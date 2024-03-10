@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34607.79
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd", "MicroPlumberd\MicroPlumberd.csproj", "{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.SourceGenerators", "MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj", "{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CBFD8B4D-6BEE-45DF-8568-2B6CC0E5ACB2}
+	EndGlobalSection
+EndGlobal
