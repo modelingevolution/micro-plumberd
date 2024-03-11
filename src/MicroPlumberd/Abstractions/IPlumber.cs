@@ -4,6 +4,7 @@ namespace MicroPlumberd;
 
 public interface IPlumber
 {
+    ISubscriptionSet SubscribeSet();
     ISubscriptionRunner Subscribe(string streamName, FromStream start,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
 

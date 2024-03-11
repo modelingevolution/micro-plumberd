@@ -49,8 +49,8 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
     {
         return new PersistentSubscriptionRunner(this, _persistentSubscriptionClient.SubscribeToStream(streamName, groupName, bufferSize, userCredentials, cancellationToken));
     }
+    public ISubscriptionSet SubscribeSet() => new SubscriptionSet(this);
 
-   
     public async Task<T> Get<T>(Guid id)
         where T : IAggregate<T>, ITypeRegister
     {

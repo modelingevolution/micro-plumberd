@@ -1,4 +1,9 @@
-﻿namespace MicroPlumberd;
+﻿using EventStore.Client;
+using System.Linq;
+
+namespace MicroPlumberd;
+
+
 
 public abstract class AggregateBase<TState>(Guid id)
     where TState : new()
