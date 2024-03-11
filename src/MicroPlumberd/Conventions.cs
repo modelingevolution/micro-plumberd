@@ -6,10 +6,10 @@ namespace MicroPlumberd;
 
 public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId);
 
-public delegate string EventNameConvention(IAggregate aggregate, object evt);
+public delegate string EventNameConvention(IAggregate? aggregate, object evt);
 
-public delegate void MetadataConvention(dynamic metadata, IAggregate aggregate, object evt);
-public delegate Uuid EventIdConvention(IAggregate aggregator, object evt);
+public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
+public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
 
 public interface IConventions
 {

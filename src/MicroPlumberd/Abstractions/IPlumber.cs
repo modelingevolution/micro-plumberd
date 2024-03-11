@@ -4,6 +4,8 @@ namespace MicroPlumberd;
 
 public interface IPlumber
 {
+    Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null);
+    Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null);
     ISubscriptionSet SubscribeSet();
     ISubscriptionRunner Subscribe(string streamName, FromStream start,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());

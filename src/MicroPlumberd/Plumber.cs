@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using EventStore.Client;
+using Grpc.Core;
 
 namespace MicroPlumberd;
 
@@ -64,34 +65,45 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         return aggregate;
     }
 
+    public async Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null)
+    {
+        var evData = GetEventData(events, metadata);
+        await _client.AppendToStreamAsync(streamId, rev, evData);
+    }
+    public async Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null)
+    {
+        var evData = GetEventData(events, metadata);
+        await _client.AppendToStreamAsync(streamId, state, evData);
+    }
+
+    private IEnumerable<EventData> GetEventData(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
+    {
+        var evData = events.Select(x =>
+        {
+            var m = Conventions.GetMetadata(agg, x, metadata);
+            var evName = this.Conventions.GetEventNameConvention(agg, x);
+            var evId = Conventions.GetEventIdConvention(agg, x);
+            return new EventData(evId, evName, Serializer.SerializeToUtf8Bytes(x),
+                Serializer.SerializeToUtf8Bytes(m));
+        });
+        return evData;
+    }
+
     public async Task SaveChanges<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
-        var evData = aggregate.PendingEvents.Select(x =>
-        {
-            var m = Conventions.GetMetadata(aggregate,x, metadata);
-            var evName = this.Conventions.GetEventNameConvention(aggregate, x);
-            var evId = Conventions.GetEventIdConvention(aggregate, x);
-            return new EventData(evId, evName, Serializer.SerializeToUtf8Bytes(x),
-                Serializer.SerializeToUtf8Bytes(m));
-        });
+        var evData = GetEventData(aggregate.PendingEvents, metadata, aggregate);
         await _client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Age), evData);
         aggregate.AckCommitted();
     }
+
 
     public async Task SaveNew<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
-        var evData = aggregate.PendingEvents.Select(x =>
-        {
-            var m = Conventions.GetMetadata(aggregate, x, metadata);
-            var evName = this.Conventions.GetEventNameConvention(aggregate, x);
-            var evId = Conventions.GetEventIdConvention(aggregate, x);
-            return new EventData(evId, evName, Serializer.SerializeToUtf8Bytes(x),
-                Serializer.SerializeToUtf8Bytes(m));
-        });
+        var evData = GetEventData(aggregate.PendingEvents, metadata, aggregate);
         await _client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
         aggregate.AckCommitted();
     }
