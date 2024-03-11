@@ -39,6 +39,8 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 var t = builder._register[er.EventType];
 
                 var (ev, metadata) = plumber.ReadEventData(er, t);
+               
+
                 foreach (var i in models)
                     await i.Given(metadata, ev);
                 await sub.Ack(e.Event.EventId);

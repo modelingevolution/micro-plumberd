@@ -20,6 +20,9 @@ namespace MicroPlumberd.Tests
         [Fact]
         public async Task New()
         {
+            await using var scope = new InvocationScope();
+            scope.SetCausation(Guid.NewGuid()).SetCorrelation(Guid.NewGuid()).SetUserId(Guid.NewGuid());
+
             FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
             aggregate.Open("Hello");
 

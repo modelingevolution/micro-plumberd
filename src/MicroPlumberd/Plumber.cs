@@ -14,7 +14,7 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
     private ProjectionRegister? _projectionRegister;
     public IProjectionRegister ProjectionRegister => _projectionRegister ??= new ProjectionRegister(_projectionManagementClient);
     public IObjectSerializer Serializer { get; set; } = new ObjectSerializer();
-    public IConventions Conventions { get; } = new Conventions();
+    public IConventions Conventions { get; } = new Conventions(StandardMetadataEnricherTypes.All);
     public EventStoreClient Client => _client;
     public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient => _persistentSubscriptionClient;
     public EventStoreProjectionManagementClient ProjectionManagementClient => _projectionManagementClient;
@@ -75,12 +75,25 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         var evData = MakeEventData(events, metadata);
         await _client.AppendToStreamAsync(streamId, state, evData);
     }
+    /// <summary>
+    /// This method is called only from subscriptions.
+    /// </summary>
+    /// <param name="er"></param>
+    /// <param name="t"></param>
+    /// <returns></returns>
     internal (object, Metadata) ReadEventData(EventRecord er, Type t)
     {
         var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
         var ev = Serializer.Deserialize(er.Data.Span, t)!;
         var m = Serializer.Parse(er.Metadata.Span);
-         return (ev, new Metadata(aggregateId, m)); 
+        
+        var metadata = new Metadata(aggregateId, m);
+        if (metadata.CorrelationId() != null)
+            InvocationContext.Current.SetCorrelation(metadata.CorrelationId()!.Value);
+        else InvocationContext.Current.ClearCorrelation();
+        InvocationContext.Current.SetCausation(er.EventId.ToGuid());
+
+        return (ev, metadata); 
     }
     private IEnumerable<EventData> MakeEventData(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
     {
