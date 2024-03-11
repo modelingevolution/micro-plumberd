@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd", "MicroPlumberd\MicroPlumberd.csproj", "{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd", "MicroPlumberd\MicroPlumberd.csproj", "{0BC48811-047F-47E0-AC76-FA1FEB8DCA53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.SourceGenerators", "MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj", "{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.SourceGenerators", "MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj", "{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Tests", "MicroPlumberd.Tests\MicroPlumberd.Tests.csproj", "{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B1B9298-4D0F-4EED-BCFF-58754B1B6C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

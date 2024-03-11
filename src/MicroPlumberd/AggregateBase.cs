@@ -13,7 +13,7 @@ public abstract class AggregateBase<TState>(Guid id)
 
     public IReadOnlyList<object> PendingEvents => _pendingEvents;
 
-    protected void AppendEvent(object ev)
+    protected void AppendPendingChange(object ev)
     {
         _pendingEvents.Add(ev);
         Apply(ev);
@@ -27,7 +27,11 @@ public abstract class AggregateBase<TState>(Guid id)
             Age += 1;
         }
     }
-
+    public void AckCommitted()
+    {
+        Age += _pendingEvents.Count;
+        _pendingEvents.Clear();
+    }
     protected abstract TState Given(TState state, object ev);
 
     private TState Apply(object ev)

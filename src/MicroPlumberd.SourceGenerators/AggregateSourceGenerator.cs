@@ -72,7 +72,7 @@ namespace MicroPlumberd.SourceGenerators
                             sb.AppendLine($"namespace {namespaceName};");
                         }
 
-                        sb.AppendLine($"partial class {className} : IAggregate<{className}> ");
+                        sb.AppendLine($"partial class {className} : IAggregate<{className}>, ITypeRegister ");
                         sb.AppendLine("{");
                         sb.AppendLine($"    protected override {stateClassName} Given({stateClassName} state, object ev)");
                         sb.AppendLine("    {");
@@ -102,7 +102,7 @@ namespace MicroPlumberd.SourceGenerators
                         }
                         sb.AppendLine("    };");
 
-                        sb.AppendLine($"    static IDictionary<string, Type> IAggregate<{className}>.TypeRegister => _register;");
+                        sb.AppendLine($"    static IDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
 
                         sb.AppendLine("}");
                         context.AddSource($"{className}_Aggregate.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
