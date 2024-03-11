@@ -67,16 +67,22 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
 
     public async Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null)
     {
-        var evData = GetEventData(events, metadata);
+        var evData = MakeEventData(events, metadata);
         await _client.AppendToStreamAsync(streamId, rev, evData);
     }
     public async Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null)
     {
-        var evData = GetEventData(events, metadata);
+        var evData = MakeEventData(events, metadata);
         await _client.AppendToStreamAsync(streamId, state, evData);
     }
-
-    private IEnumerable<EventData> GetEventData(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
+    internal (object, Metadata) ReadEventData(EventRecord er, Type t)
+    {
+        var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
+        var ev = Serializer.Deserialize(er.Data.Span, t)!;
+        var m = Serializer.Parse(er.Metadata.Span);
+         return (ev, new Metadata(aggregateId, m)); 
+    }
+    private IEnumerable<EventData> MakeEventData(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
     {
         var evData = events.Select(x =>
         {
@@ -93,7 +99,7 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
-        var evData = GetEventData(aggregate.PendingEvents, metadata, aggregate);
+        var evData = MakeEventData(aggregate.PendingEvents, metadata, aggregate);
         await _client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Age), evData);
         aggregate.AckCommitted();
     }
@@ -103,7 +109,7 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
-        var evData = GetEventData(aggregate.PendingEvents, metadata, aggregate);
+        var evData = MakeEventData(aggregate.PendingEvents, metadata, aggregate);
         await _client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
         aggregate.AckCommitted();
     }

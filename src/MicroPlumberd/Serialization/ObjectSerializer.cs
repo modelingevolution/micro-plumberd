@@ -61,7 +61,7 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
         throw new JsonException("Expected EndObject token not found.");
     }
 
-    private object ReadObject(ref Utf8JsonReader reader, JsonSerializerOptions options)
+    private object? ReadObject(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         switch (reader.TokenType)
         {

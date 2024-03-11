@@ -8,7 +8,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
     private readonly Dictionary<string, Type> _register = new();
     private readonly Dictionary<string, List<IReadModel>> _dispatcher = new();
     
-    public SubscriptionSet With<TModel>(TModel model)
+    public ISubscriptionSet With<TModel>(TModel model)
         where TModel : IReadModel, ITypeRegister
     {
         foreach(var i in TModel.TypeRegister)
@@ -38,16 +38,16 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 if (!builder._dispatcher.TryGetValue(er.EventType, out var models)) continue;
                 var t = builder._register[er.EventType];
 
-                var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
-                var ev = plumber.Serializer.Deserialize(er.Data.Span, t)!;
-                var m = plumber.Serializer.Parse(er.Metadata.Span);
-                var metadata = new Metadata(aggregateId, m);
+                var (ev, metadata) = plumber.ReadEventData(er, t);
                 foreach (var i in models)
                     await i.Given(metadata, ev);
                 await sub.Ack(e.Event.EventId);
             }
         }, state, TaskCreationOptions.LongRunning);
     }
+
+   
+
     public async Task SubscribeAsync(string name, FromStream start)
     {
         await plumber.ProjectionManagementClient.EnsureJoinProjection(name, _register.Keys);
@@ -64,10 +64,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 if (!builder._dispatcher.TryGetValue(er.EventType, out var models)) continue;
                 var t = builder._register[er.EventType];
 
-                var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
-                var ev = plumber.Serializer.Deserialize(er.Data.Span, t)!;
-                var m = plumber.Serializer.Parse(er.Metadata.Span);
-                var metadata = new Metadata(aggregateId, m);
+                var (ev, metadata) = plumber.ReadEventData(er, t);
                 foreach (var i in models) 
                     await i.Given(metadata, ev);
             }
