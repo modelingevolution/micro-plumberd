@@ -59,4 +59,9 @@ namespace MicroPlumberd.Tests
             return EventStoreClientSettings.Create(connectionString);
         }
     }
+
+    public class CommandHandlerTests
+    {
+
+    }
 }

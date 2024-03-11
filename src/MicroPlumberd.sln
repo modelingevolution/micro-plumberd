@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.SourceGenerat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Tests", "MicroPlumberd.Tests\MicroPlumberd.Tests.csproj", "{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.DirectConnect", "MicroPlumberd.DirectConnect\MicroPlumberd.DirectConnect.csproj", "{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

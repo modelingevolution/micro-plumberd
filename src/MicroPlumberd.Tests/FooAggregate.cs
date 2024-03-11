@@ -1,3 +1,5 @@
+using MicroPlumberd.DirectConnect;
+
 namespace MicroPlumberd.Tests;
 
 [Aggregate]
