@@ -145,12 +145,13 @@ Comments:
 [EventHandler]
 public partial class FooModel : DbContext
 {
-    internal const string MODEL_NAME = "FooModel_v1";
+    internal const string MODEL_VER = "_v1";
+    internal const string MODEL_NAME = $"FooModel{MODEL_VER}";
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
            .Entity<FooEntity>()
-           .ToTable(MODEL_NAME);
+           .ToTable($"FooEntities{MODEL_VER}");
     }
     private async Task Given(Metadata m, FooCreated ev)
     {
