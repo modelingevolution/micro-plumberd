@@ -18,7 +18,7 @@ public static class EventStoreProjectionManagementClientExtensions
     private static async Task Update(EventStoreProjectionManagementClient client, string outputStream, string query)
     {
         var state = await client.GetStatusAsync(outputStream);
-        if (state.Status != "Stopped")
+        if (state!.Status != "Stopped")
             await client.DisableAsync(outputStream);
         await client.UpdateAsync(outputStream, query, true);
         await client.EnableAsync(outputStream);

@@ -13,7 +13,7 @@ public partial class FooCommandHandler(IPlumber plumber)
             throw new BusinessFaultException("Foo");
 
         var agg = FooAggregate.New(id);
-        agg.Open(cmd.Name);
+        agg.Open(cmd.Name!);
 
         await plumber.SaveNew(agg);
     }
@@ -25,7 +25,7 @@ public partial class FooCommandHandler(IPlumber plumber)
             throw new BusinessFaultException("Foo");
 
         var agg = await plumber.Get<FooAggregate>(id);
-        agg.Change(cmd.Name);
+        agg.Change(cmd.Name!);
 
         await plumber.SaveChanges(agg);
         return HandlerOperationStatus.Ok();

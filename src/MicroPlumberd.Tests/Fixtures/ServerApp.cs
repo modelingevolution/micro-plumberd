@@ -17,7 +17,7 @@ class ServerApp : IDisposable, IAsyncDisposable
     {
         _esPort = esPort;
     }
-    public async Task<IServiceProvider> StartAsync(Action<IServiceCollection> configure = null)
+    public async Task<IServiceProvider> StartAsync(Action<IServiceCollection>? configure = null)
     {
         var builder = WebApplication.CreateBuilder();
 
@@ -54,12 +54,12 @@ class ServerApp : IDisposable, IAsyncDisposable
     }
     public void Dispose()
     {
-        ((IDisposable)app)?.Dispose();
+        (app as IDisposable)?.Dispose();
     }
 
     public async ValueTask DisposeAsync()
     {
         if(app != null)
-        await app.DisposeAsync();
+            await app.DisposeAsync();
     }
 }

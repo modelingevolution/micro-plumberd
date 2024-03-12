@@ -125,7 +125,9 @@ Implementing a processor is technically the same as implementing a read-model, b
   - EventNameConvention - from aggregate? instance and event instance
   - MetadataConvention - to enrich event with metadata based on aggregate instance and event instance
   - EventIdConvention - from aggregate instance and event instance
-
+  - OutputStreamModelConvention - for output stream name from model-type
+  - GroupNameModelConvention - for group name from model-type
+  
 ### Ultra development cycle for Read-Models (EF example).
 
 Imagine this:

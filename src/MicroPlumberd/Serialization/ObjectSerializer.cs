@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -40,7 +41,7 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
         }
 
         var expando = new ExpandoObject();
-        var dictionary = (IDictionary<string, object>)expando;
+        IDictionary<string, object> dictionary = expando!;
 
         while (reader.Read())
         {
@@ -51,7 +52,7 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
                 case JsonTokenType.PropertyName:
                     var propertyName = reader.GetString();
                     reader.Read();
-                    dictionary[propertyName] = ReadObject(ref reader, options);
+                    dictionary[propertyName!] = ReadObject(ref reader, options)!;
                     break;
                 default:
                     throw new JsonException();
@@ -104,7 +105,7 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
                 return list;
             }
 
-            list.Add(ReadObject(ref reader, options));
+            list.Add(ReadObject(ref reader, options)!);
         }
 
         throw new JsonException("Expected EndArray token not found.");
@@ -117,7 +118,7 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
         foreach (var kvp in value)
         {
             writer.WritePropertyName(kvp.Key);
-            WriteValue(writer, kvp.Value, options);
+            WriteValue(writer, kvp.Value!, options);
         }
 
         writer.WriteEndObject(); // End writing the object

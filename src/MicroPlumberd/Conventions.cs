@@ -19,17 +19,17 @@ public interface IConventions
 {
     SteamNameConvention GetStreamIdConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
-    MetadataConvention MetadataEnrichers { get; set; }
+    MetadataConvention? MetadataEnrichers { get; set; }
     EventIdConvention GetEventIdConvention { get; set; }
     OutputStreamModelConvention OutputStreamModelConvention { get; set; }
     GroupNameModelConvention GroupNameModelConvention { get; set; }
-    object GetMetadata(IAggregate aggregate, object evt, object? metadata);
+    object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
 }
 class Conventions : IConventions
 {
     public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.Name}-{id}";
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().Name;
-    public MetadataConvention MetadataEnrichers { get; set; }
+    public MetadataConvention? MetadataEnrichers { get; set; }
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.Name;
@@ -43,15 +43,15 @@ class Conventions : IConventions
 
     private static string OutputStreamFromModel(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.Name;
 
-    public object GetMetadata(IAggregate aggregate, object evt, object? metadata)
+    public object GetMetadata(IAggregate? aggregate, object evt, object? metadata)
     {
         ExpandoObject obj = new ExpandoObject();
         MetadataEnrichers?.Invoke(obj, aggregate, evt);
         if (metadata == null) return obj;
 
-        IDictionary<string, object> kv = obj;
+        IDictionary<string, object> kv = obj!;
         foreach (var i in metadata.GetType().GetProperties().Where(x => x.CanRead))
-            kv.Add(i.Name, i.GetGetMethod(false).Invoke(metadata, null));
+            kv.Add(i.Name, i.GetGetMethod(false)!.Invoke(metadata, null)!);
         return obj;
     }
 }
@@ -79,7 +79,7 @@ static class StandardMetadataEnrichers
     }
 }
 
-public class InvocationScope : IAsyncDisposable
+public class InvocationScope : IDisposable
 {
     public InvocationContext Context => InvocationContext.Current;
     public InvocationContext SetCorrelation(Guid correlationId) => Context.SetCorrelation(correlationId);
@@ -87,7 +87,7 @@ public class InvocationScope : IAsyncDisposable
     public InvocationContext SetUserId(Guid userId) => Context.SetUserId(userId);
     public InvocationContext Set(string key, object value) => Context.Set(key, value);
     public bool ContainsProperty(string propertyName) => Context.ContainsProperty(propertyName);
-    public async ValueTask DisposeAsync() => InvocationContext.Current.Clear();
+    public void Dispose() => InvocationContext.Current.Clear();
 }
 
 public static class MetadataExtensions
@@ -120,10 +120,10 @@ public class InvocationContext
         dict[key] = value;
         return this;
     }
-    public bool ContainsProperty(string propertyName) => ((IDictionary<string, object>)_data).ContainsKey(propertyName);
+    public bool ContainsProperty(string propertyName) => ((IDictionary<string, object>)_data!).ContainsKey(propertyName);
     public void Clear()
     {
-        IDictionary<string, object> obj = _data;
+        IDictionary<string, object> obj = _data!;
         obj.Clear();
     }
 

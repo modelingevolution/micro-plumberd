@@ -10,10 +10,10 @@ using NSubstitute;
 
 namespace MicroPlumberd.Tests;
 
-public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, IAsyncDisposable
+public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, IAsyncDisposable, IDisposable
 {
     private readonly EventStoreServer _eventStore;
-    private ClientApp client;
+    private ClientApp? client;
 
     public CommandHandler_IntegrationTests(EventStoreServer eventStore)
     {
@@ -109,6 +109,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, 
 
     public async ValueTask DisposeAsync()
     {
-        await client.DisposeAsync();
+        if(client != null)
+            await client.DisposeAsync();
     }
 }
