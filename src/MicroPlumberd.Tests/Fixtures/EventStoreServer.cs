@@ -112,11 +112,9 @@ public class EventStoreServer : IAsyncDisposable
         if (container != null && !_isDebuggerAttached)
         {
             var data = await client.Containers.InspectContainerAsync(container.ID);
-            if (data.State.Running)
-            {
+            if (data.State.Running) 
                 await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
-                await client.Containers.RemoveContainerAsync(data.ID, new ContainerRemoveParameters());
-            }
+            await client.Containers.RemoveContainerAsync(data.ID, new ContainerRemoveParameters() { Force = true});
         }
     }
 }
