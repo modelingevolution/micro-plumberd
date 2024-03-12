@@ -125,7 +125,44 @@ Implementing a processor is technically the same as implementing a read-model, b
   - EventNameConvention - from aggregate? instance and event instance
   - MetadataConvention - to enrich event with metadata based on aggregate instance and event instance
   - EventIdConvention - from aggregate instance and event instance
-    
+
+### Ultra development cycle for Read-Models (EF example).
+
+Imagine this:
+
+1. You create a read-model that subscribes persistently.
+2. You subscribe it with plumber.
+3. You changed something in the event and want to re-create the model.
+4. Instead of overriding the existing read-model, you can easily create new one. Just append suffix for a specific output stream name in **[OutputStream]** attribute.
+5. Sql schema create/drop auto-generation script will be covered in a different article. (For now we leave it for developers.)
+
+Comments:
+- By creating a new read-model you can always compare the differences to the previous one.
+- You can leverage canary-deployment strategy and have 2 versions of your system running in parallel.  
+
+```csharp
+[OutputStream(FooModel.MODEL_NAME)]
+[EventHandler]
+public partial class FooModel : DbContext
+{
+    internal const string MODEL_NAME = "FooModel_v1";
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+           .Entity<FooEntity>()
+           .ToTable(MODEL_NAME);
+    }
+    private async Task Given(Metadata m, FooCreated ev)
+    {
+        // your code
+    }
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+        // your code
+    }
+}
+```
+
 ### Subscription Sets - Models ultra-composition
   - You can easily create a stream that joins events together by event-type. 
 

@@ -1,4 +1,5 @@
 ﻿using System.Dynamic;
+using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using EventStore.Client;
 
@@ -12,12 +13,16 @@ public delegate string EventNameConvention(IAggregate? aggregate, object evt);
 public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
 public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
 
+public delegate string OutputStreamModelConvention(Type model);
+public delegate string GroupNameModelConvention(Type model);
 public interface IConventions
 {
     SteamNameConvention GetStreamIdConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
     MetadataConvention MetadataEnrichers { get; set; }
     EventIdConvention GetEventIdConvention { get; set; }
+    OutputStreamModelConvention OutputStreamModelConvention { get; set; }
+    GroupNameModelConvention GroupNameModelConvention { get; set; }
     object GetMetadata(IAggregate aggregate, object evt, object? metadata);
 }
 class Conventions : IConventions
@@ -26,7 +31,8 @@ class Conventions : IConventions
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().Name;
     public MetadataConvention MetadataEnrichers { get; set; }
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
-
+    public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
+    public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.Name;
     public Conventions(StandardMetadataEnricherTypes types)
     {
         if(types.HasFlag(StandardMetadataEnricherTypes.Created))
@@ -34,6 +40,9 @@ class Conventions : IConventions
         if (types.HasFlag(StandardMetadataEnricherTypes.InvocationContext))
             MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
     }
+
+    private static string OutputStreamFromModel(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.Name;
+
     public object GetMetadata(IAggregate aggregate, object evt, object? metadata)
     {
         ExpandoObject obj = new ExpandoObject();

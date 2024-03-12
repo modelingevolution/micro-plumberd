@@ -1,5 +1,6 @@
 namespace MicroPlumberd.Tests.AppSrc;
 
+[OutputStream("FooModel_v1")]
 [EventHandler]
 public partial class FooModel
 {
@@ -19,3 +20,4 @@ public partial class FooModel
         Events.Add(ev);
     }
 }
+

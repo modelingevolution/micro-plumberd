@@ -28,7 +28,7 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         where TModel : IReadModel, ITypeRegister
     {
         var events = TModel.TypeRegister.Keys;
-        var outputStream = typeof(TModel).Name;
+        var outputStream = Conventions.OutputStreamModelConvention(typeof(TModel));
         await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
         var sub = Subscribe(outputStream, start ?? FromStream.Start);
         await sub.WithModel(model);
@@ -38,8 +38,8 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         where TModel : IReadModel, ITypeRegister
     {
         var events = TModel.TypeRegister.Keys;
-        var outputStream = typeof(TModel).Name;
-        var groupName = outputStream;
+        var outputStream = Conventions.OutputStreamModelConvention(typeof(TModel));
+        var groupName = Conventions.GroupNameModelConvention(typeof(TModel));
         await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
         var sub = SubscribePersistently(outputStream, groupName);
         await sub.WithModel(model);
