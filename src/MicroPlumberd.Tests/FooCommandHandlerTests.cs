@@ -45,10 +45,10 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
         {
             x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect();
         });
-        FooModel srvModel = new FooModel();
+        AppSrc.FooModel srvModel = new AppSrc.FooModel();
 
         await srvProvider.GetRequiredService<IPlumber>().SubscribeModel(srvModel, FromStream.End);
-        await srvProvider.GetRequiredService<IPlumber>().SubscribeModel(new FooProcessor(srvProvider.GetRequiredService<IPlumber>()), FromStream.End);
+        await srvProvider.GetRequiredService<IPlumber>().SubscribeModel(new AppSrc.FooProcessor(srvProvider.GetRequiredService<IPlumber>()), FromStream.End);
 
         // Making sure we have subscribed.
         await Task.Delay(1000);

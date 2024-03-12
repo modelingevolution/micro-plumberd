@@ -24,7 +24,7 @@ public class ReadModel_IntegrationTests : IClassFixture<EventStoreServer>
         await _eventStore.StartInDocker();
         await AppendOneEvent();
 
-        var fooModel = new FooModel();
+        var fooModel = new AppSrc.FooModel();
 
         var sub= await plumber.SubscribeModel(fooModel);
         
@@ -35,7 +35,7 @@ public class ReadModel_IntegrationTests : IClassFixture<EventStoreServer>
 
     private async Task AppendOneEvent()
     {
-        FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
+        AppSrc.FooAggregate aggregate = AppSrc.FooAggregate.New(Guid.NewGuid());
         aggregate.Open("Hello");
         await plumber.SaveNew(aggregate);
     }
