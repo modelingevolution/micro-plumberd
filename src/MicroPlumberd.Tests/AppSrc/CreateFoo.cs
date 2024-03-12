@@ -8,7 +8,7 @@ namespace MicroPlumberd.Tests.AppSrc;
 public class CreateFoo : ICommand
 {
     [ProtoMember(2)]
-    public string Name { get; set; }
+    public string? Name { get; set; }
     [ProtoMember(1)]
     public Guid Id { get; set; } = Guid.NewGuid();
 }

@@ -26,10 +26,10 @@ public class MessagesTests
 
         var t = sp.GetRequiredService<TypeRegister>();
 
-        t[typeof(CommandEnvelope<CreateFoo>).FullName.ToGuid()].Should().NotBeNull();
-        t[typeof(CommandEnvelope<ChangeFoo>).FullName.ToGuid()].Should().NotBeNull();
-        t[typeof(BusinessFault).FullName.ToGuid()].Should().NotBeNull();
-        t[typeof(HandlerOperationStatus).FullName.ToGuid()].Should().NotBeNull();
+        t[typeof(CommandEnvelope<CreateFoo>).FullName!.ToGuid()].Should().NotBeNull();
+        t[typeof(CommandEnvelope<ChangeFoo>).FullName!.ToGuid()].Should().NotBeNull();
+        t[typeof(BusinessFault).FullName!.ToGuid()].Should().NotBeNull();
+        t[typeof(HandlerOperationStatus).FullName!.ToGuid()].Should().NotBeNull();
     }
 
     private IEnumerable<Type> Messages<T>() where T : IApiTypeRegister

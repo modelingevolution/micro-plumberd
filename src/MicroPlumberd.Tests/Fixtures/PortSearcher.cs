@@ -24,7 +24,7 @@ public class PortSearcher
                 
                 return actual;
             }
-            catch (SocketException ex)
+            catch (SocketException)
             {
                 // Increment the port number and try again
                 actual = Interlocked.Increment(ref this.lastPort);

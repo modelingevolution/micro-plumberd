@@ -11,7 +11,7 @@ namespace MicroPlumberd.Tests.Fixtures;
 class ServerApp : IDisposable, IAsyncDisposable
 {
     private readonly int _esPort;
-    private WebApplication app;
+    private WebApplication? app;
 
     public ServerApp(int esPort)
     {
@@ -59,6 +59,7 @@ class ServerApp : IDisposable, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
+        if(app != null)
         await app.DisposeAsync();
     }
 }

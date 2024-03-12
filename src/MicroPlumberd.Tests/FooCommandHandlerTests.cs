@@ -10,7 +10,7 @@ using NSubstitute;
 
 namespace MicroPlumberd.Tests;
 
-public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
+public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, IAsyncDisposable
 {
     private readonly EventStoreServer _eventStore;
     private ClientApp client;
@@ -27,7 +27,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
         await using ServerApp srv = new ServerApp(_eventStore.HttpPort);
         await srv.StartAsync(x => { x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect(); });
 
-        var invoker = await ArrangeClientApp();
+        var invoker = ArrangeClientApp();
         var streamId = Guid.NewGuid();
 
         await invoker.Execute(streamId, new CreateFoo() { Name="Hello"});
@@ -54,7 +54,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
         await Task.Delay(1000);
         
         // Client App
-        var invoker = await ArrangeClientApp();
+        var invoker = ArrangeClientApp();
 
         // Invocation
         var streamId = Guid.NewGuid();
@@ -71,7 +71,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
         srvModel.Events[2].Should().BeOfType<FooCreated>();
     }
 
-    private async Task<IRequestInvoker> ArrangeClientApp()
+    private IRequestInvoker ArrangeClientApp()
     {
         this.client = new ClientApp();
 
@@ -92,7 +92,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
 
         await srv.StartAsync(x => { x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect(); });
 
-        var invoker = await ArrangeClientApp();
+        var invoker = ArrangeClientApp();
         var streamId = Guid.NewGuid();
 
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });

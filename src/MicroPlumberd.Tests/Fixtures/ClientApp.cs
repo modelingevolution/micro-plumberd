@@ -4,9 +4,9 @@ namespace MicroPlumberd.Tests.Fixtures;
 
 class ClientApp : IDisposable, IAsyncDisposable
 {
-    private ServiceProvider sp;
+    private ServiceProvider? sp;
 
-    public IServiceProvider Start(Action<IServiceCollection> configure = null)
+    public IServiceProvider Start(Action<IServiceCollection>? configure = null)
     {
         IServiceCollection service = new ServiceCollection();
 
@@ -23,6 +23,7 @@ class ClientApp : IDisposable, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await sp.DisposeAsync();
+        if(sp != null)
+            await sp.DisposeAsync();
     }
 }
