@@ -1,0 +1,148 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IReadModel
+  commentId: T:MicroPlumberd.IReadModel
+  id: IReadModel
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata,System.Object)
+  langs:
+  - csharp
+  - vb
+  name: IReadModel
+  nameWithType: IReadModel
+  fullName: MicroPlumberd.IReadModel
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IReadModel
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IReadModel
+    content.vb: Public Interface IReadModel
+- uid: MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata,System.Object)
+  commentId: M:MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata,System.Object)
+  id: Given(MicroPlumberd.Metadata,System.Object)
+  parent: MicroPlumberd.IReadModel
+  langs:
+  - csharp
+  - vb
+  name: Given(Metadata, object)
+  nameWithType: IReadModel.Given(Metadata, object)
+  fullName: MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Given
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Task Given(Metadata m, object ev)
+    parameters:
+    - id: m
+      type: MicroPlumberd.Metadata
+    - id: ev
+      type: System.Object
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function Given(m As Metadata, ev As Object) As Task
+  overload: MicroPlumberd.IReadModel.Given*
+  nameWithType.vb: IReadModel.Given(Metadata, Object)
+  fullName.vb: MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata, Object)
+  name.vb: Given(Metadata, Object)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IReadModel.Given*
+  commentId: Overload:MicroPlumberd.IReadModel.Given
+  href: MicroPlumberd.IReadModel.html#MicroPlumberd_IReadModel_Given_MicroPlumberd_Metadata_System_Object_
+  name: Given
+  nameWithType: IReadModel.Given
+  fullName: MicroPlumberd.IReadModel.Given
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

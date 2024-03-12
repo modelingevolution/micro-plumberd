@@ -1,0 +1,562 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  commentId: T:MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  id: EventStoreProjectionManagementClientExtensions
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  langs:
+  - csharp
+  - vb
+  name: EventStoreProjectionManagementClientExtensions
+  nameWithType: EventStoreProjectionManagementClientExtensions
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EventStoreProjectionManagementClientExtensions
+    path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static class EventStoreProjectionManagementClientExtensions
+    content.vb: Public Module EventStoreProjectionManagementClientExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  id: EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  isExtensionMethod: true
+  parent: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  langs:
+  - csharp
+  - vb
+  name: EnsureJoinProjection(EventStoreProjectionManagementClient, string, IEnumerable<string>)
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, string, IEnumerable<string>)
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, string, System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EnsureJoinProjection
+    path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static Task EnsureJoinProjection(this EventStoreProjectionManagementClient client, string outputStream, IEnumerable<string> eventTypes)
+    parameters:
+    - id: client
+      type: EventStore.Client.EventStoreProjectionManagementClient
+    - id: outputStream
+      type: System.String
+    - id: eventTypes
+      type: System.Collections.Generic.IEnumerable{System.String}
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function EnsureJoinProjection(client As EventStoreProjectionManagementClient, outputStream As String, eventTypes As IEnumerable(Of String)) As Task
+  overload: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection*
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, System.Collections.Generic.IEnumerable(Of String))
+  name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  id: EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  isExtensionMethod: true
+  parent: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  langs:
+  - csharp
+  - vb
+  name: EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>)
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>)
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, string, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable<string>)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EnsureJoinProjection
+    path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+    startLine: 26
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static Task EnsureJoinProjection(this EventStoreProjectionManagementClient client, string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes)
+    parameters:
+    - id: client
+      type: EventStore.Client.EventStoreProjectionManagementClient
+    - id: outputStream
+      type: System.String
+    - id: register
+      type: MicroPlumberd.IProjectionRegister
+    - id: eventTypes
+      type: System.Collections.Generic.IEnumerable{System.String}
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function EnsureJoinProjection(client As EventStoreProjectionManagementClient, outputStream As String, register As IProjectionRegister, eventTypes As IEnumerable(Of String)) As Task
+  overload: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection*
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String))
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable(Of String))
+  name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String))
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection*
+  commentId: Overload:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection
+  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_EventStore_Client_EventStoreProjectionManagementClient_System_String_System_Collections_Generic_IEnumerable_System_String__
+  name: EnsureJoinProjection
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection
+- uid: EventStore.Client.EventStoreProjectionManagementClient
+  commentId: T:EventStore.Client.EventStoreProjectionManagementClient
+  parent: EventStore.Client
+  isExternal: true
+  name: EventStoreProjectionManagementClient
+  nameWithType: EventStoreProjectionManagementClient
+  fullName: EventStore.Client.EventStoreProjectionManagementClient
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: EventStore.Client
+  commentId: N:EventStore.Client
+  isExternal: true
+  name: EventStore.Client
+  nameWithType: EventStore.Client
+  fullName: EventStore.Client
+  spec.csharp:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+  spec.vb:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.IProjectionRegister
+  commentId: T:MicroPlumberd.IProjectionRegister
+  parent: MicroPlumberd
+  href: MicroPlumberd.IProjectionRegister.html
+  name: IProjectionRegister
+  nameWithType: IProjectionRegister
+  fullName: MicroPlumberd.IProjectionRegister

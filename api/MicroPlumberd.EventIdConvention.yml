@@ -1,0 +1,96 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.EventIdConvention
+  commentId: T:MicroPlumberd.EventIdConvention
+  id: EventIdConvention
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: EventIdConvention
+  nameWithType: EventIdConvention
+  fullName: MicroPlumberd.EventIdConvention
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EventIdConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt)
+    parameters:
+    - id: aggregator
+      type: MicroPlumberd.IAggregate
+    - id: evt
+      type: System.Object
+    return:
+      type: EventStore.Client.Uuid
+    content.vb: Public Delegate Function EventIdConvention(aggregator As IAggregate, evt As Object) As Uuid
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IAggregate
+  commentId: T:MicroPlumberd.IAggregate
+  parent: MicroPlumberd
+  href: MicroPlumberd.IAggregate.html
+  name: IAggregate
+  nameWithType: IAggregate
+  fullName: MicroPlumberd.IAggregate
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: EventStore.Client.Uuid
+  commentId: T:EventStore.Client.Uuid
+  parent: EventStore.Client
+  isExternal: true
+  name: Uuid
+  nameWithType: Uuid
+  fullName: EventStore.Client.Uuid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: EventStore.Client
+  commentId: N:EventStore.Client
+  isExternal: true
+  name: EventStore.Client
+  nameWithType: EventStore.Client
+  fullName: EventStore.Client
+  spec.csharp:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+  spec.vb:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true

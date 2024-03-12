@@ -1,0 +1,487 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  id: Metadata
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
+  - MicroPlumberd.Metadata.Data
+  - MicroPlumberd.Metadata.Id
+  langs:
+  - csharp
+  - vb
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+  type: Struct
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Metadata
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public readonly struct Metadata
+    content.vb: Public Structure Metadata
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  extensionMethods:
+  - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CorrelationId
+- uid: MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
+  commentId: M:MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
+  id: '#ctor(System.Guid,System.Text.Json.JsonElement)'
+  parent: MicroPlumberd.Metadata
+  langs:
+  - csharp
+  - vb
+  name: Metadata(Guid, JsonElement)
+  nameWithType: Metadata.Metadata(Guid, JsonElement)
+  fullName: MicroPlumberd.Metadata.Metadata(System.Guid, System.Text.Json.JsonElement)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Metadata(Guid id, JsonElement data)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: data
+      type: System.Text.Json.JsonElement
+    content.vb: Public Sub New(id As Guid, data As JsonElement)
+  overload: MicroPlumberd.Metadata.#ctor*
+  nameWithType.vb: Metadata.New(Guid, JsonElement)
+  fullName.vb: MicroPlumberd.Metadata.New(System.Guid, System.Text.Json.JsonElement)
+  name.vb: New(Guid, JsonElement)
+- uid: MicroPlumberd.Metadata.Id
+  commentId: P:MicroPlumberd.Metadata.Id
+  id: Id
+  parent: MicroPlumberd.Metadata
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: Metadata.Id
+  fullName: MicroPlumberd.Metadata.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public ReadOnly Property Id As Guid
+  overload: MicroPlumberd.Metadata.Id*
+- uid: MicroPlumberd.Metadata.Data
+  commentId: P:MicroPlumberd.Metadata.Data
+  id: Data
+  parent: MicroPlumberd.Metadata
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: Metadata.Data
+  fullName: MicroPlumberd.Metadata.Data
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Data
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public JsonElement Data { get; }
+    parameters: []
+    return:
+      type: System.Text.Json.JsonElement
+    content.vb: Public ReadOnly Property Data As JsonElement
+  overload: MicroPlumberd.Metadata.Data*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CorrelationId
+  commentId: M:MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  parent: MicroPlumberd.MetadataExtensions
+  definition: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  name: CorrelationId(Metadata)
+  nameWithType: MetadataExtensions.CorrelationId(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+    name: CorrelationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+    name: CorrelationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  name: CorrelationId(Metadata)
+  nameWithType: MetadataExtensions.CorrelationId(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+    name: CorrelationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+    name: CorrelationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.MetadataExtensions
+  commentId: T:MicroPlumberd.MetadataExtensions
+  parent: MicroPlumberd
+  href: MicroPlumberd.MetadataExtensions.html
+  name: MetadataExtensions
+  nameWithType: MetadataExtensions
+  fullName: MicroPlumberd.MetadataExtensions
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Metadata.#ctor*
+  commentId: Overload:MicroPlumberd.Metadata.#ctor
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata__ctor_System_Guid_System_Text_Json_JsonElement_
+  name: Metadata
+  nameWithType: Metadata.Metadata
+  fullName: MicroPlumberd.Metadata.Metadata
+  nameWithType.vb: Metadata.New
+  fullName.vb: MicroPlumberd.Metadata.New
+  name.vb: New
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Text.Json.JsonElement
+  commentId: T:System.Text.Json.JsonElement
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonelement
+  name: JsonElement
+  nameWithType: JsonElement
+  fullName: System.Text.Json.JsonElement
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+- uid: MicroPlumberd.Metadata.Id*
+  commentId: Overload:MicroPlumberd.Metadata.Id
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_Id
+  name: Id
+  nameWithType: Metadata.Id
+  fullName: MicroPlumberd.Metadata.Id
+- uid: MicroPlumberd.Metadata.Data*
+  commentId: Overload:MicroPlumberd.Metadata.Data
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_Data
+  name: Data
+  nameWithType: Metadata.Data
+  fullName: MicroPlumberd.Metadata.Data

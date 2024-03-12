@@ -1,0 +1,78 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.EventNameConvention
+  commentId: T:MicroPlumberd.EventNameConvention
+  id: EventNameConvention
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: EventNameConvention
+  nameWithType: EventNameConvention
+  fullName: MicroPlumberd.EventNameConvention
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EventNameConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public delegate string EventNameConvention(IAggregate? aggregate, object evt)
+    parameters:
+    - id: aggregate
+      type: MicroPlumberd.IAggregate
+    - id: evt
+      type: System.Object
+    return:
+      type: System.String
+    content.vb: Public Delegate Function EventNameConvention(aggregate As IAggregate, evt As Object) As String
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IAggregate
+  commentId: T:MicroPlumberd.IAggregate
+  parent: MicroPlumberd
+  href: MicroPlumberd.IAggregate.html
+  name: IAggregate
+  nameWithType: IAggregate
+  fullName: MicroPlumberd.IAggregate
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

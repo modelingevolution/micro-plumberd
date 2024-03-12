@@ -1,0 +1,134 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.StandardMetadataEnricherTypes
+  commentId: T:MicroPlumberd.StandardMetadataEnricherTypes
+  id: StandardMetadataEnricherTypes
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.StandardMetadataEnricherTypes.All
+  - MicroPlumberd.StandardMetadataEnricherTypes.Created
+  - MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: StandardMetadataEnricherTypes
+  nameWithType: StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes
+  type: Enum
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StandardMetadataEnricherTypes
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 57
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum StandardMetadataEnricherTypes
+    content.vb: >-
+      <Flags>
+
+      Public Enum StandardMetadataEnricherTypes
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.Created
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.Created
+  id: Created
+  parent: MicroPlumberd.StandardMetadataEnricherTypes
+  langs:
+  - csharp
+  - vb
+  name: Created
+  nameWithType: StandardMetadataEnricherTypes.Created
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.Created
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Created
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 60
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Created = 1
+    return:
+      type: MicroPlumberd.StandardMetadataEnricherTypes
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  id: InvocationContext
+  parent: MicroPlumberd.StandardMetadataEnricherTypes
+  langs:
+  - csharp
+  - vb
+  name: InvocationContext
+  nameWithType: StandardMetadataEnricherTypes.InvocationContext
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: InvocationContext
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 61
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: InvocationContext = 2
+    return:
+      type: MicroPlumberd.StandardMetadataEnricherTypes
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.All
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.All
+  id: All
+  parent: MicroPlumberd.StandardMetadataEnricherTypes
+  langs:
+  - csharp
+  - vb
+  name: All
+  nameWithType: StandardMetadataEnricherTypes.All
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.All
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: All
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 62
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: All = Created | InvocationContext
+    return:
+      type: MicroPlumberd.StandardMetadataEnricherTypes
+    content.vb: All = Created Or InvocationContext
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.StandardMetadataEnricherTypes
+  commentId: T:MicroPlumberd.StandardMetadataEnricherTypes
+  parent: MicroPlumberd
+  href: MicroPlumberd.StandardMetadataEnricherTypes.html
+  name: StandardMetadataEnricherTypes
+  nameWithType: StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes

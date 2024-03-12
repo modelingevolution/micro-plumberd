@@ -1,0 +1,317 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IObjectSerializer
+  commentId: T:MicroPlumberd.IObjectSerializer
+  id: IObjectSerializer
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan{System.Byte},System.Type)
+  - MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan{System.Byte})
+  - MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(System.Object)
+  langs:
+  - csharp
+  - vb
+  name: IObjectSerializer
+  nameWithType: IObjectSerializer
+  fullName: MicroPlumberd.IObjectSerializer
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IObjectSerializer
+    path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IObjectSerializer
+    content.vb: Public Interface IObjectSerializer
+- uid: MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan{System.Byte},System.Type)
+  commentId: M:MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan{System.Byte},System.Type)
+  id: Deserialize(System.ReadOnlySpan{System.Byte},System.Type)
+  parent: MicroPlumberd.IObjectSerializer
+  langs:
+  - csharp
+  - vb
+  name: Deserialize(ReadOnlySpan<byte>, Type)
+  nameWithType: IObjectSerializer.Deserialize(ReadOnlySpan<byte>, Type)
+  fullName: MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan<byte>, System.Type)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Deserialize
+    path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: object? Deserialize(ReadOnlySpan<byte> span, Type t)
+    parameters:
+    - id: span
+      type: System.ReadOnlySpan{System.Byte}
+    - id: t
+      type: System.Type
+    return:
+      type: System.Object
+    content.vb: Function Deserialize(span As ReadOnlySpan(Of Byte), t As Type) As Object
+  overload: MicroPlumberd.IObjectSerializer.Deserialize*
+  nameWithType.vb: IObjectSerializer.Deserialize(ReadOnlySpan(Of Byte), Type)
+  fullName.vb: MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan(Of Byte), System.Type)
+  name.vb: Deserialize(ReadOnlySpan(Of Byte), Type)
+- uid: MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan{System.Byte})
+  commentId: M:MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan{System.Byte})
+  id: Parse(System.ReadOnlySpan{System.Byte})
+  parent: MicroPlumberd.IObjectSerializer
+  langs:
+  - csharp
+  - vb
+  name: Parse(ReadOnlySpan<byte>)
+  nameWithType: IObjectSerializer.Parse(ReadOnlySpan<byte>)
+  fullName: MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan<byte>)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Parse
+    path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: JsonElement Parse(ReadOnlySpan<byte> span)
+    parameters:
+    - id: span
+      type: System.ReadOnlySpan{System.Byte}
+    return:
+      type: System.Text.Json.JsonElement
+    content.vb: Function Parse(span As ReadOnlySpan(Of Byte)) As JsonElement
+  overload: MicroPlumberd.IObjectSerializer.Parse*
+  nameWithType.vb: IObjectSerializer.Parse(ReadOnlySpan(Of Byte))
+  fullName.vb: MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan(Of Byte))
+  name.vb: Parse(ReadOnlySpan(Of Byte))
+- uid: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(System.Object)
+  commentId: M:MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(System.Object)
+  id: SerializeToUtf8Bytes(System.Object)
+  parent: MicroPlumberd.IObjectSerializer
+  langs:
+  - csharp
+  - vb
+  name: SerializeToUtf8Bytes(object?)
+  nameWithType: IObjectSerializer.SerializeToUtf8Bytes(object?)
+  fullName: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(object?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SerializeToUtf8Bytes
+    path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: byte[] SerializeToUtf8Bytes(object? t)
+    parameters:
+    - id: t
+      type: System.Object
+    return:
+      type: System.Byte[]
+    content.vb: Function SerializeToUtf8Bytes(t As Object) As Byte()
+  overload: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes*
+  nameWithType.vb: IObjectSerializer.SerializeToUtf8Bytes(Object)
+  fullName.vb: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(Object)
+  name.vb: SerializeToUtf8Bytes(Object)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IObjectSerializer.Deserialize*
+  commentId: Overload:MicroPlumberd.IObjectSerializer.Deserialize
+  href: MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_Deserialize_System_ReadOnlySpan_System_Byte__System_Type_
+  name: Deserialize
+  nameWithType: IObjectSerializer.Deserialize
+  fullName: MicroPlumberd.IObjectSerializer.Deserialize
+- uid: System.ReadOnlySpan{System.Byte}
+  commentId: T:System.ReadOnlySpan{System.Byte}
+  parent: System
+  definition: System.ReadOnlySpan`1
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<byte>
+  nameWithType: ReadOnlySpan<byte>
+  fullName: System.ReadOnlySpan<byte>
+  nameWithType.vb: ReadOnlySpan(Of Byte)
+  fullName.vb: System.ReadOnlySpan(Of Byte)
+  name.vb: ReadOnlySpan(Of Byte)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.ReadOnlySpan`1
+  commentId: T:System.ReadOnlySpan`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  name: ReadOnlySpan<T>
+  nameWithType: ReadOnlySpan<T>
+  fullName: System.ReadOnlySpan<T>
+  nameWithType.vb: ReadOnlySpan(Of T)
+  fullName.vb: System.ReadOnlySpan(Of T)
+  name.vb: ReadOnlySpan(Of T)
+  spec.csharp:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.ReadOnlySpan`1
+    name: ReadOnlySpan
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.readonlyspan-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IObjectSerializer.Parse*
+  commentId: Overload:MicroPlumberd.IObjectSerializer.Parse
+  href: MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_Parse_System_ReadOnlySpan_System_Byte__
+  name: Parse
+  nameWithType: IObjectSerializer.Parse
+  fullName: MicroPlumberd.IObjectSerializer.Parse
+- uid: System.Text.Json.JsonElement
+  commentId: T:System.Text.Json.JsonElement
+  parent: System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.text.json.jsonelement
+  name: JsonElement
+  nameWithType: JsonElement
+  fullName: System.Text.Json.JsonElement
+- uid: System.Text.Json
+  commentId: N:System.Text.Json
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Text.Json
+  nameWithType: System.Text.Json
+  fullName: System.Text.Json
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Text
+    name: Text
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text
+  - name: .
+  - uid: System.Text.Json
+    name: Json
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.text.json
+- uid: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes*
+  commentId: Overload:MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes
+  href: MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_SerializeToUtf8Bytes_System_Object_
+  name: SerializeToUtf8Bytes
+  nameWithType: IObjectSerializer.SerializeToUtf8Bytes
+  fullName: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )

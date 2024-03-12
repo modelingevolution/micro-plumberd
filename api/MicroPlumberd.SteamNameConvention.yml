@@ -1,0 +1,76 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.SteamNameConvention
+  commentId: T:MicroPlumberd.SteamNameConvention
+  id: SteamNameConvention
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: SteamNameConvention
+  nameWithType: SteamNameConvention
+  fullName: MicroPlumberd.SteamNameConvention
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SteamNameConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId)
+    parameters:
+    - id: aggregateType
+      type: System.Type
+    - id: aggregateId
+      type: System.Guid
+    return:
+      type: System.String
+    content.vb: Public Delegate Function SteamNameConvention(aggregateType As Type, aggregateId As Guid) As String
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

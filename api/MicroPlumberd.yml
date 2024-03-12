@@ -1,0 +1,266 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  id: MicroPlumberd
+  children:
+  - MicroPlumberd.AggregateAttribute
+  - MicroPlumberd.AggregateBase`1
+  - MicroPlumberd.EventHandlerAttribute
+  - MicroPlumberd.EventIdConvention
+  - MicroPlumberd.EventNameConvention
+  - MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  - MicroPlumberd.GroupNameModelConvention
+  - MicroPlumberd.IAggregate
+  - MicroPlumberd.IAggregate`1
+  - MicroPlumberd.IConventions
+  - MicroPlumberd.IObjectSerializer
+  - MicroPlumberd.IPlumber
+  - MicroPlumberd.IProjectionRegister
+  - MicroPlumberd.IReadModel
+  - MicroPlumberd.ISubscriptionRunner
+  - MicroPlumberd.ISubscriptionSet
+  - MicroPlumberd.ITypeRegister
+  - MicroPlumberd.InvocationContext
+  - MicroPlumberd.InvocationScope
+  - MicroPlumberd.Metadata
+  - MicroPlumberd.MetadataConvention
+  - MicroPlumberd.MetadataExtensions
+  - MicroPlumberd.OutputStreamAttribute
+  - MicroPlumberd.OutputStreamModelConvention
+  - MicroPlumberd.Plumber
+  - MicroPlumberd.StandardMetadataEnricherTypes
+  - MicroPlumberd.SteamNameConvention
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+  type: Namespace
+  assemblies:
+  - MicroPlumberd
+references:
+- uid: MicroPlumberd.AggregateAttribute
+  commentId: T:MicroPlumberd.AggregateAttribute
+  href: MicroPlumberd.AggregateAttribute.html
+  name: AggregateAttribute
+  nameWithType: AggregateAttribute
+  fullName: MicroPlumberd.AggregateAttribute
+- uid: MicroPlumberd.OutputStreamAttribute
+  commentId: T:MicroPlumberd.OutputStreamAttribute
+  href: MicroPlumberd.OutputStreamAttribute.html
+  name: OutputStreamAttribute
+  nameWithType: OutputStreamAttribute
+  fullName: MicroPlumberd.OutputStreamAttribute
+- uid: MicroPlumberd.EventHandlerAttribute
+  commentId: T:MicroPlumberd.EventHandlerAttribute
+  href: MicroPlumberd.EventHandlerAttribute.html
+  name: EventHandlerAttribute
+  nameWithType: EventHandlerAttribute
+  fullName: MicroPlumberd.EventHandlerAttribute
+- uid: MicroPlumberd.ITypeRegister
+  commentId: T:MicroPlumberd.ITypeRegister
+  href: MicroPlumberd.ITypeRegister.html
+  name: ITypeRegister
+  nameWithType: ITypeRegister
+  fullName: MicroPlumberd.ITypeRegister
+- uid: MicroPlumberd.IAggregate
+  commentId: T:MicroPlumberd.IAggregate
+  parent: MicroPlumberd
+  href: MicroPlumberd.IAggregate.html
+  name: IAggregate
+  nameWithType: IAggregate
+  fullName: MicroPlumberd.IAggregate
+- uid: MicroPlumberd.IAggregate`1
+  commentId: T:MicroPlumberd.IAggregate`1
+  href: MicroPlumberd.IAggregate-1.html
+  name: IAggregate<TSelf>
+  nameWithType: IAggregate<TSelf>
+  fullName: MicroPlumberd.IAggregate<TSelf>
+  nameWithType.vb: IAggregate(Of TSelf)
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf)
+  name.vb: IAggregate(Of TSelf)
+  spec.csharp:
+  - uid: MicroPlumberd.IAggregate`1
+    name: IAggregate
+    href: MicroPlumberd.IAggregate-1.html
+  - name: <
+  - name: TSelf
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IAggregate`1
+    name: IAggregate
+    href: MicroPlumberd.IAggregate-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TSelf
+  - name: )
+- uid: MicroPlumberd.IObjectSerializer
+  commentId: T:MicroPlumberd.IObjectSerializer
+  parent: MicroPlumberd
+  href: MicroPlumberd.IObjectSerializer.html
+  name: IObjectSerializer
+  nameWithType: IObjectSerializer
+  fullName: MicroPlumberd.IObjectSerializer
+- uid: MicroPlumberd.IPlumber
+  commentId: T:MicroPlumberd.IPlumber
+  parent: MicroPlumberd
+  href: MicroPlumberd.IPlumber.html
+  name: IPlumber
+  nameWithType: IPlumber
+  fullName: MicroPlumberd.IPlumber
+- uid: MicroPlumberd.IReadModel
+  commentId: T:MicroPlumberd.IReadModel
+  href: MicroPlumberd.IReadModel.html
+  name: IReadModel
+  nameWithType: IReadModel
+  fullName: MicroPlumberd.IReadModel
+- uid: MicroPlumberd.ISubscriptionSet
+  commentId: T:MicroPlumberd.ISubscriptionSet
+  parent: MicroPlumberd
+  href: MicroPlumberd.ISubscriptionSet.html
+  name: ISubscriptionSet
+  nameWithType: ISubscriptionSet
+  fullName: MicroPlumberd.ISubscriptionSet
+- uid: MicroPlumberd.ISubscriptionRunner
+  commentId: T:MicroPlumberd.ISubscriptionRunner
+  parent: MicroPlumberd
+  href: MicroPlumberd.ISubscriptionRunner.html
+  name: ISubscriptionRunner
+  nameWithType: ISubscriptionRunner
+  fullName: MicroPlumberd.ISubscriptionRunner
+- uid: MicroPlumberd.AggregateBase`1
+  commentId: T:MicroPlumberd.AggregateBase`1
+  href: MicroPlumberd.AggregateBase-1.html
+  name: AggregateBase<TState>
+  nameWithType: AggregateBase<TState>
+  fullName: MicroPlumberd.AggregateBase<TState>
+  nameWithType.vb: AggregateBase(Of TState)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState)
+  name.vb: AggregateBase(Of TState)
+  spec.csharp:
+  - uid: MicroPlumberd.AggregateBase`1
+    name: AggregateBase
+    href: MicroPlumberd.AggregateBase-1.html
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.AggregateBase`1
+    name: AggregateBase
+    href: MicroPlumberd.AggregateBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: MicroPlumberd.SteamNameConvention
+  commentId: T:MicroPlumberd.SteamNameConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.SteamNameConvention.html
+  name: SteamNameConvention
+  nameWithType: SteamNameConvention
+  fullName: MicroPlumberd.SteamNameConvention
+- uid: MicroPlumberd.EventNameConvention
+  commentId: T:MicroPlumberd.EventNameConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.EventNameConvention.html
+  name: EventNameConvention
+  nameWithType: EventNameConvention
+  fullName: MicroPlumberd.EventNameConvention
+- uid: MicroPlumberd.MetadataConvention
+  commentId: T:MicroPlumberd.MetadataConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.MetadataConvention.html
+  name: MetadataConvention
+  nameWithType: MetadataConvention
+  fullName: MicroPlumberd.MetadataConvention
+- uid: MicroPlumberd.EventIdConvention
+  commentId: T:MicroPlumberd.EventIdConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.EventIdConvention.html
+  name: EventIdConvention
+  nameWithType: EventIdConvention
+  fullName: MicroPlumberd.EventIdConvention
+- uid: MicroPlumberd.OutputStreamModelConvention
+  commentId: T:MicroPlumberd.OutputStreamModelConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.OutputStreamModelConvention.html
+  name: OutputStreamModelConvention
+  nameWithType: OutputStreamModelConvention
+  fullName: MicroPlumberd.OutputStreamModelConvention
+- uid: MicroPlumberd.GroupNameModelConvention
+  commentId: T:MicroPlumberd.GroupNameModelConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.GroupNameModelConvention.html
+  name: GroupNameModelConvention
+  nameWithType: GroupNameModelConvention
+  fullName: MicroPlumberd.GroupNameModelConvention
+- uid: MicroPlumberd.IConventions
+  commentId: T:MicroPlumberd.IConventions
+  parent: MicroPlumberd
+  href: MicroPlumberd.IConventions.html
+  name: IConventions
+  nameWithType: IConventions
+  fullName: MicroPlumberd.IConventions
+- uid: MicroPlumberd.StandardMetadataEnricherTypes
+  commentId: T:MicroPlumberd.StandardMetadataEnricherTypes
+  parent: MicroPlumberd
+  href: MicroPlumberd.StandardMetadataEnricherTypes.html
+  name: StandardMetadataEnricherTypes
+  nameWithType: StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes
+- uid: MicroPlumberd.InvocationScope
+  commentId: T:MicroPlumberd.InvocationScope
+  href: MicroPlumberd.InvocationScope.html
+  name: InvocationScope
+  nameWithType: InvocationScope
+  fullName: MicroPlumberd.InvocationScope
+- uid: MicroPlumberd.MetadataExtensions
+  commentId: T:MicroPlumberd.MetadataExtensions
+  parent: MicroPlumberd
+  href: MicroPlumberd.MetadataExtensions.html
+  name: MetadataExtensions
+  nameWithType: MetadataExtensions
+  fullName: MicroPlumberd.MetadataExtensions
+- uid: MicroPlumberd.InvocationContext
+  commentId: T:MicroPlumberd.InvocationContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.InvocationContext.html
+  name: InvocationContext
+  nameWithType: InvocationContext
+  fullName: MicroPlumberd.InvocationContext
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  commentId: T:MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html
+  name: EventStoreProjectionManagementClientExtensions
+  nameWithType: EventStoreProjectionManagementClientExtensions
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+- uid: MicroPlumberd.Plumber
+  commentId: T:MicroPlumberd.Plumber
+  href: MicroPlumberd.Plumber.html
+  name: Plumber
+  nameWithType: Plumber
+  fullName: MicroPlumberd.Plumber
+- uid: MicroPlumberd.IProjectionRegister
+  commentId: T:MicroPlumberd.IProjectionRegister
+  parent: MicroPlumberd
+  href: MicroPlumberd.IProjectionRegister.html
+  name: IProjectionRegister
+  nameWithType: IProjectionRegister
+  fullName: MicroPlumberd.IProjectionRegister
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd

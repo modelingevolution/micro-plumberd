@@ -1,0 +1,664 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.InvocationContext
+  commentId: T:MicroPlumberd.InvocationContext
+  id: InvocationContext
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.InvocationContext.Clear
+  - MicroPlumberd.InvocationContext.ClearCorrelation
+  - MicroPlumberd.InvocationContext.ContainsProperty(System.String)
+  - MicroPlumberd.InvocationContext.Current
+  - MicroPlumberd.InvocationContext.Set(System.String,System.Object)
+  - MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  - MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  - MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  - MicroPlumberd.InvocationContext.Value
+  langs:
+  - csharp
+  - vb
+  name: InvocationContext
+  nameWithType: InvocationContext
+  fullName: MicroPlumberd.InvocationContext
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: InvocationContext
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 101
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public class InvocationContext
+    content.vb: Public Class InvocationContext
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  commentId: M:MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  id: SetCorrelation(System.Guid)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: SetCorrelation(Guid)
+  nameWithType: InvocationContext.SetCorrelation(Guid)
+  fullName: MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SetCorrelation
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 103
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationContext SetCorrelation(Guid correlationId)
+    parameters:
+    - id: correlationId
+      type: System.Guid
+    return:
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Function SetCorrelation(correlationId As Guid) As InvocationContext
+  overload: MicroPlumberd.InvocationContext.SetCorrelation*
+- uid: MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  commentId: M:MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  id: SetCausation(System.Guid)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: SetCausation(Guid)
+  nameWithType: InvocationContext.SetCausation(Guid)
+  fullName: MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SetCausation
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 105
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationContext SetCausation(Guid causationId)
+    parameters:
+    - id: causationId
+      type: System.Guid
+    return:
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Function SetCausation(causationId As Guid) As InvocationContext
+  overload: MicroPlumberd.InvocationContext.SetCausation*
+- uid: MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  commentId: M:MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  id: SetUserId(System.Guid)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: SetUserId(Guid)
+  nameWithType: InvocationContext.SetUserId(Guid)
+  fullName: MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SetUserId
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 106
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationContext SetUserId(Guid userId)
+    parameters:
+    - id: userId
+      type: System.Guid
+    return:
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Function SetUserId(userId As Guid) As InvocationContext
+  overload: MicroPlumberd.InvocationContext.SetUserId*
+- uid: MicroPlumberd.InvocationContext.Current
+  commentId: P:MicroPlumberd.InvocationContext.Current
+  id: Current
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: Current
+  nameWithType: InvocationContext.Current
+  fullName: MicroPlumberd.InvocationContext.Current
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Current
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 112
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static InvocationContext Current { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Shared ReadOnly Property Current As InvocationContext
+  overload: MicroPlumberd.InvocationContext.Current*
+- uid: MicroPlumberd.InvocationContext.Value
+  commentId: P:MicroPlumberd.InvocationContext.Value
+  id: Value
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: InvocationContext.Value
+  fullName: MicroPlumberd.InvocationContext.Value
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Value
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 114
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public dynamic Value { get; }
+    parameters: []
+    return:
+      type: dynamic
+    content.vb: Public ReadOnly Property Value As Object
+  overload: MicroPlumberd.InvocationContext.Value*
+- uid: MicroPlumberd.InvocationContext.Set(System.String,System.Object)
+  commentId: M:MicroPlumberd.InvocationContext.Set(System.String,System.Object)
+  id: Set(System.String,System.Object)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: Set(string, object)
+  nameWithType: InvocationContext.Set(string, object)
+  fullName: MicroPlumberd.InvocationContext.Set(string, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Set
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 116
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationContext Set(string key, object value)
+    parameters:
+    - id: key
+      type: System.String
+    - id: value
+      type: System.Object
+    return:
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Function [Set](key As String, value As Object) As InvocationContext
+  overload: MicroPlumberd.InvocationContext.Set*
+  nameWithType.vb: InvocationContext.Set(String, Object)
+  fullName.vb: MicroPlumberd.InvocationContext.Set(String, Object)
+  name.vb: Set(String, Object)
+- uid: MicroPlumberd.InvocationContext.ContainsProperty(System.String)
+  commentId: M:MicroPlumberd.InvocationContext.ContainsProperty(System.String)
+  id: ContainsProperty(System.String)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: ContainsProperty(string)
+  nameWithType: InvocationContext.ContainsProperty(string)
+  fullName: MicroPlumberd.InvocationContext.ContainsProperty(string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ContainsProperty
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 122
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public bool ContainsProperty(string propertyName)
+    parameters:
+    - id: propertyName
+      type: System.String
+    return:
+      type: System.Boolean
+    content.vb: Public Function ContainsProperty(propertyName As String) As Boolean
+  overload: MicroPlumberd.InvocationContext.ContainsProperty*
+  nameWithType.vb: InvocationContext.ContainsProperty(String)
+  fullName.vb: MicroPlumberd.InvocationContext.ContainsProperty(String)
+  name.vb: ContainsProperty(String)
+- uid: MicroPlumberd.InvocationContext.Clear
+  commentId: M:MicroPlumberd.InvocationContext.Clear
+  id: Clear
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: Clear()
+  nameWithType: InvocationContext.Clear()
+  fullName: MicroPlumberd.InvocationContext.Clear()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Clear
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 123
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public void Clear()
+    content.vb: Public Sub Clear()
+  overload: MicroPlumberd.InvocationContext.Clear*
+- uid: MicroPlumberd.InvocationContext.ClearCorrelation
+  commentId: M:MicroPlumberd.InvocationContext.ClearCorrelation
+  id: ClearCorrelation
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: ClearCorrelation()
+  nameWithType: InvocationContext.ClearCorrelation()
+  fullName: MicroPlumberd.InvocationContext.ClearCorrelation()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ClearCorrelation
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 129
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public void ClearCorrelation()
+    content.vb: Public Sub ClearCorrelation()
+  overload: MicroPlumberd.InvocationContext.ClearCorrelation*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.InvocationContext.SetCorrelation*
+  commentId: Overload:MicroPlumberd.InvocationContext.SetCorrelation
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetCorrelation_System_Guid_
+  name: SetCorrelation
+  nameWithType: InvocationContext.SetCorrelation
+  fullName: MicroPlumberd.InvocationContext.SetCorrelation
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MicroPlumberd.InvocationContext
+  commentId: T:MicroPlumberd.InvocationContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.InvocationContext.html
+  name: InvocationContext
+  nameWithType: InvocationContext
+  fullName: MicroPlumberd.InvocationContext
+- uid: MicroPlumberd.InvocationContext.SetCausation*
+  commentId: Overload:MicroPlumberd.InvocationContext.SetCausation
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetCausation_System_Guid_
+  name: SetCausation
+  nameWithType: InvocationContext.SetCausation
+  fullName: MicroPlumberd.InvocationContext.SetCausation
+- uid: MicroPlumberd.InvocationContext.SetUserId*
+  commentId: Overload:MicroPlumberd.InvocationContext.SetUserId
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetUserId_System_Guid_
+  name: SetUserId
+  nameWithType: InvocationContext.SetUserId
+  fullName: MicroPlumberd.InvocationContext.SetUserId
+- uid: MicroPlumberd.InvocationContext.Current*
+  commentId: Overload:MicroPlumberd.InvocationContext.Current
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Current
+  name: Current
+  nameWithType: InvocationContext.Current
+  fullName: MicroPlumberd.InvocationContext.Current
+- uid: MicroPlumberd.InvocationContext.Value*
+  commentId: Overload:MicroPlumberd.InvocationContext.Value
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Value
+  name: Value
+  nameWithType: InvocationContext.Value
+  fullName: MicroPlumberd.InvocationContext.Value
+- uid: dynamic
+  commentId: T:System.Object
+  isExternal: true
+  name: dynamic
+  nameWithType: dynamic
+  fullName: dynamic
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.InvocationContext.Set*
+  commentId: Overload:MicroPlumberd.InvocationContext.Set
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Set_System_String_System_Object_
+  name: Set
+  nameWithType: InvocationContext.Set
+  fullName: MicroPlumberd.InvocationContext.Set
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MicroPlumberd.InvocationContext.ContainsProperty*
+  commentId: Overload:MicroPlumberd.InvocationContext.ContainsProperty
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_ContainsProperty_System_String_
+  name: ContainsProperty
+  nameWithType: InvocationContext.ContainsProperty
+  fullName: MicroPlumberd.InvocationContext.ContainsProperty
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MicroPlumberd.InvocationContext.Clear*
+  commentId: Overload:MicroPlumberd.InvocationContext.Clear
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Clear
+  name: Clear
+  nameWithType: InvocationContext.Clear
+  fullName: MicroPlumberd.InvocationContext.Clear
+- uid: MicroPlumberd.InvocationContext.ClearCorrelation*
+  commentId: Overload:MicroPlumberd.InvocationContext.ClearCorrelation
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_ClearCorrelation
+  name: ClearCorrelation
+  nameWithType: InvocationContext.ClearCorrelation
+  fullName: MicroPlumberd.InvocationContext.ClearCorrelation

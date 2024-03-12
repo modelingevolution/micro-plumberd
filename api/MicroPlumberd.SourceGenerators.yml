@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.SourceGenerators
+  commentId: N:MicroPlumberd.SourceGenerators
+  id: MicroPlumberd.SourceGenerators
+  children:
+  - MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+  - MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+  - MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.SourceGenerators
+  nameWithType: MicroPlumberd.SourceGenerators
+  fullName: MicroPlumberd.SourceGenerators
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.SourceGenerators
+references:
+- uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+  commentId: T:MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+  href: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.html
+  name: AggregateSourceGenerator
+  nameWithType: AggregateSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+  commentId: T:MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+  href: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.html
+  name: CommandHandlerSourceGenerator
+  nameWithType: CommandHandlerSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  commentId: T:MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  href: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.html
+  name: EventHandlerSourceGenerator
+  nameWithType: EventHandlerSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator

@@ -1,0 +1,273 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ISubscriptionSet
+  commentId: T:MicroPlumberd.ISubscriptionSet
+  id: ISubscriptionSet
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ISubscriptionSet.SubscribeAsync(System.String,EventStore.Client.FromStream)
+  - MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(System.String,System.String)
+  - MicroPlumberd.ISubscriptionSet.With``1(``0)
+  langs:
+  - csharp
+  - vb
+  name: ISubscriptionSet
+  nameWithType: ISubscriptionSet
+  fullName: MicroPlumberd.ISubscriptionSet
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ISubscriptionSet
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ISubscriptionSet
+    content.vb: Public Interface ISubscriptionSet
+- uid: MicroPlumberd.ISubscriptionSet.With``1(``0)
+  commentId: M:MicroPlumberd.ISubscriptionSet.With``1(``0)
+  id: With``1(``0)
+  parent: MicroPlumberd.ISubscriptionSet
+  langs:
+  - csharp
+  - vb
+  name: With<TModel>(TModel)
+  nameWithType: ISubscriptionSet.With<TModel>(TModel)
+  fullName: MicroPlumberd.ISubscriptionSet.With<TModel>(TModel)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: With
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'ISubscriptionSet With<TModel>(TModel model) where TModel : IReadModel, ITypeRegister'
+    parameters:
+    - id: model
+      type: '{TModel}'
+    typeParameters:
+    - id: TModel
+    return:
+      type: MicroPlumberd.ISubscriptionSet
+    content.vb: Function [With](Of TModel As {IReadModel, ITypeRegister})(model As TModel) As ISubscriptionSet
+  overload: MicroPlumberd.ISubscriptionSet.With*
+  nameWithType.vb: ISubscriptionSet.With(Of TModel)(TModel)
+  fullName.vb: MicroPlumberd.ISubscriptionSet.With(Of TModel)(TModel)
+  name.vb: With(Of TModel)(TModel)
+- uid: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(System.String,System.String)
+  commentId: M:MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(System.String,System.String)
+  id: SubscribePersistentlyAsync(System.String,System.String)
+  parent: MicroPlumberd.ISubscriptionSet
+  langs:
+  - csharp
+  - vb
+  name: SubscribePersistentlyAsync(string, string?)
+  nameWithType: ISubscriptionSet.SubscribePersistentlyAsync(string, string?)
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(string, string?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SubscribePersistentlyAsync
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Task SubscribePersistentlyAsync(string outputStream, string? groupName = null)
+    parameters:
+    - id: outputStream
+      type: System.String
+    - id: groupName
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function SubscribePersistentlyAsync(outputStream As String, groupName As String = Nothing) As Task
+  overload: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync*
+  nameWithType.vb: ISubscriptionSet.SubscribePersistentlyAsync(String, String)
+  fullName.vb: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(String, String)
+  name.vb: SubscribePersistentlyAsync(String, String)
+- uid: MicroPlumberd.ISubscriptionSet.SubscribeAsync(System.String,EventStore.Client.FromStream)
+  commentId: M:MicroPlumberd.ISubscriptionSet.SubscribeAsync(System.String,EventStore.Client.FromStream)
+  id: SubscribeAsync(System.String,EventStore.Client.FromStream)
+  parent: MicroPlumberd.ISubscriptionSet
+  langs:
+  - csharp
+  - vb
+  name: SubscribeAsync(string, FromStream)
+  nameWithType: ISubscriptionSet.SubscribeAsync(string, FromStream)
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribeAsync(string, EventStore.Client.FromStream)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SubscribeAsync
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 14
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Task SubscribeAsync(string name, FromStream start)
+    parameters:
+    - id: name
+      type: System.String
+    - id: start
+      type: EventStore.Client.FromStream
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function SubscribeAsync(name As String, start As FromStream) As Task
+  overload: MicroPlumberd.ISubscriptionSet.SubscribeAsync*
+  nameWithType.vb: ISubscriptionSet.SubscribeAsync(String, FromStream)
+  fullName.vb: MicroPlumberd.ISubscriptionSet.SubscribeAsync(String, EventStore.Client.FromStream)
+  name.vb: SubscribeAsync(String, FromStream)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ISubscriptionSet.With*
+  commentId: Overload:MicroPlumberd.ISubscriptionSet.With
+  href: MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_With__1___0_
+  name: With
+  nameWithType: ISubscriptionSet.With
+  fullName: MicroPlumberd.ISubscriptionSet.With
+- uid: '{TModel}'
+  commentId: '!:TModel'
+  definition: TModel
+  name: TModel
+  nameWithType: TModel
+  fullName: TModel
+- uid: MicroPlumberd.ISubscriptionSet
+  commentId: T:MicroPlumberd.ISubscriptionSet
+  parent: MicroPlumberd
+  href: MicroPlumberd.ISubscriptionSet.html
+  name: ISubscriptionSet
+  nameWithType: ISubscriptionSet
+  fullName: MicroPlumberd.ISubscriptionSet
+- uid: TModel
+  name: TModel
+  nameWithType: TModel
+  fullName: TModel
+- uid: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync*
+  commentId: Overload:MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync
+  href: MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_SubscribePersistentlyAsync_System_String_System_String_
+  name: SubscribePersistentlyAsync
+  nameWithType: ISubscriptionSet.SubscribePersistentlyAsync
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.ISubscriptionSet.SubscribeAsync*
+  commentId: Overload:MicroPlumberd.ISubscriptionSet.SubscribeAsync
+  href: MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_SubscribeAsync_System_String_EventStore_Client_FromStream_
+  name: SubscribeAsync
+  nameWithType: ISubscriptionSet.SubscribeAsync
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribeAsync
+- uid: EventStore.Client.FromStream
+  commentId: T:EventStore.Client.FromStream
+  parent: EventStore.Client
+  isExternal: true
+  name: FromStream
+  nameWithType: FromStream
+  fullName: EventStore.Client.FromStream
+- uid: EventStore.Client
+  commentId: N:EventStore.Client
+  isExternal: true
+  name: EventStore.Client
+  nameWithType: EventStore.Client
+  fullName: EventStore.Client
+  spec.csharp:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+  spec.vb:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true

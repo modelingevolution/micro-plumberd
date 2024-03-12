@@ -1,0 +1,225 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1
+  commentId: T:MicroPlumberd.DirectConnect.ICommandHandler`1
+  id: ICommandHandler`1
+  parent: MicroPlumberd.DirectConnect
+  children:
+  - MicroPlumberd.DirectConnect.ICommandHandler`1.Execute(System.Guid,`0)
+  langs:
+  - csharp
+  - vb
+  name: ICommandHandler<TCommand>
+  nameWithType: ICommandHandler<TCommand>
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICommandHandler
+    path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: 'public interface ICommandHandler<in TCommand> where TCommand : ICommand'
+    typeParameters:
+    - id: TCommand
+    content.vb: Public Interface ICommandHandler(Of In TCommand As ICommand)
+  nameWithType.vb: ICommandHandler(Of TCommand)
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand)
+  name.vb: ICommandHandler(Of TCommand)
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1.Execute(System.Guid,`0)
+  commentId: M:MicroPlumberd.DirectConnect.ICommandHandler`1.Execute(System.Guid,`0)
+  id: Execute(System.Guid,`0)
+  parent: MicroPlumberd.DirectConnect.ICommandHandler`1
+  langs:
+  - csharp
+  - vb
+  name: Execute(Guid, TCommand)
+  nameWithType: ICommandHandler<TCommand>.Execute(Guid, TCommand)
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>.Execute(System.Guid, TCommand)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Execute
+    path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: Task<object> Execute(Guid id, TCommand command)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: command
+      type: '{TCommand}'
+    return:
+      type: System.Threading.Tasks.Task{System.Object}
+    content.vb: Function Execute(id As Guid, command As TCommand) As Task(Of Object)
+  overload: MicroPlumberd.DirectConnect.ICommandHandler`1.Execute*
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute(Guid, TCommand)
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand).Execute(System.Guid, TCommand)
+references:
+- uid: MicroPlumberd.DirectConnect
+  commentId: N:MicroPlumberd.DirectConnect
+  href: MicroPlumberd.html
+  name: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1.Execute*
+  commentId: Overload:MicroPlumberd.DirectConnect.ICommandHandler`1.Execute
+  href: MicroPlumberd.DirectConnect.ICommandHandler-1.html#MicroPlumberd_DirectConnect_ICommandHandler_1_Execute_System_Guid__0_
+  name: Execute
+  nameWithType: ICommandHandler<TCommand>.Execute
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>.Execute
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand).Execute
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: '{TCommand}'
+  commentId: '!:TCommand'
+  definition: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: System.Threading.Tasks.Task{System.Object}
+  commentId: T:System.Threading.Tasks.Task{System.Object}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<object>
+  nameWithType: Task<object>
+  fullName: System.Threading.Tasks.Task<object>
+  nameWithType.vb: Task(Of Object)
+  fullName.vb: System.Threading.Tasks.Task(Of Object)
+  name.vb: Task(Of Object)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

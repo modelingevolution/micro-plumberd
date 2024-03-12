@@ -1,0 +1,189 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ITypeRegister
+  commentId: T:MicroPlumberd.ITypeRegister
+  id: ITypeRegister
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ITypeRegister.TypeRegister
+  langs:
+  - csharp
+  - vb
+  name: ITypeRegister
+  nameWithType: ITypeRegister
+  fullName: MicroPlumberd.ITypeRegister
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ITypeRegister
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ITypeRegister
+    content.vb: Public Interface ITypeRegister
+- uid: MicroPlumberd.ITypeRegister.TypeRegister
+  commentId: P:MicroPlumberd.ITypeRegister.TypeRegister
+  id: TypeRegister
+  parent: MicroPlumberd.ITypeRegister
+  langs:
+  - csharp
+  - vb
+  name: TypeRegister
+  nameWithType: ITypeRegister.TypeRegister
+  fullName: MicroPlumberd.ITypeRegister.TypeRegister
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: TypeRegister
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static abstract IDictionary<string, Type> TypeRegister { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IDictionary{System.String,System.Type}
+    content.vb: Public Shared MustInherit ReadOnly Property TypeRegister As IDictionary(Of String, Type)
+  overload: MicroPlumberd.ITypeRegister.TypeRegister*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ITypeRegister.TypeRegister*
+  commentId: Overload:MicroPlumberd.ITypeRegister.TypeRegister
+  href: MicroPlumberd.ITypeRegister.html#MicroPlumberd_ITypeRegister_TypeRegister
+  name: TypeRegister
+  nameWithType: ITypeRegister.TypeRegister
+  fullName: MicroPlumberd.ITypeRegister.TypeRegister
+- uid: System.Collections.Generic.IDictionary{System.String,System.Type}
+  commentId: T:System.Collections.Generic.IDictionary{System.String,System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IDictionary`2
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<string, Type>
+  nameWithType: IDictionary<string, Type>
+  fullName: System.Collections.Generic.IDictionary<string, System.Type>
+  nameWithType.vb: IDictionary(Of String, Type)
+  fullName.vb: System.Collections.Generic.IDictionary(Of String, System.Type)
+  name.vb: IDictionary(Of String, Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IDictionary`2
+  commentId: T:System.Collections.Generic.IDictionary`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  name: IDictionary<TKey, TValue>
+  nameWithType: IDictionary<TKey, TValue>
+  fullName: System.Collections.Generic.IDictionary<TKey, TValue>
+  nameWithType.vb: IDictionary(Of TKey, TValue)
+  fullName.vb: System.Collections.Generic.IDictionary(Of TKey, TValue)
+  name.vb: IDictionary(Of TKey, TValue)
+  spec.csharp:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TKey
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

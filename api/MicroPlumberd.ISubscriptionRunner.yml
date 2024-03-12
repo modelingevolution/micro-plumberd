@@ -1,0 +1,172 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ISubscriptionRunner
+  commentId: T:MicroPlumberd.ISubscriptionRunner
+  id: ISubscriptionRunner
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
+  langs:
+  - csharp
+  - vb
+  name: ISubscriptionRunner
+  nameWithType: ISubscriptionRunner
+  fullName: MicroPlumberd.ISubscriptionRunner
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ISubscriptionRunner
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface ISubscriptionRunner : IAsyncDisposable'
+    content.vb: Public Interface ISubscriptionRunner Inherits IAsyncDisposable
+  inheritedMembers:
+  - System.IAsyncDisposable.DisposeAsync
+- uid: MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
+  id: WithModel``1(``0)
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithModel<T>(T)
+  nameWithType: ISubscriptionRunner.WithModel<T>(T)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithModel<T>(T)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithModel
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task WithModel<T>(T model) where T : IReadModel, ITypeRegister'
+    parameters:
+    - id: model
+      type: '{T}'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function WithModel(Of T As {IReadModel, ITypeRegister})(model As T) As Task
+  overload: MicroPlumberd.ISubscriptionRunner.WithModel*
+  nameWithType.vb: ISubscriptionRunner.WithModel(Of T)(T)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithModel(Of T)(T)
+  name.vb: WithModel(Of T)(T)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.IAsyncDisposable.DisposeAsync
+  commentId: M:System.IAsyncDisposable.DisposeAsync
+  parent: System.IAsyncDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  name: DisposeAsync()
+  nameWithType: IAsyncDisposable.DisposeAsync()
+  fullName: System.IAsyncDisposable.DisposeAsync()
+  spec.csharp:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IAsyncDisposable.DisposeAsync
+    name: DisposeAsync
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable.disposeasync
+  - name: (
+  - name: )
+- uid: System.IAsyncDisposable
+  commentId: T:System.IAsyncDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  name: IAsyncDisposable
+  nameWithType: IAsyncDisposable
+  fullName: System.IAsyncDisposable
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.ISubscriptionRunner.WithModel*
+  commentId: Overload:MicroPlumberd.ISubscriptionRunner.WithModel
+  href: MicroPlumberd.ISubscriptionRunner.html#MicroPlumberd_ISubscriptionRunner_WithModel__1___0_
+  name: WithModel
+  nameWithType: ISubscriptionRunner.WithModel
+  fullName: MicroPlumberd.ISubscriptionRunner.WithModel
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

@@ -1,0 +1,96 @@
+### YamlMime:TableOfContent
+items:
+- uid: MicroPlumberd
+  name: MicroPlumberd
+  items:
+  - uid: MicroPlumberd.AggregateAttribute
+    name: AggregateAttribute
+  - uid: MicroPlumberd.AggregateBase`1
+    name: AggregateBase<TState>
+  - uid: MicroPlumberd.EventHandlerAttribute
+    name: EventHandlerAttribute
+  - uid: MicroPlumberd.EventIdConvention
+    name: EventIdConvention
+  - uid: MicroPlumberd.EventNameConvention
+    name: EventNameConvention
+  - uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+    name: EventStoreProjectionManagementClientExtensions
+  - uid: MicroPlumberd.GroupNameModelConvention
+    name: GroupNameModelConvention
+  - uid: MicroPlumberd.IAggregate
+    name: IAggregate
+  - uid: MicroPlumberd.IAggregate`1
+    name: IAggregate<TSelf>
+  - uid: MicroPlumberd.IConventions
+    name: IConventions
+  - uid: MicroPlumberd.IObjectSerializer
+    name: IObjectSerializer
+  - uid: MicroPlumberd.IPlumber
+    name: IPlumber
+  - uid: MicroPlumberd.IProjectionRegister
+    name: IProjectionRegister
+  - uid: MicroPlumberd.IReadModel
+    name: IReadModel
+  - uid: MicroPlumberd.ISubscriptionRunner
+    name: ISubscriptionRunner
+  - uid: MicroPlumberd.ISubscriptionSet
+    name: ISubscriptionSet
+  - uid: MicroPlumberd.ITypeRegister
+    name: ITypeRegister
+  - uid: MicroPlumberd.InvocationContext
+    name: InvocationContext
+  - uid: MicroPlumberd.InvocationScope
+    name: InvocationScope
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+  - uid: MicroPlumberd.MetadataConvention
+    name: MetadataConvention
+  - uid: MicroPlumberd.MetadataExtensions
+    name: MetadataExtensions
+  - uid: MicroPlumberd.OutputStreamAttribute
+    name: OutputStreamAttribute
+  - uid: MicroPlumberd.OutputStreamModelConvention
+    name: OutputStreamModelConvention
+  - uid: MicroPlumberd.Plumber
+    name: Plumber
+  - uid: MicroPlumberd.StandardMetadataEnricherTypes
+    name: StandardMetadataEnricherTypes
+  - uid: MicroPlumberd.SteamNameConvention
+    name: SteamNameConvention
+- uid: MicroPlumberd.DirectConnect
+  name: MicroPlumberd.DirectConnect
+  items:
+  - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1
+    name: CommandEnvelope<TCommand>
+  - uid: MicroPlumberd.DirectConnect.CommandHandlerAttribute
+    name: CommandHandlerAttribute
+  - uid: MicroPlumberd.DirectConnect.ContainerExtensions
+    name: ContainerExtensions
+  - uid: MicroPlumberd.DirectConnect.HandlerOperationStatus
+    name: HandlerOperationStatus
+  - uid: MicroPlumberd.DirectConnect.IApiTypeRegister
+    name: IApiTypeRegister
+  - uid: MicroPlumberd.DirectConnect.ICommand
+    name: ICommand
+  - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
+    name: ICommandHandler<TCommand>
+  - uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions
+    name: RequestInvokerExtensions
+  - uid: MicroPlumberd.DirectConnect.ReturnsAttribute
+    name: ReturnsAttribute
+  - uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
+    name: ReturnsAttribute<TResult>
+  - uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+    name: ThrowsFaultExceptionAttribute
+  - uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+    name: ThrowsFaultExceptionAttribute<TMessage>
+- uid: MicroPlumberd.SourceGenerators
+  name: MicroPlumberd.SourceGenerators
+  items:
+  - uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+    name: AggregateSourceGenerator
+  - uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+    name: CommandHandlerSourceGenerator
+  - uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+    name: EventHandlerSourceGenerator
+memberLayout: SamePage

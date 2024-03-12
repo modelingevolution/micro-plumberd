@@ -1,3 +1,1948 @@
 ### YamlMime:XRefMap
 sorted: true
-references: []
+references:
+- uid: MicroPlumberd
+  name: MicroPlumberd
+  href: api/MicroPlumberd.html
+  commentId: N:MicroPlumberd
+  fullName: MicroPlumberd
+  nameWithType: MicroPlumberd
+- uid: MicroPlumberd.AggregateAttribute
+  name: AggregateAttribute
+  href: api/MicroPlumberd.AggregateAttribute.html
+  commentId: T:MicroPlumberd.AggregateAttribute
+  fullName: MicroPlumberd.AggregateAttribute
+  nameWithType: AggregateAttribute
+- uid: MicroPlumberd.AggregateBase`1
+  name: AggregateBase<TState>
+  href: api/MicroPlumberd.AggregateBase-1.html
+  commentId: T:MicroPlumberd.AggregateBase`1
+  name.vb: AggregateBase(Of TState)
+  fullName: MicroPlumberd.AggregateBase<TState>
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState)
+  nameWithType: AggregateBase<TState>
+  nameWithType.vb: AggregateBase(Of TState)
+- uid: MicroPlumberd.AggregateBase`1.#ctor(System.Guid)
+  name: AggregateBase(Guid)
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1__ctor_System_Guid_
+  commentId: M:MicroPlumberd.AggregateBase`1.#ctor(System.Guid)
+  name.vb: New(Guid)
+  fullName: MicroPlumberd.AggregateBase<TState>.AggregateBase(System.Guid)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).New(System.Guid)
+  nameWithType: AggregateBase<TState>.AggregateBase(Guid)
+  nameWithType.vb: AggregateBase(Of TState).New(Guid)
+- uid: MicroPlumberd.AggregateBase`1.#ctor*
+  name: AggregateBase
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1__ctor_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.AggregateBase<TState>.AggregateBase
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).New
+  nameWithType: AggregateBase<TState>.AggregateBase
+  nameWithType.vb: AggregateBase(Of TState).New
+- uid: MicroPlumberd.AggregateBase`1.AckCommitted
+  name: AckCommitted()
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_AckCommitted
+  commentId: M:MicroPlumberd.AggregateBase`1.AckCommitted
+  fullName: MicroPlumberd.AggregateBase<TState>.AckCommitted()
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AckCommitted()
+  nameWithType: AggregateBase<TState>.AckCommitted()
+  nameWithType.vb: AggregateBase(Of TState).AckCommitted()
+- uid: MicroPlumberd.AggregateBase`1.AckCommitted*
+  name: AckCommitted
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_AckCommitted_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.AckCommitted
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.AckCommitted
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AckCommitted
+  nameWithType: AggregateBase<TState>.AckCommitted
+  nameWithType.vb: AggregateBase(Of TState).AckCommitted
+- uid: MicroPlumberd.AggregateBase`1.Age
+  name: Age
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Age
+  commentId: P:MicroPlumberd.AggregateBase`1.Age
+  fullName: MicroPlumberd.AggregateBase<TState>.Age
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Age
+  nameWithType: AggregateBase<TState>.Age
+  nameWithType.vb: AggregateBase(Of TState).Age
+- uid: MicroPlumberd.AggregateBase`1.Age*
+  name: Age
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Age_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Age
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.Age
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Age
+  nameWithType: AggregateBase<TState>.Age
+  nameWithType.vb: AggregateBase(Of TState).Age
+- uid: MicroPlumberd.AggregateBase`1.AppendPendingChange(System.Object)
+  name: AppendPendingChange(object)
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_AppendPendingChange_System_Object_
+  commentId: M:MicroPlumberd.AggregateBase`1.AppendPendingChange(System.Object)
+  name.vb: AppendPendingChange(Object)
+  fullName: MicroPlumberd.AggregateBase<TState>.AppendPendingChange(object)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AppendPendingChange(Object)
+  nameWithType: AggregateBase<TState>.AppendPendingChange(object)
+  nameWithType.vb: AggregateBase(Of TState).AppendPendingChange(Object)
+- uid: MicroPlumberd.AggregateBase`1.AppendPendingChange*
+  name: AppendPendingChange
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_AppendPendingChange_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.AppendPendingChange
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.AppendPendingChange
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AppendPendingChange
+  nameWithType: AggregateBase<TState>.AppendPendingChange
+  nameWithType.vb: AggregateBase(Of TState).AppendPendingChange
+- uid: MicroPlumberd.AggregateBase`1.Given(`0,System.Object)
+  name: Given(TState, object)
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Given__0_System_Object_
+  commentId: M:MicroPlumberd.AggregateBase`1.Given(`0,System.Object)
+  name.vb: Given(TState, Object)
+  fullName: MicroPlumberd.AggregateBase<TState>.Given(TState, object)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Given(TState, Object)
+  nameWithType: AggregateBase<TState>.Given(TState, object)
+  nameWithType.vb: AggregateBase(Of TState).Given(TState, Object)
+- uid: MicroPlumberd.AggregateBase`1.Given*
+  name: Given
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Given_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Given
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.Given
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Given
+  nameWithType: AggregateBase<TState>.Given
+  nameWithType.vb: AggregateBase(Of TState).Given
+- uid: MicroPlumberd.AggregateBase`1.Id
+  name: Id
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Id
+  commentId: P:MicroPlumberd.AggregateBase`1.Id
+  fullName: MicroPlumberd.AggregateBase<TState>.Id
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Id
+  nameWithType: AggregateBase<TState>.Id
+  nameWithType.vb: AggregateBase(Of TState).Id
+- uid: MicroPlumberd.AggregateBase`1.Id*
+  name: Id
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Id_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.Id
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Id
+  nameWithType: AggregateBase<TState>.Id
+  nameWithType.vb: AggregateBase(Of TState).Id
+- uid: MicroPlumberd.AggregateBase`1.PendingEvents
+  name: PendingEvents
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_PendingEvents
+  commentId: P:MicroPlumberd.AggregateBase`1.PendingEvents
+  fullName: MicroPlumberd.AggregateBase<TState>.PendingEvents
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).PendingEvents
+  nameWithType: AggregateBase<TState>.PendingEvents
+  nameWithType.vb: AggregateBase(Of TState).PendingEvents
+- uid: MicroPlumberd.AggregateBase`1.PendingEvents*
+  name: PendingEvents
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_PendingEvents_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.PendingEvents
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.PendingEvents
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).PendingEvents
+  nameWithType: AggregateBase<TState>.PendingEvents
+  nameWithType.vb: AggregateBase(Of TState).PendingEvents
+- uid: MicroPlumberd.AggregateBase`1.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  name: Rehydrate(IAsyncEnumerable<object>)
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  commentId: M:MicroPlumberd.AggregateBase`1.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  name.vb: Rehydrate(IAsyncEnumerable(Of Object))
+  fullName: MicroPlumberd.AggregateBase<TState>.Rehydrate(System.Collections.Generic.IAsyncEnumerable<object>)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Rehydrate(System.Collections.Generic.IAsyncEnumerable(Of Object))
+  nameWithType: AggregateBase<TState>.Rehydrate(IAsyncEnumerable<object>)
+  nameWithType.vb: AggregateBase(Of TState).Rehydrate(IAsyncEnumerable(Of Object))
+- uid: MicroPlumberd.AggregateBase`1.Rehydrate*
+  name: Rehydrate
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Rehydrate_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Rehydrate
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.Rehydrate
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Rehydrate
+  nameWithType: AggregateBase<TState>.Rehydrate
+  nameWithType.vb: AggregateBase(Of TState).Rehydrate
+- uid: MicroPlumberd.AggregateBase`1.State
+  name: State
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_State
+  commentId: P:MicroPlumberd.AggregateBase`1.State
+  fullName: MicroPlumberd.AggregateBase<TState>.State
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).State
+  nameWithType: AggregateBase<TState>.State
+  nameWithType.vb: AggregateBase(Of TState).State
+- uid: MicroPlumberd.AggregateBase`1.State*
+  name: State
+  href: api/MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_State_
+  commentId: Overload:MicroPlumberd.AggregateBase`1.State
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TState>.State
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).State
+  nameWithType: AggregateBase<TState>.State
+  nameWithType.vb: AggregateBase(Of TState).State
+- uid: MicroPlumberd.DirectConnect
+  name: MicroPlumberd.DirectConnect
+  href: api/MicroPlumberd.DirectConnect.html
+  commentId: N:MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1
+  name: CommandEnvelope<TCommand>
+  href: api/MicroPlumberd.DirectConnect.CommandEnvelope-1.html
+  commentId: T:MicroPlumberd.DirectConnect.CommandEnvelope`1
+  name.vb: CommandEnvelope(Of TCommand)
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand)
+  nameWithType: CommandEnvelope<TCommand>
+  nameWithType.vb: CommandEnvelope(Of TCommand)
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.Command
+  name: Command
+  href: api/MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_Command
+  commentId: P:MicroPlumberd.DirectConnect.CommandEnvelope`1.Command
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.Command
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).Command
+  nameWithType: CommandEnvelope<TCommand>.Command
+  nameWithType.vb: CommandEnvelope(Of TCommand).Command
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.Command*
+  name: Command
+  href: api/MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_Command_
+  commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.Command
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.Command
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).Command
+  nameWithType: CommandEnvelope<TCommand>.Command
+  nameWithType.vb: CommandEnvelope(Of TCommand).Command
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
+  name: StreamId
+  href: api/MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_StreamId
+  commentId: P:MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.StreamId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).StreamId
+  nameWithType: CommandEnvelope<TCommand>.StreamId
+  nameWithType.vb: CommandEnvelope(Of TCommand).StreamId
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId*
+  name: StreamId
+  href: api/MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_StreamId_
+  commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.StreamId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).StreamId
+  nameWithType: CommandEnvelope<TCommand>.StreamId
+  nameWithType.vb: CommandEnvelope(Of TCommand).StreamId
+- uid: MicroPlumberd.DirectConnect.CommandHandlerAttribute
+  name: CommandHandlerAttribute
+  href: api/MicroPlumberd.DirectConnect.CommandHandlerAttribute.html
+  commentId: T:MicroPlumberd.DirectConnect.CommandHandlerAttribute
+  fullName: MicroPlumberd.DirectConnect.CommandHandlerAttribute
+  nameWithType: CommandHandlerAttribute
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions
+  name: ContainerExtensions
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html
+  commentId: T:MicroPlumberd.DirectConnect.ContainerExtensions
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions
+  nameWithType: ContainerExtensions
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler*
+  name: AddCommandHandler
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandHandler_
+  commentId: Overload:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler
+  nameWithType: ContainerExtensions.AddCommandHandler
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: AddCommandHandler<TCommandHandler>(IServiceCollection)
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name.vb: AddCommandHandler(Of TCommandHandler)(IServiceCollection)
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler<TCommandHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  fullName.vb: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  nameWithType: ContainerExtensions.AddCommandHandler<TCommandHandler>(IServiceCollection)
+  nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection)
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)
+  name: AddCommandInvoker(IServiceCollection, Type)
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvoker_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Type_
+  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Type)
+  nameWithType: ContainerExtensions.AddCommandInvoker(IServiceCollection, Type)
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker*
+  name: AddCommandInvoker
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvoker_
+  commentId: Overload:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker
+  nameWithType: ContainerExtensions.AddCommandInvoker
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: AddCommandInvoker<TCommand>(IServiceCollection)
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvoker__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name.vb: AddCommandInvoker(Of TCommand)(IServiceCollection)
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker<TCommand>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  fullName.vb: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker(Of TCommand)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  nameWithType: ContainerExtensions.AddCommandInvoker<TCommand>(IServiceCollection)
+  nameWithType.vb: ContainerExtensions.AddCommandInvoker(Of TCommand)(IServiceCollection)
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: AddCommandInvokers(IServiceCollection)
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvokers_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  nameWithType: ContainerExtensions.AddCommandInvokers(IServiceCollection)
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Collections.Generic.IEnumerable{System.Type})
+  name: AddCommandInvokers(IServiceCollection, IEnumerable<Type>)
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvokers_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Collections_Generic_IEnumerable_System_Type__
+  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Collections.Generic.IEnumerable{System.Type})
+  name.vb: AddCommandInvokers(IServiceCollection, IEnumerable(Of Type))
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Collections.Generic.IEnumerable<System.Type>)
+  fullName.vb: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Collections.Generic.IEnumerable(Of System.Type))
+  nameWithType: ContainerExtensions.AddCommandInvokers(IServiceCollection, IEnumerable<Type>)
+  nameWithType.vb: ContainerExtensions.AddCommandInvokers(IServiceCollection, IEnumerable(Of Type))
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])
+  name: AddCommandInvokers(IServiceCollection, params Type[])
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvokers_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Type___
+  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])
+  name.vb: AddCommandInvokers(IServiceCollection, ParamArray Type())
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection, params System.Type[])
+  fullName.vb: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection, ParamArray System.Type())
+  nameWithType: ContainerExtensions.AddCommandInvokers(IServiceCollection, params Type[])
+  nameWithType.vb: ContainerExtensions.AddCommandInvokers(IServiceCollection, ParamArray Type())
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers*
+  name: AddCommandInvokers
+  href: api/MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvokers_
+  commentId: Overload:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers
+  nameWithType: ContainerExtensions.AddCommandInvokers
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus
+  name: HandlerOperationStatus
+  href: api/MicroPlumberd.DirectConnect.HandlerOperationStatus.html
+  commentId: T:MicroPlumberd.DirectConnect.HandlerOperationStatus
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus
+  nameWithType: HandlerOperationStatus
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Code
+  name: Code
+  href: api/MicroPlumberd.DirectConnect.HandlerOperationStatus.html#MicroPlumberd_DirectConnect_HandlerOperationStatus_Code
+  commentId: P:MicroPlumberd.DirectConnect.HandlerOperationStatus.Code
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus.Code
+  nameWithType: HandlerOperationStatus.Code
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Code*
+  name: Code
+  href: api/MicroPlumberd.DirectConnect.HandlerOperationStatus.html#MicroPlumberd_DirectConnect_HandlerOperationStatus_Code_
+  commentId: Overload:MicroPlumberd.DirectConnect.HandlerOperationStatus.Code
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus.Code
+  nameWithType: HandlerOperationStatus.Code
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
+  name: Ok()
+  href: api/MicroPlumberd.DirectConnect.HandlerOperationStatus.html#MicroPlumberd_DirectConnect_HandlerOperationStatus_Ok
+  commentId: M:MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok()
+  nameWithType: HandlerOperationStatus.Ok()
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok*
+  name: Ok
+  href: api/MicroPlumberd.DirectConnect.HandlerOperationStatus.html#MicroPlumberd_DirectConnect_HandlerOperationStatus_Ok_
+  commentId: Overload:MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
+  nameWithType: HandlerOperationStatus.Ok
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister
+  name: IApiTypeRegister
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html
+  commentId: T:MicroPlumberd.DirectConnect.IApiTypeRegister
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister
+  nameWithType: IApiTypeRegister
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.CommandTypes
+  name: CommandTypes
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_CommandTypes
+  commentId: P:MicroPlumberd.DirectConnect.IApiTypeRegister.CommandTypes
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.CommandTypes
+  nameWithType: IApiTypeRegister.CommandTypes
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.CommandTypes*
+  name: CommandTypes
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_CommandTypes_
+  commentId: Overload:MicroPlumberd.DirectConnect.IApiTypeRegister.CommandTypes
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.CommandTypes
+  nameWithType: IApiTypeRegister.CommandTypes
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.FaultTypes
+  name: FaultTypes
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_FaultTypes
+  commentId: P:MicroPlumberd.DirectConnect.IApiTypeRegister.FaultTypes
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.FaultTypes
+  nameWithType: IApiTypeRegister.FaultTypes
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.FaultTypes*
+  name: FaultTypes
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_FaultTypes_
+  commentId: Overload:MicroPlumberd.DirectConnect.IApiTypeRegister.FaultTypes
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.FaultTypes
+  nameWithType: IApiTypeRegister.FaultTypes
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: RegisterHandlers(IServiceCollection)
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_RegisterHandlers_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  commentId: M:MicroPlumberd.DirectConnect.IApiTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  nameWithType: IApiTypeRegister.RegisterHandlers(IServiceCollection)
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.RegisterHandlers*
+  name: RegisterHandlers
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_RegisterHandlers_
+  commentId: Overload:MicroPlumberd.DirectConnect.IApiTypeRegister.RegisterHandlers
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.RegisterHandlers
+  nameWithType: IApiTypeRegister.RegisterHandlers
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.ReturnTypes
+  name: ReturnTypes
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_ReturnTypes
+  commentId: P:MicroPlumberd.DirectConnect.IApiTypeRegister.ReturnTypes
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.ReturnTypes
+  nameWithType: IApiTypeRegister.ReturnTypes
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister.ReturnTypes*
+  name: ReturnTypes
+  href: api/MicroPlumberd.DirectConnect.IApiTypeRegister.html#MicroPlumberd_DirectConnect_IApiTypeRegister_ReturnTypes_
+  commentId: Overload:MicroPlumberd.DirectConnect.IApiTypeRegister.ReturnTypes
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister.ReturnTypes
+  nameWithType: IApiTypeRegister.ReturnTypes
+- uid: MicroPlumberd.DirectConnect.ICommand
+  name: ICommand
+  href: api/MicroPlumberd.DirectConnect.ICommand.html
+  commentId: T:MicroPlumberd.DirectConnect.ICommand
+  fullName: MicroPlumberd.DirectConnect.ICommand
+  nameWithType: ICommand
+- uid: MicroPlumberd.DirectConnect.ICommand.Id
+  name: Id
+  href: api/MicroPlumberd.DirectConnect.ICommand.html#MicroPlumberd_DirectConnect_ICommand_Id
+  commentId: P:MicroPlumberd.DirectConnect.ICommand.Id
+  fullName: MicroPlumberd.DirectConnect.ICommand.Id
+  nameWithType: ICommand.Id
+- uid: MicroPlumberd.DirectConnect.ICommand.Id*
+  name: Id
+  href: api/MicroPlumberd.DirectConnect.ICommand.html#MicroPlumberd_DirectConnect_ICommand_Id_
+  commentId: Overload:MicroPlumberd.DirectConnect.ICommand.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ICommand.Id
+  nameWithType: ICommand.Id
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1
+  name: ICommandHandler<TCommand>
+  href: api/MicroPlumberd.DirectConnect.ICommandHandler-1.html
+  commentId: T:MicroPlumberd.DirectConnect.ICommandHandler`1
+  name.vb: ICommandHandler(Of TCommand)
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand)
+  nameWithType: ICommandHandler<TCommand>
+  nameWithType.vb: ICommandHandler(Of TCommand)
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1.Execute(System.Guid,`0)
+  name: Execute(Guid, TCommand)
+  href: api/MicroPlumberd.DirectConnect.ICommandHandler-1.html#MicroPlumberd_DirectConnect_ICommandHandler_1_Execute_System_Guid__0_
+  commentId: M:MicroPlumberd.DirectConnect.ICommandHandler`1.Execute(System.Guid,`0)
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>.Execute(System.Guid, TCommand)
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand).Execute(System.Guid, TCommand)
+  nameWithType: ICommandHandler<TCommand>.Execute(Guid, TCommand)
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute(Guid, TCommand)
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1.Execute*
+  name: Execute
+  href: api/MicroPlumberd.DirectConnect.ICommandHandler-1.html#MicroPlumberd_DirectConnect_ICommandHandler_1_Execute_
+  commentId: Overload:MicroPlumberd.DirectConnect.ICommandHandler`1.Execute
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>.Execute
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand).Execute
+  nameWithType: ICommandHandler<TCommand>.Execute
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute
+- uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions
+  name: RequestInvokerExtensions
+  href: api/MicroPlumberd.DirectConnect.RequestInvokerExtensions.html
+  commentId: T:MicroPlumberd.DirectConnect.RequestInvokerExtensions
+  fullName: MicroPlumberd.DirectConnect.RequestInvokerExtensions
+  nameWithType: RequestInvokerExtensions
+- uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,MicroPlumberd.DirectConnect.ICommand)
+  name: Execute(IRequestInvoker, Guid, ICommand)
+  href: api/MicroPlumberd.DirectConnect.RequestInvokerExtensions.html#MicroPlumberd_DirectConnect_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_MicroPlumberd_DirectConnect_ICommand_
+  commentId: M:MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,MicroPlumberd.DirectConnect.ICommand)
+  fullName: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, MicroPlumberd.DirectConnect.ICommand)
+  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, Guid, ICommand)
+- uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute*
+  name: Execute
+  href: api/MicroPlumberd.DirectConnect.RequestInvokerExtensions.html#MicroPlumberd_DirectConnect_RequestInvokerExtensions_Execute_
+  commentId: Overload:MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute
+  nameWithType: RequestInvokerExtensions.Execute
+- uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,MicroPlumberd.DirectConnect.ICommand)
+  name: Execute<TResponse>(IRequestInvoker, Guid, ICommand)
+  href: api/MicroPlumberd.DirectConnect.RequestInvokerExtensions.html#MicroPlumberd_DirectConnect_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_MicroPlumberd_DirectConnect_ICommand_
+  commentId: M:MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,MicroPlumberd.DirectConnect.ICommand)
+  name.vb: Execute(Of TResponse)(IRequestInvoker, Guid, ICommand)
+  fullName: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, MicroPlumberd.DirectConnect.ICommand)
+  fullName.vb: MicroPlumberd.DirectConnect.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, MicroPlumberd.DirectConnect.ICommand)
+  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, Guid, ICommand)
+  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, Guid, ICommand)
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute
+  name: ReturnsAttribute
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute.html
+  commentId: T:MicroPlumberd.DirectConnect.ReturnsAttribute
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute
+  nameWithType: ReturnsAttribute
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute.#ctor(System.Type)
+  name: ReturnsAttribute(Type)
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute.html#MicroPlumberd_DirectConnect_ReturnsAttribute__ctor_System_Type_
+  commentId: M:MicroPlumberd.DirectConnect.ReturnsAttribute.#ctor(System.Type)
+  name.vb: New(Type)
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnsAttribute(System.Type)
+  fullName.vb: MicroPlumberd.DirectConnect.ReturnsAttribute.New(System.Type)
+  nameWithType: ReturnsAttribute.ReturnsAttribute(Type)
+  nameWithType.vb: ReturnsAttribute.New(Type)
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute.#ctor*
+  name: ReturnsAttribute
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute.html#MicroPlumberd_DirectConnect_ReturnsAttribute__ctor_
+  commentId: Overload:MicroPlumberd.DirectConnect.ReturnsAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnsAttribute
+  fullName.vb: MicroPlumberd.DirectConnect.ReturnsAttribute.New
+  nameWithType: ReturnsAttribute.ReturnsAttribute
+  nameWithType.vb: ReturnsAttribute.New
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnType
+  name: ReturnType
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute.html#MicroPlumberd_DirectConnect_ReturnsAttribute_ReturnType
+  commentId: P:MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnType
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnType
+  nameWithType: ReturnsAttribute.ReturnType
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnType*
+  name: ReturnType
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute.html#MicroPlumberd_DirectConnect_ReturnsAttribute_ReturnType_
+  commentId: Overload:MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnType
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute.ReturnType
+  nameWithType: ReturnsAttribute.ReturnType
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
+  name: ReturnsAttribute<TResult>
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute-1.html
+  commentId: T:MicroPlumberd.DirectConnect.ReturnsAttribute`1
+  name.vb: ReturnsAttribute(Of TResult)
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute<TResult>
+  fullName.vb: MicroPlumberd.DirectConnect.ReturnsAttribute(Of TResult)
+  nameWithType: ReturnsAttribute<TResult>
+  nameWithType.vb: ReturnsAttribute(Of TResult)
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1.#ctor
+  name: ReturnsAttribute()
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute-1.html#MicroPlumberd_DirectConnect_ReturnsAttribute_1__ctor
+  commentId: M:MicroPlumberd.DirectConnect.ReturnsAttribute`1.#ctor
+  name.vb: New()
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute<TResult>.ReturnsAttribute()
+  fullName.vb: MicroPlumberd.DirectConnect.ReturnsAttribute(Of TResult).New()
+  nameWithType: ReturnsAttribute<TResult>.ReturnsAttribute()
+  nameWithType.vb: ReturnsAttribute(Of TResult).New()
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1.#ctor*
+  name: ReturnsAttribute
+  href: api/MicroPlumberd.DirectConnect.ReturnsAttribute-1.html#MicroPlumberd_DirectConnect_ReturnsAttribute_1__ctor_
+  commentId: Overload:MicroPlumberd.DirectConnect.ReturnsAttribute`1.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute<TResult>.ReturnsAttribute
+  fullName.vb: MicroPlumberd.DirectConnect.ReturnsAttribute(Of TResult).New
+  nameWithType: ReturnsAttribute<TResult>.ReturnsAttribute
+  nameWithType.vb: ReturnsAttribute(Of TResult).New
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+  name: ThrowsFaultExceptionAttribute
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.html
+  commentId: T:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+  nameWithType: ThrowsFaultExceptionAttribute
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.#ctor(System.Type)
+  name: ThrowsFaultExceptionAttribute(Type)
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.html#MicroPlumberd_DirectConnect_ThrowsFaultExceptionAttribute__ctor_System_Type_
+  commentId: M:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.#ctor(System.Type)
+  name.vb: New(Type)
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrowsFaultExceptionAttribute(System.Type)
+  fullName.vb: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.New(System.Type)
+  nameWithType: ThrowsFaultExceptionAttribute.ThrowsFaultExceptionAttribute(Type)
+  nameWithType.vb: ThrowsFaultExceptionAttribute.New(Type)
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.#ctor*
+  name: ThrowsFaultExceptionAttribute
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.html#MicroPlumberd_DirectConnect_ThrowsFaultExceptionAttribute__ctor_
+  commentId: Overload:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrowsFaultExceptionAttribute
+  fullName.vb: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.New
+  nameWithType: ThrowsFaultExceptionAttribute.ThrowsFaultExceptionAttribute
+  nameWithType.vb: ThrowsFaultExceptionAttribute.New
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrownType
+  name: ThrownType
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.html#MicroPlumberd_DirectConnect_ThrowsFaultExceptionAttribute_ThrownType
+  commentId: P:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrownType
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrownType
+  nameWithType: ThrowsFaultExceptionAttribute.ThrownType
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrownType*
+  name: ThrownType
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.html#MicroPlumberd_DirectConnect_ThrowsFaultExceptionAttribute_ThrownType_
+  commentId: Overload:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrownType
+  isSpec: "True"
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.ThrownType
+  nameWithType: ThrowsFaultExceptionAttribute.ThrownType
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+  name: ThrowsFaultExceptionAttribute<TMessage>
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute-1.html
+  commentId: T:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+  name.vb: ThrowsFaultExceptionAttribute(Of TMessage)
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute<TMessage>
+  fullName.vb: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute(Of TMessage)
+  nameWithType: ThrowsFaultExceptionAttribute<TMessage>
+  nameWithType.vb: ThrowsFaultExceptionAttribute(Of TMessage)
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1.#ctor
+  name: ThrowsFaultExceptionAttribute()
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute-1.html#MicroPlumberd_DirectConnect_ThrowsFaultExceptionAttribute_1__ctor
+  commentId: M:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1.#ctor
+  name.vb: New()
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute<TMessage>.ThrowsFaultExceptionAttribute()
+  fullName.vb: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute(Of TMessage).New()
+  nameWithType: ThrowsFaultExceptionAttribute<TMessage>.ThrowsFaultExceptionAttribute()
+  nameWithType.vb: ThrowsFaultExceptionAttribute(Of TMessage).New()
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1.#ctor*
+  name: ThrowsFaultExceptionAttribute
+  href: api/MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute-1.html#MicroPlumberd_DirectConnect_ThrowsFaultExceptionAttribute_1__ctor_
+  commentId: Overload:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute<TMessage>.ThrowsFaultExceptionAttribute
+  fullName.vb: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute(Of TMessage).New
+  nameWithType: ThrowsFaultExceptionAttribute<TMessage>.ThrowsFaultExceptionAttribute
+  nameWithType.vb: ThrowsFaultExceptionAttribute(Of TMessage).New
+- uid: MicroPlumberd.EventHandlerAttribute
+  name: EventHandlerAttribute
+  href: api/MicroPlumberd.EventHandlerAttribute.html
+  commentId: T:MicroPlumberd.EventHandlerAttribute
+  fullName: MicroPlumberd.EventHandlerAttribute
+  nameWithType: EventHandlerAttribute
+- uid: MicroPlumberd.EventIdConvention
+  name: EventIdConvention
+  href: api/MicroPlumberd.EventIdConvention.html
+  commentId: T:MicroPlumberd.EventIdConvention
+  fullName: MicroPlumberd.EventIdConvention
+  nameWithType: EventIdConvention
+- uid: MicroPlumberd.EventNameConvention
+  name: EventNameConvention
+  href: api/MicroPlumberd.EventNameConvention.html
+  commentId: T:MicroPlumberd.EventNameConvention
+  fullName: MicroPlumberd.EventNameConvention
+  nameWithType: EventNameConvention
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  name: EventStoreProjectionManagementClientExtensions
+  href: api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.html
+  commentId: T:MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  nameWithType: EventStoreProjectionManagementClientExtensions
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  name: EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>)
+  href: api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_EventStore_Client_EventStoreProjectionManagementClient_System_String_MicroPlumberd_IProjectionRegister_System_Collections_Generic_IEnumerable_System_String__
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String))
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, string, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable<string>)
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable(Of String))
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>)
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String))
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  name: EnsureJoinProjection(EventStoreProjectionManagementClient, string, IEnumerable<string>)
+  href: api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_EventStore_Client_EventStoreProjectionManagementClient_System_String_System_Collections_Generic_IEnumerable_System_String__
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, string, System.Collections.Generic.IEnumerable<string>)
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, System.Collections.Generic.IEnumerable(Of String))
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, string, IEnumerable<string>)
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection*
+  name: EnsureJoinProjection
+  href: api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_
+  commentId: Overload:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection
+  isSpec: "True"
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection
+- uid: MicroPlumberd.GroupNameModelConvention
+  name: GroupNameModelConvention
+  href: api/MicroPlumberd.GroupNameModelConvention.html
+  commentId: T:MicroPlumberd.GroupNameModelConvention
+  fullName: MicroPlumberd.GroupNameModelConvention
+  nameWithType: GroupNameModelConvention
+- uid: MicroPlumberd.IAggregate
+  name: IAggregate
+  href: api/MicroPlumberd.IAggregate.html
+  commentId: T:MicroPlumberd.IAggregate
+  fullName: MicroPlumberd.IAggregate
+  nameWithType: IAggregate
+- uid: MicroPlumberd.IAggregate.AckCommitted
+  name: AckCommitted()
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
+  commentId: M:MicroPlumberd.IAggregate.AckCommitted
+  fullName: MicroPlumberd.IAggregate.AckCommitted()
+  nameWithType: IAggregate.AckCommitted()
+- uid: MicroPlumberd.IAggregate.AckCommitted*
+  name: AckCommitted
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted_
+  commentId: Overload:MicroPlumberd.IAggregate.AckCommitted
+  isSpec: "True"
+  fullName: MicroPlumberd.IAggregate.AckCommitted
+  nameWithType: IAggregate.AckCommitted
+- uid: MicroPlumberd.IAggregate.Age
+  name: Age
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Age
+  commentId: P:MicroPlumberd.IAggregate.Age
+  fullName: MicroPlumberd.IAggregate.Age
+  nameWithType: IAggregate.Age
+- uid: MicroPlumberd.IAggregate.Age*
+  name: Age
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Age_
+  commentId: Overload:MicroPlumberd.IAggregate.Age
+  isSpec: "True"
+  fullName: MicroPlumberd.IAggregate.Age
+  nameWithType: IAggregate.Age
+- uid: MicroPlumberd.IAggregate.Id
+  name: Id
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Id
+  commentId: P:MicroPlumberd.IAggregate.Id
+  fullName: MicroPlumberd.IAggregate.Id
+  nameWithType: IAggregate.Id
+- uid: MicroPlumberd.IAggregate.Id*
+  name: Id
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Id_
+  commentId: Overload:MicroPlumberd.IAggregate.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.IAggregate.Id
+  nameWithType: IAggregate.Id
+- uid: MicroPlumberd.IAggregate.PendingEvents
+  name: PendingEvents
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_PendingEvents
+  commentId: P:MicroPlumberd.IAggregate.PendingEvents
+  fullName: MicroPlumberd.IAggregate.PendingEvents
+  nameWithType: IAggregate.PendingEvents
+- uid: MicroPlumberd.IAggregate.PendingEvents*
+  name: PendingEvents
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_PendingEvents_
+  commentId: Overload:MicroPlumberd.IAggregate.PendingEvents
+  isSpec: "True"
+  fullName: MicroPlumberd.IAggregate.PendingEvents
+  nameWithType: IAggregate.PendingEvents
+- uid: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  name: Rehydrate(IAsyncEnumerable<object>)
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  commentId: M:MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  name.vb: Rehydrate(IAsyncEnumerable(Of Object))
+  fullName: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable<object>)
+  fullName.vb: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable(Of Object))
+  nameWithType: IAggregate.Rehydrate(IAsyncEnumerable<object>)
+  nameWithType.vb: IAggregate.Rehydrate(IAsyncEnumerable(Of Object))
+- uid: MicroPlumberd.IAggregate.Rehydrate*
+  name: Rehydrate
+  href: api/MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Rehydrate_
+  commentId: Overload:MicroPlumberd.IAggregate.Rehydrate
+  isSpec: "True"
+  fullName: MicroPlumberd.IAggregate.Rehydrate
+  nameWithType: IAggregate.Rehydrate
+- uid: MicroPlumberd.IAggregate`1
+  name: IAggregate<TSelf>
+  href: api/MicroPlumberd.IAggregate-1.html
+  commentId: T:MicroPlumberd.IAggregate`1
+  name.vb: IAggregate(Of TSelf)
+  fullName: MicroPlumberd.IAggregate<TSelf>
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf)
+  nameWithType: IAggregate<TSelf>
+  nameWithType.vb: IAggregate(Of TSelf)
+- uid: MicroPlumberd.IAggregate`1.New(System.Guid)
+  name: New(Guid)
+  href: api/MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_System_Guid_
+  commentId: M:MicroPlumberd.IAggregate`1.New(System.Guid)
+  fullName: MicroPlumberd.IAggregate<TSelf>.New(System.Guid)
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New(System.Guid)
+  nameWithType: IAggregate<TSelf>.New(Guid)
+  nameWithType.vb: IAggregate(Of TSelf).New(Guid)
+- uid: MicroPlumberd.IAggregate`1.New*
+  name: New
+  href: api/MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_
+  commentId: Overload:MicroPlumberd.IAggregate`1.New
+  isSpec: "True"
+  fullName: MicroPlumberd.IAggregate<TSelf>.New
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New
+  nameWithType: IAggregate<TSelf>.New
+  nameWithType.vb: IAggregate(Of TSelf).New
+- uid: MicroPlumberd.IConventions
+  name: IConventions
+  href: api/MicroPlumberd.IConventions.html
+  commentId: T:MicroPlumberd.IConventions
+  fullName: MicroPlumberd.IConventions
+  nameWithType: IConventions
+- uid: MicroPlumberd.IConventions.GetEventIdConvention
+  name: GetEventIdConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetEventIdConvention
+  commentId: P:MicroPlumberd.IConventions.GetEventIdConvention
+  fullName: MicroPlumberd.IConventions.GetEventIdConvention
+  nameWithType: IConventions.GetEventIdConvention
+- uid: MicroPlumberd.IConventions.GetEventIdConvention*
+  name: GetEventIdConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetEventIdConvention_
+  commentId: Overload:MicroPlumberd.IConventions.GetEventIdConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.GetEventIdConvention
+  nameWithType: IConventions.GetEventIdConvention
+- uid: MicroPlumberd.IConventions.GetEventNameConvention
+  name: GetEventNameConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetEventNameConvention
+  commentId: P:MicroPlumberd.IConventions.GetEventNameConvention
+  fullName: MicroPlumberd.IConventions.GetEventNameConvention
+  nameWithType: IConventions.GetEventNameConvention
+- uid: MicroPlumberd.IConventions.GetEventNameConvention*
+  name: GetEventNameConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetEventNameConvention_
+  commentId: Overload:MicroPlumberd.IConventions.GetEventNameConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.GetEventNameConvention
+  nameWithType: IConventions.GetEventNameConvention
+- uid: MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
+  name: GetMetadata(IAggregate?, object, object?)
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetMetadata_MicroPlumberd_IAggregate_System_Object_System_Object_
+  commentId: M:MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
+  name.vb: GetMetadata(IAggregate, Object, Object)
+  fullName: MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate?, object, object?)
+  fullName.vb: MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate, Object, Object)
+  nameWithType: IConventions.GetMetadata(IAggregate?, object, object?)
+  nameWithType.vb: IConventions.GetMetadata(IAggregate, Object, Object)
+- uid: MicroPlumberd.IConventions.GetMetadata*
+  name: GetMetadata
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetMetadata_
+  commentId: Overload:MicroPlumberd.IConventions.GetMetadata
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.GetMetadata
+  nameWithType: IConventions.GetMetadata
+- uid: MicroPlumberd.IConventions.GetStreamIdConvention
+  name: GetStreamIdConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetStreamIdConvention
+  commentId: P:MicroPlumberd.IConventions.GetStreamIdConvention
+  fullName: MicroPlumberd.IConventions.GetStreamIdConvention
+  nameWithType: IConventions.GetStreamIdConvention
+- uid: MicroPlumberd.IConventions.GetStreamIdConvention*
+  name: GetStreamIdConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetStreamIdConvention_
+  commentId: Overload:MicroPlumberd.IConventions.GetStreamIdConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.GetStreamIdConvention
+  nameWithType: IConventions.GetStreamIdConvention
+- uid: MicroPlumberd.IConventions.GroupNameModelConvention
+  name: GroupNameModelConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GroupNameModelConvention
+  commentId: P:MicroPlumberd.IConventions.GroupNameModelConvention
+  fullName: MicroPlumberd.IConventions.GroupNameModelConvention
+  nameWithType: IConventions.GroupNameModelConvention
+- uid: MicroPlumberd.IConventions.GroupNameModelConvention*
+  name: GroupNameModelConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GroupNameModelConvention_
+  commentId: Overload:MicroPlumberd.IConventions.GroupNameModelConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.GroupNameModelConvention
+  nameWithType: IConventions.GroupNameModelConvention
+- uid: MicroPlumberd.IConventions.MetadataEnrichers
+  name: MetadataEnrichers
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_MetadataEnrichers
+  commentId: P:MicroPlumberd.IConventions.MetadataEnrichers
+  fullName: MicroPlumberd.IConventions.MetadataEnrichers
+  nameWithType: IConventions.MetadataEnrichers
+- uid: MicroPlumberd.IConventions.MetadataEnrichers*
+  name: MetadataEnrichers
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_MetadataEnrichers_
+  commentId: Overload:MicroPlumberd.IConventions.MetadataEnrichers
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.MetadataEnrichers
+  nameWithType: IConventions.MetadataEnrichers
+- uid: MicroPlumberd.IConventions.OutputStreamModelConvention
+  name: OutputStreamModelConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_OutputStreamModelConvention
+  commentId: P:MicroPlumberd.IConventions.OutputStreamModelConvention
+  fullName: MicroPlumberd.IConventions.OutputStreamModelConvention
+  nameWithType: IConventions.OutputStreamModelConvention
+- uid: MicroPlumberd.IConventions.OutputStreamModelConvention*
+  name: OutputStreamModelConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_OutputStreamModelConvention_
+  commentId: Overload:MicroPlumberd.IConventions.OutputStreamModelConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.OutputStreamModelConvention
+  nameWithType: IConventions.OutputStreamModelConvention
+- uid: MicroPlumberd.IObjectSerializer
+  name: IObjectSerializer
+  href: api/MicroPlumberd.IObjectSerializer.html
+  commentId: T:MicroPlumberd.IObjectSerializer
+  fullName: MicroPlumberd.IObjectSerializer
+  nameWithType: IObjectSerializer
+- uid: MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan{System.Byte},System.Type)
+  name: Deserialize(ReadOnlySpan<byte>, Type)
+  href: api/MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_Deserialize_System_ReadOnlySpan_System_Byte__System_Type_
+  commentId: M:MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan{System.Byte},System.Type)
+  name.vb: Deserialize(ReadOnlySpan(Of Byte), Type)
+  fullName: MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan<byte>, System.Type)
+  fullName.vb: MicroPlumberd.IObjectSerializer.Deserialize(System.ReadOnlySpan(Of Byte), System.Type)
+  nameWithType: IObjectSerializer.Deserialize(ReadOnlySpan<byte>, Type)
+  nameWithType.vb: IObjectSerializer.Deserialize(ReadOnlySpan(Of Byte), Type)
+- uid: MicroPlumberd.IObjectSerializer.Deserialize*
+  name: Deserialize
+  href: api/MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_Deserialize_
+  commentId: Overload:MicroPlumberd.IObjectSerializer.Deserialize
+  isSpec: "True"
+  fullName: MicroPlumberd.IObjectSerializer.Deserialize
+  nameWithType: IObjectSerializer.Deserialize
+- uid: MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan{System.Byte})
+  name: Parse(ReadOnlySpan<byte>)
+  href: api/MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_Parse_System_ReadOnlySpan_System_Byte__
+  commentId: M:MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan{System.Byte})
+  name.vb: Parse(ReadOnlySpan(Of Byte))
+  fullName: MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan<byte>)
+  fullName.vb: MicroPlumberd.IObjectSerializer.Parse(System.ReadOnlySpan(Of Byte))
+  nameWithType: IObjectSerializer.Parse(ReadOnlySpan<byte>)
+  nameWithType.vb: IObjectSerializer.Parse(ReadOnlySpan(Of Byte))
+- uid: MicroPlumberd.IObjectSerializer.Parse*
+  name: Parse
+  href: api/MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_Parse_
+  commentId: Overload:MicroPlumberd.IObjectSerializer.Parse
+  isSpec: "True"
+  fullName: MicroPlumberd.IObjectSerializer.Parse
+  nameWithType: IObjectSerializer.Parse
+- uid: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(System.Object)
+  name: SerializeToUtf8Bytes(object?)
+  href: api/MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_SerializeToUtf8Bytes_System_Object_
+  commentId: M:MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(System.Object)
+  name.vb: SerializeToUtf8Bytes(Object)
+  fullName: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(object?)
+  fullName.vb: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes(Object)
+  nameWithType: IObjectSerializer.SerializeToUtf8Bytes(object?)
+  nameWithType.vb: IObjectSerializer.SerializeToUtf8Bytes(Object)
+- uid: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes*
+  name: SerializeToUtf8Bytes
+  href: api/MicroPlumberd.IObjectSerializer.html#MicroPlumberd_IObjectSerializer_SerializeToUtf8Bytes_
+  commentId: Overload:MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes
+  isSpec: "True"
+  fullName: MicroPlumberd.IObjectSerializer.SerializeToUtf8Bytes
+  nameWithType: IObjectSerializer.SerializeToUtf8Bytes
+- uid: MicroPlumberd.IPlumber
+  name: IPlumber
+  href: api/MicroPlumberd.IPlumber.html
+  commentId: T:MicroPlumberd.IPlumber
+  fullName: MicroPlumberd.IPlumber
+  nameWithType: IPlumber
+- uid: MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name: AppendEvents(string, StreamRevision, IEnumerable<object>, object?)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvents_System_String_EventStore_Client_StreamRevision_System_Collections_Generic_IEnumerable_System_Object__System_Object_
+  commentId: M:MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name.vb: AppendEvents(String, StreamRevision, IEnumerable(Of Object), Object)
+  fullName: MicroPlumberd.IPlumber.AppendEvents(string, EventStore.Client.StreamRevision, System.Collections.Generic.IEnumerable<object>, object?)
+  fullName.vb: MicroPlumberd.IPlumber.AppendEvents(String, EventStore.Client.StreamRevision, System.Collections.Generic.IEnumerable(Of Object), Object)
+  nameWithType: IPlumber.AppendEvents(string, StreamRevision, IEnumerable<object>, object?)
+  nameWithType.vb: IPlumber.AppendEvents(String, StreamRevision, IEnumerable(Of Object), Object)
+- uid: MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name: AppendEvents(string, StreamState, IEnumerable<object>, object?)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvents_System_String_EventStore_Client_StreamState_System_Collections_Generic_IEnumerable_System_Object__System_Object_
+  commentId: M:MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name.vb: AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+  fullName: MicroPlumberd.IPlumber.AppendEvents(string, EventStore.Client.StreamState, System.Collections.Generic.IEnumerable<object>, object?)
+  fullName.vb: MicroPlumberd.IPlumber.AppendEvents(String, EventStore.Client.StreamState, System.Collections.Generic.IEnumerable(Of Object), Object)
+  nameWithType: IPlumber.AppendEvents(string, StreamState, IEnumerable<object>, object?)
+  nameWithType.vb: IPlumber.AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+- uid: MicroPlumberd.IPlumber.AppendEvents*
+  name: AppendEvents
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvents_
+  commentId: Overload:MicroPlumberd.IPlumber.AppendEvents
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.AppendEvents
+  nameWithType: IPlumber.AppendEvents
+- uid: MicroPlumberd.IPlumber.Get*
+  name: Get
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Get_
+  commentId: Overload:MicroPlumberd.IPlumber.Get
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.Get
+  nameWithType: IPlumber.Get
+- uid: MicroPlumberd.IPlumber.Get``1(System.Guid)
+  name: Get<T>(Guid)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Get__1_System_Guid_
+  commentId: M:MicroPlumberd.IPlumber.Get``1(System.Guid)
+  name.vb: Get(Of T)(Guid)
+  fullName: MicroPlumberd.IPlumber.Get<T>(System.Guid)
+  fullName.vb: MicroPlumberd.IPlumber.Get(Of T)(System.Guid)
+  nameWithType: IPlumber.Get<T>(Guid)
+  nameWithType.vb: IPlumber.Get(Of T)(Guid)
+- uid: MicroPlumberd.IPlumber.SaveChanges*
+  name: SaveChanges
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SaveChanges_
+  commentId: Overload:MicroPlumberd.IPlumber.SaveChanges
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.SaveChanges
+  nameWithType: IPlumber.SaveChanges
+- uid: MicroPlumberd.IPlumber.SaveChanges``1(``0,System.Object)
+  name: SaveChanges<T>(T, object?)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SaveChanges__1___0_System_Object_
+  commentId: M:MicroPlumberd.IPlumber.SaveChanges``1(``0,System.Object)
+  name.vb: SaveChanges(Of T)(T, Object)
+  fullName: MicroPlumberd.IPlumber.SaveChanges<T>(T, object?)
+  fullName.vb: MicroPlumberd.IPlumber.SaveChanges(Of T)(T, Object)
+  nameWithType: IPlumber.SaveChanges<T>(T, object?)
+  nameWithType.vb: IPlumber.SaveChanges(Of T)(T, Object)
+- uid: MicroPlumberd.IPlumber.SaveNew*
+  name: SaveNew
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SaveNew_
+  commentId: Overload:MicroPlumberd.IPlumber.SaveNew
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.SaveNew
+  nameWithType: IPlumber.SaveNew
+- uid: MicroPlumberd.IPlumber.SaveNew``1(``0,System.Object)
+  name: SaveNew<T>(T, object?)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SaveNew__1___0_System_Object_
+  commentId: M:MicroPlumberd.IPlumber.SaveNew``1(``0,System.Object)
+  name.vb: SaveNew(Of T)(T, Object)
+  fullName: MicroPlumberd.IPlumber.SaveNew<T>(T, object?)
+  fullName.vb: MicroPlumberd.IPlumber.SaveNew(Of T)(T, Object)
+  nameWithType: IPlumber.SaveNew<T>(T, object?)
+  nameWithType.vb: IPlumber.SaveNew(Of T)(T, Object)
+- uid: MicroPlumberd.IPlumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name: Subscribe(string, FromStream, UserCredentials?, CancellationToken)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Subscribe_System_String_EventStore_Client_FromStream_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.IPlumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name.vb: Subscribe(String, FromStream, UserCredentials, CancellationToken)
+  fullName: MicroPlumberd.IPlumber.Subscribe(string, EventStore.Client.FromStream, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumber.Subscribe(String, EventStore.Client.FromStream, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
+  nameWithType: IPlumber.Subscribe(string, FromStream, UserCredentials?, CancellationToken)
+  nameWithType.vb: IPlumber.Subscribe(String, FromStream, UserCredentials, CancellationToken)
+- uid: MicroPlumberd.IPlumber.Subscribe*
+  name: Subscribe
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Subscribe_
+  commentId: Overload:MicroPlumberd.IPlumber.Subscribe
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.Subscribe
+  nameWithType: IPlumber.Subscribe
+- uid: MicroPlumberd.IPlumber.SubscribeModel*
+  name: SubscribeModel
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeModel_
+  commentId: Overload:MicroPlumberd.IPlumber.SubscribeModel
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.SubscribeModel
+  nameWithType: IPlumber.SubscribeModel
+- uid: MicroPlumberd.IPlumber.SubscribeModelPersistently*
+  name: SubscribeModelPersistently
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeModelPersistently_
+  commentId: Overload:MicroPlumberd.IPlumber.SubscribeModelPersistently
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.SubscribeModelPersistently
+  nameWithType: IPlumber.SubscribeModelPersistently
+- uid: MicroPlumberd.IPlumber.SubscribeModelPersistently``1(``0)
+  name: SubscribeModelPersistently<TModel>(TModel)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeModelPersistently__1___0_
+  commentId: M:MicroPlumberd.IPlumber.SubscribeModelPersistently``1(``0)
+  name.vb: SubscribeModelPersistently(Of TModel)(TModel)
+  fullName: MicroPlumberd.IPlumber.SubscribeModelPersistently<TModel>(TModel)
+  fullName.vb: MicroPlumberd.IPlumber.SubscribeModelPersistently(Of TModel)(TModel)
+  nameWithType: IPlumber.SubscribeModelPersistently<TModel>(TModel)
+  nameWithType.vb: IPlumber.SubscribeModelPersistently(Of TModel)(TModel)
+- uid: MicroPlumberd.IPlumber.SubscribeModel``1(``0,System.Nullable{EventStore.Client.FromStream})
+  name: SubscribeModel<TModel>(TModel, FromStream?)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeModel__1___0_System_Nullable_EventStore_Client_FromStream__
+  commentId: M:MicroPlumberd.IPlumber.SubscribeModel``1(``0,System.Nullable{EventStore.Client.FromStream})
+  name.vb: SubscribeModel(Of TModel)(TModel, FromStream?)
+  fullName: MicroPlumberd.IPlumber.SubscribeModel<TModel>(TModel, EventStore.Client.FromStream?)
+  fullName.vb: MicroPlumberd.IPlumber.SubscribeModel(Of TModel)(TModel, EventStore.Client.FromStream?)
+  nameWithType: IPlumber.SubscribeModel<TModel>(TModel, FromStream?)
+  nameWithType.vb: IPlumber.SubscribeModel(Of TModel)(TModel, FromStream?)
+- uid: MicroPlumberd.IPlumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name: SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribePersistently_System_String_System_String_System_Int32_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.IPlumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name.vb: SubscribePersistently(String, String, Integer, UserCredentials, CancellationToken)
+  fullName: MicroPlumberd.IPlumber.SubscribePersistently(string, string, int, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumber.SubscribePersistently(String, String, Integer, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
+  nameWithType: IPlumber.SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
+  nameWithType.vb: IPlumber.SubscribePersistently(String, String, Integer, UserCredentials, CancellationToken)
+- uid: MicroPlumberd.IPlumber.SubscribePersistently*
+  name: SubscribePersistently
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribePersistently_
+  commentId: Overload:MicroPlumberd.IPlumber.SubscribePersistently
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.SubscribePersistently
+  nameWithType: IPlumber.SubscribePersistently
+- uid: MicroPlumberd.IPlumber.SubscribeSet
+  name: SubscribeSet()
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeSet
+  commentId: M:MicroPlumberd.IPlumber.SubscribeSet
+  fullName: MicroPlumberd.IPlumber.SubscribeSet()
+  nameWithType: IPlumber.SubscribeSet()
+- uid: MicroPlumberd.IPlumber.SubscribeSet*
+  name: SubscribeSet
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeSet_
+  commentId: Overload:MicroPlumberd.IPlumber.SubscribeSet
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumber.SubscribeSet
+  nameWithType: IPlumber.SubscribeSet
+- uid: MicroPlumberd.IProjectionRegister
+  name: IProjectionRegister
+  href: api/MicroPlumberd.IProjectionRegister.html
+  commentId: T:MicroPlumberd.IProjectionRegister
+  fullName: MicroPlumberd.IProjectionRegister
+  nameWithType: IProjectionRegister
+- uid: MicroPlumberd.IProjectionRegister.Get(System.String)
+  name: Get(string)
+  href: api/MicroPlumberd.IProjectionRegister.html#MicroPlumberd_IProjectionRegister_Get_System_String_
+  commentId: M:MicroPlumberd.IProjectionRegister.Get(System.String)
+  name.vb: Get(String)
+  fullName: MicroPlumberd.IProjectionRegister.Get(string)
+  fullName.vb: MicroPlumberd.IProjectionRegister.Get(String)
+  nameWithType: IProjectionRegister.Get(string)
+  nameWithType.vb: IProjectionRegister.Get(String)
+- uid: MicroPlumberd.IProjectionRegister.Get*
+  name: Get
+  href: api/MicroPlumberd.IProjectionRegister.html#MicroPlumberd_IProjectionRegister_Get_
+  commentId: Overload:MicroPlumberd.IProjectionRegister.Get
+  isSpec: "True"
+  fullName: MicroPlumberd.IProjectionRegister.Get
+  nameWithType: IProjectionRegister.Get
+- uid: MicroPlumberd.IReadModel
+  name: IReadModel
+  href: api/MicroPlumberd.IReadModel.html
+  commentId: T:MicroPlumberd.IReadModel
+  fullName: MicroPlumberd.IReadModel
+  nameWithType: IReadModel
+- uid: MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata,System.Object)
+  name: Given(Metadata, object)
+  href: api/MicroPlumberd.IReadModel.html#MicroPlumberd_IReadModel_Given_MicroPlumberd_Metadata_System_Object_
+  commentId: M:MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata,System.Object)
+  name.vb: Given(Metadata, Object)
+  fullName: MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata, object)
+  fullName.vb: MicroPlumberd.IReadModel.Given(MicroPlumberd.Metadata, Object)
+  nameWithType: IReadModel.Given(Metadata, object)
+  nameWithType.vb: IReadModel.Given(Metadata, Object)
+- uid: MicroPlumberd.IReadModel.Given*
+  name: Given
+  href: api/MicroPlumberd.IReadModel.html#MicroPlumberd_IReadModel_Given_
+  commentId: Overload:MicroPlumberd.IReadModel.Given
+  isSpec: "True"
+  fullName: MicroPlumberd.IReadModel.Given
+  nameWithType: IReadModel.Given
+- uid: MicroPlumberd.ISubscriptionRunner
+  name: ISubscriptionRunner
+  href: api/MicroPlumberd.ISubscriptionRunner.html
+  commentId: T:MicroPlumberd.ISubscriptionRunner
+  fullName: MicroPlumberd.ISubscriptionRunner
+  nameWithType: ISubscriptionRunner
+- uid: MicroPlumberd.ISubscriptionRunner.WithModel*
+  name: WithModel
+  href: api/MicroPlumberd.ISubscriptionRunner.html#MicroPlumberd_ISubscriptionRunner_WithModel_
+  commentId: Overload:MicroPlumberd.ISubscriptionRunner.WithModel
+  isSpec: "True"
+  fullName: MicroPlumberd.ISubscriptionRunner.WithModel
+  nameWithType: ISubscriptionRunner.WithModel
+- uid: MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
+  name: WithModel<T>(T)
+  href: api/MicroPlumberd.ISubscriptionRunner.html#MicroPlumberd_ISubscriptionRunner_WithModel__1___0_
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
+  name.vb: WithModel(Of T)(T)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithModel<T>(T)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithModel(Of T)(T)
+  nameWithType: ISubscriptionRunner.WithModel<T>(T)
+  nameWithType.vb: ISubscriptionRunner.WithModel(Of T)(T)
+- uid: MicroPlumberd.ISubscriptionSet
+  name: ISubscriptionSet
+  href: api/MicroPlumberd.ISubscriptionSet.html
+  commentId: T:MicroPlumberd.ISubscriptionSet
+  fullName: MicroPlumberd.ISubscriptionSet
+  nameWithType: ISubscriptionSet
+- uid: MicroPlumberd.ISubscriptionSet.SubscribeAsync(System.String,EventStore.Client.FromStream)
+  name: SubscribeAsync(string, FromStream)
+  href: api/MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_SubscribeAsync_System_String_EventStore_Client_FromStream_
+  commentId: M:MicroPlumberd.ISubscriptionSet.SubscribeAsync(System.String,EventStore.Client.FromStream)
+  name.vb: SubscribeAsync(String, FromStream)
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribeAsync(string, EventStore.Client.FromStream)
+  fullName.vb: MicroPlumberd.ISubscriptionSet.SubscribeAsync(String, EventStore.Client.FromStream)
+  nameWithType: ISubscriptionSet.SubscribeAsync(string, FromStream)
+  nameWithType.vb: ISubscriptionSet.SubscribeAsync(String, FromStream)
+- uid: MicroPlumberd.ISubscriptionSet.SubscribeAsync*
+  name: SubscribeAsync
+  href: api/MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_SubscribeAsync_
+  commentId: Overload:MicroPlumberd.ISubscriptionSet.SubscribeAsync
+  isSpec: "True"
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribeAsync
+  nameWithType: ISubscriptionSet.SubscribeAsync
+- uid: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(System.String,System.String)
+  name: SubscribePersistentlyAsync(string, string?)
+  href: api/MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_SubscribePersistentlyAsync_System_String_System_String_
+  commentId: M:MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(System.String,System.String)
+  name.vb: SubscribePersistentlyAsync(String, String)
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(string, string?)
+  fullName.vb: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(String, String)
+  nameWithType: ISubscriptionSet.SubscribePersistentlyAsync(string, string?)
+  nameWithType.vb: ISubscriptionSet.SubscribePersistentlyAsync(String, String)
+- uid: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync*
+  name: SubscribePersistentlyAsync
+  href: api/MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_SubscribePersistentlyAsync_
+  commentId: Overload:MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync
+  isSpec: "True"
+  fullName: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync
+  nameWithType: ISubscriptionSet.SubscribePersistentlyAsync
+- uid: MicroPlumberd.ISubscriptionSet.With*
+  name: With
+  href: api/MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_With_
+  commentId: Overload:MicroPlumberd.ISubscriptionSet.With
+  isSpec: "True"
+  fullName: MicroPlumberd.ISubscriptionSet.With
+  nameWithType: ISubscriptionSet.With
+- uid: MicroPlumberd.ISubscriptionSet.With``1(``0)
+  name: With<TModel>(TModel)
+  href: api/MicroPlumberd.ISubscriptionSet.html#MicroPlumberd_ISubscriptionSet_With__1___0_
+  commentId: M:MicroPlumberd.ISubscriptionSet.With``1(``0)
+  name.vb: With(Of TModel)(TModel)
+  fullName: MicroPlumberd.ISubscriptionSet.With<TModel>(TModel)
+  fullName.vb: MicroPlumberd.ISubscriptionSet.With(Of TModel)(TModel)
+  nameWithType: ISubscriptionSet.With<TModel>(TModel)
+  nameWithType.vb: ISubscriptionSet.With(Of TModel)(TModel)
+- uid: MicroPlumberd.ITypeRegister
+  name: ITypeRegister
+  href: api/MicroPlumberd.ITypeRegister.html
+  commentId: T:MicroPlumberd.ITypeRegister
+  fullName: MicroPlumberd.ITypeRegister
+  nameWithType: ITypeRegister
+- uid: MicroPlumberd.ITypeRegister.TypeRegister
+  name: TypeRegister
+  href: api/MicroPlumberd.ITypeRegister.html#MicroPlumberd_ITypeRegister_TypeRegister
+  commentId: P:MicroPlumberd.ITypeRegister.TypeRegister
+  fullName: MicroPlumberd.ITypeRegister.TypeRegister
+  nameWithType: ITypeRegister.TypeRegister
+- uid: MicroPlumberd.ITypeRegister.TypeRegister*
+  name: TypeRegister
+  href: api/MicroPlumberd.ITypeRegister.html#MicroPlumberd_ITypeRegister_TypeRegister_
+  commentId: Overload:MicroPlumberd.ITypeRegister.TypeRegister
+  isSpec: "True"
+  fullName: MicroPlumberd.ITypeRegister.TypeRegister
+  nameWithType: ITypeRegister.TypeRegister
+- uid: MicroPlumberd.InvocationContext
+  name: InvocationContext
+  href: api/MicroPlumberd.InvocationContext.html
+  commentId: T:MicroPlumberd.InvocationContext
+  fullName: MicroPlumberd.InvocationContext
+  nameWithType: InvocationContext
+- uid: MicroPlumberd.InvocationContext.Clear
+  name: Clear()
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Clear
+  commentId: M:MicroPlumberd.InvocationContext.Clear
+  fullName: MicroPlumberd.InvocationContext.Clear()
+  nameWithType: InvocationContext.Clear()
+- uid: MicroPlumberd.InvocationContext.Clear*
+  name: Clear
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Clear_
+  commentId: Overload:MicroPlumberd.InvocationContext.Clear
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.Clear
+  nameWithType: InvocationContext.Clear
+- uid: MicroPlumberd.InvocationContext.ClearCorrelation
+  name: ClearCorrelation()
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_ClearCorrelation
+  commentId: M:MicroPlumberd.InvocationContext.ClearCorrelation
+  fullName: MicroPlumberd.InvocationContext.ClearCorrelation()
+  nameWithType: InvocationContext.ClearCorrelation()
+- uid: MicroPlumberd.InvocationContext.ClearCorrelation*
+  name: ClearCorrelation
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_ClearCorrelation_
+  commentId: Overload:MicroPlumberd.InvocationContext.ClearCorrelation
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.ClearCorrelation
+  nameWithType: InvocationContext.ClearCorrelation
+- uid: MicroPlumberd.InvocationContext.ContainsProperty(System.String)
+  name: ContainsProperty(string)
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_ContainsProperty_System_String_
+  commentId: M:MicroPlumberd.InvocationContext.ContainsProperty(System.String)
+  name.vb: ContainsProperty(String)
+  fullName: MicroPlumberd.InvocationContext.ContainsProperty(string)
+  fullName.vb: MicroPlumberd.InvocationContext.ContainsProperty(String)
+  nameWithType: InvocationContext.ContainsProperty(string)
+  nameWithType.vb: InvocationContext.ContainsProperty(String)
+- uid: MicroPlumberd.InvocationContext.ContainsProperty*
+  name: ContainsProperty
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_ContainsProperty_
+  commentId: Overload:MicroPlumberd.InvocationContext.ContainsProperty
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.ContainsProperty
+  nameWithType: InvocationContext.ContainsProperty
+- uid: MicroPlumberd.InvocationContext.Current
+  name: Current
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Current
+  commentId: P:MicroPlumberd.InvocationContext.Current
+  fullName: MicroPlumberd.InvocationContext.Current
+  nameWithType: InvocationContext.Current
+- uid: MicroPlumberd.InvocationContext.Current*
+  name: Current
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Current_
+  commentId: Overload:MicroPlumberd.InvocationContext.Current
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.Current
+  nameWithType: InvocationContext.Current
+- uid: MicroPlumberd.InvocationContext.Set(System.String,System.Object)
+  name: Set(string, object)
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Set_System_String_System_Object_
+  commentId: M:MicroPlumberd.InvocationContext.Set(System.String,System.Object)
+  name.vb: Set(String, Object)
+  fullName: MicroPlumberd.InvocationContext.Set(string, object)
+  fullName.vb: MicroPlumberd.InvocationContext.Set(String, Object)
+  nameWithType: InvocationContext.Set(string, object)
+  nameWithType.vb: InvocationContext.Set(String, Object)
+- uid: MicroPlumberd.InvocationContext.Set*
+  name: Set
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Set_
+  commentId: Overload:MicroPlumberd.InvocationContext.Set
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.Set
+  nameWithType: InvocationContext.Set
+- uid: MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  name: SetCausation(Guid)
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetCausation_System_Guid_
+  commentId: M:MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  fullName: MicroPlumberd.InvocationContext.SetCausation(System.Guid)
+  nameWithType: InvocationContext.SetCausation(Guid)
+- uid: MicroPlumberd.InvocationContext.SetCausation*
+  name: SetCausation
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetCausation_
+  commentId: Overload:MicroPlumberd.InvocationContext.SetCausation
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.SetCausation
+  nameWithType: InvocationContext.SetCausation
+- uid: MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  name: SetCorrelation(Guid)
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetCorrelation_System_Guid_
+  commentId: M:MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  fullName: MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
+  nameWithType: InvocationContext.SetCorrelation(Guid)
+- uid: MicroPlumberd.InvocationContext.SetCorrelation*
+  name: SetCorrelation
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetCorrelation_
+  commentId: Overload:MicroPlumberd.InvocationContext.SetCorrelation
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.SetCorrelation
+  nameWithType: InvocationContext.SetCorrelation
+- uid: MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  name: SetUserId(Guid)
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetUserId_System_Guid_
+  commentId: M:MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  fullName: MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  nameWithType: InvocationContext.SetUserId(Guid)
+- uid: MicroPlumberd.InvocationContext.SetUserId*
+  name: SetUserId
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_SetUserId_
+  commentId: Overload:MicroPlumberd.InvocationContext.SetUserId
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.SetUserId
+  nameWithType: InvocationContext.SetUserId
+- uid: MicroPlumberd.InvocationContext.Value
+  name: Value
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Value
+  commentId: P:MicroPlumberd.InvocationContext.Value
+  fullName: MicroPlumberd.InvocationContext.Value
+  nameWithType: InvocationContext.Value
+- uid: MicroPlumberd.InvocationContext.Value*
+  name: Value
+  href: api/MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Value_
+  commentId: Overload:MicroPlumberd.InvocationContext.Value
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationContext.Value
+  nameWithType: InvocationContext.Value
+- uid: MicroPlumberd.InvocationScope
+  name: InvocationScope
+  href: api/MicroPlumberd.InvocationScope.html
+  commentId: T:MicroPlumberd.InvocationScope
+  fullName: MicroPlumberd.InvocationScope
+  nameWithType: InvocationScope
+- uid: MicroPlumberd.InvocationScope.ContainsProperty(System.String)
+  name: ContainsProperty(string)
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_ContainsProperty_System_String_
+  commentId: M:MicroPlumberd.InvocationScope.ContainsProperty(System.String)
+  name.vb: ContainsProperty(String)
+  fullName: MicroPlumberd.InvocationScope.ContainsProperty(string)
+  fullName.vb: MicroPlumberd.InvocationScope.ContainsProperty(String)
+  nameWithType: InvocationScope.ContainsProperty(string)
+  nameWithType.vb: InvocationScope.ContainsProperty(String)
+- uid: MicroPlumberd.InvocationScope.ContainsProperty*
+  name: ContainsProperty
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_ContainsProperty_
+  commentId: Overload:MicroPlumberd.InvocationScope.ContainsProperty
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.ContainsProperty
+  nameWithType: InvocationScope.ContainsProperty
+- uid: MicroPlumberd.InvocationScope.Context
+  name: Context
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Context
+  commentId: P:MicroPlumberd.InvocationScope.Context
+  fullName: MicroPlumberd.InvocationScope.Context
+  nameWithType: InvocationScope.Context
+- uid: MicroPlumberd.InvocationScope.Context*
+  name: Context
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Context_
+  commentId: Overload:MicroPlumberd.InvocationScope.Context
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.Context
+  nameWithType: InvocationScope.Context
+- uid: MicroPlumberd.InvocationScope.Dispose
+  name: Dispose()
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Dispose
+  commentId: M:MicroPlumberd.InvocationScope.Dispose
+  fullName: MicroPlumberd.InvocationScope.Dispose()
+  nameWithType: InvocationScope.Dispose()
+- uid: MicroPlumberd.InvocationScope.Dispose*
+  name: Dispose
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Dispose_
+  commentId: Overload:MicroPlumberd.InvocationScope.Dispose
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.Dispose
+  nameWithType: InvocationScope.Dispose
+- uid: MicroPlumberd.InvocationScope.Set(System.String,System.Object)
+  name: Set(string, object)
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Set_System_String_System_Object_
+  commentId: M:MicroPlumberd.InvocationScope.Set(System.String,System.Object)
+  name.vb: Set(String, Object)
+  fullName: MicroPlumberd.InvocationScope.Set(string, object)
+  fullName.vb: MicroPlumberd.InvocationScope.Set(String, Object)
+  nameWithType: InvocationScope.Set(string, object)
+  nameWithType.vb: InvocationScope.Set(String, Object)
+- uid: MicroPlumberd.InvocationScope.Set*
+  name: Set
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Set_
+  commentId: Overload:MicroPlumberd.InvocationScope.Set
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.Set
+  nameWithType: InvocationScope.Set
+- uid: MicroPlumberd.InvocationScope.SetCausation(System.Guid)
+  name: SetCausation(Guid)
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetCausation_System_Guid_
+  commentId: M:MicroPlumberd.InvocationScope.SetCausation(System.Guid)
+  fullName: MicroPlumberd.InvocationScope.SetCausation(System.Guid)
+  nameWithType: InvocationScope.SetCausation(Guid)
+- uid: MicroPlumberd.InvocationScope.SetCausation*
+  name: SetCausation
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetCausation_
+  commentId: Overload:MicroPlumberd.InvocationScope.SetCausation
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.SetCausation
+  nameWithType: InvocationScope.SetCausation
+- uid: MicroPlumberd.InvocationScope.SetCorrelation(System.Guid)
+  name: SetCorrelation(Guid)
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetCorrelation_System_Guid_
+  commentId: M:MicroPlumberd.InvocationScope.SetCorrelation(System.Guid)
+  fullName: MicroPlumberd.InvocationScope.SetCorrelation(System.Guid)
+  nameWithType: InvocationScope.SetCorrelation(Guid)
+- uid: MicroPlumberd.InvocationScope.SetCorrelation*
+  name: SetCorrelation
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetCorrelation_
+  commentId: Overload:MicroPlumberd.InvocationScope.SetCorrelation
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.SetCorrelation
+  nameWithType: InvocationScope.SetCorrelation
+- uid: MicroPlumberd.InvocationScope.SetUserId(System.Guid)
+  name: SetUserId(Guid)
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetUserId_System_Guid_
+  commentId: M:MicroPlumberd.InvocationScope.SetUserId(System.Guid)
+  fullName: MicroPlumberd.InvocationScope.SetUserId(System.Guid)
+  nameWithType: InvocationScope.SetUserId(Guid)
+- uid: MicroPlumberd.InvocationScope.SetUserId*
+  name: SetUserId
+  href: api/MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetUserId_
+  commentId: Overload:MicroPlumberd.InvocationScope.SetUserId
+  isSpec: "True"
+  fullName: MicroPlumberd.InvocationScope.SetUserId
+  nameWithType: InvocationScope.SetUserId
+- uid: MicroPlumberd.Metadata
+  name: Metadata
+  href: api/MicroPlumberd.Metadata.html
+  commentId: T:MicroPlumberd.Metadata
+  fullName: MicroPlumberd.Metadata
+  nameWithType: Metadata
+- uid: MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
+  name: Metadata(Guid, JsonElement)
+  href: api/MicroPlumberd.Metadata.html#MicroPlumberd_Metadata__ctor_System_Guid_System_Text_Json_JsonElement_
+  commentId: M:MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
+  name.vb: New(Guid, JsonElement)
+  fullName: MicroPlumberd.Metadata.Metadata(System.Guid, System.Text.Json.JsonElement)
+  fullName.vb: MicroPlumberd.Metadata.New(System.Guid, System.Text.Json.JsonElement)
+  nameWithType: Metadata.Metadata(Guid, JsonElement)
+  nameWithType.vb: Metadata.New(Guid, JsonElement)
+- uid: MicroPlumberd.Metadata.#ctor*
+  name: Metadata
+  href: api/MicroPlumberd.Metadata.html#MicroPlumberd_Metadata__ctor_
+  commentId: Overload:MicroPlumberd.Metadata.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.Metadata.Metadata
+  fullName.vb: MicroPlumberd.Metadata.New
+  nameWithType: Metadata.Metadata
+  nameWithType.vb: Metadata.New
+- uid: MicroPlumberd.Metadata.Data
+  name: Data
+  href: api/MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_Data
+  commentId: P:MicroPlumberd.Metadata.Data
+  fullName: MicroPlumberd.Metadata.Data
+  nameWithType: Metadata.Data
+- uid: MicroPlumberd.Metadata.Data*
+  name: Data
+  href: api/MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_Data_
+  commentId: Overload:MicroPlumberd.Metadata.Data
+  isSpec: "True"
+  fullName: MicroPlumberd.Metadata.Data
+  nameWithType: Metadata.Data
+- uid: MicroPlumberd.Metadata.Id
+  name: Id
+  href: api/MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_Id
+  commentId: P:MicroPlumberd.Metadata.Id
+  fullName: MicroPlumberd.Metadata.Id
+  nameWithType: Metadata.Id
+- uid: MicroPlumberd.Metadata.Id*
+  name: Id
+  href: api/MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_Id_
+  commentId: Overload:MicroPlumberd.Metadata.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.Metadata.Id
+  nameWithType: Metadata.Id
+- uid: MicroPlumberd.MetadataConvention
+  name: MetadataConvention
+  href: api/MicroPlumberd.MetadataConvention.html
+  commentId: T:MicroPlumberd.MetadataConvention
+  fullName: MicroPlumberd.MetadataConvention
+  nameWithType: MetadataConvention
+- uid: MicroPlumberd.MetadataExtensions
+  name: MetadataExtensions
+  href: api/MicroPlumberd.MetadataExtensions.html
+  commentId: T:MicroPlumberd.MetadataExtensions
+  fullName: MicroPlumberd.MetadataExtensions
+  nameWithType: MetadataExtensions
+- uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  name: CorrelationId(Metadata)
+  href: api/MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
+  commentId: M:MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
+  nameWithType: MetadataExtensions.CorrelationId(Metadata)
+- uid: MicroPlumberd.MetadataExtensions.CorrelationId*
+  name: CorrelationId
+  href: api/MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_
+  commentId: Overload:MicroPlumberd.MetadataExtensions.CorrelationId
+  isSpec: "True"
+  fullName: MicroPlumberd.MetadataExtensions.CorrelationId
+  nameWithType: MetadataExtensions.CorrelationId
+- uid: MicroPlumberd.OutputStreamAttribute
+  name: OutputStreamAttribute
+  href: api/MicroPlumberd.OutputStreamAttribute.html
+  commentId: T:MicroPlumberd.OutputStreamAttribute
+  fullName: MicroPlumberd.OutputStreamAttribute
+  nameWithType: OutputStreamAttribute
+- uid: MicroPlumberd.OutputStreamAttribute.#ctor(System.String)
+  name: OutputStreamAttribute(string)
+  href: api/MicroPlumberd.OutputStreamAttribute.html#MicroPlumberd_OutputStreamAttribute__ctor_System_String_
+  commentId: M:MicroPlumberd.OutputStreamAttribute.#ctor(System.String)
+  name.vb: New(String)
+  fullName: MicroPlumberd.OutputStreamAttribute.OutputStreamAttribute(string)
+  fullName.vb: MicroPlumberd.OutputStreamAttribute.New(String)
+  nameWithType: OutputStreamAttribute.OutputStreamAttribute(string)
+  nameWithType.vb: OutputStreamAttribute.New(String)
+- uid: MicroPlumberd.OutputStreamAttribute.#ctor*
+  name: OutputStreamAttribute
+  href: api/MicroPlumberd.OutputStreamAttribute.html#MicroPlumberd_OutputStreamAttribute__ctor_
+  commentId: Overload:MicroPlumberd.OutputStreamAttribute.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.OutputStreamAttribute.OutputStreamAttribute
+  fullName.vb: MicroPlumberd.OutputStreamAttribute.New
+  nameWithType: OutputStreamAttribute.OutputStreamAttribute
+  nameWithType.vb: OutputStreamAttribute.New
+- uid: MicroPlumberd.OutputStreamAttribute.OutputStreamName
+  name: OutputStreamName
+  href: api/MicroPlumberd.OutputStreamAttribute.html#MicroPlumberd_OutputStreamAttribute_OutputStreamName
+  commentId: P:MicroPlumberd.OutputStreamAttribute.OutputStreamName
+  fullName: MicroPlumberd.OutputStreamAttribute.OutputStreamName
+  nameWithType: OutputStreamAttribute.OutputStreamName
+- uid: MicroPlumberd.OutputStreamAttribute.OutputStreamName*
+  name: OutputStreamName
+  href: api/MicroPlumberd.OutputStreamAttribute.html#MicroPlumberd_OutputStreamAttribute_OutputStreamName_
+  commentId: Overload:MicroPlumberd.OutputStreamAttribute.OutputStreamName
+  isSpec: "True"
+  fullName: MicroPlumberd.OutputStreamAttribute.OutputStreamName
+  nameWithType: OutputStreamAttribute.OutputStreamName
+- uid: MicroPlumberd.OutputStreamModelConvention
+  name: OutputStreamModelConvention
+  href: api/MicroPlumberd.OutputStreamModelConvention.html
+  commentId: T:MicroPlumberd.OutputStreamModelConvention
+  fullName: MicroPlumberd.OutputStreamModelConvention
+  nameWithType: OutputStreamModelConvention
+- uid: MicroPlumberd.Plumber
+  name: Plumber
+  href: api/MicroPlumberd.Plumber.html
+  commentId: T:MicroPlumberd.Plumber
+  fullName: MicroPlumberd.Plumber
+  nameWithType: Plumber
+- uid: MicroPlumberd.Plumber.#ctor(EventStore.Client.EventStoreClientSettings)
+  name: Plumber(EventStoreClientSettings)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber__ctor_EventStore_Client_EventStoreClientSettings_
+  commentId: M:MicroPlumberd.Plumber.#ctor(EventStore.Client.EventStoreClientSettings)
+  name.vb: New(EventStoreClientSettings)
+  fullName: MicroPlumberd.Plumber.Plumber(EventStore.Client.EventStoreClientSettings)
+  fullName.vb: MicroPlumberd.Plumber.New(EventStore.Client.EventStoreClientSettings)
+  nameWithType: Plumber.Plumber(EventStoreClientSettings)
+  nameWithType.vb: Plumber.New(EventStoreClientSettings)
+- uid: MicroPlumberd.Plumber.#ctor*
+  name: Plumber
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber__ctor_
+  commentId: Overload:MicroPlumberd.Plumber.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.Plumber.Plumber
+  fullName.vb: MicroPlumberd.Plumber.New
+  nameWithType: Plumber.Plumber
+  nameWithType.vb: Plumber.New
+- uid: MicroPlumberd.Plumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name: AppendEvents(string, StreamRevision, IEnumerable<object>, object?)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvents_System_String_EventStore_Client_StreamRevision_System_Collections_Generic_IEnumerable_System_Object__System_Object_
+  commentId: M:MicroPlumberd.Plumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name.vb: AppendEvents(String, StreamRevision, IEnumerable(Of Object), Object)
+  fullName: MicroPlumberd.Plumber.AppendEvents(string, EventStore.Client.StreamRevision, System.Collections.Generic.IEnumerable<object>, object?)
+  fullName.vb: MicroPlumberd.Plumber.AppendEvents(String, EventStore.Client.StreamRevision, System.Collections.Generic.IEnumerable(Of Object), Object)
+  nameWithType: Plumber.AppendEvents(string, StreamRevision, IEnumerable<object>, object?)
+  nameWithType.vb: Plumber.AppendEvents(String, StreamRevision, IEnumerable(Of Object), Object)
+- uid: MicroPlumberd.Plumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name: AppendEvents(string, StreamState, IEnumerable<object>, object?)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvents_System_String_EventStore_Client_StreamState_System_Collections_Generic_IEnumerable_System_Object__System_Object_
+  commentId: M:MicroPlumberd.Plumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  name.vb: AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+  fullName: MicroPlumberd.Plumber.AppendEvents(string, EventStore.Client.StreamState, System.Collections.Generic.IEnumerable<object>, object?)
+  fullName.vb: MicroPlumberd.Plumber.AppendEvents(String, EventStore.Client.StreamState, System.Collections.Generic.IEnumerable(Of Object), Object)
+  nameWithType: Plumber.AppendEvents(string, StreamState, IEnumerable<object>, object?)
+  nameWithType.vb: Plumber.AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+- uid: MicroPlumberd.Plumber.AppendEvents*
+  name: AppendEvents
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvents_
+  commentId: Overload:MicroPlumberd.Plumber.AppendEvents
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.AppendEvents
+  nameWithType: Plumber.AppendEvents
+- uid: MicroPlumberd.Plumber.Client
+  name: Client
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Client
+  commentId: P:MicroPlumberd.Plumber.Client
+  fullName: MicroPlumberd.Plumber.Client
+  nameWithType: Plumber.Client
+- uid: MicroPlumberd.Plumber.Client*
+  name: Client
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Client_
+  commentId: Overload:MicroPlumberd.Plumber.Client
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.Client
+  nameWithType: Plumber.Client
+- uid: MicroPlumberd.Plumber.Conventions
+  name: Conventions
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Conventions
+  commentId: P:MicroPlumberd.Plumber.Conventions
+  fullName: MicroPlumberd.Plumber.Conventions
+  nameWithType: Plumber.Conventions
+- uid: MicroPlumberd.Plumber.Conventions*
+  name: Conventions
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Conventions_
+  commentId: Overload:MicroPlumberd.Plumber.Conventions
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.Conventions
+  nameWithType: Plumber.Conventions
+- uid: MicroPlumberd.Plumber.Get*
+  name: Get
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Get_
+  commentId: Overload:MicroPlumberd.Plumber.Get
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.Get
+  nameWithType: Plumber.Get
+- uid: MicroPlumberd.Plumber.Get``1(System.Guid)
+  name: Get<T>(Guid)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Get__1_System_Guid_
+  commentId: M:MicroPlumberd.Plumber.Get``1(System.Guid)
+  name.vb: Get(Of T)(Guid)
+  fullName: MicroPlumberd.Plumber.Get<T>(System.Guid)
+  fullName.vb: MicroPlumberd.Plumber.Get(Of T)(System.Guid)
+  nameWithType: Plumber.Get<T>(Guid)
+  nameWithType.vb: Plumber.Get(Of T)(Guid)
+- uid: MicroPlumberd.Plumber.PersistentSubscriptionClient
+  name: PersistentSubscriptionClient
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_PersistentSubscriptionClient
+  commentId: P:MicroPlumberd.Plumber.PersistentSubscriptionClient
+  fullName: MicroPlumberd.Plumber.PersistentSubscriptionClient
+  nameWithType: Plumber.PersistentSubscriptionClient
+- uid: MicroPlumberd.Plumber.PersistentSubscriptionClient*
+  name: PersistentSubscriptionClient
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_PersistentSubscriptionClient_
+  commentId: Overload:MicroPlumberd.Plumber.PersistentSubscriptionClient
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.PersistentSubscriptionClient
+  nameWithType: Plumber.PersistentSubscriptionClient
+- uid: MicroPlumberd.Plumber.ProjectionManagementClient
+  name: ProjectionManagementClient
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ProjectionManagementClient
+  commentId: P:MicroPlumberd.Plumber.ProjectionManagementClient
+  fullName: MicroPlumberd.Plumber.ProjectionManagementClient
+  nameWithType: Plumber.ProjectionManagementClient
+- uid: MicroPlumberd.Plumber.ProjectionManagementClient*
+  name: ProjectionManagementClient
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ProjectionManagementClient_
+  commentId: Overload:MicroPlumberd.Plumber.ProjectionManagementClient
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.ProjectionManagementClient
+  nameWithType: Plumber.ProjectionManagementClient
+- uid: MicroPlumberd.Plumber.ProjectionRegister
+  name: ProjectionRegister
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ProjectionRegister
+  commentId: P:MicroPlumberd.Plumber.ProjectionRegister
+  fullName: MicroPlumberd.Plumber.ProjectionRegister
+  nameWithType: Plumber.ProjectionRegister
+- uid: MicroPlumberd.Plumber.ProjectionRegister*
+  name: ProjectionRegister
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ProjectionRegister_
+  commentId: Overload:MicroPlumberd.Plumber.ProjectionRegister
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.ProjectionRegister
+  nameWithType: Plumber.ProjectionRegister
+- uid: MicroPlumberd.Plumber.SaveChanges*
+  name: SaveChanges
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SaveChanges_
+  commentId: Overload:MicroPlumberd.Plumber.SaveChanges
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.SaveChanges
+  nameWithType: Plumber.SaveChanges
+- uid: MicroPlumberd.Plumber.SaveChanges``1(``0,System.Object)
+  name: SaveChanges<T>(T, object?)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SaveChanges__1___0_System_Object_
+  commentId: M:MicroPlumberd.Plumber.SaveChanges``1(``0,System.Object)
+  name.vb: SaveChanges(Of T)(T, Object)
+  fullName: MicroPlumberd.Plumber.SaveChanges<T>(T, object?)
+  fullName.vb: MicroPlumberd.Plumber.SaveChanges(Of T)(T, Object)
+  nameWithType: Plumber.SaveChanges<T>(T, object?)
+  nameWithType.vb: Plumber.SaveChanges(Of T)(T, Object)
+- uid: MicroPlumberd.Plumber.SaveNew*
+  name: SaveNew
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SaveNew_
+  commentId: Overload:MicroPlumberd.Plumber.SaveNew
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.SaveNew
+  nameWithType: Plumber.SaveNew
+- uid: MicroPlumberd.Plumber.SaveNew``1(``0,System.Object)
+  name: SaveNew<T>(T, object?)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SaveNew__1___0_System_Object_
+  commentId: M:MicroPlumberd.Plumber.SaveNew``1(``0,System.Object)
+  name.vb: SaveNew(Of T)(T, Object)
+  fullName: MicroPlumberd.Plumber.SaveNew<T>(T, object?)
+  fullName.vb: MicroPlumberd.Plumber.SaveNew(Of T)(T, Object)
+  nameWithType: Plumber.SaveNew<T>(T, object?)
+  nameWithType.vb: Plumber.SaveNew(Of T)(T, Object)
+- uid: MicroPlumberd.Plumber.Serializer
+  name: Serializer
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Serializer
+  commentId: P:MicroPlumberd.Plumber.Serializer
+  fullName: MicroPlumberd.Plumber.Serializer
+  nameWithType: Plumber.Serializer
+- uid: MicroPlumberd.Plumber.Serializer*
+  name: Serializer
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Serializer_
+  commentId: Overload:MicroPlumberd.Plumber.Serializer
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.Serializer
+  nameWithType: Plumber.Serializer
+- uid: MicroPlumberd.Plumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name: Subscribe(string, FromStream, UserCredentials?, CancellationToken)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Subscribe_System_String_EventStore_Client_FromStream_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.Plumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name.vb: Subscribe(String, FromStream, UserCredentials, CancellationToken)
+  fullName: MicroPlumberd.Plumber.Subscribe(string, EventStore.Client.FromStream, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.Plumber.Subscribe(String, EventStore.Client.FromStream, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
+  nameWithType: Plumber.Subscribe(string, FromStream, UserCredentials?, CancellationToken)
+  nameWithType.vb: Plumber.Subscribe(String, FromStream, UserCredentials, CancellationToken)
+- uid: MicroPlumberd.Plumber.Subscribe*
+  name: Subscribe
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Subscribe_
+  commentId: Overload:MicroPlumberd.Plumber.Subscribe
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.Subscribe
+  nameWithType: Plumber.Subscribe
+- uid: MicroPlumberd.Plumber.SubscribeModel*
+  name: SubscribeModel
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeModel_
+  commentId: Overload:MicroPlumberd.Plumber.SubscribeModel
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.SubscribeModel
+  nameWithType: Plumber.SubscribeModel
+- uid: MicroPlumberd.Plumber.SubscribeModelPersistently*
+  name: SubscribeModelPersistently
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeModelPersistently_
+  commentId: Overload:MicroPlumberd.Plumber.SubscribeModelPersistently
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.SubscribeModelPersistently
+  nameWithType: Plumber.SubscribeModelPersistently
+- uid: MicroPlumberd.Plumber.SubscribeModelPersistently``1(``0)
+  name: SubscribeModelPersistently<TModel>(TModel)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeModelPersistently__1___0_
+  commentId: M:MicroPlumberd.Plumber.SubscribeModelPersistently``1(``0)
+  name.vb: SubscribeModelPersistently(Of TModel)(TModel)
+  fullName: MicroPlumberd.Plumber.SubscribeModelPersistently<TModel>(TModel)
+  fullName.vb: MicroPlumberd.Plumber.SubscribeModelPersistently(Of TModel)(TModel)
+  nameWithType: Plumber.SubscribeModelPersistently<TModel>(TModel)
+  nameWithType.vb: Plumber.SubscribeModelPersistently(Of TModel)(TModel)
+- uid: MicroPlumberd.Plumber.SubscribeModel``1(``0,System.Nullable{EventStore.Client.FromStream})
+  name: SubscribeModel<TModel>(TModel, FromStream?)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeModel__1___0_System_Nullable_EventStore_Client_FromStream__
+  commentId: M:MicroPlumberd.Plumber.SubscribeModel``1(``0,System.Nullable{EventStore.Client.FromStream})
+  name.vb: SubscribeModel(Of TModel)(TModel, FromStream?)
+  fullName: MicroPlumberd.Plumber.SubscribeModel<TModel>(TModel, EventStore.Client.FromStream?)
+  fullName.vb: MicroPlumberd.Plumber.SubscribeModel(Of TModel)(TModel, EventStore.Client.FromStream?)
+  nameWithType: Plumber.SubscribeModel<TModel>(TModel, FromStream?)
+  nameWithType.vb: Plumber.SubscribeModel(Of TModel)(TModel, FromStream?)
+- uid: MicroPlumberd.Plumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name: SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribePersistently_System_String_System_String_System_Int32_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.Plumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name.vb: SubscribePersistently(String, String, Integer, UserCredentials, CancellationToken)
+  fullName: MicroPlumberd.Plumber.SubscribePersistently(string, string, int, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.Plumber.SubscribePersistently(String, String, Integer, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
+  nameWithType: Plumber.SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
+  nameWithType.vb: Plumber.SubscribePersistently(String, String, Integer, UserCredentials, CancellationToken)
+- uid: MicroPlumberd.Plumber.SubscribePersistently*
+  name: SubscribePersistently
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribePersistently_
+  commentId: Overload:MicroPlumberd.Plumber.SubscribePersistently
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.SubscribePersistently
+  nameWithType: Plumber.SubscribePersistently
+- uid: MicroPlumberd.Plumber.SubscribeSet
+  name: SubscribeSet()
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeSet
+  commentId: M:MicroPlumberd.Plumber.SubscribeSet
+  fullName: MicroPlumberd.Plumber.SubscribeSet()
+  nameWithType: Plumber.SubscribeSet()
+- uid: MicroPlumberd.Plumber.SubscribeSet*
+  name: SubscribeSet
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeSet_
+  commentId: Overload:MicroPlumberd.Plumber.SubscribeSet
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.SubscribeSet
+  nameWithType: Plumber.SubscribeSet
+- uid: MicroPlumberd.SourceGenerators
+  name: MicroPlumberd.SourceGenerators
+  href: api/MicroPlumberd.SourceGenerators.html
+  commentId: N:MicroPlumberd.SourceGenerators
+  fullName: MicroPlumberd.SourceGenerators
+  nameWithType: MicroPlumberd.SourceGenerators
+- uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+  name: AggregateSourceGenerator
+  href: api/MicroPlumberd.SourceGenerators.AggregateSourceGenerator.html
+  commentId: T:MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.AggregateSourceGenerator
+  nameWithType: AggregateSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  name: Execute(GeneratorExecutionContext)
+  href: api/MicroPlumberd.SourceGenerators.AggregateSourceGenerator.html#MicroPlumberd_SourceGenerators_AggregateSourceGenerator_Execute_Microsoft_CodeAnalysis_GeneratorExecutionContext_
+  commentId: M:MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  fullName: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  nameWithType: AggregateSourceGenerator.Execute(GeneratorExecutionContext)
+- uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Execute*
+  name: Execute
+  href: api/MicroPlumberd.SourceGenerators.AggregateSourceGenerator.html#MicroPlumberd_SourceGenerators_AggregateSourceGenerator_Execute_
+  commentId: Overload:MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Execute
+  isSpec: "True"
+  fullName: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Execute
+  nameWithType: AggregateSourceGenerator.Execute
+- uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  name: Initialize(GeneratorInitializationContext)
+  href: api/MicroPlumberd.SourceGenerators.AggregateSourceGenerator.html#MicroPlumberd_SourceGenerators_AggregateSourceGenerator_Initialize_Microsoft_CodeAnalysis_GeneratorInitializationContext_
+  commentId: M:MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  fullName: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  nameWithType: AggregateSourceGenerator.Initialize(GeneratorInitializationContext)
+- uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Initialize*
+  name: Initialize
+  href: api/MicroPlumberd.SourceGenerators.AggregateSourceGenerator.html#MicroPlumberd_SourceGenerators_AggregateSourceGenerator_Initialize_
+  commentId: Overload:MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Initialize
+  isSpec: "True"
+  fullName: MicroPlumberd.SourceGenerators.AggregateSourceGenerator.Initialize
+  nameWithType: AggregateSourceGenerator.Initialize
+- uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+  name: CommandHandlerSourceGenerator
+  href: api/MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.html
+  commentId: T:MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
+  nameWithType: CommandHandlerSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  name: Execute(GeneratorExecutionContext)
+  href: api/MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_CommandHandlerSourceGenerator_Execute_Microsoft_CodeAnalysis_GeneratorExecutionContext_
+  commentId: M:MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  fullName: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  nameWithType: CommandHandlerSourceGenerator.Execute(GeneratorExecutionContext)
+- uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Execute*
+  name: Execute
+  href: api/MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_CommandHandlerSourceGenerator_Execute_
+  commentId: Overload:MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Execute
+  isSpec: "True"
+  fullName: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Execute
+  nameWithType: CommandHandlerSourceGenerator.Execute
+- uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  name: Initialize(GeneratorInitializationContext)
+  href: api/MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_CommandHandlerSourceGenerator_Initialize_Microsoft_CodeAnalysis_GeneratorInitializationContext_
+  commentId: M:MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  fullName: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  nameWithType: CommandHandlerSourceGenerator.Initialize(GeneratorInitializationContext)
+- uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Initialize*
+  name: Initialize
+  href: api/MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_CommandHandlerSourceGenerator_Initialize_
+  commentId: Overload:MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Initialize
+  isSpec: "True"
+  fullName: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator.Initialize
+  nameWithType: CommandHandlerSourceGenerator.Initialize
+- uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  name: EventHandlerSourceGenerator
+  href: api/MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.html
+  commentId: T:MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  nameWithType: EventHandlerSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  name: Execute(GeneratorExecutionContext)
+  href: api/MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_EventHandlerSourceGenerator_Execute_Microsoft_CodeAnalysis_GeneratorExecutionContext_
+  commentId: M:MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Execute(Microsoft.CodeAnalysis.GeneratorExecutionContext)
+  nameWithType: EventHandlerSourceGenerator.Execute(GeneratorExecutionContext)
+- uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Execute*
+  name: Execute
+  href: api/MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_EventHandlerSourceGenerator_Execute_
+  commentId: Overload:MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Execute
+  isSpec: "True"
+  fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Execute
+  nameWithType: EventHandlerSourceGenerator.Execute
+- uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  name: Initialize(GeneratorInitializationContext)
+  href: api/MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_EventHandlerSourceGenerator_Initialize_Microsoft_CodeAnalysis_GeneratorInitializationContext_
+  commentId: M:MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Initialize(Microsoft.CodeAnalysis.GeneratorInitializationContext)
+  nameWithType: EventHandlerSourceGenerator.Initialize(GeneratorInitializationContext)
+- uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Initialize*
+  name: Initialize
+  href: api/MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.html#MicroPlumberd_SourceGenerators_EventHandlerSourceGenerator_Initialize_
+  commentId: Overload:MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Initialize
+  isSpec: "True"
+  fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator.Initialize
+  nameWithType: EventHandlerSourceGenerator.Initialize
+- uid: MicroPlumberd.StandardMetadataEnricherTypes
+  name: StandardMetadataEnricherTypes
+  href: api/MicroPlumberd.StandardMetadataEnricherTypes.html
+  commentId: T:MicroPlumberd.StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes
+  nameWithType: StandardMetadataEnricherTypes
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.All
+  name: All
+  href: api/MicroPlumberd.StandardMetadataEnricherTypes.html#MicroPlumberd_StandardMetadataEnricherTypes_All
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.All
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.All
+  nameWithType: StandardMetadataEnricherTypes.All
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.Created
+  name: Created
+  href: api/MicroPlumberd.StandardMetadataEnricherTypes.html#MicroPlumberd_StandardMetadataEnricherTypes_Created
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.Created
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.Created
+  nameWithType: StandardMetadataEnricherTypes.Created
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  name: InvocationContext
+  href: api/MicroPlumberd.StandardMetadataEnricherTypes.html#MicroPlumberd_StandardMetadataEnricherTypes_InvocationContext
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  nameWithType: StandardMetadataEnricherTypes.InvocationContext
+- uid: MicroPlumberd.SteamNameConvention
+  name: SteamNameConvention
+  href: api/MicroPlumberd.SteamNameConvention.html
+  commentId: T:MicroPlumberd.SteamNameConvention
+  fullName: MicroPlumberd.SteamNameConvention
+  nameWithType: SteamNameConvention

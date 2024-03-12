@@ -1,0 +1,892 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.AggregateBase`1
+  commentId: T:MicroPlumberd.AggregateBase`1
+  id: AggregateBase`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.AggregateBase`1.#ctor(System.Guid)
+  - MicroPlumberd.AggregateBase`1.AckCommitted
+  - MicroPlumberd.AggregateBase`1.Age
+  - MicroPlumberd.AggregateBase`1.AppendPendingChange(System.Object)
+  - MicroPlumberd.AggregateBase`1.Given(`0,System.Object)
+  - MicroPlumberd.AggregateBase`1.Id
+  - MicroPlumberd.AggregateBase`1.PendingEvents
+  - MicroPlumberd.AggregateBase`1.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  - MicroPlumberd.AggregateBase`1.State
+  langs:
+  - csharp
+  - vb
+  name: AggregateBase<TState>
+  nameWithType: AggregateBase<TState>
+  fullName: MicroPlumberd.AggregateBase<TState>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AggregateBase
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public abstract class AggregateBase<TState> where TState : new()'
+    typeParameters:
+    - id: TState
+    content.vb: Public MustInherit Class AggregateBase(Of TState As New)
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: AggregateBase(Of TState)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState)
+  name.vb: AggregateBase(Of TState)
+- uid: MicroPlumberd.AggregateBase`1.#ctor(System.Guid)
+  commentId: M:MicroPlumberd.AggregateBase`1.#ctor(System.Guid)
+  id: '#ctor(System.Guid)'
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: AggregateBase(Guid)
+  nameWithType: AggregateBase<TState>.AggregateBase(Guid)
+  fullName: MicroPlumberd.AggregateBase<TState>.AggregateBase(System.Guid)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: protected AggregateBase(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    content.vb: Protected Sub New(id As Guid)
+  overload: MicroPlumberd.AggregateBase`1.#ctor*
+  nameWithType.vb: AggregateBase(Of TState).New(Guid)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).New(System.Guid)
+  name.vb: New(Guid)
+- uid: MicroPlumberd.AggregateBase`1.State
+  commentId: P:MicroPlumberd.AggregateBase`1.State
+  id: State
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: State
+  nameWithType: AggregateBase<TState>.State
+  fullName: MicroPlumberd.AggregateBase<TState>.State
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: State
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: protected TState State { get; }
+    parameters: []
+    return:
+      type: '{TState}'
+    content.vb: Protected Property State As TState
+  overload: MicroPlumberd.AggregateBase`1.State*
+  nameWithType.vb: AggregateBase(Of TState).State
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).State
+- uid: MicroPlumberd.AggregateBase`1.Id
+  commentId: P:MicroPlumberd.AggregateBase`1.Id
+  id: Id
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: AggregateBase<TState>.Id
+  fullName: MicroPlumberd.AggregateBase<TState>.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 15
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public ReadOnly Property Id As Guid
+  overload: MicroPlumberd.AggregateBase`1.Id*
+  nameWithType.vb: AggregateBase(Of TState).Id
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Id
+- uid: MicroPlumberd.AggregateBase`1.Age
+  commentId: P:MicroPlumberd.AggregateBase`1.Age
+  id: Age
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: Age
+  nameWithType: AggregateBase<TState>.Age
+  fullName: MicroPlumberd.AggregateBase<TState>.Age
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Age
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 16
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public long Age { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property Age As Long
+  overload: MicroPlumberd.AggregateBase`1.Age*
+  nameWithType.vb: AggregateBase(Of TState).Age
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Age
+- uid: MicroPlumberd.AggregateBase`1.PendingEvents
+  commentId: P:MicroPlumberd.AggregateBase`1.PendingEvents
+  id: PendingEvents
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: PendingEvents
+  nameWithType: AggregateBase<TState>.PendingEvents
+  fullName: MicroPlumberd.AggregateBase<TState>.PendingEvents
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: PendingEvents
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 18
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public IReadOnlyList<object> PendingEvents { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: Public ReadOnly Property PendingEvents As IReadOnlyList(Of Object)
+  overload: MicroPlumberd.AggregateBase`1.PendingEvents*
+  nameWithType.vb: AggregateBase(Of TState).PendingEvents
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).PendingEvents
+- uid: MicroPlumberd.AggregateBase`1.AppendPendingChange(System.Object)
+  commentId: M:MicroPlumberd.AggregateBase`1.AppendPendingChange(System.Object)
+  id: AppendPendingChange(System.Object)
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: AppendPendingChange(object)
+  nameWithType: AggregateBase<TState>.AppendPendingChange(object)
+  fullName: MicroPlumberd.AggregateBase<TState>.AppendPendingChange(object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AppendPendingChange
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 20
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: protected void AppendPendingChange(object ev)
+    parameters:
+    - id: ev
+      type: System.Object
+    content.vb: Protected Sub AppendPendingChange(ev As Object)
+  overload: MicroPlumberd.AggregateBase`1.AppendPendingChange*
+  nameWithType.vb: AggregateBase(Of TState).AppendPendingChange(Object)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AppendPendingChange(Object)
+  name.vb: AppendPendingChange(Object)
+- uid: MicroPlumberd.AggregateBase`1.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  commentId: M:MicroPlumberd.AggregateBase`1.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  id: Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: Rehydrate(IAsyncEnumerable<object>)
+  nameWithType: AggregateBase<TState>.Rehydrate(IAsyncEnumerable<object>)
+  fullName: MicroPlumberd.AggregateBase<TState>.Rehydrate(System.Collections.Generic.IAsyncEnumerable<object>)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Rehydrate
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 26
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Task Rehydrate(IAsyncEnumerable<object> events)
+    parameters:
+    - id: events
+      type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Function Rehydrate(events As IAsyncEnumerable(Of Object)) As Task
+  overload: MicroPlumberd.AggregateBase`1.Rehydrate*
+  nameWithType.vb: AggregateBase(Of TState).Rehydrate(IAsyncEnumerable(Of Object))
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Rehydrate(System.Collections.Generic.IAsyncEnumerable(Of Object))
+  name.vb: Rehydrate(IAsyncEnumerable(Of Object))
+- uid: MicroPlumberd.AggregateBase`1.AckCommitted
+  commentId: M:MicroPlumberd.AggregateBase`1.AckCommitted
+  id: AckCommitted
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: AckCommitted()
+  nameWithType: AggregateBase<TState>.AckCommitted()
+  fullName: MicroPlumberd.AggregateBase<TState>.AckCommitted()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AckCommitted
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 34
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public void AckCommitted()
+    content.vb: Public Sub AckCommitted()
+  overload: MicroPlumberd.AggregateBase`1.AckCommitted*
+  nameWithType.vb: AggregateBase(Of TState).AckCommitted()
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AckCommitted()
+- uid: MicroPlumberd.AggregateBase`1.Given(`0,System.Object)
+  commentId: M:MicroPlumberd.AggregateBase`1.Given(`0,System.Object)
+  id: Given(`0,System.Object)
+  parent: MicroPlumberd.AggregateBase`1
+  langs:
+  - csharp
+  - vb
+  name: Given(TState, object)
+  nameWithType: AggregateBase<TState>.Given(TState, object)
+  fullName: MicroPlumberd.AggregateBase<TState>.Given(TState, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Given
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 39
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: protected abstract TState Given(TState state, object ev)
+    parameters:
+    - id: state
+      type: '{TState}'
+    - id: ev
+      type: System.Object
+    return:
+      type: '{TState}'
+    content.vb: Protected MustOverride Function Given(state As TState, ev As Object) As TState
+  overload: MicroPlumberd.AggregateBase`1.Given*
+  nameWithType.vb: AggregateBase(Of TState).Given(TState, Object)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Given(TState, Object)
+  name.vb: Given(TState, Object)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.AggregateBase`1.#ctor*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.#ctor
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1__ctor_System_Guid_
+  name: AggregateBase
+  nameWithType: AggregateBase<TState>.AggregateBase
+  fullName: MicroPlumberd.AggregateBase<TState>.AggregateBase
+  nameWithType.vb: AggregateBase(Of TState).New
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).New
+  name.vb: New
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: MicroPlumberd.AggregateBase`1.State*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.State
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_State
+  name: State
+  nameWithType: AggregateBase<TState>.State
+  fullName: MicroPlumberd.AggregateBase<TState>.State
+  nameWithType.vb: AggregateBase(Of TState).State
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).State
+- uid: '{TState}'
+  commentId: '!:TState'
+  definition: TState
+  name: TState
+  nameWithType: TState
+  fullName: TState
+- uid: TState
+  name: TState
+  nameWithType: TState
+  fullName: TState
+- uid: MicroPlumberd.AggregateBase`1.Id*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Id
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Id
+  name: Id
+  nameWithType: AggregateBase<TState>.Id
+  fullName: MicroPlumberd.AggregateBase<TState>.Id
+  nameWithType.vb: AggregateBase(Of TState).Id
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Id
+- uid: MicroPlumberd.AggregateBase`1.Age*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Age
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Age
+  name: Age
+  nameWithType: AggregateBase<TState>.Age
+  fullName: MicroPlumberd.AggregateBase<TState>.Age
+  nameWithType.vb: AggregateBase(Of TState).Age
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Age
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: MicroPlumberd.AggregateBase`1.PendingEvents*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.PendingEvents
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_PendingEvents
+  name: PendingEvents
+  nameWithType: AggregateBase<TState>.PendingEvents
+  fullName: MicroPlumberd.AggregateBase<TState>.PendingEvents
+  nameWithType.vb: AggregateBase(Of TState).PendingEvents
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).PendingEvents
+- uid: System.Collections.Generic.IReadOnlyList{System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<object>
+  nameWithType: IReadOnlyList<object>
+  fullName: System.Collections.Generic.IReadOnlyList<object>
+  nameWithType.vb: IReadOnlyList(Of Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Object)
+  name.vb: IReadOnlyList(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MicroPlumberd.AggregateBase`1.AppendPendingChange*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.AppendPendingChange
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_AppendPendingChange_System_Object_
+  name: AppendPendingChange
+  nameWithType: AggregateBase<TState>.AppendPendingChange
+  fullName: MicroPlumberd.AggregateBase<TState>.AppendPendingChange
+  nameWithType.vb: AggregateBase(Of TState).AppendPendingChange
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AppendPendingChange
+- uid: MicroPlumberd.AggregateBase`1.Rehydrate*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Rehydrate
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  name: Rehydrate
+  nameWithType: AggregateBase<TState>.Rehydrate
+  fullName: MicroPlumberd.AggregateBase<TState>.Rehydrate
+  nameWithType.vb: AggregateBase(Of TState).Rehydrate
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Rehydrate
+- uid: System.Collections.Generic.IAsyncEnumerable{System.Object}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<object>
+  nameWithType: IAsyncEnumerable<object>
+  fullName: System.Collections.Generic.IAsyncEnumerable<object>
+  nameWithType.vb: IAsyncEnumerable(Of Object)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of Object)
+  name.vb: IAsyncEnumerable(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Collections.Generic.IAsyncEnumerable`1
+  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.AggregateBase`1.AckCommitted*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.AckCommitted
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_AckCommitted
+  name: AckCommitted
+  nameWithType: AggregateBase<TState>.AckCommitted
+  fullName: MicroPlumberd.AggregateBase<TState>.AckCommitted
+  nameWithType.vb: AggregateBase(Of TState).AckCommitted
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).AckCommitted
+- uid: MicroPlumberd.AggregateBase`1.Given*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Given
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Given__0_System_Object_
+  name: Given
+  nameWithType: AggregateBase<TState>.Given
+  fullName: MicroPlumberd.AggregateBase<TState>.Given
+  nameWithType.vb: AggregateBase(Of TState).Given
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Given

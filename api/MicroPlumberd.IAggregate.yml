@@ -1,0 +1,451 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IAggregate
+  commentId: T:MicroPlumberd.IAggregate
+  id: IAggregate
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IAggregate.AckCommitted
+  - MicroPlumberd.IAggregate.Age
+  - MicroPlumberd.IAggregate.Id
+  - MicroPlumberd.IAggregate.PendingEvents
+  - MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  langs:
+  - csharp
+  - vb
+  name: IAggregate
+  nameWithType: IAggregate
+  fullName: MicroPlumberd.IAggregate
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IAggregate
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IAggregate
+    content.vb: Public Interface IAggregate
+- uid: MicroPlumberd.IAggregate.Id
+  commentId: P:MicroPlumberd.IAggregate.Id
+  id: Id
+  parent: MicroPlumberd.IAggregate
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IAggregate.Id
+  fullName: MicroPlumberd.IAggregate.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: ReadOnly Property Id As Guid
+  overload: MicroPlumberd.IAggregate.Id*
+- uid: MicroPlumberd.IAggregate.Age
+  commentId: P:MicroPlumberd.IAggregate.Age
+  id: Age
+  parent: MicroPlumberd.IAggregate
+  langs:
+  - csharp
+  - vb
+  name: Age
+  nameWithType: IAggregate.Age
+  fullName: MicroPlumberd.IAggregate.Age
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Age
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: long Age { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property Age As Long
+  overload: MicroPlumberd.IAggregate.Age*
+- uid: MicroPlumberd.IAggregate.PendingEvents
+  commentId: P:MicroPlumberd.IAggregate.PendingEvents
+  id: PendingEvents
+  parent: MicroPlumberd.IAggregate
+  langs:
+  - csharp
+  - vb
+  name: PendingEvents
+  nameWithType: IAggregate.PendingEvents
+  fullName: MicroPlumberd.IAggregate.PendingEvents
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: PendingEvents
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IReadOnlyList<object> PendingEvents { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IReadOnlyList{System.Object}
+    content.vb: ReadOnly Property PendingEvents As IReadOnlyList(Of Object)
+  overload: MicroPlumberd.IAggregate.PendingEvents*
+- uid: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  commentId: M:MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  id: Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  parent: MicroPlumberd.IAggregate
+  langs:
+  - csharp
+  - vb
+  name: Rehydrate(IAsyncEnumerable<object>)
+  nameWithType: IAggregate.Rehydrate(IAsyncEnumerable<object>)
+  fullName: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable<object>)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Rehydrate
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Task Rehydrate(IAsyncEnumerable<object> events)
+    parameters:
+    - id: events
+      type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function Rehydrate(events As IAsyncEnumerable(Of Object)) As Task
+  overload: MicroPlumberd.IAggregate.Rehydrate*
+  nameWithType.vb: IAggregate.Rehydrate(IAsyncEnumerable(Of Object))
+  fullName.vb: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable(Of Object))
+  name.vb: Rehydrate(IAsyncEnumerable(Of Object))
+- uid: MicroPlumberd.IAggregate.AckCommitted
+  commentId: M:MicroPlumberd.IAggregate.AckCommitted
+  id: AckCommitted
+  parent: MicroPlumberd.IAggregate
+  langs:
+  - csharp
+  - vb
+  name: AckCommitted()
+  nameWithType: IAggregate.AckCommitted()
+  fullName: MicroPlumberd.IAggregate.AckCommitted()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AckCommitted
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 12
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: void AckCommitted()
+    content.vb: Sub AckCommitted()
+  overload: MicroPlumberd.IAggregate.AckCommitted*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IAggregate.Id*
+  commentId: Overload:MicroPlumberd.IAggregate.Id
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Id
+  name: Id
+  nameWithType: IAggregate.Id
+  fullName: MicroPlumberd.IAggregate.Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IAggregate.Age*
+  commentId: Overload:MicroPlumberd.IAggregate.Age
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Age
+  name: Age
+  nameWithType: IAggregate.Age
+  fullName: MicroPlumberd.IAggregate.Age
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: MicroPlumberd.IAggregate.PendingEvents*
+  commentId: Overload:MicroPlumberd.IAggregate.PendingEvents
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_PendingEvents
+  name: PendingEvents
+  nameWithType: IAggregate.PendingEvents
+  fullName: MicroPlumberd.IAggregate.PendingEvents
+- uid: System.Collections.Generic.IReadOnlyList{System.Object}
+  commentId: T:System.Collections.Generic.IReadOnlyList{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IReadOnlyList`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<object>
+  nameWithType: IReadOnlyList<object>
+  fullName: System.Collections.Generic.IReadOnlyList<object>
+  nameWithType.vb: IReadOnlyList(Of Object)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of Object)
+  name.vb: IReadOnlyList(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IReadOnlyList`1
+  commentId: T:System.Collections.Generic.IReadOnlyList`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  name: IReadOnlyList<T>
+  nameWithType: IReadOnlyList<T>
+  fullName: System.Collections.Generic.IReadOnlyList<T>
+  nameWithType.vb: IReadOnlyList(Of T)
+  fullName.vb: System.Collections.Generic.IReadOnlyList(Of T)
+  name.vb: IReadOnlyList(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IReadOnlyList`1
+    name: IReadOnlyList
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MicroPlumberd.IAggregate.Rehydrate*
+  commentId: Overload:MicroPlumberd.IAggregate.Rehydrate
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  name: Rehydrate
+  nameWithType: IAggregate.Rehydrate
+  fullName: MicroPlumberd.IAggregate.Rehydrate
+- uid: System.Collections.Generic.IAsyncEnumerable{System.Object}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<object>
+  nameWithType: IAsyncEnumerable<object>
+  fullName: System.Collections.Generic.IAsyncEnumerable<object>
+  nameWithType.vb: IAsyncEnumerable(Of Object)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of Object)
+  name.vb: IAsyncEnumerable(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Collections.Generic.IAsyncEnumerable`1
+  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.IAggregate.AckCommitted*
+  commentId: Overload:MicroPlumberd.IAggregate.AckCommitted
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
+  name: AckCommitted
+  nameWithType: IAggregate.AckCommitted
+  fullName: MicroPlumberd.IAggregate.AckCommitted

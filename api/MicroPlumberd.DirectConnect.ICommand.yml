@@ -1,0 +1,102 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.DirectConnect.ICommand
+  commentId: T:MicroPlumberd.DirectConnect.ICommand
+  id: ICommand
+  parent: MicroPlumberd.DirectConnect
+  children:
+  - MicroPlumberd.DirectConnect.ICommand.Id
+  langs:
+  - csharp
+  - vb
+  name: ICommand
+  nameWithType: ICommand
+  fullName: MicroPlumberd.DirectConnect.ICommand
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICommand
+    path: src/MicroPlumberd.DirectConnect/ICommand.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: public interface ICommand
+    content.vb: Public Interface ICommand
+- uid: MicroPlumberd.DirectConnect.ICommand.Id
+  commentId: P:MicroPlumberd.DirectConnect.ICommand.Id
+  id: Id
+  parent: MicroPlumberd.DirectConnect.ICommand
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: ICommand.Id
+  fullName: MicroPlumberd.DirectConnect.ICommand.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd.DirectConnect/ICommand.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: ReadOnly Property Id As Guid
+  overload: MicroPlumberd.DirectConnect.ICommand.Id*
+references:
+- uid: MicroPlumberd.DirectConnect
+  commentId: N:MicroPlumberd.DirectConnect
+  href: MicroPlumberd.html
+  name: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+- uid: MicroPlumberd.DirectConnect.ICommand.Id*
+  commentId: Overload:MicroPlumberd.DirectConnect.ICommand.Id
+  href: MicroPlumberd.DirectConnect.ICommand.html#MicroPlumberd_DirectConnect_ICommand_Id
+  name: Id
+  nameWithType: ICommand.Id
+  fullName: MicroPlumberd.DirectConnect.ICommand.Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

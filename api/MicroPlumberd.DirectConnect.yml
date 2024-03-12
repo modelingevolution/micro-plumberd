@@ -1,0 +1,202 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.DirectConnect
+  commentId: N:MicroPlumberd.DirectConnect
+  id: MicroPlumberd.DirectConnect
+  children:
+  - MicroPlumberd.DirectConnect.CommandEnvelope`1
+  - MicroPlumberd.DirectConnect.CommandHandlerAttribute
+  - MicroPlumberd.DirectConnect.ContainerExtensions
+  - MicroPlumberd.DirectConnect.HandlerOperationStatus
+  - MicroPlumberd.DirectConnect.IApiTypeRegister
+  - MicroPlumberd.DirectConnect.ICommand
+  - MicroPlumberd.DirectConnect.ICommandHandler`1
+  - MicroPlumberd.DirectConnect.RequestInvokerExtensions
+  - MicroPlumberd.DirectConnect.ReturnsAttribute
+  - MicroPlumberd.DirectConnect.ReturnsAttribute`1
+  - MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+  - MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.DirectConnect
+references:
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1
+  commentId: T:MicroPlumberd.DirectConnect.CommandEnvelope`1
+  href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html
+  name: CommandEnvelope<TCommand>
+  nameWithType: CommandEnvelope<TCommand>
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>
+  nameWithType.vb: CommandEnvelope(Of TCommand)
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand)
+  name.vb: CommandEnvelope(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1
+    name: CommandEnvelope
+    href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1
+    name: CommandEnvelope
+    href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.DirectConnect.CommandHandlerAttribute
+  commentId: T:MicroPlumberd.DirectConnect.CommandHandlerAttribute
+  href: MicroPlumberd.DirectConnect.CommandHandlerAttribute.html
+  name: CommandHandlerAttribute
+  nameWithType: CommandHandlerAttribute
+  fullName: MicroPlumberd.DirectConnect.CommandHandlerAttribute
+- uid: MicroPlumberd.DirectConnect.ContainerExtensions
+  commentId: T:MicroPlumberd.DirectConnect.ContainerExtensions
+  href: MicroPlumberd.DirectConnect.ContainerExtensions.html
+  name: ContainerExtensions
+  nameWithType: ContainerExtensions
+  fullName: MicroPlumberd.DirectConnect.ContainerExtensions
+- uid: MicroPlumberd.DirectConnect.IApiTypeRegister
+  commentId: T:MicroPlumberd.DirectConnect.IApiTypeRegister
+  href: MicroPlumberd.DirectConnect.IApiTypeRegister.html
+  name: IApiTypeRegister
+  nameWithType: IApiTypeRegister
+  fullName: MicroPlumberd.DirectConnect.IApiTypeRegister
+- uid: MicroPlumberd.DirectConnect.ICommand
+  commentId: T:MicroPlumberd.DirectConnect.ICommand
+  parent: MicroPlumberd.DirectConnect
+  href: MicroPlumberd.DirectConnect.ICommand.html
+  name: ICommand
+  nameWithType: ICommand
+  fullName: MicroPlumberd.DirectConnect.ICommand
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute
+  commentId: T:MicroPlumberd.DirectConnect.ReturnsAttribute
+  parent: MicroPlumberd.DirectConnect
+  href: MicroPlumberd.DirectConnect.ReturnsAttribute.html
+  name: ReturnsAttribute
+  nameWithType: ReturnsAttribute
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute
+- uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
+  commentId: T:MicroPlumberd.DirectConnect.ReturnsAttribute`1
+  href: MicroPlumberd.DirectConnect.ReturnsAttribute-1.html
+  name: ReturnsAttribute<TResult>
+  nameWithType: ReturnsAttribute<TResult>
+  fullName: MicroPlumberd.DirectConnect.ReturnsAttribute<TResult>
+  nameWithType.vb: ReturnsAttribute(Of TResult)
+  fullName.vb: MicroPlumberd.DirectConnect.ReturnsAttribute(Of TResult)
+  name.vb: ReturnsAttribute(Of TResult)
+  spec.csharp:
+  - uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
+    name: ReturnsAttribute
+    href: MicroPlumberd.DirectConnect.ReturnsAttribute-1.html
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
+    name: ReturnsAttribute
+    href: MicroPlumberd.DirectConnect.ReturnsAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus
+  commentId: T:MicroPlumberd.DirectConnect.HandlerOperationStatus
+  parent: MicroPlumberd.DirectConnect
+  href: MicroPlumberd.DirectConnect.HandlerOperationStatus.html
+  name: HandlerOperationStatus
+  nameWithType: HandlerOperationStatus
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus
+- uid: MicroPlumberd.DirectConnect.ICommandHandler`1
+  commentId: T:MicroPlumberd.DirectConnect.ICommandHandler`1
+  href: MicroPlumberd.DirectConnect.ICommandHandler-1.html
+  name: ICommandHandler<TCommand>
+  nameWithType: ICommandHandler<TCommand>
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>
+  nameWithType.vb: ICommandHandler(Of TCommand)
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand)
+  name.vb: ICommandHandler(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.DirectConnect.ICommandHandler-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.DirectConnect.ICommandHandler-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions
+  commentId: T:MicroPlumberd.DirectConnect.RequestInvokerExtensions
+  href: MicroPlumberd.DirectConnect.RequestInvokerExtensions.html
+  name: RequestInvokerExtensions
+  nameWithType: RequestInvokerExtensions
+  fullName: MicroPlumberd.DirectConnect.RequestInvokerExtensions
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+  commentId: T:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+  href: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute-1.html
+  name: ThrowsFaultExceptionAttribute<TMessage>
+  nameWithType: ThrowsFaultExceptionAttribute<TMessage>
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute<TMessage>
+  nameWithType.vb: ThrowsFaultExceptionAttribute(Of TMessage)
+  fullName.vb: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute(Of TMessage)
+  name.vb: ThrowsFaultExceptionAttribute(Of TMessage)
+  spec.csharp:
+  - uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+    name: ThrowsFaultExceptionAttribute
+    href: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute-1.html
+  - name: <
+  - name: TMessage
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
+    name: ThrowsFaultExceptionAttribute
+    href: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMessage
+  - name: )
+- uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+  commentId: T:MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+  parent: MicroPlumberd.DirectConnect
+  href: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute.html
+  name: ThrowsFaultExceptionAttribute
+  nameWithType: ThrowsFaultExceptionAttribute
+  fullName: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
+- uid: MicroPlumberd.DirectConnect
+  commentId: N:MicroPlumberd.DirectConnect
+  href: MicroPlumberd.html
+  name: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html

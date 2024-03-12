@@ -1,0 +1,206 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IAggregate`1
+  commentId: T:MicroPlumberd.IAggregate`1
+  id: IAggregate`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IAggregate`1.New(System.Guid)
+  langs:
+  - csharp
+  - vb
+  name: IAggregate<TSelf>
+  nameWithType: IAggregate<TSelf>
+  fullName: MicroPlumberd.IAggregate<TSelf>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IAggregate
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 14
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IAggregate<out TSelf> : IAggregate'
+    typeParameters:
+    - id: TSelf
+    content.vb: Public Interface IAggregate(Of Out TSelf) Inherits IAggregate
+  inheritedMembers:
+  - MicroPlumberd.IAggregate.Id
+  - MicroPlumberd.IAggregate.Age
+  - MicroPlumberd.IAggregate.PendingEvents
+  - MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  - MicroPlumberd.IAggregate.AckCommitted
+  nameWithType.vb: IAggregate(Of TSelf)
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf)
+  name.vb: IAggregate(Of TSelf)
+- uid: MicroPlumberd.IAggregate`1.New(System.Guid)
+  commentId: M:MicroPlumberd.IAggregate`1.New(System.Guid)
+  id: New(System.Guid)
+  parent: MicroPlumberd.IAggregate`1
+  langs:
+  - csharp
+  - vb
+  name: New(Guid)
+  nameWithType: IAggregate<TSelf>.New(Guid)
+  fullName: MicroPlumberd.IAggregate<TSelf>.New(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: New
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 16
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static abstract TSelf New(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: '{TSelf}'
+    content.vb: Public Shared MustInherit Function [New](id As Guid) As TSelf
+  overload: MicroPlumberd.IAggregate`1.New*
+  nameWithType.vb: IAggregate(Of TSelf).New(Guid)
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New(System.Guid)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IAggregate.Id
+  commentId: P:MicroPlumberd.IAggregate.Id
+  parent: MicroPlumberd.IAggregate
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Id
+  name: Id
+  nameWithType: IAggregate.Id
+  fullName: MicroPlumberd.IAggregate.Id
+- uid: MicroPlumberd.IAggregate.Age
+  commentId: P:MicroPlumberd.IAggregate.Age
+  parent: MicroPlumberd.IAggregate
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Age
+  name: Age
+  nameWithType: IAggregate.Age
+  fullName: MicroPlumberd.IAggregate.Age
+- uid: MicroPlumberd.IAggregate.PendingEvents
+  commentId: P:MicroPlumberd.IAggregate.PendingEvents
+  parent: MicroPlumberd.IAggregate
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_PendingEvents
+  name: PendingEvents
+  nameWithType: IAggregate.PendingEvents
+  fullName: MicroPlumberd.IAggregate.PendingEvents
+- uid: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  commentId: M:MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  parent: MicroPlumberd.IAggregate
+  isExternal: true
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  name: Rehydrate(IAsyncEnumerable<object>)
+  nameWithType: IAggregate.Rehydrate(IAsyncEnumerable<object>)
+  fullName: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable<object>)
+  nameWithType.vb: IAggregate.Rehydrate(IAsyncEnumerable(Of Object))
+  fullName.vb: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable(Of Object))
+  name.vb: Rehydrate(IAsyncEnumerable(Of Object))
+  spec.csharp:
+  - uid: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+    name: Rehydrate
+    href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  - name: (
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+    name: Rehydrate
+    href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  - name: (
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  - name: )
+- uid: MicroPlumberd.IAggregate.AckCommitted
+  commentId: M:MicroPlumberd.IAggregate.AckCommitted
+  parent: MicroPlumberd.IAggregate
+  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
+  name: AckCommitted()
+  nameWithType: IAggregate.AckCommitted()
+  fullName: MicroPlumberd.IAggregate.AckCommitted()
+  spec.csharp:
+  - uid: MicroPlumberd.IAggregate.AckCommitted
+    name: AckCommitted
+    href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IAggregate.AckCommitted
+    name: AckCommitted
+    href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
+  - name: (
+  - name: )
+- uid: MicroPlumberd.IAggregate
+  commentId: T:MicroPlumberd.IAggregate
+  parent: MicroPlumberd
+  href: MicroPlumberd.IAggregate.html
+  name: IAggregate
+  nameWithType: IAggregate
+  fullName: MicroPlumberd.IAggregate
+- uid: MicroPlumberd.IAggregate`1.New*
+  commentId: Overload:MicroPlumberd.IAggregate`1.New
+  href: MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_System_Guid_
+  name: New
+  nameWithType: IAggregate<TSelf>.New
+  fullName: MicroPlumberd.IAggregate<TSelf>.New
+  nameWithType.vb: IAggregate(Of TSelf).New
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: '{TSelf}'
+  commentId: '!:TSelf'
+  definition: TSelf
+  name: TSelf
+  nameWithType: TSelf
+  fullName: TSelf
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: TSelf
+  commentId: '!:TSelf'
+  name: TSelf
+  nameWithType: TSelf
+  fullName: TSelf
