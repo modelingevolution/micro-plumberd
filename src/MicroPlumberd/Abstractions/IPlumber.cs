@@ -2,8 +2,19 @@
 
 namespace MicroPlumberd;
 
+/// <summary>
+/// Root interface for plumber
+/// </summary>
 public interface IPlumber
 {
+    /// <summary>
+    /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
+    /// </summary>
+    /// <param name="streamId"></param>
+    /// <param name="rev"></param>
+    /// <param name="events"></param>
+    /// <param name="metadata"></param>
+    /// <returns></returns>
     Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null);
     Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null);
     ISubscriptionSet SubscribeSet();
