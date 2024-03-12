@@ -132,12 +132,13 @@ Imagine this:
 
 1. You create a read-model that subscribes persistently.
 2. You subscribe it with plumber.
-3. You changed something in the event and want to re-create the model.
-4. Instead of overriding the existing read-model, you can easily create new one. Just append suffix for a specific output stream name in **[OutputStream]** attribute.
-5. Sql schema create/drop auto-generation script will be covered in a different article. (For now we leave it for developers.)
+3. You changed something in the event and want to see the new model.
+4. Instead of re-creating old read-model, you can easily create new one. Just change MODEL_VER to reflect new version.
+
+*Please note that Sql schema create/drop auto-generation script will be covered in a different article. (For now we leave it for developers.)*
 
 Comments:
-- By creating a new read-model you can always compare the differences to the previous one.
+- By creating a new read-model you can always compare the differences with the previous one.
 - You can leverage canary-deployment strategy and have 2 versions of your system running in parallel.  
 
 ```csharp
