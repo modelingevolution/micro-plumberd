@@ -11,7 +11,12 @@ public static class ContainerExtensions
     {
         return services.AddCommandInvoker(typeof(TCommand));
     }
-
+    public static IServiceCollection AddCommandInvokers(this IServiceCollection services)
+    {
+        var commands = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x =>
+            typeof(ICommand).IsAssignableFrom(x) && !x.IsAbstract && x.IsClass && !x.IsInterface);
+        return services.AddCommandInvokers(commands);
+    }
     public static IServiceCollection AddCommandInvokers(this IServiceCollection services, params Type[] commandTypes)
     {
         return services.AddCommandInvokers(commandTypes.AsEnumerable());

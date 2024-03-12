@@ -3,14 +3,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using ModelingEvolution.DirectConnect;
 
 namespace MicroPlumberd.Tests;
 
 class ServerApp : IDisposable, IAsyncDisposable
 {
+    private readonly int _esPort;
     private WebApplication app;
 
+    public ServerApp(int esPort = 2113)
+    {
+        _esPort = esPort;
+    }
     public async Task<IServiceProvider> StartAsync(Action<IServiceCollection> configure = null)
     {
         var builder = WebApplication.CreateBuilder();
@@ -40,9 +46,9 @@ class ServerApp : IDisposable, IAsyncDisposable
         await app.StartAsync();
         return app.Services;
     }
-    private static EventStoreClientSettings GetEventStoreSettings()
+    private EventStoreClientSettings GetEventStoreSettings()
     {
-        const string connectionString = "esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
+        string connectionString = $"esdb://admin:changeit@localhost:{_esPort}?tls=false&tlsVerifyCert=false";
 
         return EventStoreClientSettings.Create(connectionString);
     }

@@ -20,12 +20,28 @@ public class FooUpdated { public string Name { get; set; } }
 public partial class FooModel
 {
     public readonly Dictionary<Guid, string> Index = new();
+    public readonly List<Metadata> Metadatas = new();
+    public readonly List<object> Events = new();
     private async Task Given(Metadata m, FooCreated ev)
     {
         Index.Add(m.Id, ev.Name);
+        Metadatas.Add(m);
+        Events.Add(ev);
     }
     private async Task Given(Metadata m, FooUpdated ev)
     {
         Index[m.Id] = ev.Name;
+        Metadatas.Add(m);
+        Events.Add(ev);
+    }
+}
+[EventHandler]
+public partial class FooProcessor(IPlumber plumber)
+{
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+        var agg = FooAggregate.New(Guid.NewGuid());
+        agg.Open(ev.Name + "new");
+        await plumber.SaveNew(agg);
     }
 }

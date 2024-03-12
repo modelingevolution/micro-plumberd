@@ -20,7 +20,7 @@ public static class EventStoreProjectionManagementClientExtensions
         var state = await client.GetStatusAsync(outputStream);
         if (state.Status != "Stopped")
             await client.DisableAsync(outputStream);
-        await client.UpdateAsync(outputStream, query);
+        await client.UpdateAsync(outputStream, query, true);
         await client.EnableAsync(outputStream);
     }
 
@@ -32,7 +32,12 @@ public static class EventStoreProjectionManagementClientExtensions
         if (await register.Get(outputStream) != null)
             await Update(client, outputStream, query);
         else
-            await client.CreateContinuousAsync(outputStream, query, true);
+        {
+            await client.CreateContinuousAsync(outputStream, query, false);
+            await client.DisableAsync(outputStream);
+            await client.UpdateAsync(outputStream, query, true);
+            await client.EnableAsync(outputStream);
+        }
     }
 
     private static string CreateQuery(string outputStream, IEnumerable<string> eventTypes)

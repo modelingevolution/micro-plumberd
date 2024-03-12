@@ -6,20 +6,25 @@ using MicroPlumberd;
 namespace MicroPlumberd.Tests
 {
     
-    public class AggregateTests
+    public class Aggregate_IntegrationTests
     {
         private readonly IPlumber plumber;
-
-        public AggregateTests()
+        private const int EVENTSTORE_PORT = 2131;
+        private async Task InitEventStore()
+        {
+            var es = new EventStoreServer();
+            await es.StartInDocker(EVENTSTORE_PORT);
+            await Task.Delay(8000);
+        }
+        public Aggregate_IntegrationTests()
         {
             plumber = new Plumber(GetEventStoreSettings());
-
-            
         }
 
         [Fact]
         public async Task New()
         {
+            await InitEventStore();
             await using var scope = new InvocationScope();
             scope.SetCausation(Guid.NewGuid()).SetCorrelation(Guid.NewGuid()).SetUserId(Guid.NewGuid());
 
@@ -31,6 +36,7 @@ namespace MicroPlumberd.Tests
         [Fact]
         public async Task Get()
         {
+            await InitEventStore();
             FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
             aggregate.Open("Hello");
 
@@ -44,6 +50,7 @@ namespace MicroPlumberd.Tests
         [Fact]
         public async Task Update()
         {
+            await InitEventStore();
             FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
             aggregate.Open("Hello");
             await plumber.SaveNew(aggregate);
@@ -54,14 +61,10 @@ namespace MicroPlumberd.Tests
         }
         private static EventStoreClientSettings GetEventStoreSettings()
         {
-            const string connectionString = "esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
+            string connectionString = $"esdb://admin:changeit@localhost:{EVENTSTORE_PORT}?tls=false&tlsVerifyCert=false";
 
             return EventStoreClientSettings.Create(connectionString);
         }
     }
 
-    public class CommandHandlerTests
-    {
-
-    }
 }
