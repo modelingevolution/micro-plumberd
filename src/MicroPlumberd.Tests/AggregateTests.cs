@@ -2,29 +2,27 @@ using System.Data.Common;
 using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd;
+using MicroPlumberd.Tests.Fixtures;
 
 namespace MicroPlumberd.Tests
 {
     
-    public class Aggregate_IntegrationTests
+    public class Aggregate_IntegrationTests : IClassFixture<EventStoreServer>
     {
         private readonly IPlumber plumber;
-        private const int EVENTSTORE_PORT = 2131;
-        private async Task InitEventStore()
+        private readonly EventStoreServer es;
+
+        
+        public Aggregate_IntegrationTests(EventStoreServer es)
         {
-            var es = new EventStoreServer();
-            await es.StartInDocker(EVENTSTORE_PORT);
-            await Task.Delay(8000);
-        }
-        public Aggregate_IntegrationTests()
-        {
-            plumber = new Plumber(GetEventStoreSettings());
+            plumber = new Plumber(es.GetEventStoreSettings());
+            this.es  = es;
         }
 
         [Fact]
         public async Task New()
         {
-            await InitEventStore();
+            await es.StartInDocker();
             await using var scope = new InvocationScope();
             scope.SetCausation(Guid.NewGuid()).SetCorrelation(Guid.NewGuid()).SetUserId(Guid.NewGuid());
 
@@ -36,7 +34,7 @@ namespace MicroPlumberd.Tests
         [Fact]
         public async Task Get()
         {
-            await InitEventStore();
+            await es.StartInDocker();
             FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
             aggregate.Open("Hello");
 
@@ -50,7 +48,7 @@ namespace MicroPlumberd.Tests
         [Fact]
         public async Task Update()
         {
-            await InitEventStore();
+            await es.StartInDocker();
             FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
             aggregate.Open("Hello");
             await plumber.SaveNew(aggregate);
@@ -59,12 +57,7 @@ namespace MicroPlumberd.Tests
 
             await plumber.SaveChanges(aggregate);
         }
-        private static EventStoreClientSettings GetEventStoreSettings()
-        {
-            string connectionString = $"esdb://admin:changeit@localhost:{EVENTSTORE_PORT}?tls=false&tlsVerifyCert=false";
-
-            return EventStoreClientSettings.Create(connectionString);
-        }
+        
     }
 
 }

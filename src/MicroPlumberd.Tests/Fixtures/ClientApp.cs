@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.Fixtures;
 
 class ClientApp : IDisposable, IAsyncDisposable
 {
@@ -13,7 +13,7 @@ class ClientApp : IDisposable, IAsyncDisposable
 
         configure?.Invoke(service);
 
-        return this.sp = service.BuildServiceProvider();
+        return sp = service.BuildServiceProvider();
     }
 
     public void Dispose()

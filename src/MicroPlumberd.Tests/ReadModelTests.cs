@@ -1,35 +1,27 @@
 using EventStore.Client;
 using FluentAssertions;
+using MicroPlumberd.Tests.Fixtures;
 
 namespace MicroPlumberd.Tests;
 
-public class ReadModel_IntegrationTests
+public class ReadModel_IntegrationTests : IClassFixture<EventStoreServer>
 {
-    private static EventStoreClientSettings GetEventStoreSettings()
-    {
-        string connectionString = $"esdb://admin:changeit@localhost:{EVENTSTORE_PORT}?tls=false&tlsVerifyCert=false";
+    private readonly EventStoreServer _eventStore;
 
-        return EventStoreClientSettings.Create(connectionString);
-    }
     private readonly IPlumber plumber;
-    private const int EVENTSTORE_PORT = 2120;
-    public ReadModel_IntegrationTests()
+   
+    public ReadModel_IntegrationTests(EventStoreServer eventStore)
     {
-        plumber = new Plumber(GetEventStoreSettings());
-
+        _eventStore = eventStore;
+        plumber = new Plumber(_eventStore.GetEventStoreSettings());
     }
     
-    private async Task Init()
-    {
-        var es = new EventStoreServer();
-        await es.StartInDocker(EVENTSTORE_PORT);
-        await Task.Delay(8000);
-    }
+    
 
     [Fact]
     public async Task SubscribeModel()
     {
-        await Init();
+        await _eventStore.StartInDocker();
         await AppendOneEvent();
 
         var fooModel = new FooModel();

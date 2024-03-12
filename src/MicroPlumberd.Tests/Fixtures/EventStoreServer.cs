@@ -1,42 +1,46 @@
+using System.Diagnostics;
 using System.Net;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using EventStore.Client;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.Fixtures;
 
-class EventStoreServer
+public class EventStoreServer : IAsyncDisposable
 {
-    //private ClusterVNode _node;
+    public EventStoreClientSettings GetEventStoreSettings() => EventStoreClientSettings.Create(HttpUrl.ToString());
 
-
-    public static async Task<EventStoreServer> Start(int httpPort)
+    public Uri HttpUrl { get; }
+    private readonly int httpPort;
+    private static PortSearcher _searcher = new PortSearcher();
+    private readonly DockerClient client;
+    private readonly bool _isDebuggerAttached = false;
+    public EventStoreServer()
     {
-        EventStoreServer s = new EventStoreServer();
-        //await s.StartAsync();
-        await s.StartInDocker(httpPort);
-        return s;
-    }
-    
-    public Uri HttpUrl { get; set; }
-    public async Task StartInDocker(int httpPort)
-    {
-        const string eventStoreHostName = "127.0.0.1";
-        
-        
-        await CheckDns(eventStoreHostName);
-
-        
-        HttpUrl = new Uri($"http://{eventStoreHostName}:{httpPort}");
-        DockerClient client = new DockerClientConfiguration()
+        httpPort = _searcher.FindNextAvailablePort();
+        const string eventStoreHostName = "localhost";
+        //await CheckDns(eventStoreHostName);
+        _isDebuggerAttached = Debugger.IsAttached;
+        HttpUrl = new Uri($"esdb://admin:changeit@{eventStoreHostName}:{httpPort}?tls=false&tlsVerifyCert=false");
+        client = new DockerClientConfiguration()
             .CreateClient();
+    }
+    public string ContainerName => $"eventstore-mem-{httpPort}";
+    public int HttpPort => httpPort;
 
+    private async Task<ContainerListResponse?> GetEventStoreContainer()
+    {
         var containers = await client.Containers.ListContainersAsync(new ContainersListParameters()
         {
             All = true,
             Limit = 10000
         });
-        var containerName = $"eventstore-mem-{httpPort}";
-        var container = containers.FirstOrDefault(x => x.Names.Any(n => n.Contains(containerName)));
+        var container = containers.FirstOrDefault(x => x.Names.Any(n => n.Contains(ContainerName)));
+        return container;
+    }
+    public async Task StartInDocker(bool wait = true)
+    {
+        var container = await GetEventStoreContainer();
         if (container == null)
         {
             var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters()
@@ -53,7 +57,7 @@ class EventStoreServer
                     //"EVENTSTORE_CERTIFICATE_FILE=/cert/eventstore.p12",
                     //"EVENTSTORE_TRUSTED_ROOT_CERTIFICATES_PATH=/cert/ca-certificates/"
                 },
-                Name = containerName,
+                Name = ContainerName,
                 HostConfig = new HostConfig()
                 {
                     PortBindings = new Dictionary<string, IList<PortBinding>>()
@@ -65,7 +69,7 @@ class EventStoreServer
                 Volumes = new Dictionary<string, EmptyStruct>() { },
                 ExposedPorts = new Dictionary<string, EmptyStruct>()
                 {
-                    { "2113", default(EmptyStruct)},
+                    { "2113", default},
                 }
             });
             await client.Containers.StartContainerAsync(response.ID, new ContainerStartParameters());
@@ -80,6 +84,8 @@ class EventStoreServer
 
             await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
         }
+
+        await Task.Delay(8000);
     }
 
     private static async Task CheckDns(string eventStoreHostName)
@@ -98,5 +104,19 @@ class EventStoreServer
         throw new Exception(
             $"To run tests put {eventStoreHostName} to your etc/hosts and modellution's ca certificate to trusted certificate store.");
 
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        var container = await GetEventStoreContainer();
+        if (container != null && !_isDebuggerAttached)
+        {
+            var data = await client.Containers.InspectContainerAsync(container.ID);
+            if (data.State.Running)
+            {
+                await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
+                await client.Containers.RemoveContainerAsync(data.ID, new ContainerRemoveParameters());
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 using FluentAssertions;
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Tests.AppSrc;
+using MicroPlumberd.Tests.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 

@@ -2,7 +2,7 @@ using MicroPlumberd.DirectConnect;
 using ModelingEvolution.DirectConnect;
 using ProtoBuf;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.AppSrc;
 
 [ProtoContract]
 [Returns<HandlerOperationStatus>]
@@ -31,11 +31,11 @@ public class BusinessFault { [ProtoMember(1)] public string Name { get; init; } 
 public class BusinessFaultException : FaultException<BusinessFault>
 {
     public BusinessFaultException(string name) : base(new BusinessFault() { Name = name }) { }
-} 
+}
 [CommandHandler]
 public partial class FooCommandHandler(IPlumber plumber)
 {
-    
+
     [ThrowsFaultException<BusinessFault>]
     public async Task Handle(Guid id, CreateFoo cmd)
     {

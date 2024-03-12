@@ -2,22 +2,29 @@ using System.Net;
 using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Tests.AppSrc;
+using MicroPlumberd.Tests.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 using NSubstitute;
 
 namespace MicroPlumberd.Tests;
 
-public class CommandHandler_IntegrationTests : IDisposable, IAsyncDisposable
+public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>
 {
+    private readonly EventStoreServer _eventStore;
     private ClientApp client;
-    private const int EVENTSTORE_PORT = 2119;
+
+    public CommandHandler_IntegrationTests(EventStoreServer eventStore)
+    {
+        _eventStore = eventStore;
+    }
+
     [Fact]
     public async Task ApiSuccessfullInvocation()
     {
-        await ArrangeEventStore();
-
-        await using ServerApp srv = new ServerApp(EVENTSTORE_PORT);
+        await _eventStore.StartInDocker();
+        await using ServerApp srv = new ServerApp(_eventStore.HttpPort);
         await srv.StartAsync(x => { x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect(); });
 
         var invoker = await ArrangeClientApp();
@@ -30,11 +37,9 @@ public class CommandHandler_IntegrationTests : IDisposable, IAsyncDisposable
     [Fact]
     public async Task ApiInvocationWithProcessorCorrelation()
     {
-        // Arrange
-        // EventStore
-        await ArrangeEventStore();
+        await _eventStore.StartInDocker();
         // App Server
-        await using ServerApp srv = new ServerApp(EVENTSTORE_PORT);
+        await using ServerApp srv = new ServerApp(_eventStore.HttpPort);
 
         var srvProvider = await srv.StartAsync(x =>
         {
@@ -82,9 +87,8 @@ public class CommandHandler_IntegrationTests : IDisposable, IAsyncDisposable
     [Fact]
     public async Task ApiHandingExceptionInvocation()
     {
-        await ArrangeEventStore();
-
-        await using ServerApp srv = new ServerApp(EVENTSTORE_PORT);
+        await _eventStore.StartInDocker();
+        await using ServerApp srv = new ServerApp(_eventStore.HttpPort);
 
         await srv.StartAsync(x => { x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect(); });
 
@@ -97,12 +101,6 @@ public class CommandHandler_IntegrationTests : IDisposable, IAsyncDisposable
         await action.Should().ThrowAsync<FaultException<BusinessFault>>();
     }
 
-    private static async Task ArrangeEventStore()
-    {
-        var es = new EventStoreServer();
-        await es.StartInDocker(EVENTSTORE_PORT);
-        await Task.Delay(8000);
-    }
 
     public void Dispose()
     {

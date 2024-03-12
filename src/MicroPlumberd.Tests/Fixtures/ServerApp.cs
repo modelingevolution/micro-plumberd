@@ -5,15 +5,47 @@ using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using ModelingEvolution.DirectConnect;
+using System.Net.Sockets;
+using System.Net;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.Fixtures;
 
+public class PortSearcher
+{
+    private int lastPort = 2700;
+    public int FindNextAvailablePort()
+    {
+        var actual = Interlocked.Increment(ref this.lastPort);
+        while (true)
+        {
+            Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            try
+            {
+                
+                socket.Bind(new IPEndPoint(IPAddress.Loopback, actual));
+                socket.Listen();
+                socket.Close();
+                socket.Dispose();
+                Thread.Sleep(100);
+                
+                return actual;
+            }
+            catch (SocketException ex)
+            {
+                // Increment the port number and try again
+                actual = Interlocked.Increment(ref this.lastPort);
+                socket.Dispose();
+            }
+        }
+    }
+}
 class ServerApp : IDisposable, IAsyncDisposable
 {
     private readonly int _esPort;
     private WebApplication app;
 
-    public ServerApp(int esPort = 2113)
+    public ServerApp(int esPort)
     {
         _esPort = esPort;
     }
@@ -37,7 +69,7 @@ class ServerApp : IDisposable, IAsyncDisposable
             options.ListenLocalhost(5001, o => o.Protocols = HttpProtocols.Http2);
         });
 
-        this.app = builder.Build();
+        app = builder.Build();
 
         // Configure the HTTP request pipeline.
         app.MapDirectConnect();
