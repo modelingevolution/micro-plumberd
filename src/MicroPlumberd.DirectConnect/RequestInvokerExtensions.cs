@@ -27,6 +27,16 @@ namespace MicroPlumberd.DirectConnect
             });
             return invoker.Execute(ri, id, c);
         }
+        public static Task Execute(this IRequestInvoker ri, Guid id, ICommand c)
+        {
+            var commandType = c.GetType();
+            var invoker = (IInvoke<HandlerOperationStatus>)_invokers.GetOrAdd(commandType, x =>
+            {
+                var t = typeof(Invoker<,>).MakeGenericType(commandType, typeof(HandlerOperationStatus));
+                return Activator.CreateInstance(t)!;
+            });
+            return invoker.Execute(ri, id, c);
+        }
 
     }
 }

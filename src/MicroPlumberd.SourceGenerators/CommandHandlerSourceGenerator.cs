@@ -74,14 +74,37 @@ namespace MicroPlumberd.SourceGenerators
 
                         
                         var commands =  methods.Select(x => x.ParameterList.Parameters[1].Type.ToString()).ToArray();
-                        var returnTypes = methods.Select(x => GetGenericArgument(x.ReturnType.ToString())).Where(x=>x!= null)
+                        var returnTypes = methods.Select(x => GetGenericArgument(x.ReturnType.ToString()))
+                            .Where(x=>x!= null && x != "Task")
+                            .Distinct()
+                            .ToArray();
+
+                        var args = methods.Select(x =>
+                            {
+                                var cmdType = x.ParameterList.Parameters[1].Type.ToString();
+                                if (x.ReturnType is GenericNameSyntax gn)
+                                {
+                                    var resultType = gn.TypeArgumentList.Arguments.FirstOrDefault()?.ToString();
+                                    return (cmdType: cmdType, resultType);
+                                }
+                                else if (x.ReturnType.ToString() == "Task")
+                                {
+                                    return (cmdType: cmdType, null);
+                                }
+                                else return (null,null);
+
+                            })
+                            .Where(x => x.cmdType != null)
                             .Distinct()
                             .ToArray();
 
                         sb.AppendLine($"partial class {className} : IApiTypeRegister, {string.Join(", ",commands.Select(x=> $"ICommandHandler<{x}>"))} ");
                         sb.AppendLine("{");
-                        foreach(var command in commands) { 
-                            sb.AppendLine($"    async Task<object> ICommandHandler<{command}>.Execute(Guid id, {command} cmd) => await this.Handle(id, cmd);");
+                        foreach(var a in args) { 
+                            if(a.resultType != null)
+                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.cmdType}>.Execute(Guid id, {a.cmdType} cmd) => await this.Handle(id, cmd);");
+                            else
+                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.cmdType}>.Execute(Guid id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return HandlerOperationStatus.Ok(); }}");
                         }
 
                         sb.AppendLine("    static IServiceCollection IApiTypeRegister.RegisterHandlers(IServiceCollection services)");

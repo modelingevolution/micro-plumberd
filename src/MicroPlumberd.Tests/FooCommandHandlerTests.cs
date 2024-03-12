@@ -12,7 +12,7 @@ public class FooCommandHandlerTests
     public void MessagesCount()
     {
         var actual = Messages<FooCommandHandler>().ToArray();
-        actual.Should().BeEquivalentTo(new[] { typeof(Results), typeof(CreateFoo), typeof(ChangeFoo), typeof(BusinessFault) });
+        actual.Should().BeEquivalentTo(new[] { typeof(HandlerOperationStatus), typeof(CreateFoo), typeof(ChangeFoo), typeof(BusinessFault) });
     }
 
     private IEnumerable<Type> Messages<T>() where T : IApiTypeRegister
@@ -34,17 +34,14 @@ public class FooCommandHandlerTests
         using var client = new ClientApp();
 
         var sp = client.Start(service => service.AddClientDirectConnect()
-            .AddCommandInvoker<CreateFoo>()
-            .AddCommandInvoker<ChangeFoo>()
-            .AddMessage<Results>()
-            .AddMessage<BusinessFault>());
-
+            .AddCommandInvokers(typeof(CreateFoo), typeof(ChangeFoo)));
+            
         var clientPool = sp.GetRequiredService<IRequestInvokerPool>();
         var invoker = clientPool.Get("http://localhost:5001");
         var streamId = Guid.NewGuid();
 
-        var ret = await invoker.Execute<Results>(streamId, new CreateFoo() { Name="Hello"});
-        var ret2 = await invoker.Execute<Results>(streamId, new ChangeFoo() { Name = "Hello" });
+        await invoker.Execute(streamId, new CreateFoo() { Name="Hello"});
+        var ret2 = await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "Hello" });
         //ret.Name.Should().Be("Test2");
 
         //await customHandler.Received(1).Handle(Arg.Is<FooRequest>(x => x.Name == "Test"));
