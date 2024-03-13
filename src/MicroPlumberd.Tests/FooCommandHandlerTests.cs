@@ -7,6 +7,7 @@ using MicroPlumberd.Tests.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 using NSubstitute;
+using MicroPlumberd.Tests.AppSrc;
 
 namespace MicroPlumberd.Tests;
 
@@ -45,10 +46,10 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, 
         {
             x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect();
         });
-        AppSrc.FooModel srvModel = new AppSrc.FooModel();
+        FooModel srvModel = new FooModel();
 
         await srvProvider.GetRequiredService<IPlumber>().SubscribeModel(srvModel, FromStream.End);
-        await srvProvider.GetRequiredService<IPlumber>().SubscribeModel(new AppSrc.FooProcessor(srvProvider.GetRequiredService<IPlumber>()), FromStream.End);
+        await srvProvider.GetRequiredService<IPlumber>().SubscribeModel(new FooProcessor(srvProvider.GetRequiredService<IPlumber>()), FromStream.End);
 
         // Making sure we have subscribed.
         await Task.Delay(1000);

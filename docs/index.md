@@ -53,7 +53,7 @@ Comments:
 If you want to create a new aggregate and save it to EventStoreDB:
 ```csharp
 
-AppSrc.FooAggregate aggregate = AppSrc.FooAggregate.New(Guid.NewGuid());
+FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
 aggregate.Open("Hello");
 
 await plumber.SaveNew(aggregate);
@@ -128,7 +128,7 @@ Implementing a processor is technically the same as implementing a read-model, b
   - OutputStreamModelConvention - for output stream name from model-type
   - GroupNameModelConvention - for group name from model-type
   
-### Ultra development cycle for Read-Models (EF example).
+### Ultra development cycle for Read-Models (EF example)
 
 Imagine this:
 

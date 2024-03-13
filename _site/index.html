@@ -130,7 +130,7 @@ public partial class FooAggregate(Guid id) : AggregateBase&lt;FooAggregate.FooSt
 </ol>
 <p>If you want to create a new aggregate and save it to EventStoreDB:</p>
 <pre><code class="lang-csharp">
-AppSrc.FooAggregate aggregate = AppSrc.FooAggregate.New(Guid.NewGuid());
+FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
 aggregate.Open(&quot;Hello&quot;);
 
 await plumber.SaveNew(aggregate);
@@ -195,7 +195,7 @@ public partial class FooProcessor(IPlumber plumber)
 <li>OutputStreamModelConvention - for output stream name from model-type</li>
 <li>GroupNameModelConvention - for group name from model-type</li>
 </ul>
-<h3 id="ultra-development-cycle-for-read-models-ef-example">Ultra development cycle for Read-Models (EF example).</h3>
+<h3 id="ultra-development-cycle-for-read-models-ef-example">Ultra development cycle for Read-Models (EF example)</h3>
 <p>Imagine this:</p>
 <ol>
 <li>You create a read-model that subscribes persistently.</li>

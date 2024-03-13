@@ -56,7 +56,7 @@ Comments:
 If you want to create a new aggregate and save it to EventStoreDB:
 ```csharp
 
-AppSrc.FooAggregate aggregate = AppSrc.FooAggregate.New(Guid.NewGuid());
+FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
 aggregate.Open("Hello");
 
 await plumber.SaveNew(aggregate);
