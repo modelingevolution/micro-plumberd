@@ -2,9 +2,6 @@
 Micro library for EventStore, CQRS and EventSourcing
 Just eXtreamly simple.
 
-Documentation can be found here:
-[MicroPlumberd Documentation](https://modelingevolution.github.io/micro-plumberd/)
-
 ## Getting started
 
 ### Install nugets: 

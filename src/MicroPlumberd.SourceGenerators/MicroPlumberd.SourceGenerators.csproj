@@ -11,6 +11,8 @@
     
     <PackageIcon>logo-squere.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>

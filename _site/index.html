@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>This is the HOMEPAGE. | MicroPlumberd </title>
+      <title>micro-plumberd | MicroPlumberd </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="This is the HOMEPAGE. | MicroPlumberd ">
+      <meta name="title" content="micro-plumberd | MicroPlumberd ">
       
       
       <link rel="icon" href="favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="">
       
       
-      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/blob/master/index.md/#L1">
+      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/blob/master/docs/index.md/#L1">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -39,7 +39,7 @@
   </script>
 
 
-  <body class="tex2jax_ignore" data-layout="landing" data-yaml-mime="">
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="">
     <header class="bg-body border-bottom">
       <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
         <div class="container-xxl flex-nowrap">
@@ -85,18 +85,209 @@
         </div>
 
         <article data-uid="">
-<h1 id="this-is-the-homepage">This is the <strong>HOMEPAGE</strong>.</h1>
+<h1 id="micro-plumberd">micro-plumberd</h1>
 
-<p>Refer to <a href="http://daringfireball.net/projects/markdown/">Markdown</a> for how to write markdown files.</p>
-<h2 id="quick-start-notes">Quick Start Notes:</h2>
+<p>Micro library for EventStore, CQRS and EventSourcing
+Just eXtreamly simple.</p>
+<h2 id="getting-started">Getting started</h2>
+<h3 id="install-nugets">Install nugets:</h3>
+<pre><code class="lang-powershell">dotnet add package MicroPlumberd
+dotnet add package MicroPlumberd.SourceGeneratiors
+</code></pre>
+<p>If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect</p>
+<pre><code class="lang-powershell">dotnet add package MicroPlumberd.DirectConnect
+</code></pre>
+<h3 id="configure-plumber">Configure plumber</h3>
+<pre><code class="lang-csharp">/// change to your connection-string.
+string connectionString = $&quot;esdb://admin:changeit@localhost:2113?tls=false&amp;tlsVerifyCert=false&quot;;
+var seetings = EventStoreClientSettings.Create(connectionString);
+
+var plumber = new Plumber(settings) as IPlumber;
+</code></pre>
+<h3 id="aggregates">Aggregates</h3>
 <ol>
-<li>Add images to the <em>images</em> folder if the file is referencing an image.</li>
+<li>Write an aggregate.</li>
 </ol>
+<pre><code class="lang-csharp">[Aggregate]
+public partial class FooAggregate(Guid id) : AggregateBase&lt;FooAggregate.FooState&gt;(id)
+{
+    internal new FooState State =&gt; base.State;
+    public record FooState { public string Name { get; set; } };
+    private static FooState Given(FooState state, FooCreated ev) =&gt; state with { Name = ev.Name };
+    private static FooState Given(FooState state, FooUpdated ev) =&gt; state with { Name =ev.Name };
+    public void Open(string msg) =&gt; AppendPendingChange(new FooCreated() { Name = msg });
+    public void Change(string msg) =&gt; AppendPendingChange(new FooUpdated() { Name = msg });
+}
+</code></pre>
+<p>Comments:</p>
+<ul>
+<li>State is encapsulated in nested class FooState.</li>
+<li>Given methods, that are used when loading aggregate from the EventStoreDB are private and static. State is encouraged to be immutable.</li>
+<li>[Aggregate] attribute is used by SourceGenerator that will generate dispatching code and handy metadata.</li>
+</ul>
+<ol start="2">
+<li>Consume an aggregate.</li>
+</ol>
+<p>If you want to create a new aggregate and save it to EventStoreDB:</p>
+<pre><code class="lang-csharp">
+AppSrc.FooAggregate aggregate = AppSrc.FooAggregate.New(Guid.NewGuid());
+aggregate.Open(&quot;Hello&quot;);
+
+await plumber.SaveNew(aggregate);
+
+</code></pre>
+<p>If you want to load aggregate from EventStoreDB, change it and save back to EventStoreDB</p>
+<pre><code class="lang-csharp">var aggregate = await plumber.Get&lt;FooAggregate&gt;(&quot;YOUR_ID&quot;);
+aggregate.Change(&quot;World&quot;);
+await plumber.SaveChanges(aggregate);
+</code></pre>
+<h3 id="write-a-read-modelprocessor">Write a read-model/processor</h3>
+<ol>
+<li>Read-Models</li>
+</ol>
+<pre><code class="lang-csharp">[EventHandler]
+public partial class FooModel
+{
+    private async Task Given(Metadata m, FooCreated ev)
+    {
+        // your code
+    }
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+         // your code
+    }
+}
+</code></pre>
+<p>Comments:</p>
+<ul>
+<li>ReadModels have private async Given methods. Since they are async, you can invoke SQL here, or othere APIs to store your model.</li>
+<li>Metadata contains standard stuff (Created, CorrelationId, CausationId), but can be reconfigured.</li>
+</ul>
+<pre><code class="lang-csharp">var fooModel = new FooModel();
+var sub= await plumber.SubscribeModel(fooModel);
+
+// or if you want to persist progress of your subscription
+var sub2= await plumber.SubscribeModelPersistently(fooModel);
+</code></pre>
+<p>With <strong>SubscribeModel</strong> you can subscribe from start, from certain moment or from the end of the stream.</p>
+<ol start="2">
+<li>Processors</li>
+</ol>
+<pre><code class="lang-csharp">[EventHandler]
+public partial class FooProcessor(IPlumber plumber)
+{
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+        var agg = FooAggregate.New(Guid.NewGuid());
+        agg.Open(ev.Name + &quot; new&quot;);
+        await plumber.SaveNew(agg);
+    }
+}
+</code></pre>
+<p>Implementing a processor is technically the same as implementing a read-model, but inside the Given method you would typically invoke a command or execute an aggregate.</p>
+<h2 id="features">Features</h2>
+<h3 id="conventions">Conventions</h3>
+<ul>
+<li>SteamNameConvention - from aggregate type, and aggregate id</li>
+<li>EventNameConvention - from aggregate? instance and event instance</li>
+<li>MetadataConvention - to enrich event with metadata based on aggregate instance and event instance</li>
+<li>EventIdConvention - from aggregate instance and event instance</li>
+<li>OutputStreamModelConvention - for output stream name from model-type</li>
+<li>GroupNameModelConvention - for group name from model-type</li>
+</ul>
+<h3 id="ultra-development-cycle-for-read-models-ef-example">Ultra development cycle for Read-Models (EF example).</h3>
+<p>Imagine this:</p>
+<ol>
+<li>You create a read-model that subscribes persistently.</li>
+<li>You subscribe it with plumber.</li>
+<li>You changed something in the event and want to see the new model.</li>
+<li>Instead of re-creating old read-model, you can easily create new one. Just change MODEL_VER to reflect new version.</li>
+</ol>
+<p><em>Please note that Sql schema create/drop auto-generation script will be covered in a different article. (For now we leave it for developers.)</em></p>
+<p>Comments:</p>
+<ul>
+<li>By creating a new read-model you can always compare the differences with the previous one.</li>
+<li>You can leverage canary-deployment strategy and have 2 versions of your system running in parallel.</li>
+</ul>
+<pre><code class="lang-csharp">[OutputStream(FooModel.MODEL_NAME)]
+[EventHandler]
+public partial class FooModel : DbContext
+{
+    internal const string MODEL_VER = &quot;_v1&quot;;
+    internal const string MODEL_NAME = $&quot;FooModel{MODEL_VER}&quot;;
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder
+           .Entity&lt;FooEntity&gt;()
+           .ToTable($&quot;FooEntities{MODEL_VER}&quot;);
+    }
+    private async Task Given(Metadata m, FooCreated ev)
+    {
+        // your code
+    }
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+        // your code
+    }
+}
+</code></pre>
+<h3 id="subscription-sets---models-ultra-composition">Subscription Sets - Models ultra-composition</h3>
+<ul>
+<li>You can easily create a stream that joins events together by event-type.</li>
+</ul>
+<h3 id="grpc-direct-communication">GRPC Direct communication</h3>
+<pre><code class="lang-csharp">/// Let's configure server:
+services.AddCommandHandler&lt;FooCommandHandler&gt;().AddServerDirectConnect();
+
+/// Add mapping to direct-connect service
+app.MapDirectConnect();
+</code></pre>
+<p>Here is an example of a command handler code:</p>
+<pre><code class="lang-csharp">[CommandHandler]
+public partial class FooCommandHandler(IPlumber plumber)
+{
+
+    [ThrowsFaultException&lt;BusinessFault&gt;]
+    public async Task Handle(Guid id, CreateFoo cmd)
+    {
+        if (cmd.Name == &quot;error&quot;)
+            throw new BusinessFaultException(&quot;Foo&quot;);
+
+        var agg = FooAggregate.New(id);
+        agg.Open(cmd.Name);
+
+        await plumber.SaveNew(agg);
+    }
+
+    [ThrowsFaultException&lt;BusinessFault&gt;]
+    public async Task&lt;HandlerOperationStatus&gt; Handle(Guid id, ChangeFoo cmd)
+    {
+        if (cmd.Name == &quot;error&quot;)
+            throw new BusinessFaultException(&quot;Foo&quot;);
+
+        var agg = await plumber.Get&lt;FooAggregate&gt;(id);
+        agg.Change(cmd.Name);
+
+        await plumber.SaveChanges(agg);
+        return HandlerOperationStatus.Ok();
+    }
+}
+</code></pre>
+<p>And how on the client side:</p>
+<pre><code class="lang-csharp">service.AddClientDirectConnect().AddCommandInvokers();
+
+// And invocation
+ var clientPool = sp.GetRequiredService&lt;IRequestInvokerPool&gt;();
+ var invoker = clientPool.Get(&quot;YOUR_GRPC_URL&quot;);
+ await invoker.Execute(Guid.NewId(), new CreateFoo(){});
+</code></pre>
+<h3 id="aspects">Aspects</h3>
+<p>You can easily inject aspects through decorator pattern.</p>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/index.md/#L1" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/docs/index.md/#L1" class="edit-link">Edit this page</a>
         </div>
 
         <div class="next-article d-print-none border-top" id="nextArticle"></div>

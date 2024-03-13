@@ -1,4 +1,15 @@
 - name: Introduction
-  href: introduction.md
+  href: index.md
 - name: Getting Started
-  href: getting-started.md
+  href: index.md#getting-started
+- name: Features
+  href: index.md#features
+  items:
+    - name: Conventions
+      href: index.md#conventions
+    - name: Read-Models Development cycle
+      href: index.md#ultra-development-cycle-for-read-models-ef-example
+    - name: Subscription sets
+      href: index.md#subscription-sets---models-ultra-composition
+    - name: Grpc direct communication
+      href: index.md#grpc-direct-communication

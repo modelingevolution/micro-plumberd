@@ -19,8 +19,9 @@
     "content": [
       {
         "files": [
-          "**/*.{md,yml}"
+          "**/*.{md,yml}", "**/toc.yml", "index.md", "README.md"
         ],
+        "src":"docs",
         "exclude": [
           "_site/**"
         ]
