@@ -8,14 +8,16 @@
     <AssemblyVersion>1.0.1</AssemblyVersion>
     <FileVersion>1.0.1</FileVersion>
     <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
-    
+    <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageIcon>logo-squere.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
   </PropertyGroup>
-
+  
   <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="true" />
+   
     <None Include="..\..\logo-squere.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
