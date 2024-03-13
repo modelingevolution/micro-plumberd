@@ -2,6 +2,8 @@
   href: index.md
 - name: Getting Started
   href: index.md#getting-started
+- name: API Reference
+  href: api/MicroPlumberd.html
 - name: Features
   href: index.md#features
   items:
