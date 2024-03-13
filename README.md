@@ -45,6 +45,9 @@ public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState
     public void Open(string msg) => AppendPendingChange(new FooCreated() { Name = msg });
     public void Change(string msg) => AppendPendingChange(new FooUpdated() { Name = msg });
 }
+// And events:
+public record FooCreated { public string? Name { get; set; } }
+public record FooUpdated { public string? Name { get; set; } }
 ```
 Comments:
 
