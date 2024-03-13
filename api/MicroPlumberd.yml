@@ -16,6 +16,7 @@ items:
   - MicroPlumberd.IConventions
   - MicroPlumberd.IObjectSerializer
   - MicroPlumberd.IPlumber
+  - MicroPlumberd.IPlumberConfig
   - MicroPlumberd.IProjectionRegister
   - MicroPlumberd.IReadModel
   - MicroPlumberd.ISubscriptionRunner
@@ -238,6 +239,12 @@ references:
   name: EventStoreProjectionManagementClientExtensions
   nameWithType: EventStoreProjectionManagementClientExtensions
   fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+- uid: MicroPlumberd.IPlumberConfig
+  commentId: T:MicroPlumberd.IPlumberConfig
+  href: MicroPlumberd.IPlumberConfig.html
+  name: IPlumberConfig
+  nameWithType: IPlumberConfig
+  fullName: MicroPlumberd.IPlumberConfig
 - uid: MicroPlumberd.Plumber
   commentId: T:MicroPlumberd.Plumber
   href: MicroPlumberd.Plumber.html

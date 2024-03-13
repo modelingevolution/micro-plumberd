@@ -1,0 +1,121 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IPlumberConfig
+  commentId: T:MicroPlumberd.IPlumberConfig
+  id: IPlumberConfig
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IPlumberConfig.Conventions
+  - MicroPlumberd.IPlumberConfig.Serializer
+  langs:
+  - csharp
+  - vb
+  name: IPlumberConfig
+  nameWithType: IPlumberConfig
+  fullName: MicroPlumberd.IPlumberConfig
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IPlumberConfig
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IPlumberConfig
+    content.vb: Public Interface IPlumberConfig
+- uid: MicroPlumberd.IPlumberConfig.Serializer
+  commentId: P:MicroPlumberd.IPlumberConfig.Serializer
+  id: Serializer
+  parent: MicroPlumberd.IPlumberConfig
+  langs:
+  - csharp
+  - vb
+  name: Serializer
+  nameWithType: IPlumberConfig.Serializer
+  fullName: MicroPlumberd.IPlumberConfig.Serializer
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Serializer
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IObjectSerializer Serializer { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.IObjectSerializer
+    content.vb: Property Serializer As IObjectSerializer
+  overload: MicroPlumberd.IPlumberConfig.Serializer*
+- uid: MicroPlumberd.IPlumberConfig.Conventions
+  commentId: P:MicroPlumberd.IPlumberConfig.Conventions
+  id: Conventions
+  parent: MicroPlumberd.IPlumberConfig
+  langs:
+  - csharp
+  - vb
+  name: Conventions
+  nameWithType: IPlumberConfig.Conventions
+  fullName: MicroPlumberd.IPlumberConfig.Conventions
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Conventions
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IConventions Conventions { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.IConventions
+    content.vb: ReadOnly Property Conventions As IConventions
+  overload: MicroPlumberd.IPlumberConfig.Conventions*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IPlumberConfig.Serializer*
+  commentId: Overload:MicroPlumberd.IPlumberConfig.Serializer
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Serializer
+  name: Serializer
+  nameWithType: IPlumberConfig.Serializer
+  fullName: MicroPlumberd.IPlumberConfig.Serializer
+- uid: MicroPlumberd.IObjectSerializer
+  commentId: T:MicroPlumberd.IObjectSerializer
+  parent: MicroPlumberd
+  href: MicroPlumberd.IObjectSerializer.html
+  name: IObjectSerializer
+  nameWithType: IObjectSerializer
+  fullName: MicroPlumberd.IObjectSerializer
+- uid: MicroPlumberd.IPlumberConfig.Conventions*
+  commentId: Overload:MicroPlumberd.IPlumberConfig.Conventions
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Conventions
+  name: Conventions
+  nameWithType: IPlumberConfig.Conventions
+  fullName: MicroPlumberd.IPlumberConfig.Conventions
+- uid: MicroPlumberd.IConventions
+  commentId: T:MicroPlumberd.IConventions
+  parent: MicroPlumberd
+  href: MicroPlumberd.IConventions.html
+  name: IConventions
+  nameWithType: IConventions
+  fullName: MicroPlumberd.IConventions

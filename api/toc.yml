@@ -27,6 +27,8 @@ items:
     name: IObjectSerializer
   - uid: MicroPlumberd.IPlumber
     name: IPlumber
+  - uid: MicroPlumberd.IPlumberConfig
+    name: IPlumberConfig
   - uid: MicroPlumberd.IProjectionRegister
     name: IProjectionRegister
   - uid: MicroPlumberd.IReadModel

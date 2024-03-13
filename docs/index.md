@@ -168,8 +168,19 @@ public partial class FooModel : DbContext
 ```
 
 ### Subscription Sets - Models ultra-composition
-  - You can easily create a stream that joins events together by event-type. 
+- You can easily create a stream that joins events together by event-type, and subscribe many read-models at once.
 
+```csharp
+/// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
+
+var dimentionTable = new DimentionLookupModel();
+var factTable = new MasterModel(dimentionTable);
+
+await plumber.SubscribeSet()
+    .With(dimentionTable)
+    .With(factTable)
+    .SubscribeAsync("MasterStream", FromStream.Start);
+```
 ### GRPC Direct communication
 
 ```csharp

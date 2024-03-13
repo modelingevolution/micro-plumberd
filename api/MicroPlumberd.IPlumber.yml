@@ -7,6 +7,7 @@ items:
   children:
   - MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
   - MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
+  - MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Object[])
   - MicroPlumberd.IPlumber.Get``1(System.Guid)
   - MicroPlumberd.IPlumber.SaveChanges``1(``0,System.Object)
   - MicroPlumberd.IPlumber.SaveNew``1(``0,System.Object)
@@ -29,7 +30,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IPlumber
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 7
+    startLine: 6
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -56,7 +57,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 17
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -67,16 +68,16 @@ items:
     parameters:
     - id: streamId
       type: System.String
-      description: ''
+      description: Full stream id, typically in format {category}-{id}
     - id: rev
       type: EventStore.Client.StreamRevision
-      description: ''
+      description: Expected stream revision
     - id: events
       type: System.Collections.Generic.IEnumerable{System.Object}
-      description: ''
+      description: Events that are going to be serialized and appended
     - id: metadata
       type: System.Object
-      description: ''
+      description: Metadata that will be merged with metadata created from conventions
     return:
       type: System.Threading.Tasks.Task
       description: ''
@@ -103,28 +104,73 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 18
+    startLine: 26
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
+  example: []
+  syntax:
+    content: Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null)
+    parameters:
+    - id: streamId
+      type: System.String
+      description: Full stream id, typically in format {category}-{id}
+    - id: state
+      type: EventStore.Client.StreamState
+      description: State of the stream
+    - id: events
+      type: System.Collections.Generic.IEnumerable{System.Object}
+      description: Events that are going to be serialized and appended
+    - id: metadata
+      type: System.Object
+      description: Metadata that will be merged with metadata created from conventions
+    return:
+      type: System.Threading.Tasks.Task
+      description: ''
+    content.vb: Function AppendEvents(streamId As String, state As StreamState, events As IEnumerable(Of Object), metadata As Object = Nothing) As Task
+  overload: MicroPlumberd.IPlumber.AppendEvents*
+  nameWithType.vb: IPlumber.AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+  fullName.vb: MicroPlumberd.IPlumber.AppendEvents(String, EventStore.Client.StreamState, System.Collections.Generic.IEnumerable(Of Object), Object)
+  name.vb: AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+- uid: MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Object[])
+  commentId: M:MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Object[])
+  id: AppendEvents(System.String,EventStore.Client.StreamState,System.Object[])
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: AppendEvents(string, StreamState, params object[])
+  nameWithType: IPlumber.AppendEvents(string, StreamState, params object[])
+  fullName: MicroPlumberd.IPlumber.AppendEvents(string, EventStore.Client.StreamState, params object[])
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AppendEvents
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 27
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null)
+    content: Task AppendEvents(string streamId, StreamState state, params object[] events)
     parameters:
     - id: streamId
       type: System.String
     - id: state
       type: EventStore.Client.StreamState
     - id: events
-      type: System.Collections.Generic.IEnumerable{System.Object}
-    - id: metadata
-      type: System.Object
+      type: System.Object[]
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Function AppendEvents(streamId As String, state As StreamState, events As IEnumerable(Of Object), metadata As Object = Nothing) As Task
+    content.vb: Function AppendEvents(streamId As String, state As StreamState, ParamArray events As Object()) As Task
   overload: MicroPlumberd.IPlumber.AppendEvents*
-  nameWithType.vb: IPlumber.AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
-  fullName.vb: MicroPlumberd.IPlumber.AppendEvents(String, EventStore.Client.StreamState, System.Collections.Generic.IEnumerable(Of Object), Object)
-  name.vb: AppendEvents(String, StreamState, IEnumerable(Of Object), Object)
+  nameWithType.vb: IPlumber.AppendEvents(String, StreamState, ParamArray Object())
+  fullName.vb: MicroPlumberd.IPlumber.AppendEvents(String, EventStore.Client.StreamState, ParamArray Object())
+  name.vb: AppendEvents(String, StreamState, ParamArray Object())
 - uid: MicroPlumberd.IPlumber.SubscribeSet
   commentId: M:MicroPlumberd.IPlumber.SubscribeSet
   id: SubscribeSet
@@ -143,7 +189,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 19
+    startLine: 29
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -171,7 +217,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Subscribe
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 20
+    startLine: 30
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -211,7 +257,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeModel
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 22
+    startLine: 32
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -249,7 +295,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeModelPersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 24
+    startLine: 34
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -285,7 +331,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 26
+    startLine: 36
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -327,7 +373,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 28
+    startLine: 38
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -363,7 +409,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 29
+    startLine: 39
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -401,7 +447,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 30
+    startLine: 40
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -644,6 +690,29 @@ references:
   name: StreamState
   nameWithType: StreamState
   fullName: EventStore.Client.StreamState
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
 - uid: MicroPlumberd.IPlumber.SubscribeSet*
   commentId: Overload:MicroPlumberd.IPlumber.SubscribeSet
   href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeSet

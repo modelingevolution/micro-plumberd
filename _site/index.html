@@ -233,8 +233,18 @@ public partial class FooModel : DbContext
 </code></pre>
 <h3 id="subscription-sets---models-ultra-composition">Subscription Sets - Models ultra-composition</h3>
 <ul>
-<li>You can easily create a stream that joins events together by event-type.</li>
+<li>You can easily create a stream that joins events together by event-type, and subscribe many read-models at once.</li>
 </ul>
+<pre><code class="lang-csharp">/// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
+
+var dimentionTable = new DimentionLookupModel();
+var factTable = new MasterModel(dimentionTable);
+
+await plumber.SubscribeSet()
+    .With(dimentionTable)
+    .With(factTable)
+    .SubscribeAsync(&quot;MasterStream&quot;, FromStream.Start);
+</code></pre>
 <h3 id="grpc-direct-communication">GRPC Direct communication</h3>
 <pre><code class="lang-csharp">/// Let's configure server:
 services.AddCommandHandler&lt;FooCommandHandler&gt;().AddServerDirectConnect();
