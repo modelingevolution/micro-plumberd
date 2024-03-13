@@ -1,20 +1,50 @@
-﻿using System.Text.Json;
+﻿
+using System.Text.Json;
 using EventStore.Client;
 using Grpc.Core;
 
 namespace MicroPlumberd;
 
-
-
-public class Plumber(EventStoreClientSettings settings) : IPlumber
+public interface IPlumberConfig
 {
-    private readonly EventStoreClient _client = new(settings);
-    private readonly EventStorePersistentSubscriptionsClient _persistentSubscriptionClient = new(settings);
-    private readonly EventStoreProjectionManagementClient _projectionManagementClient = new (settings);
-    private ProjectionRegister? _projectionRegister;
-    public IProjectionRegister ProjectionRegister => _projectionRegister ??= new ProjectionRegister(_projectionManagementClient);
+    IObjectSerializer Serializer { get; set; }
+    IConventions Conventions { get; }
+}
+
+class PlumberConfig : IPlumberConfig
+{
+    
     public IObjectSerializer Serializer { get; set; } = new ObjectSerializer();
     public IConventions Conventions { get; } = new Conventions(StandardMetadataEnricherTypes.All);
+}
+
+public class Plumber : IPlumber
+{
+    private readonly EventStoreClient _client;
+    private readonly EventStorePersistentSubscriptionsClient _persistentSubscriptionClient;
+    private readonly EventStoreProjectionManagementClient _projectionManagementClient;
+    
+    public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
+    {
+        settings ??= EventStoreClientSettings.Create($"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false");
+        var cfg = new PlumberConfig();
+        configure?.Invoke(cfg);
+        return new Plumber(settings, cfg);
+    }
+    internal Plumber(EventStoreClientSettings settings, IPlumberConfig? config = null)
+    {
+        config ??= new PlumberConfig();
+        _client = new(settings);
+        _persistentSubscriptionClient = new(settings);
+        _projectionManagementClient = new (settings);
+        this.Conventions = config.Conventions;
+        this.Serializer = config.Serializer;
+    }
+
+    public IObjectSerializer Serializer { get; }
+    public IConventions Conventions { get; }
+    private ProjectionRegister? _projectionRegister;
+    public IProjectionRegister ProjectionRegister => _projectionRegister ??= new ProjectionRegister(_projectionManagementClient);
     public EventStoreClient Client => _client;
     public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient => _persistentSubscriptionClient;
     public EventStoreProjectionManagementClient ProjectionManagementClient => _projectionManagementClient;
@@ -64,7 +94,7 @@ public class Plumber(EventStoreClientSettings settings) : IPlumber
         await aggregate.Rehydrate(events);
         return aggregate;
     }
-
+    
     public async Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null)
     {
         var evData = MakeEventData(events, metadata);

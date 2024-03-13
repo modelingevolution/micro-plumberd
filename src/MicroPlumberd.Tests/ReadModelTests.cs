@@ -1,4 +1,3 @@
-using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;

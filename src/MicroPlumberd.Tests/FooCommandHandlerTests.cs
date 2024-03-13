@@ -7,7 +7,7 @@ using MicroPlumberd.Tests.Fixtures;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 using NSubstitute;
-using MicroPlumberd.Tests.AppSrc;
+
 
 namespace MicroPlumberd.Tests;
 
