@@ -12,7 +12,7 @@ Documentation can be found here:
 ```powershell
 # For your domain
 dotnet add package MicroPlumberd
-dotnet add package MicroPlumberd.SourceGeneratiors
+dotnet add package MicroPlumberd.SourceGenerators
 ```
 
 If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
