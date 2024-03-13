@@ -10,6 +10,7 @@ Documentation can be found here:
 ### Install nugets: 
 
 ```powershell
+# For your domain
 dotnet add package MicroPlumberd
 dotnet add package MicroPlumberd.SourceGeneratiors
 ```
@@ -17,6 +18,7 @@ dotnet add package MicroPlumberd.SourceGeneratiors
 If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
 
 ```powershell
+# For application-layer GRPC integration. (dotnet-2-dotnet)
 dotnet add package MicroPlumberd.DirectConnect
 ```
 
