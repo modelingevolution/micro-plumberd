@@ -171,7 +171,8 @@ public partial class FooModel : DbContext
 ```
 
 ### Subscription Sets - Models ultra-composition
-  - You can easily create a stream that joins events together by event-type, and subscribe many read-models at once.
+  - You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.
+  - In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one. 
 
 ```csharp
 /// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
