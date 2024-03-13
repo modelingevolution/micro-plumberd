@@ -16,7 +16,7 @@ namespace MicroPlumberd.Tests
         
         public Aggregate_IntegrationTests(EventStoreServer es)
         {
-            plumber = new Plumber(es.GetEventStoreSettings());
+            plumber = Plumber.Create(es.GetEventStoreSettings());
             this.es  = es;
         }
 

@@ -15,7 +15,7 @@ class PlumberConfig : IPlumberConfig
 {
     
     public IObjectSerializer Serializer { get; set; } = new ObjectSerializer();
-    public IConventions Conventions { get; } = new Conventions(StandardMetadataEnricherTypes.All);
+    public IConventions Conventions { get; } = new Conventions();
 }
 
 public class Plumber : IPlumber

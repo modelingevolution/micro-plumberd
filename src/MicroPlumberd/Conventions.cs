@@ -23,22 +23,47 @@ public interface IConventions
     EventIdConvention GetEventIdConvention { get; set; }
     OutputStreamModelConvention OutputStreamModelConvention { get; set; }
     GroupNameModelConvention GroupNameModelConvention { get; set; }
+    StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
     object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
 }
 class Conventions : IConventions
 {
+    private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
     public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.Name}-{id}";
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().Name;
     public MetadataConvention? MetadataEnrichers { get; set; }
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.Name;
-    public Conventions(StandardMetadataEnricherTypes types)
+
+    public StandardMetadataEnricherTypes StandardMetadataEnricherTypes
     {
-        if(types.HasFlag(StandardMetadataEnricherTypes.Created))
-            MetadataEnrichers += StandardMetadataEnrichers.CreatedTimeMetadata;
-        if (types.HasFlag(StandardMetadataEnricherTypes.InvocationContext))
-            MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
+        get => _standardMetadataEnricherTypes;
+        set
+        {
+            if (_standardMetadataEnricherTypes == value) return;
+
+            AdjustEnrichersFromFlag(StandardMetadataEnricherTypes.Created, value,StandardMetadataEnrichers.CreatedTimeMetadata);
+            AdjustEnrichersFromFlag(StandardMetadataEnricherTypes.InvocationContext, value, StandardMetadataEnrichers.InvocationContextMetadata);
+
+            _standardMetadataEnricherTypes = value;
+        }
+    }
+
+    private void AdjustEnrichersFromFlag(StandardMetadataEnricherTypes flag, StandardMetadataEnricherTypes value, MetadataConvention mth)
+    {
+        var isOn = value.HasFlag(flag);
+        var wasOn = _standardMetadataEnricherTypes.HasFlag(flag);
+        if (!(wasOn ^ isOn)) return;
+        
+        if (wasOn) MetadataEnrichers -= mth;
+        else MetadataEnrichers += mth;
+    }
+
+    public Conventions()
+    {
+        MetadataEnrichers += StandardMetadataEnrichers.CreatedTimeMetadata;
+        MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
     }
 
     private static string OutputStreamFromModel(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.Name;
@@ -58,6 +83,7 @@ class Conventions : IConventions
 [Flags]
 public enum StandardMetadataEnricherTypes
 {
+    None = 0x0,
     Created = 0x1,
     InvocationContext = 0x2,
     All = 0x3
