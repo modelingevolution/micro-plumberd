@@ -25,9 +25,8 @@ dotnet add package MicroPlumberd.DirectConnect
 ```csharp
 /// change to your connection-string.
 string connectionString = $"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
-var seetings = EventStoreClientSettings.Create(connectionString);
-
-var plumber = new Plumber(settings) as IPlumber;
+var settings = EventStoreClientSettings.Create(connectionString);
+var plumber = Plumber.Create(settings);
 ```
 
 ### Aggregates

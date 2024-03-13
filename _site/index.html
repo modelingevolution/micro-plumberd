@@ -100,9 +100,8 @@ dotnet add package MicroPlumberd.SourceGeneratiors
 <h3 id="configure-plumber">Configure plumber</h3>
 <pre><code class="lang-csharp">/// change to your connection-string.
 string connectionString = $&quot;esdb://admin:changeit@localhost:2113?tls=false&amp;tlsVerifyCert=false&quot;;
-var seetings = EventStoreClientSettings.Create(connectionString);
-
-var plumber = new Plumber(settings) as IPlumber;
+var settings = EventStoreClientSettings.Create(connectionString);
+var plumber = Plumber.Create(settings);
 </code></pre>
 <h3 id="aggregates">Aggregates</h3>
 <ol>
