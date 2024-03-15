@@ -1,11 +1,11 @@
 ﻿using EventStore.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
 class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult subscription) : ISubscriptionRunner
 {
-    public async Task WithModel<T>(T model)
-        where T : IReadModel, ITypeRegister
+    public async Task<T> WithHandler<T>(T model) where T : IEventHandler, ITypeRegister
     {
         var state = new Tuple<EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult, T>(subscription, model);
         await Task.Factory.StartNew(async (x) =>
@@ -16,10 +16,16 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
                 if (!T.TypeRegister.TryGetValue(e.Event.EventType, out var t)) continue;
 
                 var (ev, metadata) = plumber.ReadEventData(e.Event, t);
-                await model.Given(metadata, ev);
+                await model.Handle(metadata, ev);
                 await sub.Ack(e.Event.EventId);
             }
         }, state, TaskCreationOptions.LongRunning);
+        return model;
+    }
+
+    public async Task<T> WithHandler<T>() where T : IEventHandler, ITypeRegister
+    {
+        return await WithHandler(plumber.ServiceProvider.GetRequiredService<T>());
     }
 
     public async ValueTask DisposeAsync() => await subscription.DisposeAsync();

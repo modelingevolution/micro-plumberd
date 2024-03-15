@@ -2,5 +2,6 @@
 
 public interface ISubscriptionRunner : IAsyncDisposable
 {
-    Task WithModel<T>(T model) where T : IReadModel, ITypeRegister;
+    Task<T> WithHandler<T>(T model) where T : IEventHandler, ITypeRegister;
+    Task<T> WithHandler<T>() where T : IEventHandler, ITypeRegister;
 }

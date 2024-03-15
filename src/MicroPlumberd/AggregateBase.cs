@@ -10,11 +10,10 @@ public abstract class AggregateBase<TState>(Guid id)
 
 {
     private readonly List<object> _pendingEvents = new();
-
     protected TState State { get; private set; } = new();
 
     public Guid Id => id;
-    public long Age { get; private set; } = -1;
+    public long Version { get; private set; } = -1;
 
     public IReadOnlyList<object> PendingEvents => _pendingEvents;
 
@@ -29,12 +28,12 @@ public abstract class AggregateBase<TState>(Guid id)
         await foreach (var e in events)
         {
             State = Apply(e);
-            Age += 1;
+            Version += 1;
         }
     }
     public void AckCommitted()
     {
-        Age += _pendingEvents.Count;
+        Version += _pendingEvents.Count;
         _pendingEvents.Clear();
     }
     protected abstract TState Given(TState state, object ev);

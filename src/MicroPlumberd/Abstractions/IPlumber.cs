@@ -27,16 +27,24 @@ public interface IPlumber
     Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null);
     Task AppendEvents(string streamId, StreamState state, params object[] events) => AppendEvents(streamId, state, events,null);
 
+    Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null,
+        Direction scanDirection = Direction.Backwards);
+    Task<IEventRecord?> FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping,
+        Direction scanDirection = Direction.Backwards);
     ISubscriptionSet SubscribeSet();
     ISubscriptionRunner Subscribe(string streamName, FromStream start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
 
-    Task<IAsyncDisposable> SubscribeModel<TModel>(TModel model, FromStream? start = null) where TModel : IReadModel, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler eh,string? outputStream=null, FromStream? start = null) where TEventHandler : IEventHandler, ITypeRegister;
 
-    Task<IAsyncDisposable> SubscribeModelPersistently<TModel>(TModel model) where TModel : IReadModel, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler model, string? outputStream = null, string? groupName = null) where TEventHandler : IEventHandler, ITypeRegister;
 
     ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
+    
+    Task Rehydrate<T>(T model, string stream) where T : IEventHandler, ITypeRegister;
+    Task Rehydrate<T>(T model, Guid id) where T : IEventHandler, ITypeRegister;
 
     Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister;
     Task SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
     Task SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+    Task AppendLink(string streamId, Metadata metadata);
 }

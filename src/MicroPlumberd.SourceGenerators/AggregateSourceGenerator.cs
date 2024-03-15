@@ -102,7 +102,7 @@ namespace MicroPlumberd.SourceGenerators
                         }
                         sb.AppendLine("    };");
 
-                        sb.AppendLine($"    static IDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
+                        sb.AppendLine($"    static IReadOnlyDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
 
                         sb.AppendLine("}");
                         context.AddSource($"{className}_Aggregate.cs", SourceText.From(sb.ToString(), Encoding.UTF8));

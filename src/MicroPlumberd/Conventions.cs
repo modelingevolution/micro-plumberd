@@ -124,6 +124,12 @@ public static class MetadataExtensions
             return Guid.Parse(v.GetString()!);
         return null;
     }
+    public static Guid? CausationId(this Metadata m)
+    {
+        if (m.Data.TryGetProperty("$causationId", out var v))
+            return Guid.Parse(v.GetString()!);
+        return null;
+    }
 }
 public class InvocationContext
 {

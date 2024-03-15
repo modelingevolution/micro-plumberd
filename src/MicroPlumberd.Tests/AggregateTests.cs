@@ -43,7 +43,7 @@ namespace MicroPlumberd.Tests
 
             var aggregate2 = await plumber.Get<FooAggregate>(aggregate.Id);
 
-            aggregate2.Age.Should().Be(0);
+            aggregate2.Version.Should().Be(0);
             aggregate2.State.Name.Should().Be("Hello");
         }
         [Fact]

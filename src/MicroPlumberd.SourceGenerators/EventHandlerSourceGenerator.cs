@@ -64,6 +64,7 @@ namespace MicroPlumberd.SourceGenerators
 
                         sb.AppendLine($"partial class {className} : IReadModel,ITypeRegister");
                         sb.AppendLine("{");
+                        sb.AppendLine("    Task IEventHandler.Handle(Metadata m, object ev) => Given(m,ev);");
                         sb.AppendLine("    public async Task Given(Metadata m, object ev)");
                         sb.AppendLine("    {");
                         sb.AppendLine("        switch (ev)");
@@ -92,7 +93,7 @@ namespace MicroPlumberd.SourceGenerators
                         }
                         sb.AppendLine("    };");
 
-                        sb.AppendLine($"    static IDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
+                        sb.AppendLine($"    static IReadOnlyDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
                         
                         sb.AppendLine("}");
                         context.AddSource($"{className}_EventHandler.cs", SourceText.From(sb.ToString(), Encoding.UTF8));

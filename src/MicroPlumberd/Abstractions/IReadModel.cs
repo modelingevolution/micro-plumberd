@@ -2,7 +2,12 @@
 
 namespace MicroPlumberd;
 
-public interface IReadModel
+
+public interface IEventHandler
+{
+    Task Handle(Metadata m, object ev);
+}
+public interface IReadModel : IEventHandler
 {
     Task Given(Metadata m, object ev);
 }
