@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
   </ItemGroup>
 

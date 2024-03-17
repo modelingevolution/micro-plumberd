@@ -140,12 +140,14 @@ public class Plumber : IPlumber
     {
         var items = _client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
         var registry = T.TypeRegister;
-        
+        var vAware = model as IVersionAware;
         await foreach (var i in items)
         {
-            if (!registry.TryGetValue(i.Event.EventType, out var t)) continue;
+            if (!registry.TryGetValue(i.Event.EventType, out var t))
+                continue;
             var (evt, metadata) = ReadEventData(i.Event, t);
             await model.Handle(metadata, evt);
+            vAware?.Increase();
         }
     }
 

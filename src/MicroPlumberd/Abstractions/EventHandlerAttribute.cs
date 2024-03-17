@@ -2,3 +2,4 @@
 
 [AttributeUsage(AttributeTargets.Class)]
 public class EventHandlerAttribute : Attribute { }
+

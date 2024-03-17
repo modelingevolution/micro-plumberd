@@ -4,7 +4,7 @@ using ProtoBuf;
 
 namespace MicroPlumberd.DirectConnect;
 
-public interface ICommand { Guid Id { get; }}
+
 
 public abstract class ReturnsAttribute(Type returnType) : Attribute
 {

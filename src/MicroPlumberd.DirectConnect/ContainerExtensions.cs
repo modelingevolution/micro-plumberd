@@ -7,16 +7,11 @@ namespace MicroPlumberd.DirectConnect;
 public static class ContainerExtensions
 {
 
-    public static IServiceCollection AddCommandInvoker<TCommand>(this IServiceCollection services) where TCommand : ICommand
+    public static IServiceCollection AddCommandInvoker<TCommand>(this IServiceCollection services) 
     {
         return services.AddCommandInvoker(typeof(TCommand));
     }
-    public static IServiceCollection AddCommandInvokers(this IServiceCollection services)
-    {
-        var commands = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x =>
-            typeof(ICommand).IsAssignableFrom(x) && !x.IsAbstract && x.IsClass && !x.IsInterface);
-        return services.AddCommandInvokers(commands);
-    }
+    
     public static IServiceCollection AddCommandInvokers(this IServiceCollection services, params Type[] commandTypes)
     {
         return services.AddCommandInvokers(commandTypes.AsEnumerable());

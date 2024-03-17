@@ -12,3 +12,6 @@ public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState
 }
 public class FooCreated { public string? Name { get; set; } }
 public class FooUpdated { public string? Name { get; set; } }
+
+public class BooCreated { public string? Name { get; set; } }
+public class BooUpdated { public string? Name { get; set; } }

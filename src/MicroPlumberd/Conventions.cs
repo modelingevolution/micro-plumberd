@@ -141,11 +141,14 @@ public class InvocationContext
         Value.UserId = userId;
         return this;
     }
+
+    public Guid? CausactionId() => TryGetValue<Guid>("$causationId", out var v) ? v : null;
+    
     private static AsyncLocal<InvocationContext> _current = new AsyncLocal<InvocationContext>();
     public static InvocationContext Current => _current.Value ?? (_current.Value = new InvocationContext());
     private readonly ExpandoObject _data = new ExpandoObject();
     public dynamic Value => _data;
-
+    
     public InvocationContext Set(string key, object value)
     {
         var dict  = (IDictionary<string, object>)_data!;
@@ -153,6 +156,19 @@ public class InvocationContext
         return this;
     }
     public bool ContainsProperty(string propertyName) => ((IDictionary<string, object>)_data!).ContainsKey(propertyName);
+
+    public bool TryGetValue<TValue>(string propertyName, out TValue value)
+    {
+        var dict = (IDictionary<string, object>)_data!;
+        if (dict.TryGetValue(propertyName, out var v))
+        {
+            value = (TValue)v;
+            return true;
+        }
+
+        value = default;
+        return false;
+    }
     public void Clear()
     {
         IDictionary<string, object> obj = _data!;
@@ -164,4 +180,6 @@ public class InvocationContext
         var dict = (IDictionary<string, object>)_data!;
         dict.Remove("$correlationId");
     }
+
+    public Guid? CorrelationId() => TryGetValue<Guid>("$correlationId", out var v) ? v : null;
 }

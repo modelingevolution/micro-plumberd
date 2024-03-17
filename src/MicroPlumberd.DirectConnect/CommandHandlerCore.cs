@@ -4,7 +4,6 @@ using ModelingEvolution.DirectConnect;
 namespace MicroPlumberd.DirectConnect;
 
 internal class CommandHandlerCore<TCommand>(IServiceProvider serviceProvider) : IRequestHandler<CommandEnvelope<TCommand>, object>
-    where TCommand : ICommand
 {
     public async Task<object> Handle(CommandEnvelope<TCommand> request)
     {

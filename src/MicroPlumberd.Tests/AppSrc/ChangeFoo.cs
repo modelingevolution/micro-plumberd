@@ -5,7 +5,7 @@ namespace MicroPlumberd.Tests.AppSrc;
 
 [ProtoContract]
 [ThrowsFaultException<BusinessFault>]
-public class ChangeFoo : ICommand
+public class ChangeFoo : IId
 {
     [ProtoMember(2)]
     public string? Name { get; set; }

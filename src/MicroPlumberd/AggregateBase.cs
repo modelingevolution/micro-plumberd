@@ -5,7 +5,7 @@ namespace MicroPlumberd;
 
 
 
-public abstract class AggregateBase<TState>(Guid id)
+public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId
     where TState : new()
 
 {
