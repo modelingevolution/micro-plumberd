@@ -4,7 +4,28 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
+    <Title>MicroPlumberd.Services</Title>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
   </PropertyGroup>
+
+
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />

@@ -18,8 +18,11 @@ dotnet add package MicroPlumberd.SourceGenerators
 If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
 
 ```powershell
-# For application-layer GRPC integration. (dotnet-2-dotnet)
-dotnet add package MicroPlumberd.DirectConnect
+# For application-layer using EventStore as message-bus. 
+dotnet add package MicroPlumberd.Services
+
+# For application-layer communicating (dotnet-2-dotnet) using GRPC:
+dotnet add package MicroPlumberd.Services.Grpc.DirectConnect
 ```
 
 ### Configure plumber
@@ -190,7 +193,24 @@ await plumber.SubscribeSet()
     .SubscribeAsync("MasterStream", FromStream.Start);
 ```
 
+
+### EventStoreDB as message-bus
+
+If you want to start as quickly as possible, you can start with EventStoreDB as command-message-bus. 
+```csharp
+
+services.AddPlumberd()
+        .AddCommandHandler<FooCommandHandler>()
+
+// on the client side:
+ICommandBus bus; // from DI
+bus.SendAsync(Guid.NewGuid(), new CreateFoo() { Name = "Hello" });
+```
+
 ### GRPC Direct communication
+
+If you prefer direct communication (like REST-API, but without the hassle for contract generation/etc.) you can use direct communication where client invokes command handle using grpc.
+Command is not stored in EventStore.
 
 ```csharp
 /// Let's configure server:
