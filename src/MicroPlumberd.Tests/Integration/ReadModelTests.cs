@@ -1,3 +1,4 @@
+using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
@@ -18,7 +19,20 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         plumber = new Plumber(_eventStore.GetEventStoreSettings());
     }
 
+    [Fact]
+    public async Task SubscribeModelPersistently()
+    {
+        await _eventStore.StartInDocker();
+        await AppendOneEvent();
 
+        var fooModel = new FooModel();
+
+        var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom:StreamPosition.Start);
+
+        await Task.Delay(1000);
+
+        fooModel.Index.Should().HaveCount(1);
+    }
 
     [Fact]
     public async Task SubscribeModel()

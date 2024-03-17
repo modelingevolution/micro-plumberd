@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using ModelingEvolution.DirectConnect;
 
-namespace MicroPlumberd.Tests.Fixtures;
+namespace MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 
 class ServerApp : IDisposable, IAsyncDisposable
 {
@@ -59,7 +59,7 @@ class ServerApp : IDisposable, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if(app != null)
+        if (app != null)
             await app.DisposeAsync();
     }
 }

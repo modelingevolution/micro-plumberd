@@ -13,8 +13,8 @@ class ProjectionRegister(EventStoreProjectionManagementClient client) : IProject
     {
         if (_index.Count == 0)
         {
-            var projections = client.ListContinuousAsync();
-            await foreach (var i in projections)
+            var projections = await client.ListContinuousAsync().ToArrayAsync();
+            foreach (var i in projections)
             {
                 _index.Add(i.Name, i);
             }

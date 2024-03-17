@@ -1,8 +1,10 @@
 ﻿
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using EventStore.Client;
 using Grpc.Core;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
@@ -10,7 +12,7 @@ public interface IPlumberConfig
 {
     IObjectSerializer Serializer { get; set; }
     IConventions Conventions { get; }
-    IServiceProvider ServiceProvider { get; }
+    IServiceProvider ServiceProvider { get; set; }
 }
 
 class PlumberConfig : IPlumberConfig
@@ -65,7 +67,7 @@ record EventRecord<TEvent> : IEventRecord<TEvent>
     public TEvent Event { get; init; }
     object IEventRecord.Event => Event;
 }
-public class Plumber : IPlumber
+public class Plumber : IPlumber, IPlumberConfig
 {
     private readonly EventStoreClient _client;
     private readonly EventStorePersistentSubscriptionsClient _persistentSubscriptionClient;
@@ -88,8 +90,8 @@ public class Plumber : IPlumber
         this.Serializer = config.Serializer;
         this.ServiceProvider = config.ServiceProvider;
     }
-    public IServiceProvider ServiceProvider { get; }
-    public IObjectSerializer Serializer { get; }
+    public IServiceProvider ServiceProvider { get; set; }
+    public IObjectSerializer Serializer { get; set; }
     public IConventions Conventions { get; }
     private ProjectionRegister? _projectionRegister;
     public IProjectionRegister ProjectionRegister => _projectionRegister ??= new ProjectionRegister(_projectionManagementClient);
@@ -102,10 +104,11 @@ public class Plumber : IPlumber
     {
         return new SubscriptionRunner(this,_client.SubscribeToStream(streamName, start, true, userCredentials, cancellationToken));
     }
-    public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler eh, string? outputStream = null,
+    public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
         FromStream? start = null)
-        where TEventHandler : IEventHandler, ITypeRegister
+        where TEventHandler : class,IEventHandler, ITypeRegister
     {
+        eh ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
         var events = TEventHandler.TypeRegister.Keys;
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
@@ -113,18 +116,33 @@ public class Plumber : IPlumber
         await sub.WithHandler(eh);
         return sub;
     }
-    public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler model,
-        string? outputStream = null, string? groupName = null)
-        where TEventHandler : IEventHandler, ITypeRegister
+    public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
+        string? outputStream = null, string? groupName = null, IPosition? startFrom = null)
+        where TEventHandler : class,IEventHandler, ITypeRegister
     {
+        model ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
         var events = TEventHandler.TypeRegister.Keys;
-        outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
-        groupName ??= Conventions.GroupNameModelConvention(typeof(TEventHandler));
+        var handlerType = typeof(TEventHandler);
+        startFrom ??= StreamPosition.End;
+        outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
+        groupName ??= Conventions.GroupNameModelConvention(handlerType);
         await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
+
+        try
+        {
+            await PersistentSubscriptionClient.GetInfoToStreamAsync(outputStream, groupName);
+        }
+        catch (PersistentSubscriptionNotFoundException)
+        {
+            await PersistentSubscriptionClient.CreateToStreamAsync(outputStream, groupName, new PersistentSubscriptionSettings(true, startFrom));
+        }
+
         var sub = SubscribePersistently(outputStream, groupName);
         await sub.WithHandler(model);
         return sub;
     }
+   
+
     public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken())
     {
@@ -198,7 +216,9 @@ public class Plumber : IPlumber
         await aggregate.Rehydrate(events);
         return aggregate;
     }
-    
+
+    public IPlumberConfig Config => this;
+
     public async Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null)
     {
         var evData = MakeEventData(events, metadata);

@@ -1,7 +1,8 @@
 ﻿using ModelingEvolution.DirectConnect;
 using System.Collections.Concurrent;
+using MicroPlumberd.DirectConnect;
 
-namespace MicroPlumberd.DirectConnect
+namespace MicroPlumberd
 {
     public static class RequestInvokerExtensions
     {

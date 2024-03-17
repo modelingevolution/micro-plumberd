@@ -3,6 +3,7 @@ using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;

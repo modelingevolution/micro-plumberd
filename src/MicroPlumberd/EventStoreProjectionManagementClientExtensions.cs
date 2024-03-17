@@ -29,7 +29,7 @@ public static class EventStoreProjectionManagementClientExtensions
     {
         var query = CreateQuery(outputStream, eventTypes);
 
-        if (await register.Get(outputStream) != null)
+        if ((await register.Get(outputStream)) != null)
             await Update(client, outputStream, query);
         else
         {

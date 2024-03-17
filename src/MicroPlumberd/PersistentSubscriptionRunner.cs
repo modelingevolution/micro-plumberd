@@ -1,4 +1,5 @@
-﻿using EventStore.Client;
+﻿using System.Diagnostics;
+using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
@@ -11,14 +12,16 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
         await Task.Factory.StartNew(async (x) =>
         {
             var (sub, model) = (Tuple<EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult, T>)x!;
+
             await foreach (var e in sub)
             {
                 if (!T.TypeRegister.TryGetValue(e.Event.EventType, out var t)) continue;
 
                 var (ev, metadata) = plumber.ReadEventData(e.Event, t);
                 await model.Handle(metadata, ev);
-                await sub.Ack(e.Event.EventId);
+                await sub.Ack(e);
             }
+
         }, state, TaskCreationOptions.LongRunning);
         return model;
     }

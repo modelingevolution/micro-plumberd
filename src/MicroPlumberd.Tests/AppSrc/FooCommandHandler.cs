@@ -19,6 +19,7 @@ public partial class FooCommandHandler(IPlumber plumber)
         await plumber.SaveNew(agg);
     }
 
+
     [ThrowsFaultException<BusinessFault>]
     public async Task<HandlerOperationStatus> Handle(Guid id, ChangeFoo cmd)
     {

@@ -2,6 +2,7 @@
 using System.Dynamic;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.Text;
 using System.Text.Json;
 using EventStore.Client;
 
@@ -34,12 +35,12 @@ class Conventions : IConventions
     private readonly ConcurrentDictionary<Type,object> _extension = new();
     public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
-    public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.Name}-{id}";
-    public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().Name;
+    public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.GetFriendlyName()}-{id}";
+    public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
-    public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.Name;
+    public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
 
     public StandardMetadataEnricherTypes StandardMetadataEnricherTypes
     {
@@ -121,6 +122,41 @@ public class InvocationScope : IDisposable
     public void Dispose() => InvocationContext.Current.Clear();
 }
 
+public static class TypeExtensions
+{
+    public static string GetFriendlyName(this Type type)
+    {
+        if (!type.IsGenericType)
+        {
+            return type.Name;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        string name = type.Name;
+        int index = name.IndexOf('`');
+        if (index > 0)
+        {
+            name = name.Substring(0, index);
+        }
+
+        builder.Append(name);
+        builder.Append('<');
+
+        Type[] genericArguments = type.GetGenericArguments();
+        for (int i = 0; i < genericArguments.Length; i++)
+        {
+            string argumentName = GetFriendlyName(genericArguments[i]);
+            if (i > 0)
+            {
+                builder.Append(", ");
+            }
+            builder.Append(argumentName);
+        }
+        builder.Append('>');
+
+        return builder.ToString();
+    }
+}
 public static class MetadataExtensions
 {
     public static Guid? CorrelationId(this Metadata m)

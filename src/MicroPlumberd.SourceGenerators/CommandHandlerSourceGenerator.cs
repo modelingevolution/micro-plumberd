@@ -114,7 +114,7 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine("    {");
                         foreach (var command in commands)
                         {
-                            sb.AppendLine($"        {command} c => await Execute(id, c),");
+                            sb.AppendLine($"        {command} c => await ((ICommandHandler<{command}>)this).Execute(id, c),");
                         }
                         sb.AppendLine($"        _ => null");
                         sb.AppendLine("    };");

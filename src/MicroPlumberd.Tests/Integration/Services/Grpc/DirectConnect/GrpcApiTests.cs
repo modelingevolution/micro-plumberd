@@ -4,26 +4,27 @@ using FluentAssertions;
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 
-namespace MicroPlumberd.Tests.Integration;
+namespace MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect;
 
 
 [TestCategory("Integration")]
-public class CommandHandlerTests : IClassFixture<EventStoreServer>, IAsyncDisposable, IDisposable
+public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, IDisposable
 {
     private readonly EventStoreServer _eventStore;
-    private ClientApp? client;
+    private Fixtures.ClientApp? client;
 
-    public CommandHandlerTests(EventStoreServer eventStore)
+    public GrpcApiTests(EventStoreServer eventStore)
     {
         _eventStore = eventStore;
     }
 
     [Fact]
-    public async Task ApiSuccessfullInvocation()
+    public async Task ApiSuccessfulInvocation()
     {
         await _eventStore.StartInDocker();
         await using ServerApp srv = new ServerApp(_eventStore.HttpPort);
@@ -75,7 +76,7 @@ public class CommandHandlerTests : IClassFixture<EventStoreServer>, IAsyncDispos
 
     private IRequestInvoker ArrangeClientApp()
     {
-        client = new ClientApp();
+        client = new Fixtures.ClientApp();
 
         var sp = client.Start(service => service.AddClientDirectConnect()
             .AddCommandInvokers(typeof(CreateFoo), typeof(ChangeFoo)));

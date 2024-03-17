@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MicroPlumberd.Tests.Fixtures;
+namespace MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 
 class ClientApp : IDisposable, IAsyncDisposable
 {
@@ -23,7 +23,7 @@ class ClientApp : IDisposable, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        if(sp != null)
+        if (sp != null)
             await sp.DisposeAsync();
     }
 }
