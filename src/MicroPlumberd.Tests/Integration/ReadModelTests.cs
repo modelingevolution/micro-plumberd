@@ -1,22 +1,24 @@
 using FluentAssertions;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Utils;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.Integration;
 
-public class ReadModel_IntegrationTests : IClassFixture<EventStoreServer>
+[TestCategory("Integration")]
+public class ReadModelTests : IClassFixture<EventStoreServer>
 {
     private readonly EventStoreServer _eventStore;
 
     private readonly IPlumber plumber;
-   
-    public ReadModel_IntegrationTests(EventStoreServer eventStore)
+
+    public ReadModelTests(EventStoreServer eventStore)
     {
         _eventStore = eventStore;
         plumber = new Plumber(_eventStore.GetEventStoreSettings());
     }
-    
-    
+
+
 
     [Fact]
     public async Task SubscribeModel()
@@ -26,8 +28,8 @@ public class ReadModel_IntegrationTests : IClassFixture<EventStoreServer>
 
         var fooModel = new FooModel();
 
-        var sub= await plumber.SubscribeEventHandle(fooModel);
-        
+        var sub = await plumber.SubscribeEventHandle(fooModel);
+
         await Task.Delay(1000);
 
         fooModel.Index.Should().HaveCount(1);

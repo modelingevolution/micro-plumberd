@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageTags>EventStore;CQRS;EventSourcing;GRPC</PackageTags>
-    <Title>MicroPlumberd.DirectConnect</Title>
+    <Title>MicroPlumberd.Services.Grpc.DirectConnect</Title>
     <PackageIcon>logo-squere.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>

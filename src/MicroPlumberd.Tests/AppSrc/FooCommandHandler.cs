@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using MicroPlumberd.DirectConnect;
 
 namespace MicroPlumberd.Tests.AppSrc;
@@ -30,4 +31,5 @@ public partial class FooCommandHandler(IPlumber plumber)
         await plumber.SaveChanges(agg);
         return HandlerOperationStatus.Ok();
     }
+
 }

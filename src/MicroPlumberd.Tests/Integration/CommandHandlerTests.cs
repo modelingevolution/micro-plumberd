@@ -4,19 +4,20 @@ using FluentAssertions;
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
-using NSubstitute;
+
+namespace MicroPlumberd.Tests.Integration;
 
 
-namespace MicroPlumberd.Tests;
-
-public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, IAsyncDisposable, IDisposable
+[TestCategory("Integration")]
+public class CommandHandlerTests : IClassFixture<EventStoreServer>, IAsyncDisposable, IDisposable
 {
     private readonly EventStoreServer _eventStore;
     private ClientApp? client;
 
-    public CommandHandler_IntegrationTests(EventStoreServer eventStore)
+    public CommandHandlerTests(EventStoreServer eventStore)
     {
         _eventStore = eventStore;
     }
@@ -31,7 +32,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, 
         var invoker = ArrangeClientApp();
         var streamId = Guid.NewGuid();
 
-        await invoker.Execute(streamId, new CreateFoo() { Name="Hello"});
+        await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
         var ret2 = await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "Hello" });
         ret2.Code.Should().Be(HttpStatusCode.OK);
     }
@@ -48,12 +49,12 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, 
         });
         FooModel srvModel = new FooModel();
 
-        await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandle(srvModel, start:FromStream.End);
+        await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandle(srvModel, start: FromStream.End);
         await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandle(new FooProcessor(srvProvider.GetRequiredService<IPlumber>()), start: FromStream.End);
 
         // Making sure we have subscribed.
         await Task.Delay(1000);
-        
+
         // Client App
         var invoker = ArrangeClientApp();
 
@@ -74,14 +75,14 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, 
 
     private IRequestInvoker ArrangeClientApp()
     {
-        this.client = new ClientApp();
+        client = new ClientApp();
 
         var sp = client.Start(service => service.AddClientDirectConnect()
             .AddCommandInvokers(typeof(CreateFoo), typeof(ChangeFoo)));
 
         var clientPool = sp.GetRequiredService<IRequestInvokerPool>();
         var invoker = clientPool.Get("http://localhost:5001");
-        
+
         return invoker;
     }
 
@@ -110,7 +111,7 @@ public class CommandHandler_IntegrationTests : IClassFixture<EventStoreServer>, 
 
     public async ValueTask DisposeAsync()
     {
-        if(client != null)
+        if (client != null)
             await client.DisposeAsync();
     }
 }

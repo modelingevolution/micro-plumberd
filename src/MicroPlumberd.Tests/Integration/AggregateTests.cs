@@ -1,23 +1,24 @@
-using System.Data.Common;
-using EventStore.Client;
 using FluentAssertions;
-using MicroPlumberd;
-using MicroPlumberd.Tests.Fixtures;
 using MicroPlumberd.Tests.AppSrc;
+using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Utils;
 
-namespace MicroPlumberd.Tests
+namespace MicroPlumberd.Tests.Integration
 {
     
-    public class Aggregate_IntegrationTests : IClassFixture<EventStoreServer>
+  
+
+    [TestCategory("Integration")]
+    public class AggregateTests : IClassFixture<EventStoreServer>
     {
         private readonly IPlumber plumber;
         private readonly EventStoreServer es;
 
-        
-        public Aggregate_IntegrationTests(EventStoreServer es)
+
+        public AggregateTests(EventStoreServer es)
         {
             plumber = Plumber.Create(es.GetEventStoreSettings());
-            this.es  = es;
+            this.es = es;
         }
 
         [Fact]
@@ -58,7 +59,7 @@ namespace MicroPlumberd.Tests
 
             await plumber.SaveChanges(aggregate);
         }
-        
+
     }
 
 }

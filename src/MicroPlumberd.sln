@@ -9,14 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.SourceGenerat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Tests", "MicroPlumberd.Tests\MicroPlumberd.Tests.csproj", "{075AC1B2-C859-48AF-9275-ACA4E7D77ABB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.DirectConnect", "MicroPlumberd.DirectConnect\MicroPlumberd.DirectConnect.csproj", "{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Services.Grpc.DirectConnect", "MicroPlumberd.DirectConnect\MicroPlumberd.Services.Grpc.DirectConnect.csproj", "{7DC01D07-9F17-47F1-9CF1-1E7A068A2647}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80E95089-6BBE-4CE2-97FD-EAB8EDF7D0E4}"
 	ProjectSection(SolutionItems) = preProject
 		..\cake.ps1 = ..\cake.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services", "MicroPlumberd.Services\MicroPlumberd.Services.csproj", "{513E10D3-337C-4D76-AAA4-C630F56F995F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Services", "MicroPlumberd.Services\MicroPlumberd.Services.csproj", "{513E10D3-337C-4D76-AAA4-C630F56F995F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

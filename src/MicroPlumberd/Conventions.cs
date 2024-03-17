@@ -1,6 +1,8 @@
-﻿using System.Dynamic;
+﻿using System.Collections.Concurrent;
+using System.Dynamic;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.Text.Json;
 using EventStore.Client;
 
 namespace MicroPlumberd;
@@ -17,6 +19,7 @@ public delegate string OutputStreamModelConvention(Type model);
 public delegate string GroupNameModelConvention(Type model);
 public interface IConventions
 {
+    T GetExtension<T>() where T:new();
     SteamNameConvention GetStreamIdConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
     MetadataConvention? MetadataEnrichers { get; set; }
@@ -28,6 +31,8 @@ public interface IConventions
 }
 class Conventions : IConventions
 {
+    private readonly ConcurrentDictionary<Type,object> _extension = new();
+    public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
     public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.Name}-{id}";
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().Name;
@@ -129,6 +134,17 @@ public static class MetadataExtensions
         if (m.Data.TryGetProperty("$causationId", out var v))
             return Guid.Parse(v.GetString()!);
         return null;
+    }
+    public static bool TryGetValue<TValue>(this Metadata m, string propertyName, out TValue value)
+    {
+        if (m.Data.TryGetProperty(propertyName, out var v))
+        {
+            value = JsonSerializer.Deserialize<TValue>(v);
+            return true;
+        }
+
+        value = default;
+        return false;
     }
 }
 public class InvocationContext

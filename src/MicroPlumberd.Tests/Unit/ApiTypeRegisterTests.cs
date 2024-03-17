@@ -1,13 +1,16 @@
 using FluentAssertions;
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Services;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.Unit;
 
-public class MessagesTests
+[TestCategory("Unit")]
+public class ApiTypeRegisterTests
 {
     [Fact]
     public void ServerMessagesCount()
@@ -32,7 +35,7 @@ public class MessagesTests
         t[typeof(HandlerOperationStatus).FullName!.ToGuid()].Should().NotBeNull();
     }
 
-    private IEnumerable<Type> Messages<T>() where T : IApiTypeRegister
+    private IEnumerable<Type> Messages<T>() where T : IServiceTypeRegister
     {
         return T.FaultTypes.Union(T.CommandTypes).Union(T.ReturnTypes).Distinct();
     }

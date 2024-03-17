@@ -2,33 +2,35 @@ using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
+using MicroPlumberd.Tests.Utils;
 
-namespace MicroPlumberd.Tests;
+namespace MicroPlumberd.Tests.Integration;
 
-public class ModelSets_IntegrationTests : IClassFixture<EventStoreServer>
+[TestCategory("Integration")]
+public class ModelSetsTests : IClassFixture<EventStoreServer>
 {
     private readonly EventStoreServer _eventStore;
 
     private readonly IPlumber plumber;
 
-    public ModelSets_IntegrationTests(EventStoreServer eventStore)
+    public ModelSetsTests(EventStoreServer eventStore)
     {
         _eventStore = eventStore;
         plumber = new Plumber(_eventStore.GetEventStoreSettings());
     }
-    
+
 
     [Fact]
     public async Task SubscribeModels()
     {
         await _eventStore.StartInDocker();
         var fk = Guid.NewGuid();
-        await plumber.AppendEvents($"Dim-{fk}", StreamState.NoStream, new DimentionCreated() { Name = "Dependency"});
-        await plumber.AppendEvents($"Fact-{Guid.NewGuid()}", StreamState.NoStream, new MasterRecordCreated() { Name="Master", DependencyId = fk});
+        await plumber.AppendEvents($"Dim-{fk}", StreamState.NoStream, new DimentionCreated() { Name = "Dependency" });
+        await plumber.AppendEvents($"Fact-{Guid.NewGuid()}", StreamState.NoStream, new MasterRecordCreated() { Name = "Master", DependencyId = fk });
 
         var dimentionTable = new DimentionLookupModel();
         var factTable = new MasterModel(dimentionTable);
-        
+
 
         await plumber.SubscribeSet()
             .With(dimentionTable)

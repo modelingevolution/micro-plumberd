@@ -68,6 +68,7 @@ namespace MicroPlumberd.SourceGenerators
                         // Add using directives
                         foreach (var usingDirective in usingDirectives) sb.AppendLine(usingDirective);
                         sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
+                        sb.AppendLine("using MicroPlumberd.Services;");
                         sb.AppendLine(); // Add a line break after using directives
 
                         if (!string.IsNullOrEmpty(namespaceName)) sb.AppendLine($"namespace {namespaceName};");
@@ -98,7 +99,7 @@ namespace MicroPlumberd.SourceGenerators
                             .Distinct()
                             .ToArray();
 
-                        sb.AppendLine($"partial class {className} : IApiTypeRegister, {string.Join(", ",commands.Select(x=> $"ICommandHandler<{x}>"))} ");
+                        sb.AppendLine($"partial class {className} : IServiceTypeRegister, {string.Join(", ",commands.Select(x=> $"ICommandHandler<{x}>"))} ");
                         sb.AppendLine("{");
                         foreach(var a in args) { 
                             if(a.resultType != null)
@@ -107,7 +108,18 @@ namespace MicroPlumberd.SourceGenerators
                                 sb.AppendLine($"    async Task<object> ICommandHandler<{a.cmdType}>.Execute(Guid id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return HandlerOperationStatus.Ok(); }}");
                         }
 
-                        sb.AppendLine("    static IServiceCollection IApiTypeRegister.RegisterHandlers(IServiceCollection services)");
+
+
+                        sb.AppendLine("    public async Task<object?> Execute(Guid id, object command) => command switch");
+                        sb.AppendLine("    {");
+                        foreach (var command in commands)
+                        {
+                            sb.AppendLine($"        {command} c => await Execute(id, c),");
+                        }
+                        sb.AppendLine($"        _ => null");
+                        sb.AppendLine("    };");
+
+                        sb.AppendLine("    static IServiceCollection IServiceTypeRegister.RegisterHandlers(IServiceCollection services)");
                         sb.AppendLine("    {");
                         foreach (var command in commands)
                         {
@@ -120,9 +132,9 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine($"   private static readonly Type[] _commandTypes = new[] {{ {string.Join(",", commands.Select(x=>$"typeof({x})")) } }};");
                         sb.AppendLine($"   private static readonly Type[] _returnTypes = new[] {{ {string.Join(",", returnTypes.Select(x => $"typeof({x})"))} }};");
                         sb.AppendLine($"   private static readonly Type[] _faultTypes = new[] {{ {string.Join(",", errorMsg.Select(x => $"typeof({x})"))} }};");
-                        sb.AppendLine("    static IEnumerable<Type> IApiTypeRegister.CommandTypes => _commandTypes;");
-                        sb.AppendLine("    static IEnumerable<Type> IApiTypeRegister.ReturnTypes => _returnTypes;");
-                        sb.AppendLine("    static IEnumerable<Type> IApiTypeRegister.FaultTypes => _faultTypes;");
+                        sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.CommandTypes => _commandTypes;");
+                        sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.ReturnTypes => _returnTypes;");
+                        sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.FaultTypes => _faultTypes;");
 
                         sb.AppendLine("}");
                         context.AddSource($"{className}_CommandHandler.cs", SourceText.From(sb.ToString(), Encoding.UTF8));

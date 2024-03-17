@@ -88,7 +88,7 @@ public class Plumber : IPlumber
         this.Serializer = config.Serializer;
         this.ServiceProvider = config.ServiceProvider;
     }
-    internal IServiceProvider ServiceProvider { get; }
+    public IServiceProvider ServiceProvider { get; }
     public IObjectSerializer Serializer { get; }
     public IConventions Conventions { get; }
     private ProjectionRegister? _projectionRegister;

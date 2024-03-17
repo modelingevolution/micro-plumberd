@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace MicroPlumberd.DirectConnect;
+namespace MicroPlumberd.Services;
 
-public interface IApiTypeRegister
+public interface IServiceTypeRegister
 {
     static abstract IEnumerable<Type> ReturnTypes { get; }
     static abstract IEnumerable<Type> FaultTypes { get; }

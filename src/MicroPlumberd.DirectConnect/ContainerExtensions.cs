@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using MicroPlumberd.Services;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 
@@ -30,7 +31,7 @@ public static class ContainerExtensions
         return services;
     }
 
-    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler:IApiTypeRegister
+    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler:IServiceTypeRegister
     {
         foreach (var cmdType in TCommandHandler.CommandTypes)
         {
