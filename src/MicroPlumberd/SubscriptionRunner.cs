@@ -8,13 +8,19 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
     {
+        return await WithHandler<T>(model, T.TypeRegister.TryGetValue!);
+    }
+
+    public async Task<T> WithHandler<T>(T model, TypeEventConverter func)
+        where T : IEventHandler
+    {
         var state = new Tuple<EventStoreClient.StreamSubscriptionResult, T>(subscription, model);
         await Task.Factory.StartNew(async (x) =>
         {
             var (sub, model) = (Tuple<EventStoreClient.StreamSubscriptionResult, T>)x!;
             await foreach (var e in sub)
             {
-                if (!T.TypeRegister.TryGetValue(e.Event.EventType, out var t)) continue;
+                if (!func(e.Event.EventType, out var t)) continue;
 
                 var (ev, metadata) = plumber.ReadEventData(e.Event, t);
                 using var scope = new InvocationScope();

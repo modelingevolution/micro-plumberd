@@ -19,6 +19,7 @@ public interface IPlumber
     Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
         object? metadata = null);
 
+    Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null);
     /// <summary>
     /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
     /// </summary>
@@ -38,9 +39,13 @@ public interface IPlumber
     ISubscriptionSet SubscribeSet();
     ISubscriptionRunner Subscribe(string streamName, FromStream start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
 
-    Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler? eh=default,string? outputStream=null, FromStream? start = null) where TEventHandler : class,IEventHandler, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TypeEventConverter mapFunc,
+        IEnumerable<string>? eventTypes,
+        TEventHandler? eh = default, string? outputStream = null,
+        FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler:class,IEventHandler;
+    Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler? eh=default,string? outputStream=null, FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class,IEventHandler, ITypeRegister;
 
-    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null) where TEventHandler : class,IEventHandler, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true) where TEventHandler : class,IEventHandler, ITypeRegister;
 
     ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
     

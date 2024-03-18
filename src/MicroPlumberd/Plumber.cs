@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
+using System.Xml.Linq;
 using EventStore.Client;
 using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -106,19 +107,28 @@ public class Plumber : IPlumber, IPlumberConfig
         return new SubscriptionRunner(this,_client.SubscribeToStream(streamName, start, true, userCredentials, cancellationToken));
     }
     public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
-        FromStream? start = null)
+        FromStream? start = null, bool ensureOutputStreamProjection=true)
         where TEventHandler : class,IEventHandler, ITypeRegister
     {
+        return await SubscribeEventHandle<TEventHandler>(TEventHandler.TypeRegister.TryGetValue!, TEventHandler.TypeRegister.Keys,
+            eh, outputStream, start, ensureOutputStreamProjection);
+    }
+    public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TypeEventConverter mapFunc,
+        IEnumerable<string>? eventTypes, TEventHandler? eh = default, string? outputStream = null,
+        FromStream? start = null, bool ensureOutputStreamProjection = true)
+        where TEventHandler : class, IEventHandler
+    {
+        eventTypes ??= Array.Empty<string>();
         eh ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
-        var events = TEventHandler.TypeRegister.Keys;
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
-        await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
+        if (ensureOutputStreamProjection)
+            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, eventTypes);
         var sub = Subscribe(outputStream, start ?? FromStream.Start);
-        await sub.WithHandler(eh);
+        await sub.WithHandler(eh, mapFunc);
         return sub;
     }
     public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
-        string? outputStream = null, string? groupName = null, IPosition? startFrom = null)
+        string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class,IEventHandler, ITypeRegister
     {
         model ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
@@ -127,7 +137,8 @@ public class Plumber : IPlumber, IPlumberConfig
         startFrom ??= StreamPosition.End;
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
         groupName ??= Conventions.GroupNameModelConvention(handlerType);
-        await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
+        if (ensureOutputStreamProjection)
+            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
 
         try
         {
@@ -223,14 +234,22 @@ public class Plumber : IPlumber, IPlumberConfig
     public async Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
         object? metadata = null)
     {
-        var evData = MakeEventData(events, metadata);
+        var evData = MakeEvents(events, metadata);
         return await _client.AppendToStreamAsync(streamId, rev, evData);
     }
     public async Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
         object? metadata = null)
     {
-        var evData = MakeEventData(events, metadata);
+        var evData = MakeEvents(events, metadata);
         var r = await _client.AppendToStreamAsync(streamId, state, evData);
+        return r;
+    }
+    public async Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null)
+    {
+        var m = Conventions.GetMetadata(null, evt, metadata);
+        var evId = Conventions.GetEventIdConvention(null, evt);
+        var evData = MakeEvent(evId, evtName, evt, m);
+        var r = await _client.AppendToStreamAsync(streamId, state, [evData]);
         return r;
     }
     /// <summary>
@@ -247,27 +266,30 @@ public class Plumber : IPlumber, IPlumberConfig
         
         var metadata = new Metadata(aggregateId, er.EventId.ToGuid(), er.EventNumber.ToInt64(), er.EventStreamId, m);
         return (ev, metadata);
-
         
     }
-    private IEnumerable<EventData> MakeEventData(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
+    private IEnumerable<EventData> MakeEvents(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
     {
         var evData = events.Select(x =>
         {
             var m = Conventions.GetMetadata(agg, x, metadata);
             var evName = this.Conventions.GetEventNameConvention(agg, x);
             var evId = Conventions.GetEventIdConvention(agg, x);
-            return new EventData(evId, evName, Serializer.SerializeToUtf8Bytes(x),
-                Serializer.SerializeToUtf8Bytes(m));
+            return MakeEvent(evId, evName, x, m);
         });
         return evData;
+    }
+
+    private EventData MakeEvent(Uuid evId, string evName, object data, object m)
+    {
+        return new EventData(evId, evName, Serializer.SerializeToUtf8Bytes(data), Serializer.SerializeToUtf8Bytes(m));
     }
 
     public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
-        var evData = MakeEventData(aggregate.PendingEvents, metadata, aggregate);
+        var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
         var r = await _client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
         aggregate.AckCommitted();
         return r;
@@ -278,7 +300,7 @@ public class Plumber : IPlumber, IPlumberConfig
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
-        var evData = MakeEventData(aggregate.PendingEvents, metadata, aggregate);
+        var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
         var r = await _client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
         aggregate.AckCommitted();
         return r;

@@ -8,7 +8,7 @@ public static class PlumberExtensions
     {
         var outputStream = plumber.Config.Conventions.GetCommandHandlerOutputStreamName<TCommandHandler>();
         var groupName= plumber.Config.Conventions.GetCommandHandlerGroupName<TCommandHandler>();
-        return plumber.SubscribeEventHandlerPersistently(new CommandHandlerDispatcher<TCommandHandler>(plumber), 
+        return plumber.SubscribeEventHandlerPersistently(new CommandHandlerExecutor<TCommandHandler>(plumber), 
             outputStream, groupName);
     }
    

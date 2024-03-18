@@ -6,7 +6,14 @@ namespace MicroPlumberd;
 
 class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult subscription) : ISubscriptionRunner
 {
-    public async Task<T> WithHandler<T>(T model) where T : IEventHandler, ITypeRegister
+    public async Task<T> WithHandler<T>(T model)
+        where T : IEventHandler, ITypeRegister
+    {
+        return await WithHandler<T>(model, T.TypeRegister.TryGetValue!);
+    }
+
+    public async Task<T> WithHandler<T>(T model, TypeEventConverter func)
+        where T : IEventHandler
     {
         var state = new Tuple<EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult, T>(subscription, model);
         await Task.Factory.StartNew(async (x) =>
@@ -15,7 +22,7 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
 
             await foreach (var e in sub)
             {
-                if (!T.TypeRegister.TryGetValue(e.Event.EventType, out var t)) continue;
+                if (!func(e.Event.EventType, out var t)) continue;
 
                 var (ev, metadata) = plumber.ReadEventData(e.Event, t);
 

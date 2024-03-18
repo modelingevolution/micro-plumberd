@@ -2,7 +2,7 @@
 
 namespace MicroPlumberd;
 
-
+public delegate Task EventDispatcher(Metadata m, object evt);
 public interface IEventHandler
 {
     Task Handle(Metadata m, object ev);

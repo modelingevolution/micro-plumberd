@@ -22,6 +22,70 @@ class CommandBus(IPlumber plumber) : ICommandBus
         };
         
             
-        await plumber.AppendEvents(streamId, StreamState.Any, [command], metadata);
+        var ret = await plumber.AppendEvents(streamId, StreamState.Any, [command], metadata);
+
+        ICommandResult executionResults = (ICommandResult)Activator.CreateInstance(typeof(CommandExecutionResults<>).MakeGenericType(command.GetType()), plumber, ret,command);
+        //var start = StreamPosition.FromStreamRevision(ret.NextExpectedStreamRevision);
+        var fromStream = FromStream.Start;
+        await plumber.SubscribeEventHandle(executionResults.Map, null, executionResults, streamId, fromStream, false);
+        executionResults.Wait.WaitOne(TimeSpan.FromSeconds(120));
+        if (!executionResults.IsSuccess)
+            throw new Exception(executionResults.Error ?? "Timeout");
+
     }
+}
+
+interface ICommandResult : IEventHandler
+{
+    bool Map(string type, out Type t);
+    bool IsSuccess { get; }
+    string Error { get; }
+    ManualResetEvent Wait { get; }
+}
+class CommandExecutionResults<TCommand>(IPlumber plumber, IWriteResult results, TCommand source) : ICommandResult
+{
+    public async Task Handle(Metadata m, object ev)
+    {
+        if (ev is CommandExecuted ce)
+        {
+            if (ce.CommandId == m.CausationId())
+            {
+                IsSuccess = true;
+                Wait.Set();
+            }
+        } else if (ev is CommandFailed cf)
+        {
+            if (cf.CommandId == m.CausationId())
+            {
+                IsSuccess = false;
+                Error = cf.Message;
+                Wait.Set();
+            }
+        }
+    }
+
+    public bool Map(string type, out Type t)
+    {
+        var cmdType = typeof(TCommand).Name;
+        if (type == cmdType)
+        {
+            t = typeof(TCommand);
+            return true;
+        } else if (type == $"{cmdType}Executed")
+        {
+            t = typeof(CommandExecuted);
+            return true;
+        } else if (type == $"{cmdType}Failed")
+        {
+            t = typeof(CommandFailed);
+            return true;
+        }
+        t = null;
+        return false;
+    }
+
+    public bool IsSuccess { get; set; }
+    public string Error { get; set; }
+
+    public ManualResetEvent Wait { get; } = new ManualResetEvent(false);
 }
