@@ -16,10 +16,12 @@ class CommandBus(IPlumber plumber) : ICommandBus
         var streamId = plumber.Config.Conventions.GetSteamIdFromCommand(command.GetType(), recipientId);
         var metadata = new
         {
-            CorrelationId = correlationId, 
-            CausationId = causationId,
+            CorrelationId = (command is IId id && correlationId == null) ? id.Id : correlationId, 
+            CausationId = (command is IId id2 && causationId == null) ? id2.Id : causationId,
             RecipientId = recipientId
         };
+        
+            
         await plumber.AppendEvents(streamId, StreamState.Any, [command], metadata);
     }
 }

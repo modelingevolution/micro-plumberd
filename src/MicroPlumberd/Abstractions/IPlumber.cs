@@ -7,6 +7,7 @@ namespace MicroPlumberd;
 public interface IPlumber
 {
     IPlumberConfig Config { get; }
+
     /// <summary>
     /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
     /// </summary>
@@ -15,7 +16,8 @@ public interface IPlumber
     /// <param name="events">Events that are going to be serialized and appended</param>
     /// <param name="metadata">Metadata that will be merged with metadata created from conventions</param>
     /// <returns></returns>
-    Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null);
+    Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
+        object? metadata = null);
 
     /// <summary>
     /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
@@ -25,7 +27,8 @@ public interface IPlumber
     /// <param name="events">Events that are going to be serialized and appended</param>
     /// <param name="metadata">Metadata that will be merged with metadata created from conventions</param>
     /// <returns></returns>
-    Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null);
+    Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
+        object? metadata = null);
     Task AppendEvents(string streamId, StreamState state, params object[] events) => AppendEvents(streamId, state, events,null);
 
     Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null,
@@ -45,7 +48,7 @@ public interface IPlumber
     Task Rehydrate<T>(T model, Guid id) where T : IEventHandler, ITypeRegister;
 
     Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister;
-    Task SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
-    Task SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
-    Task AppendLink(string streamId, Metadata metadata);
+    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+    Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null);
 }

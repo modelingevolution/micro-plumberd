@@ -1,5 +1,6 @@
 ﻿
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using EventStore.Client;
@@ -219,15 +220,18 @@ public class Plumber : IPlumber, IPlumberConfig
 
     public IPlumberConfig Config => this;
 
-    public async Task AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null)
+    public async Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
+        object? metadata = null)
     {
         var evData = MakeEventData(events, metadata);
-        await _client.AppendToStreamAsync(streamId, rev, evData);
+        return await _client.AppendToStreamAsync(streamId, rev, evData);
     }
-    public async Task AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null)
+    public async Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
+        object? metadata = null)
     {
         var evData = MakeEventData(events, metadata);
-        await _client.AppendToStreamAsync(streamId, state, evData);
+        var r = await _client.AppendToStreamAsync(streamId, state, evData);
+        return r;
     }
     /// <summary>
     /// This method is called only from subscriptions.
@@ -235,21 +239,16 @@ public class Plumber : IPlumber, IPlumberConfig
     /// <param name="er"></param>
     /// <param name="t"></param>
     /// <returns></returns>
-    internal (object, Metadata) ReadEventData(EventRecord er, Type t, bool setContext = true)
+    internal (object, Metadata) ReadEventData(EventRecord er, Type t)
     {
         var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
         var ev = Serializer.Deserialize(er.Data.Span, t)!;
         var m = Serializer.Parse(er.Metadata.Span);
         
-        var metadata = new Metadata(aggregateId,  er.EventNumber.ToInt64(), er.EventStreamId, m);
-        if (!setContext) return (ev, metadata);
+        var metadata = new Metadata(aggregateId, er.EventId.ToGuid(), er.EventNumber.ToInt64(), er.EventStreamId, m);
+        return (ev, metadata);
 
-        if (metadata.CorrelationId() != null)
-            InvocationContext.Current.SetCorrelation(metadata.CorrelationId()!.Value);
-        else InvocationContext.Current.ClearCorrelation();
-        InvocationContext.Current.SetCausation(er.EventId.ToGuid());
-
-        return (ev, metadata); 
+        
     }
     private IEnumerable<EventData> MakeEventData(IEnumerable<object> events, object? metadata, IAggregate? agg = null)
     {
@@ -264,30 +263,38 @@ public class Plumber : IPlumber, IPlumberConfig
         return evData;
     }
 
-    public async Task SaveChanges<T>(T aggregate, object? metadata = null)
+    public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEventData(aggregate.PendingEvents, metadata, aggregate);
-        await _client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
+        var r = await _client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
         aggregate.AckCommitted();
+        return r;
     }
 
 
-    public async Task SaveNew<T>(T aggregate, object? metadata = null)
+    public async Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEventData(aggregate.PendingEvents, metadata, aggregate);
-        await _client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
+        var r = await _client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
         aggregate.AckCommitted();
+        return r;
     }
-
-    public async Task AppendLink(string streamId, Metadata metadata)
+    /// <summary>
+    /// Appends a link to the stream based on metadata loaded from somewhere else.
+    /// </summary>
+    /// <param name="streamId">Full name of the stream.</param>
+    /// <param name="metadata">Event's metadata that link will point to.</param>
+    /// <param name="state">StreamState, default is Any</param>
+    /// <returns></returns>
+    public async Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null)
     {
         var data = Encoding.UTF8.GetBytes($"{metadata.SourceStreamPosition}@{metadata.SourceStreamId}");
-        string eventType = "$>";
-        await _client.AppendToStreamAsync(streamId, StreamState.Any,
+        const string eventType = "$>";
+        return await _client.AppendToStreamAsync(streamId, state ?? StreamState.Any,
             new[] { new EventData(Uuid.NewUuid(), eventType, data) });
 
     }

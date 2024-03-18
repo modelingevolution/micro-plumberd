@@ -5,6 +5,8 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json;
 using EventStore.Client;
+using Grpc.Core;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace MicroPlumberd;
 
@@ -14,6 +16,8 @@ public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId)
 public delegate string EventNameConvention(IAggregate? aggregate, object evt);
 
 public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
+
+public delegate void BuildInvocationContext(InvocationContext context, Metadata m);
 public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
 
 public delegate string OutputStreamModelConvention(Type model);
@@ -23,6 +27,7 @@ public interface IConventions
     T GetExtension<T>() where T:new();
     SteamNameConvention GetStreamIdConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
+    BuildInvocationContext BuildInvocationContext { get; set; }
     MetadataConvention? MetadataEnrichers { get; set; }
     EventIdConvention GetEventIdConvention { get; set; }
     OutputStreamModelConvention OutputStreamModelConvention { get; set; }
@@ -38,6 +43,7 @@ class Conventions : IConventions
     public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.GetFriendlyName()}-{id}";
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
+    public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
@@ -82,7 +88,12 @@ class Conventions : IConventions
 
         IDictionary<string, object> kv = obj!;
         foreach (var i in metadata.GetType().GetProperties().Where(x => x.CanRead))
-            kv.Add(i.Name, i.GetGetMethod(false)!.Invoke(metadata, null)!);
+        {
+            string prop = i.Name
+                .Replace("CorrelationId", "$correlationId")
+                .Replace("CausationId", "$causationId");
+            kv.Add(prop, i.GetGetMethod(false)!.Invoke(metadata, null)!);
+        }
         return obj;
     }
 }
@@ -234,4 +245,12 @@ public class InvocationContext
     }
 
     public Guid? CorrelationId() => TryGetValue<Guid>("$correlationId", out var v) ? v : null;
+
+    public static void Build(InvocationContext context, Metadata metadata)
+    {
+        if (metadata.CorrelationId() != null)
+            context.SetCorrelation(metadata.CorrelationId()!.Value);
+        else context.ClearCorrelation();
+        context.SetCausation(metadata.CausationId() != null ? metadata.CausationId()!.Value : metadata.EventId);
+    }
 }

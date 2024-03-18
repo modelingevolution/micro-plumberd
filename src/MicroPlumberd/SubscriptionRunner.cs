@@ -17,6 +17,8 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
                 if (!T.TypeRegister.TryGetValue(e.Event.EventType, out var t)) continue;
 
                 var (ev, metadata) = plumber.ReadEventData(e.Event, t);
+                using var scope = new InvocationScope();
+                plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
                 await model.Handle(metadata, ev);
             }
         }, state, TaskCreationOptions.LongRunning);
