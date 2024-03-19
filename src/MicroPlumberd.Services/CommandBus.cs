@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
@@ -22,14 +23,11 @@ class CommandBus(IPlumber plumber) : ICommandBus
             CausationId = (command is IId id2 && causationId == null) ? id2.Id : causationId,
             RecipientId = recipientId
         };
-        
-            
-        var ret = await plumber.AppendEvents(streamId, StreamState.Any, [command], metadata);
 
-        ICommandResult executionResults = (ICommandResult)Activator.CreateInstance(typeof(CommandExecutionResults<>).MakeGenericType(command.GetType()), plumber, ret,command);
-        //var start = StreamPosition.FromStreamRevision(ret.NextExpectedStreamRevision);
-        var fromStream = FromStream.Start;
-        await plumber.SubscribeEventHandle(executionResults.Map, null, executionResults, streamId, fromStream, false);
+        ICommandResult? executionResults = (ICommandResult)Activator.CreateInstance(typeof(CommandExecutionResults<>).MakeGenericType(command.GetType()))!;
+        await plumber.SubscribeEventHandle(executionResults.Map, null, executionResults, streamId, FromStream.End, false);
+        await plumber.AppendEvents(streamId, StreamState.Any, [command], metadata);
+        
         bool receivedReturn = executionResults.Wait.WaitOne(TimeSpan.FromSeconds(120));
         if (!executionResults.IsSuccess)
         {
@@ -53,22 +51,22 @@ interface ICommandResult : IEventHandler
     ManualResetEvent Wait { get; }
 }
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
-public class ThrowsFaultExceptionAttribute<TMessage>() : ThrowsFaultExceptionAttribute(typeof(TMessage));
+public class ThrowsFaultCommandExceptionAttribute<TMessage>() : ThrowsFaultCommandExceptionAttribute(typeof(TMessage));
 
-public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute
+public abstract class ThrowsFaultCommandExceptionAttribute(Type thrownType) : Attribute
 {
     public Type ThrownType { get; init; } = thrownType;
 }
-class CommandExecutionResults<TCommand>(IPlumber plumber, IWriteResult results, TCommand source) : ICommandResult
+public class CommandExecutionResults<TCommand>() : ICommandResult
 {
-    private static readonly IDictionary<string, Type> _exceptionMap;
-    static CommandExecutionResults()
-    {
-        _exceptionMap = typeof(TCommand)
-            .GetCustomAttributes<ThrowsFaultExceptionAttribute>()
-            .Select(x=>x.ThrownType)
-            .ToDictionary(x => $"{typeof(TCommand).Name}Failed<{x.Name}>");
-    }
+    private static readonly IDictionary<string, Type> _exceptionMap= typeof(TCommand)
+        .GetCustomAttributes()
+        .Where(x => x is ThrowsFaultCommandExceptionAttribute)
+        .OfType<ThrowsFaultCommandExceptionAttribute>()
+        .Select(x => x.ThrownType)
+        .ToDictionary(x => $"{typeof(TCommand).Name}Failed<{x.Name}>", 
+            x => typeof(CommandExecuted<>).MakeGenericType(x));
+    
     public async Task Handle(Metadata m, object ev)
     {
         switch (ev)
@@ -137,8 +135,8 @@ class CommandExecutionResults<TCommand>(IPlumber plumber, IWriteResult results, 
         return false;
     }
 
-    public bool IsSuccess { get; set; }
-    public string ErrorMessage { get; set; }
-    public object? ErrorData { get; set; }
+    public bool IsSuccess { get; private set; }
+    public string ErrorMessage { get; private set; }
+    public object? ErrorData { get; private set; }
     public ManualResetEvent Wait { get; } = new ManualResetEvent(false);
 }

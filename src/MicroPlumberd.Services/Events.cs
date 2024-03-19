@@ -13,9 +13,10 @@ record CommandFailed
     public TimeSpan Duration { get; init; }
     public string Message { get; init; }
 
-    public static CommandExecuted Create(Guid commandId, string message, TimeSpan duration, object fault)
+    public static ICommandFailedEx Create(Guid commandId, string message, TimeSpan duration, object fault)
     {
-        return (CommandExecuted)Activator.CreateInstance(typeof(CommandExecuted<>).MakeGenericType(fault.GetType()), commandId, message,duration, fault);
+        var type = typeof(CommandExecuted<>).MakeGenericType(fault.GetType());
+        return (ICommandFailedEx)Activator.CreateInstance(type, commandId, message,duration, fault)!;
     }
 }
 

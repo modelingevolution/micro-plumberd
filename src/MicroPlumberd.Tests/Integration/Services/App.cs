@@ -28,6 +28,7 @@ public class App : IDisposable
     public async Task<IServiceProvider> StartAsync()
     {
         await host.StartAsync();
+        await Task.Delay(1000);
         return host.Services;
     }
 }

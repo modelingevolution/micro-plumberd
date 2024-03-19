@@ -1,9 +1,12 @@
+
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Services;
 using ProtoBuf;
 
 namespace MicroPlumberd.Tests.AppSrc;
 
 [ProtoContract]
+[ThrowsFaultCommandException<BusinessFault>]
 [Returns<HandlerOperationStatus>]
 public class CreateFoo : IId
 {
