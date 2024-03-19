@@ -32,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
   </ItemGroup>
 

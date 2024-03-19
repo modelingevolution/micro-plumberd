@@ -40,6 +40,12 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
                     Duration = sw.Elapsed
                 });
         }
+        catch (CommandFaultException ex)
+        {
+            var faultData = ex.GetFaultData();
+            await plumber.AppendEvent(cmdStream, StreamState.StreamExists,
+                $"{cmdName}Failed<{faultData.GetType().Name}>", CommandFailed.Create(cmdId, ex.Message, sw.Elapsed,faultData));
+        }
         catch(Exception ex)
         {
             await plumber.AppendEvent(cmdStream, StreamState.StreamExists,
@@ -59,21 +65,4 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
     // TODO: Conventions are not consistent.
     private static Dictionary<string, Type> _typeRegister = T.CommandTypes.ToDictionary(x => x.Name);
     public static IReadOnlyDictionary<string, Type> TypeRegister => _typeRegister;
-}
-
-record CommandExecuted
-{
-    public Guid CommandId { get; init; }
-    public TimeSpan Duration { get; init; }
-}
-
-record CommandFailed
-{
-    public Guid CommandId { get; init; }
-    public TimeSpan Duration { get; init; }
-    public string Message { get; init; }
-}
-record CommandExecuted<TFault> : CommandFailed
-{
-    public TFault Fault { get; init; }
 }

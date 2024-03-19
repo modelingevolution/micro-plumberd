@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using EventStore.Client;
 using MicroPlumberd;
@@ -28,38 +30,81 @@ class CommandBus(IPlumber plumber) : ICommandBus
         //var start = StreamPosition.FromStreamRevision(ret.NextExpectedStreamRevision);
         var fromStream = FromStream.Start;
         await plumber.SubscribeEventHandle(executionResults.Map, null, executionResults, streamId, fromStream, false);
-        executionResults.Wait.WaitOne(TimeSpan.FromSeconds(120));
+        bool receivedReturn = executionResults.Wait.WaitOne(TimeSpan.FromSeconds(120));
         if (!executionResults.IsSuccess)
-            throw new Exception(executionResults.Error ?? "Timeout");
-
+        {
+            if (!receivedReturn)
+                throw new TimeoutException("Command execution timeout.");
+            else if (executionResults.ErrorData != null)
+                throw CommandFaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData);
+            throw new CommandFaultException(executionResults.ErrorMessage);
+        }
     }
 }
+
+
 
 interface ICommandResult : IEventHandler
 {
     bool Map(string type, out Type t);
     bool IsSuccess { get; }
-    string Error { get; }
+    string ErrorMessage { get; }
+    object? ErrorData { get; }
     ManualResetEvent Wait { get; }
+}
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+public class ThrowsFaultExceptionAttribute<TMessage>() : ThrowsFaultExceptionAttribute(typeof(TMessage));
+
+public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute
+{
+    public Type ThrownType { get; init; } = thrownType;
 }
 class CommandExecutionResults<TCommand>(IPlumber plumber, IWriteResult results, TCommand source) : ICommandResult
 {
+    private static readonly IDictionary<string, Type> _exceptionMap;
+    static CommandExecutionResults()
+    {
+        _exceptionMap = typeof(TCommand)
+            .GetCustomAttributes<ThrowsFaultExceptionAttribute>()
+            .Select(x=>x.ThrownType)
+            .ToDictionary(x => $"{typeof(TCommand).Name}Failed<{x.Name}>");
+    }
     public async Task Handle(Metadata m, object ev)
     {
-        if (ev is CommandExecuted ce)
+        switch (ev)
         {
-            if (ce.CommandId == m.CausationId())
+            case CommandExecuted ce:
             {
-                IsSuccess = true;
-                Wait.Set();
+                if (ce.CommandId == m.CausationId())
+                {
+                    IsSuccess = true;
+                    Wait.Set();
+                }
+
+                break;
             }
-        } else if (ev is CommandFailed cf)
-        {
-            if (cf.CommandId == m.CausationId())
+            case ICommandFailedEx ef:
             {
-                IsSuccess = false;
-                Error = cf.Message;
-                Wait.Set();
+                if (ef.CommandId == m.CausationId())
+                {
+                    IsSuccess = false;
+                    ErrorMessage = ef.Message;
+                    ErrorData = ef.Fault;
+                    Wait.Set();
+                }
+
+                break;
+            }
+            case ICommandFailed cf:
+            {
+                if (cf.CommandId == m.CausationId())
+                {
+                    IsSuccess = false;
+                    ErrorMessage = cf.Message;
+                    Wait.Set();
+                }
+
+                break;
             }
         }
     }
@@ -79,13 +124,21 @@ class CommandExecutionResults<TCommand>(IPlumber plumber, IWriteResult results, 
         {
             t = typeof(CommandFailed);
             return true;
+        } else if (_exceptionMap.TryGetValue(type, out t))
+        {
+            return true;
+        } else if (type.StartsWith($"{cmdType}Failed"))
+        {
+            // most likely someone forgotten to put attribute on a command.
+            t = typeof(CommandFailed);
+            return true;
         }
         t = null;
         return false;
     }
 
     public bool IsSuccess { get; set; }
-    public string Error { get; set; }
-
+    public string ErrorMessage { get; set; }
+    public object? ErrorData { get; set; }
     public ManualResetEvent Wait { get; } = new ManualResetEvent(false);
 }
