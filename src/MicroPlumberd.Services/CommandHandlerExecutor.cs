@@ -6,9 +6,28 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd.Services;
 
+static class CommandHandlerExecutor
+{
+    public static IEventHandler Create(IPlumber plumber, Type t)
+    {
+        return (IEventHandler)Activator.CreateInstance(typeof(CommandHandlerExecutor<>).MakeGenericType(t), plumber)!;
+    }
+}
+
+public static class MetadataExtensions
+{
+    public static Guid? SessionId(this Metadata m)
+    {
+        if (m.Data.TryGetProperty("SessionId", out var v))
+            return Guid.Parse(v.GetString()!);
+        return null;
+    }
+}
+
 class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
     where T:ICommandHandler, IServiceTypeRegister
 {
+    
     class Invoker<TCommand>(CommandHandlerExecutor<T> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => await parent.Handle<TCommand>(m, (TCommand)ev); }
     interface IInvoker { Task Handle(Metadata m, object ev); }
 
@@ -24,7 +43,8 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
         await using var scope = plumber.Config.ServiceProvider.CreateAsyncScope();
         var ch = (ICommandHandler)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<T>));
         var recipientId = m.RecipientId();
-        var cmdStream = plumber.Config.Conventions.GetSteamIdFromCommand<T>(recipientId);
+        var sessionId = m.SessionId();
+        var cmdStream = $"Session-{sessionId}";
         var cmdName = plumber.Config.Conventions.GetEventNameConvention(null,command);
         var cmdId = (command is IId id) ? id.Id : m.EventId;
 
@@ -33,6 +53,8 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
         {
             sw.Start();
             await ch.Execute(recipientId, command);
+            //var t = Task.Run(async () => await ch.Execute(recipientId, command));
+            //await t.WaitAsync(TimeSpan.FromSeconds(110));
             await plumber.AppendEvent(cmdStream, StreamState.StreamExists, $"{cmdName}Executed",
                 new CommandExecuted()
                 {

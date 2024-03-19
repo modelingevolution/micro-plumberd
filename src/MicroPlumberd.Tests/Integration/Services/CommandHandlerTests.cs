@@ -3,6 +3,7 @@ using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using MicroPlumberd.Services;
 using MicroPlumberd.Tests.AppSrc;
 using FluentAssertions;
 using ModelingEvolution.DirectConnect;
+using Xunit.Abstractions;
 
 namespace MicroPlumberd.Tests.Integration.Services
 {
@@ -18,12 +20,14 @@ namespace MicroPlumberd.Tests.Integration.Services
     public class CommandHandlerTests : IClassFixture<EventStoreServer>
     {
         private readonly EventStoreServer _eventStore;
+        private readonly ITestOutputHelper _testOutputHelper;
         private readonly App _serverApp;
         private readonly App _clientApp;
 
-        public CommandHandlerTests(EventStoreServer eventStore)
+        public CommandHandlerTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
         {
             _eventStore = eventStore;
+            _testOutputHelper = testOutputHelper;
             _serverApp = new App();
             _clientApp = new App();
         }
@@ -37,14 +41,25 @@ namespace MicroPlumberd.Tests.Integration.Services
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
                 .AddCommandHandler<FooCommandHandler>());
 
-            var sp = await _serverApp.StartAsync();
+            var srv = await _serverApp.StartAsync();
             await Task.Delay(1000);
             var cmd = new CreateFoo() { Name = "Hello" };
             var recipientId = Guid.NewGuid();
-            await sp.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            var client = new ServiceCollection()
+                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .BuildServiceProvider();
+
+            await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
+
+            _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed);
             
+
             var fooModel = new FooModel();
-            var sub = await sp.GetRequiredService<IPlumber>().SubscribeEventHandle(fooModel);
+            var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandle(fooModel);
             await Task.Delay(1000);
 
             fooModel.Index.Should().HaveCount(1);
@@ -68,7 +83,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             
             Func<Task> action = async () => await sp.GetRequiredService<ICommandBus>().SendAsync(Guid.NewGuid(), cmd);
 
-            await action.Should().ThrowAsync<CommandFaultException>();
+            await action.Should().ThrowAsync<CommandFaultException<BusinessFault>>();
         }
 
        

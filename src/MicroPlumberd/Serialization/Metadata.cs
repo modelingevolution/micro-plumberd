@@ -9,4 +9,6 @@ public readonly struct Metadata(Guid id,Guid eventId, long sourceStreamPosition,
     public long SourceStreamPosition { get; } = sourceStreamPosition;
     public string SourceStreamId { get; } = sourceStreamId;
     public Guid EventId => eventId;
+
+    
 }

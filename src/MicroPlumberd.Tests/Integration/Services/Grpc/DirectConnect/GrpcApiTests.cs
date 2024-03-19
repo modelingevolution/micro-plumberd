@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net;
 using EventStore.Client;
 using FluentAssertions;
@@ -8,6 +9,7 @@ using MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
+using Xunit.Abstractions;
 
 namespace MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect;
 
@@ -16,11 +18,13 @@ namespace MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect;
 public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, IDisposable
 {
     private readonly EventStoreServer _eventStore;
+    private readonly ITestOutputHelper _testOutputHelper;
     private Fixtures.ClientApp? client;
 
-    public GrpcApiTests(EventStoreServer eventStore)
+    public GrpcApiTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
     {
         _eventStore = eventStore;
+        _testOutputHelper = testOutputHelper;
     }
 
     [Fact]
@@ -34,7 +38,10 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         var streamId = Guid.NewGuid();
 
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
         var ret2 = await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "Hello" });
+        _testOutputHelper.WriteLine("Command executed in:" + sw.Elapsed);
         ret2.Code.Should().Be(HttpStatusCode.OK);
     }
     [Fact]

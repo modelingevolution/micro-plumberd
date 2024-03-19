@@ -9,4 +9,7 @@ class CommandHandlerStarter<THandler>(IPlumber plumber) : ICommandHandlerStarter
     {
         await plumber.SubscribeCommandHandler<THandler>();
     }
+
+    public IEnumerable<Type> CommandTypes => THandler.CommandTypes;
+    public Type HandlerType => typeof(THandler);
 }
