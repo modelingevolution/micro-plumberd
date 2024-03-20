@@ -2,6 +2,7 @@
 using MicroPlumberd.DirectConnect;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 
 namespace MicroPlumberd.Services;
 
@@ -18,10 +19,26 @@ public static class ContainerExtensions
         collection.TryAddSingleton<ICommandBus, CommandBus>();
         return collection;
     }
-    
+
+    public static IServiceCollection AddBackgroundServiceIfMissing<TService>(this IServiceCollection services)
+        where TService : BackgroundService
+    {
+        // Check if the service is already added
+        var serviceDescriptor = services.FirstOrDefault(descriptor =>
+            descriptor.ServiceType == typeof(IHostedService) &&
+            descriptor.ImplementationType == typeof(TService));
+
+        // Add the service if it's missing
+        if (serviceDescriptor == null)
+        {
+            services.AddHostedService<TService>();
+        }
+
+        return services;
+    }
     public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler:ICommandHandler, IServiceTypeRegister
     {
-        services.AddHostedService<CommandHandlerService>();
+        services.AddBackgroundServiceIfMissing<CommandHandlerService>();
         services.AddSingleton<ICommandHandlerStarter, CommandHandlerStarter<TCommandHandler>>();
         TCommandHandler.RegisterHandlers(services);
         return services;

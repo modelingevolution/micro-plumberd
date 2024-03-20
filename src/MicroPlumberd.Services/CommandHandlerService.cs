@@ -1,13 +1,21 @@
-﻿using EventStore.Client;
+﻿using System.Diagnostics;
+using System.Text;
+using EventStore.Client;
 using MicroPlumberd.DirectConnect;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
-sealed class CommandHandlerService(IPlumber plumber, IEnumerable<ICommandHandlerStarter> starters) : BackgroundService, IEventHandler, IAsyncDisposable
+sealed class CommandHandlerService(ILogger<CommandHandlerService> log, IPlumber plumber, IEnumerable<ICommandHandlerStarter> starters) : BackgroundService, IEventHandler
 {
     private readonly Dictionary<Type, IEventHandler> _handlersByCommand = new();
     private IAsyncDisposable? _subscription;
+    private Dictionary<string, Type> _eventMapper;
+    public override void Dispose()
+    {
+        Task.WaitAll(_subscription.DisposeAsync().AsTask());
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -18,13 +26,29 @@ sealed class CommandHandlerService(IPlumber plumber, IEnumerable<ICommandHandler
             foreach (var c in i.CommandTypes) _handlersByCommand.Add(c, executor);
         }
 
-        var eventMapper = _handlersByCommand.Keys.ToDictionary(x => x.Name);
+        this._eventMapper = _handlersByCommand.Keys.ToDictionary(x => x.Name);
         var events = _handlersByCommand.Keys.Select(x => x.Name).ToArray();
 
         var outputStream = plumber.Config.Conventions.ServicesConventions().AppCommandStreamConvention();
         
-        this._subscription = await plumber.SubscribeEventHandle(eventMapper.TryGetValue, events, this, outputStream, FromStream.End, true);
+        this._subscription = await plumber.SubscribeEventHandlerPersistently(MapCommandType, events, this, outputStream, AppDomain.CurrentDomain.FriendlyName , StreamPosition.End, true);
         
+    }
+
+    private bool MapCommandType(string evtType, out Type t)
+    {
+        Debug.WriteLine($"Handling {evtType} command.");
+        if (_eventMapper.TryGetValue(evtType, out t))
+        {
+            Debug.WriteLine($"Handling command: {evtType}");
+            return true;
+        }
+
+        log.LogError(new StringBuilder().Append("Found unrecognized command type in app command stream. ")
+            .Append(evtType)
+            .ToString());
+
+        return false;
     }
 
     public async Task Handle(Metadata m, object ev)
@@ -37,18 +61,8 @@ sealed class CommandHandlerService(IPlumber plumber, IEnumerable<ICommandHandler
                 using var scope = new InvocationScope(tmp);
                 await executor.Handle(m, ev);
             });
-        }
+        } 
     }
 
-    private async ValueTask DisposeAsyncCore()
-    {
-        if(_subscription != null)
-            await _subscription.DisposeAsync();
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await DisposeAsyncCore();
-        GC.SuppressFinalize(this);
-    }
+   
 }

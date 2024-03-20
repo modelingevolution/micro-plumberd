@@ -10,6 +10,16 @@ public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState
     public void Open(string msg) => AppendPendingChange(new FooCreated() { Name = msg });
     public void Change(string msg) => AppendPendingChange(new FooUpdated() { Name = msg });
 }
+[Aggregate]
+public partial class BooAggregate(Guid id) : AggregateBase<BooAggregate.BooState>(id)
+{
+    internal new BooState State => base.State;
+    public record BooState { public string? Name { get; set; } };
+    private static BooState Given(BooState state, BooCreated ev) => state with { Name = ev.Name };
+    private static BooState Given(BooState state, BooUpdated ev) => state with { Name = ev.Name };
+    public void Open(string msg) => AppendPendingChange(new BooCreated() { Name = msg });
+    public void Change(string msg) => AppendPendingChange(new BooUpdated() { Name = msg });
+}
 public class FooCreated { public string? Name { get; set; } }
 public class FooUpdated { public string? Name { get; set; } }
 

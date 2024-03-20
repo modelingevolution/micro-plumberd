@@ -5,30 +5,30 @@ namespace MicroPlumberd.Tests.Integration.Services;
 
 public class App : IDisposable
 {
-    private IHost host;
+    public IHost Host;
 
-    public IHost Configure(Action<IServiceCollection>? configure = null)
+    public App Configure(Action<IServiceCollection>? configure = null)
     {
-        host = Host.CreateDefaultBuilder()
+        Host = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
                 configure(services);
             })
             .Build();
 
-        return host;
+        return this;
     }
 
     public void Dispose()
     {
-        host?.Dispose();
+        Host?.Dispose();
     }
 
 
     public async Task<IServiceProvider> StartAsync()
     {
-        await host.StartAsync();
+        await Host.StartAsync();
         await Task.Delay(1000);
-        return host.Services;
+        return Host.Services;
     }
 }

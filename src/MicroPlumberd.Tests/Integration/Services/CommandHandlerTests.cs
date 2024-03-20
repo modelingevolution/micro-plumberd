@@ -33,6 +33,71 @@ namespace MicroPlumberd.Tests.Integration.Services
         }
 
         [Fact]
+        public async Task HandleAggregateCommands()
+        {
+            await _eventStore.StartInDocker();
+
+            _serverApp.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .AddCommandHandler<BooCommandHandler>());
+
+            var srv = await _serverApp.StartAsync();
+            await Task.Delay(1000);
+
+            
+            var client = await _clientApp.Configure(x => x
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
+                .StartAsync();
+
+            var bus = client.GetRequiredService<ICommandBus>();
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var recipientId = Guid.NewGuid();
+            await bus.SendAsync(recipientId, new CreateBoo() { Name = $"Name1" });
+            for (int i = 0; i < 100; i++)
+                await bus.SendAsync(recipientId, new ChangeBoo() { Name = $"Name_{i}" });
+
+            _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed / 101);
+
+            await Task.Delay(3000);
+
+        }
+
+        [Fact]
+        public async Task HandleCommands()
+        {
+            await _eventStore.StartInDocker();
+
+            _serverApp.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .AddCommandHandler<FooCommandHandler>());
+
+            var srv = await _serverApp.StartAsync();
+            await Task.Delay(1000);
+            
+            var fooModel = new FooModel();
+            var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandle(fooModel);
+
+            var client = await _clientApp.Configure(x => x
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
+                .StartAsync();
+
+            var bus = client.GetRequiredService<ICommandBus>();
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            for (int i = 0; i < 100; i++) 
+                 bus.SendAsync(Guid.NewGuid(), new CreateFoo() { Name = $"Name_{i}"});
+
+            _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed/100);
+            
+            await Task.Delay(3000);
+
+            fooModel.Index.Should().HaveCount(100);
+           
+        }
+        [Fact]
         public async Task HandleCommand()
         {
             await _eventStore.StartInDocker();
@@ -49,9 +114,9 @@ namespace MicroPlumberd.Tests.Integration.Services
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            var client = new ServiceCollection()
-                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5))
-                .BuildServiceProvider();
+            var client = await _clientApp.Configure( x=>x
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
+                .StartAsync();
 
             await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
 

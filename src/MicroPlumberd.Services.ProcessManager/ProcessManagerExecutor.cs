@@ -1,4 +1,6 @@
-﻿using EventStore.Client;
+﻿using System.Collections.Concurrent;
+using EventStore.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd.Services.ProcessManagers;
 
@@ -8,7 +10,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
     public class Lookup : IEventHandler, ITypeRegister
     {
         private readonly Dictionary<Guid, Guid> _managerByReceiverId = new Dictionary<Guid, Guid>();
-        public Guid? GetProcessManagerIdByReceiverId(Guid receiverId) => _managerByReceiverId[receiverId];
+        public Guid? GetProcessManagerIdByReceiverId(Guid receiverId) => _managerByReceiverId.TryGetValue(receiverId, out var v) ? v : null;
 
         private void Given(Metadata m, ICommandEnqueued ev)
         {
@@ -53,14 +55,12 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
 
         }
 
-        public static IReadOnlyDictionary<string, Type> TypeRegister => TProcessManager.TypeRegister;
+        public static IReadOnlyDictionary<string, Type> TypeRegister => TProcessManager.CommandTypes.ToDictionary(x => x.GetFriendlyName());
     }
 
     
     public async Task Handle(Metadata m, object evt)
     {
-        
-
         var manager = await pmClient.GetManager<TProcessManager>(m.Id);
         ICommandRequest? cmd = null;
 
@@ -72,9 +72,11 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             cmd = await manager.When(m, evt);
         }
 
+        // TODO: This should be done as a single transaction!
         await pmClient.Plumber.AppendLink($"{typeof(TProcessManager).Name}-{manager.Id}",m);
         if (cmd != null) 
             await pmClient.Plumber.AppendEvents($"{typeof(TProcessManager).Name}-{manager.Id}", StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
+        
     }
 
 

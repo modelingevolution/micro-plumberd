@@ -97,7 +97,8 @@ class Conventions : IConventions
             string prop = i.Name
                 .Replace("CorrelationId", "$correlationId")
                 .Replace("CausationId", "$causationId");
-            kv.Add(prop, i.GetGetMethod(false)!.Invoke(metadata, null)!);
+            var value = i.GetGetMethod(false)!.Invoke(metadata, null)!;
+            kv[prop] = value;
         }
         return obj;
     }

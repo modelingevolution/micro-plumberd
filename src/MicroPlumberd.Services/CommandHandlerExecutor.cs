@@ -55,14 +55,14 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
         {
             sw.Start();
             await ch.Execute(recipientId, command);
-            //var t = Task.Run(async () => await ch.Execute(recipientId, command));
-            //await t.WaitAsync(TimeSpan.FromSeconds(110));
-            await plumber.AppendEvent(cmdStream, StreamState.StreamExists, $"{cmdName}Executed",
+            Debug.WriteLine($"Command {command.GetType().Name} executed.");
+            await plumber.AppendEvent(cmdStream, StreamState.Any, $"{cmdName}Executed",
                 new CommandExecuted()
                 {
                     CommandId = cmdId,
                     Duration = sw.Elapsed
                 });
+            Debug.WriteLine($"Command {command.GetType().Name} appended to session steam {cmdStream}.");
         }
         catch (CommandFaultException ex)
         {

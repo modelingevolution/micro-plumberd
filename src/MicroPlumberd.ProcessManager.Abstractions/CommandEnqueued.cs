@@ -13,9 +13,21 @@ public static class CommandEnqueued
     }
 }
 
-public sealed class CommandEnqueued<TCommand>(Guid recipientId, TCommand command) : ICommandEnqueued
+public sealed class CommandEnqueued<TCommand> : ICommandEnqueued
 {
-    object ICommandEnqueued.Command => command;
-    public TCommand Command => command;
-    public Guid RecipientId => recipientId;
+    public CommandEnqueued(Guid recipientId, TCommand command)
+    {
+        RecipientId = recipientId;
+        Command = command;
+    }
+
+    public CommandEnqueued()
+    {
+        
+    }
+    object ICommandEnqueued.Command => Command;
+
+    public TCommand Command { get; init; }
+
+    public Guid RecipientId { get; init; }
 }

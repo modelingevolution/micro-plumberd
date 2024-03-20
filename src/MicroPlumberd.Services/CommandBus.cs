@@ -43,8 +43,11 @@ class CommandBus : ICommandBus, IEventHandler
                     _initialized = true;
                 }
 
-        if (shouldSubscribe) 
+        if (shouldSubscribe)
+        {
             await _plumber.SubscribeEventHandle(TryMapEventResponse, null, this, _steamId, FromStream.End, false);
+            Debug.WriteLine($"Session {_steamId} subscribed");
+        }
     }
 
     private bool TryMapEventResponse(string type, out Type t)
@@ -111,9 +114,12 @@ class CommandBus : ICommandBus, IEventHandler
         var id = m.CausationId() ?? Guid.Empty;
         if (_handlers.TryGetValue(id, out var results))
         {
-            if(await results.Handle(m, ev))
+            if (await results.Handle(m, ev))
+            {
                 _handlers.TryRemove(id, out var x);
-        }
+                Debug.WriteLine($"Command execution confirmed: {ev.GetType().Name}");
+            }
+        } else Debug.WriteLine($"Session event unhandled. CausationId: {id}");
     }
 }
 

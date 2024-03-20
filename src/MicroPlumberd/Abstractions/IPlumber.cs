@@ -7,6 +7,7 @@ namespace MicroPlumberd;
 public interface IPlumber
 {
     IPlumberConfig Config { get; }
+    IEventStoreClientPool Pool { get; }
 
     /// <summary>
     /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
@@ -56,4 +57,10 @@ public interface IPlumber
     Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
     Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
     Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null);
+
+    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
+        IEnumerable<string>? events,
+        TEventHandler? model,
+        string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
+        where TEventHandler : class, IEventHandler;
 }

@@ -7,4 +7,6 @@ public interface IProcessManagerClient
 
     Task<TProcessManager> GetManager<TProcessManager>(Guid commandRecipientId)
         where TProcessManager : IProcessManager, ITypeRegister;
+
+    Task<IAsyncDisposable> SubscribeProcessManager<TProcessManager>() where TProcessManager : IProcessManager, ITypeRegister;
 }

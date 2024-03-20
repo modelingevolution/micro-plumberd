@@ -73,12 +73,13 @@ record EventRecord<TEvent> : IEventRecord<TEvent>
     public TEvent Event { get; init; }
     object IEventRecord.Event => Event;
 }
+
 public class Plumber : IPlumber, IPlumberConfig
 {
-    private readonly EventStoreClient _client;
+    private readonly EventStoreClientPool _clientPool;
     private readonly EventStorePersistentSubscriptionsClient _persistentSubscriptionClient;
     private readonly EventStoreProjectionManagementClient _projectionManagementClient;
-    
+    public IEventStoreClientPool Pool => _clientPool;
     public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
     {
         settings ??= EventStoreClientSettings.Create($"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false");
@@ -90,7 +91,8 @@ public class Plumber : IPlumber, IPlumberConfig
     internal Plumber(EventStoreClientSettings settings, PlumberConfig? config = null)
     {
         config ??= new PlumberConfig();
-        _client = new(settings);
+        _settings = settings;
+        _clientPool = new(settings);
         _persistentSubscriptionClient = new(settings);
         _projectionManagementClient = new (settings);
         this.Conventions = config.Conventions;
@@ -106,15 +108,16 @@ public class Plumber : IPlumber, IPlumberConfig
     public IObjectSerializer Serializer { get; set; }
     public IConventions Conventions { get; }
     private ProjectionRegister? _projectionRegister;
+    private readonly EventStoreClientSettings _settings;
     public IProjectionRegister ProjectionRegister => _projectionRegister ??= new ProjectionRegister(_projectionManagementClient);
-    public EventStoreClient Client => _client;
+    
     public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient => _persistentSubscriptionClient;
     public EventStoreProjectionManagementClient ProjectionManagementClient => _projectionManagementClient;
 
     public ISubscriptionRunner Subscribe(string streamName, FromStream start, 
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken())
     {
-        return new SubscriptionRunner(this,_client.SubscribeToStream(streamName, start, true, userCredentials, cancellationToken));
+        return new SubscriptionRunner(this,_clientPool.Rent().SubscribeToStream(streamName, start, true, userCredentials, cancellationToken));
     }
     public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
         FromStream? start = null, bool ensureOutputStreamProjection=true)
@@ -137,12 +140,13 @@ public class Plumber : IPlumber, IPlumberConfig
         await sub.WithHandler(eh, mapFunc);
         return sub;
     }
-    public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
+    public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
+        IEnumerable<string>? events,
+        TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
-        where TEventHandler : class,IEventHandler, ITypeRegister
+        where TEventHandler : class, IEventHandler
     {
         model ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
-        var events = TEventHandler.TypeRegister.Keys;
         var handlerType = typeof(TEventHandler);
         startFrom ??= StreamPosition.End;
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
@@ -160,10 +164,15 @@ public class Plumber : IPlumber, IPlumberConfig
         }
 
         var sub = SubscribePersistently(outputStream, groupName);
-        await sub.WithHandler(model);
+        await sub.WithHandler(model, mapFunc);
         return sub;
     }
-   
+    public Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
+        string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
+        where TEventHandler : class,IEventHandler, ITypeRegister =>
+        SubscribeEventHandlerPersistently(TEventHandler.TypeRegister.TryGetValue, TEventHandler.TypeRegister.Keys,
+            model, outputStream, groupName, startFrom, ensureOutputStreamProjection);
+
 
     public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken())
@@ -178,9 +187,13 @@ public class Plumber : IPlumber, IPlumberConfig
     }
     public async Task Rehydrate<T>(T model, string streamId) where T : IEventHandler, ITypeRegister
     {
-        var items = _client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
+        using var c = _clientPool.Rent();
+        var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
         var registry = T.TypeRegister;
         var vAware = model as IVersionAware;
+        
+        if (await items.ReadState == ReadState.StreamNotFound) return;
+
         await foreach (var i in items)
         {
             if (!registry.TryGetValue(i.Event.EventType, out var t))
@@ -189,6 +202,7 @@ public class Plumber : IPlumber, IPlumberConfig
             await model.Handle(metadata, evt);
             vAware?.Increase();
         }
+
     }
 
     public async Task<IEventRecord?> FindEventInStream(string streamId, Guid id,
@@ -198,7 +212,8 @@ public class Plumber : IPlumber, IPlumberConfig
     }
     public async Task<IEventRecord<TEvent>?> FindEventInStream<TEvent>(string streamId, Guid id, TypeEventConverter eventMapping = null, Direction scanDirection = Direction.Backwards)
     {
-        var items = _client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
+        using var c = _clientPool.Rent();
+        var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
 
         eventMapping ??= (string x, out Type tt) =>
         {
@@ -230,7 +245,8 @@ public class Plumber : IPlumber, IPlumberConfig
         where T : IAggregate<T>, ITypeRegister
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), id);
-        var items = _client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
+        using var c = _clientPool.Rent();
+        var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
         var registry = T.TypeRegister;
         var events = items.Select(ev => Serializer.Deserialize(ev.Event.Data.Span, registry[ev.Event.EventType])!);
 
@@ -245,13 +261,15 @@ public class Plumber : IPlumber, IPlumberConfig
         object? metadata = null)
     {
         var evData = MakeEvents(events, metadata);
-        return await _client.AppendToStreamAsync(streamId, rev, evData);
+        using var c = _clientPool.Rent();
+        return await c.AppendToStreamAsync(streamId, rev, evData);
     }
     public async Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
         object? metadata = null)
     {
         var evData = MakeEvents(events, metadata);
-        var r = await _client.AppendToStreamAsync(streamId, state, evData);
+        using var c = _clientPool.Rent();
+        var r = await c.AppendToStreamAsync(streamId, state, evData);
         return r;
     }
     public async Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null)
@@ -259,7 +277,8 @@ public class Plumber : IPlumber, IPlumberConfig
         var m = Conventions.GetMetadata(null, evt, metadata);
         var evId = Conventions.GetEventIdConvention(null, evt);
         var evData = MakeEvent(evId, evtName, evt, m);
-        var r = await _client.AppendToStreamAsync(streamId, state, [evData]);
+        using var c = _clientPool.Rent();
+        var r = await c.AppendToStreamAsync(streamId, state, [evData]);
         return r;
     }
     /// <summary>
@@ -300,8 +319,10 @@ public class Plumber : IPlumber, IPlumberConfig
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
-        var r = await _client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
+        EventStoreClient c = new EventStoreClient(_settings);
+        var r = await c.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
         aggregate.AckCommitted();
+        
         return r;
     }
 
@@ -311,7 +332,8 @@ public class Plumber : IPlumber, IPlumberConfig
     {
         string streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
-        var r = await _client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
+        EventStoreClient c = new EventStoreClient(_settings);
+        var r = await c.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
         aggregate.AckCommitted();
         return r;
     }
@@ -326,7 +348,8 @@ public class Plumber : IPlumber, IPlumberConfig
     {
         var data = Encoding.UTF8.GetBytes($"{metadata.SourceStreamPosition}@{metadata.SourceStreamId}");
         const string eventType = "$>";
-        return await _client.AppendToStreamAsync(streamId, state ?? StreamState.Any,
+        using var c = _clientPool.Rent();
+        return await c.AppendToStreamAsync(streamId, state ?? StreamState.Any,
             new[] { new EventData(Uuid.NewUuid(), eventType, data) });
 
     }
