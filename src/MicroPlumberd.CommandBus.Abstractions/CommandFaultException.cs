@@ -9,7 +9,7 @@ public class CommandFaultException<TData> : CommandFaultException
 
     public TData Data { get; init; }
 
-    protected internal override object GetFaultData() => (object)this.Data;
+    public override object GetFaultData() => (object)this.Data;
 
     public CommandFaultException(TData data) => this.Data = data;
 }
@@ -27,5 +27,5 @@ public class CommandFaultException : Exception
     {
     }
 
-    protected internal virtual object GetFaultData() => null;
+    public virtual object GetFaultData() => null;
 }

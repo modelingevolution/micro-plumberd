@@ -51,7 +51,7 @@ namespace MicroPlumberd.SourceGenerators
 
 
                         var errorMsg = methods.SelectMany(method => method.AttributeLists.SelectMany(attrList => attrList.Attributes))
-                            .Where(attribute => attribute.Name.ToString().Contains("ThrowsFaultException<") )
+                            .Where(attribute => attribute.Name.ToString().Contains("ThrowsFaultCommandException<") )
                             .SelectMany(attribute =>
                             {
                                 var genericName = attribute.Name as GenericNameSyntax;
@@ -131,7 +131,11 @@ namespace MicroPlumberd.SourceGenerators
 
                         sb.AppendLine($"   private static readonly Type[] _commandTypes = new[] {{ {string.Join(",", commands.Select(x=>$"typeof({x})")) } }};");
                         sb.AppendLine($"   private static readonly Type[] _returnTypes = new[] {{ {string.Join(",", returnTypes.Select(x => $"typeof({x})"))} }};");
-                        sb.AppendLine($"   private static readonly Type[] _faultTypes = new[] {{ {string.Join(",", errorMsg.Select(x => $"typeof({x})"))} }};");
+                        
+                        if(errorMsg.Any())
+                            sb.AppendLine($"   private static readonly Type[] _faultTypes = new[] {{ {string.Join(",", errorMsg.Select(x => $"typeof({x})"))} }};");
+                        else
+                            sb.AppendLine($"   private static readonly Type[] _faultTypes = Array.Empty<Type>();");
                         sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.CommandTypes => _commandTypes;");
                         sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.ReturnTypes => _returnTypes;");
                         sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.FaultTypes => _faultTypes;");

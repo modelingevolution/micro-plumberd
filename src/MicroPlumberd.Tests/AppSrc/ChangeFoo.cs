@@ -1,10 +1,11 @@
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Services;
 using ProtoBuf;
 
 namespace MicroPlumberd.Tests.AppSrc;
 
 [ProtoContract]
-[ThrowsFaultException<BusinessFault>]
+[ThrowsFaultCommandException<BusinessFault>]
 public class ChangeFoo : IId
 {
     [ProtoMember(2)]

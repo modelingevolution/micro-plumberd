@@ -16,19 +16,23 @@ namespace MicroPlumberd.Services;
 class CommandBus : ICommandBus, IEventHandler
 {
     private readonly IPlumber _plumber;
-
-    public CommandBus(IPlumber plumber)
-    {
-        _plumber = plumber;
-    }
-
+    private readonly string _steamId;
     private readonly ConcurrentDictionary<Guid, CommandExecutionResults> _handlers = new();
     private readonly ConcurrentDictionary<string, Type> _commandMapping = new();
     private readonly ConcurrentHashSet<Type> _supportedCommands = new();
     private bool _initialized;
     private object _sync = new object();
 
-    private async Task CheckInitialized()
+    public Guid SessionId { get; } = Guid.NewGuid();
+    public CommandBus(IPlumber plumber)
+    {
+        _plumber = plumber;
+        _steamId = plumber.Config.Conventions.ServicesConventions().SessionStreamFromSessionIdConvention(SessionId);
+    }
+    
+    
+
+    private async ValueTask CheckInitialized()
     {
         bool shouldSubscribe = false;
         if (!_initialized)
@@ -40,7 +44,7 @@ class CommandBus : ICommandBus, IEventHandler
                 }
 
         if (shouldSubscribe) 
-            await _plumber.SubscribeEventHandle(TryMapEventResponse, null, this, StreamId, FromStream.End, false);
+            await _plumber.SubscribeEventHandle(TryMapEventResponse, null, this, _steamId, FromStream.End, false);
     }
 
     private bool TryMapEventResponse(string type, out Type t)
@@ -53,36 +57,38 @@ class CommandBus : ICommandBus, IEventHandler
 
         return true;
     }
-    public Guid SessionId { get; } = Guid.NewGuid();
-    private string StreamId => $"Session-{SessionId}";
+    
+    
     public async Task SendAsync(Guid recipientId, object command)
     {
         var causationId = InvocationContext.Current.CausactionId();
         var correlationId = InvocationContext.Current.CorrelationId();
-
         
         var metadata = new
         {
             CorrelationId = (command is IId id && correlationId == null) ? id.Id : correlationId, 
-            CausationId = (command is IId id2 && causationId == null) ? id2.Id : causationId,
+            CausationId = ((command is IId id2 && causationId == null) ? id2.Id : causationId) ?? Guid.NewGuid(),
             RecipientId = recipientId,
             SessionId = SessionId,
         };
 
         var executionResults = new CommandExecutionResults();
-        if (!_handlers.TryAdd(metadata.CausationId.Value, executionResults))
+        if (!_handlers.TryAdd(metadata.CausationId, executionResults))
             throw new InvalidOperationException("This command is being executed.");
 
         CheckMapping(command);
         await CheckInitialized();
         
-        await _plumber.AppendEvents(StreamId, StreamState.Any, [command], metadata);
+        await _plumber.AppendEvents(_steamId, StreamState.Any, [command], metadata);
         
-        bool receivedReturn = executionResults.Wait.WaitOne(TimeSpan.FromSeconds(120));
+        bool receivedReturn = executionResults.Wait.WaitOne(_plumber.Config.ServicesConfig().DefaultTimeout);
         if (!executionResults.IsSuccess)
         {
             if (!receivedReturn)
+            {
+                _handlers.TryRemove(metadata.CausationId, out var v);
                 throw new TimeoutException("Command execution timeout.");
+            }
             else if (executionResults.ErrorData != null)
                 throw CommandFaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData);
             throw new CommandFaultException(executionResults.ErrorMessage);
@@ -95,7 +101,7 @@ class CommandBus : ICommandBus, IEventHandler
         if (_supportedCommands.Contains(cmdType)) return;
         if (!_supportedCommands.Add(cmdType)) return;
 
-        foreach (var (name, type) in CommandMappings.Discover(cmdType))
+        foreach (var (name, type) in _plumber.Config.Conventions.ServicesConventions().CommandMessageTypes(cmdType))
             _commandMapping.TryAdd(name, type);
     }
 
@@ -120,23 +126,7 @@ public abstract class ThrowsFaultCommandExceptionAttribute(Type thrownType) : At
     public Type ThrownType { get; init; } = thrownType;
 }
 
-class CommandMappings
-{
-    public static IEnumerable<(string, Type)> Discover(Type command)
-    {
-        var cmdType = command.Name;
 
-        yield return (cmdType, command);
-        yield return ($"{cmdType}Executed", typeof(CommandExecuted));
-        yield return ($"{cmdType}Failed", typeof(CommandFailed));
-        foreach (var c in command
-                     .GetCustomAttributes()
-                     .Where(x => x is ThrowsFaultCommandExceptionAttribute)
-                     .OfType<ThrowsFaultCommandExceptionAttribute>()
-                     .Select(x => x.ThrownType))
-            yield return ($"{cmdType}Failed<{c.Name}>", typeof(CommandExecuted<>).MakeGenericType(c));
-    }
-}
 public class CommandExecutionResults 
 {
     public async ValueTask<bool> Handle(Metadata m, object ev)

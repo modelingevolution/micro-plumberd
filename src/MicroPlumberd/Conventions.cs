@@ -22,9 +22,9 @@ public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
 
 public delegate string OutputStreamModelConvention(Type model);
 public delegate string GroupNameModelConvention(Type model);
-public interface IConventions
+public interface IConventions : IExtension
 {
-    T GetExtension<T>() where T:new();
+    
     SteamNameConvention GetStreamIdConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
     BuildInvocationContext BuildInvocationContext { get; set; }
@@ -34,6 +34,11 @@ public interface IConventions
     GroupNameModelConvention GroupNameModelConvention { get; set; }
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
     object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
+}
+
+public interface IExtension
+{
+    T GetExtension<T>() where T : new();
 }
 class Conventions : IConventions
 {
@@ -124,6 +129,9 @@ static class StandardMetadataEnrichers
 
 public class InvocationScope : IDisposable
 {
+    public InvocationScope() { }
+
+    public InvocationScope(InvocationContext copy) => InvocationContext.Current = copy;
     public InvocationContext Context => InvocationContext.Current;
     public InvocationContext SetCorrelation(Guid correlationId) => Context.SetCorrelation(correlationId);
     public InvocationContext SetCausation(Guid causationId) => Context.SetCausation(causationId);
@@ -208,8 +216,22 @@ public class InvocationContext
     public Guid? CausactionId() => TryGetValue<Guid>("$causationId", out var v) ? v : null;
     
     private static AsyncLocal<InvocationContext> _current = new AsyncLocal<InvocationContext>();
-    public static InvocationContext Current => _current.Value ?? (_current.Value = new InvocationContext());
-    private readonly ExpandoObject _data = new ExpandoObject();
+    public static InvocationContext Current
+    {
+        get => _current.Value ?? (_current.Value = new InvocationContext());
+        set => _current.Value = value;
+    }
+
+    private readonly ExpandoObject _data;
+    private InvocationContext()
+    {
+        _data = new ExpandoObject();
+    }
+    private InvocationContext(ExpandoObject data)
+    {
+        _data = data;
+    }
+
     public dynamic Value => _data;
     
     public InvocationContext Set(string key, object value)
@@ -252,5 +274,17 @@ public class InvocationContext
             context.SetCorrelation(metadata.CorrelationId()!.Value);
         else context.ClearCorrelation();
         context.SetCausation(metadata.CausationId() != null ? metadata.CausationId()!.Value : metadata.EventId);
+    }
+
+    public InvocationContext Clone()
+    {
+        var dictOriginal = _data as IDictionary<string, object>; // ExpandoObject supports IDictionary
+        var dst = new ExpandoObject();
+        var dictClone = dst as IDictionary<string, object>;
+
+        // Shallow copy, for deep copy you need a different approach
+        foreach (var kvp in dictOriginal) dictClone[kvp.Key] = kvp.Value; 
+
+        return new InvocationContext(dst);
     }
 }

@@ -108,7 +108,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
 
         var action = async () => await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "error" });
-        await action.Should().ThrowAsync<FaultException<BusinessFault>>();
+        await action.Should().ThrowAsync<CommandFaultException<BusinessFault>>();
     }
 
 

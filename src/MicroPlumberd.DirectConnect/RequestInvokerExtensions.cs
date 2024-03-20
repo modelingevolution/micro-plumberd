@@ -15,7 +15,12 @@ namespace MicroPlumberd
             where TResponse : class
         {
             var result = await invoker.Invoke<CommandEnvelope<TRequest>, object>(new CommandEnvelope<TRequest>() { StreamId = id, Command = cmd });
-            return (TResponse)result;
+            if(result is not IFaultEnvelope)
+                return (TResponse)result;
+            var fault = (IFaultEnvelope)result;
+            if (fault.Data != null)
+                throw CommandFaultException.Create(fault.Error, fault.Data);
+            throw new CommandFaultException(fault.Error);
         }
         private static readonly ConcurrentDictionary<Type, object> _invokers = new();
         public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, Guid id, object c)

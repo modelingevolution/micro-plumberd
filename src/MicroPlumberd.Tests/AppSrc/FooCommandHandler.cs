@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Services;
 
 namespace MicroPlumberd.Tests.AppSrc;
 
@@ -7,7 +8,7 @@ namespace MicroPlumberd.Tests.AppSrc;
 public partial class FooCommandHandler(IPlumber plumber)
 {
 
-    [ThrowsFaultException<BusinessFault>]
+    
     public async Task Handle(Guid id, CreateFoo cmd)
     {
         if (cmd.Name == "error")
@@ -20,7 +21,7 @@ public partial class FooCommandHandler(IPlumber plumber)
     }
 
 
-    [ThrowsFaultException<BusinessFault>]
+    [ThrowsFaultCommandException<BusinessFault>]
     public async Task<HandlerOperationStatus> Handle(Guid id, ChangeFoo cmd)
     {
         if (cmd.Name == "error")

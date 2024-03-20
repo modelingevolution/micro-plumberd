@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Concurrent;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
-public interface IPlumberConfig
+public interface IPlumberConfig : IExtension
 {
     IObjectSerializer Serializer { get; set; }
     IConventions Conventions { get; }
@@ -19,6 +20,9 @@ public interface IPlumberConfig
 
 class PlumberConfig : IPlumberConfig
 {
+    internal readonly ConcurrentDictionary<Type, object> Extension = new();
+    public T GetExtension<T>() where T : new() => (T)Extension.GetOrAdd(typeof(T), x => new T());
+
     private IServiceProvider _serviceProvider = new ActivatorServiceProvider();
     private IObjectSerializer _serializer = new ObjectSerializer();
 
@@ -80,9 +84,10 @@ public class Plumber : IPlumber, IPlumberConfig
         settings ??= EventStoreClientSettings.Create($"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false");
         var cfg = new PlumberConfig();
         configure?.Invoke(cfg);
+
         return new Plumber(settings, cfg);
     }
-    internal Plumber(EventStoreClientSettings settings, IPlumberConfig? config = null)
+    internal Plumber(EventStoreClientSettings settings, PlumberConfig? config = null)
     {
         config ??= new PlumberConfig();
         _client = new(settings);
@@ -91,7 +96,12 @@ public class Plumber : IPlumber, IPlumberConfig
         this.Conventions = config.Conventions;
         this.Serializer = config.Serializer;
         this.ServiceProvider = config.ServiceProvider;
+        this._extension = config.Extension; // Shouldn't we make a copy?
     }
+
+    private readonly ConcurrentDictionary<Type, object> _extension = new();
+    public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
+
     public IServiceProvider ServiceProvider { get; set; }
     public IObjectSerializer Serializer { get; set; }
     public IConventions Conventions { get; }

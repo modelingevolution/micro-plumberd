@@ -50,7 +50,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             sw.Start();
 
             var client = new ServiceCollection()
-                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5))
                 .BuildServiceProvider();
 
             await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
