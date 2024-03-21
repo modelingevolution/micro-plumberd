@@ -44,7 +44,7 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
 
     private async Task Handle<T>(Metadata m, T command)
     {
-        m.CausationId()
+        
         await using var scope = plumber.Config.ServiceProvider.CreateAsyncScope();
         var ch = (ICommandHandler<T>)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<T>));
         var recipientId = m.RecipientId();
