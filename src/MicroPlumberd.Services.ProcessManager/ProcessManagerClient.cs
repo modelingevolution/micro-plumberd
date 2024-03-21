@@ -4,6 +4,7 @@ using MicroPlumberd.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd
 {
@@ -58,11 +59,13 @@ namespace MicroPlumberd.Services.ProcessManagers
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IPlumber _plumber;
+        
 
         public ProcessManagerClient(IServiceProvider serviceProvider, IPlumber plumber, ICommandBus bus)
         {
             _serviceProvider = serviceProvider;
             _plumber = plumber;
+            
             Bus = bus;
         }
 
@@ -71,12 +74,16 @@ namespace MicroPlumberd.Services.ProcessManagers
 
         public async Task<IAsyncDisposable> SubscribeProcessManager<TProcessManager>() where TProcessManager : IProcessManager, ITypeRegister
         {
-            ProcessManagerExecutor<TProcessManager> executor = new ProcessManagerExecutor<TProcessManager>(this);
+            ProcessManagerExecutor<TProcessManager> executor = new ProcessManagerExecutor<TProcessManager>(this, _serviceProvider.GetRequiredService<ILogger<ProcessManagerExecutor<TProcessManager>>>());
             ProcessManagerExecutor<TProcessManager>.Sender sender =
                 new ProcessManagerExecutor<TProcessManager>.Sender(this);
             var c = AsyncDisposableCollection.New();
             c += await Plumber.SubscribeEventHandlerPersistently(sender, $"{typeof(TProcessManager).Name}Outbox", ensureOutputStreamProjection:true);
             c += await Plumber.SubscribeEventHandlerPersistently(executor, $"{typeof(TProcessManager).Name}Inbox", ensureOutputStreamProjection:true);
+
+            await Plumber.ProjectionManagementClient.EnsureLookupProjection(Plumber.ProjectionRegister,
+                typeof(TProcessManager).Name, "RecipientId", $"{typeof(TProcessManager).Name}Lookup");
+
             return c;
         }
         internal T CreateProcessManager<T>()

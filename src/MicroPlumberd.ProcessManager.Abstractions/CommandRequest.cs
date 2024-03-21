@@ -19,6 +19,8 @@ public record CommandRequest<TCommand> : ICommandRequest<TCommand>
         this.RecipientId = recipientId;
         this.Command = command;
     }
+
+    public CommandRequest() { }
     public TCommand Command { get; init; }
     public Guid RecipientId { get; init; }
     object ICommandRequest.Command => Command;

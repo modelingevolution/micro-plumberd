@@ -13,9 +13,7 @@ public partial class FooProcessor(IPlumber plumber)
         await plumber.SaveNew(agg);
     }
 }
-
-[ProcessManager]
-public partial class XooProcessManager : IProcessManager, IVersionAware, IIdAware, ITypeRegister
+public abstract class ProcessManagerBase : IVersionAware, IIdAware
 {
     private long _version = -1;
     private Guid _id;
@@ -23,6 +21,11 @@ public partial class XooProcessManager : IProcessManager, IVersionAware, IIdAwar
     Guid IIdAware.Id { set => _id = value; }
     public long Version => _version;
     void IVersionAware.Increase() => _version += 1;
+}
+
+[ProcessManager]
+public partial class XooProcessManager : ProcessManagerBase, IProcessManager, ITypeRegister
+{
     public async Task<ICommandRequest<CreateBoo>> StartWhen(Metadata m, FooCreated ev)
     {
         return CommandRequest.Create("Hello".ToGuid(), new CreateBoo());
@@ -40,7 +43,7 @@ public partial class XooProcessManager : IProcessManager, IVersionAware, IIdAwar
         Console.WriteLine("Given-FooCreated");
     }
 
-    private async Task Given(Metadata m, CommandEnqueued<CreateLoo> ev)
+    private async Task Given(Metadata m, CommandEnqueued<CreateBoo> ev)
     {
         // This method is optional; It is used to capture the fact, that command was sent to the queue.
         Console.WriteLine("Given-CommandEnqueued<CreateLoo>");
@@ -65,7 +68,7 @@ public partial class XooProcessManager : IProcessManager, IVersionAware, IIdAwar
         return null;
     }
 
-    public async Task<ICommandRequest> When(Metadata m, object evt)
+    async Task<ICommandRequest> IProcessManager.When(Metadata m, object evt)
     {
         switch (evt)
         {
@@ -78,7 +81,7 @@ public partial class XooProcessManager : IProcessManager, IVersionAware, IIdAwar
         switch (evt)
         {
             case FooCreated e: await Given(m, e); return;
-            case CommandEnqueued<CreateLoo> e: await Given(m, e); return;
+            case CommandEnqueued<CreateBoo> e: await Given(m, e); return;
             default: return;
         }
     }
@@ -88,6 +91,7 @@ public partial class XooProcessManager : IProcessManager, IVersionAware, IIdAwar
     {
         {nameof(FooCreated), typeof(FooCreated)},
         {nameof(BooUpdated), typeof(BooUpdated)},
+        {"CommandEnqueued<CreateBoo>", typeof(CommandEnqueued<CreateBoo>)}
     };
 
     static IReadOnlyDictionary<string, Type> ITypeRegister.TypeRegister => _register;

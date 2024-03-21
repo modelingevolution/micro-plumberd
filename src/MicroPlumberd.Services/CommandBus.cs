@@ -10,13 +10,15 @@ using EventStore.Client;
 using MicroPlumberd;
 using MicroPlumberd.Collections;
 using MicroPlumberd.Services;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
 class CommandBus : ICommandBus, IEventHandler
 {
     private readonly IPlumber _plumber;
-    private readonly string _steamId;
+    private readonly ILogger<CommandBus> _log;
+    private readonly string _stream;
     private readonly ConcurrentDictionary<Guid, CommandExecutionResults> _handlers = new();
     private readonly ConcurrentDictionary<string, Type> _commandMapping = new();
     private readonly ConcurrentHashSet<Type> _supportedCommands = new();
@@ -24,10 +26,11 @@ class CommandBus : ICommandBus, IEventHandler
     private object _sync = new object();
 
     public Guid SessionId { get; } = Guid.NewGuid();
-    public CommandBus(IPlumber plumber)
+    public CommandBus(IPlumber plumber, ILogger<CommandBus> log)
     {
         _plumber = plumber;
-        _steamId = plumber.Config.Conventions.ServicesConventions().SessionStreamFromSessionIdConvention(SessionId);
+        _log = log;
+        _stream = plumber.Config.Conventions.ServicesConventions().SessionStreamFromSessionIdConvention(SessionId);
     }
     
     
@@ -45,8 +48,8 @@ class CommandBus : ICommandBus, IEventHandler
 
         if (shouldSubscribe)
         {
-            await _plumber.SubscribeEventHandle(TryMapEventResponse, null, this, _steamId, FromStream.End, false);
-            Debug.WriteLine($"Session {_steamId} subscribed");
+            await _plumber.SubscribeEventHandle(TryMapEventResponse, null, this, _stream, FromStream.End, false);
+            _log.LogDebug("Session {steamId} subscribed.", _stream);
         }
     }
 
@@ -54,7 +57,7 @@ class CommandBus : ICommandBus, IEventHandler
     {
         if (!_commandMapping.TryGetValue(type, out t))
         {
-            Debug.WriteLine($"Received unrecognized message type: {type}");
+            _log.LogWarning("Received unrecognized message type: {type}", type);
             return false;
         }
 
@@ -82,9 +85,10 @@ class CommandBus : ICommandBus, IEventHandler
         CheckMapping(command);
         await CheckInitialized();
         
-        await _plumber.AppendEvents(_steamId, StreamState.Any, [command], metadata);
+        await _plumber.AppendEvents(_stream, StreamState.Any, [command], metadata);
+
+        bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(_plumber.Config.ServicesConfig().DefaultTimeout);
         
-        bool receivedReturn = executionResults.Wait.WaitOne(_plumber.Config.ServicesConfig().DefaultTimeout);
         if (!executionResults.IsSuccess)
         {
             if (!receivedReturn)
@@ -111,15 +115,15 @@ class CommandBus : ICommandBus, IEventHandler
 
     async Task IEventHandler.Handle(Metadata m, object ev)
     {
-        var id = m.CausationId() ?? Guid.Empty;
-        if (_handlers.TryGetValue(id, out var results))
+        var causationId = m.CausationId() ?? Guid.Empty;
+        if (_handlers.TryGetValue(causationId, out var results))
         {
             if (await results.Handle(m, ev))
             {
-                _handlers.TryRemove(id, out var x);
-                Debug.WriteLine($"Command execution confirmed: {ev.GetType().Name}");
+                _handlers.TryRemove(causationId, out var x);
+                _log.LogDebug("Command execution confirmed: {CommandType}", ev.GetType().GetFriendlyName());
             }
-        } else Debug.WriteLine($"Session event unhandled. CausationId: {id}");
+        } else _log.LogDebug("Session event unhandled. CausationId: {CausationId}", causationId);
     }
 }
 
@@ -144,7 +148,7 @@ public class CommandExecutionResults
                 if (ce.CommandId == m.CausationId())
                 {
                     IsSuccess = true;
-                    Wait.Set();
+                    IsReady.SetResult(true);
                     return true;
                 }
 
@@ -157,8 +161,8 @@ public class CommandExecutionResults
                     IsSuccess = false;
                     ErrorMessage = ef.Message;
                     ErrorData = ef.Fault;
-                    Wait.Set();
-                    return true;
+                    IsReady.SetResult(true);
+                        return true;
                 }
 
                 break;
@@ -169,7 +173,7 @@ public class CommandExecutionResults
                 {
                     IsSuccess = false;
                     ErrorMessage = cf.Message;
-                    Wait.Set();
+                    IsReady.SetResult(true);
                     return true;
                 }
 
@@ -182,8 +186,10 @@ public class CommandExecutionResults
 
     
 
-    public bool IsSuccess { get; private set; }
+    
     public string ErrorMessage { get; private set; }
     public object? ErrorData { get; private set; }
-    public ManualResetEvent Wait { get; } = new ManualResetEvent(false);
+    public bool IsSuccess { get; private set; }
+    public TaskCompletionSource<bool> IsReady { get; private set; } = new TaskCompletionSource<bool>();
+    
 }

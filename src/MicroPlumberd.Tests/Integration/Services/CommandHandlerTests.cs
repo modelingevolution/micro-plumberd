@@ -28,8 +28,8 @@ namespace MicroPlumberd.Tests.Integration.Services
         {
             _eventStore = eventStore;
             _testOutputHelper = testOutputHelper;
-            _serverApp = new App();
-            _clientApp = new App();
+            _serverApp = new App(testOutputHelper);
+            _clientApp = new App(testOutputHelper);
         }
 
         [Fact]

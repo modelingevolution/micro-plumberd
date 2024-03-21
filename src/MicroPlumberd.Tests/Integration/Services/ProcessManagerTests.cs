@@ -5,6 +5,8 @@ using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using ModelingEvolution.DirectConnect;
+using Xunit.Sdk;
+using Xunit.Abstractions;
 
 namespace MicroPlumberd.Tests.Integration.Services;
 
@@ -14,11 +16,11 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
     private readonly EventStoreServer _eventStore;
     private readonly App _serverApp;
     private readonly App _clientApp;
-    public ProcessManagerTests(EventStoreServer eventStore)
+    public ProcessManagerTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
     {
         _eventStore = eventStore;
-        _serverApp = new App();
-        _clientApp = new App();
+        _serverApp = new App(testOutputHelper);
+        _clientApp = new App(testOutputHelper);
     }
 
     [Fact]
@@ -46,13 +48,11 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
         await clientBus.SendAsync(Guid.NewGuid(), new CreateFoo() { Name = "Hello" });
         sw.Stop();
 
-        Debug.WriteLine("==> Waiting 30 seconds...");
-        await Task.Delay(30000);
-        Debug.WriteLine("==> Pushing process manager further.");
-
+        
+        await Task.Delay(2000);
         await clientBus.SendAsync("Hello".ToGuid(), new ChangeBoo() { Name="Okidoki"} );
 
 
-        await Task.Delay(1000);
+        await Task.Delay(30000);
     }
 }

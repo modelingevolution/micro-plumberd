@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using MicroPlumberd.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using ModelingEvolution.DirectConnect;
 
 namespace MicroPlumberd.DirectConnect;
@@ -46,6 +47,7 @@ public static class ContainerExtensions
             
         if (!services.TryGetSingleton<TypeRegister>(out var service))
             throw new InvalidOperationException();
+        
 
         service!.Index(TCommandHandler.ReturnTypes)
             .Index(TCommandHandler.FaultTypes);

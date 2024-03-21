@@ -1,10 +1,11 @@
 ﻿using System.Collections.Concurrent;
 using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services.ProcessManagers;
 
-public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClient)  : IEventHandler, ITypeRegister
+public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClient, ILogger<ProcessManagerExecutor<TProcessManager>> log)  : IEventHandler, ITypeRegister
     where TProcessManager : IProcessManager, ITypeRegister
 {
     public class Lookup : IEventHandler, ITypeRegister
@@ -14,7 +15,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
 
         private void Given(Metadata m, ICommandEnqueued ev)
         {
-            _managerByReceiverId[m.Id] = ev.RecipientId;
+            _managerByReceiverId[ev.RecipientId] = m.Id;
         }
 
         public async Task Handle(Metadata m, object ev)
@@ -22,7 +23,8 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             if (ev is ICommandEnqueued sf)
                 Given(m, sf);
         }
-        public static IReadOnlyDictionary<string, Type> TypeRegister => TProcessManager.TypeRegister;
+        private static Dictionary<string, Type> _typeRegister = TProcessManager.CommandTypes.ToDictionary(x=>x.GetFriendlyName());
+        public static IReadOnlyDictionary<string, Type> TypeRegister => _typeRegister;
     }
     internal class Sender(IProcessManagerClient pmClient) : IEventHandler, ITypeRegister
     {
@@ -68,7 +70,11 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             cmd = await manager.StartWhen(m, evt);
         else
         {
-            if (manager.Version < 0) return;
+            if (manager.Version < 0)
+            {
+                log.LogDebug("We've received event to process-manager that was not created.");
+                return;
+            }
             cmd = await manager.When(m, evt);
         }
 
@@ -78,7 +84,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             await pmClient.Plumber.AppendEvents($"{typeof(TProcessManager).Name}-{manager.Id}", StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
         
     }
-
-
+    
+   
     public static IReadOnlyDictionary<string, Type> TypeRegister => TProcessManager.TypeRegister;
 }

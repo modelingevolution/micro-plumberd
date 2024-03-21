@@ -40,6 +40,7 @@ public static class ContainerExtensions
     {
         services.AddBackgroundServiceIfMissing<CommandHandlerService>();
         services.AddSingleton<ICommandHandlerStarter, CommandHandlerStarter<TCommandHandler>>();
+        services.TryAddSingleton(typeof(CommandHandlerExecutor<>));
         TCommandHandler.RegisterHandlers(services);
         return services;
     }

@@ -6,52 +6,21 @@ public interface IProjectionRegister
 {
     Task<ProjectionDetails?> Get(string name);
 }
-class ProjectionRegister(EventStoreProjectionManagementClient client) : IProjectionRegister
+
+class ProjectionRegister : IProjectionRegister
 {
-    private readonly Dictionary<string, ProjectionDetails> _index = new();
-    private bool _initialized = false;
-    private object _sync = new object();
-    private readonly ManualResetEventSlim _ready = new ManualResetEventSlim(false);
+    private readonly AsyncLazy<Dictionary<string, ProjectionDetails>> _lazyLoader;
+    private readonly EventStoreProjectionManagementClient _client;
+
+    public ProjectionRegister(EventStoreProjectionManagementClient client)
+    {
+        _client = client;
+        _lazyLoader = new AsyncLazy<Dictionary<string, ProjectionDetails>>(async () => await _client.ListContinuousAsync().ToDictionaryAsync(x=>x.Name).AsTask());
+    }
+
+
     public async Task<ProjectionDetails?> Get(string name)
     {
-        if (!_initialized )
-        {
-            bool load = false;
-            lock (_sync)
-            {
-                if (!_initialized)
-                {
-                    load = true;
-                    _initialized = true;
-                }
-            }
-
-            if (load)
-            {
-                for (int r = 0; r < 3; r++)
-                {
-                    try
-                    {
-                        var projections = await client.ListContinuousAsync().ToArrayAsync();
-                        foreach (var i in projections)
-                        {
-                            _index.Add(i.Name, i);
-                        }
-
-                        break;
-                    }
-                    catch
-                    {
-                        await Task.Delay(1000);
-                    }
-                }
-
-                _ready.Set();
-            }
-            else
-                _ready.Wait();
-        }
-
-        return _index.TryGetValue(name, out var v) ? v : null;
+        return (await _lazyLoader.Value).TryGetValue(name, out var v) ? v : null;
     }
 }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using EventStore.Client;
 using MicroPlumberd.DirectConnect;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
@@ -10,7 +11,8 @@ static class CommandHandlerExecutor
 {
     public static IEventHandler Create(IPlumber plumber, Type t)
     {
-        return (IEventHandler)Activator.CreateInstance(typeof(CommandHandlerExecutor<>).MakeGenericType(t), plumber)!;
+        var executorType = typeof(CommandHandlerExecutor<>).MakeGenericType(t);
+        return (IEventHandler)plumber.Config.ServiceProvider.GetRequiredService(executorType);
     }
 }
 
@@ -24,10 +26,10 @@ public static class MetadataExtensions
     }
 }
 
-class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
+class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor<T>> log) : IEventHandler, ITypeRegister
     where T:ICommandHandler, IServiceTypeRegister
 {
-    private IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
+    private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
     class Invoker<TCommand>(CommandHandlerExecutor<T> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => await parent.Handle<TCommand>(m, (TCommand)ev); }
     interface IInvoker { Task Handle(Metadata m, object ev); }
 
@@ -55,20 +57,24 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
         {
             sw.Start();
             await ch.Execute(recipientId, command);
-            Debug.WriteLine($"Command {command.GetType().Name} executed.");
+            log.LogDebug("Command {CommandType} executed.", command.GetType().Name);
             await plumber.AppendEvent(cmdStream, StreamState.Any, $"{cmdName}Executed",
                 new CommandExecuted()
                 {
                     CommandId = cmdId,
                     Duration = sw.Elapsed
                 });
-            Debug.WriteLine($"Command {command.GetType().Name} appended to session steam {cmdStream}.");
+            log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name, cmdStream);
         }
         catch (CommandFaultException ex)
         {
             var faultData = ex.GetFaultData();
             await plumber.AppendEvent(cmdStream, StreamState.StreamExists,
                 $"{cmdName}Failed<{faultData.GetType().Name}>", CommandFailed.Create(cmdId, ex.Message, sw.Elapsed,faultData));
+            log.LogDebug(ex,"Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.", 
+                command.GetType().Name,
+                faultData.GetType().Name,
+                cmdStream);
         }
         catch(Exception ex)
         {
@@ -79,6 +85,8 @@ class CommandHandlerExecutor<T>(IPlumber plumber) : IEventHandler, ITypeRegister
                     Duration = sw.Elapsed,
                     Message = ex.Message
                 });
+            log.LogDebug(ex,"Command {CommandType}Failed appended to session steam {CommandStream}.", command.GetType().Name,
+                cmdStream);
         }
     }
     

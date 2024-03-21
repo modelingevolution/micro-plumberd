@@ -8,6 +8,9 @@ public interface IPlumber
 {
     IPlumberConfig Config { get; }
     IEventStoreClientPool Pool { get; }
+    EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
+    EventStoreProjectionManagementClient ProjectionManagementClient { get; }
+    IProjectionRegister ProjectionRegister { get; }
 
     /// <summary>
     /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.

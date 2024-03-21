@@ -1,4 +1,5 @@
 ﻿using EventStore.Client;
+using Microsoft.Win32;
 
 namespace MicroPlumberd;
 
@@ -24,6 +25,20 @@ public static class EventStoreProjectionManagementClientExtensions
         await client.EnableAsync(outputStream);
     }
 
+    public static async Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory)
+    {
+        string query =
+            $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
+        if ((await register.Get(outputStreamCategory)) != null)
+            await Update(client, outputStreamCategory, query);
+        else
+        {
+            await client.CreateContinuousAsync(outputStreamCategory, query, false);
+            await client.DisableAsync(outputStreamCategory);
+            await client.UpdateAsync(outputStreamCategory, query, true);
+            await client.EnableAsync(outputStreamCategory);
+        }
+    }
     public static async Task EnsureJoinProjection(this EventStoreProjectionManagementClient client,
         string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes)
     {

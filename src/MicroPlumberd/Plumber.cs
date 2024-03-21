@@ -188,7 +188,7 @@ public class Plumber : IPlumber, IPlumberConfig
     public async Task Rehydrate<T>(T model, string streamId) where T : IEventHandler, ITypeRegister
     {
         using var c = _clientPool.Rent();
-        var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
+        var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start, resolveLinkTos:true);
         var registry = T.TypeRegister;
         var vAware = model as IVersionAware;
         
@@ -210,7 +210,7 @@ public class Plumber : IPlumber, IPlumberConfig
     {
         return await FindEventInStream<object>(streamId, id, eventMapping, scanDirection);
     }
-    public async Task<IEventRecord<TEvent>?> FindEventInStream<TEvent>(string streamId, Guid id, TypeEventConverter eventMapping = null, Direction scanDirection = Direction.Backwards)
+    public async Task<IEventRecord<TEvent>?> FindEventInStream<TEvent>(string streamId, Guid id, TypeEventConverter? eventMapping = null, Direction scanDirection = Direction.Backwards)
     {
         using var c = _clientPool.Rent();
         var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
@@ -247,10 +247,12 @@ public class Plumber : IPlumber, IPlumberConfig
         string streamId = Conventions.GetStreamIdConvention(typeof(T), id);
         using var c = _clientPool.Rent();
         var items = c.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
+        
+        var aggregate = T.New(id);
+        if (await items.ReadState == ReadState.StreamNotFound) return aggregate;
+
         var registry = T.TypeRegister;
         var events = items.Select(ev => Serializer.Deserialize(ev.Event.Data.Span, registry[ev.Event.EventType])!);
-
-        var aggregate = T.New(id);
         await aggregate.Rehydrate(events);
         return aggregate;
     }

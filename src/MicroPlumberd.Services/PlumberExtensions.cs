@@ -1,4 +1,5 @@
 ﻿using MicroPlumberd.DirectConnect;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd.Services;
 
@@ -10,8 +11,8 @@ public static class PlumberExtensions
         var servicesConventions = plumber.Config.Conventions.ServicesConventions();
         var outputStream = servicesConventions.OutputSteamNameFromCommandHandlerConvention(commandHandlerType);
         var groupName = servicesConventions.GroupNameFromCommandHandlerConvention(commandHandlerType);
-        return plumber.SubscribeEventHandlerPersistently(new CommandHandlerExecutor<TCommandHandler>(plumber), 
-            outputStream, groupName);
+        var executor = plumber.Config.ServiceProvider.GetRequiredService<CommandHandlerExecutor<TCommandHandler>>();
+        return plumber.SubscribeEventHandlerPersistently(executor, outputStream, groupName);
     }
    
 }
