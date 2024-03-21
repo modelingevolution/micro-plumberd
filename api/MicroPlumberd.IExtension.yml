@@ -1,0 +1,85 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IExtension
+  commentId: T:MicroPlumberd.IExtension
+  id: IExtension
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IExtension.GetExtension``1
+  langs:
+  - csharp
+  - vb
+  name: IExtension
+  nameWithType: IExtension
+  fullName: MicroPlumberd.IExtension
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IExtension
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 38
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IExtension
+    content.vb: Public Interface IExtension
+- uid: MicroPlumberd.IExtension.GetExtension``1
+  commentId: M:MicroPlumberd.IExtension.GetExtension``1
+  id: GetExtension``1
+  parent: MicroPlumberd.IExtension
+  langs:
+  - csharp
+  - vb
+  name: GetExtension<T>()
+  nameWithType: IExtension.GetExtension<T>()
+  fullName: MicroPlumberd.IExtension.GetExtension<T>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetExtension
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 40
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'T GetExtension<T>() where T : new()'
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Function GetExtension(Of T As New)() As T
+  overload: MicroPlumberd.IExtension.GetExtension*
+  nameWithType.vb: IExtension.GetExtension(Of T)()
+  fullName.vb: MicroPlumberd.IExtension.GetExtension(Of T)()
+  name.vb: GetExtension(Of T)()
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IExtension.GetExtension*
+  commentId: Overload:MicroPlumberd.IExtension.GetExtension
+  href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  name: GetExtension
+  nameWithType: IExtension.GetExtension
+  fullName: MicroPlumberd.IExtension.GetExtension
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

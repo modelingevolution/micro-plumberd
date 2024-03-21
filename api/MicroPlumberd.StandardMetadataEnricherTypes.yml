@@ -8,6 +8,7 @@ items:
   - MicroPlumberd.StandardMetadataEnricherTypes.All
   - MicroPlumberd.StandardMetadataEnricherTypes.Created
   - MicroPlumberd.StandardMetadataEnricherTypes.InvocationContext
+  - MicroPlumberd.StandardMetadataEnricherTypes.None
   langs:
   - csharp
   - vb
@@ -22,7 +23,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StandardMetadataEnricherTypes
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 57
+    startLine: 105
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -39,6 +40,32 @@ items:
   - type: System.FlagsAttribute
     ctor: System.FlagsAttribute.#ctor
     arguments: []
+- uid: MicroPlumberd.StandardMetadataEnricherTypes.None
+  commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.None
+  id: None
+  parent: MicroPlumberd.StandardMetadataEnricherTypes
+  langs:
+  - csharp
+  - vb
+  name: None
+  nameWithType: StandardMetadataEnricherTypes.None
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes.None
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: None
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 108
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: None = 0
+    return:
+      type: MicroPlumberd.StandardMetadataEnricherTypes
 - uid: MicroPlumberd.StandardMetadataEnricherTypes.Created
   commentId: F:MicroPlumberd.StandardMetadataEnricherTypes.Created
   id: Created
@@ -57,7 +84,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Created
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 60
+    startLine: 109
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -83,7 +110,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: InvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 61
+    startLine: 110
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -109,7 +136,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: All
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 62
+    startLine: 111
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

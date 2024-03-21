@@ -1,0 +1,46 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Utils
+  commentId: N:MicroPlumberd.Utils
+  id: MicroPlumberd.Utils
+  children:
+  - MicroPlumberd.Utils.AsyncDisposableCollection
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Utils
+  nameWithType: MicroPlumberd.Utils
+  fullName: MicroPlumberd.Utils
+  type: Namespace
+  assemblies:
+  - MicroPlumberd
+references:
+- uid: MicroPlumberd.Utils.AsyncDisposableCollection
+  commentId: T:MicroPlumberd.Utils.AsyncDisposableCollection
+  parent: MicroPlumberd.Utils
+  href: MicroPlumberd.Utils.AsyncDisposableCollection.html
+  name: AsyncDisposableCollection
+  nameWithType: AsyncDisposableCollection
+  fullName: MicroPlumberd.Utils.AsyncDisposableCollection
+- uid: MicroPlumberd.Utils
+  commentId: N:MicroPlumberd.Utils
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Utils
+  nameWithType: MicroPlumberd.Utils
+  fullName: MicroPlumberd.Utils
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Utils
+    name: Utils
+    href: MicroPlumberd.Utils.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Utils
+    name: Utils
+    href: MicroPlumberd.Utils.html

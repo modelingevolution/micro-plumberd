@@ -1,0 +1,35 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IProcessAction
+  commentId: T:MicroPlumberd.IProcessAction
+  id: IProcessAction
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IProcessAction
+  nameWithType: IProcessAction
+  fullName: MicroPlumberd.IProcessAction
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IProcessAction
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 3
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IProcessAction
+    content.vb: Public Interface IProcessAction
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd

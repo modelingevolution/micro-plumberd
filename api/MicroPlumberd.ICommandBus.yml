@@ -1,0 +1,149 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ICommandBus
+  commentId: T:MicroPlumberd.ICommandBus
+  id: ICommandBus
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
+  langs:
+  - csharp
+  - vb
+  name: ICommandBus
+  nameWithType: ICommandBus
+  fullName: MicroPlumberd.ICommandBus
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICommandBus
+    path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ICommandBus
+    content.vb: Public Interface ICommandBus
+- uid: MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
+  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
+  id: SendAsync(System.Guid,System.Object)
+  parent: MicroPlumberd.ICommandBus
+  langs:
+  - csharp
+  - vb
+  name: SendAsync(Guid, object)
+  nameWithType: ICommandBus.SendAsync(Guid, object)
+  fullName: MicroPlumberd.ICommandBus.SendAsync(System.Guid, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SendAsync
+    path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Task SendAsync(Guid recipientId, object command)
+    parameters:
+    - id: recipientId
+      type: System.Guid
+    - id: command
+      type: System.Object
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function SendAsync(recipientId As Guid, command As Object) As Task
+  overload: MicroPlumberd.ICommandBus.SendAsync*
+  nameWithType.vb: ICommandBus.SendAsync(Guid, Object)
+  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(System.Guid, Object)
+  name.vb: SendAsync(Guid, Object)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ICommandBus.SendAsync*
+  commentId: Overload:MicroPlumberd.ICommandBus.SendAsync
+  href: MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Guid_System_Object_
+  name: SendAsync
+  nameWithType: ICommandBus.SendAsync
+  fullName: MicroPlumberd.ICommandBus.SendAsync
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

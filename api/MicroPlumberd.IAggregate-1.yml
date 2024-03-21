@@ -20,21 +20,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 14
+    startLine: 43
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'public interface IAggregate<out TSelf> : IAggregate'
+    content: 'public interface IAggregate<out TSelf> : IAggregate, IId, IVersioned'
     typeParameters:
     - id: TSelf
-    content.vb: Public Interface IAggregate(Of Out TSelf) Inherits IAggregate
+    content.vb: Public Interface IAggregate(Of Out TSelf) Inherits IAggregate, IId, IVersioned
   inheritedMembers:
-  - MicroPlumberd.IAggregate.Id
-  - MicroPlumberd.IAggregate.Age
   - MicroPlumberd.IAggregate.PendingEvents
   - MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
   - MicroPlumberd.IAggregate.AckCommitted
+  - MicroPlumberd.IId.Id
+  - MicroPlumberd.IVersioned.Version
   nameWithType.vb: IAggregate(Of TSelf)
   fullName.vb: MicroPlumberd.IAggregate(Of TSelf)
   name.vb: IAggregate(Of TSelf)
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: New
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 16
+    startLine: 45
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -78,20 +78,6 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: MicroPlumberd.IAggregate.Id
-  commentId: P:MicroPlumberd.IAggregate.Id
-  parent: MicroPlumberd.IAggregate
-  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Id
-  name: Id
-  nameWithType: IAggregate.Id
-  fullName: MicroPlumberd.IAggregate.Id
-- uid: MicroPlumberd.IAggregate.Age
-  commentId: P:MicroPlumberd.IAggregate.Age
-  parent: MicroPlumberd.IAggregate
-  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Age
-  name: Age
-  nameWithType: IAggregate.Age
-  fullName: MicroPlumberd.IAggregate.Age
 - uid: MicroPlumberd.IAggregate.PendingEvents
   commentId: P:MicroPlumberd.IAggregate.PendingEvents
   parent: MicroPlumberd.IAggregate
@@ -163,6 +149,20 @@ references:
     href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
   - name: (
   - name: )
+- uid: MicroPlumberd.IId.Id
+  commentId: P:MicroPlumberd.IId.Id
+  parent: MicroPlumberd.IId
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
+  name: Id
+  nameWithType: IId.Id
+  fullName: MicroPlumberd.IId.Id
+- uid: MicroPlumberd.IVersioned.Version
+  commentId: P:MicroPlumberd.IVersioned.Version
+  parent: MicroPlumberd.IVersioned
+  href: MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: MicroPlumberd.IVersioned.Version
 - uid: MicroPlumberd.IAggregate
   commentId: T:MicroPlumberd.IAggregate
   parent: MicroPlumberd
@@ -170,6 +170,20 @@ references:
   name: IAggregate
   nameWithType: IAggregate
   fullName: MicroPlumberd.IAggregate
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd.IAggregate`1.New*
   commentId: Overload:MicroPlumberd.IAggregate`1.New
   href: MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_System_Guid_

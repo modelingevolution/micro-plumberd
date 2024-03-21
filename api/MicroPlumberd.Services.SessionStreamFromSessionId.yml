@@ -1,0 +1,82 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.SessionStreamFromSessionId
+  commentId: T:MicroPlumberd.Services.SessionStreamFromSessionId
+  id: SessionStreamFromSessionId
+  parent: MicroPlumberd.Services
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: SessionStreamFromSessionId
+  nameWithType: SessionStreamFromSessionId
+  fullName: MicroPlumberd.Services.SessionStreamFromSessionId
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SessionStreamFromSessionId
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public delegate string SessionStreamFromSessionId(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+    return:
+      type: System.String
+    content.vb: Public Delegate Function SessionStreamFromSessionId(id As Guid) As String
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

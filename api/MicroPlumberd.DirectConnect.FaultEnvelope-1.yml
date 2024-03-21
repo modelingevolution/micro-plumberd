@@ -1,0 +1,698 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1
+  commentId: T:MicroPlumberd.DirectConnect.FaultEnvelope`1
+  id: FaultEnvelope`1
+  parent: MicroPlumberd.DirectConnect
+  children:
+  - MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor
+  - MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor(`0,System.String)
+  - MicroPlumberd.DirectConnect.FaultEnvelope`1.Code
+  - MicroPlumberd.DirectConnect.FaultEnvelope`1.Data
+  - MicroPlumberd.DirectConnect.FaultEnvelope`1.Error
+  langs:
+  - csharp
+  - vb
+  name: FaultEnvelope<TData>
+  nameWithType: FaultEnvelope<TData>
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: FaultEnvelope
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 44
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: >-
+      [ProtoContract]
+
+      public record FaultEnvelope<TData> : IFaultEnvelope, IEquatable<FaultEnvelope<TData>>
+    typeParameters:
+    - id: TData
+    content.vb: >-
+      <ProtoContract>
+
+      Public Class FaultEnvelope(Of TData) Implements IFaultEnvelope, IEquatable(Of FaultEnvelope(Of TData))
+  inheritance:
+  - System.Object
+  implements:
+  - MicroPlumberd.DirectConnect.IFaultEnvelope
+  - System.IEquatable{MicroPlumberd.DirectConnect.FaultEnvelope`1}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  attributes:
+  - type: ProtoBuf.ProtoContractAttribute
+    ctor: ProtoBuf.ProtoContractAttribute.#ctor
+    arguments: []
+  nameWithType.vb: FaultEnvelope(Of TData)
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData)
+  name.vb: FaultEnvelope(Of TData)
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor(`0,System.String)
+  commentId: M:MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor(`0,System.String)
+  id: '#ctor(`0,System.String)'
+  parent: MicroPlumberd.DirectConnect.FaultEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: FaultEnvelope(TData, string)
+  nameWithType: FaultEnvelope<TData>.FaultEnvelope(TData, string)
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.FaultEnvelope(TData, string)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 47
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: public FaultEnvelope(TData data, string error)
+    parameters:
+    - id: data
+      type: '{TData}'
+    - id: error
+      type: System.String
+    content.vb: Public Sub New(data As TData, [error] As String)
+  overload: MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor*
+  nameWithType.vb: FaultEnvelope(Of TData).New(TData, String)
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).New(TData, String)
+  name.vb: New(TData, String)
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor
+  commentId: M:MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor
+  id: '#ctor'
+  parent: MicroPlumberd.DirectConnect.FaultEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: FaultEnvelope()
+  nameWithType: FaultEnvelope<TData>.FaultEnvelope()
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.FaultEnvelope()
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 53
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: public FaultEnvelope()
+    content.vb: Public Sub New()
+  overload: MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor*
+  nameWithType.vb: FaultEnvelope(Of TData).New()
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).New()
+  name.vb: New()
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.Data
+  commentId: P:MicroPlumberd.DirectConnect.FaultEnvelope`1.Data
+  id: Data
+  parent: MicroPlumberd.DirectConnect.FaultEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: FaultEnvelope<TData>.Data
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.Data
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Data
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 59
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: >-
+      [ProtoMember(1)]
+
+      public required TData Data { get; init; }
+    parameters: []
+    return:
+      type: '{TData}'
+    content.vb: >-
+      <ProtoMember(1)>
+
+      Public Property Data As TData
+  overload: MicroPlumberd.DirectConnect.FaultEnvelope`1.Data*
+  attributes:
+  - type: ProtoBuf.ProtoMemberAttribute
+    ctor: ProtoBuf.ProtoMemberAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 1
+  nameWithType.vb: FaultEnvelope(Of TData).Data
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).Data
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.Error
+  commentId: P:MicroPlumberd.DirectConnect.FaultEnvelope`1.Error
+  id: Error
+  parent: MicroPlumberd.DirectConnect.FaultEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: FaultEnvelope<TData>.Error
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.Error
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Error
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 62
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  example: []
+  syntax:
+    content: >-
+      [ProtoMember(2)]
+
+      public required string Error { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <ProtoMember(2)>
+
+      Public Property [Error] As String
+  overload: MicroPlumberd.DirectConnect.FaultEnvelope`1.Error*
+  implements:
+  - MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  attributes:
+  - type: ProtoBuf.ProtoMemberAttribute
+    ctor: ProtoBuf.ProtoMemberAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 2
+  nameWithType.vb: FaultEnvelope(Of TData).Error
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).Error
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.Code
+  commentId: P:MicroPlumberd.DirectConnect.FaultEnvelope`1.Code
+  id: Code
+  parent: MicroPlumberd.DirectConnect.FaultEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: Code
+  nameWithType: FaultEnvelope<TData>.Code
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.Code
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Code
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 65
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  example: []
+  syntax:
+    content: >-
+      [ProtoMember(3)]
+
+      public HttpStatusCode Code { get; init; }
+    parameters: []
+    return:
+      type: System.Net.HttpStatusCode
+    content.vb: >-
+      <ProtoMember(3)>
+
+      Public Property Code As HttpStatusCode
+  overload: MicroPlumberd.DirectConnect.FaultEnvelope`1.Code*
+  implements:
+  - MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  attributes:
+  - type: ProtoBuf.ProtoMemberAttribute
+    ctor: ProtoBuf.ProtoMemberAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 3
+  nameWithType.vb: FaultEnvelope(Of TData).Code
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).Code
+references:
+- uid: MicroPlumberd.DirectConnect
+  commentId: N:MicroPlumberd.DirectConnect
+  href: MicroPlumberd.html
+  name: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope
+  commentId: T:MicroPlumberd.DirectConnect.IFaultEnvelope
+  parent: MicroPlumberd.DirectConnect
+  href: MicroPlumberd.DirectConnect.IFaultEnvelope.html
+  name: IFaultEnvelope
+  nameWithType: IFaultEnvelope
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope
+- uid: System.IEquatable{MicroPlumberd.DirectConnect.FaultEnvelope`1}
+  commentId: T:System.IEquatable{MicroPlumberd.DirectConnect.FaultEnvelope`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<FaultEnvelope<TData>>
+  nameWithType: IEquatable<FaultEnvelope<TData>>
+  fullName: System.IEquatable<MicroPlumberd.DirectConnect.FaultEnvelope<TData>>
+  nameWithType.vb: IEquatable(Of FaultEnvelope(Of TData))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.DirectConnect.FaultEnvelope(Of TData))
+  name.vb: IEquatable(Of FaultEnvelope(Of TData))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.DirectConnect.FaultEnvelope`1
+    name: FaultEnvelope
+    href: MicroPlumberd.DirectConnect.FaultEnvelope-1.html
+  - name: <
+  - name: TData
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.DirectConnect.FaultEnvelope`1
+    name: FaultEnvelope
+    href: MicroPlumberd.DirectConnect.FaultEnvelope-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TData
+  - name: )
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor*
+  commentId: Overload:MicroPlumberd.DirectConnect.FaultEnvelope`1.#ctor
+  href: MicroPlumberd.DirectConnect.FaultEnvelope-1.html#MicroPlumberd_DirectConnect_FaultEnvelope_1__ctor__0_System_String_
+  name: FaultEnvelope
+  nameWithType: FaultEnvelope<TData>.FaultEnvelope
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.FaultEnvelope
+  nameWithType.vb: FaultEnvelope(Of TData).New
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).New
+  name.vb: New
+- uid: '{TData}'
+  commentId: '!:TData'
+  definition: TData
+  name: TData
+  nameWithType: TData
+  fullName: TData
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: TData
+  name: TData
+  nameWithType: TData
+  fullName: TData
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.Data*
+  commentId: Overload:MicroPlumberd.DirectConnect.FaultEnvelope`1.Data
+  href: MicroPlumberd.DirectConnect.FaultEnvelope-1.html#MicroPlumberd_DirectConnect_FaultEnvelope_1_Data
+  name: Data
+  nameWithType: FaultEnvelope<TData>.Data
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.Data
+  nameWithType.vb: FaultEnvelope(Of TData).Data
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).Data
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.Error*
+  commentId: Overload:MicroPlumberd.DirectConnect.FaultEnvelope`1.Error
+  href: MicroPlumberd.DirectConnect.FaultEnvelope-1.html#MicroPlumberd_DirectConnect_FaultEnvelope_1_Error
+  name: Error
+  nameWithType: FaultEnvelope<TData>.Error
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.Error
+  nameWithType.vb: FaultEnvelope(Of TData).Error
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).Error
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  commentId: P:MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  parent: MicroPlumberd.DirectConnect.IFaultEnvelope
+  href: MicroPlumberd.DirectConnect.IFaultEnvelope.html#MicroPlumberd_DirectConnect_IFaultEnvelope_Error
+  name: Error
+  nameWithType: IFaultEnvelope.Error
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+- uid: MicroPlumberd.DirectConnect.FaultEnvelope`1.Code*
+  commentId: Overload:MicroPlumberd.DirectConnect.FaultEnvelope`1.Code
+  href: MicroPlumberd.DirectConnect.FaultEnvelope-1.html#MicroPlumberd_DirectConnect_FaultEnvelope_1_Code
+  name: Code
+  nameWithType: FaultEnvelope<TData>.Code
+  fullName: MicroPlumberd.DirectConnect.FaultEnvelope<TData>.Code
+  nameWithType.vb: FaultEnvelope(Of TData).Code
+  fullName.vb: MicroPlumberd.DirectConnect.FaultEnvelope(Of TData).Code
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  commentId: P:MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  parent: MicroPlumberd.DirectConnect.IFaultEnvelope
+  href: MicroPlumberd.DirectConnect.IFaultEnvelope.html#MicroPlumberd_DirectConnect_IFaultEnvelope_Code
+  name: Code
+  nameWithType: IFaultEnvelope.Code
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+- uid: System.Net.HttpStatusCode
+  commentId: T:System.Net.HttpStatusCode
+  parent: System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode
+  name: HttpStatusCode
+  nameWithType: HttpStatusCode
+  fullName: System.Net.HttpStatusCode
+- uid: System.Net
+  commentId: N:System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net
+  nameWithType: System.Net
+  fullName: System.Net
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net

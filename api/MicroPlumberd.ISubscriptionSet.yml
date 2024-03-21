@@ -22,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ISubscriptionSet
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 8
+    startLine: 13
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -47,7 +47,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: With
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 10
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -83,7 +83,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistentlyAsync
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 13
+    startLine: 18
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -119,7 +119,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeAsync
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 14
+    startLine: 19
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -164,6 +164,7 @@ references:
   nameWithType: ISubscriptionSet
   fullName: MicroPlumberd.ISubscriptionSet
 - uid: TModel
+  commentId: '!:TModel'
   name: TModel
   nameWithType: TModel
   fullName: TModel

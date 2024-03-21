@@ -7,13 +7,13 @@ items:
   children:
   - MicroPlumberd.AggregateBase`1.#ctor(System.Guid)
   - MicroPlumberd.AggregateBase`1.AckCommitted
-  - MicroPlumberd.AggregateBase`1.Age
   - MicroPlumberd.AggregateBase`1.AppendPendingChange(System.Object)
   - MicroPlumberd.AggregateBase`1.Given(`0,System.Object)
   - MicroPlumberd.AggregateBase`1.Id
   - MicroPlumberd.AggregateBase`1.PendingEvents
   - MicroPlumberd.AggregateBase`1.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
   - MicroPlumberd.AggregateBase`1.State
+  - MicroPlumberd.AggregateBase`1.Version
   langs:
   - csharp
   - vb
@@ -33,12 +33,15 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'public abstract class AggregateBase<TState> where TState : new()'
+    content: 'public abstract class AggregateBase<TState> : IVersioned, IId where TState : new()'
     typeParameters:
     - id: TState
-    content.vb: Public MustInherit Class AggregateBase(Of TState As New)
+    content.vb: Public MustInherit Class AggregateBase(Of TState As New) Implements IVersioned, IId
   inheritance:
   - System.Object
+  implements:
+  - MicroPlumberd.IVersioned
+  - MicroPlumberd.IId
   inheritedMembers:
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -100,7 +103,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: State
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 13
+    startLine: 12
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -131,10 +134,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 15
+    startLine: 14
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  example: []
   syntax:
     content: public Guid Id { get; }
     parameters: []
@@ -142,39 +146,44 @@ items:
       type: System.Guid
     content.vb: Public ReadOnly Property Id As Guid
   overload: MicroPlumberd.AggregateBase`1.Id*
+  implements:
+  - MicroPlumberd.IId.Id
   nameWithType.vb: AggregateBase(Of TState).Id
   fullName.vb: MicroPlumberd.AggregateBase(Of TState).Id
-- uid: MicroPlumberd.AggregateBase`1.Age
-  commentId: P:MicroPlumberd.AggregateBase`1.Age
-  id: Age
+- uid: MicroPlumberd.AggregateBase`1.Version
+  commentId: P:MicroPlumberd.AggregateBase`1.Version
+  id: Version
   parent: MicroPlumberd.AggregateBase`1
   langs:
   - csharp
   - vb
-  name: Age
-  nameWithType: AggregateBase<TState>.Age
-  fullName: MicroPlumberd.AggregateBase<TState>.Age
+  name: Version
+  nameWithType: AggregateBase<TState>.Version
+  fullName: MicroPlumberd.AggregateBase<TState>.Version
   type: Property
   source:
     remote:
       path: src/MicroPlumberd/AggregateBase.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Age
+    id: Version
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 16
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  example: []
   syntax:
-    content: public long Age { get; }
+    content: public long Version { get; }
     parameters: []
     return:
       type: System.Int64
-    content.vb: Public Property Age As Long
-  overload: MicroPlumberd.AggregateBase`1.Age*
-  nameWithType.vb: AggregateBase(Of TState).Age
-  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Age
+    content.vb: Public Property Version As Long
+  overload: MicroPlumberd.AggregateBase`1.Version*
+  implements:
+  - MicroPlumberd.IVersioned.Version
+  nameWithType.vb: AggregateBase(Of TState).Version
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Version
 - uid: MicroPlumberd.AggregateBase`1.PendingEvents
   commentId: P:MicroPlumberd.AggregateBase`1.PendingEvents
   id: PendingEvents
@@ -193,7 +202,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 18
+    startLine: 17
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -224,7 +233,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendPendingChange
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 20
+    startLine: 19
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -256,7 +265,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 26
+    startLine: 25
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -290,7 +299,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 34
+    startLine: 33
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -318,7 +327,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Given
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 39
+    startLine: 38
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -354,6 +363,20 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -623,14 +646,28 @@ references:
   fullName: MicroPlumberd.AggregateBase<TState>.Id
   nameWithType.vb: AggregateBase(Of TState).Id
   fullName.vb: MicroPlumberd.AggregateBase(Of TState).Id
-- uid: MicroPlumberd.AggregateBase`1.Age*
-  commentId: Overload:MicroPlumberd.AggregateBase`1.Age
-  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Age
-  name: Age
-  nameWithType: AggregateBase<TState>.Age
-  fullName: MicroPlumberd.AggregateBase<TState>.Age
-  nameWithType.vb: AggregateBase(Of TState).Age
-  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Age
+- uid: MicroPlumberd.IId.Id
+  commentId: P:MicroPlumberd.IId.Id
+  parent: MicroPlumberd.IId
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
+  name: Id
+  nameWithType: IId.Id
+  fullName: MicroPlumberd.IId.Id
+- uid: MicroPlumberd.AggregateBase`1.Version*
+  commentId: Overload:MicroPlumberd.AggregateBase`1.Version
+  href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1_Version
+  name: Version
+  nameWithType: AggregateBase<TState>.Version
+  fullName: MicroPlumberd.AggregateBase<TState>.Version
+  nameWithType.vb: AggregateBase(Of TState).Version
+  fullName.vb: MicroPlumberd.AggregateBase(Of TState).Version
+- uid: MicroPlumberd.IVersioned.Version
+  commentId: P:MicroPlumberd.IVersioned.Version
+  parent: MicroPlumberd.IVersioned
+  href: MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: MicroPlumberd.IVersioned.Version
 - uid: System.Int64
   commentId: T:System.Int64
   parent: System

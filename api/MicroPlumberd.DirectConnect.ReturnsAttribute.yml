@@ -16,14 +16,14 @@ items:
   type: Class
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      path: src/MicroPlumberd.DirectConnect/ReturnsAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReturnsAttribute
-    path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 8
+    path: src/MicroPlumberd.DirectConnect/ReturnsAttribute.cs
+    startLine: 2
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: 'public abstract class ReturnsAttribute : Attribute'
@@ -89,14 +89,14 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      path: src/MicroPlumberd.DirectConnect/ReturnsAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
-    path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 8
+    path: src/MicroPlumberd.DirectConnect/ReturnsAttribute.cs
+    startLine: 2
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: protected ReturnsAttribute(Type returnType)
@@ -121,14 +121,14 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      path: src/MicroPlumberd.DirectConnect/ReturnsAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReturnType
-    path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 10
+    path: src/MicroPlumberd.DirectConnect/ReturnsAttribute.cs
+    startLine: 4
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public Type ReturnType { get; init; }

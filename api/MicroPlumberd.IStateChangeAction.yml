@@ -1,0 +1,236 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IStateChangeAction
+  commentId: T:MicroPlumberd.IStateChangeAction
+  id: IStateChangeAction
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IStateChangeAction.Events
+  - MicroPlumberd.IStateChangeAction.Id
+  - MicroPlumberd.IStateChangeAction.Owner
+  - MicroPlumberd.IStateChangeAction.Version
+  langs:
+  - csharp
+  - vb
+  name: IStateChangeAction
+  nameWithType: IStateChangeAction
+  fullName: MicroPlumberd.IStateChangeAction
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IStateChangeAction
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 12
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IStateChangeAction : IProcessAction'
+    content.vb: Public Interface IStateChangeAction Inherits IProcessAction
+- uid: MicroPlumberd.IStateChangeAction.Id
+  commentId: P:MicroPlumberd.IStateChangeAction.Id
+  id: Id
+  parent: MicroPlumberd.IStateChangeAction
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IStateChangeAction.Id
+  fullName: MicroPlumberd.IStateChangeAction.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 14
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: ReadOnly Property Id As Guid
+  overload: MicroPlumberd.IStateChangeAction.Id*
+- uid: MicroPlumberd.IStateChangeAction.Version
+  commentId: P:MicroPlumberd.IStateChangeAction.Version
+  id: Version
+  parent: MicroPlumberd.IStateChangeAction
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: IStateChangeAction.Version
+  fullName: MicroPlumberd.IStateChangeAction.Version
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Version
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 15
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: long Version { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property Version As Long
+  overload: MicroPlumberd.IStateChangeAction.Version*
+- uid: MicroPlumberd.IStateChangeAction.Events
+  commentId: P:MicroPlumberd.IStateChangeAction.Events
+  id: Events
+  parent: MicroPlumberd.IStateChangeAction
+  langs:
+  - csharp
+  - vb
+  name: Events
+  nameWithType: IStateChangeAction.Events
+  fullName: MicroPlumberd.IStateChangeAction.Events
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Events
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 16
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: object[] Events { get; }
+    parameters: []
+    return:
+      type: System.Object[]
+    content.vb: ReadOnly Property Events As Object()
+  overload: MicroPlumberd.IStateChangeAction.Events*
+- uid: MicroPlumberd.IStateChangeAction.Owner
+  commentId: P:MicroPlumberd.IStateChangeAction.Owner
+  id: Owner
+  parent: MicroPlumberd.IStateChangeAction
+  langs:
+  - csharp
+  - vb
+  name: Owner
+  nameWithType: IStateChangeAction.Owner
+  fullName: MicroPlumberd.IStateChangeAction.Owner
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Owner
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 17
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Type Owner { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: ReadOnly Property Owner As Type
+  overload: MicroPlumberd.IStateChangeAction.Owner*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IStateChangeAction.Id*
+  commentId: Overload:MicroPlumberd.IStateChangeAction.Id
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Id
+  name: Id
+  nameWithType: IStateChangeAction.Id
+  fullName: MicroPlumberd.IStateChangeAction.Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IStateChangeAction.Version*
+  commentId: Overload:MicroPlumberd.IStateChangeAction.Version
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Version
+  name: Version
+  nameWithType: IStateChangeAction.Version
+  fullName: MicroPlumberd.IStateChangeAction.Version
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: MicroPlumberd.IStateChangeAction.Events*
+  commentId: Overload:MicroPlumberd.IStateChangeAction.Events
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Events
+  name: Events
+  nameWithType: IStateChangeAction.Events
+  fullName: MicroPlumberd.IStateChangeAction.Events
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+- uid: MicroPlumberd.IStateChangeAction.Owner*
+  commentId: Overload:MicroPlumberd.IStateChangeAction.Owner
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Owner
+  name: Owner
+  nameWithType: IStateChangeAction.Owner
+  fullName: MicroPlumberd.IStateChangeAction.Owner
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type

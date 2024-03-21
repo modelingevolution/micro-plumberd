@@ -15,20 +15,22 @@ items:
   type: Interface
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
+      path: src/MicroPlumberd.Services/ICommandHandler.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ICommandHandler
-    path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
-    startLine: 2
+    path: src/MicroPlumberd.Services/ICommandHandler.cs
+    startLine: 6
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services
   namespace: MicroPlumberd.DirectConnect
   syntax:
-    content: 'public interface ICommandHandler<in TCommand> where TCommand : ICommand'
+    content: 'public interface ICommandHandler<in TCommand> : ICommandHandler'
     typeParameters:
     - id: TCommand
-    content.vb: Public Interface ICommandHandler(Of In TCommand As ICommand)
+    content.vb: Public Interface ICommandHandler(Of In TCommand) Inherits ICommandHandler
+  inheritedMembers:
+  - MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid,System.Object)
   nameWithType.vb: ICommandHandler(Of TCommand)
   fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand)
   name.vb: ICommandHandler(Of TCommand)
@@ -45,14 +47,14 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
+      path: src/MicroPlumberd.Services/ICommandHandler.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Execute
-    path: src/MicroPlumberd.DirectConnect/ICommandHandler.cs
-    startLine: 5
+    path: src/MicroPlumberd.Services/ICommandHandler.cs
+    startLine: 8
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: Task<object> Execute(Guid id, TCommand command)
@@ -90,6 +92,56 @@ references:
   - uid: MicroPlumberd.DirectConnect
     name: DirectConnect
     href: MicroPlumberd.DirectConnect.html
+- uid: MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid,System.Object)
+  commentId: M:MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid,System.Object)
+  parent: MicroPlumberd.DirectConnect.ICommandHandler
+  isExternal: true
+  href: MicroPlumberd.DirectConnect.ICommandHandler.html#MicroPlumberd_DirectConnect_ICommandHandler_Execute_System_Guid_System_Object_
+  name: Execute(Guid, object)
+  nameWithType: ICommandHandler.Execute(Guid, object)
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid, object)
+  nameWithType.vb: ICommandHandler.Execute(Guid, Object)
+  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid, Object)
+  name.vb: Execute(Guid, Object)
+  spec.csharp:
+  - uid: MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid,System.Object)
+    name: Execute
+    href: MicroPlumberd.DirectConnect.ICommandHandler.html#MicroPlumberd_DirectConnect_ICommandHandler_Execute_System_Guid_System_Object_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.DirectConnect.ICommandHandler.Execute(System.Guid,System.Object)
+    name: Execute
+    href: MicroPlumberd.DirectConnect.ICommandHandler.html#MicroPlumberd_DirectConnect_ICommandHandler_Execute_System_Guid_System_Object_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: MicroPlumberd.DirectConnect.ICommandHandler
+  commentId: T:MicroPlumberd.DirectConnect.ICommandHandler
+  parent: MicroPlumberd.DirectConnect
+  href: MicroPlumberd.DirectConnect.ICommandHandler.html
+  name: ICommandHandler
+  nameWithType: ICommandHandler
+  fullName: MicroPlumberd.DirectConnect.ICommandHandler
 - uid: MicroPlumberd.DirectConnect.ICommandHandler`1.Execute*
   commentId: Overload:MicroPlumberd.DirectConnect.ICommandHandler`1.Execute
   href: MicroPlumberd.DirectConnect.ICommandHandler-1.html#MicroPlumberd_DirectConnect_ICommandHandler_1_Execute_System_Guid__0_

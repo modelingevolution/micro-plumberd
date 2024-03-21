@@ -8,7 +8,6 @@ items:
   - MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   - MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type)
   - MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  - MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   - MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Collections.Generic.IEnumerable{System.Type})
   - MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])
   langs:
@@ -25,9 +24,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ContainerExtensions
     path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 6
+    startLine: 8
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public static class ContainerExtensions
@@ -61,12 +60,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandInvoker
     path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 9
+    startLine: 11
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
-    content: 'public static IServiceCollection AddCommandInvoker<TCommand>(this IServiceCollection services) where TCommand : ICommand'
+    content: public static IServiceCollection AddCommandInvoker<TCommand>(this IServiceCollection services)
     parameters:
     - id: services
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
@@ -74,43 +73,11 @@ items:
     - id: TCommand
     return:
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    content.vb: Public Shared Function AddCommandInvoker(Of TCommand As ICommand)(services As IServiceCollection) As IServiceCollection
+    content.vb: Public Shared Function AddCommandInvoker(Of TCommand)(services As IServiceCollection) As IServiceCollection
   overload: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker*
   nameWithType.vb: ContainerExtensions.AddCommandInvoker(Of TCommand)(IServiceCollection)
   fullName.vb: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvoker(Of TCommand)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   name.vb: AddCommandInvoker(Of TCommand)(IServiceCollection)
-- uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  id: AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  isExtensionMethod: true
-  parent: MicroPlumberd.DirectConnect.ContainerExtensions
-  langs:
-  - csharp
-  - vb
-  name: AddCommandInvokers(IServiceCollection)
-  nameWithType: ContainerExtensions.AddCommandInvokers(IServiceCollection)
-  fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  type: Method
-  source:
-    remote:
-      path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: AddCommandInvokers
-    path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 13
-  assemblies:
-  - MicroPlumberd.DirectConnect
-  namespace: MicroPlumberd.DirectConnect
-  syntax:
-    content: public static IServiceCollection AddCommandInvokers(this IServiceCollection services)
-    parameters:
-    - id: services
-      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    return:
-      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    content.vb: Public Shared Function AddCommandInvokers(services As IServiceCollection) As IServiceCollection
-  overload: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers*
 - uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])
   commentId: M:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])
   id: AddCommandInvokers(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Type[])
@@ -130,9 +97,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandInvokers
     path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 19
+    startLine: 16
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public static IServiceCollection AddCommandInvokers(this IServiceCollection services, params Type[] commandTypes)
@@ -167,9 +134,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandInvokers
     path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 23
+    startLine: 20
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public static IServiceCollection AddCommandInvokers(this IServiceCollection services, IEnumerable<Type> commandTypes)
@@ -204,9 +171,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandInvoker
     path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 28
+    startLine: 25
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public static IServiceCollection AddCommandInvoker(this IServiceCollection services, Type commandType)
@@ -238,12 +205,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandHandler
     path: src/MicroPlumberd.DirectConnect/ContainerExtensions.cs
-    startLine: 37
+    startLine: 35
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
-    content: 'public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler : IApiTypeRegister'
+    content: 'public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler : IServiceTypeRegister'
     parameters:
     - id: services
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
@@ -251,7 +218,7 @@ items:
     - id: TCommandHandler
     return:
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    content.vb: Public Shared Function AddCommandHandler(Of TCommandHandler As IApiTypeRegister)(services As IServiceCollection) As IServiceCollection
+    content.vb: Public Shared Function AddCommandHandler(Of TCommandHandler As IServiceTypeRegister)(services As IServiceCollection) As IServiceCollection
   overload: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler*
   nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection)
   fullName.vb: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
@@ -569,7 +536,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
 - uid: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers*
   commentId: Overload:MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers
-  href: MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvokers_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  href: MicroPlumberd.DirectConnect.ContainerExtensions.html#MicroPlumberd_DirectConnect_ContainerExtensions_AddCommandInvokers_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Type___
   name: AddCommandInvokers
   nameWithType: ContainerExtensions.AddCommandInvokers
   fullName: MicroPlumberd.DirectConnect.ContainerExtensions.AddCommandInvokers

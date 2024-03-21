@@ -14,7 +14,14 @@ dotnet add package MicroPlumberd.SourceGenerators
 If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
 
 ```powershell
-dotnet add package MicroPlumberd.DirectConnect
+# For application-layer using EventStore as message-bus. 
+dotnet add package MicroPlumberd.Services
+
+# For application-layer communicating (dotnet-2-dotnet) using GRPC:
+dotnet add package MicroPlumberd.Services.Grpc.DirectConnect
+
+# EXPERIMENTAL ProcessManager support can be found here:
+dotnet add package MicroPlumberd.Services.ProcessManagers
 ```
 
 ### Configure plumber
@@ -24,6 +31,15 @@ dotnet add package MicroPlumberd.DirectConnect
 string connectionString = $"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
 var settings = EventStoreClientSettings.Create(connectionString);
 var plumber = Plumber.Create(settings);
+```
+
+If you'd want to do it at service-level with DI:
+```csharp
+/// change to your connection-string.
+string connectionString = $"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
+var settings = EventStoreClientSettings.Create(connectionString);
+
+services.AddPlumberd(settings);
 ```
 
 ### Aggregates
@@ -40,6 +56,9 @@ public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState
     public void Open(string msg) => AppendPendingChange(new FooCreated() { Name = msg });
     public void Change(string msg) => AppendPendingChange(new FooUpdated() { Name = msg });
 }
+// And events:
+public record FooCreated { public string? Name { get; set; } }
+public record FooUpdated { public string? Name { get; set; } }
 ```
 Comments:
 
@@ -127,7 +146,7 @@ Implementing a processor is technically the same as implementing a read-model, b
   - OutputStreamModelConvention - for output stream name from model-type
   - GroupNameModelConvention - for group name from model-type
   
-### Ultra development cycle for Read-Models (EF example)
+### Ultra development cycle for Read-Models (EF example).
 
 Imagine this:
 
@@ -167,7 +186,8 @@ public partial class FooModel : DbContext
 ```
 
 ### Subscription Sets - Models ultra-composition
-- You can easily create a stream that joins events together by event-type, and subscribe many read-models at once.
+  - You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.
+  - In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one. 
 
 ```csharp
 /// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
@@ -180,7 +200,46 @@ await plumber.SubscribeSet()
     .With(factTable)
     .SubscribeAsync("MasterStream", FromStream.Start);
 ```
+
+
+### EventStoreDB as message-bus
+
+If you want to start as quickly as possible, you can start with EventStoreDB as command-message-bus. 
+```csharp
+
+services.AddPlumberd()
+        .AddCommandHandler<FooCommandHandler>()
+
+// on the client side:
+ICommandBus bus; // from DI
+bus.SendAsync(Guid.NewGuid(), new CreateFoo() { Name = "Hello" });
+```
+
+If you are running many replicas of your service, you need to switch command-execution to persistent mode:
+
+```csharp
+
+services.AddPlumberd(configure: c => c.Conventions.ServicesConventions().AreHandlersExecutedPersistently = () => true)
+        .AddCommandHandler<FooCommandHandler>()
+
+```
+This means, that once your microservice subscribes to commands, it will execute all. So if your service is down, and commands are saved, once your service is up, they will be executed.
+To skip old commands, you can configure a filter.
+
+```csharp
+
+services.AddPlumberd(configure: c => {
+    c.Conventions.ServicesConventions().AreHandlersExecutedPersistently = () => true;
+    c.Conventions.ServicesConventions().CommandHandlerSkipFilter = (m,ev) => DateTimeOffset.Now.Substract(m.Created()) > TimeSpan.FromSeconds(60);
+    })
+    .AddCommandHandler<FooCommandHandler>()
+
+```
+
 ### GRPC Direct communication
+
+If you prefer direct communication (like REST-API, but without the hassle for contract generation/etc.) you can use direct communication where client invokes command handle using grpc.
+Command is not stored in EventStore.
 
 ```csharp
 /// Let's configure server:
@@ -234,6 +293,41 @@ service.AddClientDirectConnect().AddCommandInvokers();
  await invoker.Execute(Guid.NewId(), new CreateFoo(){});
 ```
 
-### Aspects
+### EXPERIMENTAL Process-Manager
 
-You can easily inject aspects through decorator pattern. 
+Given diagram:
+![Saga](./pm.png)
+
+The code of Order Process Manager looks like this:
+
+```csharp
+
+[ProcessManager]
+public class OrderProcessManager(IPlumberd plumberd)
+{
+    public async Task<ICommandRequest<MakeReservation>> StartWhen(Metadata m, OrderCreated e) 
+    {
+        return CommandRequest.Create(Guid.NewId(), new MakeReservation());
+    }
+    public async Task<ICommandRequest<MakePayment>> When(Metadata m, SeatsReserved e)
+    {
+        return CommandRequest.Create(Guid.NewId(), new MakePayment());
+    }
+    public async Task When(Metadata m, PaymentAccepted e)
+    {
+        var order = await plumberd.Get<Order>(this.Id);
+        order.Confirm();
+        await plumberd.SaveChanges(order);
+    }
+    // Optional
+    private async Task Given(Metadata m, OrderCreated v){
+        // this will be used to rehydrate state of process-manager
+        // So that when(SeatsReserved) you can adjust the response.
+    }
+    // Optional 2
+    private async Task Given(Metadata m, CommandEnqueued<MakeReservation> e){
+        // same here.
+    }
+}
+
+```

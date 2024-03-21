@@ -1,0 +1,410 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions
+  commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
+  id: PlumberdConventionsExtensions
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
+  - MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  langs:
+  - csharp
+  - vb
+  name: PlumberdConventionsExtensions
+  nameWithType: PlumberdConventionsExtensions
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: PlumberdConventionsExtensions
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 54
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static class PlumberdConventionsExtensions
+    content.vb: Public Module PlumberdConventionsExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  id: ServicesConventions(MicroPlumberd.IConventions)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
+  langs:
+  - csharp
+  - vb
+  name: ServicesConventions(IConventions)
+  nameWithType: PlumberdConventionsExtensions.ServicesConventions(IConventions)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ServicesConventions
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 56
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static IServicesConvention ServicesConventions(this IConventions conventions)
+    parameters:
+    - id: conventions
+      type: MicroPlumberd.IConventions
+    return:
+      type: MicroPlumberd.Services.IServicesConvention
+    content.vb: Public Shared Function ServicesConventions(conventions As IConventions) As IServicesConvention
+  overload: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions*
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
+  id: ServicesConfig(MicroPlumberd.IPlumberConfig)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
+  langs:
+  - csharp
+  - vb
+  name: ServicesConfig(IPlumberConfig)
+  nameWithType: PlumberdConventionsExtensions.ServicesConfig(IPlumberConfig)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ServicesConfig
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 58
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static IServicesConfig ServicesConfig(this IPlumberConfig config)
+    parameters:
+    - id: config
+      type: MicroPlumberd.IPlumberConfig
+    return:
+      type: MicroPlumberd.Services.IServicesConfig
+    content.vb: Public Shared Function ServicesConfig(config As IPlumberConfig) As IServicesConfig
+  overload: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig*
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions*
+  commentId: Overload:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  name: ServicesConventions
+  nameWithType: PlumberdConventionsExtensions.ServicesConventions
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
+- uid: MicroPlumberd.IConventions
+  commentId: T:MicroPlumberd.IConventions
+  parent: MicroPlumberd
+  href: MicroPlumberd.IConventions.html
+  name: IConventions
+  nameWithType: IConventions
+  fullName: MicroPlumberd.IConventions
+- uid: MicroPlumberd.Services.IServicesConvention
+  commentId: T:MicroPlumberd.Services.IServicesConvention
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.IServicesConvention.html
+  name: IServicesConvention
+  nameWithType: IServicesConvention
+  fullName: MicroPlumberd.Services.IServicesConvention
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig*
+  commentId: Overload:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberConfig_
+  name: ServicesConfig
+  nameWithType: PlumberdConventionsExtensions.ServicesConfig
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
+- uid: MicroPlumberd.IPlumberConfig
+  commentId: T:MicroPlumberd.IPlumberConfig
+  parent: MicroPlumberd
+  href: MicroPlumberd.IPlumberConfig.html
+  name: IPlumberConfig
+  nameWithType: IPlumberConfig
+  fullName: MicroPlumberd.IPlumberConfig
+- uid: MicroPlumberd.Services.IServicesConfig
+  commentId: T:MicroPlumberd.Services.IServicesConfig
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.IServicesConfig.html
+  name: IServicesConfig
+  nameWithType: IServicesConfig
+  fullName: MicroPlumberd.Services.IServicesConfig

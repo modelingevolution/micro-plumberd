@@ -14,14 +14,14 @@ items:
   type: Class
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/CommandHandlerAttribute.cs
+      path: src/MicroPlumberd.Services/CommandHandlerAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandHandlerAttribute
-    path: src/MicroPlumberd.DirectConnect/CommandHandlerAttribute.cs
+    path: src/MicroPlumberd.Services/CommandHandlerAttribute.cs
     startLine: 2
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-

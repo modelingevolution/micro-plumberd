@@ -1,0 +1,670 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.StateChangeAction`1
+  commentId: T:MicroPlumberd.StateChangeAction`1
+  id: StateChangeAction`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.StateChangeAction`1.#ctor(System.Guid,System.Int64,System.Object[])
+  - MicroPlumberd.StateChangeAction`1.Events
+  - MicroPlumberd.StateChangeAction`1.Id
+  - MicroPlumberd.StateChangeAction`1.Owner
+  - MicroPlumberd.StateChangeAction`1.Version
+  langs:
+  - csharp
+  - vb
+  name: StateChangeAction<TOwner>
+  nameWithType: StateChangeAction<TOwner>
+  fullName: MicroPlumberd.StateChangeAction<TOwner>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StateChangeAction
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public record StateChangeAction<TOwner> : IStateChangeAction, IProcessAction, IEquatable<StateChangeAction<TOwner>>'
+    typeParameters:
+    - id: TOwner
+    content.vb: Public Class StateChangeAction(Of TOwner) Implements IStateChangeAction, IProcessAction, IEquatable(Of StateChangeAction(Of TOwner))
+  inheritance:
+  - System.Object
+  implements:
+  - MicroPlumberd.IStateChangeAction
+  - MicroPlumberd.IProcessAction
+  - System.IEquatable{MicroPlumberd.StateChangeAction`1}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: StateChangeAction(Of TOwner)
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner)
+  name.vb: StateChangeAction(Of TOwner)
+- uid: MicroPlumberd.StateChangeAction`1.#ctor(System.Guid,System.Int64,System.Object[])
+  commentId: M:MicroPlumberd.StateChangeAction`1.#ctor(System.Guid,System.Int64,System.Object[])
+  id: '#ctor(System.Guid,System.Int64,System.Object[])'
+  parent: MicroPlumberd.StateChangeAction`1
+  langs:
+  - csharp
+  - vb
+  name: StateChangeAction(Guid, long, params object[])
+  nameWithType: StateChangeAction<TOwner>.StateChangeAction(Guid, long, params object[])
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.StateChangeAction(System.Guid, long, params object[])
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public StateChangeAction(Guid Id, long Version, params object[] Events)
+    parameters:
+    - id: Id
+      type: System.Guid
+    - id: Version
+      type: System.Int64
+    - id: Events
+      type: System.Object[]
+    content.vb: Public Sub New(Id As Guid, Version As Long, ParamArray Events As Object())
+  overload: MicroPlumberd.StateChangeAction`1.#ctor*
+  nameWithType.vb: StateChangeAction(Of TOwner).New(Guid, Long, ParamArray Object())
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).New(System.Guid, Long, ParamArray Object())
+  name.vb: New(Guid, Long, ParamArray Object())
+- uid: MicroPlumberd.StateChangeAction`1.Id
+  commentId: P:MicroPlumberd.StateChangeAction`1.Id
+  id: Id
+  parent: MicroPlumberd.StateChangeAction`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: StateChangeAction<TOwner>.Id
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public Guid Id { get; init; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property Id As Guid
+  overload: MicroPlumberd.StateChangeAction`1.Id*
+  implements:
+  - MicroPlumberd.IStateChangeAction.Id
+  nameWithType.vb: StateChangeAction(Of TOwner).Id
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Id
+- uid: MicroPlumberd.StateChangeAction`1.Version
+  commentId: P:MicroPlumberd.StateChangeAction`1.Version
+  id: Version
+  parent: MicroPlumberd.StateChangeAction`1
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: StateChangeAction<TOwner>.Version
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Version
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Version
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public long Version { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property Version As Long
+  overload: MicroPlumberd.StateChangeAction`1.Version*
+  implements:
+  - MicroPlumberd.IStateChangeAction.Version
+  nameWithType.vb: StateChangeAction(Of TOwner).Version
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Version
+- uid: MicroPlumberd.StateChangeAction`1.Events
+  commentId: P:MicroPlumberd.StateChangeAction`1.Events
+  id: Events
+  parent: MicroPlumberd.StateChangeAction`1
+  langs:
+  - csharp
+  - vb
+  name: Events
+  nameWithType: StateChangeAction<TOwner>.Events
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Events
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Events
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public object[] Events { get; init; }
+    parameters: []
+    return:
+      type: System.Object[]
+    content.vb: Public Property Events As Object()
+  overload: MicroPlumberd.StateChangeAction`1.Events*
+  implements:
+  - MicroPlumberd.IStateChangeAction.Events
+  nameWithType.vb: StateChangeAction(Of TOwner).Events
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Events
+- uid: MicroPlumberd.StateChangeAction`1.Owner
+  commentId: P:MicroPlumberd.StateChangeAction`1.Owner
+  id: Owner
+  parent: MicroPlumberd.StateChangeAction`1
+  langs:
+  - csharp
+  - vb
+  name: Owner
+  nameWithType: StateChangeAction<TOwner>.Owner
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Owner
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Owner
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public Type Owner { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property Owner As Type
+  overload: MicroPlumberd.StateChangeAction`1.Owner*
+  implements:
+  - MicroPlumberd.IStateChangeAction.Owner
+  nameWithType.vb: StateChangeAction(Of TOwner).Owner
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Owner
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.IStateChangeAction
+  commentId: T:MicroPlumberd.IStateChangeAction
+  parent: MicroPlumberd
+  href: MicroPlumberd.IStateChangeAction.html
+  name: IStateChangeAction
+  nameWithType: IStateChangeAction
+  fullName: MicroPlumberd.IStateChangeAction
+- uid: MicroPlumberd.IProcessAction
+  commentId: T:MicroPlumberd.IProcessAction
+  parent: MicroPlumberd
+  href: MicroPlumberd.IProcessAction.html
+  name: IProcessAction
+  nameWithType: IProcessAction
+  fullName: MicroPlumberd.IProcessAction
+- uid: System.IEquatable{MicroPlumberd.StateChangeAction`1}
+  commentId: T:System.IEquatable{MicroPlumberd.StateChangeAction`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<StateChangeAction<TOwner>>
+  nameWithType: IEquatable<StateChangeAction<TOwner>>
+  fullName: System.IEquatable<MicroPlumberd.StateChangeAction<TOwner>>
+  nameWithType.vb: IEquatable(Of StateChangeAction(Of TOwner))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.StateChangeAction(Of TOwner))
+  name.vb: IEquatable(Of StateChangeAction(Of TOwner))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.StateChangeAction`1
+    name: StateChangeAction
+    href: MicroPlumberd.StateChangeAction-1.html
+  - name: <
+  - name: TOwner
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.StateChangeAction`1
+    name: StateChangeAction
+    href: MicroPlumberd.StateChangeAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOwner
+  - name: )
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.StateChangeAction`1.#ctor*
+  commentId: Overload:MicroPlumberd.StateChangeAction`1.#ctor
+  href: MicroPlumberd.StateChangeAction-1.html#MicroPlumberd_StateChangeAction_1__ctor_System_Guid_System_Int64_System_Object___
+  name: StateChangeAction
+  nameWithType: StateChangeAction<TOwner>.StateChangeAction
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.StateChangeAction
+  nameWithType.vb: StateChangeAction(Of TOwner).New
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).New
+  name.vb: New
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Object[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object[]
+  nameWithType: object[]
+  fullName: object[]
+  nameWithType.vb: Object()
+  fullName.vb: Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: (
+  - name: )
+- uid: MicroPlumberd.StateChangeAction`1.Id*
+  commentId: Overload:MicroPlumberd.StateChangeAction`1.Id
+  href: MicroPlumberd.StateChangeAction-1.html#MicroPlumberd_StateChangeAction_1_Id
+  name: Id
+  nameWithType: StateChangeAction<TOwner>.Id
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Id
+  nameWithType.vb: StateChangeAction(Of TOwner).Id
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Id
+- uid: MicroPlumberd.IStateChangeAction.Id
+  commentId: P:MicroPlumberd.IStateChangeAction.Id
+  parent: MicroPlumberd.IStateChangeAction
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Id
+  name: Id
+  nameWithType: IStateChangeAction.Id
+  fullName: MicroPlumberd.IStateChangeAction.Id
+- uid: MicroPlumberd.StateChangeAction`1.Version*
+  commentId: Overload:MicroPlumberd.StateChangeAction`1.Version
+  href: MicroPlumberd.StateChangeAction-1.html#MicroPlumberd_StateChangeAction_1_Version
+  name: Version
+  nameWithType: StateChangeAction<TOwner>.Version
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Version
+  nameWithType.vb: StateChangeAction(Of TOwner).Version
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Version
+- uid: MicroPlumberd.IStateChangeAction.Version
+  commentId: P:MicroPlumberd.IStateChangeAction.Version
+  parent: MicroPlumberd.IStateChangeAction
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Version
+  name: Version
+  nameWithType: IStateChangeAction.Version
+  fullName: MicroPlumberd.IStateChangeAction.Version
+- uid: MicroPlumberd.StateChangeAction`1.Events*
+  commentId: Overload:MicroPlumberd.StateChangeAction`1.Events
+  href: MicroPlumberd.StateChangeAction-1.html#MicroPlumberd_StateChangeAction_1_Events
+  name: Events
+  nameWithType: StateChangeAction<TOwner>.Events
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Events
+  nameWithType.vb: StateChangeAction(Of TOwner).Events
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Events
+- uid: MicroPlumberd.IStateChangeAction.Events
+  commentId: P:MicroPlumberd.IStateChangeAction.Events
+  parent: MicroPlumberd.IStateChangeAction
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Events
+  name: Events
+  nameWithType: IStateChangeAction.Events
+  fullName: MicroPlumberd.IStateChangeAction.Events
+- uid: MicroPlumberd.StateChangeAction`1.Owner*
+  commentId: Overload:MicroPlumberd.StateChangeAction`1.Owner
+  href: MicroPlumberd.StateChangeAction-1.html#MicroPlumberd_StateChangeAction_1_Owner
+  name: Owner
+  nameWithType: StateChangeAction<TOwner>.Owner
+  fullName: MicroPlumberd.StateChangeAction<TOwner>.Owner
+  nameWithType.vb: StateChangeAction(Of TOwner).Owner
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner).Owner
+- uid: MicroPlumberd.IStateChangeAction.Owner
+  commentId: P:MicroPlumberd.IStateChangeAction.Owner
+  parent: MicroPlumberd.IStateChangeAction
+  href: MicroPlumberd.IStateChangeAction.html#MicroPlumberd_IStateChangeAction_Owner
+  name: Owner
+  nameWithType: IStateChangeAction.Owner
+  fullName: MicroPlumberd.IStateChangeAction.Owner
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type

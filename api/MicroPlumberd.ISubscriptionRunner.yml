@@ -5,7 +5,9 @@ items:
   id: ISubscriptionRunner
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
+  - MicroPlumberd.ISubscriptionRunner.WithHandler``1
+  - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0)
+  - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.TypeEventConverter)
   langs:
   - csharp
   - vb
@@ -29,42 +31,113 @@ items:
     content.vb: Public Interface ISubscriptionRunner Inherits IAsyncDisposable
   inheritedMembers:
   - System.IAsyncDisposable.DisposeAsync
-- uid: MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
-  commentId: M:MicroPlumberd.ISubscriptionRunner.WithModel``1(``0)
-  id: WithModel``1(``0)
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0)
+  id: WithHandler``1(``0)
   parent: MicroPlumberd.ISubscriptionRunner
   langs:
   - csharp
   - vb
-  name: WithModel<T>(T)
-  nameWithType: ISubscriptionRunner.WithModel<T>(T)
-  fullName: MicroPlumberd.ISubscriptionRunner.WithModel<T>(T)
+  name: WithHandler<T>(T)
+  nameWithType: ISubscriptionRunner.WithHandler<T>(T)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler<T>(T)
   type: Method
   source:
     remote:
       path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: WithModel
+    id: WithHandler
     path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
     startLine: 4
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'Task WithModel<T>(T model) where T : IReadModel, ITypeRegister'
+    content: 'Task<T> WithHandler<T>(T model) where T : IEventHandler, ITypeRegister'
     parameters:
     - id: model
       type: '{T}'
     typeParameters:
     - id: T
     return:
-      type: System.Threading.Tasks.Task
-    content.vb: Function WithModel(Of T As {IReadModel, ITypeRegister})(model As T) As Task
-  overload: MicroPlumberd.ISubscriptionRunner.WithModel*
-  nameWithType.vb: ISubscriptionRunner.WithModel(Of T)(T)
-  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithModel(Of T)(T)
-  name.vb: WithModel(Of T)(T)
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function WithHandler(Of T As {IEventHandler, ITypeRegister})(model As T) As Task(Of T)
+  overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)(T)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)(T)
+  name.vb: WithHandler(Of T)(T)
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.TypeEventConverter)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.TypeEventConverter)
+  id: WithHandler``1(``0,MicroPlumberd.TypeEventConverter)
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithHandler<T>(T, TypeEventConverter)
+  nameWithType: ISubscriptionRunner.WithHandler<T>(T, TypeEventConverter)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler<T>(T, MicroPlumberd.TypeEventConverter)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<T> WithHandler<T>(T model, TypeEventConverter mapFunc) where T : IEventHandler'
+    parameters:
+    - id: model
+      type: '{T}'
+    - id: mapFunc
+      type: MicroPlumberd.TypeEventConverter
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function WithHandler(Of T As IEventHandler)(model As T, mapFunc As TypeEventConverter) As Task(Of T)
+  overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)(T, TypeEventConverter)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)(T, MicroPlumberd.TypeEventConverter)
+  name.vb: WithHandler(Of T)(T, TypeEventConverter)
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler``1
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithHandler``1
+  id: WithHandler``1
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithHandler<T>()
+  nameWithType: ISubscriptionRunner.WithHandler<T>()
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler<T>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<T> WithHandler<T>() where T : IEventHandler, ITypeRegister'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{{T}}
+    content.vb: Function WithHandler(Of T As {IEventHandler, ITypeRegister})() As Task(Of T)
+  overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)()
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)()
+  name.vb: WithHandler(Of T)()
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -109,30 +182,79 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: MicroPlumberd.ISubscriptionRunner.WithModel*
-  commentId: Overload:MicroPlumberd.ISubscriptionRunner.WithModel
-  href: MicroPlumberd.ISubscriptionRunner.html#MicroPlumberd_ISubscriptionRunner_WithModel__1___0_
-  name: WithModel
-  nameWithType: ISubscriptionRunner.WithModel
-  fullName: MicroPlumberd.ISubscriptionRunner.WithModel
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  commentId: Overload:MicroPlumberd.ISubscriptionRunner.WithHandler
+  href: MicroPlumberd.ISubscriptionRunner.html#MicroPlumberd_ISubscriptionRunner_WithHandler__1___0_
+  name: WithHandler
+  nameWithType: ISubscriptionRunner.WithHandler
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler
 - uid: '{T}'
   commentId: '!:T'
   definition: T
   name: T
   nameWithType: T
   fullName: T
-- uid: System.Threading.Tasks.Task
-  commentId: T:System.Threading.Tasks.Task
+- uid: System.Threading.Tasks.Task{{T}}
+  commentId: T:System.Threading.Tasks.Task{``0}
   parent: System.Threading.Tasks
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
-  name: Task
-  nameWithType: Task
-  fullName: System.Threading.Tasks.Task
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<T>
+  nameWithType: Task<T>
+  fullName: System.Threading.Tasks.Task<T>
+  nameWithType.vb: Task(Of T)
+  fullName.vb: System.Threading.Tasks.Task(Of T)
+  name.vb: Task(Of T)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: T
   name: T
   nameWithType: T
   fullName: T
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
 - uid: System.Threading.Tasks
   commentId: N:System.Threading.Tasks
   isExternal: true
@@ -170,3 +292,10 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.TypeEventConverter
+  commentId: T:MicroPlumberd.TypeEventConverter
+  parent: MicroPlumberd
+  href: MicroPlumberd.TypeEventConverter.html
+  name: TypeEventConverter
+  nameWithType: TypeEventConverter
+  fullName: MicroPlumberd.TypeEventConverter

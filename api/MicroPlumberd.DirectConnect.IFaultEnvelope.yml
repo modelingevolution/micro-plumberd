@@ -1,0 +1,223 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope
+  commentId: T:MicroPlumberd.DirectConnect.IFaultEnvelope
+  id: IFaultEnvelope
+  parent: MicroPlumberd.DirectConnect
+  children:
+  - MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  - MicroPlumberd.DirectConnect.IFaultEnvelope.Data
+  - MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  langs:
+  - csharp
+  - vb
+  name: IFaultEnvelope
+  nameWithType: IFaultEnvelope
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IFaultEnvelope
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 37
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: public interface IFaultEnvelope
+    content.vb: Public Interface IFaultEnvelope
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Data
+  commentId: P:MicroPlumberd.DirectConnect.IFaultEnvelope.Data
+  id: Data
+  parent: MicroPlumberd.DirectConnect.IFaultEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: IFaultEnvelope.Data
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Data
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Data
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 39
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: object Data { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property Data As Object
+  overload: MicroPlumberd.DirectConnect.IFaultEnvelope.Data*
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  commentId: P:MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  id: Error
+  parent: MicroPlumberd.DirectConnect.IFaultEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: IFaultEnvelope.Error
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Error
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 40
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: string Error { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: ReadOnly Property [Error] As String
+  overload: MicroPlumberd.DirectConnect.IFaultEnvelope.Error*
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  commentId: P:MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  id: Code
+  parent: MicroPlumberd.DirectConnect.IFaultEnvelope
+  langs:
+  - csharp
+  - vb
+  name: Code
+  nameWithType: IFaultEnvelope.Code
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Code
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 41
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: HttpStatusCode Code { get; }
+    parameters: []
+    return:
+      type: System.Net.HttpStatusCode
+    content.vb: ReadOnly Property Code As HttpStatusCode
+  overload: MicroPlumberd.DirectConnect.IFaultEnvelope.Code*
+references:
+- uid: MicroPlumberd.DirectConnect
+  commentId: N:MicroPlumberd.DirectConnect
+  href: MicroPlumberd.html
+  name: MicroPlumberd.DirectConnect
+  nameWithType: MicroPlumberd.DirectConnect
+  fullName: MicroPlumberd.DirectConnect
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.DirectConnect
+    name: DirectConnect
+    href: MicroPlumberd.DirectConnect.html
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Data*
+  commentId: Overload:MicroPlumberd.DirectConnect.IFaultEnvelope.Data
+  href: MicroPlumberd.DirectConnect.IFaultEnvelope.html#MicroPlumberd_DirectConnect_IFaultEnvelope_Data
+  name: Data
+  nameWithType: IFaultEnvelope.Data
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Data
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Error*
+  commentId: Overload:MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+  href: MicroPlumberd.DirectConnect.IFaultEnvelope.html#MicroPlumberd_DirectConnect_IFaultEnvelope_Error
+  name: Error
+  nameWithType: IFaultEnvelope.Error
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Error
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MicroPlumberd.DirectConnect.IFaultEnvelope.Code*
+  commentId: Overload:MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+  href: MicroPlumberd.DirectConnect.IFaultEnvelope.html#MicroPlumberd_DirectConnect_IFaultEnvelope_Code
+  name: Code
+  nameWithType: IFaultEnvelope.Code
+  fullName: MicroPlumberd.DirectConnect.IFaultEnvelope.Code
+- uid: System.Net.HttpStatusCode
+  commentId: T:System.Net.HttpStatusCode
+  parent: System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode
+  name: HttpStatusCode
+  nameWithType: HttpStatusCode
+  fullName: System.Net.HttpStatusCode
+- uid: System.Net
+  commentId: N:System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net
+  nameWithType: System.Net
+  fullName: System.Net
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net

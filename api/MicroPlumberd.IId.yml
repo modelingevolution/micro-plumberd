@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  id: IId
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IId.Id
+  langs:
+  - csharp
+  - vb
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IId
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 31
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IId
+    content.vb: Public Interface IId
+- uid: MicroPlumberd.IId.Id
+  commentId: P:MicroPlumberd.IId.Id
+  id: Id
+  parent: MicroPlumberd.IId
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IId.Id
+  fullName: MicroPlumberd.IId.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 33
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid Id { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: ReadOnly Property Id As Guid
+  overload: MicroPlumberd.IId.Id*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IId.Id*
+  commentId: Overload:MicroPlumberd.IId.Id
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
+  name: Id
+  nameWithType: IId.Id
+  fullName: MicroPlumberd.IId.Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

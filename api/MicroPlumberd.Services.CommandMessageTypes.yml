@@ -1,0 +1,187 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.CommandMessageTypes
+  commentId: T:MicroPlumberd.Services.CommandMessageTypes
+  id: CommandMessageTypes
+  parent: MicroPlumberd.Services
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: CommandMessageTypes
+  nameWithType: CommandMessageTypes
+  fullName: MicroPlumberd.Services.CommandMessageTypes
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandMessageTypes
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public delegate IEnumerable<(string, Type)> CommandMessageTypes(Type command)
+    parameters:
+    - id: command
+      type: System.Type
+    return:
+      type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Type}}
+    content.vb: Public Delegate Function CommandMessageTypes(command As Type) As IEnumerable(Of (String, Type))
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Type}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Type}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<(string, Type)>
+  nameWithType: IEnumerable<(string, Type)>
+  fullName: System.Collections.Generic.IEnumerable<(string, System.Type)>
+  nameWithType.vb: IEnumerable(Of (String, Type))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of (String, System.Type))
+  name.vb: IEnumerable(Of (String, Type))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic

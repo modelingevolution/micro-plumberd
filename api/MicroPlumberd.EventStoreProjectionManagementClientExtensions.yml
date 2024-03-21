@@ -7,6 +7,7 @@ items:
   children:
   - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
   - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
+  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
   langs:
   - csharp
   - vb
@@ -21,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventStoreProjectionManagementClientExtensions
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 4
+    startLine: 5
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -57,7 +58,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EnsureJoinProjection
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 6
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -77,6 +78,49 @@ items:
   nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
   fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, System.Collections.Generic.IEnumerable(Of String))
   name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
+  id: EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
+  isExtensionMethod: true
+  parent: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  langs:
+  - csharp
+  - vb
+  name: EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string)
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string)
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient, MicroPlumberd.IProjectionRegister, string, string, string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EnsureLookupProjection
+    path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
+    startLine: 27
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory)
+    parameters:
+    - id: client
+      type: EventStore.Client.EventStoreProjectionManagementClient
+    - id: register
+      type: MicroPlumberd.IProjectionRegister
+    - id: category
+      type: System.String
+    - id: eventProperty
+      type: System.String
+    - id: outputStreamCategory
+      type: System.String
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Public Shared Function EnsureLookupProjection(client As EventStoreProjectionManagementClient, register As IProjectionRegister, category As String, eventProperty As String, outputStreamCategory As String) As Task
+  overload: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection*
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, String, String, String)
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient, MicroPlumberd.IProjectionRegister, String, String, String)
+  name.vb: EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, String, String, String)
 - uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
   commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
   id: EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
@@ -96,7 +140,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EnsureJoinProjection
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 26
+    startLine: 41
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -553,6 +597,12 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection*
+  commentId: Overload:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection
+  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureLookupProjection_EventStore_Client_EventStoreProjectionManagementClient_MicroPlumberd_IProjectionRegister_System_String_System_String_System_String_
+  name: EnsureLookupProjection
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection
 - uid: MicroPlumberd.IProjectionRegister
   commentId: T:MicroPlumberd.IProjectionRegister
   parent: MicroPlumberd

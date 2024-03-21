@@ -1,0 +1,595 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.CommandRequest`1
+  commentId: T:MicroPlumberd.CommandRequest`1
+  id: CommandRequest`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.CommandRequest`1.#ctor
+  - MicroPlumberd.CommandRequest`1.Command
+  - MicroPlumberd.CommandRequest`1.RecipientId
+  langs:
+  - csharp
+  - vb
+  name: CommandRequest<TCommand>
+  nameWithType: CommandRequest<TCommand>
+  fullName: MicroPlumberd.CommandRequest<TCommand>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandRequest
+    path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+    startLine: 14
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public record CommandRequest<TCommand> : ICommandRequest<TCommand>, ICommandRequest, IProcessAction, IEquatable<CommandRequest<TCommand>>'
+    typeParameters:
+    - id: TCommand
+    content.vb: Public Class CommandRequest(Of TCommand) Implements ICommandRequest(Of TCommand), ICommandRequest, IProcessAction, IEquatable(Of CommandRequest(Of TCommand))
+  inheritance:
+  - System.Object
+  implements:
+  - MicroPlumberd.ICommandRequest{{TCommand}}
+  - MicroPlumberd.ICommandRequest
+  - MicroPlumberd.IProcessAction
+  - System.IEquatable{MicroPlumberd.CommandRequest`1}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: CommandRequest(Of TCommand)
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand)
+  name.vb: CommandRequest(Of TCommand)
+- uid: MicroPlumberd.CommandRequest`1.#ctor
+  commentId: M:MicroPlumberd.CommandRequest`1.#ctor
+  id: '#ctor'
+  parent: MicroPlumberd.CommandRequest`1
+  langs:
+  - csharp
+  - vb
+  name: CommandRequest()
+  nameWithType: CommandRequest<TCommand>.CommandRequest()
+  fullName: MicroPlumberd.CommandRequest<TCommand>.CommandRequest()
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public CommandRequest()
+    content.vb: Public Sub New()
+  overload: MicroPlumberd.CommandRequest`1.#ctor*
+  nameWithType.vb: CommandRequest(Of TCommand).New()
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand).New()
+  name.vb: New()
+- uid: MicroPlumberd.CommandRequest`1.Command
+  commentId: P:MicroPlumberd.CommandRequest`1.Command
+  id: Command
+  parent: MicroPlumberd.CommandRequest`1
+  langs:
+  - csharp
+  - vb
+  name: Command
+  nameWithType: CommandRequest<TCommand>.Command
+  fullName: MicroPlumberd.CommandRequest<TCommand>.Command
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Command
+    path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+    startLine: 23
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public TCommand Command { get; init; }
+    parameters: []
+    return:
+      type: '{TCommand}'
+    content.vb: Public Property Command As TCommand
+  overload: MicroPlumberd.CommandRequest`1.Command*
+  implements:
+  - MicroPlumberd.ICommandRequest{{TCommand}}.Command
+  nameWithType.vb: CommandRequest(Of TCommand).Command
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand).Command
+- uid: MicroPlumberd.CommandRequest`1.RecipientId
+  commentId: P:MicroPlumberd.CommandRequest`1.RecipientId
+  id: RecipientId
+  parent: MicroPlumberd.CommandRequest`1
+  langs:
+  - csharp
+  - vb
+  name: RecipientId
+  nameWithType: CommandRequest<TCommand>.RecipientId
+  fullName: MicroPlumberd.CommandRequest<TCommand>.RecipientId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: RecipientId
+    path: src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public Guid RecipientId { get; init; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public Property RecipientId As Guid
+  overload: MicroPlumberd.CommandRequest`1.RecipientId*
+  implements:
+  - MicroPlumberd.ICommandRequest.RecipientId
+  nameWithType.vb: CommandRequest(Of TCommand).RecipientId
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand).RecipientId
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.ICommandRequest{{TCommand}}
+  commentId: T:MicroPlumberd.ICommandRequest{``0}
+  parent: MicroPlumberd
+  definition: MicroPlumberd.ICommandRequest`1
+  href: MicroPlumberd.ICommandRequest-1.html
+  name: ICommandRequest<TCommand>
+  nameWithType: ICommandRequest<TCommand>
+  fullName: MicroPlumberd.ICommandRequest<TCommand>
+  nameWithType.vb: ICommandRequest(Of TCommand)
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand)
+  name.vb: ICommandRequest(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.ICommandRequest
+  commentId: T:MicroPlumberd.ICommandRequest
+  parent: MicroPlumberd
+  href: MicroPlumberd.ICommandRequest.html
+  name: ICommandRequest
+  nameWithType: ICommandRequest
+  fullName: MicroPlumberd.ICommandRequest
+- uid: MicroPlumberd.IProcessAction
+  commentId: T:MicroPlumberd.IProcessAction
+  parent: MicroPlumberd
+  href: MicroPlumberd.IProcessAction.html
+  name: IProcessAction
+  nameWithType: IProcessAction
+  fullName: MicroPlumberd.IProcessAction
+- uid: System.IEquatable{MicroPlumberd.CommandRequest`1}
+  commentId: T:System.IEquatable{MicroPlumberd.CommandRequest`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<CommandRequest<TCommand>>
+  nameWithType: IEquatable<CommandRequest<TCommand>>
+  fullName: System.IEquatable<MicroPlumberd.CommandRequest<TCommand>>
+  nameWithType.vb: IEquatable(Of CommandRequest(Of TCommand))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.CommandRequest(Of TCommand))
+  name.vb: IEquatable(Of CommandRequest(Of TCommand))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.CommandRequest`1
+    name: CommandRequest
+    href: MicroPlumberd.CommandRequest-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.CommandRequest`1
+    name: CommandRequest
+    href: MicroPlumberd.CommandRequest-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.ICommandRequest`1
+  commentId: T:MicroPlumberd.ICommandRequest`1
+  href: MicroPlumberd.ICommandRequest-1.html
+  name: ICommandRequest<TCommand>
+  nameWithType: ICommandRequest<TCommand>
+  fullName: MicroPlumberd.ICommandRequest<TCommand>
+  nameWithType.vb: ICommandRequest(Of TCommand)
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand)
+  name.vb: ICommandRequest(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.CommandRequest`1.#ctor*
+  commentId: Overload:MicroPlumberd.CommandRequest`1.#ctor
+  href: MicroPlumberd.CommandRequest-1.html#MicroPlumberd_CommandRequest_1__ctor
+  name: CommandRequest
+  nameWithType: CommandRequest<TCommand>.CommandRequest
+  fullName: MicroPlumberd.CommandRequest<TCommand>.CommandRequest
+  nameWithType.vb: CommandRequest(Of TCommand).New
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand).New
+  name.vb: New
+- uid: MicroPlumberd.CommandRequest`1.Command*
+  commentId: Overload:MicroPlumberd.CommandRequest`1.Command
+  href: MicroPlumberd.CommandRequest-1.html#MicroPlumberd_CommandRequest_1_Command
+  name: Command
+  nameWithType: CommandRequest<TCommand>.Command
+  fullName: MicroPlumberd.CommandRequest<TCommand>.Command
+  nameWithType.vb: CommandRequest(Of TCommand).Command
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand).Command
+- uid: MicroPlumberd.ICommandRequest{{TCommand}}.Command
+  commentId: P:MicroPlumberd.ICommandRequest{`0}.Command
+  parent: MicroPlumberd.ICommandRequest{{TCommand}}
+  definition: MicroPlumberd.ICommandRequest`1.Command
+  href: MicroPlumberd.ICommandRequest-1.html#MicroPlumberd_ICommandRequest_1_Command
+  name: Command
+  nameWithType: ICommandRequest<TCommand>.Command
+  fullName: MicroPlumberd.ICommandRequest<TCommand>.Command
+  nameWithType.vb: ICommandRequest(Of TCommand).Command
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand).Command
+- uid: '{TCommand}'
+  commentId: '!:TCommand'
+  definition: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: MicroPlumberd.ICommandRequest`1.Command
+  commentId: P:MicroPlumberd.ICommandRequest`1.Command
+  href: MicroPlumberd.ICommandRequest-1.html#MicroPlumberd_ICommandRequest_1_Command
+  name: Command
+  nameWithType: ICommandRequest<TCommand>.Command
+  fullName: MicroPlumberd.ICommandRequest<TCommand>.Command
+  nameWithType.vb: ICommandRequest(Of TCommand).Command
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand).Command
+- uid: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: MicroPlumberd.CommandRequest`1.RecipientId*
+  commentId: Overload:MicroPlumberd.CommandRequest`1.RecipientId
+  href: MicroPlumberd.CommandRequest-1.html#MicroPlumberd_CommandRequest_1_RecipientId
+  name: RecipientId
+  nameWithType: CommandRequest<TCommand>.RecipientId
+  fullName: MicroPlumberd.CommandRequest<TCommand>.RecipientId
+  nameWithType.vb: CommandRequest(Of TCommand).RecipientId
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand).RecipientId
+- uid: MicroPlumberd.ICommandRequest.RecipientId
+  commentId: P:MicroPlumberd.ICommandRequest.RecipientId
+  parent: MicroPlumberd.ICommandRequest
+  href: MicroPlumberd.ICommandRequest.html#MicroPlumberd_ICommandRequest_RecipientId
+  name: RecipientId
+  nameWithType: ICommandRequest.RecipientId
+  fullName: MicroPlumberd.ICommandRequest.RecipientId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid

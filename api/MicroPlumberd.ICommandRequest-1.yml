@@ -1,0 +1,106 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ICommandRequest`1
+  commentId: T:MicroPlumberd.ICommandRequest`1
+  id: ICommandRequest`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ICommandRequest`1.Command
+  langs:
+  - csharp
+  - vb
+  name: ICommandRequest<TCommand>
+  nameWithType: ICommandRequest<TCommand>
+  fullName: MicroPlumberd.ICommandRequest<TCommand>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICommandRequest
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface ICommandRequest<out TCommand> : ICommandRequest, IProcessAction'
+    typeParameters:
+    - id: TCommand
+    content.vb: Public Interface ICommandRequest(Of Out TCommand) Inherits ICommandRequest, IProcessAction
+  inheritedMembers:
+  - MicroPlumberd.ICommandRequest.RecipientId
+  nameWithType.vb: ICommandRequest(Of TCommand)
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand)
+  name.vb: ICommandRequest(Of TCommand)
+- uid: MicroPlumberd.ICommandRequest`1.Command
+  commentId: P:MicroPlumberd.ICommandRequest`1.Command
+  id: Command
+  parent: MicroPlumberd.ICommandRequest`1
+  langs:
+  - csharp
+  - vb
+  name: Command
+  nameWithType: ICommandRequest<TCommand>.Command
+  fullName: MicroPlumberd.ICommandRequest<TCommand>.Command
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Command
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 26
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: TCommand Command { get; }
+    parameters: []
+    return:
+      type: '{TCommand}'
+    content.vb: ReadOnly Property Command As TCommand
+  overload: MicroPlumberd.ICommandRequest`1.Command*
+  nameWithType.vb: ICommandRequest(Of TCommand).Command
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand).Command
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ICommandRequest.RecipientId
+  commentId: P:MicroPlumberd.ICommandRequest.RecipientId
+  parent: MicroPlumberd.ICommandRequest
+  href: MicroPlumberd.ICommandRequest.html#MicroPlumberd_ICommandRequest_RecipientId
+  name: RecipientId
+  nameWithType: ICommandRequest.RecipientId
+  fullName: MicroPlumberd.ICommandRequest.RecipientId
+- uid: MicroPlumberd.ICommandRequest
+  commentId: T:MicroPlumberd.ICommandRequest
+  parent: MicroPlumberd
+  href: MicroPlumberd.ICommandRequest.html
+  name: ICommandRequest
+  nameWithType: ICommandRequest
+  fullName: MicroPlumberd.ICommandRequest
+- uid: MicroPlumberd.ICommandRequest`1.Command*
+  commentId: Overload:MicroPlumberd.ICommandRequest`1.Command
+  href: MicroPlumberd.ICommandRequest-1.html#MicroPlumberd_ICommandRequest_1_Command
+  name: Command
+  nameWithType: ICommandRequest<TCommand>.Command
+  fullName: MicroPlumberd.ICommandRequest<TCommand>.Command
+  nameWithType.vb: ICommandRequest(Of TCommand).Command
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand).Command
+- uid: '{TCommand}'
+  commentId: '!:TCommand'
+  definition: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand

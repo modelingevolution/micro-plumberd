@@ -1,0 +1,684 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.CommandFaultException`1
+  commentId: T:MicroPlumberd.CommandFaultException`1
+  id: CommandFaultException`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.CommandFaultException`1.#ctor(System.String,`0)
+  - MicroPlumberd.CommandFaultException`1.#ctor(`0)
+  - MicroPlumberd.CommandFaultException`1.Data
+  - MicroPlumberd.CommandFaultException`1.GetFaultData
+  langs:
+  - csharp
+  - vb
+  name: CommandFaultException<TData>
+  nameWithType: CommandFaultException<TData>
+  fullName: MicroPlumberd.CommandFaultException<TData>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandFaultException
+    path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public class CommandFaultException<TData> : CommandFaultException, ISerializable'
+    typeParameters:
+    - id: TData
+    content.vb: Public Class CommandFaultException(Of TData) Inherits CommandFaultException Implements ISerializable
+  inheritance:
+  - System.Object
+  - System.Exception
+  - MicroPlumberd.CommandFaultException
+  implements:
+  - System.Runtime.Serialization.ISerializable
+  inheritedMembers:
+  - MicroPlumberd.CommandFaultException.Create(System.String,System.Object)
+  - System.Exception.GetBaseException
+  - System.Exception.GetType
+  - System.Exception.ToString
+  - System.Exception.HelpLink
+  - System.Exception.HResult
+  - System.Exception.InnerException
+  - System.Exception.Message
+  - System.Exception.Source
+  - System.Exception.StackTrace
+  - System.Exception.TargetSite
+  - System.Exception.SerializeObjectState
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: CommandFaultException(Of TData)
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData)
+  name.vb: CommandFaultException(Of TData)
+- uid: MicroPlumberd.CommandFaultException`1.#ctor(System.String,`0)
+  commentId: M:MicroPlumberd.CommandFaultException`1.#ctor(System.String,`0)
+  id: '#ctor(System.String,`0)'
+  parent: MicroPlumberd.CommandFaultException`1
+  langs:
+  - csharp
+  - vb
+  name: CommandFaultException(string?, TData)
+  nameWithType: CommandFaultException<TData>.CommandFaultException(string?, TData)
+  fullName: MicroPlumberd.CommandFaultException<TData>.CommandFaultException(string?, TData)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public CommandFaultException(string? message, TData data)
+    parameters:
+    - id: message
+      type: System.String
+    - id: data
+      type: '{TData}'
+    content.vb: Public Sub New(message As String, data As TData)
+  overload: MicroPlumberd.CommandFaultException`1.#ctor*
+  nameWithType.vb: CommandFaultException(Of TData).New(String, TData)
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).New(String, TData)
+  name.vb: New(String, TData)
+- uid: MicroPlumberd.CommandFaultException`1.Data
+  commentId: P:MicroPlumberd.CommandFaultException`1.Data
+  id: Data
+  parent: MicroPlumberd.CommandFaultException`1
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: CommandFaultException<TData>.Data
+  fullName: MicroPlumberd.CommandFaultException<TData>.Data
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Data
+    path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public TData Data { get; init; }
+    parameters: []
+    return:
+      type: '{TData}'
+    content.vb: Public Property Data As TData
+  overload: MicroPlumberd.CommandFaultException`1.Data*
+  nameWithType.vb: CommandFaultException(Of TData).Data
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).Data
+- uid: MicroPlumberd.CommandFaultException`1.GetFaultData
+  commentId: M:MicroPlumberd.CommandFaultException`1.GetFaultData
+  id: GetFaultData
+  parent: MicroPlumberd.CommandFaultException`1
+  langs:
+  - csharp
+  - vb
+  name: GetFaultData()
+  nameWithType: CommandFaultException<TData>.GetFaultData()
+  fullName: MicroPlumberd.CommandFaultException<TData>.GetFaultData()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetFaultData
+    path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public override object GetFaultData()
+    return:
+      type: System.Object
+    content.vb: Public Overrides Function GetFaultData() As Object
+  overridden: MicroPlumberd.CommandFaultException.GetFaultData
+  overload: MicroPlumberd.CommandFaultException`1.GetFaultData*
+  nameWithType.vb: CommandFaultException(Of TData).GetFaultData()
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).GetFaultData()
+- uid: MicroPlumberd.CommandFaultException`1.#ctor(`0)
+  commentId: M:MicroPlumberd.CommandFaultException`1.#ctor(`0)
+  id: '#ctor(`0)'
+  parent: MicroPlumberd.CommandFaultException`1
+  langs:
+  - csharp
+  - vb
+  name: CommandFaultException(TData)
+  nameWithType: CommandFaultException<TData>.CommandFaultException(TData)
+  fullName: MicroPlumberd.CommandFaultException<TData>.CommandFaultException(TData)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.CommandBus.Abstractions/CommandFaultException.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd.CommandBus.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public CommandFaultException(TData data)
+    parameters:
+    - id: data
+      type: '{TData}'
+    content.vb: Public Sub New(data As TData)
+  overload: MicroPlumberd.CommandFaultException`1.#ctor*
+  nameWithType.vb: CommandFaultException(Of TData).New(TData)
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).New(TData)
+  name.vb: New(TData)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: MicroPlumberd.CommandFaultException
+  commentId: T:MicroPlumberd.CommandFaultException
+  parent: MicroPlumberd
+  href: MicroPlumberd.CommandFaultException.html
+  name: CommandFaultException
+  nameWithType: CommandFaultException
+  fullName: MicroPlumberd.CommandFaultException
+- uid: System.Runtime.Serialization.ISerializable
+  commentId: T:System.Runtime.Serialization.ISerializable
+  parent: System.Runtime.Serialization
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.runtime.serialization.iserializable
+  name: ISerializable
+  nameWithType: ISerializable
+  fullName: System.Runtime.Serialization.ISerializable
+- uid: MicroPlumberd.CommandFaultException.Create(System.String,System.Object)
+  commentId: M:MicroPlumberd.CommandFaultException.Create(System.String,System.Object)
+  parent: MicroPlumberd.CommandFaultException
+  isExternal: true
+  href: MicroPlumberd.CommandFaultException.html#MicroPlumberd_CommandFaultException_Create_System_String_System_Object_
+  name: Create(string, object)
+  nameWithType: CommandFaultException.Create(string, object)
+  fullName: MicroPlumberd.CommandFaultException.Create(string, object)
+  nameWithType.vb: CommandFaultException.Create(String, Object)
+  fullName.vb: MicroPlumberd.CommandFaultException.Create(String, Object)
+  name.vb: Create(String, Object)
+  spec.csharp:
+  - uid: MicroPlumberd.CommandFaultException.Create(System.String,System.Object)
+    name: Create
+    href: MicroPlumberd.CommandFaultException.html#MicroPlumberd_CommandFaultException_Create_System_String_System_Object_
+  - name: (
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.CommandFaultException.Create(System.String,System.Object)
+    name: Create
+    href: MicroPlumberd.CommandFaultException.html#MicroPlumberd_CommandFaultException_Create_System_String_System_Object_
+  - name: (
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Exception.GetBaseException
+  commentId: M:System.Exception.GetBaseException
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.getbaseexception
+  name: GetBaseException()
+  nameWithType: Exception.GetBaseException()
+  fullName: System.Exception.GetBaseException()
+  spec.csharp:
+  - uid: System.Exception.GetBaseException
+    name: GetBaseException
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception.getbaseexception
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Exception.GetBaseException
+    name: GetBaseException
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception.getbaseexception
+  - name: (
+  - name: )
+- uid: System.Exception.GetType
+  commentId: M:System.Exception.GetType
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.gettype
+  name: GetType()
+  nameWithType: Exception.GetType()
+  fullName: System.Exception.GetType()
+  spec.csharp:
+  - uid: System.Exception.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Exception.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception.gettype
+  - name: (
+  - name: )
+- uid: System.Exception.ToString
+  commentId: M:System.Exception.ToString
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.tostring
+  name: ToString()
+  nameWithType: Exception.ToString()
+  fullName: System.Exception.ToString()
+  spec.csharp:
+  - uid: System.Exception.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Exception.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception.tostring
+  - name: (
+  - name: )
+- uid: System.Exception.HelpLink
+  commentId: P:System.Exception.HelpLink
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.helplink
+  name: HelpLink
+  nameWithType: Exception.HelpLink
+  fullName: System.Exception.HelpLink
+- uid: System.Exception.HResult
+  commentId: P:System.Exception.HResult
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.hresult
+  name: HResult
+  nameWithType: Exception.HResult
+  fullName: System.Exception.HResult
+- uid: System.Exception.InnerException
+  commentId: P:System.Exception.InnerException
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.innerexception
+  name: InnerException
+  nameWithType: Exception.InnerException
+  fullName: System.Exception.InnerException
+- uid: System.Exception.Message
+  commentId: P:System.Exception.Message
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.message
+  name: Message
+  nameWithType: Exception.Message
+  fullName: System.Exception.Message
+- uid: System.Exception.Source
+  commentId: P:System.Exception.Source
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.source
+  name: Source
+  nameWithType: Exception.Source
+  fullName: System.Exception.Source
+- uid: System.Exception.StackTrace
+  commentId: P:System.Exception.StackTrace
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.stacktrace
+  name: StackTrace
+  nameWithType: Exception.StackTrace
+  fullName: System.Exception.StackTrace
+- uid: System.Exception.TargetSite
+  commentId: P:System.Exception.TargetSite
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.targetsite
+  name: TargetSite
+  nameWithType: Exception.TargetSite
+  fullName: System.Exception.TargetSite
+- uid: System.Exception.SerializeObjectState
+  commentId: E:System.Exception.SerializeObjectState
+  parent: System.Exception
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception.serializeobjectstate
+  name: SerializeObjectState
+  nameWithType: Exception.SerializeObjectState
+  fullName: System.Exception.SerializeObjectState
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Runtime.Serialization
+  commentId: N:System.Runtime.Serialization
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Runtime.Serialization
+  nameWithType: System.Runtime.Serialization
+  fullName: System.Runtime.Serialization
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime
+  - name: .
+  - uid: System.Runtime.Serialization
+    name: Serialization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.serialization
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Runtime
+    name: Runtime
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime
+  - name: .
+  - uid: System.Runtime.Serialization
+    name: Serialization
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.runtime.serialization
+- uid: MicroPlumberd.CommandFaultException`1.#ctor*
+  commentId: Overload:MicroPlumberd.CommandFaultException`1.#ctor
+  href: MicroPlumberd.CommandFaultException-1.html#MicroPlumberd_CommandFaultException_1__ctor_System_String__0_
+  name: CommandFaultException
+  nameWithType: CommandFaultException<TData>.CommandFaultException
+  fullName: MicroPlumberd.CommandFaultException<TData>.CommandFaultException
+  nameWithType.vb: CommandFaultException(Of TData).New
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).New
+  name.vb: New
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: '{TData}'
+  commentId: '!:TData'
+  definition: TData
+  name: TData
+  nameWithType: TData
+  fullName: TData
+- uid: TData
+  name: TData
+  nameWithType: TData
+  fullName: TData
+- uid: MicroPlumberd.CommandFaultException`1.Data*
+  commentId: Overload:MicroPlumberd.CommandFaultException`1.Data
+  href: MicroPlumberd.CommandFaultException-1.html#MicroPlumberd_CommandFaultException_1_Data
+  name: Data
+  nameWithType: CommandFaultException<TData>.Data
+  fullName: MicroPlumberd.CommandFaultException<TData>.Data
+  nameWithType.vb: CommandFaultException(Of TData).Data
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).Data
+- uid: MicroPlumberd.CommandFaultException.GetFaultData
+  commentId: M:MicroPlumberd.CommandFaultException.GetFaultData
+  parent: MicroPlumberd.CommandFaultException
+  href: MicroPlumberd.CommandFaultException.html#MicroPlumberd_CommandFaultException_GetFaultData
+  name: GetFaultData()
+  nameWithType: CommandFaultException.GetFaultData()
+  fullName: MicroPlumberd.CommandFaultException.GetFaultData()
+  spec.csharp:
+  - uid: MicroPlumberd.CommandFaultException.GetFaultData
+    name: GetFaultData
+    href: MicroPlumberd.CommandFaultException.html#MicroPlumberd_CommandFaultException_GetFaultData
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.CommandFaultException.GetFaultData
+    name: GetFaultData
+    href: MicroPlumberd.CommandFaultException.html#MicroPlumberd_CommandFaultException_GetFaultData
+  - name: (
+  - name: )
+- uid: MicroPlumberd.CommandFaultException`1.GetFaultData*
+  commentId: Overload:MicroPlumberd.CommandFaultException`1.GetFaultData
+  href: MicroPlumberd.CommandFaultException-1.html#MicroPlumberd_CommandFaultException_1_GetFaultData
+  name: GetFaultData
+  nameWithType: CommandFaultException<TData>.GetFaultData
+  fullName: MicroPlumberd.CommandFaultException<TData>.GetFaultData
+  nameWithType.vb: CommandFaultException(Of TData).GetFaultData
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData).GetFaultData

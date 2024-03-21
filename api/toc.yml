@@ -7,6 +7,28 @@ items:
     name: AggregateAttribute
   - uid: MicroPlumberd.AggregateBase`1
     name: AggregateBase<TState>
+  - uid: MicroPlumberd.AsyncLazy`1
+    name: AsyncLazy<T>
+  - uid: MicroPlumberd.BuildInvocationContext
+    name: BuildInvocationContext
+  - uid: MicroPlumberd.CommandEnqueued
+    name: CommandEnqueued
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued<TCommand>
+  - uid: MicroPlumberd.CommandFaultException
+    name: CommandFaultException
+  - uid: MicroPlumberd.CommandFaultException`1
+    name: CommandFaultException<TData>
+  - uid: MicroPlumberd.CommandInvocationFailed
+    name: CommandInvocationFailed
+  - uid: MicroPlumberd.CommandRequest
+    name: CommandRequest
+  - uid: MicroPlumberd.CommandRequest`1
+    name: CommandRequest<TCommand>
+  - uid: MicroPlumberd.ContainerExtensions
+    name: ContainerExtensions
+  - uid: MicroPlumberd.EventDispatcher
+    name: EventDispatcher
   - uid: MicroPlumberd.EventHandlerAttribute
     name: EventHandlerAttribute
   - uid: MicroPlumberd.EventIdConvention
@@ -15,30 +37,62 @@ items:
     name: EventNameConvention
   - uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
     name: EventStoreProjectionManagementClientExtensions
+  - uid: MicroPlumberd.ExecutionContext
+    name: ExecutionContext
   - uid: MicroPlumberd.GroupNameModelConvention
     name: GroupNameModelConvention
   - uid: MicroPlumberd.IAggregate
     name: IAggregate
   - uid: MicroPlumberd.IAggregate`1
     name: IAggregate<TSelf>
+  - uid: MicroPlumberd.ICommandBus
+    name: ICommandBus
+  - uid: MicroPlumberd.ICommandEnqueued
+    name: ICommandEnqueued
+  - uid: MicroPlumberd.ICommandRequest
+    name: ICommandRequest
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest<TCommand>
   - uid: MicroPlumberd.IConventions
     name: IConventions
+  - uid: MicroPlumberd.IEventHandler
+    name: IEventHandler
+  - uid: MicroPlumberd.IEventRecord
+    name: IEventRecord
+  - uid: MicroPlumberd.IEventRecord`1
+    name: IEventRecord<TEvent>
+  - uid: MicroPlumberd.IExtension
+    name: IExtension
+  - uid: MicroPlumberd.IId
+    name: IId
+  - uid: MicroPlumberd.IIdAware
+    name: IIdAware
   - uid: MicroPlumberd.IObjectSerializer
     name: IObjectSerializer
   - uid: MicroPlumberd.IPlumber
     name: IPlumber
   - uid: MicroPlumberd.IPlumberConfig
     name: IPlumberConfig
+  - uid: MicroPlumberd.IProcessAction
+    name: IProcessAction
+  - uid: MicroPlumberd.IProcessManager
+    name: IProcessManager
   - uid: MicroPlumberd.IProjectionRegister
     name: IProjectionRegister
   - uid: MicroPlumberd.IReadModel
     name: IReadModel
+  - uid: MicroPlumberd.IStateChangeAction
+    name: IStateChangeAction
   - uid: MicroPlumberd.ISubscriptionRunner
     name: ISubscriptionRunner
   - uid: MicroPlumberd.ISubscriptionSet
     name: ISubscriptionSet
   - uid: MicroPlumberd.ITypeRegister
     name: ITypeRegister
+  - uid: MicroPlumberd.IVersionAware
+    name: IVersionAware
+  - uid: MicroPlumberd.IVersioned
+    name: IVersioned
   - uid: MicroPlumberd.InvocationContext
     name: InvocationContext
   - uid: MicroPlumberd.InvocationScope
@@ -55,10 +109,29 @@ items:
     name: OutputStreamModelConvention
   - uid: MicroPlumberd.Plumber
     name: Plumber
+  - uid: MicroPlumberd.ProcessManagerAttribute
+    name: ProcessManagerAttribute
+  - uid: MicroPlumberd.ProcessManagerBase
+    name: ProcessManagerBase
+  - uid: MicroPlumberd.RequestInvokerExtensions
+    name: RequestInvokerExtensions
   - uid: MicroPlumberd.StandardMetadataEnricherTypes
     name: StandardMetadataEnricherTypes
+  - uid: MicroPlumberd.StateChangeAction`1
+    name: StateChangeAction<TOwner>
   - uid: MicroPlumberd.SteamNameConvention
     name: SteamNameConvention
+  - uid: MicroPlumberd.TypeEventConverter
+    name: TypeEventConverter
+  - uid: MicroPlumberd.TypeExtensions
+    name: TypeExtensions
+- uid: MicroPlumberd.Collections
+  name: MicroPlumberd.Collections
+  items:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet<T>
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+    name: ConcurrentHashSet<T>.Enumerator
 - uid: MicroPlumberd.DirectConnect
   name: MicroPlumberd.DirectConnect
   items:
@@ -68,24 +141,72 @@ items:
     name: CommandHandlerAttribute
   - uid: MicroPlumberd.DirectConnect.ContainerExtensions
     name: ContainerExtensions
+  - uid: MicroPlumberd.DirectConnect.FaultEnvelope
+    name: FaultEnvelope
+  - uid: MicroPlumberd.DirectConnect.FaultEnvelope`1
+    name: FaultEnvelope<TData>
   - uid: MicroPlumberd.DirectConnect.HandlerOperationStatus
     name: HandlerOperationStatus
-  - uid: MicroPlumberd.DirectConnect.IApiTypeRegister
-    name: IApiTypeRegister
-  - uid: MicroPlumberd.DirectConnect.ICommand
-    name: ICommand
+  - uid: MicroPlumberd.DirectConnect.ICommandHandler
+    name: ICommandHandler
   - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
     name: ICommandHandler<TCommand>
-  - uid: MicroPlumberd.DirectConnect.RequestInvokerExtensions
-    name: RequestInvokerExtensions
+  - uid: MicroPlumberd.DirectConnect.IFaultEnvelope
+    name: IFaultEnvelope
   - uid: MicroPlumberd.DirectConnect.ReturnsAttribute
     name: ReturnsAttribute
   - uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
     name: ReturnsAttribute<TResult>
-  - uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute
-    name: ThrowsFaultExceptionAttribute
-  - uid: MicroPlumberd.DirectConnect.ThrowsFaultExceptionAttribute`1
-    name: ThrowsFaultExceptionAttribute<TMessage>
+- uid: MicroPlumberd.Services
+  name: MicroPlumberd.Services
+  items:
+  - uid: MicroPlumberd.Services.AppCommandStream
+    name: AppCommandStream
+  - uid: MicroPlumberd.Services.CommandExecutionResults
+    name: CommandExecutionResults
+  - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+    name: CommandHandlerMetadataExtensions
+  - uid: MicroPlumberd.Services.CommandMessageTypes
+    name: CommandMessageTypes
+  - uid: MicroPlumberd.Services.CommandName
+    name: CommandName
+  - uid: MicroPlumberd.Services.ContainerExtensions
+    name: ContainerExtensions
+  - uid: MicroPlumberd.Services.GroupNameFromCommandHandler
+    name: GroupNameFromCommandHandler
+  - uid: MicroPlumberd.Services.IServiceTypeRegister
+    name: IServiceTypeRegister
+  - uid: MicroPlumberd.Services.IServicesConfig
+    name: IServicesConfig
+  - uid: MicroPlumberd.Services.IServicesConvention
+    name: IServicesConvention
+  - uid: MicroPlumberd.Services.IsHandlerExecutionPersistent
+    name: IsHandlerExecutionPersistent
+  - uid: MicroPlumberd.Services.MetadataExtensions
+    name: MetadataExtensions
+  - uid: MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+    name: OutputSteamNameFromCommandHandler
+  - uid: MicroPlumberd.Services.PlumberExtensions
+    name: PlumberExtensions
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions
+    name: PlumberdConventionsExtensions
+  - uid: MicroPlumberd.Services.SessionStreamFromSessionId
+    name: SessionStreamFromSessionId
+  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+    name: ThrowsFaultCommandExceptionAttribute
+  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+    name: ThrowsFaultCommandExceptionAttribute<TMessage>
+- uid: MicroPlumberd.Services.ProcessManagers
+  name: MicroPlumberd.Services.ProcessManagers
+  items:
+  - uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+    name: IProcessManagerClient
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+    name: ProcessManagerClient
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+    name: ProcessManagerExecutor<TProcessManager>
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
+    name: ProcessManagerExecutor<TProcessManager>.Lookup
 - uid: MicroPlumberd.SourceGenerators
   name: MicroPlumberd.SourceGenerators
   items:
@@ -95,4 +216,13 @@ items:
     name: CommandHandlerSourceGenerator
   - uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
     name: EventHandlerSourceGenerator
+  - uid: MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator
+    name: ProcessManagerSourceGenerator
+  - uid: MicroPlumberd.SourceGenerators.TypeSyntaxExtensions
+    name: TypeSyntaxExtensions
+- uid: MicroPlumberd.Utils
+  name: MicroPlumberd.Utils
+  items:
+  - uid: MicroPlumberd.Utils.AsyncDisposableCollection
+    name: AsyncDisposableCollection
 memberLayout: SamePage

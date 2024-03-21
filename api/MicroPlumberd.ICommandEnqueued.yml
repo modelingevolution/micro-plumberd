@@ -1,0 +1,133 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ICommandEnqueued
+  commentId: T:MicroPlumberd.ICommandEnqueued
+  id: ICommandEnqueued
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ICommandEnqueued.Command
+  - MicroPlumberd.ICommandEnqueued.RecipientId
+  langs:
+  - csharp
+  - vb
+  name: ICommandEnqueued
+  nameWithType: ICommandEnqueued
+  fullName: MicroPlumberd.ICommandEnqueued
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandEnqueued.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICommandEnqueued
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandEnqueued.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ICommandEnqueued
+    content.vb: Public Interface ICommandEnqueued
+- uid: MicroPlumberd.ICommandEnqueued.Command
+  commentId: P:MicroPlumberd.ICommandEnqueued.Command
+  id: Command
+  parent: MicroPlumberd.ICommandEnqueued
+  langs:
+  - csharp
+  - vb
+  name: Command
+  nameWithType: ICommandEnqueued.Command
+  fullName: MicroPlumberd.ICommandEnqueued.Command
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandEnqueued.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Command
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandEnqueued.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: object Command { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property Command As Object
+  overload: MicroPlumberd.ICommandEnqueued.Command*
+- uid: MicroPlumberd.ICommandEnqueued.RecipientId
+  commentId: P:MicroPlumberd.ICommandEnqueued.RecipientId
+  id: RecipientId
+  parent: MicroPlumberd.ICommandEnqueued
+  langs:
+  - csharp
+  - vb
+  name: RecipientId
+  nameWithType: ICommandEnqueued.RecipientId
+  fullName: MicroPlumberd.ICommandEnqueued.RecipientId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandEnqueued.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: RecipientId
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandEnqueued.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid RecipientId { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: ReadOnly Property RecipientId As Guid
+  overload: MicroPlumberd.ICommandEnqueued.RecipientId*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ICommandEnqueued.Command*
+  commentId: Overload:MicroPlumberd.ICommandEnqueued.Command
+  href: MicroPlumberd.ICommandEnqueued.html#MicroPlumberd_ICommandEnqueued_Command
+  name: Command
+  nameWithType: ICommandEnqueued.Command
+  fullName: MicroPlumberd.ICommandEnqueued.Command
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.ICommandEnqueued.RecipientId*
+  commentId: Overload:MicroPlumberd.ICommandEnqueued.RecipientId
+  href: MicroPlumberd.ICommandEnqueued.html#MicroPlumberd_ICommandEnqueued_RecipientId
+  name: RecipientId
+  nameWithType: ICommandEnqueued.RecipientId
+  fullName: MicroPlumberd.ICommandEnqueued.RecipientId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid

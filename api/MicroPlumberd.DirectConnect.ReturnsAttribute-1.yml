@@ -20,9 +20,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReturnsAttribute
     path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 13
+    startLine: 4
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-
@@ -110,9 +110,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 13
+    startLine: 4
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public ReturnsAttribute()

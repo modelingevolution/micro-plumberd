@@ -1,0 +1,591 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.IServicesConvention
+  commentId: T:MicroPlumberd.Services.IServicesConvention
+  id: IServicesConvention
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
+  - MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  - MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
+  - MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
+  - MicroPlumberd.Services.IServicesConvention.CommandNameConvention
+  - MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
+  - MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
+  - MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  - MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  langs:
+  - csharp
+  - vb
+  name: IServicesConvention
+  nameWithType: IServicesConvention
+  fullName: MicroPlumberd.Services.IServicesConvention
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IServicesConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public interface IServicesConvention
+    content.vb: Public Interface IServicesConvention
+- uid: MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  id: OutputSteamNameFromCommandHandlerConvention
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: OutputSteamNameFromCommandHandlerConvention
+  nameWithType: IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: OutputSteamNameFromCommandHandlerConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: OutputSteamNameFromCommandHandler OutputSteamNameFromCommandHandlerConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+    content.vb: Property OutputSteamNameFromCommandHandlerConvention As OutputSteamNameFromCommandHandler
+  overload: MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention*
+- uid: MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
+  id: GroupNameFromCommandHandlerConvention
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: GroupNameFromCommandHandlerConvention
+  nameWithType: IServicesConvention.GroupNameFromCommandHandlerConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GroupNameFromCommandHandlerConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 14
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: GroupNameFromCommandHandler GroupNameFromCommandHandlerConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.GroupNameFromCommandHandler
+    content.vb: Property GroupNameFromCommandHandlerConvention As GroupNameFromCommandHandler
+  overload: MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention*
+- uid: MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
+  id: AppCommandStreamConvention
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: AppCommandStreamConvention
+  nameWithType: IServicesConvention.AppCommandStreamConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AppCommandStreamConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 15
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: AppCommandStream AppCommandStreamConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.AppCommandStream
+    content.vb: Property AppCommandStreamConvention As AppCommandStream
+  overload: MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention*
+- uid: MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
+  commentId: P:MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
+  id: CommandMessageTypes
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: CommandMessageTypes
+  nameWithType: IServicesConvention.CommandMessageTypes
+  fullName: MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandMessageTypes
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 16
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: CommandMessageTypes CommandMessageTypes { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.CommandMessageTypes
+    content.vb: Property CommandMessageTypes As CommandMessageTypes
+  overload: MicroPlumberd.Services.IServicesConvention.CommandMessageTypes*
+- uid: MicroPlumberd.Services.IServicesConvention.CommandNameConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.CommandNameConvention
+  id: CommandNameConvention
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: CommandNameConvention
+  nameWithType: IServicesConvention.CommandNameConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.CommandNameConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandNameConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 17
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: CommandName CommandNameConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.CommandName
+    content.vb: Property CommandNameConvention As CommandName
+  overload: MicroPlumberd.Services.IServicesConvention.CommandNameConvention*
+- uid: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  id: SessionStreamFromSessionIdConvention
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: SessionStreamFromSessionIdConvention
+  nameWithType: IServicesConvention.SessionStreamFromSessionIdConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SessionStreamFromSessionIdConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 18
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: SessionStreamFromSessionId SessionStreamFromSessionIdConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.SessionStreamFromSessionId
+    content.vb: Property SessionStreamFromSessionIdConvention As SessionStreamFromSessionId
+  overload: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention*
+- uid: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
+  commentId: P:MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
+  id: IsHandlerExecutionPersistent
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: IsHandlerExecutionPersistent
+  nameWithType: IServicesConvention.IsHandlerExecutionPersistent
+  fullName: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IsHandlerExecutionPersistent
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: IsHandlerExecutionPersistent IsHandlerExecutionPersistent { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.IsHandlerExecutionPersistent
+    content.vb: Property IsHandlerExecutionPersistent As IsHandlerExecutionPersistent
+  overload: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent*
+- uid: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  commentId: P:MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  id: AreHandlersExecutedPersistently
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: AreHandlersExecutedPersistently
+  nameWithType: IServicesConvention.AreHandlersExecutedPersistently
+  fullName: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AreHandlersExecutedPersistently
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 23
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: Func<bool> AreHandlersExecutedPersistently { get; set; }
+    parameters: []
+    return:
+      type: System.Func{System.Boolean}
+    content.vb: Property AreHandlersExecutedPersistently As Func(Of Boolean)
+  overload: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently*
+- uid: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
+  commentId: P:MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
+  id: CommandHandlerSkipFilter
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: CommandHandlerSkipFilter
+  nameWithType: IServicesConvention.CommandHandlerSkipFilter
+  fullName: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandHandlerSkipFilter
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: Func<Metadata, object, bool> CommandHandlerSkipFilter { get; set; }
+    parameters: []
+    return:
+      type: System.Func{MicroPlumberd.Metadata,System.Object,System.Boolean}
+    content.vb: Property CommandHandlerSkipFilter As Func(Of Metadata, Object, Boolean)
+  overload: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter*
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_OutputSteamNameFromCommandHandlerConvention
+  name: OutputSteamNameFromCommandHandlerConvention
+  nameWithType: IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
+- uid: MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+  commentId: T:MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.OutputSteamNameFromCommandHandler.html
+  name: OutputSteamNameFromCommandHandler
+  nameWithType: OutputSteamNameFromCommandHandler
+  fullName: MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+- uid: MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_GroupNameFromCommandHandlerConvention
+  name: GroupNameFromCommandHandlerConvention
+  nameWithType: IServicesConvention.GroupNameFromCommandHandlerConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
+- uid: MicroPlumberd.Services.GroupNameFromCommandHandler
+  commentId: T:MicroPlumberd.Services.GroupNameFromCommandHandler
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.GroupNameFromCommandHandler.html
+  name: GroupNameFromCommandHandler
+  nameWithType: GroupNameFromCommandHandler
+  fullName: MicroPlumberd.Services.GroupNameFromCommandHandler
+- uid: MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AppCommandStreamConvention
+  name: AppCommandStreamConvention
+  nameWithType: IServicesConvention.AppCommandStreamConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
+- uid: MicroPlumberd.Services.AppCommandStream
+  commentId: T:MicroPlumberd.Services.AppCommandStream
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.AppCommandStream.html
+  name: AppCommandStream
+  nameWithType: AppCommandStream
+  fullName: MicroPlumberd.Services.AppCommandStream
+- uid: MicroPlumberd.Services.IServicesConvention.CommandMessageTypes*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_CommandMessageTypes
+  name: CommandMessageTypes
+  nameWithType: IServicesConvention.CommandMessageTypes
+  fullName: MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
+- uid: MicroPlumberd.Services.CommandMessageTypes
+  commentId: T:MicroPlumberd.Services.CommandMessageTypes
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.CommandMessageTypes.html
+  name: CommandMessageTypes
+  nameWithType: CommandMessageTypes
+  fullName: MicroPlumberd.Services.CommandMessageTypes
+- uid: MicroPlumberd.Services.IServicesConvention.CommandNameConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.CommandNameConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_CommandNameConvention
+  name: CommandNameConvention
+  nameWithType: IServicesConvention.CommandNameConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.CommandNameConvention
+- uid: MicroPlumberd.Services.CommandName
+  commentId: T:MicroPlumberd.Services.CommandName
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.CommandName.html
+  name: CommandName
+  nameWithType: CommandName
+  fullName: MicroPlumberd.Services.CommandName
+- uid: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_SessionStreamFromSessionIdConvention
+  name: SessionStreamFromSessionIdConvention
+  nameWithType: IServicesConvention.SessionStreamFromSessionIdConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+- uid: MicroPlumberd.Services.SessionStreamFromSessionId
+  commentId: T:MicroPlumberd.Services.SessionStreamFromSessionId
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.SessionStreamFromSessionId.html
+  name: SessionStreamFromSessionId
+  nameWithType: SessionStreamFromSessionId
+  fullName: MicroPlumberd.Services.SessionStreamFromSessionId
+- uid: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_IsHandlerExecutionPersistent
+  name: IsHandlerExecutionPersistent
+  nameWithType: IServicesConvention.IsHandlerExecutionPersistent
+  fullName: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
+- uid: MicroPlumberd.Services.IsHandlerExecutionPersistent
+  commentId: T:MicroPlumberd.Services.IsHandlerExecutionPersistent
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.IsHandlerExecutionPersistent.html
+  name: IsHandlerExecutionPersistent
+  nameWithType: IsHandlerExecutionPersistent
+  fullName: MicroPlumberd.Services.IsHandlerExecutionPersistent
+- uid: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreHandlersExecutedPersistently
+  name: AreHandlersExecutedPersistently
+  nameWithType: IServicesConvention.AreHandlersExecutedPersistently
+  fullName: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+- uid: System.Func{System.Boolean}
+  commentId: T:System.Func{System.Boolean}
+  parent: System
+  definition: System.Func`1
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<bool>
+  nameWithType: Func<bool>
+  fullName: System.Func<bool>
+  nameWithType.vb: Func(Of Boolean)
+  fullName.vb: System.Func(Of Boolean)
+  name.vb: Func(Of Boolean)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`1
+  commentId: T:System.Func`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-1
+  name: Func<TResult>
+  nameWithType: Func<TResult>
+  fullName: System.Func<TResult>
+  nameWithType.vb: Func(Of TResult)
+  fullName.vb: System.Func(Of TResult)
+  name.vb: Func(Of TResult)
+  spec.csharp:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`1
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_CommandHandlerSkipFilter
+  name: CommandHandlerSkipFilter
+  nameWithType: IServicesConvention.CommandHandlerSkipFilter
+  fullName: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
+- uid: System.Func{MicroPlumberd.Metadata,System.Object,System.Boolean}
+  commentId: T:System.Func{MicroPlumberd.Metadata,System.Object,System.Boolean}
+  parent: System
+  definition: System.Func`3
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<Metadata, object, bool>
+  nameWithType: Func<Metadata, object, bool>
+  fullName: System.Func<MicroPlumberd.Metadata, object, bool>
+  nameWithType.vb: Func(Of Metadata, Object, Boolean)
+  fullName.vb: System.Func(Of MicroPlumberd.Metadata, Object, Boolean)
+  name.vb: Func(Of Metadata, Object, Boolean)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Func`3
+  commentId: T:System.Func`3
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-3
+  name: Func<T1, T2, TResult>
+  nameWithType: Func<T1, T2, TResult>
+  fullName: System.Func<T1, T2, TResult>
+  nameWithType.vb: Func(Of T1, T2, TResult)
+  fullName.vb: System.Func(Of T1, T2, TResult)
+  name.vb: Func(Of T1, T2, TResult)
+  spec.csharp:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`3
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-3
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )

@@ -5,6 +5,7 @@ items:
   id: IConventions
   parent: MicroPlumberd
   children:
+  - MicroPlumberd.IConventions.BuildInvocationContext
   - MicroPlumberd.IConventions.GetEventIdConvention
   - MicroPlumberd.IConventions.GetEventNameConvention
   - MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
@@ -12,6 +13,7 @@ items:
   - MicroPlumberd.IConventions.GroupNameModelConvention
   - MicroPlumberd.IConventions.MetadataEnrichers
   - MicroPlumberd.IConventions.OutputStreamModelConvention
+  - MicroPlumberd.IConventions.StandardMetadataEnricherTypes
   langs:
   - csharp
   - vb
@@ -26,13 +28,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IConventions
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 17
+    startLine: 24
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public interface IConventions
-    content.vb: Public Interface IConventions
+    content: 'public interface IConventions : IExtension'
+    content.vb: Public Interface IConventions Inherits IExtension
+  inheritedMembers:
+  - MicroPlumberd.IExtension.GetExtension``1
+  extensionMethods:
+  - MicroPlumberd.IConventions.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
 - uid: MicroPlumberd.IConventions.GetStreamIdConvention
   commentId: P:MicroPlumberd.IConventions.GetStreamIdConvention
   id: GetStreamIdConvention
@@ -51,7 +57,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 19
+    startLine: 27
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -80,7 +86,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 20
+    startLine: 28
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -91,6 +97,35 @@ items:
       type: MicroPlumberd.EventNameConvention
     content.vb: Property GetEventNameConvention As EventNameConvention
   overload: MicroPlumberd.IConventions.GetEventNameConvention*
+- uid: MicroPlumberd.IConventions.BuildInvocationContext
+  commentId: P:MicroPlumberd.IConventions.BuildInvocationContext
+  id: BuildInvocationContext
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: BuildInvocationContext
+  nameWithType: IConventions.BuildInvocationContext
+  fullName: MicroPlumberd.IConventions.BuildInvocationContext
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: BuildInvocationContext
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 29
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: BuildInvocationContext BuildInvocationContext { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.BuildInvocationContext
+    content.vb: Property BuildInvocationContext As BuildInvocationContext
+  overload: MicroPlumberd.IConventions.BuildInvocationContext*
 - uid: MicroPlumberd.IConventions.MetadataEnrichers
   commentId: P:MicroPlumberd.IConventions.MetadataEnrichers
   id: MetadataEnrichers
@@ -109,7 +144,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataEnrichers
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 21
+    startLine: 30
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -138,7 +173,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 22
+    startLine: 31
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -167,7 +202,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 23
+    startLine: 32
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -196,7 +231,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 24
+    startLine: 33
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -207,6 +242,35 @@ items:
       type: MicroPlumberd.GroupNameModelConvention
     content.vb: Property GroupNameModelConvention As GroupNameModelConvention
   overload: MicroPlumberd.IConventions.GroupNameModelConvention*
+- uid: MicroPlumberd.IConventions.StandardMetadataEnricherTypes
+  commentId: P:MicroPlumberd.IConventions.StandardMetadataEnricherTypes
+  id: StandardMetadataEnricherTypes
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: StandardMetadataEnricherTypes
+  nameWithType: IConventions.StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.IConventions.StandardMetadataEnricherTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StandardMetadataEnricherTypes
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 34
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.StandardMetadataEnricherTypes
+    content.vb: Property StandardMetadataEnricherTypes As StandardMetadataEnricherTypes
+  overload: MicroPlumberd.IConventions.StandardMetadataEnricherTypes*
 - uid: MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
   commentId: M:MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
   id: GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
@@ -225,7 +289,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetMetadata
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 25
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -252,6 +316,122 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
+- uid: MicroPlumberd.IExtension.GetExtension``1
+  commentId: M:MicroPlumberd.IExtension.GetExtension``1
+  parent: MicroPlumberd.IExtension
+  href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  name: GetExtension<T>()
+  nameWithType: IExtension.GetExtension<T>()
+  fullName: MicroPlumberd.IExtension.GetExtension<T>()
+  nameWithType.vb: IExtension.GetExtension(Of T)()
+  fullName.vb: MicroPlumberd.IExtension.GetExtension(Of T)()
+  name.vb: GetExtension(Of T)()
+  spec.csharp:
+  - uid: MicroPlumberd.IExtension.GetExtension``1
+    name: GetExtension
+    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IExtension.GetExtension``1
+    name: GetExtension
+    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MicroPlumberd.IConventions.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
+  definition: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  name: ServicesConventions(IConventions)
+  nameWithType: PlumberdConventionsExtensions.ServicesConventions(IConventions)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+    name: ServicesConventions
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  - name: (
+  - uid: MicroPlumberd.IConventions
+    name: IConventions
+    href: MicroPlumberd.IConventions.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+    name: ServicesConventions
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  - name: (
+  - uid: MicroPlumberd.IConventions
+    name: IConventions
+    href: MicroPlumberd.IConventions.html
+  - name: )
+- uid: MicroPlumberd.IExtension
+  commentId: T:MicroPlumberd.IExtension
+  parent: MicroPlumberd
+  href: MicroPlumberd.IExtension.html
+  name: IExtension
+  nameWithType: IExtension
+  fullName: MicroPlumberd.IExtension
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  name: ServicesConventions(IConventions)
+  nameWithType: PlumberdConventionsExtensions.ServicesConventions(IConventions)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+    name: ServicesConventions
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  - name: (
+  - uid: MicroPlumberd.IConventions
+    name: IConventions
+    href: MicroPlumberd.IConventions.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+    name: ServicesConventions
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IConventions_
+  - name: (
+  - uid: MicroPlumberd.IConventions
+    name: IConventions
+    href: MicroPlumberd.IConventions.html
+  - name: )
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions
+  commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html
+  name: PlumberdConventionsExtensions
+  nameWithType: PlumberdConventionsExtensions
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
 - uid: MicroPlumberd.IConventions.GetStreamIdConvention*
   commentId: Overload:MicroPlumberd.IConventions.GetStreamIdConvention
   href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetStreamIdConvention
@@ -278,6 +458,19 @@ references:
   name: EventNameConvention
   nameWithType: EventNameConvention
   fullName: MicroPlumberd.EventNameConvention
+- uid: MicroPlumberd.IConventions.BuildInvocationContext*
+  commentId: Overload:MicroPlumberd.IConventions.BuildInvocationContext
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_BuildInvocationContext
+  name: BuildInvocationContext
+  nameWithType: IConventions.BuildInvocationContext
+  fullName: MicroPlumberd.IConventions.BuildInvocationContext
+- uid: MicroPlumberd.BuildInvocationContext
+  commentId: T:MicroPlumberd.BuildInvocationContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.BuildInvocationContext.html
+  name: BuildInvocationContext
+  nameWithType: BuildInvocationContext
+  fullName: MicroPlumberd.BuildInvocationContext
 - uid: MicroPlumberd.IConventions.MetadataEnrichers*
   commentId: Overload:MicroPlumberd.IConventions.MetadataEnrichers
   href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_MetadataEnrichers
@@ -330,6 +523,19 @@ references:
   name: GroupNameModelConvention
   nameWithType: GroupNameModelConvention
   fullName: MicroPlumberd.GroupNameModelConvention
+- uid: MicroPlumberd.IConventions.StandardMetadataEnricherTypes*
+  commentId: Overload:MicroPlumberd.IConventions.StandardMetadataEnricherTypes
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_StandardMetadataEnricherTypes
+  name: StandardMetadataEnricherTypes
+  nameWithType: IConventions.StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.IConventions.StandardMetadataEnricherTypes
+- uid: MicroPlumberd.StandardMetadataEnricherTypes
+  commentId: T:MicroPlumberd.StandardMetadataEnricherTypes
+  parent: MicroPlumberd
+  href: MicroPlumberd.StandardMetadataEnricherTypes.html
+  name: StandardMetadataEnricherTypes
+  nameWithType: StandardMetadataEnricherTypes
+  fullName: MicroPlumberd.StandardMetadataEnricherTypes
 - uid: MicroPlumberd.IConventions.GetMetadata*
   commentId: Overload:MicroPlumberd.IConventions.GetMetadata
   href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetMetadata_MicroPlumberd_IAggregate_System_Object_System_Object_

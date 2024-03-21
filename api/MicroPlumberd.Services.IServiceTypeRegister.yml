@@ -1,0 +1,342 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.IServiceTypeRegister
+  commentId: T:MicroPlumberd.Services.IServiceTypeRegister
+  id: IServiceTypeRegister
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.IServiceTypeRegister.CommandTypes
+  - MicroPlumberd.Services.IServiceTypeRegister.FaultTypes
+  - MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes
+  langs:
+  - csharp
+  - vb
+  name: IServiceTypeRegister
+  nameWithType: IServiceTypeRegister
+  fullName: MicroPlumberd.Services.IServiceTypeRegister
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IServiceTypeRegister
+    path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public interface IServiceTypeRegister
+    content.vb: Public Interface IServiceTypeRegister
+- uid: MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes
+  commentId: P:MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes
+  id: ReturnTypes
+  parent: MicroPlumberd.Services.IServiceTypeRegister
+  langs:
+  - csharp
+  - vb
+  name: ReturnTypes
+  nameWithType: IServiceTypeRegister.ReturnTypes
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ReturnTypes
+    path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static abstract IEnumerable<Type> ReturnTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Public Shared MustInherit ReadOnly Property ReturnTypes As IEnumerable(Of Type)
+  overload: MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes*
+- uid: MicroPlumberd.Services.IServiceTypeRegister.FaultTypes
+  commentId: P:MicroPlumberd.Services.IServiceTypeRegister.FaultTypes
+  id: FaultTypes
+  parent: MicroPlumberd.Services.IServiceTypeRegister
+  langs:
+  - csharp
+  - vb
+  name: FaultTypes
+  nameWithType: IServiceTypeRegister.FaultTypes
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.FaultTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: FaultTypes
+    path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static abstract IEnumerable<Type> FaultTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Public Shared MustInherit ReadOnly Property FaultTypes As IEnumerable(Of Type)
+  overload: MicroPlumberd.Services.IServiceTypeRegister.FaultTypes*
+- uid: MicroPlumberd.Services.IServiceTypeRegister.CommandTypes
+  commentId: P:MicroPlumberd.Services.IServiceTypeRegister.CommandTypes
+  id: CommandTypes
+  parent: MicroPlumberd.Services.IServiceTypeRegister
+  langs:
+  - csharp
+  - vb
+  name: CommandTypes
+  nameWithType: IServiceTypeRegister.CommandTypes
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.CommandTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandTypes
+    path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static abstract IEnumerable<Type> CommandTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Public Shared MustInherit ReadOnly Property CommandTypes As IEnumerable(Of Type)
+  overload: MicroPlumberd.Services.IServiceTypeRegister.CommandTypes*
+- uid: MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  commentId: M:MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  id: RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  parent: MicroPlumberd.Services.IServiceTypeRegister
+  langs:
+  - csharp
+  - vb
+  name: RegisterHandlers(IServiceCollection)
+  nameWithType: IServiceTypeRegister.RegisterHandlers(IServiceCollection)
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: RegisterHandlers
+    path: src/MicroPlumberd.Services/IServiceTypeRegister.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static abstract IServiceCollection RegisterHandlers(IServiceCollection services)
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared MustInherit Function RegisterHandlers(services As IServiceCollection) As IServiceCollection
+  overload: MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers*
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes*
+  commentId: Overload:MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes
+  href: MicroPlumberd.Services.IServiceTypeRegister.html#MicroPlumberd_Services_IServiceTypeRegister_ReturnTypes
+  name: ReturnTypes
+  nameWithType: IServiceTypeRegister.ReturnTypes
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.ReturnTypes
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MicroPlumberd.Services.IServiceTypeRegister.FaultTypes*
+  commentId: Overload:MicroPlumberd.Services.IServiceTypeRegister.FaultTypes
+  href: MicroPlumberd.Services.IServiceTypeRegister.html#MicroPlumberd_Services_IServiceTypeRegister_FaultTypes
+  name: FaultTypes
+  nameWithType: IServiceTypeRegister.FaultTypes
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.FaultTypes
+- uid: MicroPlumberd.Services.IServiceTypeRegister.CommandTypes*
+  commentId: Overload:MicroPlumberd.Services.IServiceTypeRegister.CommandTypes
+  href: MicroPlumberd.Services.IServiceTypeRegister.html#MicroPlumberd_Services_IServiceTypeRegister_CommandTypes
+  name: CommandTypes
+  nameWithType: IServiceTypeRegister.CommandTypes
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.CommandTypes
+- uid: MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers*
+  commentId: Overload:MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers
+  href: MicroPlumberd.Services.IServiceTypeRegister.html#MicroPlumberd_Services_IServiceTypeRegister_RegisterHandlers_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  name: RegisterHandlers
+  nameWithType: IServiceTypeRegister.RegisterHandlers
+  fullName: MicroPlumberd.Services.IServiceTypeRegister.RegisterHandlers
+- uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+  commentId: T:Microsoft.Extensions.DependencyInjection.IServiceCollection
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  name: IServiceCollection
+  nameWithType: IServiceCollection
+  fullName: Microsoft.Extensions.DependencyInjection.IServiceCollection
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection

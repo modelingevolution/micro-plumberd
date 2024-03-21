@@ -7,6 +7,8 @@ items:
   - MicroPlumberd.SourceGenerators.AggregateSourceGenerator
   - MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
   - MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+  - MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator
+  - MicroPlumberd.SourceGenerators.TypeSyntaxExtensions
   langs:
   - csharp
   - vb
@@ -35,3 +37,15 @@ references:
   name: EventHandlerSourceGenerator
   nameWithType: EventHandlerSourceGenerator
   fullName: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator
+  commentId: T:MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator
+  href: MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator.html
+  name: ProcessManagerSourceGenerator
+  nameWithType: ProcessManagerSourceGenerator
+  fullName: MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator
+- uid: MicroPlumberd.SourceGenerators.TypeSyntaxExtensions
+  commentId: T:MicroPlumberd.SourceGenerators.TypeSyntaxExtensions
+  href: MicroPlumberd.SourceGenerators.TypeSyntaxExtensions.html
+  name: TypeSyntaxExtensions
+  nameWithType: TypeSyntaxExtensions
+  fullName: MicroPlumberd.SourceGenerators.TypeSyntaxExtensions

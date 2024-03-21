@@ -1,0 +1,768 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  commentId: T:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  id: ConcurrentHashSet`1.Enumerator
+  parent: MicroPlumberd.Collections
+  children:
+  - MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.#ctor(MicroPlumberd.Collections.ConcurrentHashSet{`0})
+  - MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Current
+  - MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Dispose
+  - MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.MoveNext
+  - MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Reset
+  langs:
+  - csharp
+  - vb
+  name: ConcurrentHashSet<T>.Enumerator
+  nameWithType: ConcurrentHashSet<T>.Enumerator
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator
+  type: Struct
+  source:
+    remote:
+      path: src/MicroPlumberd/Collections/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Enumerator
+    path: src/MicroPlumberd/Collections/Class1.cs
+    startLine: 431
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd.Collections
+  summary: Represents an enumerator for <xref href="MicroPlumberd.Collections.ConcurrentHashSet%601" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: 'public struct ConcurrentHashSet<T>.Enumerator : IEnumerator<T>, IEnumerator, IDisposable'
+    content.vb: Public Structure ConcurrentHashSet(Of T).Enumerator Implements IEnumerator(Of T), IEnumerator, IDisposable
+  implements:
+  - System.Collections.Generic.IEnumerator{{T}}
+  - System.Collections.IEnumerator
+  - System.IDisposable
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator
+  name.vb: ConcurrentHashSet(Of T).Enumerator
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.#ctor(MicroPlumberd.Collections.ConcurrentHashSet{`0})
+  commentId: M:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.#ctor(MicroPlumberd.Collections.ConcurrentHashSet{`0})
+  id: '#ctor(MicroPlumberd.Collections.ConcurrentHashSet{`0})'
+  parent: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  langs:
+  - csharp
+  - vb
+  name: Enumerator(ConcurrentHashSet<T>)
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Enumerator(ConcurrentHashSet<T>)
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Enumerator(MicroPlumberd.Collections.ConcurrentHashSet<T>)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Collections/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Collections/Class1.cs
+    startLine: 454
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd.Collections
+  summary: Constructs an enumerator for <xref href="MicroPlumberd.Collections.ConcurrentHashSet%601" data-throw-if-not-resolved="false"></xref>.
+  example: []
+  syntax:
+    content: public Enumerator(ConcurrentHashSet<T> set)
+    parameters:
+    - id: set
+      type: MicroPlumberd.Collections.ConcurrentHashSet`1
+    content.vb: Public Sub New([set] As ConcurrentHashSet(Of T))
+  overload: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.#ctor*
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.New(ConcurrentHashSet(Of T))
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.New(MicroPlumberd.Collections.ConcurrentHashSet(Of T))
+  name.vb: New(ConcurrentHashSet(Of T))
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Current
+  commentId: P:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Current
+  id: Current
+  parent: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  langs:
+  - csharp
+  - vb
+  name: Current
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Current
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Current
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Collections/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Current
+    path: src/MicroPlumberd/Collections/Class1.cs
+    startLine: 468
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd.Collections
+  summary: Gets the element in the collection at the current position of the enumerator.
+  example: []
+  syntax:
+    content: public readonly T Current { get; }
+    parameters: []
+    return:
+      type: '{T}'
+      description: The element in the collection at the current position of the enumerator.
+    content.vb: Public Property Current As T
+  overload: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Current*
+  implements:
+  - System.Collections.Generic.IEnumerator{{T}}.Current
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.Current
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.Current
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Reset
+  commentId: M:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Reset
+  id: Reset
+  parent: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  langs:
+  - csharp
+  - vb
+  name: Reset()
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Reset()
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Reset()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Collections/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Reset
+    path: src/MicroPlumberd/Collections/Class1.cs
+    startLine: 475
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd.Collections
+  summary: Sets the enumerator to its initial position, which is before the first element in the collection.
+  example: []
+  syntax:
+    content: public void Reset()
+    content.vb: Public Sub Reset()
+  overload: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Reset*
+  implements:
+  - System.Collections.IEnumerator.Reset
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.Reset()
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.Reset()
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Dispose
+  commentId: M:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Dispose
+  id: Dispose
+  parent: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Dispose()
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Dispose()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Collections/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Dispose
+    path: src/MicroPlumberd/Collections/Class1.cs
+    startLine: 487
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd.Collections
+  summary: Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+  example: []
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose()
+  overload: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.Dispose()
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.Dispose()
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.MoveNext
+  commentId: M:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.MoveNext
+  id: MoveNext
+  parent: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  langs:
+  - csharp
+  - vb
+  name: MoveNext()
+  nameWithType: ConcurrentHashSet<T>.Enumerator.MoveNext()
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.MoveNext()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Collections/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: MoveNext
+    path: src/MicroPlumberd/Collections/Class1.cs
+    startLine: 493
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd.Collections
+  summary: Advances the enumerator to the next element of the collection.
+  example: []
+  syntax:
+    content: public bool MoveNext()
+    return:
+      type: System.Boolean
+      description: true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+    content.vb: Public Function MoveNext() As Boolean
+  overload: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.MoveNext*
+  implements:
+  - System.Collections.IEnumerator.MoveNext
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.MoveNext()
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.MoveNext()
+references:
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+  commentId: T:MicroPlumberd.Collections.ConcurrentHashSet`1
+  parent: MicroPlumberd.Collections
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  name: ConcurrentHashSet<T>
+  nameWithType: ConcurrentHashSet<T>
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>
+  nameWithType.vb: ConcurrentHashSet(Of T)
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T)
+  name.vb: ConcurrentHashSet(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Collections
+  commentId: N:MicroPlumberd.Collections
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Collections
+  nameWithType: MicroPlumberd.Collections
+  fullName: MicroPlumberd.Collections
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Collections
+    name: Collections
+    href: MicroPlumberd.Collections.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Collections
+    name: Collections
+    href: MicroPlumberd.Collections.html
+- uid: System.Collections.Generic.IEnumerator{{T}}
+  commentId: T:System.Collections.Generic.IEnumerator{`0}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerator`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.IEnumerator
+  commentId: T:System.Collections.IEnumerator
+  parent: System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator
+  name: IEnumerator
+  nameWithType: IEnumerator
+  fullName: System.Collections.IEnumerator
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IEnumerator`1
+  commentId: T:System.Collections.Generic.IEnumerator`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  name: IEnumerator<T>
+  nameWithType: IEnumerator<T>
+  fullName: System.Collections.Generic.IEnumerator<T>
+  nameWithType.vb: IEnumerator(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T)
+  name.vb: IEnumerator(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerator`1
+    name: IEnumerator
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: System.Collections
+  commentId: N:System.Collections
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections
+  nameWithType: System.Collections
+  fullName: System.Collections
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.#ctor*
+  commentId: Overload:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.#ctor
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html#MicroPlumberd_Collections_ConcurrentHashSet_1_Enumerator__ctor_MicroPlumberd_Collections_ConcurrentHashSet__0__
+  name: Enumerator
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Enumerator
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Enumerator
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.New
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.New
+  name.vb: New
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Current*
+  commentId: Overload:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Current
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html#MicroPlumberd_Collections_ConcurrentHashSet_1_Enumerator_Current
+  name: Current
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Current
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Current
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.Current
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.Current
+- uid: System.Collections.Generic.IEnumerator{{T}}.Current
+  commentId: P:System.Collections.Generic.IEnumerator{`0}.Current
+  parent: System.Collections.Generic.IEnumerator{{T}}
+  definition: System.Collections.Generic.IEnumerator`1.Current
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1.current
+  name: Current
+  nameWithType: IEnumerator<T>.Current
+  fullName: System.Collections.Generic.IEnumerator<T>.Current
+  nameWithType.vb: IEnumerator(Of T).Current
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T).Current
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Collections.Generic.IEnumerator`1.Current
+  commentId: P:System.Collections.Generic.IEnumerator`1.Current
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerator-1.current
+  name: Current
+  nameWithType: IEnumerator<T>.Current
+  fullName: System.Collections.Generic.IEnumerator<T>.Current
+  nameWithType.vb: IEnumerator(Of T).Current
+  fullName.vb: System.Collections.Generic.IEnumerator(Of T).Current
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Reset*
+  commentId: Overload:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Reset
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html#MicroPlumberd_Collections_ConcurrentHashSet_1_Enumerator_Reset
+  name: Reset
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Reset
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Reset
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.Reset
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.Reset
+- uid: System.Collections.IEnumerator.Reset
+  commentId: M:System.Collections.IEnumerator.Reset
+  parent: System.Collections.IEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.reset
+  name: Reset()
+  nameWithType: IEnumerator.Reset()
+  fullName: System.Collections.IEnumerator.Reset()
+  spec.csharp:
+  - uid: System.Collections.IEnumerator.Reset
+    name: Reset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.reset
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.IEnumerator.Reset
+    name: Reset
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.reset
+  - name: (
+  - name: )
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Dispose*
+  commentId: Overload:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.Dispose
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html#MicroPlumberd_Collections_ConcurrentHashSet_1_Enumerator_Dispose
+  name: Dispose
+  nameWithType: ConcurrentHashSet<T>.Enumerator.Dispose
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.Dispose
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.Dispose
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.idisposable.dispose
+  - name: (
+  - name: )
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.MoveNext*
+  commentId: Overload:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator.MoveNext
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html#MicroPlumberd_Collections_ConcurrentHashSet_1_Enumerator_MoveNext
+  name: MoveNext
+  nameWithType: ConcurrentHashSet<T>.Enumerator.MoveNext
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator.MoveNext
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator.MoveNext
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator.MoveNext
+- uid: System.Collections.IEnumerator.MoveNext
+  commentId: M:System.Collections.IEnumerator.MoveNext
+  parent: System.Collections.IEnumerator
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.movenext
+  name: MoveNext()
+  nameWithType: IEnumerator.MoveNext()
+  fullName: System.Collections.IEnumerator.MoveNext()
+  spec.csharp:
+  - uid: System.Collections.IEnumerator.MoveNext
+    name: MoveNext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.movenext
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Collections.IEnumerator.MoveNext
+    name: MoveNext
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.ienumerator.movenext
+  - name: (
+  - name: )
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

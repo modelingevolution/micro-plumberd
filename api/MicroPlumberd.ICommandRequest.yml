@@ -1,0 +1,133 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ICommandRequest
+  commentId: T:MicroPlumberd.ICommandRequest
+  id: ICommandRequest
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ICommandRequest.Command
+  - MicroPlumberd.ICommandRequest.RecipientId
+  langs:
+  - csharp
+  - vb
+  name: ICommandRequest
+  nameWithType: ICommandRequest
+  fullName: MicroPlumberd.ICommandRequest
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICommandRequest
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 19
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface ICommandRequest : IProcessAction'
+    content.vb: Public Interface ICommandRequest Inherits IProcessAction
+- uid: MicroPlumberd.ICommandRequest.RecipientId
+  commentId: P:MicroPlumberd.ICommandRequest.RecipientId
+  id: RecipientId
+  parent: MicroPlumberd.ICommandRequest
+  langs:
+  - csharp
+  - vb
+  name: RecipientId
+  nameWithType: ICommandRequest.RecipientId
+  fullName: MicroPlumberd.ICommandRequest.RecipientId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: RecipientId
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 21
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid RecipientId { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: ReadOnly Property RecipientId As Guid
+  overload: MicroPlumberd.ICommandRequest.RecipientId*
+- uid: MicroPlumberd.ICommandRequest.Command
+  commentId: P:MicroPlumberd.ICommandRequest.Command
+  id: Command
+  parent: MicroPlumberd.ICommandRequest
+  langs:
+  - csharp
+  - vb
+  name: Command
+  nameWithType: ICommandRequest.Command
+  fullName: MicroPlumberd.ICommandRequest.Command
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Command
+    path: src/MicroPlumberd.ProcessManager.Abstractions/ICommandRequest.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: object Command { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property Command As Object
+  overload: MicroPlumberd.ICommandRequest.Command*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ICommandRequest.RecipientId*
+  commentId: Overload:MicroPlumberd.ICommandRequest.RecipientId
+  href: MicroPlumberd.ICommandRequest.html#MicroPlumberd_ICommandRequest_RecipientId
+  name: RecipientId
+  nameWithType: ICommandRequest.RecipientId
+  fullName: MicroPlumberd.ICommandRequest.RecipientId
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.ICommandRequest.Command*
+  commentId: Overload:MicroPlumberd.ICommandRequest.Command
+  href: MicroPlumberd.ICommandRequest.html#MicroPlumberd_ICommandRequest_Command
+  name: Command
+  nameWithType: ICommandRequest.Command
+  fullName: MicroPlumberd.ICommandRequest.Command
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object

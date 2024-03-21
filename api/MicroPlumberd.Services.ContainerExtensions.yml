@@ -1,0 +1,567 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.ContainerExtensions
+  commentId: T:MicroPlumberd.Services.ContainerExtensions
+  id: ContainerExtensions
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  langs:
+  - csharp
+  - vb
+  name: ContainerExtensions
+  nameWithType: ContainerExtensions
+  fullName: MicroPlumberd.Services.ContainerExtensions
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ContainerExtensions
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static class ContainerExtensions
+    content.vb: Public Module ContainerExtensions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  id: AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action<IPlumberConfig>?)
+  nameWithType: ContainerExtensions.AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action<IPlumberConfig>?)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, EventStore.Client.EventStoreClientSettings?, System.Action<MicroPlumberd.IPlumberConfig>?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddPlumberd
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static IServiceCollection AddPlumberd(this IServiceCollection collection, EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
+    parameters:
+    - id: collection
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    - id: settings
+      type: EventStore.Client.EventStoreClientSettings
+    - id: configure
+      type: System.Action{MicroPlumberd.IPlumberConfig}
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddPlumberd(collection As IServiceCollection, settings As EventStoreClientSettings = Nothing, configure As Action(Of IPlumberConfig) = Nothing) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddPlumberd*
+  nameWithType.vb: ContainerExtensions.AddPlumberd(IServiceCollection, EventStoreClientSettings, Action(Of IPlumberConfig))
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, EventStore.Client.EventStoreClientSettings, System.Action(Of MicroPlumberd.IPlumberConfig))
+  name.vb: AddPlumberd(IServiceCollection, EventStoreClientSettings, Action(Of IPlumberConfig))
+- uid: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  id: AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddBackgroundServiceIfMissing<TService>(IServiceCollection)
+  nameWithType: ContainerExtensions.AddBackgroundServiceIfMissing<TService>(IServiceCollection)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing<TService>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddBackgroundServiceIfMissing
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: 'public static IServiceCollection AddBackgroundServiceIfMissing<TService>(this IServiceCollection services) where TService : BackgroundService'
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    typeParameters:
+    - id: TService
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddBackgroundServiceIfMissing(Of TService As BackgroundService)(services As IServiceCollection) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing*
+  nameWithType.vb: ContainerExtensions.AddBackgroundServiceIfMissing(Of TService)(IServiceCollection)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing(Of TService)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name.vb: AddBackgroundServiceIfMissing(Of TService)(IServiceCollection)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  id: AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddCommandHandler<TCommandHandler>(IServiceCollection)
+  nameWithType: ContainerExtensions.AddCommandHandler<TCommandHandler>(IServiceCollection)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler<TCommandHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddCommandHandler
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 38
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: 'public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler : ICommandHandler, IServiceTypeRegister'
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    typeParameters:
+    - id: TCommandHandler
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddCommandHandler(Of TCommandHandler As {ICommandHandler, IServiceTypeRegister})(services As IServiceCollection) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
+  nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name.vb: AddCommandHandler(Of TCommandHandler)(IServiceCollection)
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.ContainerExtensions.AddPlumberd*
+  commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddPlumberd
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddPlumberd_Microsoft_Extensions_DependencyInjection_IServiceCollection_EventStore_Client_EventStoreClientSettings_System_Action_MicroPlumberd_IPlumberConfig__
+  name: AddPlumberd
+  nameWithType: ContainerExtensions.AddPlumberd
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddPlumberd
+- uid: Microsoft.Extensions.DependencyInjection.IServiceCollection
+  commentId: T:Microsoft.Extensions.DependencyInjection.IServiceCollection
+  parent: Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection
+  name: IServiceCollection
+  nameWithType: IServiceCollection
+  fullName: Microsoft.Extensions.DependencyInjection.IServiceCollection
+- uid: EventStore.Client.EventStoreClientSettings
+  commentId: T:EventStore.Client.EventStoreClientSettings
+  parent: EventStore.Client
+  isExternal: true
+  name: EventStoreClientSettings
+  nameWithType: EventStoreClientSettings
+  fullName: EventStore.Client.EventStoreClientSettings
+- uid: System.Action{MicroPlumberd.IPlumberConfig}
+  commentId: T:System.Action{MicroPlumberd.IPlumberConfig}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<IPlumberConfig>
+  nameWithType: Action<IPlumberConfig>
+  fullName: System.Action<MicroPlumberd.IPlumberConfig>
+  nameWithType.vb: Action(Of IPlumberConfig)
+  fullName.vb: System.Action(Of MicroPlumberd.IPlumberConfig)
+  name.vb: Action(Of IPlumberConfig)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: MicroPlumberd.IPlumberConfig
+    name: IPlumberConfig
+    href: MicroPlumberd.IPlumberConfig.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.IPlumberConfig
+    name: IPlumberConfig
+    href: MicroPlumberd.IPlumberConfig.html
+  - name: )
+- uid: Microsoft.Extensions.DependencyInjection
+  commentId: N:Microsoft.Extensions.DependencyInjection
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.DependencyInjection
+  nameWithType: Microsoft.Extensions.DependencyInjection
+  fullName: Microsoft.Extensions.DependencyInjection
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.DependencyInjection
+    name: DependencyInjection
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection
+- uid: EventStore.Client
+  commentId: N:EventStore.Client
+  isExternal: true
+  name: EventStore.Client
+  nameWithType: EventStore.Client
+  fullName: EventStore.Client
+  spec.csharp:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+  spec.vb:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing*
+  commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddBackgroundServiceIfMissing__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  name: AddBackgroundServiceIfMissing
+  nameWithType: ContainerExtensions.AddBackgroundServiceIfMissing
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing
+- uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
+  commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  name: AddCommandHandler
+  nameWithType: ContainerExtensions.AddCommandHandler
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler

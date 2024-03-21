@@ -6,8 +6,6 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.IAggregate.AckCommitted
-  - MicroPlumberd.IAggregate.Age
-  - MicroPlumberd.IAggregate.Id
   - MicroPlumberd.IAggregate.PendingEvents
   - MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
   langs:
@@ -24,71 +22,16 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 6
+    startLine: 13
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public interface IAggregate
-    content.vb: Public Interface IAggregate
-- uid: MicroPlumberd.IAggregate.Id
-  commentId: P:MicroPlumberd.IAggregate.Id
-  id: Id
-  parent: MicroPlumberd.IAggregate
-  langs:
-  - csharp
-  - vb
-  name: Id
-  nameWithType: IAggregate.Id
-  fullName: MicroPlumberd.IAggregate.Id
-  type: Property
-  source:
-    remote:
-      path: src/MicroPlumberd/Abstractions/IAggregate.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Id
-    path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 8
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  syntax:
-    content: Guid Id { get; }
-    parameters: []
-    return:
-      type: System.Guid
-    content.vb: ReadOnly Property Id As Guid
-  overload: MicroPlumberd.IAggregate.Id*
-- uid: MicroPlumberd.IAggregate.Age
-  commentId: P:MicroPlumberd.IAggregate.Age
-  id: Age
-  parent: MicroPlumberd.IAggregate
-  langs:
-  - csharp
-  - vb
-  name: Age
-  nameWithType: IAggregate.Age
-  fullName: MicroPlumberd.IAggregate.Age
-  type: Property
-  source:
-    remote:
-      path: src/MicroPlumberd/Abstractions/IAggregate.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Age
-    path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 9
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  syntax:
-    content: long Age { get; }
-    parameters: []
-    return:
-      type: System.Int64
-    content.vb: ReadOnly Property Age As Long
-  overload: MicroPlumberd.IAggregate.Age*
+    content: 'public interface IAggregate : IId, IVersioned'
+    content.vb: Public Interface IAggregate Inherits IId, IVersioned
+  inheritedMembers:
+  - MicroPlumberd.IId.Id
+  - MicroPlumberd.IVersioned.Version
 - uid: MicroPlumberd.IAggregate.PendingEvents
   commentId: P:MicroPlumberd.IAggregate.PendingEvents
   id: PendingEvents
@@ -107,7 +50,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 10
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -136,7 +79,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 11
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -170,7 +113,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 12
+    startLine: 17
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -185,44 +128,34 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: MicroPlumberd.IAggregate.Id*
-  commentId: Overload:MicroPlumberd.IAggregate.Id
-  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Id
+- uid: MicroPlumberd.IId.Id
+  commentId: P:MicroPlumberd.IId.Id
+  parent: MicroPlumberd.IId
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
   name: Id
-  nameWithType: IAggregate.Id
-  fullName: MicroPlumberd.IAggregate.Id
-- uid: System.Guid
-  commentId: T:System.Guid
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
-- uid: System
-  commentId: N:System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System
-  nameWithType: System
-  fullName: System
-- uid: MicroPlumberd.IAggregate.Age*
-  commentId: Overload:MicroPlumberd.IAggregate.Age
-  href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_Age
-  name: Age
-  nameWithType: IAggregate.Age
-  fullName: MicroPlumberd.IAggregate.Age
-- uid: System.Int64
-  commentId: T:System.Int64
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int64
-  name: long
-  nameWithType: long
-  fullName: long
-  nameWithType.vb: Long
-  fullName.vb: Long
-  name.vb: Long
+  nameWithType: IId.Id
+  fullName: MicroPlumberd.IId.Id
+- uid: MicroPlumberd.IVersioned.Version
+  commentId: P:MicroPlumberd.IVersioned.Version
+  parent: MicroPlumberd.IVersioned
+  href: MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: MicroPlumberd.IVersioned.Version
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd.IAggregate.PendingEvents*
   commentId: Overload:MicroPlumberd.IAggregate.PendingEvents
   href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_PendingEvents

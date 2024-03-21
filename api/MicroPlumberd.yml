@@ -6,22 +6,49 @@ items:
   children:
   - MicroPlumberd.AggregateAttribute
   - MicroPlumberd.AggregateBase`1
+  - MicroPlumberd.AsyncLazy`1
+  - MicroPlumberd.BuildInvocationContext
+  - MicroPlumberd.CommandEnqueued
+  - MicroPlumberd.CommandEnqueued`1
+  - MicroPlumberd.CommandFaultException
+  - MicroPlumberd.CommandFaultException`1
+  - MicroPlumberd.CommandInvocationFailed
+  - MicroPlumberd.CommandRequest
+  - MicroPlumberd.CommandRequest`1
+  - MicroPlumberd.ContainerExtensions
+  - MicroPlumberd.EventDispatcher
   - MicroPlumberd.EventHandlerAttribute
   - MicroPlumberd.EventIdConvention
   - MicroPlumberd.EventNameConvention
   - MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  - MicroPlumberd.ExecutionContext
   - MicroPlumberd.GroupNameModelConvention
   - MicroPlumberd.IAggregate
   - MicroPlumberd.IAggregate`1
+  - MicroPlumberd.ICommandBus
+  - MicroPlumberd.ICommandEnqueued
+  - MicroPlumberd.ICommandRequest
+  - MicroPlumberd.ICommandRequest`1
   - MicroPlumberd.IConventions
+  - MicroPlumberd.IEventHandler
+  - MicroPlumberd.IEventRecord
+  - MicroPlumberd.IEventRecord`1
+  - MicroPlumberd.IExtension
+  - MicroPlumberd.IId
+  - MicroPlumberd.IIdAware
   - MicroPlumberd.IObjectSerializer
   - MicroPlumberd.IPlumber
   - MicroPlumberd.IPlumberConfig
+  - MicroPlumberd.IProcessAction
+  - MicroPlumberd.IProcessManager
   - MicroPlumberd.IProjectionRegister
   - MicroPlumberd.IReadModel
+  - MicroPlumberd.IStateChangeAction
   - MicroPlumberd.ISubscriptionRunner
   - MicroPlumberd.ISubscriptionSet
   - MicroPlumberd.ITypeRegister
+  - MicroPlumberd.IVersionAware
+  - MicroPlumberd.IVersioned
   - MicroPlumberd.InvocationContext
   - MicroPlumberd.InvocationScope
   - MicroPlumberd.Metadata
@@ -30,8 +57,14 @@ items:
   - MicroPlumberd.OutputStreamAttribute
   - MicroPlumberd.OutputStreamModelConvention
   - MicroPlumberd.Plumber
+  - MicroPlumberd.ProcessManagerAttribute
+  - MicroPlumberd.ProcessManagerBase
+  - MicroPlumberd.RequestInvokerExtensions
   - MicroPlumberd.StandardMetadataEnricherTypes
+  - MicroPlumberd.StateChangeAction`1
   - MicroPlumberd.SteamNameConvention
+  - MicroPlumberd.TypeEventConverter
+  - MicroPlumberd.TypeExtensions
   langs:
   - csharp
   - vb
@@ -60,8 +93,16 @@ references:
   name: EventHandlerAttribute
   nameWithType: EventHandlerAttribute
   fullName: MicroPlumberd.EventHandlerAttribute
+- uid: MicroPlumberd.TypeEventConverter
+  commentId: T:MicroPlumberd.TypeEventConverter
+  parent: MicroPlumberd
+  href: MicroPlumberd.TypeEventConverter.html
+  name: TypeEventConverter
+  nameWithType: TypeEventConverter
+  fullName: MicroPlumberd.TypeEventConverter
 - uid: MicroPlumberd.ITypeRegister
   commentId: T:MicroPlumberd.ITypeRegister
+  parent: MicroPlumberd
   href: MicroPlumberd.ITypeRegister.html
   name: ITypeRegister
   nameWithType: ITypeRegister
@@ -73,6 +114,34 @@ references:
   name: IAggregate
   nameWithType: IAggregate
   fullName: MicroPlumberd.IAggregate
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
+- uid: MicroPlumberd.IVersionAware
+  commentId: T:MicroPlumberd.IVersionAware
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersionAware.html
+  name: IVersionAware
+  nameWithType: IVersionAware
+  fullName: MicroPlumberd.IVersionAware
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IIdAware
+  commentId: T:MicroPlumberd.IIdAware
+  parent: MicroPlumberd
+  href: MicroPlumberd.IIdAware.html
+  name: IIdAware
+  nameWithType: IIdAware
+  fullName: MicroPlumberd.IIdAware
 - uid: MicroPlumberd.IAggregate`1
   commentId: T:MicroPlumberd.IAggregate`1
   href: MicroPlumberd.IAggregate-1.html
@@ -112,6 +181,19 @@ references:
   name: IPlumber
   nameWithType: IPlumber
   fullName: MicroPlumberd.IPlumber
+- uid: MicroPlumberd.EventDispatcher
+  commentId: T:MicroPlumberd.EventDispatcher
+  href: MicroPlumberd.EventDispatcher.html
+  name: EventDispatcher
+  nameWithType: EventDispatcher
+  fullName: MicroPlumberd.EventDispatcher
+- uid: MicroPlumberd.IEventHandler
+  commentId: T:MicroPlumberd.IEventHandler
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventHandler.html
+  name: IEventHandler
+  nameWithType: IEventHandler
+  fullName: MicroPlumberd.IEventHandler
 - uid: MicroPlumberd.IReadModel
   commentId: T:MicroPlumberd.IReadModel
   href: MicroPlumberd.IReadModel.html
@@ -157,6 +239,31 @@ references:
   - name: " "
   - name: TState
   - name: )
+- uid: MicroPlumberd.AsyncLazy`1
+  commentId: T:MicroPlumberd.AsyncLazy`1
+  href: MicroPlumberd.AsyncLazy-1.html
+  name: AsyncLazy<T>
+  nameWithType: AsyncLazy<T>
+  fullName: MicroPlumberd.AsyncLazy<T>
+  nameWithType.vb: AsyncLazy(Of T)
+  fullName.vb: MicroPlumberd.AsyncLazy(Of T)
+  name.vb: AsyncLazy(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.AsyncLazy`1
+    name: AsyncLazy
+    href: MicroPlumberd.AsyncLazy-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.AsyncLazy`1
+    name: AsyncLazy
+    href: MicroPlumberd.AsyncLazy-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.SteamNameConvention
   commentId: T:MicroPlumberd.SteamNameConvention
   parent: MicroPlumberd
@@ -178,6 +285,13 @@ references:
   name: MetadataConvention
   nameWithType: MetadataConvention
   fullName: MicroPlumberd.MetadataConvention
+- uid: MicroPlumberd.BuildInvocationContext
+  commentId: T:MicroPlumberd.BuildInvocationContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.BuildInvocationContext.html
+  name: BuildInvocationContext
+  nameWithType: BuildInvocationContext
+  fullName: MicroPlumberd.BuildInvocationContext
 - uid: MicroPlumberd.EventIdConvention
   commentId: T:MicroPlumberd.EventIdConvention
   parent: MicroPlumberd
@@ -206,6 +320,13 @@ references:
   name: IConventions
   nameWithType: IConventions
   fullName: MicroPlumberd.IConventions
+- uid: MicroPlumberd.IExtension
+  commentId: T:MicroPlumberd.IExtension
+  parent: MicroPlumberd
+  href: MicroPlumberd.IExtension.html
+  name: IExtension
+  nameWithType: IExtension
+  fullName: MicroPlumberd.IExtension
 - uid: MicroPlumberd.StandardMetadataEnricherTypes
   commentId: T:MicroPlumberd.StandardMetadataEnricherTypes
   parent: MicroPlumberd
@@ -219,6 +340,12 @@ references:
   name: InvocationScope
   nameWithType: InvocationScope
   fullName: MicroPlumberd.InvocationScope
+- uid: MicroPlumberd.TypeExtensions
+  commentId: T:MicroPlumberd.TypeExtensions
+  href: MicroPlumberd.TypeExtensions.html
+  name: TypeExtensions
+  nameWithType: TypeExtensions
+  fullName: MicroPlumberd.TypeExtensions
 - uid: MicroPlumberd.MetadataExtensions
   commentId: T:MicroPlumberd.MetadataExtensions
   parent: MicroPlumberd
@@ -241,10 +368,43 @@ references:
   fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
 - uid: MicroPlumberd.IPlumberConfig
   commentId: T:MicroPlumberd.IPlumberConfig
+  parent: MicroPlumberd
   href: MicroPlumberd.IPlumberConfig.html
   name: IPlumberConfig
   nameWithType: IPlumberConfig
   fullName: MicroPlumberd.IPlumberConfig
+- uid: MicroPlumberd.IEventRecord
+  commentId: T:MicroPlumberd.IEventRecord
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventRecord.html
+  name: IEventRecord
+  nameWithType: IEventRecord
+  fullName: MicroPlumberd.IEventRecord
+- uid: MicroPlumberd.IEventRecord`1
+  commentId: T:MicroPlumberd.IEventRecord`1
+  href: MicroPlumberd.IEventRecord-1.html
+  name: IEventRecord<TEvent>
+  nameWithType: IEventRecord<TEvent>
+  fullName: MicroPlumberd.IEventRecord<TEvent>
+  nameWithType.vb: IEventRecord(Of TEvent)
+  fullName.vb: MicroPlumberd.IEventRecord(Of TEvent)
+  name.vb: IEventRecord(Of TEvent)
+  spec.csharp:
+  - uid: MicroPlumberd.IEventRecord`1
+    name: IEventRecord
+    href: MicroPlumberd.IEventRecord-1.html
+  - name: <
+  - name: TEvent
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IEventRecord`1
+    name: IEventRecord
+    href: MicroPlumberd.IEventRecord-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TEvent
+  - name: )
 - uid: MicroPlumberd.Plumber
   commentId: T:MicroPlumberd.Plumber
   href: MicroPlumberd.Plumber.html
@@ -265,6 +425,228 @@ references:
   name: Metadata
   nameWithType: Metadata
   fullName: MicroPlumberd.Metadata
+- uid: MicroPlumberd.CommandFaultException`1
+  commentId: T:MicroPlumberd.CommandFaultException`1
+  href: MicroPlumberd.CommandFaultException-1.html
+  name: CommandFaultException<TData>
+  nameWithType: CommandFaultException<TData>
+  fullName: MicroPlumberd.CommandFaultException<TData>
+  nameWithType.vb: CommandFaultException(Of TData)
+  fullName.vb: MicroPlumberd.CommandFaultException(Of TData)
+  name.vb: CommandFaultException(Of TData)
+  spec.csharp:
+  - uid: MicroPlumberd.CommandFaultException`1
+    name: CommandFaultException
+    href: MicroPlumberd.CommandFaultException-1.html
+  - name: <
+  - name: TData
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.CommandFaultException`1
+    name: CommandFaultException
+    href: MicroPlumberd.CommandFaultException-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TData
+  - name: )
+- uid: MicroPlumberd.CommandFaultException
+  commentId: T:MicroPlumberd.CommandFaultException
+  parent: MicroPlumberd
+  href: MicroPlumberd.CommandFaultException.html
+  name: CommandFaultException
+  nameWithType: CommandFaultException
+  fullName: MicroPlumberd.CommandFaultException
+- uid: MicroPlumberd.ICommandBus
+  commentId: T:MicroPlumberd.ICommandBus
+  parent: MicroPlumberd
+  href: MicroPlumberd.ICommandBus.html
+  name: ICommandBus
+  nameWithType: ICommandBus
+  fullName: MicroPlumberd.ICommandBus
+- uid: MicroPlumberd.RequestInvokerExtensions
+  commentId: T:MicroPlumberd.RequestInvokerExtensions
+  href: MicroPlumberd.RequestInvokerExtensions.html
+  name: RequestInvokerExtensions
+  nameWithType: RequestInvokerExtensions
+  fullName: MicroPlumberd.RequestInvokerExtensions
+- uid: MicroPlumberd.CommandEnqueued
+  commentId: T:MicroPlumberd.CommandEnqueued
+  href: MicroPlumberd.CommandEnqueued.html
+  name: CommandEnqueued
+  nameWithType: CommandEnqueued
+  fullName: MicroPlumberd.CommandEnqueued
+- uid: MicroPlumberd.CommandEnqueued`1
+  commentId: T:MicroPlumberd.CommandEnqueued`1
+  href: MicroPlumberd.CommandEnqueued-1.html
+  name: CommandEnqueued<TCommand>
+  nameWithType: CommandEnqueued<TCommand>
+  fullName: MicroPlumberd.CommandEnqueued<TCommand>
+  nameWithType.vb: CommandEnqueued(Of TCommand)
+  fullName.vb: MicroPlumberd.CommandEnqueued(Of TCommand)
+  name.vb: CommandEnqueued(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued
+    href: MicroPlumberd.CommandEnqueued-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued
+    href: MicroPlumberd.CommandEnqueued-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.CommandInvocationFailed
+  commentId: T:MicroPlumberd.CommandInvocationFailed
+  href: MicroPlumberd.CommandInvocationFailed.html
+  name: CommandInvocationFailed
+  nameWithType: CommandInvocationFailed
+  fullName: MicroPlumberd.CommandInvocationFailed
+- uid: MicroPlumberd.CommandRequest
+  commentId: T:MicroPlumberd.CommandRequest
+  href: MicroPlumberd.CommandRequest.html
+  name: CommandRequest
+  nameWithType: CommandRequest
+  fullName: MicroPlumberd.CommandRequest
+- uid: MicroPlumberd.CommandRequest`1
+  commentId: T:MicroPlumberd.CommandRequest`1
+  href: MicroPlumberd.CommandRequest-1.html
+  name: CommandRequest<TCommand>
+  nameWithType: CommandRequest<TCommand>
+  fullName: MicroPlumberd.CommandRequest<TCommand>
+  nameWithType.vb: CommandRequest(Of TCommand)
+  fullName.vb: MicroPlumberd.CommandRequest(Of TCommand)
+  name.vb: CommandRequest(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.CommandRequest`1
+    name: CommandRequest
+    href: MicroPlumberd.CommandRequest-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.CommandRequest`1
+    name: CommandRequest
+    href: MicroPlumberd.CommandRequest-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.ExecutionContext
+  commentId: T:MicroPlumberd.ExecutionContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.ExecutionContext.html
+  name: ExecutionContext
+  nameWithType: ExecutionContext
+  fullName: MicroPlumberd.ExecutionContext
+- uid: MicroPlumberd.ICommandEnqueued
+  commentId: T:MicroPlumberd.ICommandEnqueued
+  parent: MicroPlumberd
+  href: MicroPlumberd.ICommandEnqueued.html
+  name: ICommandEnqueued
+  nameWithType: ICommandEnqueued
+  fullName: MicroPlumberd.ICommandEnqueued
+- uid: MicroPlumberd.IProcessAction
+  commentId: T:MicroPlumberd.IProcessAction
+  parent: MicroPlumberd
+  href: MicroPlumberd.IProcessAction.html
+  name: IProcessAction
+  nameWithType: IProcessAction
+  fullName: MicroPlumberd.IProcessAction
+- uid: MicroPlumberd.StateChangeAction`1
+  commentId: T:MicroPlumberd.StateChangeAction`1
+  href: MicroPlumberd.StateChangeAction-1.html
+  name: StateChangeAction<TOwner>
+  nameWithType: StateChangeAction<TOwner>
+  fullName: MicroPlumberd.StateChangeAction<TOwner>
+  nameWithType.vb: StateChangeAction(Of TOwner)
+  fullName.vb: MicroPlumberd.StateChangeAction(Of TOwner)
+  name.vb: StateChangeAction(Of TOwner)
+  spec.csharp:
+  - uid: MicroPlumberd.StateChangeAction`1
+    name: StateChangeAction
+    href: MicroPlumberd.StateChangeAction-1.html
+  - name: <
+  - name: TOwner
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.StateChangeAction`1
+    name: StateChangeAction
+    href: MicroPlumberd.StateChangeAction-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOwner
+  - name: )
+- uid: MicroPlumberd.IStateChangeAction
+  commentId: T:MicroPlumberd.IStateChangeAction
+  parent: MicroPlumberd
+  href: MicroPlumberd.IStateChangeAction.html
+  name: IStateChangeAction
+  nameWithType: IStateChangeAction
+  fullName: MicroPlumberd.IStateChangeAction
+- uid: MicroPlumberd.ICommandRequest
+  commentId: T:MicroPlumberd.ICommandRequest
+  parent: MicroPlumberd
+  href: MicroPlumberd.ICommandRequest.html
+  name: ICommandRequest
+  nameWithType: ICommandRequest
+  fullName: MicroPlumberd.ICommandRequest
+- uid: MicroPlumberd.ICommandRequest`1
+  commentId: T:MicroPlumberd.ICommandRequest`1
+  href: MicroPlumberd.ICommandRequest-1.html
+  name: ICommandRequest<TCommand>
+  nameWithType: ICommandRequest<TCommand>
+  fullName: MicroPlumberd.ICommandRequest<TCommand>
+  nameWithType.vb: ICommandRequest(Of TCommand)
+  fullName.vb: MicroPlumberd.ICommandRequest(Of TCommand)
+  name.vb: ICommandRequest(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.ICommandRequest`1
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.IProcessManager
+  commentId: T:MicroPlumberd.IProcessManager
+  href: MicroPlumberd.IProcessManager.html
+  name: IProcessManager
+  nameWithType: IProcessManager
+  fullName: MicroPlumberd.IProcessManager
+- uid: MicroPlumberd.ProcessManagerBase
+  commentId: T:MicroPlumberd.ProcessManagerBase
+  href: MicroPlumberd.ProcessManagerBase.html
+  name: ProcessManagerBase
+  nameWithType: ProcessManagerBase
+  fullName: MicroPlumberd.ProcessManagerBase
+- uid: MicroPlumberd.ProcessManagerAttribute
+  commentId: T:MicroPlumberd.ProcessManagerAttribute
+  href: MicroPlumberd.ProcessManagerAttribute.html
+  name: ProcessManagerAttribute
+  nameWithType: ProcessManagerAttribute
+  fullName: MicroPlumberd.ProcessManagerAttribute
+- uid: MicroPlumberd.ContainerExtensions
+  commentId: T:MicroPlumberd.ContainerExtensions
+  href: MicroPlumberd.ContainerExtensions.html
+  name: ContainerExtensions
+  nameWithType: ContainerExtensions
+  fullName: MicroPlumberd.ContainerExtensions
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html

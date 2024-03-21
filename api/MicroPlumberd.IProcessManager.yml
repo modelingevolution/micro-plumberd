@@ -1,0 +1,549 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IProcessManager
+  commentId: T:MicroPlumberd.IProcessManager
+  id: IProcessManager
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IProcessManager.CommandTypes
+  - MicroPlumberd.IProcessManager.HandleError(MicroPlumberd.ExecutionContext)
+  - MicroPlumberd.IProcessManager.StartEvent
+  - MicroPlumberd.IProcessManager.StartWhen(MicroPlumberd.Metadata,System.Object)
+  - MicroPlumberd.IProcessManager.When(MicroPlumberd.Metadata,System.Object)
+  langs:
+  - csharp
+  - vb
+  name: IProcessManager
+  nameWithType: IProcessManager
+  fullName: MicroPlumberd.IProcessManager
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IProcessManager
+    path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IProcessManager : IEventHandler, IVersioned, IId'
+    content.vb: Public Interface IProcessManager Inherits IEventHandler, IVersioned, IId
+  inheritedMembers:
+  - MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+  - MicroPlumberd.IVersioned.Version
+  - MicroPlumberd.IId.Id
+- uid: MicroPlumberd.IProcessManager.StartEvent
+  commentId: P:MicroPlumberd.IProcessManager.StartEvent
+  id: StartEvent
+  parent: MicroPlumberd.IProcessManager
+  langs:
+  - csharp
+  - vb
+  name: StartEvent
+  nameWithType: IProcessManager.StartEvent
+  fullName: MicroPlumberd.IProcessManager.StartEvent
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StartEvent
+    path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public static abstract Type StartEvent { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public Shared MustInherit ReadOnly Property StartEvent As Type
+  overload: MicroPlumberd.IProcessManager.StartEvent*
+- uid: MicroPlumberd.IProcessManager.CommandTypes
+  commentId: P:MicroPlumberd.IProcessManager.CommandTypes
+  id: CommandTypes
+  parent: MicroPlumberd.IProcessManager
+  langs:
+  - csharp
+  - vb
+  name: CommandTypes
+  nameWithType: IProcessManager.CommandTypes
+  fullName: MicroPlumberd.IProcessManager.CommandTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandTypes
+    path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: public static abstract IEnumerable<Type> CommandTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Public Shared MustInherit ReadOnly Property CommandTypes As IEnumerable(Of Type)
+  overload: MicroPlumberd.IProcessManager.CommandTypes*
+- uid: MicroPlumberd.IProcessManager.HandleError(MicroPlumberd.ExecutionContext)
+  commentId: M:MicroPlumberd.IProcessManager.HandleError(MicroPlumberd.ExecutionContext)
+  id: HandleError(MicroPlumberd.ExecutionContext)
+  parent: MicroPlumberd.IProcessManager
+  langs:
+  - csharp
+  - vb
+  name: HandleError(ExecutionContext)
+  nameWithType: IProcessManager.HandleError(ExecutionContext)
+  fullName: MicroPlumberd.IProcessManager.HandleError(MicroPlumberd.ExecutionContext)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: HandleError
+    path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Task<ICommandRequest?> HandleError(ExecutionContext executionContext)
+    parameters:
+    - id: executionContext
+      type: MicroPlumberd.ExecutionContext
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.ICommandRequest}
+    content.vb: Function HandleError(executionContext As ExecutionContext) As Task(Of ICommandRequest)
+  overload: MicroPlumberd.IProcessManager.HandleError*
+- uid: MicroPlumberd.IProcessManager.When(MicroPlumberd.Metadata,System.Object)
+  commentId: M:MicroPlumberd.IProcessManager.When(MicroPlumberd.Metadata,System.Object)
+  id: When(MicroPlumberd.Metadata,System.Object)
+  parent: MicroPlumberd.IProcessManager
+  langs:
+  - csharp
+  - vb
+  name: When(Metadata, object)
+  nameWithType: IProcessManager.When(Metadata, object)
+  fullName: MicroPlumberd.IProcessManager.When(MicroPlumberd.Metadata, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: When
+    path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Task<ICommandRequest?> When(Metadata m, object evt)
+    parameters:
+    - id: m
+      type: MicroPlumberd.Metadata
+    - id: evt
+      type: System.Object
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.ICommandRequest}
+    content.vb: Function [When](m As Metadata, evt As Object) As Task(Of ICommandRequest)
+  overload: MicroPlumberd.IProcessManager.When*
+  nameWithType.vb: IProcessManager.When(Metadata, Object)
+  fullName.vb: MicroPlumberd.IProcessManager.When(MicroPlumberd.Metadata, Object)
+  name.vb: When(Metadata, Object)
+- uid: MicroPlumberd.IProcessManager.StartWhen(MicroPlumberd.Metadata,System.Object)
+  commentId: M:MicroPlumberd.IProcessManager.StartWhen(MicroPlumberd.Metadata,System.Object)
+  id: StartWhen(MicroPlumberd.Metadata,System.Object)
+  parent: MicroPlumberd.IProcessManager
+  langs:
+  - csharp
+  - vb
+  name: StartWhen(Metadata, object)
+  nameWithType: IProcessManager.StartWhen(Metadata, object)
+  fullName: MicroPlumberd.IProcessManager.StartWhen(MicroPlumberd.Metadata, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StartWhen
+    path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
+    startLine: 12
+  assemblies:
+  - MicroPlumberd.ProcessManager.Abstractions
+  namespace: MicroPlumberd
+  syntax:
+    content: Task<ICommandRequest> StartWhen(Metadata m, object evt)
+    parameters:
+    - id: m
+      type: MicroPlumberd.Metadata
+    - id: evt
+      type: System.Object
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.ICommandRequest}
+    content.vb: Function StartWhen(m As Metadata, evt As Object) As Task(Of ICommandRequest)
+  overload: MicroPlumberd.IProcessManager.StartWhen*
+  nameWithType.vb: IProcessManager.StartWhen(Metadata, Object)
+  fullName.vb: MicroPlumberd.IProcessManager.StartWhen(MicroPlumberd.Metadata, Object)
+  name.vb: StartWhen(Metadata, Object)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+  commentId: M:MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+  parent: MicroPlumberd.IEventHandler
+  isExternal: true
+  href: MicroPlumberd.IEventHandler.html#MicroPlumberd_IEventHandler_Handle_MicroPlumberd_Metadata_System_Object_
+  name: Handle(Metadata, object)
+  nameWithType: IEventHandler.Handle(Metadata, object)
+  fullName: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata, object)
+  nameWithType.vb: IEventHandler.Handle(Metadata, Object)
+  fullName.vb: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata, Object)
+  name.vb: Handle(Metadata, Object)
+  spec.csharp:
+  - uid: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+    name: Handle
+    href: MicroPlumberd.IEventHandler.html#MicroPlumberd_IEventHandler_Handle_MicroPlumberd_Metadata_System_Object_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+    name: Handle
+    href: MicroPlumberd.IEventHandler.html#MicroPlumberd_IEventHandler_Handle_MicroPlumberd_Metadata_System_Object_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: MicroPlumberd.IVersioned.Version
+  commentId: P:MicroPlumberd.IVersioned.Version
+  parent: MicroPlumberd.IVersioned
+  href: MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: MicroPlumberd.IVersioned.Version
+- uid: MicroPlumberd.IId.Id
+  commentId: P:MicroPlumberd.IId.Id
+  parent: MicroPlumberd.IId
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
+  name: Id
+  nameWithType: IId.Id
+  fullName: MicroPlumberd.IId.Id
+- uid: MicroPlumberd.IEventHandler
+  commentId: T:MicroPlumberd.IEventHandler
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventHandler.html
+  name: IEventHandler
+  nameWithType: IEventHandler
+  fullName: MicroPlumberd.IEventHandler
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IProcessManager.StartEvent*
+  commentId: Overload:MicroPlumberd.IProcessManager.StartEvent
+  href: MicroPlumberd.IProcessManager.html#MicroPlumberd_IProcessManager_StartEvent
+  name: StartEvent
+  nameWithType: IProcessManager.StartEvent
+  fullName: MicroPlumberd.IProcessManager.StartEvent
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IProcessManager.CommandTypes*
+  commentId: Overload:MicroPlumberd.IProcessManager.CommandTypes
+  href: MicroPlumberd.IProcessManager.html#MicroPlumberd_IProcessManager_CommandTypes
+  name: CommandTypes
+  nameWithType: IProcessManager.CommandTypes
+  fullName: MicroPlumberd.IProcessManager.CommandTypes
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MicroPlumberd.IProcessManager.HandleError*
+  commentId: Overload:MicroPlumberd.IProcessManager.HandleError
+  href: MicroPlumberd.IProcessManager.html#MicroPlumberd_IProcessManager_HandleError_MicroPlumberd_ExecutionContext_
+  name: HandleError
+  nameWithType: IProcessManager.HandleError
+  fullName: MicroPlumberd.IProcessManager.HandleError
+- uid: MicroPlumberd.ExecutionContext
+  commentId: T:MicroPlumberd.ExecutionContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.ExecutionContext.html
+  name: ExecutionContext
+  nameWithType: ExecutionContext
+  fullName: MicroPlumberd.ExecutionContext
+- uid: System.Threading.Tasks.Task{MicroPlumberd.ICommandRequest}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.ICommandRequest}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ICommandRequest>
+  nameWithType: Task<ICommandRequest>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.ICommandRequest>
+  nameWithType.vb: Task(Of ICommandRequest)
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.ICommandRequest)
+  name.vb: Task(Of ICommandRequest)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.ICommandRequest
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.ICommandRequest
+    name: ICommandRequest
+    href: MicroPlumberd.ICommandRequest.html
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.IProcessManager.When*
+  commentId: Overload:MicroPlumberd.IProcessManager.When
+  href: MicroPlumberd.IProcessManager.html#MicroPlumberd_IProcessManager_When_MicroPlumberd_Metadata_System_Object_
+  name: When
+  nameWithType: IProcessManager.When
+  fullName: MicroPlumberd.IProcessManager.When
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.IProcessManager.StartWhen*
+  commentId: Overload:MicroPlumberd.IProcessManager.StartWhen
+  href: MicroPlumberd.IProcessManager.html#MicroPlumberd_IProcessManager_StartWhen_MicroPlumberd_Metadata_System_Object_
+  name: StartWhen
+  nameWithType: IProcessManager.StartWhen
+  fullName: MicroPlumberd.IProcessManager.StartWhen

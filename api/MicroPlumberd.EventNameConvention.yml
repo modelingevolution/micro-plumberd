@@ -19,20 +19,20 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 10
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public delegate string EventNameConvention(IAggregate? aggregate, object evt)
+    content: public delegate string EventNameConvention(object? aggregate, object evt)
     parameters:
     - id: aggregate
-      type: MicroPlumberd.IAggregate
+      type: System.Object
     - id: evt
       type: System.Object
     return:
       type: System.String
-    content.vb: Public Delegate Function EventNameConvention(aggregate As IAggregate, evt As Object) As String
+    content.vb: Public Delegate Function EventNameConvention(aggregate As Object, evt As Object) As String
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -40,13 +40,6 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: MicroPlumberd.IAggregate
-  commentId: T:MicroPlumberd.IAggregate
-  parent: MicroPlumberd
-  href: MicroPlumberd.IAggregate.html
-  name: IAggregate
-  nameWithType: IAggregate
-  fullName: MicroPlumberd.IAggregate
 - uid: System.Object
   commentId: T:System.Object
   parent: System

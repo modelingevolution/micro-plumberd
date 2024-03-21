@@ -1,0 +1,84 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IVersionAware
+  commentId: T:MicroPlumberd.IVersionAware
+  id: IVersionAware
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IVersionAware.Increase
+  langs:
+  - csharp
+  - vb
+  name: IVersionAware
+  nameWithType: IVersionAware
+  fullName: MicroPlumberd.IVersionAware
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IVersionAware
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 26
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IVersionAware : IVersioned'
+    content.vb: Public Interface IVersionAware Inherits IVersioned
+  inheritedMembers:
+  - MicroPlumberd.IVersioned.Version
+- uid: MicroPlumberd.IVersionAware.Increase
+  commentId: M:MicroPlumberd.IVersionAware.Increase
+  id: Increase
+  parent: MicroPlumberd.IVersionAware
+  langs:
+  - csharp
+  - vb
+  name: Increase()
+  nameWithType: IVersionAware.Increase()
+  fullName: MicroPlumberd.IVersionAware.Increase()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Increase
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 28
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: void Increase()
+    content.vb: Sub Increase()
+  overload: MicroPlumberd.IVersionAware.Increase*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IVersioned.Version
+  commentId: P:MicroPlumberd.IVersioned.Version
+  parent: MicroPlumberd.IVersioned
+  href: MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version
+  name: Version
+  nameWithType: IVersioned.Version
+  fullName: MicroPlumberd.IVersioned.Version
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
+- uid: MicroPlumberd.IVersionAware.Increase*
+  commentId: Overload:MicroPlumberd.IVersionAware.Increase
+  href: MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Increase
+  name: Increase
+  nameWithType: IVersionAware.Increase
+  fullName: MicroPlumberd.IVersionAware.Increase

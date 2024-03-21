@@ -1,0 +1,102 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.IServicesConfig
+  commentId: T:MicroPlumberd.Services.IServicesConfig
+  id: IServicesConfig
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.IServicesConfig.DefaultTimeout
+  langs:
+  - csharp
+  - vb
+  name: IServicesConfig
+  nameWithType: IServicesConfig
+  fullName: MicroPlumberd.Services.IServicesConfig
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IServicesConfig
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 27
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public interface IServicesConfig
+    content.vb: Public Interface IServicesConfig
+- uid: MicroPlumberd.Services.IServicesConfig.DefaultTimeout
+  commentId: P:MicroPlumberd.Services.IServicesConfig.DefaultTimeout
+  id: DefaultTimeout
+  parent: MicroPlumberd.Services.IServicesConfig
+  langs:
+  - csharp
+  - vb
+  name: DefaultTimeout
+  nameWithType: IServicesConfig.DefaultTimeout
+  fullName: MicroPlumberd.Services.IServicesConfig.DefaultTimeout
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: DefaultTimeout
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 29
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: TimeSpan DefaultTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.TimeSpan
+    content.vb: Property DefaultTimeout As TimeSpan
+  overload: MicroPlumberd.Services.IServicesConfig.DefaultTimeout*
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: MicroPlumberd.Services.IServicesConfig.DefaultTimeout*
+  commentId: Overload:MicroPlumberd.Services.IServicesConfig.DefaultTimeout
+  href: MicroPlumberd.Services.IServicesConfig.html#MicroPlumberd_Services_IServicesConfig_DefaultTimeout
+  name: DefaultTimeout
+  nameWithType: IServicesConfig.DefaultTimeout
+  fullName: MicroPlumberd.Services.IServicesConfig.DefaultTimeout
+- uid: System.TimeSpan
+  commentId: T:System.TimeSpan
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timespan
+  name: TimeSpan
+  nameWithType: TimeSpan
+  fullName: System.TimeSpan
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

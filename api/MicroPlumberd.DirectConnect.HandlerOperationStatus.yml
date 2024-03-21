@@ -6,6 +6,7 @@ items:
   parent: MicroPlumberd.DirectConnect
   children:
   - MicroPlumberd.DirectConnect.HandlerOperationStatus.Code
+  - MicroPlumberd.DirectConnect.HandlerOperationStatus.Error
   - MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
   langs:
   - csharp
@@ -16,14 +17,14 @@ items:
   type: Class
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: HandlerOperationStatus
-    path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 16
+    path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
+    startLine: 5
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-
@@ -61,14 +62,14 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Code
-    path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 19
+    path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
+    startLine: 8
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-
@@ -89,6 +90,47 @@ items:
     arguments:
     - type: System.Int32
       value: 1
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Error
+  commentId: P:MicroPlumberd.DirectConnect.HandlerOperationStatus.Error
+  id: Error
+  parent: MicroPlumberd.DirectConnect.HandlerOperationStatus
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: HandlerOperationStatus.Error
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus.Error
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Error
+    path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: >-
+      [ProtoMember(2)]
+
+      public string Error { get; init; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: >-
+      <ProtoMember(2)>
+
+      Public Property [Error] As String
+  overload: MicroPlumberd.DirectConnect.HandlerOperationStatus.Error*
+  attributes:
+  - type: ProtoBuf.ProtoMemberAttribute
+    ctor: ProtoBuf.ProtoMemberAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 2
 - uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
   commentId: M:MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
   id: Ok
@@ -102,14 +144,14 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd.DirectConnect/ICommand.cs
+      path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Ok
-    path: src/MicroPlumberd.DirectConnect/ICommand.cs
-    startLine: 21
+    path: src/MicroPlumberd.DirectConnect/HandlerOperationStatus.cs
+    startLine: 14
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: public static HandlerOperationStatus Ok()
@@ -418,6 +460,23 @@ references:
     name: Net
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.net
+- uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Error*
+  commentId: Overload:MicroPlumberd.DirectConnect.HandlerOperationStatus.Error
+  href: MicroPlumberd.DirectConnect.HandlerOperationStatus.html#MicroPlumberd_DirectConnect_HandlerOperationStatus_Error
+  name: Error
+  nameWithType: HandlerOperationStatus.Error
+  fullName: MicroPlumberd.DirectConnect.HandlerOperationStatus.Error
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok*
   commentId: Overload:MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok
   href: MicroPlumberd.DirectConnect.HandlerOperationStatus.html#MicroPlumberd_DirectConnect_HandlerOperationStatus_Ok

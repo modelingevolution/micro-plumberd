@@ -1,0 +1,100 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Collections
+  commentId: N:MicroPlumberd.Collections
+  id: MicroPlumberd.Collections
+  children:
+  - MicroPlumberd.Collections.ConcurrentHashSet`1
+  - MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Collections
+  nameWithType: MicroPlumberd.Collections
+  fullName: MicroPlumberd.Collections
+  type: Namespace
+  assemblies:
+  - MicroPlumberd
+references:
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+  commentId: T:MicroPlumberd.Collections.ConcurrentHashSet`1
+  parent: MicroPlumberd.Collections
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  name: ConcurrentHashSet<T>
+  nameWithType: ConcurrentHashSet<T>
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>
+  nameWithType.vb: ConcurrentHashSet(Of T)
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T)
+  name.vb: ConcurrentHashSet(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  commentId: T:MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+  parent: MicroPlumberd.Collections
+  href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  name: ConcurrentHashSet<T>.Enumerator
+  nameWithType: ConcurrentHashSet<T>.Enumerator
+  fullName: MicroPlumberd.Collections.ConcurrentHashSet<T>.Enumerator
+  nameWithType.vb: ConcurrentHashSet(Of T).Enumerator
+  fullName.vb: MicroPlumberd.Collections.ConcurrentHashSet(Of T).Enumerator
+  name.vb: ConcurrentHashSet(Of T).Enumerator
+  spec.csharp:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: .
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+    name: Enumerator
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html
+  spec.vb:
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1
+    name: ConcurrentHashSet
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: .
+  - uid: MicroPlumberd.Collections.ConcurrentHashSet`1.Enumerator
+    name: Enumerator
+    href: MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html
+- uid: MicroPlumberd.Collections
+  commentId: N:MicroPlumberd.Collections
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Collections
+  nameWithType: MicroPlumberd.Collections
+  fullName: MicroPlumberd.Collections
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Collections
+    name: Collections
+    href: MicroPlumberd.Collections.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Collections
+    name: Collections
+    href: MicroPlumberd.Collections.html

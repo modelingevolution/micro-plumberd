@@ -1,0 +1,776 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  commentId: T:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  id: ProcessManagerClient
+  parent: MicroPlumberd.Services.ProcessManagers
+  children:
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.#ctor(System.IServiceProvider,MicroPlumberd.IPlumber,MicroPlumberd.ICommandBus)
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager``1(System.Guid)
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager``1
+  langs:
+  - csharp
+  - vb
+  name: ProcessManagerClient
+  nameWithType: ProcessManagerClient
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ProcessManagerClient
+    path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+    startLine: 57
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+  namespace: MicroPlumberd.Services.ProcessManagers
+  syntax:
+    content: 'public class ProcessManagerClient : IProcessManagerClient'
+    content.vb: Public Class ProcessManagerClient Implements IProcessManagerClient
+  inheritance:
+  - System.Object
+  implements:
+  - MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.#ctor(System.IServiceProvider,MicroPlumberd.IPlumber,MicroPlumberd.ICommandBus)
+  commentId: M:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.#ctor(System.IServiceProvider,MicroPlumberd.IPlumber,MicroPlumberd.ICommandBus)
+  id: '#ctor(System.IServiceProvider,MicroPlumberd.IPlumber,MicroPlumberd.ICommandBus)'
+  parent: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  langs:
+  - csharp
+  - vb
+  name: ProcessManagerClient(IServiceProvider, IPlumber, ICommandBus)
+  nameWithType: ProcessManagerClient.ProcessManagerClient(IServiceProvider, IPlumber, ICommandBus)
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.ProcessManagerClient(System.IServiceProvider, MicroPlumberd.IPlumber, MicroPlumberd.ICommandBus)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+    startLine: 63
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+  namespace: MicroPlumberd.Services.ProcessManagers
+  syntax:
+    content: public ProcessManagerClient(IServiceProvider serviceProvider, IPlumber plumber, ICommandBus bus)
+    parameters:
+    - id: serviceProvider
+      type: System.IServiceProvider
+    - id: plumber
+      type: MicroPlumberd.IPlumber
+    - id: bus
+      type: MicroPlumberd.ICommandBus
+    content.vb: Public Sub New(serviceProvider As IServiceProvider, plumber As IPlumber, bus As ICommandBus)
+  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.#ctor*
+  nameWithType.vb: ProcessManagerClient.New(IServiceProvider, IPlumber, ICommandBus)
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.New(System.IServiceProvider, MicroPlumberd.IPlumber, MicroPlumberd.ICommandBus)
+  name.vb: New(IServiceProvider, IPlumber, ICommandBus)
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus
+  commentId: P:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus
+  id: Bus
+  parent: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  langs:
+  - csharp
+  - vb
+  name: Bus
+  nameWithType: ProcessManagerClient.Bus
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Bus
+    path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+    startLine: 71
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+  namespace: MicroPlumberd.Services.ProcessManagers
+  example: []
+  syntax:
+    content: public ICommandBus Bus { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.ICommandBus
+    content.vb: Public ReadOnly Property Bus As ICommandBus
+  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus*
+  implements:
+  - MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Bus
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber
+  commentId: P:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber
+  id: Plumber
+  parent: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  langs:
+  - csharp
+  - vb
+  name: Plumber
+  nameWithType: ProcessManagerClient.Plumber
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Plumber
+    path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+    startLine: 72
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+  namespace: MicroPlumberd.Services.ProcessManagers
+  example: []
+  syntax:
+    content: public IPlumber Plumber { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.IPlumber
+    content.vb: Public ReadOnly Property Plumber As IPlumber
+  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber*
+  implements:
+  - MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Plumber
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager``1
+  commentId: M:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager``1
+  id: SubscribeProcessManager``1
+  parent: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  langs:
+  - csharp
+  - vb
+  name: SubscribeProcessManager<TProcessManager>()
+  nameWithType: ProcessManagerClient.SubscribeProcessManager<TProcessManager>()
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager<TProcessManager>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SubscribeProcessManager
+    path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+    startLine: 74
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+  namespace: MicroPlumberd.Services.ProcessManagers
+  example: []
+  syntax:
+    content: 'public Task<IAsyncDisposable> SubscribeProcessManager<TProcessManager>() where TProcessManager : IProcessManager, ITypeRegister'
+    typeParameters:
+    - id: TProcessManager
+    return:
+      type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+    content.vb: Public Function SubscribeProcessManager(Of TProcessManager As {IProcessManager, ITypeRegister})() As Task(Of IAsyncDisposable)
+  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager*
+  implements:
+  - MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager``1
+  nameWithType.vb: ProcessManagerClient.SubscribeProcessManager(Of TProcessManager)()
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager(Of TProcessManager)()
+  name.vb: SubscribeProcessManager(Of TProcessManager)()
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager``1(System.Guid)
+  commentId: M:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager``1(System.Guid)
+  id: GetManager``1(System.Guid)
+  parent: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  langs:
+  - csharp
+  - vb
+  name: GetManager<TProcessManager>(Guid)
+  nameWithType: ProcessManagerClient.GetManager<TProcessManager>(Guid)
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager<TProcessManager>(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetManager
+    path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs
+    startLine: 94
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+  namespace: MicroPlumberd.Services.ProcessManagers
+  example: []
+  syntax:
+    content: 'public Task<TProcessManager> GetManager<TProcessManager>(Guid commandRecipientId) where TProcessManager : IProcessManager, ITypeRegister'
+    parameters:
+    - id: commandRecipientId
+      type: System.Guid
+    typeParameters:
+    - id: TProcessManager
+    return:
+      type: System.Threading.Tasks.Task{{TProcessManager}}
+    content.vb: Public Function GetManager(Of TProcessManager As {IProcessManager, ITypeRegister})(commandRecipientId As Guid) As Task(Of TProcessManager)
+  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager*
+  implements:
+  - MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager``1(System.Guid)
+  nameWithType.vb: ProcessManagerClient.GetManager(Of TProcessManager)(Guid)
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager(Of TProcessManager)(System.Guid)
+  name.vb: GetManager(Of TProcessManager)(Guid)
+references:
+- uid: MicroPlumberd.Services.ProcessManagers
+  commentId: N:MicroPlumberd.Services.ProcessManagers
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services.ProcessManagers
+  nameWithType: MicroPlumberd.Services.ProcessManagers
+  fullName: MicroPlumberd.Services.ProcessManagers
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.ProcessManagers
+    name: ProcessManagers
+    href: MicroPlumberd.Services.ProcessManagers.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.ProcessManagers
+    name: ProcessManagers
+    href: MicroPlumberd.Services.ProcessManagers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  commentId: T:MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  parent: MicroPlumberd.Services.ProcessManagers
+  href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html
+  name: IProcessManagerClient
+  nameWithType: IProcessManagerClient
+  fullName: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.#ctor*
+  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.#ctor
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerClient__ctor_System_IServiceProvider_MicroPlumberd_IPlumber_MicroPlumberd_ICommandBus_
+  name: ProcessManagerClient
+  nameWithType: ProcessManagerClient.ProcessManagerClient
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.ProcessManagerClient
+  nameWithType.vb: ProcessManagerClient.New
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.New
+  name.vb: New
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: MicroPlumberd.IPlumber
+  commentId: T:MicroPlumberd.IPlumber
+  parent: MicroPlumberd
+  href: MicroPlumberd.IPlumber.html
+  name: IPlumber
+  nameWithType: IPlumber
+  fullName: MicroPlumberd.IPlumber
+- uid: MicroPlumberd.ICommandBus
+  commentId: T:MicroPlumberd.ICommandBus
+  parent: MicroPlumberd
+  href: MicroPlumberd.ICommandBus.html
+  name: ICommandBus
+  nameWithType: ICommandBus
+  fullName: MicroPlumberd.ICommandBus
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus*
+  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerClient_Bus
+  name: Bus
+  nameWithType: ProcessManagerClient.Bus
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Bus
+- uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Bus
+  commentId: P:MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Bus
+  parent: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_Bus
+  name: Bus
+  nameWithType: IProcessManagerClient.Bus
+  fullName: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Bus
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber*
+  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerClient_Plumber
+  name: Plumber
+  nameWithType: ProcessManagerClient.Plumber
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.Plumber
+- uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Plumber
+  commentId: P:MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Plumber
+  parent: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_Plumber
+  name: Plumber
+  nameWithType: IProcessManagerClient.Plumber
+  fullName: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.Plumber
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager*
+  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerClient_SubscribeProcessManager__1
+  name: SubscribeProcessManager
+  nameWithType: ProcessManagerClient.SubscribeProcessManager
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.SubscribeProcessManager
+- uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager``1
+  commentId: M:MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager``1
+  parent: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_SubscribeProcessManager__1
+  name: SubscribeProcessManager<TProcessManager>()
+  nameWithType: IProcessManagerClient.SubscribeProcessManager<TProcessManager>()
+  fullName: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager<TProcessManager>()
+  nameWithType.vb: IProcessManagerClient.SubscribeProcessManager(Of TProcessManager)()
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager(Of TProcessManager)()
+  name.vb: SubscribeProcessManager(Of TProcessManager)()
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager``1
+    name: SubscribeProcessManager
+    href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_SubscribeProcessManager__1
+  - name: <
+  - name: TProcessManager
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.SubscribeProcessManager``1
+    name: SubscribeProcessManager
+    href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_SubscribeProcessManager__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProcessManager
+  - name: )
+  - name: (
+  - name: )
+- uid: System.Threading.Tasks.Task{System.IAsyncDisposable}
+  commentId: T:System.Threading.Tasks.Task{System.IAsyncDisposable}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IAsyncDisposable>
+  nameWithType: Task<IAsyncDisposable>
+  fullName: System.Threading.Tasks.Task<System.IAsyncDisposable>
+  nameWithType.vb: Task(Of IAsyncDisposable)
+  fullName.vb: System.Threading.Tasks.Task(Of System.IAsyncDisposable)
+  name.vb: Task(Of IAsyncDisposable)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.IAsyncDisposable
+    name: IAsyncDisposable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IAsyncDisposable
+    name: IAsyncDisposable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iasyncdisposable
+  - name: )
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager*
+  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerClient_GetManager__1_System_Guid_
+  name: GetManager
+  nameWithType: ProcessManagerClient.GetManager
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.GetManager
+- uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager``1(System.Guid)
+  commentId: M:MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager``1(System.Guid)
+  parent: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  isExternal: true
+  href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_GetManager__1_System_Guid_
+  name: GetManager<TProcessManager>(Guid)
+  nameWithType: IProcessManagerClient.GetManager<TProcessManager>(Guid)
+  fullName: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager<TProcessManager>(System.Guid)
+  nameWithType.vb: IProcessManagerClient.GetManager(Of TProcessManager)(Guid)
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager(Of TProcessManager)(System.Guid)
+  name.vb: GetManager(Of TProcessManager)(Guid)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager``1(System.Guid)
+    name: GetManager
+    href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_GetManager__1_System_Guid_
+  - name: <
+  - name: TProcessManager
+  - name: '>'
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.GetManager``1(System.Guid)
+    name: GetManager
+    href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html#MicroPlumberd_Services_ProcessManagers_IProcessManagerClient_GetManager__1_System_Guid_
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProcessManager
+  - name: )
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System.Threading.Tasks.Task{{TProcessManager}}
+  commentId: T:System.Threading.Tasks.Task{``0}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TProcessManager>
+  nameWithType: Task<TProcessManager>
+  fullName: System.Threading.Tasks.Task<TProcessManager>
+  nameWithType.vb: Task(Of TProcessManager)
+  fullName.vb: System.Threading.Tasks.Task(Of TProcessManager)
+  name.vb: Task(Of TProcessManager)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TProcessManager
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProcessManager
+  - name: )

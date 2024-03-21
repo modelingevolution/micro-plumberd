@@ -1,0 +1,86 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IIdAware
+  commentId: T:MicroPlumberd.IIdAware
+  id: IIdAware
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IIdAware.Id
+  langs:
+  - csharp
+  - vb
+  name: IIdAware
+  nameWithType: IIdAware
+  fullName: MicroPlumberd.IIdAware
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IIdAware
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 36
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IIdAware
+    content.vb: Public Interface IIdAware
+- uid: MicroPlumberd.IIdAware.Id
+  commentId: P:MicroPlumberd.IIdAware.Id
+  id: Id
+  parent: MicroPlumberd.IIdAware
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IIdAware.Id
+  fullName: MicroPlumberd.IIdAware.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 38
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid Id { set; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: WriteOnly Property Id As Guid
+  overload: MicroPlumberd.IIdAware.Id*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IIdAware.Id*
+  commentId: Overload:MicroPlumberd.IIdAware.Id
+  href: MicroPlumberd.IIdAware.html#MicroPlumberd_IIdAware_Id
+  name: Id
+  nameWithType: IIdAware.Id
+  fullName: MicroPlumberd.IIdAware.Id
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

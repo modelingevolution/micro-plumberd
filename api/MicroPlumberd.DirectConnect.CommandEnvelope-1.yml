@@ -6,6 +6,8 @@ items:
   parent: MicroPlumberd.DirectConnect
   children:
   - MicroPlumberd.DirectConnect.CommandEnvelope`1.Command
+  - MicroPlumberd.DirectConnect.CommandEnvelope`1.CommandId
+  - MicroPlumberd.DirectConnect.CommandEnvelope`1.CorrelationId
   - MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
   langs:
   - csharp
@@ -21,21 +23,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandEnvelope
     path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
-    startLine: 4
+    startLine: 5
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-
       [ProtoContract]
 
-      public record CommandEnvelope<TCommand> : IEquatable<CommandEnvelope<TCommand>> where TCommand : ICommand
+      public record CommandEnvelope<TCommand> : IEquatable<CommandEnvelope<TCommand>>
     typeParameters:
     - id: TCommand
     content.vb: >-
       <ProtoContract>
 
-      Public Class CommandEnvelope(Of TCommand As ICommand) Implements IEquatable(Of CommandEnvelope(Of TCommand))
+      Public Class CommandEnvelope(Of TCommand) Implements IEquatable(Of CommandEnvelope(Of TCommand))
   inheritance:
   - System.Object
   implements:
@@ -55,6 +57,37 @@ items:
   nameWithType.vb: CommandEnvelope(Of TCommand)
   fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand)
   name.vb: CommandEnvelope(Of TCommand)
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.CommandId
+  commentId: P:MicroPlumberd.DirectConnect.CommandEnvelope`1.CommandId
+  id: CommandId
+  parent: MicroPlumberd.DirectConnect.CommandEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: CommandId
+  nameWithType: CommandEnvelope<TCommand>.CommandId
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.CommandId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandId
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: public Guid CommandId { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public ReadOnly Property CommandId As Guid
+  overload: MicroPlumberd.DirectConnect.CommandEnvelope`1.CommandId*
+  nameWithType.vb: CommandEnvelope(Of TCommand).CommandId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).CommandId
 - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
   commentId: P:MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
   id: StreamId
@@ -73,9 +106,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StreamId
     path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
-    startLine: 7
+    startLine: 19
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-
@@ -116,9 +149,9 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Command
     path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
-    startLine: 9
+    startLine: 22
   assemblies:
-  - MicroPlumberd.DirectConnect
+  - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd.DirectConnect
   syntax:
     content: >-
@@ -141,6 +174,49 @@ items:
       value: 2
   nameWithType.vb: CommandEnvelope(Of TCommand).Command
   fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).Command
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.CorrelationId
+  commentId: P:MicroPlumberd.DirectConnect.CommandEnvelope`1.CorrelationId
+  id: CorrelationId
+  parent: MicroPlumberd.DirectConnect.CommandEnvelope`1
+  langs:
+  - csharp
+  - vb
+  name: CorrelationId
+  nameWithType: CommandEnvelope<TCommand>.CorrelationId
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.CorrelationId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CorrelationId
+    path: src/MicroPlumberd.DirectConnect/CommandEnvelope.cs
+    startLine: 25
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd.DirectConnect
+  syntax:
+    content: >-
+      [ProtoMember(3)]
+
+      public Guid? CorrelationId { get; init; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Guid}
+    content.vb: >-
+      <ProtoMember(3)>
+
+      Public Property CorrelationId As Guid?
+  overload: MicroPlumberd.DirectConnect.CommandEnvelope`1.CorrelationId*
+  attributes:
+  - type: ProtoBuf.ProtoMemberAttribute
+    ctor: ProtoBuf.ProtoMemberAttribute.#ctor(System.Int32)
+    arguments:
+    - type: System.Int32
+      value: 3
+  nameWithType.vb: CommandEnvelope(Of TCommand).CorrelationId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).CorrelationId
 references:
 - uid: MicroPlumberd.DirectConnect
   commentId: N:MicroPlumberd.DirectConnect
@@ -470,14 +546,14 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId*
-  commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
-  href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_StreamId
-  name: StreamId
-  nameWithType: CommandEnvelope<TCommand>.StreamId
-  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.StreamId
-  nameWithType.vb: CommandEnvelope(Of TCommand).StreamId
-  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).StreamId
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.CommandId*
+  commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.CommandId
+  href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_CommandId
+  name: CommandId
+  nameWithType: CommandEnvelope<TCommand>.CommandId
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.CommandId
+  nameWithType.vb: CommandEnvelope(Of TCommand).CommandId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).CommandId
 - uid: System.Guid
   commentId: T:System.Guid
   parent: System
@@ -486,6 +562,14 @@ references:
   name: Guid
   nameWithType: Guid
   fullName: System.Guid
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId*
+  commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId
+  href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_StreamId
+  name: StreamId
+  nameWithType: CommandEnvelope<TCommand>.StreamId
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.StreamId
+  nameWithType.vb: CommandEnvelope(Of TCommand).StreamId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).StreamId
 - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.Command*
   commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.Command
   href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_Command
@@ -504,3 +588,59 @@ references:
   name: TCommand
   nameWithType: TCommand
   fullName: TCommand
+- uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.CorrelationId*
+  commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.CorrelationId
+  href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_CorrelationId
+  name: CorrelationId
+  nameWithType: CommandEnvelope<TCommand>.CorrelationId
+  fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.CorrelationId
+  nameWithType.vb: CommandEnvelope(Of TCommand).CorrelationId
+  fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).CorrelationId
+- uid: System.Nullable{System.Guid}
+  commentId: T:System.Nullable{System.Guid}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid?
+  nameWithType: Guid?
+  fullName: System.Guid?
+  spec.csharp:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '?'
+  spec.vb:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

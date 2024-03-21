@@ -1,0 +1,107 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IEventRecord`1
+  commentId: T:MicroPlumberd.IEventRecord`1
+  id: IEventRecord`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IEventRecord`1.Event
+  langs:
+  - csharp
+  - vb
+  name: IEventRecord<TEvent>
+  nameWithType: IEventRecord<TEvent>
+  fullName: MicroPlumberd.IEventRecord<TEvent>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IEventRecord
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 65
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IEventRecord<out TEvent> : IEventRecord'
+    typeParameters:
+    - id: TEvent
+    content.vb: Public Interface IEventRecord(Of Out TEvent) Inherits IEventRecord
+  inheritedMembers:
+  - MicroPlumberd.IEventRecord.Metadata
+  nameWithType.vb: IEventRecord(Of TEvent)
+  fullName.vb: MicroPlumberd.IEventRecord(Of TEvent)
+  name.vb: IEventRecord(Of TEvent)
+- uid: MicroPlumberd.IEventRecord`1.Event
+  commentId: P:MicroPlumberd.IEventRecord`1.Event
+  id: Event
+  parent: MicroPlumberd.IEventRecord`1
+  langs:
+  - csharp
+  - vb
+  name: Event
+  nameWithType: IEventRecord<TEvent>.Event
+  fullName: MicroPlumberd.IEventRecord<TEvent>.Event
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Event
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 67
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: TEvent Event { get; }
+    parameters: []
+    return:
+      type: '{TEvent}'
+    content.vb: ReadOnly Property [Event] As TEvent
+  overload: MicroPlumberd.IEventRecord`1.Event*
+  nameWithType.vb: IEventRecord(Of TEvent).Event
+  fullName.vb: MicroPlumberd.IEventRecord(Of TEvent).Event
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IEventRecord.Metadata
+  commentId: P:MicroPlumberd.IEventRecord.Metadata
+  parent: MicroPlumberd.IEventRecord
+  href: MicroPlumberd.IEventRecord.html#MicroPlumberd_IEventRecord_Metadata
+  name: Metadata
+  nameWithType: IEventRecord.Metadata
+  fullName: MicroPlumberd.IEventRecord.Metadata
+- uid: MicroPlumberd.IEventRecord
+  commentId: T:MicroPlumberd.IEventRecord
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventRecord.html
+  name: IEventRecord
+  nameWithType: IEventRecord
+  fullName: MicroPlumberd.IEventRecord
+- uid: MicroPlumberd.IEventRecord`1.Event*
+  commentId: Overload:MicroPlumberd.IEventRecord`1.Event
+  href: MicroPlumberd.IEventRecord-1.html#MicroPlumberd_IEventRecord_1_Event
+  name: Event
+  nameWithType: IEventRecord<TEvent>.Event
+  fullName: MicroPlumberd.IEventRecord<TEvent>.Event
+  nameWithType.vb: IEventRecord(Of TEvent).Event
+  fullName.vb: MicroPlumberd.IEventRecord(Of TEvent).Event
+- uid: '{TEvent}'
+  commentId: '!:TEvent'
+  definition: TEvent
+  name: TEvent
+  nameWithType: TEvent
+  fullName: TEvent
+- uid: TEvent
+  commentId: '!:TEvent'
+  name: TEvent
+  nameWithType: TEvent
+  fullName: TEvent

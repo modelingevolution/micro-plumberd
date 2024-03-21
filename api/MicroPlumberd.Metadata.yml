@@ -5,9 +5,12 @@ items:
   id: Metadata
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
+  - MicroPlumberd.Metadata.#ctor(System.Guid,System.Guid,System.Int64,System.String,System.Text.Json.JsonElement)
   - MicroPlumberd.Metadata.Data
+  - MicroPlumberd.Metadata.EventId
   - MicroPlumberd.Metadata.Id
+  - MicroPlumberd.Metadata.SourceStreamId
+  - MicroPlumberd.Metadata.SourceStreamPosition
   langs:
   - csharp
   - vb
@@ -37,17 +40,22 @@ items:
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
   extensionMethods:
+  - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CausationId
   - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CorrelationId
-- uid: MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
-  commentId: M:MicroPlumberd.Metadata.#ctor(System.Guid,System.Text.Json.JsonElement)
-  id: '#ctor(System.Guid,System.Text.Json.JsonElement)'
+  - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.Created
+  - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.TryGetValue``1(System.String,{TValue}@)
+  - MicroPlumberd.Metadata.MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId
+  - MicroPlumberd.Metadata.MicroPlumberd.Services.MetadataExtensions.SessionId
+- uid: MicroPlumberd.Metadata.#ctor(System.Guid,System.Guid,System.Int64,System.String,System.Text.Json.JsonElement)
+  commentId: M:MicroPlumberd.Metadata.#ctor(System.Guid,System.Guid,System.Int64,System.String,System.Text.Json.JsonElement)
+  id: '#ctor(System.Guid,System.Guid,System.Int64,System.String,System.Text.Json.JsonElement)'
   parent: MicroPlumberd.Metadata
   langs:
   - csharp
   - vb
-  name: Metadata(Guid, JsonElement)
-  nameWithType: Metadata.Metadata(Guid, JsonElement)
-  fullName: MicroPlumberd.Metadata.Metadata(System.Guid, System.Text.Json.JsonElement)
+  name: Metadata(Guid, Guid, long, string, JsonElement)
+  nameWithType: Metadata.Metadata(Guid, Guid, long, string, JsonElement)
+  fullName: MicroPlumberd.Metadata.Metadata(System.Guid, System.Guid, long, string, System.Text.Json.JsonElement)
   type: Constructor
   source:
     remote:
@@ -61,17 +69,23 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public Metadata(Guid id, JsonElement data)
+    content: public Metadata(Guid id, Guid eventId, long sourceStreamPosition, string sourceStreamId, JsonElement data)
     parameters:
     - id: id
       type: System.Guid
+    - id: eventId
+      type: System.Guid
+    - id: sourceStreamPosition
+      type: System.Int64
+    - id: sourceStreamId
+      type: System.String
     - id: data
       type: System.Text.Json.JsonElement
-    content.vb: Public Sub New(id As Guid, data As JsonElement)
+    content.vb: Public Sub New(id As Guid, eventId As Guid, sourceStreamPosition As Long, sourceStreamId As String, data As JsonElement)
   overload: MicroPlumberd.Metadata.#ctor*
-  nameWithType.vb: Metadata.New(Guid, JsonElement)
-  fullName.vb: MicroPlumberd.Metadata.New(System.Guid, System.Text.Json.JsonElement)
-  name.vb: New(Guid, JsonElement)
+  nameWithType.vb: Metadata.New(Guid, Guid, Long, String, JsonElement)
+  fullName.vb: MicroPlumberd.Metadata.New(System.Guid, System.Guid, Long, String, System.Text.Json.JsonElement)
+  name.vb: New(Guid, Guid, Long, String, JsonElement)
 - uid: MicroPlumberd.Metadata.Id
   commentId: P:MicroPlumberd.Metadata.Id
   id: Id
@@ -130,6 +144,93 @@ items:
       type: System.Text.Json.JsonElement
     content.vb: Public ReadOnly Property Data As JsonElement
   overload: MicroPlumberd.Metadata.Data*
+- uid: MicroPlumberd.Metadata.SourceStreamPosition
+  commentId: P:MicroPlumberd.Metadata.SourceStreamPosition
+  id: SourceStreamPosition
+  parent: MicroPlumberd.Metadata
+  langs:
+  - csharp
+  - vb
+  name: SourceStreamPosition
+  nameWithType: Metadata.SourceStreamPosition
+  fullName: MicroPlumberd.Metadata.SourceStreamPosition
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SourceStreamPosition
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public long SourceStreamPosition { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public ReadOnly Property SourceStreamPosition As Long
+  overload: MicroPlumberd.Metadata.SourceStreamPosition*
+- uid: MicroPlumberd.Metadata.SourceStreamId
+  commentId: P:MicroPlumberd.Metadata.SourceStreamId
+  id: SourceStreamId
+  parent: MicroPlumberd.Metadata
+  langs:
+  - csharp
+  - vb
+  name: SourceStreamId
+  nameWithType: Metadata.SourceStreamId
+  fullName: MicroPlumberd.Metadata.SourceStreamId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SourceStreamId
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public string SourceStreamId { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property SourceStreamId As String
+  overload: MicroPlumberd.Metadata.SourceStreamId*
+- uid: MicroPlumberd.Metadata.EventId
+  commentId: P:MicroPlumberd.Metadata.EventId
+  id: EventId
+  parent: MicroPlumberd.Metadata
+  langs:
+  - csharp
+  - vb
+  name: EventId
+  nameWithType: Metadata.EventId
+  fullName: MicroPlumberd.Metadata.EventId
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/Metadata.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: EventId
+    path: src/MicroPlumberd/Serialization/Metadata.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Guid EventId { get; }
+    parameters: []
+    return:
+      type: System.Guid
+    content.vb: Public ReadOnly Property EventId As Guid
+  overload: MicroPlumberd.Metadata.EventId*
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -328,6 +429,32 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CausationId
+  commentId: M:MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+  parent: MicroPlumberd.MetadataExtensions
+  definition: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CausationId_MicroPlumberd_Metadata_
+  name: CausationId(Metadata)
+  nameWithType: MetadataExtensions.CausationId(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+    name: CausationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CausationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+    name: CausationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CausationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
 - uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CorrelationId
   commentId: M:MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
   parent: MicroPlumberd.MetadataExtensions
@@ -354,6 +481,141 @@ references:
     name: Metadata
     href: MicroPlumberd.Metadata.html
   - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.Created
+  commentId: M:MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  parent: MicroPlumberd.MetadataExtensions
+  definition: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  name: Created(Metadata)
+  nameWithType: MetadataExtensions.Created(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+    name: Created
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+    name: Created
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.TryGetValue``1(System.String,{TValue}@)
+  commentId: M:MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+  parent: MicroPlumberd.MetadataExtensions
+  definition: MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_TryGetValue__1_MicroPlumberd_Metadata_System_String___0__
+  name: TryGetValue<TValue>(Metadata, string, out TValue)
+  nameWithType: MetadataExtensions.TryGetValue<TValue>(Metadata, string, out TValue)
+  fullName: MicroPlumberd.MetadataExtensions.TryGetValue<TValue>(MicroPlumberd.Metadata, string, out TValue)
+  nameWithType.vb: MetadataExtensions.TryGetValue(Of TValue)(Metadata, String, TValue)
+  fullName.vb: MicroPlumberd.MetadataExtensions.TryGetValue(Of TValue)(MicroPlumberd.Metadata, String, TValue)
+  name.vb: TryGetValue(Of TValue)(Metadata, String, TValue)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+    name: TryGetValue
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_TryGetValue__1_MicroPlumberd_Metadata_System_String___0__
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+    name: TryGetValue
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_TryGetValue__1_MicroPlumberd_Metadata_System_String___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId
+  commentId: M:MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+  parent: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+  definition: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html#MicroPlumberd_Services_CommandHandlerMetadataExtensions_RecipientId_MicroPlumberd_Metadata_
+  name: RecipientId(Metadata)
+  nameWithType: CommandHandlerMetadataExtensions.RecipientId(Metadata)
+  fullName: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+    name: RecipientId
+    href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html#MicroPlumberd_Services_CommandHandlerMetadataExtensions_RecipientId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+    name: RecipientId
+    href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html#MicroPlumberd_Services_CommandHandlerMetadataExtensions_RecipientId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.Services.MetadataExtensions.SessionId
+  commentId: M:MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+  parent: MicroPlumberd.Services.MetadataExtensions
+  definition: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.Services.MetadataExtensions.html#MicroPlumberd_Services_MetadataExtensions_SessionId_MicroPlumberd_Metadata_
+  name: SessionId(Metadata)
+  nameWithType: MetadataExtensions.SessionId(Metadata)
+  fullName: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+    name: SessionId
+    href: MicroPlumberd.Services.MetadataExtensions.html#MicroPlumberd_Services_MetadataExtensions_SessionId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+    name: SessionId
+    href: MicroPlumberd.Services.MetadataExtensions.html#MicroPlumberd_Services_MetadataExtensions_SessionId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
 - uid: System.ValueType
   commentId: T:System.ValueType
   parent: System
@@ -373,6 +635,37 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
+- uid: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CausationId_MicroPlumberd_Metadata_
+  name: CausationId(Metadata)
+  nameWithType: MetadataExtensions.CausationId(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+    name: CausationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CausationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
+    name: CausationId
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CausationId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.MetadataExtensions
+  commentId: T:MicroPlumberd.MetadataExtensions
+  parent: MicroPlumberd
+  href: MicroPlumberd.MetadataExtensions.html
+  name: MetadataExtensions
+  nameWithType: MetadataExtensions
+  fullName: MicroPlumberd.MetadataExtensions
 - uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
   commentId: M:MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
   href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_
@@ -397,13 +690,148 @@ references:
     name: Metadata
     href: MicroPlumberd.Metadata.html
   - name: )
-- uid: MicroPlumberd.MetadataExtensions
-  commentId: T:MicroPlumberd.MetadataExtensions
-  parent: MicroPlumberd
-  href: MicroPlumberd.MetadataExtensions.html
+- uid: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  name: Created(Metadata)
+  nameWithType: MetadataExtensions.Created(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+    name: Created
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+    name: Created
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+  commentId: M:MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+  isExternal: true
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_TryGetValue__1_MicroPlumberd_Metadata_System_String___0__
+  name: TryGetValue<TValue>(Metadata, string, out TValue)
+  nameWithType: MetadataExtensions.TryGetValue<TValue>(Metadata, string, out TValue)
+  fullName: MicroPlumberd.MetadataExtensions.TryGetValue<TValue>(MicroPlumberd.Metadata, string, out TValue)
+  nameWithType.vb: MetadataExtensions.TryGetValue(Of TValue)(Metadata, String, TValue)
+  fullName.vb: MicroPlumberd.MetadataExtensions.TryGetValue(Of TValue)(MicroPlumberd.Metadata, String, TValue)
+  name.vb: TryGetValue(Of TValue)(Metadata, String, TValue)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+    name: TryGetValue
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_TryGetValue__1_MicroPlumberd_Metadata_System_String___0__
+  - name: <
+  - name: TValue
+  - name: '>'
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: out
+  - name: " "
+  - name: TValue
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
+    name: TryGetValue
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_TryGetValue__1_MicroPlumberd_Metadata_System_String___0__
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TValue
+  - name: )
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - name: TValue
+  - name: )
+- uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html#MicroPlumberd_Services_CommandHandlerMetadataExtensions_RecipientId_MicroPlumberd_Metadata_
+  name: RecipientId(Metadata)
+  nameWithType: CommandHandlerMetadataExtensions.RecipientId(Metadata)
+  fullName: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+    name: RecipientId
+    href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html#MicroPlumberd_Services_CommandHandlerMetadataExtensions_RecipientId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId(MicroPlumberd.Metadata)
+    name: RecipientId
+    href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html#MicroPlumberd_Services_CommandHandlerMetadataExtensions_RecipientId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+  commentId: T:MicroPlumberd.Services.CommandHandlerMetadataExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html
+  name: CommandHandlerMetadataExtensions
+  nameWithType: CommandHandlerMetadataExtensions
+  fullName: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+- uid: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+  href: MicroPlumberd.Services.MetadataExtensions.html#MicroPlumberd_Services_MetadataExtensions_SessionId_MicroPlumberd_Metadata_
+  name: SessionId(Metadata)
+  nameWithType: MetadataExtensions.SessionId(Metadata)
+  fullName: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+    name: SessionId
+    href: MicroPlumberd.Services.MetadataExtensions.html#MicroPlumberd_Services_MetadataExtensions_SessionId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.MetadataExtensions.SessionId(MicroPlumberd.Metadata)
+    name: SessionId
+    href: MicroPlumberd.Services.MetadataExtensions.html#MicroPlumberd_Services_MetadataExtensions_SessionId_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.Services.MetadataExtensions
+  commentId: T:MicroPlumberd.Services.MetadataExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.MetadataExtensions.html
   name: MetadataExtensions
   nameWithType: MetadataExtensions
-  fullName: MicroPlumberd.MetadataExtensions
+  fullName: MicroPlumberd.Services.MetadataExtensions
 - uid: System
   commentId: N:System
   isExternal: true
@@ -411,9 +839,31 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
 - uid: MicroPlumberd.Metadata.#ctor*
   commentId: Overload:MicroPlumberd.Metadata.#ctor
-  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata__ctor_System_Guid_System_Text_Json_JsonElement_
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata__ctor_System_Guid_System_Guid_System_Int64_System_String_System_Text_Json_JsonElement_
   name: Metadata
   nameWithType: Metadata.Metadata
   fullName: MicroPlumberd.Metadata.Metadata
@@ -428,6 +878,28 @@ references:
   name: Guid
   nameWithType: Guid
   fullName: System.Guid
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: System.Text.Json.JsonElement
   commentId: T:System.Text.Json.JsonElement
   parent: System.Text.Json
@@ -485,3 +957,21 @@ references:
   name: Data
   nameWithType: Metadata.Data
   fullName: MicroPlumberd.Metadata.Data
+- uid: MicroPlumberd.Metadata.SourceStreamPosition*
+  commentId: Overload:MicroPlumberd.Metadata.SourceStreamPosition
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_SourceStreamPosition
+  name: SourceStreamPosition
+  nameWithType: Metadata.SourceStreamPosition
+  fullName: MicroPlumberd.Metadata.SourceStreamPosition
+- uid: MicroPlumberd.Metadata.SourceStreamId*
+  commentId: Overload:MicroPlumberd.Metadata.SourceStreamId
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_SourceStreamId
+  name: SourceStreamId
+  nameWithType: Metadata.SourceStreamId
+  fullName: MicroPlumberd.Metadata.SourceStreamId
+- uid: MicroPlumberd.Metadata.EventId*
+  commentId: Overload:MicroPlumberd.Metadata.EventId
+  href: MicroPlumberd.Metadata.html#MicroPlumberd_Metadata_EventId
+  name: EventId
+  nameWithType: Metadata.EventId
+  fullName: MicroPlumberd.Metadata.EventId

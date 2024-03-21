@@ -1,0 +1,197 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  id: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.AppCommandStream
+  - MicroPlumberd.Services.CommandExecutionResults
+  - MicroPlumberd.Services.CommandHandlerMetadataExtensions
+  - MicroPlumberd.Services.CommandMessageTypes
+  - MicroPlumberd.Services.CommandName
+  - MicroPlumberd.Services.ContainerExtensions
+  - MicroPlumberd.Services.GroupNameFromCommandHandler
+  - MicroPlumberd.Services.IServiceTypeRegister
+  - MicroPlumberd.Services.IServicesConfig
+  - MicroPlumberd.Services.IServicesConvention
+  - MicroPlumberd.Services.IsHandlerExecutionPersistent
+  - MicroPlumberd.Services.MetadataExtensions
+  - MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+  - MicroPlumberd.Services.PlumberExtensions
+  - MicroPlumberd.Services.PlumberdConventionsExtensions
+  - MicroPlumberd.Services.SessionStreamFromSessionId
+  - MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+  - MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Services
+references:
+- uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+  commentId: T:MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+  href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute-1.html
+  name: ThrowsFaultCommandExceptionAttribute<TMessage>
+  nameWithType: ThrowsFaultCommandExceptionAttribute<TMessage>
+  fullName: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute<TMessage>
+  nameWithType.vb: ThrowsFaultCommandExceptionAttribute(Of TMessage)
+  fullName.vb: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute(Of TMessage)
+  name.vb: ThrowsFaultCommandExceptionAttribute(Of TMessage)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+    name: ThrowsFaultCommandExceptionAttribute
+    href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute-1.html
+  - name: <
+  - name: TMessage
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+    name: ThrowsFaultCommandExceptionAttribute
+    href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TMessage
+  - name: )
+- uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+  commentId: T:MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute.html
+  name: ThrowsFaultCommandExceptionAttribute
+  nameWithType: ThrowsFaultCommandExceptionAttribute
+  fullName: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+- uid: MicroPlumberd.Services.CommandExecutionResults
+  commentId: T:MicroPlumberd.Services.CommandExecutionResults
+  href: MicroPlumberd.Services.CommandExecutionResults.html
+  name: CommandExecutionResults
+  nameWithType: CommandExecutionResults
+  fullName: MicroPlumberd.Services.CommandExecutionResults
+- uid: MicroPlumberd.Services.MetadataExtensions
+  commentId: T:MicroPlumberd.Services.MetadataExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.MetadataExtensions.html
+  name: MetadataExtensions
+  nameWithType: MetadataExtensions
+  fullName: MicroPlumberd.Services.MetadataExtensions
+- uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+  commentId: T:MicroPlumberd.Services.CommandHandlerMetadataExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html
+  name: CommandHandlerMetadataExtensions
+  nameWithType: CommandHandlerMetadataExtensions
+  fullName: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+- uid: MicroPlumberd.Services.ContainerExtensions
+  commentId: T:MicroPlumberd.Services.ContainerExtensions
+  href: MicroPlumberd.Services.ContainerExtensions.html
+  name: ContainerExtensions
+  nameWithType: ContainerExtensions
+  fullName: MicroPlumberd.Services.ContainerExtensions
+- uid: MicroPlumberd.Services.IServiceTypeRegister
+  commentId: T:MicroPlumberd.Services.IServiceTypeRegister
+  href: MicroPlumberd.Services.IServiceTypeRegister.html
+  name: IServiceTypeRegister
+  nameWithType: IServiceTypeRegister
+  fullName: MicroPlumberd.Services.IServiceTypeRegister
+- uid: MicroPlumberd.Services.PlumberExtensions
+  commentId: T:MicroPlumberd.Services.PlumberExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.PlumberExtensions.html
+  name: PlumberExtensions
+  nameWithType: PlumberExtensions
+  fullName: MicroPlumberd.Services.PlumberExtensions
+- uid: MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+  commentId: T:MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.OutputSteamNameFromCommandHandler.html
+  name: OutputSteamNameFromCommandHandler
+  nameWithType: OutputSteamNameFromCommandHandler
+  fullName: MicroPlumberd.Services.OutputSteamNameFromCommandHandler
+- uid: MicroPlumberd.Services.GroupNameFromCommandHandler
+  commentId: T:MicroPlumberd.Services.GroupNameFromCommandHandler
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.GroupNameFromCommandHandler.html
+  name: GroupNameFromCommandHandler
+  nameWithType: GroupNameFromCommandHandler
+  fullName: MicroPlumberd.Services.GroupNameFromCommandHandler
+- uid: MicroPlumberd.Services.CommandName
+  commentId: T:MicroPlumberd.Services.CommandName
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.CommandName.html
+  name: CommandName
+  nameWithType: CommandName
+  fullName: MicroPlumberd.Services.CommandName
+- uid: MicroPlumberd.Services.CommandMessageTypes
+  commentId: T:MicroPlumberd.Services.CommandMessageTypes
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.CommandMessageTypes.html
+  name: CommandMessageTypes
+  nameWithType: CommandMessageTypes
+  fullName: MicroPlumberd.Services.CommandMessageTypes
+- uid: MicroPlumberd.Services.AppCommandStream
+  commentId: T:MicroPlumberd.Services.AppCommandStream
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.AppCommandStream.html
+  name: AppCommandStream
+  nameWithType: AppCommandStream
+  fullName: MicroPlumberd.Services.AppCommandStream
+- uid: MicroPlumberd.Services.SessionStreamFromSessionId
+  commentId: T:MicroPlumberd.Services.SessionStreamFromSessionId
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.SessionStreamFromSessionId.html
+  name: SessionStreamFromSessionId
+  nameWithType: SessionStreamFromSessionId
+  fullName: MicroPlumberd.Services.SessionStreamFromSessionId
+- uid: MicroPlumberd.Services.IServicesConvention
+  commentId: T:MicroPlumberd.Services.IServicesConvention
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.IServicesConvention.html
+  name: IServicesConvention
+  nameWithType: IServicesConvention
+  fullName: MicroPlumberd.Services.IServicesConvention
+- uid: MicroPlumberd.Services.IServicesConfig
+  commentId: T:MicroPlumberd.Services.IServicesConfig
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.IServicesConfig.html
+  name: IServicesConfig
+  nameWithType: IServicesConfig
+  fullName: MicroPlumberd.Services.IServicesConfig
+- uid: MicroPlumberd.Services.IsHandlerExecutionPersistent
+  commentId: T:MicroPlumberd.Services.IsHandlerExecutionPersistent
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.IsHandlerExecutionPersistent.html
+  name: IsHandlerExecutionPersistent
+  nameWithType: IsHandlerExecutionPersistent
+  fullName: MicroPlumberd.Services.IsHandlerExecutionPersistent
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions
+  commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html
+  name: PlumberdConventionsExtensions
+  nameWithType: PlumberdConventionsExtensions
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html

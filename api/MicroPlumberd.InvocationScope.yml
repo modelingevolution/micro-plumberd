@@ -5,6 +5,8 @@ items:
   id: InvocationScope
   parent: MicroPlumberd
   children:
+  - MicroPlumberd.InvocationScope.#ctor
+  - MicroPlumberd.InvocationScope.#ctor(MicroPlumberd.InvocationContext)
   - MicroPlumberd.InvocationScope.ContainsProperty(System.String)
   - MicroPlumberd.InvocationScope.Context
   - MicroPlumberd.InvocationScope.Dispose
@@ -26,7 +28,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: InvocationScope
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 81
+    startLine: 130
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -45,6 +47,67 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
+- uid: MicroPlumberd.InvocationScope.#ctor
+  commentId: M:MicroPlumberd.InvocationScope.#ctor
+  id: '#ctor'
+  parent: MicroPlumberd.InvocationScope
+  langs:
+  - csharp
+  - vb
+  name: InvocationScope()
+  nameWithType: InvocationScope.InvocationScope()
+  fullName: MicroPlumberd.InvocationScope.InvocationScope()
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 132
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationScope()
+    content.vb: Public Sub New()
+  overload: MicroPlumberd.InvocationScope.#ctor*
+  nameWithType.vb: InvocationScope.New()
+  fullName.vb: MicroPlumberd.InvocationScope.New()
+  name.vb: New()
+- uid: MicroPlumberd.InvocationScope.#ctor(MicroPlumberd.InvocationContext)
+  commentId: M:MicroPlumberd.InvocationScope.#ctor(MicroPlumberd.InvocationContext)
+  id: '#ctor(MicroPlumberd.InvocationContext)'
+  parent: MicroPlumberd.InvocationScope
+  langs:
+  - csharp
+  - vb
+  name: InvocationScope(InvocationContext)
+  nameWithType: InvocationScope.InvocationScope(InvocationContext)
+  fullName: MicroPlumberd.InvocationScope.InvocationScope(MicroPlumberd.InvocationContext)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 134
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationScope(InvocationContext copy)
+    parameters:
+    - id: copy
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Sub New(copy As InvocationContext)
+  overload: MicroPlumberd.InvocationScope.#ctor*
+  nameWithType.vb: InvocationScope.New(InvocationContext)
+  fullName.vb: MicroPlumberd.InvocationScope.New(MicroPlumberd.InvocationContext)
+  name.vb: New(InvocationContext)
 - uid: MicroPlumberd.InvocationScope.Context
   commentId: P:MicroPlumberd.InvocationScope.Context
   id: Context
@@ -63,7 +126,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Context
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 83
+    startLine: 135
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -92,7 +155,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SetCorrelation
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 84
+    startLine: 136
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -123,7 +186,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SetCausation
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 85
+    startLine: 137
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -154,7 +217,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SetUserId
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 86
+    startLine: 138
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -185,7 +248,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Set
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 87
+    startLine: 139
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -221,7 +284,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ContainsProperty
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 88
+    startLine: 140
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -255,7 +318,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Dispose
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 89
+    startLine: 141
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -519,12 +582,15 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: MicroPlumberd.InvocationScope.Context*
-  commentId: Overload:MicroPlumberd.InvocationScope.Context
-  href: MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Context
-  name: Context
-  nameWithType: InvocationScope.Context
-  fullName: MicroPlumberd.InvocationScope.Context
+- uid: MicroPlumberd.InvocationScope.#ctor*
+  commentId: Overload:MicroPlumberd.InvocationScope.#ctor
+  href: MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope__ctor
+  name: InvocationScope
+  nameWithType: InvocationScope.InvocationScope
+  fullName: MicroPlumberd.InvocationScope.InvocationScope
+  nameWithType.vb: InvocationScope.New
+  fullName.vb: MicroPlumberd.InvocationScope.New
+  name.vb: New
 - uid: MicroPlumberd.InvocationContext
   commentId: T:MicroPlumberd.InvocationContext
   parent: MicroPlumberd
@@ -532,6 +598,12 @@ references:
   name: InvocationContext
   nameWithType: InvocationContext
   fullName: MicroPlumberd.InvocationContext
+- uid: MicroPlumberd.InvocationScope.Context*
+  commentId: Overload:MicroPlumberd.InvocationScope.Context
+  href: MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_Context
+  name: Context
+  nameWithType: InvocationScope.Context
+  fullName: MicroPlumberd.InvocationScope.Context
 - uid: MicroPlumberd.InvocationScope.SetCorrelation*
   commentId: Overload:MicroPlumberd.InvocationScope.SetCorrelation
   href: MicroPlumberd.InvocationScope.html#MicroPlumberd_InvocationScope_SetCorrelation_System_Guid_

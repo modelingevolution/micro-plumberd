@@ -1,0 +1,122 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.ProcessManagers
+  commentId: N:MicroPlumberd.Services.ProcessManagers
+  id: MicroPlumberd.Services.ProcessManagers
+  children:
+  - MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Services.ProcessManagers
+  nameWithType: MicroPlumberd.Services.ProcessManagers
+  fullName: MicroPlumberd.Services.ProcessManagers
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Services.ProcessManagers
+references:
+- uid: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  commentId: T:MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+  parent: MicroPlumberd.Services.ProcessManagers
+  href: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html
+  name: IProcessManagerClient
+  nameWithType: IProcessManagerClient
+  fullName: MicroPlumberd.Services.ProcessManagers.IProcessManagerClient
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  commentId: T:MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+  parent: MicroPlumberd.Services.ProcessManagers
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html
+  name: ProcessManagerClient
+  nameWithType: ProcessManagerClient
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerClient
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+  commentId: T:MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html
+  name: ProcessManagerExecutor<TProcessManager>
+  nameWithType: ProcessManagerExecutor<TProcessManager>
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor<TProcessManager>
+  nameWithType.vb: ProcessManagerExecutor(Of TProcessManager)
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager)
+  name.vb: ProcessManagerExecutor(Of TProcessManager)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+    name: ProcessManagerExecutor
+    href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html
+  - name: <
+  - name: TProcessManager
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+    name: ProcessManagerExecutor
+    href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProcessManager
+  - name: )
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
+  commentId: T:MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html
+  name: ProcessManagerExecutor<TProcessManager>.Lookup
+  nameWithType: ProcessManagerExecutor<TProcessManager>.Lookup
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor<TProcessManager>.Lookup
+  nameWithType.vb: ProcessManagerExecutor(Of TProcessManager).Lookup
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager).Lookup
+  name.vb: ProcessManagerExecutor(Of TProcessManager).Lookup
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+    name: ProcessManagerExecutor
+    href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html
+  - name: <
+  - name: TProcessManager
+  - name: '>'
+  - name: .
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
+    name: Lookup
+    href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.Lookup.html
+  spec.vb:
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1
+    name: ProcessManagerExecutor
+    href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TProcessManager
+  - name: )
+  - name: .
+  - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
+    name: Lookup
+    href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.Lookup.html
+- uid: MicroPlumberd.Services.ProcessManagers
+  commentId: N:MicroPlumberd.Services.ProcessManagers
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services.ProcessManagers
+  nameWithType: MicroPlumberd.Services.ProcessManagers
+  fullName: MicroPlumberd.Services.ProcessManagers
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.ProcessManagers
+    name: ProcessManagers
+    href: MicroPlumberd.Services.ProcessManagers.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.ProcessManagers
+    name: ProcessManagers
+    href: MicroPlumberd.Services.ProcessManagers.html

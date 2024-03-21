@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.BuildInvocationContext
+  commentId: T:MicroPlumberd.BuildInvocationContext
+  id: BuildInvocationContext
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: BuildInvocationContext
+  nameWithType: BuildInvocationContext
+  fullName: MicroPlumberd.BuildInvocationContext
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: BuildInvocationContext
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 19
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public delegate void BuildInvocationContext(InvocationContext context, Metadata m)
+    parameters:
+    - id: context
+      type: MicroPlumberd.InvocationContext
+    - id: m
+      type: MicroPlumberd.Metadata
+    content.vb: Public Delegate Sub BuildInvocationContext(context As InvocationContext, m As Metadata)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.InvocationContext
+  commentId: T:MicroPlumberd.InvocationContext
+  parent: MicroPlumberd
+  href: MicroPlumberd.InvocationContext.html
+  name: InvocationContext
+  nameWithType: InvocationContext
+  fullName: MicroPlumberd.InvocationContext
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata

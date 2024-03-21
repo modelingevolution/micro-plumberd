@@ -5,14 +5,19 @@ items:
   id: InvocationContext
   parent: MicroPlumberd
   children:
+  - MicroPlumberd.InvocationContext.Build(MicroPlumberd.InvocationContext,MicroPlumberd.Metadata)
+  - MicroPlumberd.InvocationContext.CausactionId
   - MicroPlumberd.InvocationContext.Clear
   - MicroPlumberd.InvocationContext.ClearCorrelation
+  - MicroPlumberd.InvocationContext.Clone
   - MicroPlumberd.InvocationContext.ContainsProperty(System.String)
+  - MicroPlumberd.InvocationContext.CorrelationId
   - MicroPlumberd.InvocationContext.Current
   - MicroPlumberd.InvocationContext.Set(System.String,System.Object)
   - MicroPlumberd.InvocationContext.SetCausation(System.Guid)
   - MicroPlumberd.InvocationContext.SetCorrelation(System.Guid)
   - MicroPlumberd.InvocationContext.SetUserId(System.Guid)
+  - MicroPlumberd.InvocationContext.TryGetValue``1(System.String,``0@)
   - MicroPlumberd.InvocationContext.Value
   langs:
   - csharp
@@ -28,7 +33,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: InvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 101
+    startLine: 212
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -63,7 +68,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SetCorrelation
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 103
+    startLine: 214
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -94,7 +99,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SetCausation
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 105
+    startLine: 216
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -125,7 +130,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SetUserId
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 106
+    startLine: 217
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -138,6 +143,34 @@ items:
       type: MicroPlumberd.InvocationContext
     content.vb: Public Function SetUserId(userId As Guid) As InvocationContext
   overload: MicroPlumberd.InvocationContext.SetUserId*
+- uid: MicroPlumberd.InvocationContext.CausactionId
+  commentId: M:MicroPlumberd.InvocationContext.CausactionId
+  id: CausactionId
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: CausactionId()
+  nameWithType: InvocationContext.CausactionId()
+  fullName: MicroPlumberd.InvocationContext.CausactionId()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CausactionId
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 223
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Guid? CausactionId()
+    return:
+      type: System.Nullable{System.Guid}
+    content.vb: Public Function CausactionId() As Guid?
+  overload: MicroPlumberd.InvocationContext.CausactionId*
 - uid: MicroPlumberd.InvocationContext.Current
   commentId: P:MicroPlumberd.InvocationContext.Current
   id: Current
@@ -156,16 +189,16 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Current
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 112
+    startLine: 226
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public static InvocationContext Current { get; }
+    content: public static InvocationContext Current { get; set; }
     parameters: []
     return:
       type: MicroPlumberd.InvocationContext
-    content.vb: Public Shared ReadOnly Property Current As InvocationContext
+    content.vb: Public Shared Property Current As InvocationContext
   overload: MicroPlumberd.InvocationContext.Current*
 - uid: MicroPlumberd.InvocationContext.Value
   commentId: P:MicroPlumberd.InvocationContext.Value
@@ -185,7 +218,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Value
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 114
+    startLine: 242
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -214,7 +247,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Set
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 116
+    startLine: 244
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -250,7 +283,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ContainsProperty
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 122
+    startLine: 250
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -266,6 +299,44 @@ items:
   nameWithType.vb: InvocationContext.ContainsProperty(String)
   fullName.vb: MicroPlumberd.InvocationContext.ContainsProperty(String)
   name.vb: ContainsProperty(String)
+- uid: MicroPlumberd.InvocationContext.TryGetValue``1(System.String,``0@)
+  commentId: M:MicroPlumberd.InvocationContext.TryGetValue``1(System.String,``0@)
+  id: TryGetValue``1(System.String,``0@)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: TryGetValue<TValue>(string, out TValue)
+  nameWithType: InvocationContext.TryGetValue<TValue>(string, out TValue)
+  fullName: MicroPlumberd.InvocationContext.TryGetValue<TValue>(string, out TValue)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: TryGetValue
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 252
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public bool TryGetValue<TValue>(string propertyName, out TValue value)
+    parameters:
+    - id: propertyName
+      type: System.String
+    - id: value
+      type: '{TValue}'
+    typeParameters:
+    - id: TValue
+    return:
+      type: System.Boolean
+    content.vb: Public Function TryGetValue(Of TValue)(propertyName As String, value As TValue) As Boolean
+  overload: MicroPlumberd.InvocationContext.TryGetValue*
+  nameWithType.vb: InvocationContext.TryGetValue(Of TValue)(String, TValue)
+  fullName.vb: MicroPlumberd.InvocationContext.TryGetValue(Of TValue)(String, TValue)
+  name.vb: TryGetValue(Of TValue)(String, TValue)
 - uid: MicroPlumberd.InvocationContext.Clear
   commentId: M:MicroPlumberd.InvocationContext.Clear
   id: Clear
@@ -284,7 +355,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Clear
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 123
+    startLine: 264
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -310,7 +381,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ClearCorrelation
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 129
+    startLine: 270
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -318,6 +389,93 @@ items:
     content: public void ClearCorrelation()
     content.vb: Public Sub ClearCorrelation()
   overload: MicroPlumberd.InvocationContext.ClearCorrelation*
+- uid: MicroPlumberd.InvocationContext.CorrelationId
+  commentId: M:MicroPlumberd.InvocationContext.CorrelationId
+  id: CorrelationId
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: CorrelationId()
+  nameWithType: InvocationContext.CorrelationId()
+  fullName: MicroPlumberd.InvocationContext.CorrelationId()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CorrelationId
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 276
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Guid? CorrelationId()
+    return:
+      type: System.Nullable{System.Guid}
+    content.vb: Public Function CorrelationId() As Guid?
+  overload: MicroPlumberd.InvocationContext.CorrelationId*
+- uid: MicroPlumberd.InvocationContext.Build(MicroPlumberd.InvocationContext,MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.InvocationContext.Build(MicroPlumberd.InvocationContext,MicroPlumberd.Metadata)
+  id: Build(MicroPlumberd.InvocationContext,MicroPlumberd.Metadata)
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: Build(InvocationContext, Metadata)
+  nameWithType: InvocationContext.Build(InvocationContext, Metadata)
+  fullName: MicroPlumberd.InvocationContext.Build(MicroPlumberd.InvocationContext, MicroPlumberd.Metadata)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Build
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 278
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static void Build(InvocationContext context, Metadata metadata)
+    parameters:
+    - id: context
+      type: MicroPlumberd.InvocationContext
+    - id: metadata
+      type: MicroPlumberd.Metadata
+    content.vb: Public Shared Sub Build(context As InvocationContext, metadata As Metadata)
+  overload: MicroPlumberd.InvocationContext.Build*
+- uid: MicroPlumberd.InvocationContext.Clone
+  commentId: M:MicroPlumberd.InvocationContext.Clone
+  id: Clone
+  parent: MicroPlumberd.InvocationContext
+  langs:
+  - csharp
+  - vb
+  name: Clone()
+  nameWithType: InvocationContext.Clone()
+  fullName: MicroPlumberd.InvocationContext.Clone()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Clone
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 286
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public InvocationContext Clone()
+    return:
+      type: MicroPlumberd.InvocationContext
+    content.vb: Public Function Clone() As InvocationContext
+  overload: MicroPlumberd.InvocationContext.Clone*
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -595,6 +753,60 @@ references:
   name: SetUserId
   nameWithType: InvocationContext.SetUserId
   fullName: MicroPlumberd.InvocationContext.SetUserId
+- uid: MicroPlumberd.InvocationContext.CausactionId*
+  commentId: Overload:MicroPlumberd.InvocationContext.CausactionId
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_CausactionId
+  name: CausactionId
+  nameWithType: InvocationContext.CausactionId
+  fullName: MicroPlumberd.InvocationContext.CausactionId
+- uid: System.Nullable{System.Guid}
+  commentId: T:System.Nullable{System.Guid}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid?
+  nameWithType: Guid?
+  fullName: System.Guid?
+  spec.csharp:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '?'
+  spec.vb:
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.InvocationContext.Current*
   commentId: Overload:MicroPlumberd.InvocationContext.Current
   href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Current
@@ -650,6 +862,22 @@ references:
   nameWithType.vb: Boolean
   fullName.vb: Boolean
   name.vb: Boolean
+- uid: MicroPlumberd.InvocationContext.TryGetValue*
+  commentId: Overload:MicroPlumberd.InvocationContext.TryGetValue
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_TryGetValue__1_System_String___0__
+  name: TryGetValue
+  nameWithType: InvocationContext.TryGetValue
+  fullName: MicroPlumberd.InvocationContext.TryGetValue
+- uid: '{TValue}'
+  commentId: '!:TValue'
+  definition: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
+- uid: TValue
+  name: TValue
+  nameWithType: TValue
+  fullName: TValue
 - uid: MicroPlumberd.InvocationContext.Clear*
   commentId: Overload:MicroPlumberd.InvocationContext.Clear
   href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Clear
@@ -662,3 +890,28 @@ references:
   name: ClearCorrelation
   nameWithType: InvocationContext.ClearCorrelation
   fullName: MicroPlumberd.InvocationContext.ClearCorrelation
+- uid: MicroPlumberd.InvocationContext.CorrelationId*
+  commentId: Overload:MicroPlumberd.InvocationContext.CorrelationId
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_CorrelationId
+  name: CorrelationId
+  nameWithType: InvocationContext.CorrelationId
+  fullName: MicroPlumberd.InvocationContext.CorrelationId
+- uid: MicroPlumberd.InvocationContext.Build*
+  commentId: Overload:MicroPlumberd.InvocationContext.Build
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Build_MicroPlumberd_InvocationContext_MicroPlumberd_Metadata_
+  name: Build
+  nameWithType: InvocationContext.Build
+  fullName: MicroPlumberd.InvocationContext.Build
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: MicroPlumberd.InvocationContext.Clone*
+  commentId: Overload:MicroPlumberd.InvocationContext.Clone
+  href: MicroPlumberd.InvocationContext.html#MicroPlumberd_InvocationContext_Clone
+  name: Clone
+  nameWithType: InvocationContext.Clone
+  fullName: MicroPlumberd.InvocationContext.Clone

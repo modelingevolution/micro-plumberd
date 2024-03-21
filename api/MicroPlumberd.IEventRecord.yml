@@ -1,0 +1,132 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IEventRecord
+  commentId: T:MicroPlumberd.IEventRecord
+  id: IEventRecord
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IEventRecord.Event
+  - MicroPlumberd.IEventRecord.Metadata
+  langs:
+  - csharp
+  - vb
+  name: IEventRecord
+  nameWithType: IEventRecord
+  fullName: MicroPlumberd.IEventRecord
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IEventRecord
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 59
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IEventRecord
+    content.vb: Public Interface IEventRecord
+- uid: MicroPlumberd.IEventRecord.Metadata
+  commentId: P:MicroPlumberd.IEventRecord.Metadata
+  id: Metadata
+  parent: MicroPlumberd.IEventRecord
+  langs:
+  - csharp
+  - vb
+  name: Metadata
+  nameWithType: IEventRecord.Metadata
+  fullName: MicroPlumberd.IEventRecord.Metadata
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Metadata
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 61
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Metadata Metadata { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Metadata
+    content.vb: ReadOnly Property Metadata As Metadata
+  overload: MicroPlumberd.IEventRecord.Metadata*
+- uid: MicroPlumberd.IEventRecord.Event
+  commentId: P:MicroPlumberd.IEventRecord.Event
+  id: Event
+  parent: MicroPlumberd.IEventRecord
+  langs:
+  - csharp
+  - vb
+  name: Event
+  nameWithType: IEventRecord.Event
+  fullName: MicroPlumberd.IEventRecord.Event
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Event
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 62
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: object Event { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property [Event] As Object
+  overload: MicroPlumberd.IEventRecord.Event*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IEventRecord.Metadata*
+  commentId: Overload:MicroPlumberd.IEventRecord.Metadata
+  href: MicroPlumberd.IEventRecord.html#MicroPlumberd_IEventRecord_Metadata
+  name: Metadata
+  nameWithType: IEventRecord.Metadata
+  fullName: MicroPlumberd.IEventRecord.Metadata
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: MicroPlumberd.IEventRecord.Event*
+  commentId: Overload:MicroPlumberd.IEventRecord.Event
+  href: MicroPlumberd.IEventRecord.html#MicroPlumberd_IEventRecord_Event
+  name: Event
+  nameWithType: IEventRecord.Event
+  fullName: MicroPlumberd.IEventRecord.Event
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

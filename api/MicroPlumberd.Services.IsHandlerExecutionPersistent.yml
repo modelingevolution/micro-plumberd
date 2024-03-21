@@ -1,0 +1,82 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.IsHandlerExecutionPersistent
+  commentId: T:MicroPlumberd.Services.IsHandlerExecutionPersistent
+  id: IsHandlerExecutionPersistent
+  parent: MicroPlumberd.Services
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IsHandlerExecutionPersistent
+  nameWithType: IsHandlerExecutionPersistent
+  fullName: MicroPlumberd.Services.IsHandlerExecutionPersistent
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IsHandlerExecutionPersistent
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 36
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public delegate bool IsHandlerExecutionPersistent(Type handlerType)
+    parameters:
+    - id: handlerType
+      type: System.Type
+    return:
+      type: System.Boolean
+    content.vb: Public Delegate Function IsHandlerExecutionPersistent(handlerType As Type) As Boolean
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

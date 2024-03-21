@@ -1,0 +1,683 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.CommandExecutionResults
+  commentId: T:MicroPlumberd.Services.CommandExecutionResults
+  id: CommandExecutionResults
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.CommandExecutionResults.ErrorData
+  - MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
+  - MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata,System.Object)
+  - MicroPlumberd.Services.CommandExecutionResults.IsReady
+  - MicroPlumberd.Services.CommandExecutionResults.IsSuccess
+  langs:
+  - csharp
+  - vb
+  name: CommandExecutionResults
+  nameWithType: CommandExecutionResults
+  fullName: MicroPlumberd.Services.CommandExecutionResults
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandExecutionResults
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 139
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public class CommandExecutionResults
+    content.vb: Public Class CommandExecutionResults
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata,System.Object)
+  commentId: M:MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata,System.Object)
+  id: Handle(MicroPlumberd.Metadata,System.Object)
+  parent: MicroPlumberd.Services.CommandExecutionResults
+  langs:
+  - csharp
+  - vb
+  name: Handle(Metadata, object)
+  nameWithType: CommandExecutionResults.Handle(Metadata, object)
+  fullName: MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Handle
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 141
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public ValueTask<bool> Handle(Metadata m, object ev)
+    parameters:
+    - id: m
+      type: MicroPlumberd.Metadata
+    - id: ev
+      type: System.Object
+    return:
+      type: System.Threading.Tasks.ValueTask{System.Boolean}
+    content.vb: Public Function Handle(m As Metadata, ev As Object) As ValueTask(Of Boolean)
+  overload: MicroPlumberd.Services.CommandExecutionResults.Handle*
+  nameWithType.vb: CommandExecutionResults.Handle(Metadata, Object)
+  fullName.vb: MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata, Object)
+  name.vb: Handle(Metadata, Object)
+- uid: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
+  commentId: P:MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
+  id: ErrorMessage
+  parent: MicroPlumberd.Services.CommandExecutionResults
+  langs:
+  - csharp
+  - vb
+  name: ErrorMessage
+  nameWithType: CommandExecutionResults.ErrorMessage
+  fullName: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ErrorMessage
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 189
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public string ErrorMessage { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ErrorMessage As String
+  overload: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage*
+- uid: MicroPlumberd.Services.CommandExecutionResults.ErrorData
+  commentId: P:MicroPlumberd.Services.CommandExecutionResults.ErrorData
+  id: ErrorData
+  parent: MicroPlumberd.Services.CommandExecutionResults
+  langs:
+  - csharp
+  - vb
+  name: ErrorData
+  nameWithType: CommandExecutionResults.ErrorData
+  fullName: MicroPlumberd.Services.CommandExecutionResults.ErrorData
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ErrorData
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 190
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public object? ErrorData { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: Public Property ErrorData As Object
+  overload: MicroPlumberd.Services.CommandExecutionResults.ErrorData*
+- uid: MicroPlumberd.Services.CommandExecutionResults.IsSuccess
+  commentId: P:MicroPlumberd.Services.CommandExecutionResults.IsSuccess
+  id: IsSuccess
+  parent: MicroPlumberd.Services.CommandExecutionResults
+  langs:
+  - csharp
+  - vb
+  name: IsSuccess
+  nameWithType: CommandExecutionResults.IsSuccess
+  fullName: MicroPlumberd.Services.CommandExecutionResults.IsSuccess
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IsSuccess
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 191
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public bool IsSuccess { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsSuccess As Boolean
+  overload: MicroPlumberd.Services.CommandExecutionResults.IsSuccess*
+- uid: MicroPlumberd.Services.CommandExecutionResults.IsReady
+  commentId: P:MicroPlumberd.Services.CommandExecutionResults.IsReady
+  id: IsReady
+  parent: MicroPlumberd.Services.CommandExecutionResults
+  langs:
+  - csharp
+  - vb
+  name: IsReady
+  nameWithType: CommandExecutionResults.IsReady
+  fullName: MicroPlumberd.Services.CommandExecutionResults.IsReady
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IsReady
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 192
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public TaskCompletionSource<bool> IsReady { get; }
+    parameters: []
+    return:
+      type: System.Threading.Tasks.TaskCompletionSource{System.Boolean}
+    content.vb: Public Property IsReady As TaskCompletionSource(Of Boolean)
+  overload: MicroPlumberd.Services.CommandExecutionResults.IsReady*
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.CommandExecutionResults.Handle*
+  commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.Handle
+  href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_Handle_MicroPlumberd_Metadata_System_Object_
+  name: Handle
+  nameWithType: CommandExecutionResults.Handle
+  fullName: MicroPlumberd.Services.CommandExecutionResults.Handle
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: System.Threading.Tasks.ValueTask{System.Boolean}
+  commentId: T:System.Threading.Tasks.ValueTask{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.ValueTask`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<bool>
+  nameWithType: ValueTask<bool>
+  fullName: System.Threading.Tasks.ValueTask<bool>
+  nameWithType.vb: ValueTask(Of Boolean)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of Boolean)
+  name.vb: ValueTask(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Threading.Tasks.ValueTask`1
+  commentId: T:System.Threading.Tasks.ValueTask`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  name: ValueTask<TResult>
+  nameWithType: ValueTask<TResult>
+  fullName: System.Threading.Tasks.ValueTask<TResult>
+  nameWithType.vb: ValueTask(Of TResult)
+  fullName.vb: System.Threading.Tasks.ValueTask(Of TResult)
+  name.vb: ValueTask(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.ValueTask`1
+    name: ValueTask
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.valuetask-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage*
+  commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
+  href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_ErrorMessage
+  name: ErrorMessage
+  nameWithType: CommandExecutionResults.ErrorMessage
+  fullName: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MicroPlumberd.Services.CommandExecutionResults.ErrorData*
+  commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.ErrorData
+  href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_ErrorData
+  name: ErrorData
+  nameWithType: CommandExecutionResults.ErrorData
+  fullName: MicroPlumberd.Services.CommandExecutionResults.ErrorData
+- uid: MicroPlumberd.Services.CommandExecutionResults.IsSuccess*
+  commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.IsSuccess
+  href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_IsSuccess
+  name: IsSuccess
+  nameWithType: CommandExecutionResults.IsSuccess
+  fullName: MicroPlumberd.Services.CommandExecutionResults.IsSuccess
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MicroPlumberd.Services.CommandExecutionResults.IsReady*
+  commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.IsReady
+  href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_IsReady
+  name: IsReady
+  nameWithType: CommandExecutionResults.IsReady
+  fullName: MicroPlumberd.Services.CommandExecutionResults.IsReady
+- uid: System.Threading.Tasks.TaskCompletionSource{System.Boolean}
+  commentId: T:System.Threading.Tasks.TaskCompletionSource{System.Boolean}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.TaskCompletionSource`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  name: TaskCompletionSource<bool>
+  nameWithType: TaskCompletionSource<bool>
+  fullName: System.Threading.Tasks.TaskCompletionSource<bool>
+  nameWithType.vb: TaskCompletionSource(Of Boolean)
+  fullName.vb: System.Threading.Tasks.TaskCompletionSource(Of Boolean)
+  name.vb: TaskCompletionSource(Of Boolean)
+  spec.csharp:
+  - uid: System.Threading.Tasks.TaskCompletionSource`1
+    name: TaskCompletionSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  - name: <
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.TaskCompletionSource`1
+    name: TaskCompletionSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: )
+- uid: System.Threading.Tasks.TaskCompletionSource`1
+  commentId: T:System.Threading.Tasks.TaskCompletionSource`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  name: TaskCompletionSource<TResult>
+  nameWithType: TaskCompletionSource<TResult>
+  fullName: System.Threading.Tasks.TaskCompletionSource<TResult>
+  nameWithType.vb: TaskCompletionSource(Of TResult)
+  fullName.vb: System.Threading.Tasks.TaskCompletionSource(Of TResult)
+  name.vb: TaskCompletionSource(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.TaskCompletionSource`1
+    name: TaskCompletionSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.TaskCompletionSource`1
+    name: TaskCompletionSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.taskcompletionsource-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
