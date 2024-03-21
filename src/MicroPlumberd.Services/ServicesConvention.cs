@@ -74,6 +74,6 @@ class CommandMappings
                      .Where(x => x is ThrowsFaultCommandExceptionAttribute)
                      .OfType<ThrowsFaultCommandExceptionAttribute>()
                      .Select(x => x.ThrownType))
-            yield return ($"{cmdType}Failed<{c.Name}>", typeof(CommandExecuted<>).MakeGenericType(c));
+            yield return ($"{cmdType}Failed<{c.Name}>", typeof(CommandFailed<>).MakeGenericType(c));
     }
 }

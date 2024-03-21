@@ -10,6 +10,55 @@ using ModelingEvolution.DirectConnect;
 
 namespace MicroPlumberd.Tests.Unit;
 
+public class ProcessManagerGnerationTests
+{
+    [Fact]
+    public void CommandTypes()
+    {
+        GetCommandTypes<XooProcessManager>().Should().BeEquivalentTo(Expected());
+    }
+
+
+
+    [Fact]
+    public void Types()
+    {
+        GetTypes<XooProcessManager>().AsEnumerable().Should().BeEquivalentTo(ExpectedTypes.AsEnumerable());
+
+    }
+
+    [Fact]
+    public void StartType()
+    {
+        GetStartType<XooProcessManager>().Should().Be(typeof(FooCreated));
+    }
+
+    Dictionary<string, Type> ExpectedTypes = new Dictionary<string, Type>()
+    {
+        {nameof(FooCreated), typeof(FooCreated)},
+        {nameof(BooUpdated), typeof(BooUpdated)},
+        {"CommandEnqueued<CreateBoo>", typeof(CommandEnqueued<CreateBoo>)}
+    };
+
+    private Type GetStartType<T>() where T : IProcessManager
+    {
+        return T.StartEvent;
+    }
+    private IReadOnlyDictionary<string, Type> GetTypes<T>() where T : ITypeRegister
+    {
+        return T.TypeRegister;
+    }
+    private IEnumerable<Type> Expected()
+    {
+        yield return typeof(CommandEnqueued<CreateBoo>);
+        yield return typeof(CommandEnqueued<CreateLoo>);
+    }
+    private IEnumerable<Type> GetCommandTypes<T>() where T : IProcessManager
+    {
+        return T.CommandTypes;
+    }
+}
+
 [TestCategory("Unit")]
 public class ApiTypeRegisterTests
 {
