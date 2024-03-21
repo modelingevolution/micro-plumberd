@@ -42,7 +42,7 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
 
         var fooModel = new FooModel();
 
-        var sub = await plumber.SubscribeEventHandle(fooModel);
+        var sub = await plumber.SubscribeEventHandler(fooModel);
 
         await Task.Delay(1000);
 

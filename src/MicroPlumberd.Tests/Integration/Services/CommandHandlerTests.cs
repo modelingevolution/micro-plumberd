@@ -77,7 +77,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             await Task.Delay(1000);
             
             var fooModel = new FooModel();
-            var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandle(fooModel);
+            var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
 
             var client = await _clientApp.Configure(x => x
                     .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
@@ -124,7 +124,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             
 
             var fooModel = new FooModel();
-            var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandle(fooModel);
+            var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
             await Task.Delay(1000);
 
             fooModel.Index.Should().HaveCount(1);

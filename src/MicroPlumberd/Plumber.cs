@@ -119,14 +119,14 @@ public class Plumber : IPlumber, IPlumberConfig
     {
         return new SubscriptionRunner(this, _client.SubscribeToStream(streamName, start, true, userCredentials, cancellationToken));
     }
-    public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
+    public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
         FromStream? start = null, bool ensureOutputStreamProjection=true)
         where TEventHandler : class,IEventHandler, ITypeRegister
     {
-        return await SubscribeEventHandle<TEventHandler>(TEventHandler.TypeRegister.TryGetValue!, TEventHandler.TypeRegister.Keys,
+        return await SubscribeEventHandler<TEventHandler>(TEventHandler.TypeRegister.TryGetValue!, TEventHandler.TypeRegister.Keys,
             eh, outputStream, start, ensureOutputStreamProjection);
     }
-    public async Task<IAsyncDisposable> SubscribeEventHandle<TEventHandler>(TypeEventConverter mapFunc,
+    public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes, TEventHandler? eh = default, string? outputStream = null,
         FromStream? start = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class, IEventHandler

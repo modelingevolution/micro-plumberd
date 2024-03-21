@@ -37,11 +37,14 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
     public async Task Handle(Metadata m, object ev)
     {
         var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(T), ev.GetType()), this));
+        if (_serviceConventions.CommandHandlerSkipFilter(m, ev))
+            return;
         await invoker.Handle(m, ev);
     }
 
     private async Task Handle<T>(Metadata m, T command)
     {
+        m.CausationId()
         await using var scope = plumber.Config.ServiceProvider.CreateAsyncScope();
         var ch = (ICommandHandler<T>)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<T>));
         var recipientId = m.RecipientId();

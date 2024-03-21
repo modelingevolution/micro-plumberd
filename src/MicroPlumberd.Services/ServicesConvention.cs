@@ -17,6 +17,12 @@ public interface IServicesConvention
     CommandMessageTypes CommandMessageTypes { get; set; }
     CommandName CommandNameConvention { get; set; }
     SessionStreamFromSessionId SessionStreamFromSessionIdConvention { get; set; }
+    /// <summary>
+    /// Used only for manual subscribing: plumberd.SubscribeCommandHandler<THandler>()
+    /// </summary>
+    IsHandlerExecutionPersistent IsHandlerExecutionPersistent { get; set; }
+    Func<bool> AreHandlersExecutedPersistently { get; set; }
+    Func<Metadata, object, bool> CommandHandlerSkipFilter {get; set;}
 }
 
 public interface IServicesConfig
@@ -27,8 +33,13 @@ class ServicesConfig : IServicesConfig
 {
     public TimeSpan DefaultTimeout { get; set; } = TimeSpan.FromMinutes(2);
 }
+
+public delegate bool IsHandlerExecutionPersistent(Type handlerType);
 class ServicesConvention : IServicesConvention
 {
+    public IsHandlerExecutionPersistent IsHandlerExecutionPersistent { get; set; } = static x => false;
+    public Func<bool> AreHandlersExecutedPersistently { get; set; } = () => false;
+    public Func<Metadata, object, bool> CommandHandlerSkipFilter { get; set; } = (m, e) => false;
     public OutputSteamNameFromCommandHandler OutputSteamNameFromCommandHandlerConvention { get; set; } = static x => $">{x.GetFriendlyName()}";
     public GroupNameFromCommandHandler GroupNameFromCommandHandlerConvention { get; set; } = static x => $"{x.GetFriendlyName()}";
     public AppCommandStream AppCommandStreamConvention { get; set; } = static () => $">{AppDomain.CurrentDomain.FriendlyName}";

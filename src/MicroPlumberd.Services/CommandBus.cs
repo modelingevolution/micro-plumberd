@@ -48,7 +48,7 @@ class CommandBus : ICommandBus, IEventHandler
 
         if (shouldSubscribe)
         {
-            await _plumber.SubscribeEventHandle(TryMapEventResponse, null, this, _stream, FromStream.End, false);
+            await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _stream, FromStream.End, false);
             _log.LogDebug("Session {steamId} subscribed.", _stream);
         }
     }

@@ -29,10 +29,13 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log, IPlumber 
         this._eventMapper = _handlersByCommand.Keys.ToDictionary(x => x.Name);
         var events = _handlersByCommand.Keys.Select(x => x.Name).ToArray();
 
-        var outputStream = plumber.Config.Conventions.ServicesConventions().AppCommandStreamConvention();
+        var settings = plumber.Config.Conventions.ServicesConventions();
+        var outputStream = settings.AppCommandStreamConvention();
         
-        this._subscription = await plumber.SubscribeEventHandlerPersistently(MapCommandType, events, this, outputStream, AppDomain.CurrentDomain.FriendlyName , StreamPosition.End, true);
-        
+        if(settings.AreHandlersExecutedPersistently())
+            this._subscription = await plumber.SubscribeEventHandlerPersistently(MapCommandType, events, this, outputStream, AppDomain.CurrentDomain.FriendlyName , StreamPosition.End, true);
+        else this._subscription = await plumber.SubscribeEventHandler(MapCommandType, events, this, outputStream, FromStream.End, true);
+
     }
 
     private bool MapCommandType(string evtType, out Type t)

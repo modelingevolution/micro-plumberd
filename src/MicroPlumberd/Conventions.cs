@@ -179,6 +179,13 @@ public static class TypeExtensions
 }
 public static class MetadataExtensions
 {
+    public static DateTimeOffset? Created(this Metadata m)
+    {
+
+        if (m.Data.TryGetProperty("Created", out var v))
+            return DateTimeOffset.Parse(v.GetString()!);
+        return null;
+    }
     public static Guid? CorrelationId(this Metadata m)
     {
         if (m.Data.TryGetProperty("$correlationId", out var v))

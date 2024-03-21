@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -64,13 +65,20 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
     
     public async Task Handle(Metadata m, object evt)
     {
-        var manager = await pmClient.GetManager<TProcessManager>(m.Id);
+        var plb = pmClient.Plumber;
         IProcessAction? action = null;
-
+        string streamId = string.Empty;
         if (TProcessManager.StartEvent == evt.GetType())
+        {
+            Guid aggId = Guid.Parse(m.SourceStreamId.Substring(m.SourceStreamId.IndexOf('-')+1));
+            var manager = await pmClient.GetManager<TProcessManager>(aggId);
+            streamId = plb.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager), manager.Id);
             action = await manager.StartWhen(m, evt);
+        }
         else
         {
+            var manager = await pmClient.GetManager<TProcessManager>(m.Id);
+            streamId = plb.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager), manager.Id);
             if (manager.Version < 0)
             {
                 log.LogDebug("We've received event to process-manager that was not created.");
@@ -79,15 +87,11 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             action = await manager.When(m, evt);
         }
 
-        // TODO: This should be done as a single transaction!
-        var pl = pmClient.Plumber;
-        var streamId = pl.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager),manager.Id);
-        
-        await pl.AppendLink(streamId,m);
+        await plb.AppendLink(streamId,m);
         if (action is ICommandRequest cmd) 
-            await pl.AppendEvents(streamId, StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
+            await plb.AppendEvents(streamId, StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
         else if (action is IStateChangeAction s) 
-            await pl.AppendEvents(streamId, StreamRevision.FromInt64(s.Version), s.Events);
+            await plb.AppendEvents(streamId, StreamRevision.FromInt64(s.Version), s.Events);
     }
     
    
