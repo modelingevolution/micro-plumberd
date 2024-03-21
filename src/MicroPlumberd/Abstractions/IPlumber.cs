@@ -7,7 +7,7 @@ namespace MicroPlumberd;
 public interface IPlumber
 {
     IPlumberConfig Config { get; }
-    IEventStoreClientPool Pool { get; }
+    EventStoreClient Client { get; }
     EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
     EventStoreProjectionManagementClient ProjectionManagementClient { get; }
     IProjectionRegister ProjectionRegister { get; }

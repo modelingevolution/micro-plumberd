@@ -53,7 +53,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
     public async Task SubscribeAsync(string name, FromStream start)
     {
         await plumber.ProjectionManagementClient.EnsureJoinProjection(name, _register.Keys);
-        EventStoreClient.StreamSubscriptionResult subscription = plumber.Pool.Rent().SubscribeToStream(name, start, true);
+        EventStoreClient.StreamSubscriptionResult subscription = plumber.Client.SubscribeToStream(name, start, true);
         var state = Tuple.Create(this, subscription);
         
         await Task.Factory.StartNew(static async (x) =>
