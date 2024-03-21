@@ -19,7 +19,7 @@
     "content": [
       {
         "files": [
-          "**/*.{md,yml}", "**/toc.yml", "index.md", "README.md"
+          "**/*.{md,yml}", "**/toc.yml", "index.md", "README.md", "**/*.png"
         ],
         "src":"docs",
         "exclude": [
