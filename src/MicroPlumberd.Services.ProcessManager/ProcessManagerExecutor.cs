@@ -40,18 +40,19 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
                 var manager = await pmClient.GetManager<TProcessManager>(c.RecipientId);
 
                 CommandInvocationFailed evt = new CommandInvocationFailed() { Command = CommandRequest.Create(c.RecipientId, c.Command), Message = ex.Message, RecipientId = c.RecipientId };
-                await pmClient.Plumber.AppendEvents($"{typeof(TProcessManager).Name}-{manager.Id}", StreamState.Any, evt);
+                var plm = pmClient.Plumber;
+                var streamId = plm.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager), manager.Id);
+                await plm.AppendEvents(streamId, StreamState.Any, evt);
 
                 Guid causationId = m.CausationId() ?? throw new InvalidOperationException("Causation id is not provided.");
-                var causationEvent = await pmClient.Plumber
-                    .FindEventInStream($"{typeof(TProcessManager).Name}-{manager.Id}", causationId, TProcessManager.TypeRegister.TryGetValue);
+                var causationEvent = await plm.FindEventInStream(streamId, causationId, TProcessManager.TypeRegister.TryGetValue);
 
                 ExecutionContext context = new ExecutionContext(causationEvent.Metadata, causationEvent.Event, c.RecipientId, CommandRequest.Create(c.RecipientId,c.Command),ex);
                 var compensationCommand = await manager.HandleError(context);
                 if (compensationCommand != null)
                 {
                     var evt2 =  CommandEnqueued.Create(compensationCommand.RecipientId, compensationCommand.Command);
-                    await pmClient.Plumber.AppendEvents($"{typeof(TProcessManager).Name}-{manager.Id}", StreamState.StreamExists, evt2);
+                    await plm.AppendEvents(streamId, StreamState.StreamExists, evt2);
                 }
             }
 
@@ -64,10 +65,10 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
     public async Task Handle(Metadata m, object evt)
     {
         var manager = await pmClient.GetManager<TProcessManager>(m.Id);
-        ICommandRequest? cmd = null;
+        IProcessAction? action = null;
 
         if (TProcessManager.StartEvent == evt.GetType())
-            cmd = await manager.StartWhen(m, evt);
+            action = await manager.StartWhen(m, evt);
         else
         {
             if (manager.Version < 0)
@@ -75,14 +76,18 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
                 log.LogDebug("We've received event to process-manager that was not created.");
                 return;
             }
-            cmd = await manager.When(m, evt);
+            action = await manager.When(m, evt);
         }
 
         // TODO: This should be done as a single transaction!
-        await pmClient.Plumber.AppendLink($"{typeof(TProcessManager).Name}-{manager.Id}",m);
-        if (cmd != null) 
-            await pmClient.Plumber.AppendEvents($"{typeof(TProcessManager).Name}-{manager.Id}", StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
+        var pl = pmClient.Plumber;
+        var streamId = pl.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager),manager.Id);
         
+        await pl.AppendLink(streamId,m);
+        if (action is ICommandRequest cmd) 
+            await pl.AppendEvents(streamId, StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
+        else if (action is IStateChangeAction s) 
+            await pl.AppendEvents(streamId, StreamRevision.FromInt64(s.Version), s.Events);
     }
     
    

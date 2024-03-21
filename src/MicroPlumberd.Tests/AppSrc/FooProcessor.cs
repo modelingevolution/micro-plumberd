@@ -13,15 +13,7 @@ public partial class FooProcessor(IPlumber plumber)
         await plumber.SaveNew(agg);
     }
 }
-public abstract class ProcessManagerBase : IVersionAware, IIdAware
-{
-    private long _version = -1;
-    private Guid _id;
-    public Guid Id => _id;
-    Guid IIdAware.Id { set => _id = value; }
-    public long Version => _version;
-    void IVersionAware.Increase() => _version += 1;
-}
+
 
 [ProcessManager]
 public partial class XooProcessManager : ProcessManagerBase, IProcessManager, ITypeRegister

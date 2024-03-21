@@ -35,7 +35,7 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
             .AddProcessManager<XooProcessManager>())
             .StartAsync();
 
-        await Task.Delay(5000);
+        await Task.Delay(2000);
 
         
         var client = await _clientApp.Configure(x=> x
@@ -52,7 +52,6 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
         await Task.Delay(2000);
         await clientBus.SendAsync("Hello".ToGuid(), new ChangeBoo() { Name="Okidoki"} );
 
-
-        await Task.Delay(30000);
+        await Task.Delay(2000);
     }
 }
