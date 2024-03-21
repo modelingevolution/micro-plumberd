@@ -4,8 +4,32 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
+    <Title>MicroPlumberd.Services.ProcessManager</Title>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <Description>CQRS/EventSourcing made eXtreamly simple. This part is EXPERIMENTAL, provides abstraction over StateFull ProcessManager</Description>
   </PropertyGroup>
 
+
+
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicroPlumberd.ProcessManager.Abstractions\MicroPlumberd.ProcessManager.Abstractions.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />

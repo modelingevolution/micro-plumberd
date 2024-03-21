@@ -16,6 +16,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Copyright>Rafal Maciag</Copyright>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <Description>CQRS/EventSourcing made eXtreamly simple. Domain-Layer abstractions: Read-Model, Event-Handler, Aggregate, Subscriptions</Description>
   </PropertyGroup>
 
 

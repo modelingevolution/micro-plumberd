@@ -4,11 +4,34 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
+    <Title>MicroPlumberd.ProcessManager.Abstractions</Title>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
   </PropertyGroup>
 
+
+
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -13,6 +13,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <Description>CQRS/EventSourcing made eXtreamly simple. Code Generators.</Description>
   </PropertyGroup>
   
   <ItemGroup>
