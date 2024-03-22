@@ -6,16 +6,16 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
 {
     private readonly Plumber plumber = plumber;
     private readonly Dictionary<string, Type> _register = new();
-    private readonly Dictionary<string, List<IReadModel>> _dispatcher = new();
+    private readonly Dictionary<string, List<IEventHandler>> _dispatcher = new();
     
     public ISubscriptionSet With<TModel>(TModel model)
-        where TModel : IReadModel, ITypeRegister
+        where TModel : IEventHandler, ITypeRegister
     {
         foreach(var i in TModel.TypeRegister)
         {
             _register.TryAdd(i.Key, i.Value);
             if (!_dispatcher.TryGetValue(i.Key, out var disp)) 
-                _dispatcher.Add(i.Key, disp=new List<IReadModel>());
+                _dispatcher.Add(i.Key, disp=new List<IEventHandler>());
             if(!disp.Contains(model))
                 disp.Add(model);
         }
@@ -42,7 +42,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                
 
                 foreach (var i in models)
-                    await i.Given(metadata, ev);
+                    await i.Handle(metadata, ev);
                 await sub.Ack(e.Event.EventId);
             }
         }, state, TaskCreationOptions.LongRunning);
@@ -68,7 +68,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
 
                 var (ev, metadata) = plumber.ReadEventData(er, t);
                 foreach (var i in models) 
-                    await i.Given(metadata, ev);
+                    await i.Handle(metadata, ev);
             }
         }, state, TaskCreationOptions.LongRunning);
     }

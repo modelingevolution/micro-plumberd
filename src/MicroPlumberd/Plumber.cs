@@ -132,12 +132,15 @@ public class Plumber : IPlumber, IPlumberConfig
         where TEventHandler : class, IEventHandler
     {
         eventTypes ??= Array.Empty<string>();
-        eh ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
+        
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
             await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, eventTypes);
         var sub = Subscribe(outputStream, start ?? FromStream.Start);
-        await sub.WithHandler(eh, mapFunc);
+        if(eh == null)
+            await sub.WithHandler<TEventHandler>(mapFunc);
+        else
+            await sub.WithHandler(eh, mapFunc);
         return sub;
     }
     public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
@@ -146,7 +149,7 @@ public class Plumber : IPlumber, IPlumberConfig
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class, IEventHandler
     {
-        model ??= this.ServiceProvider.GetRequiredService<TEventHandler>();
+        
         var handlerType = typeof(TEventHandler);
         startFrom ??= StreamPosition.End;
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
@@ -164,7 +167,11 @@ public class Plumber : IPlumber, IPlumberConfig
         }
 
         var sub = SubscribePersistently(outputStream, groupName);
-        await sub.WithHandler(model, mapFunc);
+        if (model == null)
+            await sub.WithHandler<TEventHandler>(mapFunc);
+        else
+            await sub.WithHandler(model, mapFunc);
+        return sub;
         return sub;
     }
     public Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,

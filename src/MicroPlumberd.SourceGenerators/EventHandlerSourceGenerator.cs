@@ -62,7 +62,7 @@ namespace MicroPlumberd.SourceGenerators
                             sb.AppendLine($"namespace {namespaceName};");
                         }
 
-                        sb.AppendLine($"partial class {className} : IReadModel,ITypeRegister");
+                        sb.AppendLine($"partial class {className} : IEventHandler,ITypeRegister");
                         sb.AppendLine("{");
                         sb.AppendLine("    Task IEventHandler.Handle(Metadata m, object ev) => Given(m,ev);");
                         sb.AppendLine("    public async Task Given(Metadata m, object ev)");

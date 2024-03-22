@@ -13,3 +13,8 @@ class CommandHandlerStarter<THandler>(IPlumber plumber) : ICommandHandlerStarter
     public IEnumerable<Type> CommandTypes => THandler.CommandTypes;
     public Type HandlerType => typeof(THandler);
 }
+class EventHandlerStarter<THandler>(IPlumber plumber) : IEventHandlerStarter
+    where THandler : class, IEventHandler, ITypeRegister
+{
+    public async Task Start() => await plumber.SubscribeEventHandler<THandler>();
+}

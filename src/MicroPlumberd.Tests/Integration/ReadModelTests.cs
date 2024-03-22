@@ -1,8 +1,10 @@
 using EventStore.Client;
 using FluentAssertions;
+using MicroPlumberd.Services;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Fixtures;
 using MicroPlumberd.Tests.Utils;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd.Tests.Integration;
 
@@ -11,7 +13,7 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
 {
     private readonly EventStoreServer _eventStore;
 
-    private readonly IPlumber plumber;
+    private IPlumber plumber;
 
     public ReadModelTests(EventStoreServer eventStore)
     {
@@ -47,6 +49,25 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         await Task.Delay(1000);
 
         fooModel.Index.Should().HaveCount(1);
+    }
+    [Fact]
+    public async Task SubscribeScopedModel()
+    {
+        // TODO: Switch to EF to check
+        await _eventStore.StartInDocker();
+        await AppendOneEvent();
+
+        var sp = new ServiceCollection()
+            .AddPlumberd(_eventStore.GetEventStoreSettings())
+            .AddEventHandler<FooModel>()
+            .BuildServiceProvider();
+
+        plumber = sp.GetRequiredService<IPlumber>();
+
+        var sub = await plumber.SubscribeEventHandler<FooModel>();
+
+        await Task.Delay(1000);
+        // Should check db.
     }
 
     private async Task AppendOneEvent()

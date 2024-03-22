@@ -14,10 +14,14 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     public async Task<T> WithHandler<T>(T model, TypeEventConverter func)
         where T : IEventHandler
     {
-        var state = new Tuple<EventStoreClient.StreamSubscriptionResult, T>(subscription, model);
+        return (T)await WithHandler((IEventHandler)model, func);
+    }
+    public async Task<IEventHandler> WithHandler(IEventHandler model, TypeEventConverter func)
+    {
+        var state = new Tuple<EventStoreClient.StreamSubscriptionResult, IEventHandler>(subscription, model);
         await Task.Factory.StartNew(async (x) =>
         {
-            var (sub, model) = (Tuple<EventStoreClient.StreamSubscriptionResult, T>)x!;
+            var (sub, model) = (Tuple<EventStoreClient.StreamSubscriptionResult, IEventHandler>)x!;
             await foreach (var e in sub)
             {
                 if (!func(e.Event.EventType, out var t)) continue;
@@ -31,11 +35,13 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
         return model;
     }
 
-    public async Task<T> WithHandler<T>() where T : IEventHandler, ITypeRegister
+    public async Task<IEventHandler> WithHandler<T>(TypeEventConverter func) where T : IEventHandler
     {
-        var handler = plumber.ServiceProvider.GetRequiredService<T>();
-        return await WithHandler(handler);
+        var handler = plumber.ServiceProvider.GetService<IEventHandler<T>>() ?? (IEventHandler)plumber.ServiceProvider.GetRequiredService<T>();
+        return (IEventHandler)await WithHandler(handler, func);
     }
+    public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(T.TypeRegister.TryGetValue);
 
     public async ValueTask DisposeAsync() => await subscription.DisposeAsync();
 }
+

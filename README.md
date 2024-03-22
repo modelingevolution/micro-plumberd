@@ -120,7 +120,30 @@ var sub= await plumber.SubscribeEventHandler(fooModel);
 var sub2= await plumber.SubscribeEventHandlerPersistently(fooModel);
 ```
 
-With **SubscribeModel** you can subscribe from start, from certain moment or from the end of the stream. 
+With **SubscribeModel** you can subscribe from start, from certain moment or from the end of the stream. If you want to use DI and have your model as a scoped one, you can configure plumber at the startup and don't need to invoke SubscribeEventHandler manually.
+Here you have an example with EF Core.
+
+```csharp
+// Program.cs
+services
+    .AddPlumberd()
+    .AddEventHandler<FooModel>();
+
+// FooModel.cs
+[EventHandler]
+public partial class FooModel : DbContext
+{
+    private async Task Given(Metadata m, FooCreated ev)
+    {
+        // your code
+    }
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+         // your code
+    }
+    // other stuff, DbSet... etc...
+}
+```
 
 2) Processors
 

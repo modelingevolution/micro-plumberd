@@ -6,6 +6,20 @@ using Microsoft.Extensions.Hosting;
 
 namespace MicroPlumberd.Services;
 
+class EventHandlerExecutor<TOwner>(TOwner handler) : IEventHandler<TOwner>
+    where TOwner : IEventHandler
+{
+    public Task Handle(Metadata m, object ev) => handler.Handle(m, ev);
+}
+class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TOwner>
+    where TOwner : IEventHandler
+{
+    public async Task Handle(Metadata m, object ev)
+    {
+        await using var scope = sp.CreateAsyncScope(); 
+        await scope.ServiceProvider.GetRequiredService<TOwner>().Handle(m, ev);
+    }
+}
 public static class ContainerExtensions
 {
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
@@ -17,6 +31,7 @@ public static class ContainerExtensions
             x.ServiceProvider = sp;
         }));
         collection.TryAddSingleton<ICommandBus, CommandBus>();
+        collection.TryAddSingleton( typeof(IEventHandler<>),typeof(EventHandlerExecutor<>));
         return collection;
     }
 
@@ -34,6 +49,14 @@ public static class ContainerExtensions
             services.AddHostedService<TService>();
         }
 
+        return services;
+    }
+    public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        services.AddBackgroundServiceIfMissing<EventHandlerService>();
+        services.AddSingleton<IEventHandlerStarter, EventHandlerStarter<TEventHandler>>();
+        services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
+        services.TryAddScoped<TEventHandler>();
         return services;
     }
     public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler:ICommandHandler, IServiceTypeRegister
