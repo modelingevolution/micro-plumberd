@@ -1,9 +1,12 @@
 
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
+using MicroPlumberd.Services.Uniqueness;
 using ProtoBuf;
 
 namespace MicroPlumberd.Tests.AppSrc;
+
+
 
 [ProtoContract]
 [ThrowsFaultCommandException<BusinessFault>]
@@ -15,6 +18,8 @@ public class CreateFoo : IId
     [ProtoMember(1)]
     public Guid Id { get; set; } = Guid.NewGuid();
 }
+
+
 
 [ProtoContract]
 [Returns<HandlerOperationStatus>]

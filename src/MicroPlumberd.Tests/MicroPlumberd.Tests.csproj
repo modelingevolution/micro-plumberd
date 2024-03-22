@@ -30,6 +30,7 @@
     <ProjectReference Include="..\MicroPlumberd.DirectConnect\MicroPlumberd.Services.Grpc.DirectConnect.csproj" />
     <ProjectReference Include="..\MicroPlumberd.ProcessManager.Abstractions\MicroPlumberd.ProcessManager.Abstractions.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services.ProcessManager\MicroPlumberd.Services.ProcessManagers.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
     <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />

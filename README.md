@@ -335,3 +335,47 @@ public class OrderProcessManager(IPlumberd plumberd)
 }
 
 ```
+
+### EXPERIMENTAL Uniqueness support
+
+Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some "hacks" but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose. 
+
+However, you can leverage typical reservation patterns. At the moment the library supports only the first option:
+
+- At domain-layer, a domain-service usually would enforce uniqueness. This commonly requires a round-trip to a database. So just before actual event(s) are saved in a stream, a check against uniqueness constraints should be evaluated - thus reservation is made. When the event is appended to the stream, a confirmation is done automatically (on db).
+
+- At a app-layer, command-handler would typically reserve a name. And when aggregate, which is being executed by the handler, saves its events successfully, then the reservation is confirmed. If the handler fails, then the reservation is deleted. Seems simple? Under the hood, it is not that simple, because what if the process is terminated while the command-handler is executing? We need to make sure, that we can recover successfully from this situation.
+
+Let's see the API proposal:
+
+```csharp
+// Let's define unique-category name
+record FooCategory;
+
+
+public class FooCreated 
+    // and apply it to one fo the columns.
+    [Unique<FooCategory>]
+    public string? Name { get; set; }
+    
+    // other stuff   
+}
+```
+
+For complex types, we need more flexibility.
+
+```csharp
+// Let's define unique-category name, this will be mapped to columns in db
+// If you'd opt for domain-layer enforcment, you need to change commands to events.
+record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooChanged>
+{
+    public static BooCategory From(BooCreated x) => new(x.InitialName, x.OtherName);
+    public static BooCategory From(BooChanged x) => new(x.NewName, x.OtherName);
+}
+
+[Unique<BooCategory>]
+public record BooCreated(string InitialName, string OtherName);
+
+[Unique<BooCategory>]
+public record BooChanged(string NewName, string OtherName);
+```

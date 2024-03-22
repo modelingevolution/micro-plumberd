@@ -18,11 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Services", "MicroPlumberd.Services\MicroPlumberd.Services.csproj", "{513E10D3-337C-4D76-AAA4-C630F56F995F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.CommandBus.Abstractions", "MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj", "{E1D86855-6F63-4A52-B602-73F7CDFAF9C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.CommandBus.Abstractions", "MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj", "{E1D86855-6F63-4A52-B602-73F7CDFAF9C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.ProcessManager.Abstractions", "MicroPlumberd.ProcessManager.Abstractions\MicroPlumberd.ProcessManager.Abstractions.csproj", "{CCDC0779-E2EA-4A00-910B-23ADED419664}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.ProcessManager.Abstractions", "MicroPlumberd.ProcessManager.Abstractions\MicroPlumberd.ProcessManager.Abstractions.csproj", "{CCDC0779-E2EA-4A00-910B-23ADED419664}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.ProcessManagers", "MicroPlumberd.Services.ProcessManager\MicroPlumberd.Services.ProcessManagers.csproj", "{BBF8285D-AD1C-4D8B-BC87-34AA17D349D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Services.ProcessManagers", "MicroPlumberd.Services.ProcessManager\MicroPlumberd.Services.ProcessManagers.csproj", "{BBF8285D-AD1C-4D8B-BC87-34AA17D349D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Uniqueness", "MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj", "{045F1BF3-8B3F-4D10-9D5E-258CA8EA8B79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{BBF8285D-AD1C-4D8B-BC87-34AA17D349D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBF8285D-AD1C-4D8B-BC87-34AA17D349D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBF8285D-AD1C-4D8B-BC87-34AA17D349D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{045F1BF3-8B3F-4D10-9D5E-258CA8EA8B79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{045F1BF3-8B3F-4D10-9D5E-258CA8EA8B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{045F1BF3-8B3F-4D10-9D5E-258CA8EA8B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{045F1BF3-8B3F-4D10-9D5E-258CA8EA8B79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

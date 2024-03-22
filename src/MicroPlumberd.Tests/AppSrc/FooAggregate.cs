@@ -1,3 +1,5 @@
+using MicroPlumberd.Services.Uniqueness;
+
 namespace MicroPlumberd.Tests.AppSrc;
 
 [Aggregate]
@@ -20,8 +22,20 @@ public partial class BooAggregate(Guid id) : AggregateBase<BooAggregate.BooState
     public void Open(string msg) => AppendPendingChange(new BooCreated() { Name = msg });
     public void Change(string msg) => AppendPendingChange(new BooUpdated() { Name = msg });
 }
-public class FooCreated { public string? Name { get; set; } }
+
+
+public class FooCreated { [Unique<FooCategory>] public string? Name { get; set; } }
 public class FooUpdated { public string? Name { get; set; } }
 
+[Unique<BooCategory>()]
 public class BooCreated { public string? Name { get; set; } }
+
+[Unique<BooCategory>()]
 public class BooUpdated { public string? Name { get; set; } }
+
+record FooCategory;
+record BooCategory(string Name) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooUpdated>
+{
+    public static BooCategory From(BooCreated x) => new(x.Name);
+    public static BooCategory From(BooUpdated x) => new(x.Name);
+}
