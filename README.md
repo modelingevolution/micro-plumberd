@@ -114,10 +114,10 @@ Comments:
 
 ```csharp
 var fooModel = new FooModel();
-var sub= await plumber.SubscribeModel(fooModel);
+var sub= await plumber.SubscribeEventHandler(fooModel);
 
 // or if you want to persist progress of your subscription
-var sub2= await plumber.SubscribeModelPersistently(fooModel);
+var sub2= await plumber.SubscribeEventHandlerPersistently(fooModel);
 ```
 
 With **SubscribeModel** you can subscribe from start, from certain moment or from the end of the stream. 
