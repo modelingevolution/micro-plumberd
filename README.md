@@ -53,7 +53,6 @@ services.AddPlumberd(settings);
 [Aggregate]
 public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState>(id)
 {
-    internal new FooState State => base.State;
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) => state with { Name = ev.Name };
     private static FooState Given(FooState state, FooUpdated ev) => state with { Name =ev.Name };
