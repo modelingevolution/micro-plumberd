@@ -305,7 +305,12 @@ Given diagram:
 The code of Order Process Manager looks like this:
 
 ```csharp
+// Let's configure stuff beforehand
+services.AddPlumberd(eventStoreConfig)
+    .AddCommandHandler<OrderCommandHandler>() // handles PlaceOrder command.
+    .AddProcessManager<OrderProcessManager>();
 
+// And process manager.
 [ProcessManager]
 public class OrderProcessManager(IPlumberd plumberd)
 {
