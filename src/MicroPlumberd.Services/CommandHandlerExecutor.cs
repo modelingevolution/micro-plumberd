@@ -97,7 +97,6 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
     {
         return T.RegisterHandlers(services);
     }
-    // TODO: Conventions are not consistent.
-    private static Dictionary<string, Type> _typeRegister = T.CommandTypes.ToDictionary(x => x.Name);
-    public static IReadOnlyDictionary<string, Type> TypeRegister => _typeRegister;
+    
+    static IEnumerable<Type> ITypeRegister.Types => T.CommandTypes;
 }

@@ -23,7 +23,7 @@ public class ProcessManagerGnerationTests
     [Fact]
     public void Types()
     {
-        GetTypes<XooProcessManager>().AsEnumerable().Should().BeEquivalentTo(ExpectedTypes.AsEnumerable());
+        GetTypes<XooProcessManager>().Should().BeEquivalentTo(ExpectedTypes.AsEnumerable());
 
     }
 
@@ -33,20 +33,23 @@ public class ProcessManagerGnerationTests
         GetStartType<XooProcessManager>().Should().Be(typeof(FooCreated));
     }
 
-    Dictionary<string, Type> ExpectedTypes = new Dictionary<string, Type>()
+    IEnumerable<Type> ExpectedTypes 
     {
-        {nameof(FooCreated), typeof(FooCreated)},
-        {nameof(BooUpdated), typeof(BooUpdated)},
-        {"CommandEnqueued<CreateBoo>", typeof(CommandEnqueued<CreateBoo>)}
-    };
+        get
+        {
+            yield return typeof(FooCreated);
+            yield return typeof(BooUpdated);
+            yield return typeof(CommandEnqueued<CreateBoo>);
+        }
+    }
 
     private Type GetStartType<T>() where T : IProcessManager
     {
         return T.StartEvent;
     }
-    private IReadOnlyDictionary<string, Type> GetTypes<T>() where T : ITypeRegister
+    private IEnumerable<Type> GetTypes<T>() where T : ITypeRegister
     {
-        return T.TypeRegister;
+        return T.Types;
     }
     private IEnumerable<Type> Expected()
     {

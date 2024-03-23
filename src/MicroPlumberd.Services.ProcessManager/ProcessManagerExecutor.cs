@@ -24,8 +24,8 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             if (ev is ICommandEnqueued sf)
                 Given(m, sf);
         }
-        private static Dictionary<string, Type> _typeRegister = TProcessManager.CommandTypes.ToDictionary(x=>x.GetFriendlyName());
-        public static IReadOnlyDictionary<string, Type> TypeRegister => _typeRegister;
+        
+        public static IEnumerable<Type> Types=> TProcessManager.CommandTypes;
     }
     internal class Sender(IProcessManagerClient pmClient) : IEventHandler, ITypeRegister
     {
@@ -46,7 +46,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
                 await plm.AppendEvents(streamId, StreamState.Any, evt);
 
                 Guid causationId = m.CausationId() ?? throw new InvalidOperationException("Causation id is not provided.");
-                var causationEvent = await plm.FindEventInStream(streamId, causationId, TProcessManager.TypeRegister.TryGetValue);
+                var causationEvent = await plm.FindEventInStream(streamId, causationId, pmClient.Plumber.TypeHandlerRegister.GetConverterFor<TProcessManager>());
 
                 ExecutionContext context = new ExecutionContext(causationEvent.Metadata, causationEvent.Event, c.RecipientId, CommandRequest.Create(c.RecipientId,c.Command),ex);
                 var compensationCommand = await manager.HandleError(context);
@@ -59,7 +59,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
 
         }
 
-        public static IReadOnlyDictionary<string, Type> TypeRegister => TProcessManager.CommandTypes.ToDictionary(x => x.GetFriendlyName());
+        public static IEnumerable<Type> Types => TProcessManager.CommandTypes;
     }
 
     
@@ -95,5 +95,5 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
     }
     
    
-    public static IReadOnlyDictionary<string, Type> TypeRegister => TProcessManager.TypeRegister;
+    public static IEnumerable<Type> Types => TProcessManager.Types;
 }

@@ -92,18 +92,13 @@ namespace MicroPlumberd.SourceGenerators
 
                         sb.AppendLine($"   public static {className} New(Guid id) => new {className}(id);");
 
-                        sb.AppendLine("    private static readonly Dictionary<string, Type> _register = new()");
-                        sb.AppendLine("    {");
 
-                        foreach (var method in methods)
-                        {
-                            var eventType = method.ParameterList.Parameters[1].Type.ToString();
-                            sb.AppendLine($"        {{ nameof({eventType}), typeof({eventType}) }}, ");
-                        }
-                        sb.AppendLine("    };");
+                        var typeOfs = methods.Select(x => x.ParameterList.Parameters[1].Type)
+                            .Select(x => $"typeof({x})");
+                        var events = string.Join(",", typeOfs);
+                        sb.AppendLine($"    static IEnumerable<Type> ITypeRegister.Types => [{events}];");
 
-                        sb.AppendLine($"    static IReadOnlyDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
-
+                        
                         sb.AppendLine("}");
                         context.AddSource($"{className}_Aggregate.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
                     }

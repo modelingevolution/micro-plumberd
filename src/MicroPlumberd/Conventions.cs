@@ -13,7 +13,7 @@ namespace MicroPlumberd;
 
 public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId);
 
-public delegate string EventNameConvention(object? aggregate, object evt);
+public delegate string EventNameConvention(Type? ownerType, Type evtType);
 
 public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
 
@@ -46,7 +46,7 @@ class Conventions : IConventions
     public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
     public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.GetFriendlyName()}-{id}";
-    public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetType().GetFriendlyName();
+    public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
     public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();

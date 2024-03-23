@@ -80,21 +80,13 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine("                throw new ArgumentException(\"Unknown event type\", ev.GetType().Name);");
                         sb.AppendLine("        }");
                         sb.AppendLine("    }");
-              
 
 
-                        sb.AppendLine("    private static readonly Dictionary<string, Type> _register = new()");
-                        sb.AppendLine("    {");
+                        var typeOfs = methods.Select(x => x.ParameterList.Parameters[1].Type)
+                            .Select(x => $"typeof({x})");
+                        var events = string.Join(",", typeOfs);
+                        sb.AppendLine($"    static IEnumerable<Type> ITypeRegister.Types => [{events}];");
 
-                        foreach (var method in methods)
-                        {
-                            var eventType = method.ParameterList.Parameters[1].Type.ToString();
-                            sb.AppendLine($"        {{ nameof({eventType}), typeof({eventType}) }}, ");
-                        }
-                        sb.AppendLine("    };");
-
-                        sb.AppendLine($"    static IReadOnlyDictionary<string, Type> ITypeRegister.TypeRegister => _register;");
-                        
                         sb.AppendLine("}");
                         context.AddSource($"{className}_EventHandler.cs", SourceText.From(sb.ToString(), Encoding.UTF8));
                     }

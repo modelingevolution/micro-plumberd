@@ -7,7 +7,7 @@ namespace MicroPlumberd;
 public delegate bool TypeEventConverter(string type, out Type t);
 public interface ITypeRegister
 {
-    static abstract IReadOnlyDictionary<string, Type> TypeRegister { get; }
+    static abstract IEnumerable<Type> Types { get; }
     
 }
 

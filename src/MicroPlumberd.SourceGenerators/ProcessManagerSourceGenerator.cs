@@ -119,11 +119,7 @@ namespace MicroPlumberd.SourceGenerators
                             sb.AppendLine($"async Task<ICommandRequest> IProcessManager.StartWhen(Metadata m, object evt) => await StartWhen(m, ({startEvt})evt);");
                         }
 
-                        sb.AppendLine("private static Dictionary<string, Type> _register = new Dictionary<string, Type>()\r\n    ");
-                        sb.AppendLine("{");
-                        foreach (var i in events) sb.AppendLine($"    {{ \"{i}\",typeof({i}) }},");
-                        sb.AppendLine("};");
-                        sb.AppendLine("static IReadOnlyDictionary<string, Type> ITypeRegister.TypeRegister => _register;\r\n");
+                        sb.AppendLine($"    static IEnumerable<Type> ITypeRegister.Types => [{string.Join(",", events.Select(x=> $"typeof({x})"))}];");
 
                         sb.AppendLine("async Task IEventHandler.Handle(Metadata m, object evt)");
                         sb.AppendLine("{");
