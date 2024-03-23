@@ -11,7 +11,7 @@ public interface IPlumber
     EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
     EventStoreProjectionManagementClient ProjectionManagementClient { get; }
     IProjectionRegister ProjectionRegister { get; }
-    ITypeHandlerRegister TypeHandlerRegister { get; }
+    ITypeHandlerRegisters TypeHandlerRegisters { get; }
 
     /// <summary>
     /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.

@@ -1,6 +1,5 @@
 ﻿
 using System.Collections.Concurrent;
-using System.Collections.Frozen;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
@@ -76,38 +75,21 @@ record EventRecord<TEvent> : IEventRecord<TEvent>
     object IEventRecord.Event => Event;
 }
 
-public interface ITypeHandlerRegister
+public interface ITypeHandlerRegisters
 {
-    TypeEventConverter GetConverterFor<T>() where T:ITypeRegister;
-    IEnumerable<KeyValuePair<string, Type>> GetItems<T>() where T : ITypeRegister;
-    IEnumerable<string> GetEventsFor<T>() where T : ITypeRegister;
+    IEnumerable<Type> HandlerTypes { get; }
+    TypeEventConverter GetEventNameConverterFor<THandler>() where THandler:ITypeRegister;
+    IEnumerable<KeyValuePair<string, Type>> GetEventNameMappingsFor<THandler>() where THandler : ITypeRegister;
+    IEnumerable<string> GetEventNamesFor<THandler>() where THandler : ITypeRegister;
 }
 
-sealed class TypeHandlerRegister(EventNameConvention conventions) : ITypeHandlerRegister
-{
-    private readonly ConcurrentDictionary<Type, FrozenDictionary<string, Type>> _index = new();
-    
-    public TypeEventConverter GetConverterFor<T>() where T:ITypeRegister => Get<T>().TryGetValue!;
-
-    private FrozenDictionary<string, Type> Get<T>() where T:ITypeRegister
-    {
-        var ownerType = typeof(T);
-        return _index.GetOrAdd(ownerType, x => T.Types.ToFrozenDictionary(x => conventions(ownerType, x)));
-    }
-    
-    public IEnumerable<KeyValuePair<string, Type>> GetItems<T>() where T : ITypeRegister
-    {
-        return Get<T>();
-    }
-    public IEnumerable<string> GetEventsFor<T>() where T : ITypeRegister => Get<T>().Keys;
-}
 public class Plumber : IPlumber, IPlumberConfig
 {
     private readonly EventStoreClient _client;
     private readonly EventStorePersistentSubscriptionsClient _persistentSubscriptionClient;
     private readonly EventStoreProjectionManagementClient _projectionManagementClient;
-    private readonly TypeHandlerRegister _typeHandlerRegister;
-    public ITypeHandlerRegister TypeHandlerRegister => _typeHandlerRegister;
+    private readonly TypeHandlerRegisters _typeHandlerRegisters;
+    public ITypeHandlerRegisters TypeHandlerRegisters => _typeHandlerRegisters;
     public EventStoreClient Client => _client;
     public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
     {
@@ -128,7 +110,7 @@ public class Plumber : IPlumber, IPlumberConfig
         this.Serializer = config.Serializer;
         this.ServiceProvider = config.ServiceProvider;
         this._extension = config.Extension; // Shouldn't we make a copy?
-        this._typeHandlerRegister = new TypeHandlerRegister(this.Conventions.GetEventNameConvention);
+        this._typeHandlerRegisters = new TypeHandlerRegisters(this.Conventions.GetEventNameConvention);
     }
 
     private readonly ConcurrentDictionary<Type, object> _extension = new();
@@ -153,7 +135,7 @@ public class Plumber : IPlumber, IPlumberConfig
         FromStream? start = null, bool ensureOutputStreamProjection=true)
         where TEventHandler : class,IEventHandler, ITypeRegister
     {
-        return await SubscribeEventHandler<TEventHandler>(_typeHandlerRegister.GetConverterFor<TEventHandler>()!, _typeHandlerRegister.GetEventsFor<TEventHandler>(),
+        return await SubscribeEventHandler<TEventHandler>(_typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>()!, _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
             eh, outputStream, start, ensureOutputStreamProjection);
     }
     public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
@@ -207,7 +189,7 @@ public class Plumber : IPlumber, IPlumberConfig
     public Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class,IEventHandler, ITypeRegister =>
-        SubscribeEventHandlerPersistently(_typeHandlerRegister.GetConverterFor<TEventHandler>(), _typeHandlerRegister.GetEventsFor<TEventHandler>(),
+        SubscribeEventHandlerPersistently(_typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>(), _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
             model, outputStream, groupName, startFrom, ensureOutputStreamProjection);
 
 
@@ -226,7 +208,7 @@ public class Plumber : IPlumber, IPlumberConfig
     {
         
         var items = _client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start, resolveLinkTos:true);
-        var registry = _typeHandlerRegister.GetConverterFor<T>();
+        var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
         var vAware = model as IVersionAware;
         
         if (await items.ReadState == ReadState.StreamNotFound) return;
@@ -288,7 +270,7 @@ public class Plumber : IPlumber, IPlumberConfig
         var aggregate = T.New(id);
         if (await items.ReadState == ReadState.StreamNotFound) return aggregate;
 
-        var registry = _typeHandlerRegister.GetConverterFor<T>();
+        var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
         var events = items.Select(x=> new { ResolvedEvent = x, EventType = registry(x.Event.EventType, out var t) ? t : null })
             .Where(x=>x.EventType != null)
             .Select(ev => Serializer.Deserialize(ev.ResolvedEvent.Event.Data.Span, ev.EventType!));

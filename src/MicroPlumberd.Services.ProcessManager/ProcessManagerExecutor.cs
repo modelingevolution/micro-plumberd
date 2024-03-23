@@ -46,7 +46,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
                 await plm.AppendEvents(streamId, StreamState.Any, evt);
 
                 Guid causationId = m.CausationId() ?? throw new InvalidOperationException("Causation id is not provided.");
-                var causationEvent = await plm.FindEventInStream(streamId, causationId, pmClient.Plumber.TypeHandlerRegister.GetConverterFor<TProcessManager>());
+                var causationEvent = await plm.FindEventInStream(streamId, causationId, pmClient.Plumber.TypeHandlerRegisters.GetEventNameConverterFor<TProcessManager>());
 
                 ExecutionContext context = new ExecutionContext(causationEvent.Metadata, causationEvent.Event, c.RecipientId, CommandRequest.Create(c.RecipientId,c.Command),ex);
                 var compensationCommand = await manager.HandleError(context);

@@ -8,7 +8,7 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
     {
-        return await WithHandler<T>(model, plumber.TypeHandlerRegister.GetConverterFor<T>());
+        return await WithHandler<T>(model, plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
     }
 
     public async Task<T> WithHandler<T>(T model, TypeEventConverter func)
@@ -40,7 +40,7 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
         var handler = plumber.ServiceProvider.GetService<IEventHandler<T>>() ?? (IEventHandler)plumber.ServiceProvider.GetRequiredService<T>();
         return (IEventHandler)await WithHandler(handler, func);
     }
-    public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegister.GetConverterFor<T>());
+    public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
 
     public async ValueTask DisposeAsync() => await subscription.DisposeAsync();
 }

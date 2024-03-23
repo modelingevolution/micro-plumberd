@@ -11,7 +11,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
     public ISubscriptionSet With<TModel>(TModel model)
         where TModel : IEventHandler, ITypeRegister
     {
-        foreach(var i in plumber.TypeHandlerRegister.GetItems<TModel>())
+        foreach(var i in plumber.TypeHandlerRegisters.GetEventNameMappingsFor<TModel>())
         {
             _register.TryAdd(i.Key, i.Value);
             if (!_dispatcher.TryGetValue(i.Key, out var disp)) 
