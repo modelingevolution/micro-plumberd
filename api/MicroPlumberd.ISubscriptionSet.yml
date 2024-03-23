@@ -22,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ISubscriptionSet
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 13
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -47,12 +47,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: With
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 15
+    startLine: 18
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'ISubscriptionSet With<TModel>(TModel model) where TModel : IReadModel, ITypeRegister'
+    content: 'ISubscriptionSet With<TModel>(TModel model) where TModel : IEventHandler, ITypeRegister'
     parameters:
     - id: model
       type: '{TModel}'
@@ -60,7 +60,7 @@ items:
     - id: TModel
     return:
       type: MicroPlumberd.ISubscriptionSet
-    content.vb: Function [With](Of TModel As {IReadModel, ITypeRegister})(model As TModel) As ISubscriptionSet
+    content.vb: Function [With](Of TModel As {IEventHandler, ITypeRegister})(model As TModel) As ISubscriptionSet
   overload: MicroPlumberd.ISubscriptionSet.With*
   nameWithType.vb: ISubscriptionSet.With(Of TModel)(TModel)
   fullName.vb: MicroPlumberd.ISubscriptionSet.With(Of TModel)(TModel)
@@ -83,7 +83,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistentlyAsync
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 18
+    startLine: 21
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -119,7 +119,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeAsync
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 19
+    startLine: 22
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

@@ -1,0 +1,74 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.Uniqueness
+  commentId: N:MicroPlumberd.Services.Uniqueness
+  id: MicroPlumberd.Services.Uniqueness
+  children:
+  - MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+  - MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Services.Uniqueness
+  nameWithType: MicroPlumberd.Services.Uniqueness
+  fullName: MicroPlumberd.Services.Uniqueness
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Services.Uniqueness
+references:
+- uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+  commentId: T:MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+  href: MicroPlumberd.Services.Uniqueness.IUniqueFrom-2.html
+  name: IUniqueFrom<TCategory, TCommand>
+  nameWithType: IUniqueFrom<TCategory, TCommand>
+  fullName: MicroPlumberd.Services.Uniqueness.IUniqueFrom<TCategory, TCommand>
+  nameWithType.vb: IUniqueFrom(Of TCategory, TCommand)
+  fullName.vb: MicroPlumberd.Services.Uniqueness.IUniqueFrom(Of TCategory, TCommand)
+  name.vb: IUniqueFrom(Of TCategory, TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+    name: IUniqueFrom
+    href: MicroPlumberd.Services.Uniqueness.IUniqueFrom-2.html
+  - name: <
+  - name: TCategory
+  - name: ','
+  - name: " "
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+    name: IUniqueFrom
+    href: MicroPlumberd.Services.Uniqueness.IUniqueFrom-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategory
+  - name: ','
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
+  commentId: T:MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
+  href: MicroPlumberd.Services.Uniqueness.UniqueAttribute-1.html
+  name: UniqueAttribute<TCategory>
+  nameWithType: UniqueAttribute<TCategory>
+  fullName: MicroPlumberd.Services.Uniqueness.UniqueAttribute<TCategory>
+  nameWithType.vb: UniqueAttribute(Of TCategory)
+  fullName.vb: MicroPlumberd.Services.Uniqueness.UniqueAttribute(Of TCategory)
+  name.vb: UniqueAttribute(Of TCategory)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
+    name: UniqueAttribute
+    href: MicroPlumberd.Services.Uniqueness.UniqueAttribute-1.html
+  - name: <
+  - name: TCategory
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
+    name: UniqueAttribute
+    href: MicroPlumberd.Services.Uniqueness.UniqueAttribute-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategory
+  - name: )

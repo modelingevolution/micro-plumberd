@@ -7,6 +7,7 @@ items:
   children:
   - MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   - MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
   langs:
   - csharp
@@ -22,7 +23,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ContainerExtensions
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 8
+    startLine: 22
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -58,7 +59,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddPlumberd
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 10
+    startLine: 24
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -97,7 +98,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddBackgroundServiceIfMissing
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 22
+    startLine: 37
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -115,6 +116,43 @@ items:
   nameWithType.vb: ContainerExtensions.AddBackgroundServiceIfMissing(Of TService)(IServiceCollection)
   fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing(Of TService)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   name.vb: AddBackgroundServiceIfMissing(Of TService)(IServiceCollection)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  id: AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddEventHandler<TEventHandler>(IServiceCollection)
+  nameWithType: ContainerExtensions.AddEventHandler<TEventHandler>(IServiceCollection)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddEventHandler<TEventHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddEventHandler
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 53
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: 'public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister'
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    typeParameters:
+    - id: TEventHandler
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(services As IServiceCollection) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddEventHandler*
+  nameWithType.vb: ContainerExtensions.AddEventHandler(Of TEventHandler)(IServiceCollection)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name.vb: AddEventHandler(Of TEventHandler)(IServiceCollection)
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   id: AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
@@ -134,7 +172,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandHandler
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 38
+    startLine: 61
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -559,6 +597,12 @@ references:
   name: AddBackgroundServiceIfMissing
   nameWithType: ContainerExtensions.AddBackgroundServiceIfMissing
   fullName: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing
+- uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler*
+  commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddEventHandler
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  name: AddEventHandler
+  nameWithType: ContainerExtensions.AddEventHandler
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddEventHandler
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
   href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_

@@ -1,12 +1,13 @@
+![Logo](./logo.png)
 # micro-plumberd
 Micro library for EventStore, CQRS and EventSourcing
 Just eXtreamly simple.
 
 ## Getting started
-
 ### Install nugets: 
 
 ```powershell
+# For your domain
 dotnet add package MicroPlumberd
 dotnet add package MicroPlumberd.SourceGenerators
 ```
@@ -49,7 +50,6 @@ services.AddPlumberd(settings);
 [Aggregate]
 public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState>(id)
 {
-    internal new FooState State => base.State;
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) => state with { Name = ev.Name };
     private static FooState Given(FooState state, FooUpdated ev) => state with { Name =ev.Name };
@@ -111,13 +111,36 @@ Comments:
 
 ```csharp
 var fooModel = new FooModel();
-var sub= await plumber.SubscribeModel(fooModel);
+var sub= await plumber.SubscribeEventHandler(fooModel);
 
 // or if you want to persist progress of your subscription
-var sub2= await plumber.SubscribeModelPersistently(fooModel);
+var sub2= await plumber.SubscribeEventHandlerPersistently(fooModel);
 ```
 
-With **SubscribeModel** you can subscribe from start, from certain moment or from the end of the stream. 
+With **SubscribeModel** you can subscribe from start, from certain moment or from the end of the stream. If you want to use DI and have your model as a scoped one, you can configure plumber at the startup and don't need to invoke SubscribeEventHandler manually.
+Here you have an example with EF Core.
+
+```csharp
+// Program.cs
+services
+    .AddPlumberd()
+    .AddEventHandler<FooModel>();
+
+// FooModel.cs
+[EventHandler]
+public partial class FooModel : DbContext
+{
+    private async Task Given(Metadata m, FooCreated ev)
+    {
+        // your code
+    }
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+         // your code
+    }
+    // other stuff, DbSet... etc...
+}
+```
 
 2) Processors
 
@@ -301,7 +324,12 @@ Given diagram:
 The code of Order Process Manager looks like this:
 
 ```csharp
+// Let's configure stuff beforehand
+services.AddPlumberd(eventStoreConfig)
+    .AddCommandHandler<OrderCommandHandler>() // handles PlaceOrder command.
+    .AddProcessManager<OrderProcessManager>();
 
+// And process manager.
 [ProcessManager]
 public class OrderProcessManager(IPlumberd plumberd)
 {
@@ -330,4 +358,48 @@ public class OrderProcessManager(IPlumberd plumberd)
     }
 }
 
+```
+
+### EXPERIMENTAL Uniqueness support
+
+Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some "hacks" but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose. 
+
+However, you can leverage typical reservation patterns. At the moment the library supports only the first option:
+
+- At domain-layer, a domain-service usually would enforce uniqueness. This commonly requires a round-trip to a database. So just before actual event(s) are saved in a stream, a check against uniqueness constraints should be evaluated - thus reservation is made. When the event is appended to the stream, a confirmation is done automatically (on db).
+
+- At a app-layer, command-handler would typically reserve a name. And when aggregate, which is being executed by the handler, saves its events successfully, then the reservation is confirmed. If the handler fails, then the reservation is deleted. Seems simple? Under the hood, it is not that simple, because what if the process is terminated while the command-handler is executing? We need to make sure, that we can recover successfully from this situation.
+
+Let's see the API proposal:
+
+```csharp
+// Let's define unique-category name
+record FooCategory;
+
+
+public class FooCreated 
+    // and apply it to one fo the columns.
+    [Unique<FooCategory>]
+    public string? Name { get; set; }
+    
+    // other stuff   
+}
+```
+
+For complex types, we need more flexibility.
+
+```csharp
+// Let's define unique-category name, this will be mapped to columns in db
+// If you'd opt for domain-layer enforcment, you need to change commands to events.
+record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooChanged>
+{
+    public static BooCategory From(BooCreated x) => new(x.InitialName, x.OtherName);
+    public static BooCategory From(BooChanged x) => new(x.NewName, x.OtherName);
+}
+
+[Unique<BooCategory>]
+public record BooCreated(string InitialName, string OtherName);
+
+[Unique<BooCategory>]
+public record BooChanged(string NewName, string OtherName);
 ```

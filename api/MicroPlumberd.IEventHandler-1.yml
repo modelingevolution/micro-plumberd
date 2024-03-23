@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IEventHandler`1
+  commentId: T:MicroPlumberd.IEventHandler`1
+  id: IEventHandler`1
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: IEventHandler<TOwner>
+  nameWithType: IEventHandler<TOwner>
+  fullName: MicroPlumberd.IEventHandler<TOwner>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IEventHandler
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IEventHandler<TOwner> : IEventHandler where TOwner : IEventHandler'
+    typeParameters:
+    - id: TOwner
+    content.vb: Public Interface IEventHandler(Of TOwner As IEventHandler) Inherits IEventHandler
+  inheritedMembers:
+  - MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+  nameWithType.vb: IEventHandler(Of TOwner)
+  fullName.vb: MicroPlumberd.IEventHandler(Of TOwner)
+  name.vb: IEventHandler(Of TOwner)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+  commentId: M:MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+  parent: MicroPlumberd.IEventHandler
+  isExternal: true
+  href: MicroPlumberd.IEventHandler.html#MicroPlumberd_IEventHandler_Handle_MicroPlumberd_Metadata_System_Object_
+  name: Handle(Metadata, object)
+  nameWithType: IEventHandler.Handle(Metadata, object)
+  fullName: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata, object)
+  nameWithType.vb: IEventHandler.Handle(Metadata, Object)
+  fullName.vb: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata, Object)
+  name.vb: Handle(Metadata, Object)
+  spec.csharp:
+  - uid: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+    name: Handle
+    href: MicroPlumberd.IEventHandler.html#MicroPlumberd_IEventHandler_Handle_MicroPlumberd_Metadata_System_Object_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
+    name: Handle
+    href: MicroPlumberd.IEventHandler.html#MicroPlumberd_IEventHandler_Handle_MicroPlumberd_Metadata_System_Object_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: MicroPlumberd.IEventHandler
+  commentId: T:MicroPlumberd.IEventHandler
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventHandler.html
+  name: IEventHandler
+  nameWithType: IEventHandler
+  fullName: MicroPlumberd.IEventHandler

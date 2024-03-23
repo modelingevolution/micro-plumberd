@@ -57,6 +57,8 @@ items:
     name: IConventions
   - uid: MicroPlumberd.IEventHandler
     name: IEventHandler
+  - uid: MicroPlumberd.IEventHandler`1
+    name: IEventHandler<TOwner>
   - uid: MicroPlumberd.IEventRecord
     name: IEventRecord
   - uid: MicroPlumberd.IEventRecord`1
@@ -87,6 +89,8 @@ items:
     name: ISubscriptionRunner
   - uid: MicroPlumberd.ISubscriptionSet
     name: ISubscriptionSet
+  - uid: MicroPlumberd.ITypeHandlerRegisters
+    name: ITypeHandlerRegisters
   - uid: MicroPlumberd.ITypeRegister
     name: ITypeRegister
   - uid: MicroPlumberd.IVersionAware
@@ -207,6 +211,13 @@ items:
     name: ProcessManagerExecutor<TProcessManager>
   - uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
     name: ProcessManagerExecutor<TProcessManager>.Lookup
+- uid: MicroPlumberd.Services.Uniqueness
+  name: MicroPlumberd.Services.Uniqueness
+  items:
+  - uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+    name: IUniqueFrom<TCategory, TCommand>
+  - uid: MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
+    name: UniqueAttribute<TCategory>
 - uid: MicroPlumberd.SourceGenerators
   name: MicroPlumberd.SourceGenerators
   items:

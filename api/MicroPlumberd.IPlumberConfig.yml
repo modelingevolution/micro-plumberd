@@ -17,12 +17,12 @@ items:
   type: Interface
   source:
     remote:
-      path: src/MicroPlumberd/Plumber.cs
+      path: src/MicroPlumberd/IPlumberConfig.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IPlumberConfig
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 13
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 2
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -46,12 +46,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Plumber.cs
+      path: src/MicroPlumberd/IPlumberConfig.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Serializer
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 15
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 4
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -75,12 +75,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Plumber.cs
+      path: src/MicroPlumberd/IPlumberConfig.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Conventions
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 16
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 5
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -104,12 +104,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Plumber.cs
+      path: src/MicroPlumberd/IPlumberConfig.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServiceProvider
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 17
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 6
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

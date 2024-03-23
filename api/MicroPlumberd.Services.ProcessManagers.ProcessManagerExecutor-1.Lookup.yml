@@ -7,7 +7,7 @@ items:
   children:
   - MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.GetProcessManagerIdByReceiverId(System.Guid)
   - MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Handle(MicroPlumberd.Metadata,System.Object)
-  - MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.TypeRegister
+  - MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types
   langs:
   - csharp
   - vb
@@ -117,23 +117,23 @@ items:
   nameWithType.vb: ProcessManagerExecutor(Of TProcessManager).Lookup.Handle(Metadata, Object)
   fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager).Lookup.Handle(MicroPlumberd.Metadata, Object)
   name.vb: Handle(Metadata, Object)
-- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.TypeRegister
-  commentId: P:MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.TypeRegister
-  id: TypeRegister
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types
+  commentId: P:MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types
+  id: Types
   parent: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup
   langs:
   - csharp
   - vb
-  name: TypeRegister
-  nameWithType: ProcessManagerExecutor<TProcessManager>.Lookup.TypeRegister
-  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor<TProcessManager>.Lookup.TypeRegister
+  name: Types
+  nameWithType: ProcessManagerExecutor<TProcessManager>.Lookup.Types
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor<TProcessManager>.Lookup.Types
   type: Property
   source:
     remote:
       path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerExecutor.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: TypeRegister
+    id: Types
     path: src/MicroPlumberd.Services.ProcessManager/ProcessManagerExecutor.cs
     startLine: 27
   assemblies:
@@ -141,16 +141,16 @@ items:
   namespace: MicroPlumberd.Services.ProcessManagers
   example: []
   syntax:
-    content: public static IReadOnlyDictionary<string, Type> TypeRegister { get; }
+    content: public static IEnumerable<Type> Types { get; }
     parameters: []
     return:
-      type: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Type}
-    content.vb: Public Shared ReadOnly Property TypeRegister As IReadOnlyDictionary(Of String, Type)
-  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.TypeRegister*
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: Public Shared ReadOnly Property Types As IEnumerable(Of Type)
+  overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types*
   implements:
-  - MicroPlumberd.ITypeRegister.TypeRegister
-  nameWithType.vb: ProcessManagerExecutor(Of TProcessManager).Lookup.TypeRegister
-  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager).Lookup.TypeRegister
+  - MicroPlumberd.ITypeRegister.Types
+  nameWithType.vb: ProcessManagerExecutor(Of TProcessManager).Lookup.Types
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager).Lookup.Types
 references:
 - uid: MicroPlumberd.Services.ProcessManagers
   commentId: N:MicroPlumberd.Services.ProcessManagers
@@ -604,101 +604,83 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.TypeRegister*
-  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.TypeRegister
-  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.Lookup.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerExecutor_1_Lookup_TypeRegister
-  name: TypeRegister
-  nameWithType: ProcessManagerExecutor<TProcessManager>.Lookup.TypeRegister
-  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor<TProcessManager>.Lookup.TypeRegister
-  nameWithType.vb: ProcessManagerExecutor(Of TProcessManager).Lookup.TypeRegister
-  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager).Lookup.TypeRegister
-- uid: MicroPlumberd.ITypeRegister.TypeRegister
-  commentId: P:MicroPlumberd.ITypeRegister.TypeRegister
+- uid: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types*
+  commentId: Overload:MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types
+  href: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.Lookup.html#MicroPlumberd_Services_ProcessManagers_ProcessManagerExecutor_1_Lookup_Types
+  name: Types
+  nameWithType: ProcessManagerExecutor<TProcessManager>.Lookup.Types
+  fullName: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor<TProcessManager>.Lookup.Types
+  nameWithType.vb: ProcessManagerExecutor(Of TProcessManager).Lookup.Types
+  fullName.vb: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor(Of TProcessManager).Lookup.Types
+- uid: MicroPlumberd.ITypeRegister.Types
+  commentId: P:MicroPlumberd.ITypeRegister.Types
   parent: MicroPlumberd.ITypeRegister
-  href: MicroPlumberd.ITypeRegister.html#MicroPlumberd_ITypeRegister_TypeRegister
-  name: TypeRegister
-  nameWithType: ITypeRegister.TypeRegister
-  fullName: MicroPlumberd.ITypeRegister.TypeRegister
-- uid: System.Collections.Generic.IReadOnlyDictionary{System.String,System.Type}
-  commentId: T:System.Collections.Generic.IReadOnlyDictionary{System.String,System.Type}
+  href: MicroPlumberd.ITypeRegister.html#MicroPlumberd_ITypeRegister_Types
+  name: Types
+  nameWithType: ITypeRegister.Types
+  fullName: MicroPlumberd.ITypeRegister.Types
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
   parent: System.Collections.Generic
-  definition: System.Collections.Generic.IReadOnlyDictionary`2
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
-  name: IReadOnlyDictionary<string, Type>
-  nameWithType: IReadOnlyDictionary<string, Type>
-  fullName: System.Collections.Generic.IReadOnlyDictionary<string, System.Type>
-  nameWithType.vb: IReadOnlyDictionary(Of String, Type)
-  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of String, System.Type)
-  name.vb: IReadOnlyDictionary(Of String, Type)
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
   spec.csharp:
-  - uid: System.Collections.Generic.IReadOnlyDictionary`2
-    name: IReadOnlyDictionary
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
   - name: <
-  - uid: System.String
-    name: string
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
-  - name: " "
   - uid: System.Type
     name: Type
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.type
   - name: '>'
   spec.vb:
-  - uid: System.Collections.Generic.IReadOnlyDictionary`2
-    name: IReadOnlyDictionary
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
   - name: (
   - name: Of
-  - name: " "
-  - uid: System.String
-    name: String
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.string
-  - name: ','
   - name: " "
   - uid: System.Type
     name: Type
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.type
   - name: )
-- uid: System.Collections.Generic.IReadOnlyDictionary`2
-  commentId: T:System.Collections.Generic.IReadOnlyDictionary`2
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
-  name: IReadOnlyDictionary<TKey, TValue>
-  nameWithType: IReadOnlyDictionary<TKey, TValue>
-  fullName: System.Collections.Generic.IReadOnlyDictionary<TKey, TValue>
-  nameWithType.vb: IReadOnlyDictionary(Of TKey, TValue)
-  fullName.vb: System.Collections.Generic.IReadOnlyDictionary(Of TKey, TValue)
-  name.vb: IReadOnlyDictionary(Of TKey, TValue)
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
   spec.csharp:
-  - uid: System.Collections.Generic.IReadOnlyDictionary`2
-    name: IReadOnlyDictionary
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
   - name: <
-  - name: TKey
-  - name: ','
-  - name: " "
-  - name: TValue
+  - name: T
   - name: '>'
   spec.vb:
-  - uid: System.Collections.Generic.IReadOnlyDictionary`2
-    name: IReadOnlyDictionary
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlydictionary-2
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
   - name: (
   - name: Of
   - name: " "
-  - name: TKey
-  - name: ','
-  - name: " "
-  - name: TValue
+  - name: T
   - name: )
 - uid: System.Collections.Generic
   commentId: N:System.Collections.Generic

@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IEventHandler
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 5
+    startLine: 8
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -45,7 +45,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Handle
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 7
+    startLine: 10
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

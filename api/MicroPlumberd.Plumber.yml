@@ -33,6 +33,7 @@ items:
   - MicroPlumberd.Plumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)
   - MicroPlumberd.Plumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
   - MicroPlumberd.Plumber.SubscribeSet
+  - MicroPlumberd.Plumber.TypeHandlerRegisters
   langs:
   - csharp
   - vb
@@ -47,7 +48,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Plumber
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 76
+    startLine: 6
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -71,6 +72,38 @@ items:
   extensionMethods:
   - MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1
   - MicroPlumberd.IPlumberConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
+- uid: MicroPlumberd.Plumber.TypeHandlerRegisters
+  commentId: P:MicroPlumberd.Plumber.TypeHandlerRegisters
+  id: TypeHandlerRegisters
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: TypeHandlerRegisters
+  nameWithType: Plumber.TypeHandlerRegisters
+  fullName: MicroPlumberd.Plumber.TypeHandlerRegisters
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: TypeHandlerRegisters
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 27
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public ITypeHandlerRegisters TypeHandlerRegisters { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.ITypeHandlerRegisters
+    content.vb: Public ReadOnly Property TypeHandlerRegisters As ITypeHandlerRegisters
+  overload: MicroPlumberd.Plumber.TypeHandlerRegisters*
+  implements:
+  - MicroPlumberd.IPlumber.TypeHandlerRegisters
 - uid: MicroPlumberd.Plumber.Client
   commentId: P:MicroPlumberd.Plumber.Client
   id: Client
@@ -89,7 +122,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Client
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 81
+    startLine: 28
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -103,174 +136,6 @@ items:
   overload: MicroPlumberd.Plumber.Client*
   implements:
   - MicroPlumberd.IPlumber.Client
-- uid: MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
-  commentId: M:MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
-  id: Create(EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
-  parent: MicroPlumberd.Plumber
-  langs:
-  - csharp
-  - vb
-  name: Create(EventStoreClientSettings?, Action<IPlumberConfig>?)
-  nameWithType: Plumber.Create(EventStoreClientSettings?, Action<IPlumberConfig>?)
-  fullName: MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings?, System.Action<MicroPlumberd.IPlumberConfig>?)
-  type: Method
-  source:
-    remote:
-      path: src/MicroPlumberd/Plumber.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Create
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 82
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  syntax:
-    content: public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
-    parameters:
-    - id: settings
-      type: EventStore.Client.EventStoreClientSettings
-    - id: configure
-      type: System.Action{MicroPlumberd.IPlumberConfig}
-    return:
-      type: MicroPlumberd.IPlumber
-    content.vb: Public Shared Function Create(settings As EventStoreClientSettings = Nothing, configure As Action(Of IPlumberConfig) = Nothing) As IPlumber
-  overload: MicroPlumberd.Plumber.Create*
-  nameWithType.vb: Plumber.Create(EventStoreClientSettings, Action(Of IPlumberConfig))
-  fullName.vb: MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings, System.Action(Of MicroPlumberd.IPlumberConfig))
-  name.vb: Create(EventStoreClientSettings, Action(Of IPlumberConfig))
-- uid: MicroPlumberd.Plumber.GetExtension``1
-  commentId: M:MicroPlumberd.Plumber.GetExtension``1
-  id: GetExtension``1
-  parent: MicroPlumberd.Plumber
-  langs:
-  - csharp
-  - vb
-  name: GetExtension<T>()
-  nameWithType: Plumber.GetExtension<T>()
-  fullName: MicroPlumberd.Plumber.GetExtension<T>()
-  type: Method
-  source:
-    remote:
-      path: src/MicroPlumberd/Plumber.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: GetExtension
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 104
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  example: []
-  syntax:
-    content: 'public T GetExtension<T>() where T : new()'
-    typeParameters:
-    - id: T
-    return:
-      type: '{T}'
-    content.vb: Public Function GetExtension(Of T As New)() As T
-  overload: MicroPlumberd.Plumber.GetExtension*
-  implements:
-  - MicroPlumberd.IExtension.GetExtension``1
-  nameWithType.vb: Plumber.GetExtension(Of T)()
-  fullName.vb: MicroPlumberd.Plumber.GetExtension(Of T)()
-  name.vb: GetExtension(Of T)()
-- uid: MicroPlumberd.Plumber.ServiceProvider
-  commentId: P:MicroPlumberd.Plumber.ServiceProvider
-  id: ServiceProvider
-  parent: MicroPlumberd.Plumber
-  langs:
-  - csharp
-  - vb
-  name: ServiceProvider
-  nameWithType: Plumber.ServiceProvider
-  fullName: MicroPlumberd.Plumber.ServiceProvider
-  type: Property
-  source:
-    remote:
-      path: src/MicroPlumberd/Plumber.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: ServiceProvider
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 106
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  example: []
-  syntax:
-    content: public IServiceProvider ServiceProvider { get; set; }
-    parameters: []
-    return:
-      type: System.IServiceProvider
-    content.vb: Public Property ServiceProvider As IServiceProvider
-  overload: MicroPlumberd.Plumber.ServiceProvider*
-  implements:
-  - MicroPlumberd.IPlumberConfig.ServiceProvider
-- uid: MicroPlumberd.Plumber.Serializer
-  commentId: P:MicroPlumberd.Plumber.Serializer
-  id: Serializer
-  parent: MicroPlumberd.Plumber
-  langs:
-  - csharp
-  - vb
-  name: Serializer
-  nameWithType: Plumber.Serializer
-  fullName: MicroPlumberd.Plumber.Serializer
-  type: Property
-  source:
-    remote:
-      path: src/MicroPlumberd/Plumber.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Serializer
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 107
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  example: []
-  syntax:
-    content: public IObjectSerializer Serializer { get; set; }
-    parameters: []
-    return:
-      type: MicroPlumberd.IObjectSerializer
-    content.vb: Public Property Serializer As IObjectSerializer
-  overload: MicroPlumberd.Plumber.Serializer*
-  implements:
-  - MicroPlumberd.IPlumberConfig.Serializer
-- uid: MicroPlumberd.Plumber.Conventions
-  commentId: P:MicroPlumberd.Plumber.Conventions
-  id: Conventions
-  parent: MicroPlumberd.Plumber
-  langs:
-  - csharp
-  - vb
-  name: Conventions
-  nameWithType: Plumber.Conventions
-  fullName: MicroPlumberd.Plumber.Conventions
-  type: Property
-  source:
-    remote:
-      path: src/MicroPlumberd/Plumber.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Conventions
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 108
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  example: []
-  syntax:
-    content: public IConventions Conventions { get; }
-    parameters: []
-    return:
-      type: MicroPlumberd.IConventions
-    content.vb: Public ReadOnly Property Conventions As IConventions
-  overload: MicroPlumberd.Plumber.Conventions*
-  implements:
-  - MicroPlumberd.IPlumberConfig.Conventions
 - uid: MicroPlumberd.Plumber.ProjectionRegister
   commentId: P:MicroPlumberd.Plumber.ProjectionRegister
   id: ProjectionRegister
@@ -289,7 +154,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionRegister
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 111
+    startLine: 29
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -321,7 +186,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PersistentSubscriptionClient
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 113
+    startLine: 30
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -353,7 +218,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionManagementClient
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 114
+    startLine: 31
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -385,7 +250,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Subscribe
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 116
+    startLine: 33
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -428,7 +293,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 121
+    startLine: 40
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -473,7 +338,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 128
+    startLine: 50
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -522,7 +387,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 142
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -573,7 +438,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 169
+    startLine: 101
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -620,7 +485,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 176
+    startLine: 112
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -665,7 +530,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 182
+    startLine: 120
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -706,7 +571,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 187
+    startLine: 126
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -747,7 +612,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 207
+    startLine: 144
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -790,7 +655,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 212
+    startLine: 150
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -835,7 +700,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 241
+    startLine: 182
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -866,7 +731,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 243
+    startLine: 187
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -905,7 +770,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Config
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 259
+    startLine: 206
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -937,7 +802,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 261
+    startLine: 208
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -986,7 +851,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 268
+    startLine: 216
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1035,7 +900,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 276
+    startLine: 225
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1080,7 +945,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 318
+    startLine: 236
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1121,7 +986,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 331
+    startLine: 249
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1162,7 +1027,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 348
+    startLine: 267
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1190,6 +1055,174 @@ items:
   nameWithType.vb: Plumber.AppendLink(String, Metadata, StreamState?)
   fullName.vb: MicroPlumberd.Plumber.AppendLink(String, MicroPlumberd.Metadata, EventStore.Client.StreamState?)
   name.vb: AppendLink(String, Metadata, StreamState?)
+- uid: MicroPlumberd.Plumber.GetExtension``1
+  commentId: M:MicroPlumberd.Plumber.GetExtension``1
+  id: GetExtension``1
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: GetExtension<T>()
+  nameWithType: Plumber.GetExtension<T>()
+  fullName: MicroPlumberd.Plumber.GetExtension<T>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetExtension
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 276
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: 'public T GetExtension<T>() where T : new()'
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Public Function GetExtension(Of T As New)() As T
+  overload: MicroPlumberd.Plumber.GetExtension*
+  implements:
+  - MicroPlumberd.IExtension.GetExtension``1
+  nameWithType.vb: Plumber.GetExtension(Of T)()
+  fullName.vb: MicroPlumberd.Plumber.GetExtension(Of T)()
+  name.vb: GetExtension(Of T)()
+- uid: MicroPlumberd.Plumber.ServiceProvider
+  commentId: P:MicroPlumberd.Plumber.ServiceProvider
+  id: ServiceProvider
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: ServiceProvider
+  nameWithType: Plumber.ServiceProvider
+  fullName: MicroPlumberd.Plumber.ServiceProvider
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ServiceProvider
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 281
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public IServiceProvider ServiceProvider { get; set; }
+    parameters: []
+    return:
+      type: System.IServiceProvider
+    content.vb: Public Property ServiceProvider As IServiceProvider
+  overload: MicroPlumberd.Plumber.ServiceProvider*
+  implements:
+  - MicroPlumberd.IPlumberConfig.ServiceProvider
+- uid: MicroPlumberd.Plumber.Serializer
+  commentId: P:MicroPlumberd.Plumber.Serializer
+  id: Serializer
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: Serializer
+  nameWithType: Plumber.Serializer
+  fullName: MicroPlumberd.Plumber.Serializer
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Serializer
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 282
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public IObjectSerializer Serializer { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.IObjectSerializer
+    content.vb: Public Property Serializer As IObjectSerializer
+  overload: MicroPlumberd.Plumber.Serializer*
+  implements:
+  - MicroPlumberd.IPlumberConfig.Serializer
+- uid: MicroPlumberd.Plumber.Conventions
+  commentId: P:MicroPlumberd.Plumber.Conventions
+  id: Conventions
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: Conventions
+  nameWithType: Plumber.Conventions
+  fullName: MicroPlumberd.Plumber.Conventions
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Conventions
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 283
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public IConventions Conventions { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.IConventions
+    content.vb: Public ReadOnly Property Conventions As IConventions
+  overload: MicroPlumberd.Plumber.Conventions*
+  implements:
+  - MicroPlumberd.IPlumberConfig.Conventions
+- uid: MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  commentId: M:MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  id: Create(EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: Create(EventStoreClientSettings?, Action<IPlumberConfig>?)
+  nameWithType: Plumber.Create(EventStoreClientSettings?, Action<IPlumberConfig>?)
+  fullName: MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings?, System.Action<MicroPlumberd.IPlumberConfig>?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Create
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 285
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
+    parameters:
+    - id: settings
+      type: EventStore.Client.EventStoreClientSettings
+    - id: configure
+      type: System.Action{MicroPlumberd.IPlumberConfig}
+    return:
+      type: MicroPlumberd.IPlumber
+    content.vb: Public Shared Function Create(settings As EventStoreClientSettings = Nothing, configure As Action(Of IPlumberConfig) = Nothing) As IPlumber
+  overload: MicroPlumberd.Plumber.Create*
+  nameWithType.vb: Plumber.Create(EventStoreClientSettings, Action(Of IPlumberConfig))
+  fullName.vb: MicroPlumberd.Plumber.Create(EventStore.Client.EventStoreClientSettings, System.Action(Of MicroPlumberd.IPlumberConfig))
+  name.vb: Create(EventStoreClientSettings, Action(Of IPlumberConfig))
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -1613,6 +1646,26 @@ references:
   - uid: MicroPlumberd.Services
     name: Services
     href: MicroPlumberd.Services.html
+- uid: MicroPlumberd.Plumber.TypeHandlerRegisters*
+  commentId: Overload:MicroPlumberd.Plumber.TypeHandlerRegisters
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_TypeHandlerRegisters
+  name: TypeHandlerRegisters
+  nameWithType: Plumber.TypeHandlerRegisters
+  fullName: MicroPlumberd.Plumber.TypeHandlerRegisters
+- uid: MicroPlumberd.IPlumber.TypeHandlerRegisters
+  commentId: P:MicroPlumberd.IPlumber.TypeHandlerRegisters
+  parent: MicroPlumberd.IPlumber
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_TypeHandlerRegisters
+  name: TypeHandlerRegisters
+  nameWithType: IPlumber.TypeHandlerRegisters
+  fullName: MicroPlumberd.IPlumber.TypeHandlerRegisters
+- uid: MicroPlumberd.ITypeHandlerRegisters
+  commentId: T:MicroPlumberd.ITypeHandlerRegisters
+  parent: MicroPlumberd
+  href: MicroPlumberd.ITypeHandlerRegisters.html
+  name: ITypeHandlerRegisters
+  nameWithType: ITypeHandlerRegisters
+  fullName: MicroPlumberd.ITypeHandlerRegisters
 - uid: MicroPlumberd.Plumber.Client*
   commentId: Overload:MicroPlumberd.Plumber.Client
   href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Client
@@ -1655,187 +1708,6 @@ references:
   - uid: EventStore.Client
     name: Client
     isExternal: true
-- uid: MicroPlumberd.Plumber.Create*
-  commentId: Overload:MicroPlumberd.Plumber.Create
-  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Create_EventStore_Client_EventStoreClientSettings_System_Action_MicroPlumberd_IPlumberConfig__
-  name: Create
-  nameWithType: Plumber.Create
-  fullName: MicroPlumberd.Plumber.Create
-- uid: EventStore.Client.EventStoreClientSettings
-  commentId: T:EventStore.Client.EventStoreClientSettings
-  parent: EventStore.Client
-  isExternal: true
-  name: EventStoreClientSettings
-  nameWithType: EventStoreClientSettings
-  fullName: EventStore.Client.EventStoreClientSettings
-- uid: System.Action{MicroPlumberd.IPlumberConfig}
-  commentId: T:System.Action{MicroPlumberd.IPlumberConfig}
-  parent: System
-  definition: System.Action`1
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<IPlumberConfig>
-  nameWithType: Action<IPlumberConfig>
-  fullName: System.Action<MicroPlumberd.IPlumberConfig>
-  nameWithType.vb: Action(Of IPlumberConfig)
-  fullName.vb: System.Action(Of MicroPlumberd.IPlumberConfig)
-  name.vb: Action(Of IPlumberConfig)
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - uid: MicroPlumberd.IPlumberConfig
-    name: IPlumberConfig
-    href: MicroPlumberd.IPlumberConfig.html
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - uid: MicroPlumberd.IPlumberConfig
-    name: IPlumberConfig
-    href: MicroPlumberd.IPlumberConfig.html
-  - name: )
-- uid: System.Action`1
-  commentId: T:System.Action`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<T>
-  nameWithType: Action<T>
-  fullName: System.Action<T>
-  nameWithType.vb: Action(Of T)
-  fullName.vb: System.Action(Of T)
-  name.vb: Action(Of T)
-  spec.csharp:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: MicroPlumberd.Plumber.GetExtension*
-  commentId: Overload:MicroPlumberd.Plumber.GetExtension
-  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_GetExtension__1
-  name: GetExtension
-  nameWithType: Plumber.GetExtension
-  fullName: MicroPlumberd.Plumber.GetExtension
-- uid: MicroPlumberd.IExtension.GetExtension``1
-  commentId: M:MicroPlumberd.IExtension.GetExtension``1
-  parent: MicroPlumberd.IExtension
-  href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
-  name: GetExtension<T>()
-  nameWithType: IExtension.GetExtension<T>()
-  fullName: MicroPlumberd.IExtension.GetExtension<T>()
-  nameWithType.vb: IExtension.GetExtension(Of T)()
-  fullName.vb: MicroPlumberd.IExtension.GetExtension(Of T)()
-  name.vb: GetExtension(Of T)()
-  spec.csharp:
-  - uid: MicroPlumberd.IExtension.GetExtension``1
-    name: GetExtension
-    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
-  - name: <
-  - name: T
-  - name: '>'
-  - name: (
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.IExtension.GetExtension``1
-    name: GetExtension
-    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-  - name: (
-  - name: )
-- uid: '{T}'
-  commentId: '!:T'
-  definition: T
-  name: T
-  nameWithType: T
-  fullName: T
-- uid: T
-  name: T
-  nameWithType: T
-  fullName: T
-- uid: MicroPlumberd.Plumber.ServiceProvider*
-  commentId: Overload:MicroPlumberd.Plumber.ServiceProvider
-  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ServiceProvider
-  name: ServiceProvider
-  nameWithType: Plumber.ServiceProvider
-  fullName: MicroPlumberd.Plumber.ServiceProvider
-- uid: MicroPlumberd.IPlumberConfig.ServiceProvider
-  commentId: P:MicroPlumberd.IPlumberConfig.ServiceProvider
-  parent: MicroPlumberd.IPlumberConfig
-  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_ServiceProvider
-  name: ServiceProvider
-  nameWithType: IPlumberConfig.ServiceProvider
-  fullName: MicroPlumberd.IPlumberConfig.ServiceProvider
-- uid: System.IServiceProvider
-  commentId: T:System.IServiceProvider
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
-  name: IServiceProvider
-  nameWithType: IServiceProvider
-  fullName: System.IServiceProvider
-- uid: MicroPlumberd.Plumber.Serializer*
-  commentId: Overload:MicroPlumberd.Plumber.Serializer
-  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Serializer
-  name: Serializer
-  nameWithType: Plumber.Serializer
-  fullName: MicroPlumberd.Plumber.Serializer
-- uid: MicroPlumberd.IPlumberConfig.Serializer
-  commentId: P:MicroPlumberd.IPlumberConfig.Serializer
-  parent: MicroPlumberd.IPlumberConfig
-  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Serializer
-  name: Serializer
-  nameWithType: IPlumberConfig.Serializer
-  fullName: MicroPlumberd.IPlumberConfig.Serializer
-- uid: MicroPlumberd.IObjectSerializer
-  commentId: T:MicroPlumberd.IObjectSerializer
-  parent: MicroPlumberd
-  href: MicroPlumberd.IObjectSerializer.html
-  name: IObjectSerializer
-  nameWithType: IObjectSerializer
-  fullName: MicroPlumberd.IObjectSerializer
-- uid: MicroPlumberd.Plumber.Conventions*
-  commentId: Overload:MicroPlumberd.Plumber.Conventions
-  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Conventions
-  name: Conventions
-  nameWithType: Plumber.Conventions
-  fullName: MicroPlumberd.Plumber.Conventions
-- uid: MicroPlumberd.IPlumberConfig.Conventions
-  commentId: P:MicroPlumberd.IPlumberConfig.Conventions
-  parent: MicroPlumberd.IPlumberConfig
-  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Conventions
-  name: Conventions
-  nameWithType: IPlumberConfig.Conventions
-  fullName: MicroPlumberd.IPlumberConfig.Conventions
-- uid: MicroPlumberd.IConventions
-  commentId: T:MicroPlumberd.IConventions
-  parent: MicroPlumberd
-  href: MicroPlumberd.IConventions.html
-  name: IConventions
-  nameWithType: IConventions
-  fullName: MicroPlumberd.IConventions
 - uid: MicroPlumberd.Plumber.ProjectionRegister*
   commentId: Overload:MicroPlumberd.Plumber.ProjectionRegister
   href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ProjectionRegister
@@ -3201,6 +3073,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.guid
   - name: )
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
 - uid: System.Guid
   commentId: T:System.Guid
   parent: System
@@ -3261,6 +3139,10 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.guid
   - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
 - uid: MicroPlumberd.IPlumber.Rehydrate``1({T},System.String)
   commentId: M:MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String)
   parent: MicroPlumberd.IPlumber
@@ -4292,3 +4174,174 @@ references:
     name: StreamState
     isExternal: true
   - name: '?'
+- uid: MicroPlumberd.Plumber.GetExtension*
+  commentId: Overload:MicroPlumberd.Plumber.GetExtension
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_GetExtension__1
+  name: GetExtension
+  nameWithType: Plumber.GetExtension
+  fullName: MicroPlumberd.Plumber.GetExtension
+- uid: MicroPlumberd.IExtension.GetExtension``1
+  commentId: M:MicroPlumberd.IExtension.GetExtension``1
+  parent: MicroPlumberd.IExtension
+  href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  name: GetExtension<T>()
+  nameWithType: IExtension.GetExtension<T>()
+  fullName: MicroPlumberd.IExtension.GetExtension<T>()
+  nameWithType.vb: IExtension.GetExtension(Of T)()
+  fullName.vb: MicroPlumberd.IExtension.GetExtension(Of T)()
+  name.vb: GetExtension(Of T)()
+  spec.csharp:
+  - uid: MicroPlumberd.IExtension.GetExtension``1
+    name: GetExtension
+    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IExtension.GetExtension``1
+    name: GetExtension
+    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MicroPlumberd.Plumber.ServiceProvider*
+  commentId: Overload:MicroPlumberd.Plumber.ServiceProvider
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_ServiceProvider
+  name: ServiceProvider
+  nameWithType: Plumber.ServiceProvider
+  fullName: MicroPlumberd.Plumber.ServiceProvider
+- uid: MicroPlumberd.IPlumberConfig.ServiceProvider
+  commentId: P:MicroPlumberd.IPlumberConfig.ServiceProvider
+  parent: MicroPlumberd.IPlumberConfig
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_ServiceProvider
+  name: ServiceProvider
+  nameWithType: IPlumberConfig.ServiceProvider
+  fullName: MicroPlumberd.IPlumberConfig.ServiceProvider
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: MicroPlumberd.Plumber.Serializer*
+  commentId: Overload:MicroPlumberd.Plumber.Serializer
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Serializer
+  name: Serializer
+  nameWithType: Plumber.Serializer
+  fullName: MicroPlumberd.Plumber.Serializer
+- uid: MicroPlumberd.IPlumberConfig.Serializer
+  commentId: P:MicroPlumberd.IPlumberConfig.Serializer
+  parent: MicroPlumberd.IPlumberConfig
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Serializer
+  name: Serializer
+  nameWithType: IPlumberConfig.Serializer
+  fullName: MicroPlumberd.IPlumberConfig.Serializer
+- uid: MicroPlumberd.IObjectSerializer
+  commentId: T:MicroPlumberd.IObjectSerializer
+  parent: MicroPlumberd
+  href: MicroPlumberd.IObjectSerializer.html
+  name: IObjectSerializer
+  nameWithType: IObjectSerializer
+  fullName: MicroPlumberd.IObjectSerializer
+- uid: MicroPlumberd.Plumber.Conventions*
+  commentId: Overload:MicroPlumberd.Plumber.Conventions
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Conventions
+  name: Conventions
+  nameWithType: Plumber.Conventions
+  fullName: MicroPlumberd.Plumber.Conventions
+- uid: MicroPlumberd.IPlumberConfig.Conventions
+  commentId: P:MicroPlumberd.IPlumberConfig.Conventions
+  parent: MicroPlumberd.IPlumberConfig
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Conventions
+  name: Conventions
+  nameWithType: IPlumberConfig.Conventions
+  fullName: MicroPlumberd.IPlumberConfig.Conventions
+- uid: MicroPlumberd.IConventions
+  commentId: T:MicroPlumberd.IConventions
+  parent: MicroPlumberd
+  href: MicroPlumberd.IConventions.html
+  name: IConventions
+  nameWithType: IConventions
+  fullName: MicroPlumberd.IConventions
+- uid: MicroPlumberd.Plumber.Create*
+  commentId: Overload:MicroPlumberd.Plumber.Create
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Create_EventStore_Client_EventStoreClientSettings_System_Action_MicroPlumberd_IPlumberConfig__
+  name: Create
+  nameWithType: Plumber.Create
+  fullName: MicroPlumberd.Plumber.Create
+- uid: EventStore.Client.EventStoreClientSettings
+  commentId: T:EventStore.Client.EventStoreClientSettings
+  parent: EventStore.Client
+  isExternal: true
+  name: EventStoreClientSettings
+  nameWithType: EventStoreClientSettings
+  fullName: EventStore.Client.EventStoreClientSettings
+- uid: System.Action{MicroPlumberd.IPlumberConfig}
+  commentId: T:System.Action{MicroPlumberd.IPlumberConfig}
+  parent: System
+  definition: System.Action`1
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<IPlumberConfig>
+  nameWithType: Action<IPlumberConfig>
+  fullName: System.Action<MicroPlumberd.IPlumberConfig>
+  nameWithType.vb: Action(Of IPlumberConfig)
+  fullName.vb: System.Action(Of MicroPlumberd.IPlumberConfig)
+  name.vb: Action(Of IPlumberConfig)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - uid: MicroPlumberd.IPlumberConfig
+    name: IPlumberConfig
+    href: MicroPlumberd.IPlumberConfig.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.IPlumberConfig
+    name: IPlumberConfig
+    href: MicroPlumberd.IPlumberConfig.html
+  - name: )
+- uid: System.Action`1
+  commentId: T:System.Action`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.action-1
+  name: Action<T>
+  nameWithType: Action<T>
+  fullName: System.Action<T>
+  nameWithType.vb: Action(Of T)
+  fullName.vb: System.Action(Of T)
+  name.vb: Action(Of T)
+  spec.csharp:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`1
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

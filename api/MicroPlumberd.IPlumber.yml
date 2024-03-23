@@ -29,6 +29,7 @@ items:
   - MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)
   - MicroPlumberd.IPlumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.SubscribeSet
+  - MicroPlumberd.IPlumber.TypeHandlerRegisters
   langs:
   - csharp
   - vb
@@ -199,6 +200,35 @@ items:
       type: MicroPlumberd.IProjectionRegister
     content.vb: ReadOnly Property ProjectionRegister As IProjectionRegister
   overload: MicroPlumberd.IPlumber.ProjectionRegister*
+- uid: MicroPlumberd.IPlumber.TypeHandlerRegisters
+  commentId: P:MicroPlumberd.IPlumber.TypeHandlerRegisters
+  id: TypeHandlerRegisters
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: TypeHandlerRegisters
+  nameWithType: IPlumber.TypeHandlerRegisters
+  fullName: MicroPlumberd.IPlumber.TypeHandlerRegisters
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: TypeHandlerRegisters
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: ITypeHandlerRegisters TypeHandlerRegisters { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.ITypeHandlerRegisters
+    content.vb: ReadOnly Property TypeHandlerRegisters As ITypeHandlerRegisters
+  overload: MicroPlumberd.IPlumber.TypeHandlerRegisters*
 - uid: MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
   commentId: M:MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
   id: AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
@@ -217,7 +247,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -264,7 +294,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 25
+    startLine: 26
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -306,7 +336,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -353,7 +383,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 36
+    startLine: 37
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -391,7 +421,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -433,7 +463,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 40
+    startLine: 41
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -473,7 +503,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 42
+    startLine: 43
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -501,7 +531,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Subscribe
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 43
+    startLine: 44
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -541,7 +571,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 45
+    startLine: 46
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -587,7 +617,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 49
+    startLine: 50
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -629,7 +659,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 51
+    startLine: 52
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -673,7 +703,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 53
+    startLine: 54
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -715,7 +745,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 55
+    startLine: 56
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -753,7 +783,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 56
+    startLine: 57
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -791,7 +821,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 58
+    startLine: 59
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -827,7 +857,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 59
+    startLine: 60
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -865,7 +895,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 60
+    startLine: 61
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -903,7 +933,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 61
+    startLine: 62
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -941,7 +971,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 63
+    startLine: 64
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1166,6 +1196,19 @@ references:
   name: IProjectionRegister
   nameWithType: IProjectionRegister
   fullName: MicroPlumberd.IProjectionRegister
+- uid: MicroPlumberd.IPlumber.TypeHandlerRegisters*
+  commentId: Overload:MicroPlumberd.IPlumber.TypeHandlerRegisters
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_TypeHandlerRegisters
+  name: TypeHandlerRegisters
+  nameWithType: IPlumber.TypeHandlerRegisters
+  fullName: MicroPlumberd.IPlumber.TypeHandlerRegisters
+- uid: MicroPlumberd.ITypeHandlerRegisters
+  commentId: T:MicroPlumberd.ITypeHandlerRegisters
+  parent: MicroPlumberd
+  href: MicroPlumberd.ITypeHandlerRegisters.html
+  name: ITypeHandlerRegisters
+  nameWithType: ITypeHandlerRegisters
+  fullName: MicroPlumberd.ITypeHandlerRegisters
 - uid: MicroPlumberd.IPlumber.AppendEvents*
   commentId: Overload:MicroPlumberd.IPlumber.AppendEvents
   href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvents_System_String_EventStore_Client_StreamRevision_System_Collections_Generic_IEnumerable_System_Object__System_Object_

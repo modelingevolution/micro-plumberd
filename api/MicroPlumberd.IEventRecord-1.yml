@@ -15,12 +15,12 @@ items:
   type: Interface
   source:
     remote:
-      path: src/MicroPlumberd/Plumber.cs
+      path: src/MicroPlumberd/EventRecord.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IEventRecord
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 65
+    path: src/MicroPlumberd/EventRecord.cs
+    startLine: 2
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -47,12 +47,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Plumber.cs
+      path: src/MicroPlumberd/EventRecord.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Event
-    path: src/MicroPlumberd/Plumber.cs
-    startLine: 67
+    path: src/MicroPlumberd/EventRecord.cs
+    startLine: 4
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

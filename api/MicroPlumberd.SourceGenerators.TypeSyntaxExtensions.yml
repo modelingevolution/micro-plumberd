@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TypeSyntaxExtensions
     path: src/MicroPlumberd.SourceGenerators/ProcessManagerSourceGenerator.cs
-    startLine: 158
+    startLine: 154
   assemblies:
   - MicroPlumberd.SourceGenerators
   namespace: MicroPlumberd.SourceGenerators
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetFriendlyTypeName
     path: src/MicroPlumberd.SourceGenerators/ProcessManagerSourceGenerator.cs
-    startLine: 160
+    startLine: 156
   assemblies:
   - MicroPlumberd.SourceGenerators
   namespace: MicroPlumberd.SourceGenerators

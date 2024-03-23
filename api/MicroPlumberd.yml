@@ -31,6 +31,7 @@ items:
   - MicroPlumberd.ICommandRequest`1
   - MicroPlumberd.IConventions
   - MicroPlumberd.IEventHandler
+  - MicroPlumberd.IEventHandler`1
   - MicroPlumberd.IEventRecord
   - MicroPlumberd.IEventRecord`1
   - MicroPlumberd.IExtension
@@ -46,6 +47,7 @@ items:
   - MicroPlumberd.IStateChangeAction
   - MicroPlumberd.ISubscriptionRunner
   - MicroPlumberd.ISubscriptionSet
+  - MicroPlumberd.ITypeHandlerRegisters
   - MicroPlumberd.ITypeRegister
   - MicroPlumberd.IVersionAware
   - MicroPlumberd.IVersioned
@@ -187,6 +189,31 @@ references:
   name: EventDispatcher
   nameWithType: EventDispatcher
   fullName: MicroPlumberd.EventDispatcher
+- uid: MicroPlumberd.IEventHandler`1
+  commentId: T:MicroPlumberd.IEventHandler`1
+  href: MicroPlumberd.IEventHandler-1.html
+  name: IEventHandler<TOwner>
+  nameWithType: IEventHandler<TOwner>
+  fullName: MicroPlumberd.IEventHandler<TOwner>
+  nameWithType.vb: IEventHandler(Of TOwner)
+  fullName.vb: MicroPlumberd.IEventHandler(Of TOwner)
+  name.vb: IEventHandler(Of TOwner)
+  spec.csharp:
+  - uid: MicroPlumberd.IEventHandler`1
+    name: IEventHandler
+    href: MicroPlumberd.IEventHandler-1.html
+  - name: <
+  - name: TOwner
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IEventHandler`1
+    name: IEventHandler
+    href: MicroPlumberd.IEventHandler-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TOwner
+  - name: )
 - uid: MicroPlumberd.IEventHandler
   commentId: T:MicroPlumberd.IEventHandler
   parent: MicroPlumberd
@@ -360,26 +387,6 @@ references:
   name: InvocationContext
   nameWithType: InvocationContext
   fullName: MicroPlumberd.InvocationContext
-- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
-  commentId: T:MicroPlumberd.EventStoreProjectionManagementClientExtensions
-  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html
-  name: EventStoreProjectionManagementClientExtensions
-  nameWithType: EventStoreProjectionManagementClientExtensions
-  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
-- uid: MicroPlumberd.IPlumberConfig
-  commentId: T:MicroPlumberd.IPlumberConfig
-  parent: MicroPlumberd
-  href: MicroPlumberd.IPlumberConfig.html
-  name: IPlumberConfig
-  nameWithType: IPlumberConfig
-  fullName: MicroPlumberd.IPlumberConfig
-- uid: MicroPlumberd.IEventRecord
-  commentId: T:MicroPlumberd.IEventRecord
-  parent: MicroPlumberd
-  href: MicroPlumberd.IEventRecord.html
-  name: IEventRecord
-  nameWithType: IEventRecord
-  fullName: MicroPlumberd.IEventRecord
 - uid: MicroPlumberd.IEventRecord`1
   commentId: T:MicroPlumberd.IEventRecord`1
   href: MicroPlumberd.IEventRecord-1.html
@@ -405,6 +412,33 @@ references:
   - name: " "
   - name: TEvent
   - name: )
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  commentId: T:MicroPlumberd.EventStoreProjectionManagementClientExtensions
+  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html
+  name: EventStoreProjectionManagementClientExtensions
+  nameWithType: EventStoreProjectionManagementClientExtensions
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions
+- uid: MicroPlumberd.IEventRecord
+  commentId: T:MicroPlumberd.IEventRecord
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventRecord.html
+  name: IEventRecord
+  nameWithType: IEventRecord
+  fullName: MicroPlumberd.IEventRecord
+- uid: MicroPlumberd.IPlumberConfig
+  commentId: T:MicroPlumberd.IPlumberConfig
+  parent: MicroPlumberd
+  href: MicroPlumberd.IPlumberConfig.html
+  name: IPlumberConfig
+  nameWithType: IPlumberConfig
+  fullName: MicroPlumberd.IPlumberConfig
+- uid: MicroPlumberd.ITypeHandlerRegisters
+  commentId: T:MicroPlumberd.ITypeHandlerRegisters
+  parent: MicroPlumberd
+  href: MicroPlumberd.ITypeHandlerRegisters.html
+  name: ITypeHandlerRegisters
+  nameWithType: ITypeHandlerRegisters
+  fullName: MicroPlumberd.ITypeHandlerRegisters
 - uid: MicroPlumberd.Plumber
   commentId: T:MicroPlumberd.Plumber
   href: MicroPlumberd.Plumber.html

@@ -24,15 +24,15 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public delegate string EventNameConvention(object? aggregate, object evt)
+    content: public delegate string EventNameConvention(Type? ownerType, Type evtType)
     parameters:
-    - id: aggregate
-      type: System.Object
-    - id: evt
-      type: System.Object
+    - id: ownerType
+      type: System.Type
+    - id: evtType
+      type: System.Type
     return:
       type: System.String
-    content.vb: Public Delegate Function EventNameConvention(aggregate As Object, evt As Object) As String
+    content.vb: Public Delegate Function EventNameConvention(ownerType As Type, evtType As Type) As String
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -40,17 +40,14 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: System.Object
-  commentId: T:System.Object
+- uid: System.Type
+  commentId: T:System.Type
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.object
-  name: object
-  nameWithType: object
-  fullName: object
-  nameWithType.vb: Object
-  fullName.vb: Object
-  name.vb: Object
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: System.String
   commentId: T:System.String
   parent: System

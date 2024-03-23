@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IReadModel
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 9
+    startLine: 12
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -47,7 +47,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Given
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 11
+    startLine: 14
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

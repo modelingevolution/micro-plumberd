@@ -6,6 +6,7 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1
+  - MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.TypeEventConverter)
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0)
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.TypeEventConverter)
   langs:
@@ -128,16 +129,52 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'Task<T> WithHandler<T>() where T : IEventHandler, ITypeRegister'
+    content: 'Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister'
     typeParameters:
     - id: T
     return:
-      type: System.Threading.Tasks.Task{{T}}
-    content.vb: Function WithHandler(Of T As {IEventHandler, ITypeRegister})() As Task(Of T)
+      type: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+    content.vb: Function WithHandler(Of T As {IEventHandler, ITypeRegister})() As Task(Of IEventHandler)
   overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
   nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)()
   fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)()
   name.vb: WithHandler(Of T)()
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.TypeEventConverter)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.TypeEventConverter)
+  id: WithHandler``1(MicroPlumberd.TypeEventConverter)
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithHandler<T>(TypeEventConverter)
+  nameWithType: ISubscriptionRunner.WithHandler<T>(TypeEventConverter)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler<T>(MicroPlumberd.TypeEventConverter)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IEventHandler> WithHandler<T>(TypeEventConverter mapFunc) where T : IEventHandler'
+    parameters:
+    - id: mapFunc
+      type: MicroPlumberd.TypeEventConverter
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+    content.vb: Function WithHandler(Of T As IEventHandler)(mapFunc As TypeEventConverter) As Task(Of IEventHandler)
+  overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)(TypeEventConverter)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)(MicroPlumberd.TypeEventConverter)
+  name.vb: WithHandler(Of T)(TypeEventConverter)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -299,3 +336,36 @@ references:
   name: TypeEventConverter
   nameWithType: TypeEventConverter
   fullName: MicroPlumberd.TypeEventConverter
+- uid: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<IEventHandler>
+  nameWithType: Task<IEventHandler>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.IEventHandler>
+  nameWithType.vb: Task(Of IEventHandler)
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.IEventHandler)
+  name.vb: Task(Of IEventHandler)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.IEventHandler
+    name: IEventHandler
+    href: MicroPlumberd.IEventHandler.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.IEventHandler
+    name: IEventHandler
+    href: MicroPlumberd.IEventHandler.html
+  - name: )

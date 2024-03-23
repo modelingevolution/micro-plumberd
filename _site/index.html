@@ -85,13 +85,15 @@
         </div>
 
         <article data-uid="">
-<h1 id="micro-plumberd">micro-plumberd</h1>
 
+<p><img src="logo.png" alt="Logo"></p>
+<h1 id="micro-plumberd">micro-plumberd</h1>
 <p>Micro library for EventStore, CQRS and EventSourcing
 Just eXtreamly simple.</p>
 <h2 id="getting-started">Getting started</h2>
 <h3 id="install-nugets">Install nugets:</h3>
-<pre><code class="lang-powershell">dotnet add package MicroPlumberd
+<pre><code class="lang-powershell"># For your domain
+dotnet add package MicroPlumberd
 dotnet add package MicroPlumberd.SourceGenerators
 </code></pre>
 <p>If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect</p>
@@ -124,7 +126,6 @@ services.AddPlumberd(settings);
 <pre><code class="lang-csharp">[Aggregate]
 public partial class FooAggregate(Guid id) : AggregateBase&lt;FooAggregate.FooState&gt;(id)
 {
-    internal new FooState State =&gt; base.State;
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) =&gt; state with { Name = ev.Name };
     private static FooState Given(FooState state, FooUpdated ev) =&gt; state with { Name =ev.Name };
@@ -180,12 +181,33 @@ public partial class FooModel
 <li>Metadata contains standard stuff (Created, CorrelationId, CausationId), but can be reconfigured.</li>
 </ul>
 <pre><code class="lang-csharp">var fooModel = new FooModel();
-var sub= await plumber.SubscribeModel(fooModel);
+var sub= await plumber.SubscribeEventHandler(fooModel);
 
 // or if you want to persist progress of your subscription
-var sub2= await plumber.SubscribeModelPersistently(fooModel);
+var sub2= await plumber.SubscribeEventHandlerPersistently(fooModel);
 </code></pre>
-<p>With <strong>SubscribeModel</strong> you can subscribe from start, from certain moment or from the end of the stream.</p>
+<p>With <strong>SubscribeModel</strong> you can subscribe from start, from certain moment or from the end of the stream. If you want to use DI and have your model as a scoped one, you can configure plumber at the startup and don't need to invoke SubscribeEventHandler manually.
+Here you have an example with EF Core.</p>
+<pre><code class="lang-csharp">// Program.cs
+services
+    .AddPlumberd()
+    .AddEventHandler&lt;FooModel&gt;();
+
+// FooModel.cs
+[EventHandler]
+public partial class FooModel : DbContext
+{
+    private async Task Given(Metadata m, FooCreated ev)
+    {
+        // your code
+    }
+    private async Task Given(Metadata m, FooUpdated ev)
+    {
+         // your code
+    }
+    // other stuff, DbSet... etc...
+}
+</code></pre>
 <ol start="2">
 <li>Processors</li>
 </ol>
@@ -340,7 +362,12 @@ public partial class FooCommandHandler(IPlumber plumber)
 <p>Given diagram:
 <img src="pm.png" alt="Saga"></p>
 <p>The code of Order Process Manager looks like this:</p>
-<pre><code class="lang-csharp">
+<pre><code class="lang-csharp">// Let's configure stuff beforehand
+services.AddPlumberd(eventStoreConfig)
+    .AddCommandHandler&lt;OrderCommandHandler&gt;() // handles PlaceOrder command.
+    .AddProcessManager&lt;OrderProcessManager&gt;();
+
+// And process manager.
 [ProcessManager]
 public class OrderProcessManager(IPlumberd plumberd)
 {
@@ -369,6 +396,43 @@ public class OrderProcessManager(IPlumberd plumberd)
     }
 }
 
+</code></pre>
+<h3 id="experimental-uniqueness-support">EXPERIMENTAL Uniqueness support</h3>
+<p>Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some &quot;hacks&quot; but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose.</p>
+<p>However, you can leverage typical reservation patterns. At the moment the library supports only the first option:</p>
+<ul>
+<li><p>At domain-layer, a domain-service usually would enforce uniqueness. This commonly requires a round-trip to a database. So just before actual event(s) are saved in a stream, a check against uniqueness constraints should be evaluated - thus reservation is made. When the event is appended to the stream, a confirmation is done automatically (on db).</p>
+</li>
+<li><p>At a app-layer, command-handler would typically reserve a name. And when aggregate, which is being executed by the handler, saves its events successfully, then the reservation is confirmed. If the handler fails, then the reservation is deleted. Seems simple? Under the hood, it is not that simple, because what if the process is terminated while the command-handler is executing? We need to make sure, that we can recover successfully from this situation.</p>
+</li>
+</ul>
+<p>Let's see the API proposal:</p>
+<pre><code class="lang-csharp">// Let's define unique-category name
+record FooCategory;
+
+
+public class FooCreated 
+    // and apply it to one fo the columns.
+    [Unique&lt;FooCategory&gt;]
+    public string? Name { get; set; }
+    
+    // other stuff   
+}
+</code></pre>
+<p>For complex types, we need more flexibility.</p>
+<pre><code class="lang-csharp">// Let's define unique-category name, this will be mapped to columns in db
+// If you'd opt for domain-layer enforcment, you need to change commands to events.
+record BooCategory(string Name, string OtherName) : IUniqueFrom&lt;BooCategory, BooCreated&gt;, IUniqueFrom&lt;BooCategory, BooChanged&gt;
+{
+    public static BooCategory From(BooCreated x) =&gt; new(x.InitialName, x.OtherName);
+    public static BooCategory From(BooChanged x) =&gt; new(x.NewName, x.OtherName);
+}
+
+[Unique&lt;BooCategory&gt;]
+public record BooCreated(string InitialName, string OtherName);
+
+[Unique&lt;BooCategory&gt;]
+public record BooChanged(string NewName, string OtherName);
 </code></pre>
 
 </article>

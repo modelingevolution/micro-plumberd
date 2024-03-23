@@ -1,0 +1,394 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ITypeHandlerRegisters
+  commentId: T:MicroPlumberd.ITypeHandlerRegisters
+  id: ITypeHandlerRegisters
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor``1
+  - MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor``1
+  - MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor``1
+  - MicroPlumberd.ITypeHandlerRegisters.HandlerTypes
+  langs:
+  - csharp
+  - vb
+  name: ITypeHandlerRegisters
+  nameWithType: ITypeHandlerRegisters
+  fullName: MicroPlumberd.ITypeHandlerRegisters
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ITypeHandlerRegisters
+    path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ITypeHandlerRegisters
+    content.vb: Public Interface ITypeHandlerRegisters
+- uid: MicroPlumberd.ITypeHandlerRegisters.HandlerTypes
+  commentId: P:MicroPlumberd.ITypeHandlerRegisters.HandlerTypes
+  id: HandlerTypes
+  parent: MicroPlumberd.ITypeHandlerRegisters
+  langs:
+  - csharp
+  - vb
+  name: HandlerTypes
+  nameWithType: ITypeHandlerRegisters.HandlerTypes
+  fullName: MicroPlumberd.ITypeHandlerRegisters.HandlerTypes
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: HandlerTypes
+    path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IEnumerable<Type> HandlerTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Type}
+    content.vb: ReadOnly Property HandlerTypes As IEnumerable(Of Type)
+  overload: MicroPlumberd.ITypeHandlerRegisters.HandlerTypes*
+- uid: MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor``1
+  commentId: M:MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor``1
+  id: GetEventNameConverterFor``1
+  parent: MicroPlumberd.ITypeHandlerRegisters
+  langs:
+  - csharp
+  - vb
+  name: GetEventNameConverterFor<THandler>()
+  nameWithType: ITypeHandlerRegisters.GetEventNameConverterFor<THandler>()
+  fullName: MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor<THandler>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetEventNameConverterFor
+    path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'TypeEventConverter GetEventNameConverterFor<THandler>() where THandler : ITypeRegister'
+    typeParameters:
+    - id: THandler
+    return:
+      type: MicroPlumberd.TypeEventConverter
+    content.vb: Function GetEventNameConverterFor(Of THandler As ITypeRegister)() As TypeEventConverter
+  overload: MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor*
+  nameWithType.vb: ITypeHandlerRegisters.GetEventNameConverterFor(Of THandler)()
+  fullName.vb: MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor(Of THandler)()
+  name.vb: GetEventNameConverterFor(Of THandler)()
+- uid: MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor``1
+  commentId: M:MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor``1
+  id: GetEventNameMappingsFor``1
+  parent: MicroPlumberd.ITypeHandlerRegisters
+  langs:
+  - csharp
+  - vb
+  name: GetEventNameMappingsFor<THandler>()
+  nameWithType: ITypeHandlerRegisters.GetEventNameMappingsFor<THandler>()
+  fullName: MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor<THandler>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetEventNameMappingsFor
+    path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'IEnumerable<KeyValuePair<string, Type>> GetEventNameMappingsFor<THandler>() where THandler : ITypeRegister'
+    typeParameters:
+    - id: THandler
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Type}}
+    content.vb: Function GetEventNameMappingsFor(Of THandler As ITypeRegister)() As IEnumerable(Of KeyValuePair(Of String, Type))
+  overload: MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor*
+  nameWithType.vb: ITypeHandlerRegisters.GetEventNameMappingsFor(Of THandler)()
+  fullName.vb: MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor(Of THandler)()
+  name.vb: GetEventNameMappingsFor(Of THandler)()
+- uid: MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor``1
+  commentId: M:MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor``1
+  id: GetEventNamesFor``1
+  parent: MicroPlumberd.ITypeHandlerRegisters
+  langs:
+  - csharp
+  - vb
+  name: GetEventNamesFor<THandler>()
+  nameWithType: ITypeHandlerRegisters.GetEventNamesFor<THandler>()
+  fullName: MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor<THandler>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetEventNamesFor
+    path: src/MicroPlumberd/ITypeHandlerRegisters.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'IEnumerable<string> GetEventNamesFor<THandler>() where THandler : ITypeRegister'
+    typeParameters:
+    - id: THandler
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Function GetEventNamesFor(Of THandler As ITypeRegister)() As IEnumerable(Of String)
+  overload: MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor*
+  nameWithType.vb: ITypeHandlerRegisters.GetEventNamesFor(Of THandler)()
+  fullName.vb: MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor(Of THandler)()
+  name.vb: GetEventNamesFor(Of THandler)()
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ITypeHandlerRegisters.HandlerTypes*
+  commentId: Overload:MicroPlumberd.ITypeHandlerRegisters.HandlerTypes
+  href: MicroPlumberd.ITypeHandlerRegisters.html#MicroPlumberd_ITypeHandlerRegisters_HandlerTypes
+  name: HandlerTypes
+  nameWithType: ITypeHandlerRegisters.HandlerTypes
+  fullName: MicroPlumberd.ITypeHandlerRegisters.HandlerTypes
+- uid: System.Collections.Generic.IEnumerable{System.Type}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Type}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<Type>
+  nameWithType: IEnumerable<Type>
+  fullName: System.Collections.Generic.IEnumerable<System.Type>
+  nameWithType.vb: IEnumerable(Of Type)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Type)
+  name.vb: IEnumerable(Of Type)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Collections
+    name: Collections
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections
+  - name: .
+  - uid: System.Collections.Generic
+    name: Generic
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic
+- uid: MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor*
+  commentId: Overload:MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor
+  href: MicroPlumberd.ITypeHandlerRegisters.html#MicroPlumberd_ITypeHandlerRegisters_GetEventNameConverterFor__1
+  name: GetEventNameConverterFor
+  nameWithType: ITypeHandlerRegisters.GetEventNameConverterFor
+  fullName: MicroPlumberd.ITypeHandlerRegisters.GetEventNameConverterFor
+- uid: MicroPlumberd.TypeEventConverter
+  commentId: T:MicroPlumberd.TypeEventConverter
+  parent: MicroPlumberd
+  href: MicroPlumberd.TypeEventConverter.html
+  name: TypeEventConverter
+  nameWithType: TypeEventConverter
+  fullName: MicroPlumberd.TypeEventConverter
+- uid: MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor*
+  commentId: Overload:MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor
+  href: MicroPlumberd.ITypeHandlerRegisters.html#MicroPlumberd_ITypeHandlerRegisters_GetEventNameMappingsFor__1
+  name: GetEventNameMappingsFor
+  nameWithType: ITypeHandlerRegisters.GetEventNameMappingsFor
+  fullName: MicroPlumberd.ITypeHandlerRegisters.GetEventNameMappingsFor
+- uid: System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Type}}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{System.String,System.Type}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<KeyValuePair<string, Type>>
+  nameWithType: IEnumerable<KeyValuePair<string, Type>>
+  fullName: System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, System.Type>>
+  nameWithType.vb: IEnumerable(Of KeyValuePair(Of String, Type))
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Collections.Generic.KeyValuePair(Of String, System.Type))
+  name.vb: IEnumerable(Of KeyValuePair(Of String, Type))
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Collections.Generic.KeyValuePair`2
+    name: KeyValuePair
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.keyvaluepair-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: )
+  - name: )
+- uid: MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor*
+  commentId: Overload:MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor
+  href: MicroPlumberd.ITypeHandlerRegisters.html#MicroPlumberd_ITypeHandlerRegisters_GetEventNamesFor__1
+  name: GetEventNamesFor
+  nameWithType: ITypeHandlerRegisters.GetEventNamesFor
+  fullName: MicroPlumberd.ITypeHandlerRegisters.GetEventNamesFor
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  name: IEnumerable<string>
+  nameWithType: IEnumerable<string>
+  fullName: System.Collections.Generic.IEnumerable<string>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )

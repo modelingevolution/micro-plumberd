@@ -1,0 +1,128 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+  commentId: T:MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+  id: IUniqueFrom`2
+  parent: MicroPlumberd.Services.Uniqueness
+  children:
+  - MicroPlumberd.Services.Uniqueness.IUniqueFrom`2.From(`1)
+  langs:
+  - csharp
+  - vb
+  name: IUniqueFrom<TCategory, TCommand>
+  nameWithType: IUniqueFrom<TCategory, TCommand>
+  fullName: MicroPlumberd.Services.Uniqueness.IUniqueFrom<TCategory, TCommand>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.Uniqueness/IUniqueFrom.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IUniqueFrom
+    path: src/MicroPlumberd.Services.Uniqueness/IUniqueFrom.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd.Services.Uniqueness
+  namespace: MicroPlumberd.Services.Uniqueness
+  syntax:
+    content: public interface IUniqueFrom<out TCategory, in TCommand>
+    typeParameters:
+    - id: TCategory
+    - id: TCommand
+    content.vb: Public Interface IUniqueFrom(Of Out TCategory, In TCommand)
+  nameWithType.vb: IUniqueFrom(Of TCategory, TCommand)
+  fullName.vb: MicroPlumberd.Services.Uniqueness.IUniqueFrom(Of TCategory, TCommand)
+  name.vb: IUniqueFrom(Of TCategory, TCommand)
+- uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2.From(`1)
+  commentId: M:MicroPlumberd.Services.Uniqueness.IUniqueFrom`2.From(`1)
+  id: From(`1)
+  parent: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2
+  langs:
+  - csharp
+  - vb
+  name: From(TCommand)
+  nameWithType: IUniqueFrom<TCategory, TCommand>.From(TCommand)
+  fullName: MicroPlumberd.Services.Uniqueness.IUniqueFrom<TCategory, TCommand>.From(TCommand)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.Uniqueness/IUniqueFrom.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: From
+    path: src/MicroPlumberd.Services.Uniqueness/IUniqueFrom.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.Services.Uniqueness
+  namespace: MicroPlumberd.Services.Uniqueness
+  syntax:
+    content: public static abstract TCategory From(TCommand cmd)
+    parameters:
+    - id: cmd
+      type: '{TCommand}'
+    return:
+      type: '{TCategory}'
+    content.vb: Public Shared MustInherit Function From(cmd As TCommand) As TCategory
+  overload: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2.From*
+  nameWithType.vb: IUniqueFrom(Of TCategory, TCommand).From(TCommand)
+  fullName.vb: MicroPlumberd.Services.Uniqueness.IUniqueFrom(Of TCategory, TCommand).From(TCommand)
+references:
+- uid: MicroPlumberd.Services.Uniqueness
+  commentId: N:MicroPlumberd.Services.Uniqueness
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services.Uniqueness
+  nameWithType: MicroPlumberd.Services.Uniqueness
+  fullName: MicroPlumberd.Services.Uniqueness
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.Uniqueness
+    name: Uniqueness
+    href: MicroPlumberd.Services.Uniqueness.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.Uniqueness
+    name: Uniqueness
+    href: MicroPlumberd.Services.Uniqueness.html
+- uid: MicroPlumberd.Services.Uniqueness.IUniqueFrom`2.From*
+  commentId: Overload:MicroPlumberd.Services.Uniqueness.IUniqueFrom`2.From
+  href: MicroPlumberd.Services.Uniqueness.IUniqueFrom-2.html#MicroPlumberd_Services_Uniqueness_IUniqueFrom_2_From__1_
+  name: From
+  nameWithType: IUniqueFrom<TCategory, TCommand>.From
+  fullName: MicroPlumberd.Services.Uniqueness.IUniqueFrom<TCategory, TCommand>.From
+  nameWithType.vb: IUniqueFrom(Of TCategory, TCommand).From
+  fullName.vb: MicroPlumberd.Services.Uniqueness.IUniqueFrom(Of TCategory, TCommand).From
+- uid: '{TCommand}'
+  commentId: '!:TCommand'
+  definition: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: '{TCategory}'
+  commentId: '!:TCategory'
+  definition: TCategory
+  name: TCategory
+  nameWithType: TCategory
+  fullName: TCategory
+- uid: TCommand
+  name: TCommand
+  nameWithType: TCommand
+  fullName: TCommand
+- uid: TCategory
+  commentId: '!:TCategory'
+  name: TCategory
+  nameWithType: TCategory
+  fullName: TCategory
