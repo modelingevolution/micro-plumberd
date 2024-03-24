@@ -15,8 +15,10 @@ public class EventStoreServer : IAsyncDisposable
     private static PortSearcher _searcher = new PortSearcher();
     private readonly DockerClient client;
     private readonly bool _isDebuggerAttached = false;
-    public EventStoreServer()
+    public EventStoreServer(string? containerName = null)
     {
+        if (containerName != null)
+            _containerName = containerName;
         httpPort = _searcher.FindNextAvailablePort();
         const string eventStoreHostName = "localhost";
         //await CheckDns(eventStoreHostName);
@@ -25,7 +27,9 @@ public class EventStoreServer : IAsyncDisposable
         client = new DockerClientConfiguration()
             .CreateClient();
     }
-    public string ContainerName => $"eventstore-mem-{httpPort}";
+
+    private string? _containerName;
+    public string ContainerName => _containerName ?? $"eventstore-mem-{httpPort}";
     public int HttpPort => httpPort;
 
     private async Task<ContainerListResponse?> GetEventStoreContainer()

@@ -7,7 +7,7 @@ items:
   children:
   - MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   - MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  - MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})
   - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
   langs:
   - csharp
@@ -116,17 +116,17 @@ items:
   nameWithType.vb: ContainerExtensions.AddBackgroundServiceIfMissing(Of TService)(IServiceCollection)
   fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing(Of TService)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   name.vb: AddBackgroundServiceIfMissing(Of TService)(IServiceCollection)
-- uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  id: AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})
+  id: AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})
   isExtensionMethod: true
   parent: MicroPlumberd.Services.ContainerExtensions
   langs:
   - csharp
   - vb
-  name: AddEventHandler<TEventHandler>(IServiceCollection)
-  nameWithType: ContainerExtensions.AddEventHandler<TEventHandler>(IServiceCollection)
-  fullName: MicroPlumberd.Services.ContainerExtensions.AddEventHandler<TEventHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: AddEventHandler<TEventHandler>(IServiceCollection, bool, FromStream?)
+  nameWithType: ContainerExtensions.AddEventHandler<TEventHandler>(IServiceCollection, bool, FromStream?)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddEventHandler<TEventHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection, bool, EventStore.Client.FromStream?)
   type: Method
   source:
     remote:
@@ -140,19 +140,23 @@ items:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
-    content: 'public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister'
+    content: 'public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister'
     parameters:
     - id: services
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    - id: persistently
+      type: System.Boolean
+    - id: start
+      type: System.Nullable{EventStore.Client.FromStream}
     typeParameters:
     - id: TEventHandler
     return:
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    content.vb: Public Shared Function AddEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(services As IServiceCollection) As IServiceCollection
+    content.vb: Public Shared Function AddEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(services As IServiceCollection, persistently As Boolean = False, start As FromStream? = Nothing) As IServiceCollection
   overload: MicroPlumberd.Services.ContainerExtensions.AddEventHandler*
-  nameWithType.vb: ContainerExtensions.AddEventHandler(Of TEventHandler)(IServiceCollection)
-  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  name.vb: AddEventHandler(Of TEventHandler)(IServiceCollection)
+  nameWithType.vb: ContainerExtensions.AddEventHandler(Of TEventHandler)(IServiceCollection, Boolean, FromStream?)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection, Boolean, EventStore.Client.FromStream?)
+  name.vb: AddEventHandler(Of TEventHandler)(IServiceCollection, Boolean, FromStream?)
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   id: AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
@@ -172,7 +176,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandHandler
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 61
+    startLine: 62
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -599,10 +603,66 @@ references:
   fullName: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing
 - uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddEventHandler
-  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Boolean_System_Nullable_EventStore_Client_FromStream__
   name: AddEventHandler
   nameWithType: ContainerExtensions.AddEventHandler
   fullName: MicroPlumberd.Services.ContainerExtensions.AddEventHandler
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System.Nullable{EventStore.Client.FromStream}
+  commentId: T:System.Nullable{EventStore.Client.FromStream}
+  parent: System
+  definition: System.Nullable`1
+  name: FromStream?
+  nameWithType: FromStream?
+  fullName: EventStore.Client.FromStream?
+  spec.csharp:
+  - uid: EventStore.Client.FromStream
+    name: FromStream
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: EventStore.Client.FromStream
+    name: FromStream
+    isExternal: true
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
   href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_

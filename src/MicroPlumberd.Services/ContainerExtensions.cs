@@ -51,10 +51,11 @@ public static class ContainerExtensions
 
         return services;
     }
-    public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister
+    public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         services.AddBackgroundServiceIfMissing<EventHandlerService>();
-        services.AddSingleton<IEventHandlerStarter, EventHandlerStarter<TEventHandler>>();
+        services.AddSingleton<EventHandlerStarter<TEventHandler>>();
+        services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start));
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
         services.TryAddScoped<TEventHandler>();
         return services;

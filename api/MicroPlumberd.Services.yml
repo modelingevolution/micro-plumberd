@@ -20,6 +20,7 @@ items:
   - MicroPlumberd.Services.PlumberExtensions
   - MicroPlumberd.Services.PlumberdConventionsExtensions
   - MicroPlumberd.Services.SessionStreamFromSessionId
+  - MicroPlumberd.Services.StreamPositionExtensions
   - MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
   - MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
   langs:
@@ -84,6 +85,12 @@ references:
   name: CommandHandlerMetadataExtensions
   nameWithType: CommandHandlerMetadataExtensions
   fullName: MicroPlumberd.Services.CommandHandlerMetadataExtensions
+- uid: MicroPlumberd.Services.StreamPositionExtensions
+  commentId: T:MicroPlumberd.Services.StreamPositionExtensions
+  href: MicroPlumberd.Services.StreamPositionExtensions.html
+  name: StreamPositionExtensions
+  nameWithType: StreamPositionExtensions
+  fullName: MicroPlumberd.Services.StreamPositionExtensions
 - uid: MicroPlumberd.Services.ContainerExtensions
   commentId: T:MicroPlumberd.Services.ContainerExtensions
   href: MicroPlumberd.Services.ContainerExtensions.html

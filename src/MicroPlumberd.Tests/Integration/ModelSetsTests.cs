@@ -45,3 +45,13 @@ public class ModelSetsTests : IClassFixture<EventStoreServer>
     }
 
 }
+
+public class ProductionReplication
+{
+    [Fact]
+    public async Task Replicate()
+    {
+        EventStoreServer srv = new EventStoreServer("Replicator");
+        await srv.StartInDocker();
+    }
+}

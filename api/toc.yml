@@ -196,6 +196,8 @@ items:
     name: PlumberdConventionsExtensions
   - uid: MicroPlumberd.Services.SessionStreamFromSessionId
     name: SessionStreamFromSessionId
+  - uid: MicroPlumberd.Services.StreamPositionExtensions
+    name: StreamPositionExtensions
   - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
     name: ThrowsFaultCommandExceptionAttribute
   - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1

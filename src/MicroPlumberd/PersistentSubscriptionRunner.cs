@@ -39,7 +39,7 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
     public async Task<IEventHandler> WithHandler<T>(TypeEventConverter func) where T : IEventHandler
     {
         var handler = plumber.ServiceProvider.GetService<IEventHandler<T>>() ?? (IEventHandler)plumber.ServiceProvider.GetRequiredService<T>();
-        return (T)await WithHandler(handler, func);
+        return (IEventHandler)await WithHandler(handler, func);
     }
     public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
 
