@@ -1,8 +1,9 @@
-using System.Diagnostics;
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
+using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.AppSrc;
 
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Srv;
 
 [CommandHandler]
 public partial class FooCommandHandler(IPlumber plumber)

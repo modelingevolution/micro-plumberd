@@ -1,5 +1,4 @@
 ﻿using EventStore.Client;
-using MicroPlumberd.DirectConnect;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd.Services;

@@ -69,6 +69,8 @@ namespace MicroPlumberd.SourceGenerators
                         foreach (var usingDirective in usingDirectives) sb.AppendLine(usingDirective);
                         sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
                         sb.AppendLine("using MicroPlumberd.Services;");
+                        sb.AppendLine("using MicroPlumberd.DirectConnect;");
+
                         sb.AppendLine(); // Add a line break after using directives
 
                         if (!string.IsNullOrEmpty(namespaceName)) sb.AppendLine($"namespace {namespaceName};");

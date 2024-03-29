@@ -1,5 +1,4 @@
-﻿using MicroPlumberd.Tests.Fixtures;
-using MicroPlumberd.Tests.Utils;
+﻿using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,8 +10,11 @@ using Docker.DotNet.Models;
 using MicroPlumberd.Services;
 using MicroPlumberd.Tests.AppSrc;
 using FluentAssertions;
+using MicroPlumberd.Testing;
 using ModelingEvolution.DirectConnect;
 using Xunit.Abstractions;
+using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.App.Srv;
 
 namespace MicroPlumberd.Tests.Integration.Services
 {
@@ -21,15 +23,15 @@ namespace MicroPlumberd.Tests.Integration.Services
     {
         private readonly EventStoreServer _eventStore;
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly App _serverApp;
-        private readonly App _clientApp;
+        private readonly AppHost _serverApp;
+        private readonly AppHost _clientApp;
 
         public CommandHandlerTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
         {
             _eventStore = eventStore;
             _testOutputHelper = testOutputHelper;
-            _serverApp = new App(testOutputHelper);
-            _clientApp = new App(testOutputHelper);
+            _serverApp = new AppHost(testOutputHelper);
+            _clientApp = new AppHost(testOutputHelper);
         }
 
         [Fact]
@@ -148,7 +150,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             
             Func<Task> action = async () => await sp.GetRequiredService<ICommandBus>().SendAsync(Guid.NewGuid(), cmd);
 
-            await action.Should().ThrowAsync<CommandFaultException<BusinessFault>>();
+            await action.Should().ThrowAsync<FaultException<BusinessFault>>();
         }
 
        

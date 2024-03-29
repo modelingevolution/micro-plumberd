@@ -54,8 +54,8 @@ public interface IPlumber
 
     ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
     
-    Task Rehydrate<T>(T model, string stream) where T : IEventHandler, ITypeRegister;
-    Task Rehydrate<T>(T model, Guid id) where T : IEventHandler, ITypeRegister;
+    Task Rehydrate<T>(T model, string stream, StreamPosition? position = null) where T : IEventHandler, ITypeRegister;
+    Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null) where T : IEventHandler, ITypeRegister;
 
     Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister;
     Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
@@ -67,4 +67,8 @@ public interface IPlumber
         TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class, IEventHandler;
+
+    IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null) where TOwner : ITypeRegister;
+    IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null,Direction? direction=null) where TOwner : ITypeRegister;
+    IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null,Direction? direction=null);
 }

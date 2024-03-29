@@ -3,8 +3,9 @@ using System.Net;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 using EventStore.Client;
+using Xunit;
 
-namespace MicroPlumberd.Tests.Fixtures;
+namespace MicroPlumberd.Testing;
 
 public class EventStoreServer : IAsyncDisposable
 {
@@ -15,7 +16,8 @@ public class EventStoreServer : IAsyncDisposable
     private static PortSearcher _searcher = new PortSearcher();
     private readonly DockerClient client;
     private readonly bool _isDebuggerAttached = false;
-    public EventStoreServer(string? containerName = null)
+    public static EventStoreServer Create(string? containerName = null) => new EventStoreServer(containerName);
+    internal EventStoreServer(string? containerName = null)
     {
         if (containerName != null)
             _containerName = containerName;
@@ -42,7 +44,7 @@ public class EventStoreServer : IAsyncDisposable
         var container = containers.FirstOrDefault(x => x.Names.Any(n => n.Contains(ContainerName)));
         return container;
     }
-    public async Task StartInDocker(bool wait = true)
+    public async Task<EventStoreServer> StartInDocker(bool wait = true)
     {
         var container = await GetEventStoreContainer();
         if (container == null)
@@ -90,6 +92,7 @@ public class EventStoreServer : IAsyncDisposable
         }
 
         await Task.Delay(8000);
+        return this;
     }
 
     private static async Task CheckDns(string eventStoreHostName)

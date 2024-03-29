@@ -1,8 +1,8 @@
 ﻿namespace MicroPlumberd;
 
-public class CommandFaultException<TData> : CommandFaultException
+public class FaultException<TData> : FaultException
 {
-    public CommandFaultException(string? message, TData data) : base(message)
+    public FaultException(string? message, TData data) : base(message)
     {
         Data = data;
     }
@@ -11,19 +11,19 @@ public class CommandFaultException<TData> : CommandFaultException
 
     public override object GetFaultData() => (object)this.Data;
 
-    public CommandFaultException(TData data) => this.Data = data;
+    public FaultException(TData data) => this.Data = data;
 }
-public class CommandFaultException : Exception
+public class FaultException : Exception
 {
-    public CommandFaultException()
+    public FaultException()
     {
     }
 
-    public static CommandFaultException Create(string message, object data)
+    public static FaultException Create(string message, object data)
     {
-        return (CommandFaultException)Activator.CreateInstance(typeof(CommandFaultException<>).MakeGenericType(data.GetType()), message, data)!;
+        return (FaultException)Activator.CreateInstance(typeof(FaultException<>).MakeGenericType(data.GetType()), message, data)!;
     }
-    public CommandFaultException(string? message) : base(message)
+    public FaultException(string? message) : base(message)
     {
     }
 

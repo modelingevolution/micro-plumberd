@@ -11,7 +11,10 @@ using static System.Formats.Asn1.AsnWriter;
 namespace MicroPlumberd;
 
 
+public delegate string StreamCategoryConvention(Type aggregateType);
 public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId);
+
+public delegate string ProjectionCategoryStreamConvention(Type aggregateType);
 
 public delegate string EventNameConvention(Type? ownerType, Type evtType);
 
@@ -24,7 +27,8 @@ public delegate string OutputStreamModelConvention(Type model);
 public delegate string GroupNameModelConvention(Type model);
 public interface IConventions : IExtension
 {
-    
+    ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
+    StreamCategoryConvention GetStreamCategoryConvention { get; set; }
     SteamNameConvention GetStreamIdConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
     BuildInvocationContext BuildInvocationContext { get; set; }
@@ -45,13 +49,15 @@ class Conventions : IConventions
     private readonly ConcurrentDictionary<Type,object> _extension = new();
     public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
-    public SteamNameConvention GetStreamIdConvention { get; set; } = (aggregateType,id) => $"{aggregateType.GetFriendlyName()}-{id}";
+    public SteamNameConvention GetStreamIdConvention { get; set; }
+    public StreamCategoryConvention GetStreamCategoryConvention { get; set; } = agg => $"{agg.GetFriendlyName()}";
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
     public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
+    public ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
 
     public StandardMetadataEnricherTypes StandardMetadataEnricherTypes
     {
@@ -81,6 +87,8 @@ class Conventions : IConventions
     {
         MetadataEnrichers += StandardMetadataEnrichers.CreatedTimeMetadata;
         MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
+        GetStreamIdConvention = (aggregateType,id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
+        ProjectionCategoryStreamConvention =(t) => $"$ce-{GetStreamCategoryConvention(t)}";
     }
 
     private static string OutputStreamFromModel(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.Name;

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using EventStore.Client;
-using MicroPlumberd.DirectConnect;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 

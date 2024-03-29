@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using EventStore.Client;
+using MicroPlumberd.Services;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;
 
@@ -16,7 +17,7 @@ internal class CommandHandlerCore<TCommand>(IServiceProvider serviceProvider) : 
         {
             return await ch.Execute(request.StreamId, request.Command);
         }
-        catch (CommandFaultException ex)
+        catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
             return FaultEnvelope.Create(faultData, ex.Message);

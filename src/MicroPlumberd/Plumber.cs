@@ -118,15 +118,16 @@ public class Plumber : IPlumber, IPlumberConfig
                 cancellationToken));
     }
 
-    public async Task Rehydrate<T>(T model, Guid id) where T : IEventHandler, ITypeRegister
+    public async Task Rehydrate<T>(T model, Guid id,StreamPosition? position = null) where T : IEventHandler, ITypeRegister
     {
         var streamId = Conventions.GetStreamIdConvention(typeof(T), id);
-        await Rehydrate(model, streamId);
+        await Rehydrate(model, streamId, position);
     }
 
-    public async Task Rehydrate<T>(T model, string streamId) where T : IEventHandler, ITypeRegister
+    public async Task Rehydrate<T>(T model, string streamId, StreamPosition? position = null) where T : IEventHandler, ITypeRegister
     {
-        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start, resolveLinkTos: true);
+        StreamPosition pos = position ?? StreamPosition.Start;
+        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, pos, resolveLinkTos: true);
         var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
         var vAware = model as IVersionAware;
 
@@ -185,22 +186,42 @@ public class Plumber : IPlumber, IPlumberConfig
         return new SubscriptionSet(this);
     }
 
-    public async Task<T> Get<T>(Guid id)
-        where T : IAggregate<T>, ITypeRegister
+    public IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null) where TOwner : ITypeRegister
     {
-        var streamId = Conventions.GetStreamIdConvention(typeof(T), id);
+        start ??= StreamPosition.Start;
+        
+        var streamId = Conventions.GetStreamIdConvention(typeof(TOwner), id);
+        var registry = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
+        return Read(streamId, registry, start, direction);
+    }
+    public IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction=null) where TOwner : ITypeRegister
+    {
+        var streamId = Conventions.ProjectionCategoryStreamConvention(typeof(TOwner));
+        var evNameConv = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
+        return Read(streamId, evNameConv, start, direction);
+    }
 
-        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
-
-        var aggregate = T.New(id);
-        if (await items.ReadState == ReadState.StreamNotFound) return aggregate;
-
-        var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
+    public async IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction=null)
+    {
+        Direction d = direction ?? Direction.Forwards;
+        StreamPosition p = start ?? StreamPosition.Start;
+        
+        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos:true);
+        if (await items.ReadState == ReadState.StreamNotFound) yield break;
+        
         var events = items.Select(x => new
-                { ResolvedEvent = x, EventType = registry(x.Event.EventType, out var t) ? t : null })
+                { ResolvedEvent = x, EventType = converter(x.Event.EventType, out var t) ? t : null })
             .Where(x => x.EventType != null)
             .Select(ev => Serializer.Deserialize(ev.ResolvedEvent.Event.Data.Span, ev.EventType!));
-        await aggregate.Rehydrate(events);
+        await foreach (var i in events)
+            yield return i;
+    }
+
+    public async Task<TOwner> Get<TOwner>(Guid id)
+        where TOwner : IAggregate<TOwner>, ITypeRegister
+    {
+        var aggregate = TOwner.New(id);
+        await aggregate.Rehydrate(Read<TOwner>(id));
         return aggregate;
     }
 

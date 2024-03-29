@@ -1,8 +1,8 @@
-using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
+using MicroPlumberd.Tests.App.Domain;
 using ProtoBuf;
 
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Srv;
 
 [ProtoContract]
 [ThrowsFaultCommandException<BusinessFault>]

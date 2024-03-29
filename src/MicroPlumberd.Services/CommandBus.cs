@@ -97,8 +97,8 @@ class CommandBus : ICommandBus, IEventHandler
                 throw new TimeoutException("Command execution timeout.");
             }
             else if (executionResults.ErrorData != null)
-                throw CommandFaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData);
-            throw new CommandFaultException(executionResults.ErrorMessage);
+                throw FaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData);
+            throw new FaultException(executionResults.ErrorMessage);
         }
     }
 

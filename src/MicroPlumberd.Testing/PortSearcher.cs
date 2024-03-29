@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace MicroPlumberd.Tests.Fixtures;
+namespace MicroPlumberd.Testing;
 
 public class PortSearcher
 {

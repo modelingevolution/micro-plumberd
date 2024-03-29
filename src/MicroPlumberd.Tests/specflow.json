@@ -1,0 +1,5 @@
+﻿{
+  "stepAssemblies": [
+    { "assembly": "MicroPlumberd.Tests.App.Dsl" }
+  ]
+}

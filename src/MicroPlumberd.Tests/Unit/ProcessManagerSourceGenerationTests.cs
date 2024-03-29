@@ -1,4 +1,5 @@
 using FluentAssertions;
+using MicroPlumberd.Tests.App.Srv;
 using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Utils;
 

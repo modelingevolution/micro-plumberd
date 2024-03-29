@@ -1,8 +1,8 @@
 using ModelingEvolution.DirectConnect;
 
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Domain;
 
-public class BusinessFaultException : CommandFaultException<BusinessFault>
+public class BusinessFaultException : FaultException<BusinessFault>
 {
     public BusinessFaultException(string name) : base(new BusinessFault() { Name = name }) { }
 }

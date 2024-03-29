@@ -1,12 +1,21 @@
 using FluentAssertions;
+using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.AppSrc;
-using MicroPlumberd.Tests.Fixtures;
 using MicroPlumberd.Tests.Utils;
+using TechTalk.SpecFlow.Generator.Plugins;
+using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace MicroPlumberd.Tests.Integration
 {
-    
-  
+
+    public class SampleGeneratorPlugin : IGeneratorPlugin
+    {
+        public void Initialize(GeneratorPluginEvents generatorPluginEvents, GeneratorPluginParameters generatorPluginParameters,
+            UnitTestProviderConfiguration unitTestProviderConfiguration)
+        {
+
+        }
+    }
 
     [TestCategory("Integration")]
     public class AggregateTests : IClassFixture<EventStoreServer>

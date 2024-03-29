@@ -1,9 +1,10 @@
 ﻿using MicroPlumberd.Services;
 using MicroPlumberd.Tests.AppSrc;
-using MicroPlumberd.Tests.Fixtures;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using MicroPlumberd.Testing;
+using MicroPlumberd.Tests.App.Srv;
 using ModelingEvolution.DirectConnect;
 using Xunit.Sdk;
 using Xunit.Abstractions;
@@ -14,13 +15,13 @@ namespace MicroPlumberd.Tests.Integration.Services;
 public class ProcessManagerTests : IClassFixture<EventStoreServer>
 {
     private readonly EventStoreServer _eventStore;
-    private readonly App _serverApp;
-    private readonly App _clientApp;
+    private readonly AppHost _serverApp;
+    private readonly AppHost _clientApp;
     public ProcessManagerTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
     {
         _eventStore = eventStore;
-        _serverApp = new App(testOutputHelper);
-        _clientApp = new App(testOutputHelper);
+        _serverApp = new AppHost(testOutputHelper);
+        _clientApp = new AppHost(testOutputHelper);
     }
 
     [Fact]

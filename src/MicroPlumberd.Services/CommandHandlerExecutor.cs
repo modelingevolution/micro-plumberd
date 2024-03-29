@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using EventStore.Client;
-using MicroPlumberd.DirectConnect;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -69,7 +68,7 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
                 });
             log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name, cmdStream);
         }
-        catch (CommandFaultException ex)
+        catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
             await plumber.AppendEvent(cmdStream, StreamState.StreamExists,

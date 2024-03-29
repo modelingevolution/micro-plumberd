@@ -1,10 +1,9 @@
-
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
-using MicroPlumberd.Services.Uniqueness;
+using MicroPlumberd.Tests.App.Domain;
 using ProtoBuf;
 
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Srv;
 
 
 

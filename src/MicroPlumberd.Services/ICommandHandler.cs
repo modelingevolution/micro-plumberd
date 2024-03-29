@@ -1,4 +1,4 @@
-﻿namespace MicroPlumberd.DirectConnect;
+﻿namespace MicroPlumberd.Services;
 
 public interface ICommandHandler
 {

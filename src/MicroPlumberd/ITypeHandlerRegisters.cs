@@ -7,3 +7,5 @@ public interface ITypeHandlerRegisters
     IEnumerable<KeyValuePair<string, Type>> GetEventNameMappingsFor<THandler>() where THandler : ITypeRegister;
     IEnumerable<string> GetEventNamesFor<THandler>() where THandler : ITypeRegister;
 }
+
+

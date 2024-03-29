@@ -3,8 +3,10 @@ using System.Net;
 using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Testing;
+using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.App.Srv;
 using MicroPlumberd.Tests.AppSrc;
-using MicroPlumberd.Tests.Fixtures;
 using MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
@@ -108,7 +110,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
 
         var action = async () => await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "error" });
-        await action.Should().ThrowAsync<CommandFaultException<BusinessFault>>();
+        await action.Should().ThrowAsync<FaultException<BusinessFault>>();
     }
 
 

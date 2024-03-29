@@ -1,7 +1,7 @@
 using EventStore.Client;
 using FluentAssertions;
+using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.AppSrc;
-using MicroPlumberd.Tests.Fixtures;
 using MicroPlumberd.Tests.Utils;
 
 namespace MicroPlumberd.Tests.Integration;
@@ -44,14 +44,4 @@ public class ModelSetsTests : IClassFixture<EventStoreServer>
         factTable.Index.First().Value.DependencyName.Should().Be("Dependency");
     }
 
-}
-
-public class ProductionReplication
-{
-    [Fact]
-    public async Task Replicate()
-    {
-        EventStoreServer srv = new EventStoreServer("Replicator");
-        await srv.StartInDocker();
-    }
 }
