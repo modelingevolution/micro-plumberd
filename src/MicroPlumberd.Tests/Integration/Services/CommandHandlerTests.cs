@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Docker.DotNet.Models;
 using MicroPlumberd.Services;
-using MicroPlumberd.Tests.AppSrc;
+
 using FluentAssertions;
 using MicroPlumberd.Testing;
 using ModelingEvolution.DirectConnect;
@@ -23,15 +23,15 @@ namespace MicroPlumberd.Tests.Integration.Services
     {
         private readonly EventStoreServer _eventStore;
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly AppHost _serverApp;
-        private readonly AppHost _clientApp;
+        private readonly TestAppHost _serverTestApp;
+        private readonly TestAppHost _clientTestApp;
 
         public CommandHandlerTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
         {
             _eventStore = eventStore;
             _testOutputHelper = testOutputHelper;
-            _serverApp = new AppHost(testOutputHelper);
-            _clientApp = new AppHost(testOutputHelper);
+            _serverTestApp = new TestAppHost(testOutputHelper);
+            _clientTestApp = new TestAppHost(testOutputHelper);
         }
 
         [Fact]
@@ -39,15 +39,15 @@ namespace MicroPlumberd.Tests.Integration.Services
         {
             await _eventStore.StartInDocker();
 
-            _serverApp.Configure(x => x
+            _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
                 .AddCommandHandler<BooCommandHandler>());
 
-            var srv = await _serverApp.StartAsync();
+            var srv = await _serverTestApp.StartAsync();
             await Task.Delay(1000);
 
             
-            var client = await _clientApp.Configure(x => x
+            var client = await _clientTestApp.Configure(x => x
                     .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
                 .StartAsync();
 
@@ -71,17 +71,17 @@ namespace MicroPlumberd.Tests.Integration.Services
         {
             await _eventStore.StartInDocker();
 
-            _serverApp.Configure(x => x
+            _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
                 .AddCommandHandler<FooCommandHandler>());
 
-            var srv = await _serverApp.StartAsync();
+            var srv = await _serverTestApp.StartAsync();
             await Task.Delay(1000);
             
             var fooModel = new FooModel();
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
 
-            var client = await _clientApp.Configure(x => x
+            var client = await _clientTestApp.Configure(x => x
                     .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
                 .StartAsync();
 
@@ -104,11 +104,11 @@ namespace MicroPlumberd.Tests.Integration.Services
         {
             await _eventStore.StartInDocker();
 
-            _serverApp.Configure(x => x
+            _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
                 .AddCommandHandler<FooCommandHandler>());
 
-            var srv = await _serverApp.StartAsync();
+            var srv = await _serverTestApp.StartAsync();
             await Task.Delay(1000);
             var cmd = new CreateFoo() { Name = "Hello" };
             var recipientId = Guid.NewGuid();
@@ -116,7 +116,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             Stopwatch sw = new Stopwatch();
             sw.Start();
 
-            var client = await _clientApp.Configure( x=>x
+            var client = await _clientTestApp.Configure( x=>x
                 .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
                 .StartAsync();
 
@@ -140,11 +140,11 @@ namespace MicroPlumberd.Tests.Integration.Services
         {
             await _eventStore.StartInDocker();
 
-            _serverApp.Configure(x => x
+            _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
                 .AddCommandHandler<FooCommandHandler>());
 
-            var sp = await _serverApp.StartAsync();
+            var sp = await _serverTestApp.StartAsync();
             
             var cmd = new CreateFoo() { Name = "error" };
             

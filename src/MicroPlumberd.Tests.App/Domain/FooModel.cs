@@ -1,4 +1,4 @@
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Domain;
 
 [OutputStream("FooModel_v1")]
 [EventHandler]
@@ -7,6 +7,7 @@ public partial class FooModel
     public readonly Dictionary<Guid, string> Index = new();
     public readonly List<Metadata> Metadatas = new();
     public readonly List<object> Events = new();
+    public string? FindById(Guid id) => Index.TryGetValue(id, out var v) ? v : null;
     private async Task Given(Metadata m, FooCreated ev)
     {
         Index.Add(m.Id, ev.Name!);

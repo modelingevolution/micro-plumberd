@@ -2,7 +2,7 @@ using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.Services;
 using MicroPlumberd.Testing;
-using MicroPlumberd.Tests.AppSrc;
+using MicroPlumberd.Tests.App.Domain;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 

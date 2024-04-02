@@ -1,7 +1,8 @@
 using System.Diagnostics;
 using MicroPlumberd.Services;
 using MicroPlumberd.Tests.App.Domain;
-using MicroPlumberd.Tests.AppSrc;
+
+using BooAggregate = MicroPlumberd.Tests.App.Domain.BooAggregate;
 
 namespace MicroPlumberd.Tests.App.Srv;
 

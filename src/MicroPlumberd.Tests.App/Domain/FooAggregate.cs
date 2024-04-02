@@ -1,7 +1,6 @@
 using MicroPlumberd.Services.Uniqueness;
-using MicroPlumberd.Tests.App.Domain;
 
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Domain;
 
 [Aggregate]
 public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState>(id)

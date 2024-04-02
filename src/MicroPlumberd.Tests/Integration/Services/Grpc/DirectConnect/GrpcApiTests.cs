@@ -6,7 +6,6 @@ using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;
 using MicroPlumberd.Tests.App.Srv;
-using MicroPlumberd.Tests.AppSrc;
 using MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;

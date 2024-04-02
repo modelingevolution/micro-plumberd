@@ -7,7 +7,7 @@ using Xunit;
 
 namespace MicroPlumberd.Testing;
 
-public class EventStoreServer : IAsyncDisposable
+public class EventStoreServer :  IDisposable
 {
     public EventStoreClientSettings GetEventStoreSettings() => EventStoreClientSettings.Create(HttpUrl.ToString());
 
@@ -17,6 +17,7 @@ public class EventStoreServer : IAsyncDisposable
     private readonly DockerClient client;
     private readonly bool _isDebuggerAttached = false;
     public static EventStoreServer Create(string? containerName = null) => new EventStoreServer(containerName);
+    public EventStoreServer() : this(null) {}
     internal EventStoreServer(string? containerName = null)
     {
         if (containerName != null)
@@ -91,10 +92,29 @@ public class EventStoreServer : IAsyncDisposable
             await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
         }
 
-        await Task.Delay(8000);
+        await WaitUntilReady(TimeSpan.FromSeconds(100));
         return this;
     }
 
+    public async Task WaitUntilReady(TimeSpan timeout)
+    {
+        using var c = new HttpClient();
+        DateTime until = DateTime.Now.Add(timeout);
+        c.BaseAddress = new Uri($"http://localhost:{HttpPort}");
+        c.Timeout = TimeSpan.FromMilliseconds(100);
+        while (DateTime.Now < until)
+        {
+            try
+            {
+                var ret = await c.GetAsync("health/live");
+                if (ret.IsSuccessStatusCode)
+                    return;
+            }
+            catch{}
+        }
+
+        throw new TimeoutException("EventStore is not ready, check docker-containers.");
+    }
     private static async Task CheckDns(string eventStoreHostName)
     {
         try
@@ -113,15 +133,20 @@ public class EventStoreServer : IAsyncDisposable
 
     }
 
-    public async ValueTask DisposeAsync()
+    async ValueTask Cleanup()
     {
         var container = await GetEventStoreContainer();
-        if (container != null && !_isDebuggerAttached)
+        if (container != null)
         {
             var data = await client.Containers.InspectContainerAsync(container.ID);
             if (data.State.Running) 
                 await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
             await client.Containers.RemoveContainerAsync(data.ID, new ContainerRemoveParameters() { Force = true});
         }
+    }
+
+    public void Dispose()
+    {
+        Task.Run(Cleanup).Wait();
     }
 }

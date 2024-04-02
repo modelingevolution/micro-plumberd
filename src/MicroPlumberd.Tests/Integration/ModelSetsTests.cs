@@ -1,7 +1,8 @@
 using EventStore.Client;
 using FluentAssertions;
 using MicroPlumberd.Testing;
-using MicroPlumberd.Tests.AppSrc;
+using MicroPlumberd.Tests.App.Domain;
+
 using MicroPlumberd.Tests.Utils;
 
 namespace MicroPlumberd.Tests.Integration;

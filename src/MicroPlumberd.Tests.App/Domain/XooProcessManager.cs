@@ -1,7 +1,7 @@
 using MicroPlumberd.Tests.App.Srv;
 using ModelingEvolution.DirectConnect;
 
-namespace MicroPlumberd.Tests.AppSrc;
+namespace MicroPlumberd.Tests.App.Domain;
 
 [ProcessManager]
 public partial class XooProcessManager 

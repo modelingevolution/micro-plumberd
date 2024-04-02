@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace MicroPlumberd.Tests.Integration
+namespace MicroPlumberd.Tests.Integration.Specflow
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,19 +19,21 @@ namespace MicroPlumberd.Tests.Integration
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class FooFlowFeature : object, Xunit.IClassFixture<FooFlowFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Aggregate")]
+    public partial class FooAggregateFlowFeature : object, Xunit.IClassFixture<FooAggregateFlowFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "Aggregate"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
 #line 1 "Aggregate.feature"
 #line hidden
         
-        public FooFlowFeature(FooFlowFeature.FixtureData fixtureData, MicroPlumberd_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public FooAggregateFlowFeature(FooAggregateFlowFeature.FixtureData fixtureData, MicroPlumberd_Tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +42,7 @@ namespace MicroPlumberd.Tests.Integration
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Integration", "Foo flow", null, ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Integration/Specflow", "Foo aggregate flow", null, ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -77,10 +79,10 @@ namespace MicroPlumberd.Tests.Integration
         
         public virtual void FeatureBackground()
         {
-#line 3
-#line hidden
 #line 4
-    testRunner.Given("the app is up and running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 5
+    testRunner.Given("the Foo App is up and running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -89,15 +91,15 @@ namespace MicroPlumberd.Tests.Integration
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Calling an aggregate")]
-        [Xunit.TraitAttribute("FeatureTitle", "Foo flow")]
-        [Xunit.TraitAttribute("Description", "Calling an aggregate")]
-        public void CallingAnAggregate()
+        [Xunit.SkippableFactAttribute(DisplayName="Creating and changing Foo should be successful")]
+        [Xunit.TraitAttribute("FeatureTitle", "Foo aggregate flow")]
+        [Xunit.TraitAttribute("Description", "Creating and changing Foo should be successful")]
+        public void CreatingAndChangingFooShouldBeSuccessful()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calling an aggregate", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 6
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Creating and changing Foo should be successful", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -107,10 +109,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
-#line 8
+#line 9
     testRunner.Given("Foo created", "Name: \"Ok\"", ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
                 TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -119,32 +121,32 @@ this.FeatureBackground();
                 table1.AddRow(new string[] {
                             "Name",
                             "Ok"});
-#line 13
+#line 14
     testRunner.And("Foo was updated:", ((string)(null)), table1, "And ");
 #line hidden
-#line 17
+#line 18
     testRunner.When("I change Foo with msg: \'Blabla\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name"});
                 table2.AddRow(new string[] {
                             "Blabla"});
-#line 18
+#line 19
     testRunner.Then("I expect, that Foo was updated with:", ((string)(null)), table2, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Calling an aggregate to throw exception")]
-        [Xunit.TraitAttribute("FeatureTitle", "Foo flow")]
-        [Xunit.TraitAttribute("Description", "Calling an aggregate to throw exception")]
-        public void CallingAnAggregateToThrowException()
+        [Xunit.SkippableFactAttribute(DisplayName="Changing Foo with an error")]
+        [Xunit.TraitAttribute("FeatureTitle", "Foo aggregate flow")]
+        [Xunit.TraitAttribute("Description", "Changing Foo with an error")]
+        public void ChangingFooWithAnError()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calling an aggregate to throw exception", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Changing Foo with an error", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -154,24 +156,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 3
+#line 4
 this.FeatureBackground();
 #line hidden
                 TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name"});
                 table3.AddRow(new string[] {
                             "Foo"});
-#line 24
-    testRunner.Given("Foo created", ((string)(null)), table3, "Given ");
+#line 25
+    testRunner.Given("Foo was created", ((string)(null)), table3, "Given ");
 #line hidden
-#line 28
+#line 29
     testRunner.When("I change Foo with msg: \'error\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
                 TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name"});
                 table4.AddRow(new string[] {
                             "Houston we have a problem!"});
-#line 29
+#line 30
     testRunner.Then("I expect business fault exception:", ((string)(null)), table4, "Then ");
 #line hidden
             }
@@ -185,12 +187,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                FooFlowFeature.FeatureSetup();
+                FooAggregateFlowFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                FooFlowFeature.FeatureTearDown();
+                FooAggregateFlowFeature.FeatureTearDown();
             }
         }
     }

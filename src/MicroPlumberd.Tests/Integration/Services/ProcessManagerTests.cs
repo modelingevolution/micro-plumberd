@@ -1,9 +1,10 @@
 ﻿using MicroPlumberd.Services;
-using MicroPlumberd.Tests.AppSrc;
+
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 using MicroPlumberd.Testing;
+using MicroPlumberd.Tests.App.Domain;
 using MicroPlumberd.Tests.App.Srv;
 using ModelingEvolution.DirectConnect;
 using Xunit.Sdk;
@@ -15,13 +16,13 @@ namespace MicroPlumberd.Tests.Integration.Services;
 public class ProcessManagerTests : IClassFixture<EventStoreServer>
 {
     private readonly EventStoreServer _eventStore;
-    private readonly AppHost _serverApp;
-    private readonly AppHost _clientApp;
+    private readonly TestAppHost _serverTestApp;
+    private readonly TestAppHost _clientTestApp;
     public ProcessManagerTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
     {
         _eventStore = eventStore;
-        _serverApp = new AppHost(testOutputHelper);
-        _clientApp = new AppHost(testOutputHelper);
+        _serverTestApp = new TestAppHost(testOutputHelper);
+        _clientTestApp = new TestAppHost(testOutputHelper);
     }
 
     [Fact]
@@ -29,7 +30,7 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
     {
         await _eventStore.StartInDocker();
 
-        await _serverApp.Configure(x => x
+        await _serverTestApp.Configure(x => x
             .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(100))
             .AddCommandHandler<FooCommandHandler>()
             .AddCommandHandler<BooCommandHandler>()
@@ -39,7 +40,7 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
         await Task.Delay(2000);
 
         
-        var client = await _clientApp.Configure(x=> x
+        var client = await _clientTestApp.Configure(x=> x
             .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(100)))
             .StartAsync();
         var clientBus = client.GetRequiredService<ICommandBus>();

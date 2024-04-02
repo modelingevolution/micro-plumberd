@@ -1,9 +1,13 @@
 ﻿Feature: ReadModel
-	Simple calculator for adding two numbers
+	Simple model to query some data
 
-@mytag
-Scenario: Add two numbers
-	Given the first number is 50
-	And the second number is 70
-	When the two numbers are added
-	Then the result should be 120
+
+Scenario: Foo model
+	Given Some foos were created:
+	  | Id | Name |
+	  | 1  | Ok   |
+	  | 2  | Oki  |
+    When I find by id '1'
+    Then I get 'Ok'
+	
+   

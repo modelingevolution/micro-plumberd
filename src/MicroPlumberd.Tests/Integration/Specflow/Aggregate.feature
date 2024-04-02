@@ -1,9 +1,10 @@
-Feature: Foo flow
+@Aggregate
+Feature: Foo aggregate flow
 
 Background: 
-    Given the app is up and running
-    
-Scenario: Calling an aggregate
+    Given the Foo App is up and running
+   
+Scenario: Creating and changing Foo should be successful
     
     Given Foo created
     """
@@ -19,13 +20,13 @@ Scenario: Calling an aggregate
         | Name   |
         | Blabla | 
 
-Scenario: Calling an aggregate to throw exception
+Scenario: Changing Foo with an error
     
-    Given Foo created
+    Given Foo was created
         | Name |
         | Foo  |
 
     When I change Foo with msg: 'error'
     Then I expect business fault exception:
-        | Name   |
+        | Name                       |
         | Houston we have a problem! | 

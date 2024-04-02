@@ -4,14 +4,17 @@ using System.Linq;
 namespace MicroPlumberd;
 
 
-
-public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId
+public interface IAggregateStateAccessor<out T>
+{
+    T State { get; }
+}
+public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IAggregateStateAccessor<TState>
     where TState : new()
 
 {
     private readonly List<object> _pendingEvents = new();
     protected TState State { get; private set; } = new();
-
+    TState IAggregateStateAccessor<TState>.State => State;
     public Guid Id => id;
     public long Version { get; private set; } = -1;
 

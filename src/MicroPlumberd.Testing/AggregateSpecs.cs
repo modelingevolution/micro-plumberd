@@ -3,60 +3,88 @@ using System.Text;
 using System.Text.Json;
 using EventStore.Client;
 using MicroPlumberd;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-public class AggregateSpecs<T>(SpecsRoot parent) where T : IAggregate<T>, ITypeRegister
+public class ReadModelSpecs<T>(SpecsRoot root)
 {
-    public IArgumentProvider ArgumentProvider => parent.ArgumentProvider;
+    public async Task When<TValue>(Func<T, TValue> valueExtractor)
+    {
+        var model = root.Plumber.Config.ServiceProvider.GetRequiredService<T>();
+        await Task.Delay(1000);
+        var value = valueExtractor(model);
+        root.RegisterQueryStepExecution<T>(StepType.When, value);
+    }
+
+    public void ThenQueryResult(Action<object> assertion)
+    {
+        var queryResults = root.ExecutedSteps
+            .Reverse()
+            .TakeWhile(x => x.Type == StepType.When)
+            .Where(x=> x.QueryResult != null && x.HandlerType == typeof(T))
+            .Select(x=>x.QueryResult)
+            .ToArray();
+
+        foreach (var qr in queryResults) 
+            assertion(qr);
+    }
+}
+public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeRegister
+{
+    public IArgumentProvider ArgumentProvider => root.ArgumentProvider;
     
 
     public async Task When(Action<T> mth)
     {
-        var aggregateId = _subjects.Current();
+        var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
+        var aggregateId = root.SubjectPool.GetOrCreate(subject);
         await When(aggregateId, mth);
     }
 
     private async Task When(Guid aggregateId, Action<T> mth)
     {
-        var streamId = parent.Plumber.Config.Conventions.ProjectionCategoryStreamConvention(typeof(T));
-        var bg = parent.Plumber.Client.ReadStreamAsync(Direction.Backwards, streamId, StreamPosition.End, 10, false);
+        var streamId = root.Plumber.Config.Conventions.ProjectionCategoryStreamConvention(typeof(T));
+        var bg = root.Plumber.Client.ReadStreamAsync(Direction.Backwards, streamId, StreamPosition.End, 10, false);
         var first = await bg.FirstAsync();
         var pos = first.OriginalEventNumber;
         try
         {
             
-            var a = await parent.Plumber.Get<T>(aggregateId);
+            var a = await root.Plumber.Get<T>(aggregateId);
             mth(a);
             var publishedEvents = a.PendingEvents;
-            await parent.Plumber.SaveChanges(a);
-            parent.RegisterStepExecution<T>(StepType.When, pos, publishedEvents);
+            await root.Plumber.SaveChanges(a);
+            root.RegisterStepExecution<T>(StepType.When, pos, publishedEvents);
         }
         catch(Exception ex)
         {
-            parent.RegisterStepExecutionFailed<T>(StepType.When, ex, pos);
+            root.RegisterStepExecutionFailed<T>(StepType.When, ex, pos);
         }
     }
 
     public Task Given<TEvent>(string id, TEvent ev) => Given<TEvent>(Guid.TryParse(id, out var g) ? g : id.ToGuid(), ev);
     public async Task Given<TEvent>(Guid id, TEvent ev)
     {
+        var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
+        root.SubjectPool.Store(subject, id);
         var eventHandler = typeof(T);
-        var streamId = parent.Plumber.Config.Conventions.GetStreamIdConvention(eventHandler, id);
-        var eventName = parent.Plumber.Config.Conventions.GetEventNameConvention(eventHandler, typeof(TEvent));
-        await parent.Plumber.AppendEvent(streamId, StreamState.Any, eventName, ev);
-        parent.RegisterStepExecution<T>(StepType.Given, ev);
+        var streamId = root.Plumber.Config.Conventions.GetStreamIdConvention(eventHandler, id);
+        var eventName = root.Plumber.Config.Conventions.GetEventNameConvention(eventHandler, typeof(TEvent));
+        await root.Plumber.AppendEvent(streamId, StreamState.Any, eventName, ev);
+        root.RegisterStepExecution<T>(StepType.Given, ev);
     }
     public Task Given<TEvent>(TEvent ev)
     {
-        var id = _subjects.Current();
-        return Given<TEvent>(id, ev);
+        var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
+        var aggregateId = root.SubjectPool.GetOrCreate(subject);
+        return Given<TEvent>(aggregateId, ev);
     }
 
     public async Task ThenThrown<TException>() => await ExpectedThrown<TException>(x => true);
 
     public async Task ExpectedThrown<TException>(Expression<Predicate<TException>> ex)
     {
-        var prv = parent.ExecutedSteps.AsEnumerable()
+        var prv = root.ExecutedSteps.AsEnumerable()
             .Reverse()
             .TakeWhile(x => x.Type == StepType.When)
             .Where(x => x.Exception != null)
@@ -85,13 +113,13 @@ public class AggregateSpecs<T>(SpecsRoot parent) where T : IAggregate<T>, ITypeR
     {
         if (ev == null) throw new ArgumentNullException("Event cannot be null");
         
-        var prv = parent.ExecutedSteps.AsEnumerable()
+        var prv = root.ExecutedSteps.AsEnumerable()
             .Reverse()
             .TakeWhile(x => x.Type == StepType.When)
             .Last();
 
         var pos = prv.PreCategoryStreamPosition ?? (StreamPosition.Start);
-        var evts = await parent.Plumber.Read<T>(pos+1).ToArrayAsync();
+        var evts = await root.Plumber.Read<T>(pos+1).ToArrayAsync();
         if (evts.OfType<TEvent>().Any(x => ev.Equals(x)))
             return;
         StringBuilder sb = new StringBuilder($"No event found in the stream of type: {typeof(TEvent).Name} that are equal. Maybe you have forgotten to override Equals or use records instead of class???");
@@ -108,12 +136,21 @@ public class AggregateSpecs<T>(SpecsRoot parent) where T : IAggregate<T>, ITypeR
 
     public Task Then(Action<T> func)
     {
-        var aggregateId = _subjects.Current();
+        var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
+        var aggregateId = root.SubjectPool.GetOrCreate(subject);
         return Then(aggregateId, func);
     }
     public async Task Then(Guid aggregateId, Action<T> assertion)
     {
-        var agg = await  parent.Plumber.Get<T>(aggregateId);
+        var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
+        root.SubjectPool.Store(subject, aggregateId);
+        var agg = await root.Plumber.Get<T>(aggregateId);
         assertion(agg);
+    }
+
+    public Guid AnotherSubject()
+    {
+        var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
+        return root.SubjectPool.A(subject);
     }
 }

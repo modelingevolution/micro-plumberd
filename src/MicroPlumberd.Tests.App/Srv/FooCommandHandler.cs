@@ -1,7 +1,8 @@
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
 using MicroPlumberd.Tests.App.Domain;
-using MicroPlumberd.Tests.AppSrc;
+
+using FooAggregate = MicroPlumberd.Tests.App.Domain.FooAggregate;
 
 namespace MicroPlumberd.Tests.App.Srv;
 

@@ -11,13 +11,18 @@
     <PackageReference Include="Docker.DotNet" Version="3.125.15" />
     <PackageReference Include="EventStore.Client.Grpc" Version="23.2.1" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0" />
+    <PackageReference Include="SpecFlow" Version="3.9.74" />
     <PackageReference Include="xunit" Version="2.7.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="YamlDotNet" Version="15.1.2" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
   </ItemGroup>
 </Project>
