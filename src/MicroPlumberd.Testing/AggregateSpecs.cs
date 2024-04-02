@@ -3,32 +3,8 @@ using System.Text;
 using System.Text.Json;
 using EventStore.Client;
 using MicroPlumberd;
-using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
-public class ReadModelSpecs<T>(SpecsRoot root)
-{
-    public async Task When<TValue>(Func<T, TValue> valueExtractor)
-    {
-        var model = root.Plumber.Config.ServiceProvider.GetRequiredService<T>();
-        await Task.Delay(1000);
-        var value = valueExtractor(model);
-        root.RegisterQueryStepExecution<T>(StepType.When, value);
-    }
-
-    public void ThenQueryResult(Action<object> assertion)
-    {
-        var queryResults = root.ExecutedSteps
-            .Reverse()
-            .TakeWhile(x => x.Type == StepType.When)
-            .Where(x=> x.QueryResult != null && x.HandlerType == typeof(T))
-            .Select(x=>x.QueryResult)
-            .ToArray();
-
-        foreach (var qr in queryResults) 
-            assertion(qr);
-    }
-}
 public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeRegister
 {
     public IArgumentProvider ArgumentProvider => root.ArgumentProvider;
@@ -97,13 +73,21 @@ public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeReg
             return;
 
         StringBuilder sb = new StringBuilder();
-        sb.Append($"No exception was thrown of type: {typeof(TException).Name} with {ex.ToString()} predicate.");
+        sb.Append($"No exception was thrown of type: {typeof(TException).GetFriendlyName()} with {ex.ToString()} predicate");
 
         if (prv.Any())
         {
             sb.Append(" But those exceptions were thrown:\n");
             foreach (var i in prv.Reverse())
-                sb.AppendLine($"Exception of type {i.GetType().Name}: {i.Message}");
+            {
+                sb.Append($"Exception of type {i.GetType().GetFriendlyName()}: {i.Message}.");
+                if (i is TException e && !func(e))
+                {
+                    sb.Append(" Provided predicate returned FALSE.");
+                }
+
+                sb.AppendLine();
+            }
         }
         
         // Should construct message with what happend, just like in FluentAssertions.

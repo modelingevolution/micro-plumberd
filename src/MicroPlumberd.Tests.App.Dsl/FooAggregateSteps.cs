@@ -96,7 +96,7 @@ namespace MicroPlumberd.Tests.App.Dsl
         public async Task ThenIExpectBusinessFaultException(object s)
         {
             var errorData = _aggregateSpecs.ArgumentProvider.Recognize<BusinessFault>(s);
-            await _aggregateSpecs.ExpectedThrown<BusinessFaultException>(x=>x.Data.Equals(errorData));
+            await _aggregateSpecs.ExpectedThrown<FaultException<BusinessFault>>(x=>x.Data.Equals(errorData));
         }
         
         [Then(@"I expect, that Foo's state is set with:")]

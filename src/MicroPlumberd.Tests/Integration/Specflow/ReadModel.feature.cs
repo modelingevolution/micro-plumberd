@@ -75,6 +75,15 @@ namespace MicroPlumberd.Tests.Integration.Specflow
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+ testRunner.Given("the Foo App is up and running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -88,7 +97,7 @@ namespace MicroPlumberd.Tests.Integration.Specflow
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Foo model", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 5
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -98,6 +107,9 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
                 TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                             "Id",
                             "Name"});
@@ -107,13 +119,13 @@ this.ScenarioInitialize(scenarioInfo);
                 table12.AddRow(new string[] {
                             "2",
                             "Oki"});
-#line 6
+#line 8
  testRunner.Given("Some foos were created:", ((string)(null)), table12, "Given ");
 #line hidden
-#line 10
+#line 12
     testRunner.When("I find by id \'1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 11
+#line 13
     testRunner.Then("I get \'Ok\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

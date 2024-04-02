@@ -27,13 +27,13 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         await _eventStore.StartInDocker();
         await AppendOneEvent();
 
-        var fooModel = new FooModel();
+        var fooModel = new FooModel(new InMemoryModelStore());
 
         var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom:StreamPosition.Start);
 
         await Task.Delay(1000);
 
-        fooModel.Index.Should().HaveCount(1);
+        fooModel.ModelStore.Index.Should().HaveCount(1);
     }
 
     [Fact]
@@ -42,13 +42,13 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         await _eventStore.StartInDocker();
         await AppendOneEvent();
 
-        var fooModel = new FooModel();
+        var fooModel = new FooModel(new InMemoryModelStore());
 
         var sub = await plumber.SubscribeEventHandler(fooModel);
 
         await Task.Delay(1000);
 
-        fooModel.Index.Should().HaveCount(1);
+        fooModel.ModelStore.Index.Should().HaveCount(1);
     }
     [Fact]
     public async Task SubscribeScopedModel()

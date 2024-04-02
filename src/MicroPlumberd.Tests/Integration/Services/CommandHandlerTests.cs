@@ -78,7 +78,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             var srv = await _serverTestApp.StartAsync();
             await Task.Delay(1000);
             
-            var fooModel = new FooModel();
+            var fooModel = new FooModel(new InMemoryModelStore());
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
 
             var client = await _clientTestApp.Configure(x => x
@@ -96,7 +96,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             
             await Task.Delay(3000);
 
-            fooModel.Index.Should().HaveCount(100);
+            fooModel.ModelStore.Index.Should().HaveCount(100);
            
         }
         [Fact]
@@ -125,14 +125,14 @@ namespace MicroPlumberd.Tests.Integration.Services
             _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed);
             
 
-            var fooModel = new FooModel();
+            var fooModel = new FooModel(new InMemoryModelStore());
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
             await Task.Delay(1000);
 
-            fooModel.Index.Should().HaveCount(1);
-            fooModel.Metadatas[0].CausationId().Should().Be(cmd.Id);
-            fooModel.Metadatas[0].CorrelationId().Should().Be(cmd.Id);
-            fooModel.Metadatas[0].SourceStreamId.Should().Be($"FooAggregate-{recipientId}");
+            fooModel.ModelStore.Index.Should().HaveCount(1);
+            fooModel.ModelStore.Index[0].Metadata.CausationId().Should().Be(cmd.Id);
+            fooModel.ModelStore.Index[0].Metadata.CorrelationId().Should().Be(cmd.Id);
+            fooModel.ModelStore.Index[0].Metadata.SourceStreamId.Should().Be($"FooAggregate-{recipientId}");
         }
 
         [Fact]

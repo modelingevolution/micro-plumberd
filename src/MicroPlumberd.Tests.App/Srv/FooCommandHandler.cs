@@ -26,9 +26,6 @@ public partial class FooCommandHandler(IPlumber plumber)
     [ThrowsFaultCommandException<BusinessFault>]
     public async Task<HandlerOperationStatus> Handle(Guid id, ChangeFoo cmd)
     {
-        if (cmd.Name == "error")
-            throw new BusinessFaultException("Foo");
-
         var agg = await plumber.Get<FooAggregate>(id);
         agg.Change(cmd.Name!);
 

@@ -1,6 +1,8 @@
 ﻿Feature: ReadModel
 	Simple model to query some data
 
+Background: 
+	Given the Foo App is up and running
 
 Scenario: Foo model
 	Given Some foos were created:

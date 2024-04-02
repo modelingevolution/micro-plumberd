@@ -56,7 +56,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         {
             x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect();
         });
-        FooModel srvModel = new FooModel();
+        FooModel srvModel = new FooModel(new InMemoryModelStore());
 
         await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandler(srvModel, start: FromStream.End);
         await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandler(new FooProcessor(srvProvider.GetRequiredService<IPlumber>()), start: FromStream.End);
@@ -77,9 +77,9 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
 
         await Task.Delay(1000);
         // Let's wait for results to flow back.
-        srvModel.Metadatas.Should().HaveCount(3);
-        srvModel.Metadatas[2].CorrelationId().Should().Be(secondCommand.Id);
-        srvModel.Events[2].Should().BeOfType<FooCreated>();
+        srvModel.ModelStore.Index.Should().HaveCount(3);
+        srvModel.ModelStore.Index[2].Metadata.CorrelationId().Should().Be(secondCommand.Id);
+        srvModel.ModelStore.Index[2].Event.Should().BeOfType<FooCreated>();
     }
 
     private IRequestInvoker ArrangeClientApp()
