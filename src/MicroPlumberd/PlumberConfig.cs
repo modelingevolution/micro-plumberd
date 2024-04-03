@@ -8,15 +8,16 @@ class PlumberConfig : IPlumberConfig
     public T GetExtension<T>() where T : new() => (T)Extension.GetOrAdd(typeof(T), x => new T());
 
     private IServiceProvider _serviceProvider = new ActivatorServiceProvider();
-    private IObjectSerializer _serializer = new ObjectSerializer();
+    private static readonly JsonObjectSerializer serializer = new JsonObjectSerializer();
+    private Func<Type,IObjectSerializer> _serializerFactory = x => serializer;
 
-    public IObjectSerializer Serializer
+    public Func<Type,IObjectSerializer> SerializerFactory
     {
-        get => _serializer;
+        get => _serializerFactory;
         set
         {
             if(value == null!) throw new ArgumentNullException("ObjectSerializer cannot be null.");
-            _serializer = value;
+            _serializerFactory = value;
         }
     }
 

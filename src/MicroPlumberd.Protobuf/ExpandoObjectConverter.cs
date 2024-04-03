@@ -1,51 +1,27 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Dynamic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace MicroPlumberd;
+namespace MicroPlumberd.Protobuf;
 
-
-class JsonObjectSerializer : IObjectSerializer
-{
-    public static JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter() }};
-    private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
-    public object? Deserialize(ReadOnlySpan<byte> span, Type t)
-    {
-        return JsonSerializer.Deserialize(span, t, Options);
-    }
-
-    public JsonElement ParseMetadata(ReadOnlySpan<byte> span)
-    {
-        if(span.Length == 0) return Empty;
-        return JsonSerializer.Deserialize<JsonElement>(span, Options);
-    }
-
-    public byte[] Serialize(object? t)
-    {
-        return t == null ? Array.Empty<byte>() : JsonSerializer.SerializeToUtf8Bytes(t, t.GetType(), Options);
-    }
-
-    public string ContentType => "application/json";
-}
 class ExpandoObjectConverter : JsonConverter<ExpandoObject>
 {
     public override ExpandoObject Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         return ReadValue(ref reader, options);
     }
-
+    
     private ExpandoObject ReadValue(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         if (reader.TokenType != JsonTokenType.StartObject)
         {
             throw new JsonException();
         }
-
+    
         var expando = new ExpandoObject();
         IDictionary<string, object> dictionary = expando!;
-
+    
         while (reader.Read())
         {
             switch (reader.TokenType)
@@ -61,10 +37,10 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
                     throw new JsonException();
             }
         }
-
+    
         throw new JsonException("Expected EndObject token not found.");
     }
-
+    
     private object? ReadObject(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         switch (reader.TokenType)
@@ -93,40 +69,40 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
             default:
                 throw new JsonException($"Unexpected token: {reader.TokenType}");
         }
-
+    
         return null;
     }
-
+    
     private object ReadArray(ref Utf8JsonReader reader, JsonSerializerOptions options)
     {
         var list = new List<object>();
-
+    
         while (reader.Read())
         {
             if (reader.TokenType == JsonTokenType.EndArray)
             {
                 return list;
             }
-
+    
             list.Add(ReadObject(ref reader, options)!);
         }
-
+    
         throw new JsonException("Expected EndArray token not found.");
     }
-
+    
     public override void Write(Utf8JsonWriter writer, ExpandoObject value, JsonSerializerOptions options)
     {
         writer.WriteStartObject(); // Start writing the object
-
+    
         foreach (var kvp in value)
         {
             writer.WritePropertyName(kvp.Key);
             WriteValue(writer, kvp.Value!, options);
         }
-
+    
         writer.WriteEndObject(); // End writing the object
     }
-
+    
     private void WriteValue(Utf8JsonWriter writer, object value, JsonSerializerOptions options)
     {
         switch (value)
@@ -167,16 +143,16 @@ class ExpandoObjectConverter : JsonConverter<ExpandoObject>
                 break;
         }
     }
-
+    
     private void WriteArray(Utf8JsonWriter writer, IList list, JsonSerializerOptions options)
     {
         writer.WriteStartArray();
-
+    
         foreach (var item in list)
         {
             WriteValue(writer, item, options);
         }
-
+    
         writer.WriteEndArray();
     }
 }

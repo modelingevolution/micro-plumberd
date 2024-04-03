@@ -5,6 +5,7 @@ namespace MicroPlumberd;
 public interface IObjectSerializer
 {
     object? Deserialize(ReadOnlySpan<byte> span, Type t);
-    JsonElement Parse(ReadOnlySpan<byte> span);
-    byte[] SerializeToUtf8Bytes(object? t);
+    JsonElement ParseMetadata(ReadOnlySpan<byte> span);
+    byte[] Serialize(object? t);
+    string ContentType { get; }
 }

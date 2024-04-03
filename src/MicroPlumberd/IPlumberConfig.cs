@@ -2,7 +2,7 @@
 
 public interface IPlumberConfig : IExtension
 {
-    IObjectSerializer Serializer { get; set; }
+    Func<Type, IObjectSerializer> SerializerFactory { get; set; }
     IConventions Conventions { get; }
     IServiceProvider ServiceProvider { get; set; }
 }

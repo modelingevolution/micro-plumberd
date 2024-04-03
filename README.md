@@ -261,7 +261,7 @@ services.AddPlumberd(configure: c => {
     .AddCommandHandler<FooCommandHandler>()
 
 ```
-### Specflow/Ghierkin step-files generations
+### Specflow/Ghierkin step-files generation
 
 Given you have written your domain, you can generate step files that would populate Ghierkin API to your domain. 
 

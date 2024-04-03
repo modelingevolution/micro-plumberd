@@ -19,7 +19,7 @@ public class Plumber : IPlumber, IPlumberConfig
         PersistentSubscriptionClient = new EventStorePersistentSubscriptionsClient(settings);
         ProjectionManagementClient = new EventStoreProjectionManagementClient(settings);
         Conventions = config.Conventions;
-        Serializer = config.Serializer;
+        _serializerFactory = config.SerializerFactory;
         ServiceProvider = config.ServiceProvider;
         _extension = config.Extension; // Shouldn't we make a copy?
         _typeHandlerRegisters = new TypeHandlerRegisters(Conventions.GetEventNameConvention);
@@ -212,7 +212,7 @@ public class Plumber : IPlumber, IPlumberConfig
         var events = items.Select(x => new
                 { ResolvedEvent = x, EventType = converter(x.Event.EventType, out var t) ? t : null })
             .Where(x => x.EventType != null)
-            .Select(ev => Serializer.Deserialize(ev.ResolvedEvent.Event.Data.Span, ev.EventType!));
+            .Select(ev => Serializer(ev.EventType).Deserialize(ev.ResolvedEvent.Event.Data.Span, ev.EventType!));
         await foreach (var i in events)
             yield return i;
     }
@@ -301,7 +301,15 @@ public class Plumber : IPlumber, IPlumberConfig
     }
 
     public IServiceProvider ServiceProvider { get; set; }
-    public IObjectSerializer Serializer { get; set; }
+
+    private Func<Type, IObjectSerializer> _serializerFactory;
+    private ConcurrentDictionary<Type, IObjectSerializer> _serializers = new();
+    IObjectSerializer Serializer(Type t) => _serializers.GetOrAdd(t, _serializerFactory);
+    public Func<Type, IObjectSerializer> SerializerFactory
+    {
+        get => _serializerFactory;
+        set => _serializerFactory = value;
+    }
     public IConventions Conventions { get; }
 
     public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
@@ -323,8 +331,9 @@ public class Plumber : IPlumber, IPlumberConfig
     internal (object, Metadata) ReadEventData(EventRecord er, Type t)
     {
         var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
-        var ev = Serializer.Deserialize(er.Data.Span, t)!;
-        var m = Serializer.Parse(er.Metadata.Span);
+        var s = Serializer(t);
+        var ev = s.Deserialize(er.Data.Span, t)!;
+        var m = s.ParseMetadata(er.Metadata.Span);
 
         var metadata = new Metadata(aggregateId, er.EventId.ToGuid(), er.EventNumber.ToInt64(), er.EventStreamId, m);
         return (ev, metadata);
@@ -344,6 +353,7 @@ public class Plumber : IPlumber, IPlumberConfig
 
     private EventData MakeEvent(Uuid evId, string evName, object data, object m)
     {
-        return new EventData(evId, evName, Serializer.SerializeToUtf8Bytes(data), Serializer.SerializeToUtf8Bytes(m));
+        var s = Serializer(data.GetType());
+        return new EventData(evId, evName, s.Serialize(data), s.Serialize(m), s.ContentType);
     }
 }
