@@ -13,14 +13,14 @@ public partial class CommandHandlerSteps(AppStepsContext context)
     [When(@"I change foo '(.*)' with:")]
     public async Task WhenIChangeFooWith(string id, object arg)
     {
-        var cmd = context.SpecsRoot.ArgumentProvider.Recognize<ChangeFoo>(arg);
+        var cmd = context.SpecsRoot.ArgumentProvider.Recognize<RefineFoo>(arg);
         var recipient = Guid.TryParse(id, out var g) ? g : id.ToGuid();
         await _specs.When(recipient, cmd);
     }
     [When(@"I change foo with:")]
     public async Task WhenIChangeFooWith(object arg)
     {
-        var cmd = context.SpecsRoot.ArgumentProvider.Recognize<ChangeFoo>(arg);
+        var cmd = context.SpecsRoot.ArgumentProvider.Recognize<RefineFoo>(arg);
         await _specs.When(cmd);
     }
 

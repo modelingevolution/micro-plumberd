@@ -42,7 +42,7 @@ public partial class FooModel(InMemoryModelStore assertionModelStore)
         assertionModelStore.Given(m,ev);
          await Task.Delay(0);
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
         assertionModelStore.Given(m, ev);
         await Task.Delay(0);

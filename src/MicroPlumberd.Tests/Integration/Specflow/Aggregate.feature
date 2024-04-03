@@ -11,12 +11,12 @@ Scenario: Creating and changing Foo should be successful
     Name: "Ok"
     """
     
-    And Foo was updated:
+    And Foo was refined:
         | Property | Value |
         | Name     | Ok    |
 
     When I change Foo with msg: 'Blabla'
-    Then I expect, that Foo was updated with:
+    Then I expect, that Foo was refined with:
         | Name   |
         | Blabla | 
 

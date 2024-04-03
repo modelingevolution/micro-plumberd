@@ -52,7 +52,7 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
 
         
         await Task.Delay(2000);
-        await clientBus.SendAsync("Hello".ToGuid(), new ChangeBoo() { Name="Okidoki"} );
+        await clientBus.SendAsync("Hello".ToGuid(), new RefineBoo() { Name="Okidoki"} );
 
         await Task.Delay(2000);
     }

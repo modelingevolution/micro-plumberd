@@ -58,7 +58,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             var recipientId = Guid.NewGuid();
             await bus.SendAsync(recipientId, new CreateBoo() { Name = $"Name1" });
             for (int i = 0; i < 100; i++)
-                await bus.SendAsync(recipientId, new ChangeBoo() { Name = $"Name_{i}" });
+                await bus.SendAsync(recipientId, new RefineBoo() { Name = $"Name_{i}" });
 
             _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed / 101);
 

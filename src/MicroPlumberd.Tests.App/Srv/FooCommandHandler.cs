@@ -23,11 +23,11 @@ public partial class FooCommandHandler(IPlumber plumber)
     }
 
 
-    [ThrowsFaultCommandException<BusinessFault>]
-    public async Task<HandlerOperationStatus> Handle(Guid id, ChangeFoo cmd)
+    [ThrowsFaultException<BusinessFault>]
+    public async Task<HandlerOperationStatus> Handle(Guid id, RefineFoo cmd)
     {
         var agg = await plumber.Get<FooAggregate>(id);
-        agg.Change(cmd.Name!);
+        agg.Refine(cmd.Name!);
 
         await plumber.SaveChanges(agg);
         return HandlerOperationStatus.Ok();

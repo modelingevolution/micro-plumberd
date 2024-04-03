@@ -51,7 +51,7 @@ namespace MicroPlumberd.SourceGenerators
 
 
                         var errorMsg = methods.SelectMany(method => method.AttributeLists.SelectMany(attrList => attrList.Attributes))
-                            .Where(attribute => attribute.Name.ToString().Contains("ThrowsFaultCommandException<") )
+                            .Where(attribute => attribute.Name.ToString().Contains("ThrowsFaultException<") )
                             .SelectMany(attribute =>
                             {
                                 var genericName = attribute.Name as GenericNameSyntax;

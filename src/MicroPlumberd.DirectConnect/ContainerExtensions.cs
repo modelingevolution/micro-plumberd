@@ -27,7 +27,7 @@ public static class ContainerExtensions
     {
         services.AddClientInvoker(typeof(CommandEnvelope<>).MakeGenericType(commandType), typeof(object));
         var returnTypes = commandType.GetCustomAttributes<ReturnsAttribute>().Select(x => x.ReturnType);
-        var faultTypes = commandType.GetCustomAttributes<ThrowsFaultCommandExceptionAttribute>()
+        var faultTypes = commandType.GetCustomAttributes<ThrowsFaultExceptionAttribute>()
             .Select(x => typeof(FaultEnvelope<>).MakeGenericType(x.ThrownType));
         services.AddMessages(returnTypes.Union(faultTypes).Union(Enumerable.Repeat(typeof(HandlerOperationStatus),1)));
         return services;

@@ -122,7 +122,7 @@ this.FeatureBackground();
                             "Name",
                             "Ok"});
 #line 14
-    testRunner.And("Foo was updated:", ((string)(null)), table1, "And ");
+    testRunner.And("Foo was refined:", ((string)(null)), table1, "And ");
 #line hidden
 #line 18
     testRunner.When("I change Foo with msg: \'Blabla\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -132,7 +132,7 @@ this.FeatureBackground();
                 table2.AddRow(new string[] {
                             "Blabla"});
 #line 19
-    testRunner.Then("I expect, that Foo was updated with:", ((string)(null)), table2, "Then ");
+    testRunner.Then("I expect, that Foo was refined with:", ((string)(null)), table2, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

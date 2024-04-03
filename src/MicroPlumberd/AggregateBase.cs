@@ -8,6 +8,9 @@ public interface IAggregateStateAccessor<out T>
 {
     T State { get; }
 }
+
+
+
 public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IAggregateStateAccessor<TState>
     where TState : new()
 

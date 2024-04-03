@@ -10,7 +10,7 @@ public partial class XooProcessManager
     {
         return CommandRequest.Create("Hello".ToGuid(), new CreateBoo());
     }
-    private async Task<ICommandRequest<CreateLoo>> When(Metadata m, BooUpdated ev)
+    private async Task<ICommandRequest<CreateLoo>> When(Metadata m, BooRefined ev)
     {
         return CommandRequest.Create(Guid.NewGuid(), new CreateLoo());
     }

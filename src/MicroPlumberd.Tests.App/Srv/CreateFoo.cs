@@ -8,7 +8,7 @@ namespace MicroPlumberd.Tests.App.Srv;
 
 
 [ProtoContract]
-[ThrowsFaultCommandException<BusinessFault>]
+[ThrowsFaultException<BusinessFault>]
 [Returns<HandlerOperationStatus>]
 public class CreateFoo : IId
 {

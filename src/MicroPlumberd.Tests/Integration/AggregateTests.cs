@@ -1,3 +1,4 @@
+using System.Reflection;
 using FluentAssertions;
 using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;
@@ -8,8 +9,20 @@ using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace MicroPlumberd.Tests.Integration
 {
+    [TestCategory("Unit")]
+    public class AggregateReflection
+    {
+        [Fact]
+        public void GivenMethodsAreAccessible()
+        {
+            var mth = typeof(FooAggregate).GetMethods(BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Instance)
+                .Where(x=>x.Name == "Given").FirstOrDefault();
 
-   
+            var acceptedTypeAttributes = mth.GetCustomAttributes<AcceptedTypeAttribute>().ToArray();
+            acceptedTypeAttributes.Should().HaveCountGreaterThan(1);
+        }
+    }
+
     [TestCategory("Integration")]
     public class AggregateTests : IClassFixture<EventStoreServer>
     {
@@ -57,7 +70,7 @@ namespace MicroPlumberd.Tests.Integration
             aggregate.Open("Hello");
             await plumber.SaveNew(aggregate);
 
-            aggregate.Change("World");
+            aggregate.Refine("World");
 
             await plumber.SaveChanges(aggregate);
         }

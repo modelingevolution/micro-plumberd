@@ -55,13 +55,13 @@ public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState
 {
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) => state with { Name = ev.Name };
-    private static FooState Given(FooState state, FooUpdated ev) => state with { Name =ev.Name };
+    private static FooState Given(FooState state, FooRefined ev) => state with { Name =ev.Name };
     public void Open(string msg) => AppendPendingChange(new FooCreated() { Name = msg });
-    public void Change(string msg) => AppendPendingChange(new FooUpdated() { Name = msg });
+    public void Change(string msg) => AppendPendingChange(new FooRefined() { Name = msg });
 }
 // And events:
 public record FooCreated { public string? Name { get; set; } }
-public record FooUpdated { public string? Name { get; set; } }
+public record FooRefined { public string? Name { get; set; } }
 ```
 Comments:
 
@@ -100,7 +100,7 @@ public partial class FooModel
     {
         // your code
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
          // your code
     }
@@ -137,7 +137,7 @@ public partial class FooModel : DbContext
     {
         // your code
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
          // your code
     }
@@ -151,7 +151,7 @@ public partial class FooModel : DbContext
 [EventHandler]
 public partial class FooProcessor(IPlumber plumber)
 {
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
         var agg = FooAggregate.New(Guid.NewGuid());
         agg.Open(ev.Name + " new");
@@ -171,10 +171,10 @@ Implementing a processor is technically the same as implementing a read-model, b
   - EventIdConvention - from aggregate instance and event instance
   - OutputStreamModelConvention - for output stream name from model-type
   - GroupNameModelConvention - for group name from model-type
-  
-### Ultra development cycle for Read-Models (EF example).
 
-Imagine this:
+### Read-Models DX (EF example).
+
+Let's analyse this example:
 
 1. You create a read-model that subscribes persistently.
 2. You subscribe it with plumber.
@@ -204,14 +204,14 @@ public partial class FooModel : DbContext
     {
         // your code
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
         // your code
     }
 }
 ```
 
-### Subscription Sets - Models ultra-composition
+### Subscription Sets - Models composition
   - You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.
   - In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one. 
 
@@ -261,6 +261,10 @@ services.AddPlumberd(configure: c => {
     .AddCommandHandler<FooCommandHandler>()
 
 ```
+### Specflow/Ghierkin step-files generations
+
+Given you have written your domain, you can generate step files that would populate Ghierkin API to your domain. 
+
 
 ### GRPC Direct communication
 
@@ -394,15 +398,15 @@ For complex types, we need more flexibility.
 ```csharp
 // Let's define unique-category name, this will be mapped to columns in db
 // If you'd opt for domain-layer enforcment, you need to change commands to events.
-record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooChanged>
+record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooRefined>
 {
     public static BooCategory From(BooCreated x) => new(x.InitialName, x.OtherName);
-    public static BooCategory From(BooChanged x) => new(x.NewName, x.OtherName);
+    public static BooCategory From(BooRefined x) => new(x.NewName, x.OtherName);
 }
 
 [Unique<BooCategory>]
 public record BooCreated(string InitialName, string OtherName);
 
 [Unique<BooCategory>]
-public record BooChanged(string NewName, string OtherName);
+public record BooRefined(string NewName, string OtherName);
 ```

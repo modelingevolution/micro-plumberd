@@ -17,7 +17,7 @@ public class ApiTypeRegisterTests
     public void ServerMessagesCount()
     {
         var actual = Messages<FooCommandHandler>().ToArray();
-        actual.Should().BeEquivalentTo(new[] { typeof(HandlerOperationStatus), typeof(CreateFoo), typeof(ChangeFoo), typeof(BusinessFault) });
+        actual.Should().BeEquivalentTo(new[] { typeof(HandlerOperationStatus), typeof(CreateFoo), typeof(RefineFoo), typeof(BusinessFault) });
     }
 
     [Fact]
@@ -26,12 +26,12 @@ public class ApiTypeRegisterTests
         await using var client = new ClientApp();
 
         var sp = client.Start(service => service.AddClientDirectConnect()
-            .AddCommandInvokers(typeof(CreateFoo), typeof(ChangeFoo)));
+            .AddCommandInvokers(typeof(CreateFoo), typeof(RefineFoo)));
 
         var t = sp.GetRequiredService<TypeRegister>();
 
         t[typeof(CommandEnvelope<CreateFoo>).FullName!.ToGuid()].Should().NotBeNull();
-        t[typeof(CommandEnvelope<ChangeFoo>).FullName!.ToGuid()].Should().NotBeNull();
+        t[typeof(CommandEnvelope<RefineFoo>).FullName!.ToGuid()].Should().NotBeNull();
         //t[typeof(BusinessFault).FullName!.ToGuid()].Should().NotBeNull();
         t[typeof(HandlerOperationStatus).FullName!.ToGuid()].Should().NotBeNull();
     }

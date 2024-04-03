@@ -54,12 +54,11 @@ namespace MicroPlumberd.SourceGenerators
                         var methods = classDecl.Members.OfType<MethodDeclarationSyntax>()
                             .Where(m => m.Identifier.ValueText == "Given" &&
                                         m.ParameterList.Parameters.Count == 2 &&
-                                        m.ParameterList.Parameters[1].Type.ToString() != "object" &&
-                                        m.Modifiers.Any(SyntaxKind.PrivateKeyword))
+                                        m.ParameterList.Parameters[1].Type.ToString() != "object" )
                             .ToList();
 
                         var sb = new StringBuilder();
-
+                        var givenTypes = methods.Select(x => x.ParameterList.Parameters[1].Type).ToArray();
                         // Add using directives
                         foreach (var usingDirective in usingDirectives)
                         {
@@ -72,17 +71,21 @@ namespace MicroPlumberd.SourceGenerators
                             sb.AppendLine($"namespace {namespaceName};");
                         }
 
+                        
                         sb.AppendLine($"partial class {className} : IAggregate<{className}>, ITypeRegister ");
                         sb.AppendLine("{");
+
+                        //[AcceptedType(typeof(FooUpdated)), AcceptedType(typeof(FooCategory))]
+                        var attrs = givenTypes.Select(x => $"AcceptedType(typeof({x.ToString()}))");
+                        sb.AppendLine($"[{string.Join(", ",attrs) }]");
                         sb.AppendLine($"    protected override {stateClassName} Given({stateClassName} state, object ev)");
                         sb.AppendLine("    {");
                         sb.AppendLine("        switch(ev)");
                         sb.AppendLine("        {");
 
-                        foreach (var method in methods)
+                        foreach (var eventType in givenTypes)
                         {
-                            var eventType = method.ParameterList.Parameters[1].Type.ToString();
-                            sb.AppendLine($"            case {eventType} e: return Given(state, e);");
+                            sb.AppendLine($"            case {eventType.ToString()} e: return Given(state, e);");
                         }
 
                         sb.AppendLine("            default: return state;");

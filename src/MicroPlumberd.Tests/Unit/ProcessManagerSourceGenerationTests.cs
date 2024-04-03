@@ -30,7 +30,7 @@ public class ProcessManagerSourceGenerationTests
     IEnumerable<Type> ExpectedTypes()
     {
         yield return typeof(FooCreated);
-        yield return typeof(BooUpdated);
+        yield return typeof(BooRefined);
         yield return typeof(CommandEnqueued<CreateBoo>);
     }
 

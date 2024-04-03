@@ -71,8 +71,8 @@ class CommandMappings
         yield return ($"{cmdType}Failed", typeof(CommandFailed));
         foreach (var c in command
                      .GetCustomAttributes()
-                     .Where(x => x is ThrowsFaultCommandExceptionAttribute)
-                     .OfType<ThrowsFaultCommandExceptionAttribute>()
+                     .Where(x => x is ThrowsFaultExceptionAttribute)
+                     .OfType<ThrowsFaultExceptionAttribute>()
                      .Select(x => x.ThrownType))
             yield return ($"{cmdType}Failed<{c.Name}>", typeof(CommandFailed<>).MakeGenericType(c));
     }

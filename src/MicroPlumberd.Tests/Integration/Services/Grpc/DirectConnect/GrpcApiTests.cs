@@ -41,7 +41,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
         Stopwatch sw = new Stopwatch();
         sw.Start();
-        var ret2 = await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "Hello" });
+        var ret2 = await invoker.Execute<HandlerOperationStatus>(streamId, new RefineFoo() { Name = "Hello" });
         _testOutputHelper.WriteLine("Command executed in:" + sw.Elapsed);
         ret2.Code.Should().Be(HttpStatusCode.OK);
     }
@@ -71,7 +71,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         var streamId = Guid.NewGuid();
         var initialCommand = new CreateFoo() { Name = "Hello" };
         await invoker.Execute(streamId, initialCommand);
-        var secondCommand = new ChangeFoo() { Name = "Hello" };
+        var secondCommand = new RefineFoo() { Name = "Hello" };
         var ret = await invoker.Execute<HandlerOperationStatus>(streamId, secondCommand);
         ret.Code.Should().Be(HttpStatusCode.OK);
 
@@ -87,7 +87,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         client = new Fixtures.ClientApp();
 
         var sp = client.Start(service => service.AddClientDirectConnect()
-            .AddCommandInvokers(typeof(CreateFoo), typeof(ChangeFoo)));
+            .AddCommandInvokers(typeof(CreateFoo), typeof(RefineFoo)));
 
         var clientPool = sp.GetRequiredService<IRequestInvokerPool>();
         var invoker = clientPool.Get("http://localhost:5001");
@@ -108,7 +108,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
 
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
 
-        var action = async () => await invoker.Execute<HandlerOperationStatus>(streamId, new ChangeFoo() { Name = "error" });
+        var action = async () => await invoker.Execute<HandlerOperationStatus>(streamId, new RefineFoo() { Name = "error" });
         await action.Should().ThrowAsync<FaultException<BusinessFault>>();
     }
 

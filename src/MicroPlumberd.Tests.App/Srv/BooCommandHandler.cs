@@ -22,14 +22,14 @@ public partial class BooCommandHandler(IPlumber plumber)
     }
 
 
-    [ThrowsFaultCommandException<BusinessFault>]
-    public async Task Handle(Guid id, ChangeBoo cmd)
+    [ThrowsFaultException<BusinessFault>]
+    public async Task Handle(Guid id, RefineBoo cmd)
     {
         if (cmd.Name == "error")
             throw new BusinessFaultException("Boo");
 
         var agg = await plumber.Get<BooAggregate>(id);
-        agg.Change(cmd.Name!);
+        agg.Refine(cmd.Name!);
 
         await plumber.SaveChanges(agg);
         Debug.WriteLine("BooChanged");

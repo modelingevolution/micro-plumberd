@@ -1,0 +1,29 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ Assembly Name="System.Core" #>
+<#@ Assembly Name="System.Windows.Forms" #>
+<#@ import namespace="System" #>
+namespace Humanizer;
+
+public partial class In
+{
+<#var now = DateTime.Now;
+for (var i = 0; i < 12; i++){
+    var monthName = new DateTime(now.Year, i + 1, 1).ToString("MMMM");
+#>
+    /// <summary>
+    /// Returns 1st of <#= monthName #> of the current year
+    /// </summary>
+    public static DateTime <#= monthName #>
+        => new(DateTime.UtcNow.Year, <#= i + 1 #>, 1);
+
+    /// <summary>
+    /// Returns 1st of <#= monthName #> of the year passed in
+    /// </summary>
+    public static DateTime <#= monthName#>Of(int year)
+        => new(year, <#= i + 1 #>, 1);
+
+<#}
+
+#>
+}

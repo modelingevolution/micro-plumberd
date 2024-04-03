@@ -5,8 +5,8 @@ using ProtoBuf;
 namespace MicroPlumberd.Tests.App.Srv;
 
 [ProtoContract]
-[ThrowsFaultCommandException<BusinessFault>]
-public class ChangeFoo : IId
+[ThrowsFaultException<BusinessFault>]
+public class RefineFoo : IId
 {
     [ProtoMember(2)]
     public string? Name { get; set; }
@@ -14,8 +14,8 @@ public class ChangeFoo : IId
     public Guid Id { get; set; } = Guid.NewGuid();
 }
 [ProtoContract]
-[ThrowsFaultCommandException<BusinessFault>]
-public class ChangeBoo : IId
+[ThrowsFaultException<BusinessFault>]
+public class RefineBoo : IId
 {
     [ProtoMember(2)]
     public string? Name { get; set; }
