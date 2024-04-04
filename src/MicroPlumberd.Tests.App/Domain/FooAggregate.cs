@@ -26,7 +26,7 @@ public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState
         AppendPendingChange(new FooRefined() { Name = msg });
     }
 }
-[Aggregate]
+[Aggregate(SnapshotEvery = 50)]
 public partial class BooAggregate(Guid id) : AggregateBase<BooAggregate.BooState>(id)
 {
     internal new BooState State => base.State;

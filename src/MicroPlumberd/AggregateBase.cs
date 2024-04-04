@@ -3,22 +3,52 @@ using System.Linq;
 
 namespace MicroPlumberd;
 
+public interface IStatefull
+{
+    object State { get; }
+    void Initialize(object state, StateInfo version);
+    Type SnapshotType { get;  }
+    StateInfo? InitializedWith { get; }
+}
 
-public interface IAggregateStateAccessor<out T>
+public readonly struct StateInfo
+{
+    public long Version { get; init; }
+    public DateTimeOffset Created { get; init; }
+
+    public StateInfo(long version, DateTimeOffset created)
+    {
+        Version = version;
+        Created = created;
+    }
+}
+
+public interface IStatefull<out T>
 {
     T State { get; }
 }
 
 
 
-public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IAggregateStateAccessor<TState>
+public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IStatefull<TState>, IStatefull
     where TState : new()
 
 {
+    private StateInfo? _initialized;
+    object IStatefull.State => State;
+    StateInfo? IStatefull.InitializedWith => _initialized;
+    Type IStatefull.SnapshotType => typeof(TState);
+    void IStatefull.Initialize(object state, StateInfo info)
+    {
+        State = (TState)state;
+        Version = info.Version;
+        _initialized = info;
+    }
     private readonly List<object> _pendingEvents = new();
     protected TState State { get; private set; } = new();
-    TState IAggregateStateAccessor<TState>.State => State;
-    public Guid Id => id;
+    TState IStatefull<TState>.State => State;
+    public Guid Id { get; } = id;
+
     public long Version { get; private set; } = -1;
 
     public IReadOnlyList<object> PendingEvents => _pendingEvents;

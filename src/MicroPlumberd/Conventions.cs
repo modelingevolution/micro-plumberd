@@ -10,6 +10,15 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace MicroPlumberd;
 
+readonly struct SnapshotConverter(Type snapshot)
+{
+    public bool Convert(string evName, out Type t)
+    {
+        t = snapshot;
+        return true;
+    }
+}
+
 
 public delegate string StreamCategoryConvention(Type aggregateType);
 public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId);
@@ -18,6 +27,9 @@ public delegate string ProjectionCategoryStreamConvention(Type aggregateType);
 
 public delegate string EventNameConvention(Type? ownerType, Type evtType);
 
+public delegate string SnapshotEventName(Type stateType);
+
+public delegate ISnapshotPolicy SnapshotPolicyFactory(Type owner);
 public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
 
 public delegate void BuildInvocationContext(InvocationContext context, Metadata m);
@@ -30,14 +42,18 @@ public interface IConventions : IExtension
     ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
     StreamCategoryConvention GetStreamCategoryConvention { get; set; }
     SteamNameConvention GetStreamIdConvention { get; set; }
+    SteamNameConvention GetStreamIdSnapshotConvention { get; set; }
+    SnapshotEventName SnapshotEventNameConvention { get; set; }
     EventNameConvention GetEventNameConvention { get; set; }
     BuildInvocationContext BuildInvocationContext { get; set; }
     MetadataConvention? MetadataEnrichers { get; set; }
     EventIdConvention GetEventIdConvention { get; set; }
     OutputStreamModelConvention OutputStreamModelConvention { get; set; }
     GroupNameModelConvention GroupNameModelConvention { get; set; }
+    SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
     object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
+    
 }
 
 public interface IExtension
@@ -50,6 +66,8 @@ class Conventions : IConventions
     public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
     public SteamNameConvention GetStreamIdConvention { get; set; }
+    public SteamNameConvention GetStreamIdSnapshotConvention { get; set; }
+    public SnapshotEventName SnapshotEventNameConvention { get; set; } = t => $"{t.GetFriendlyName()}SnapShotted";
     public StreamCategoryConvention GetStreamCategoryConvention { get; set; } = agg => $"{agg.GetFriendlyName()}";
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
@@ -57,6 +75,7 @@ class Conventions : IConventions
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
+    public SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     public ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
 
     public StandardMetadataEnricherTypes StandardMetadataEnricherTypes
@@ -88,6 +107,7 @@ class Conventions : IConventions
         MetadataEnrichers += StandardMetadataEnrichers.CreatedTimeMetadata;
         MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
         GetStreamIdConvention = (aggregateType,id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
+        GetStreamIdSnapshotConvention = (aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}Snapshot-{id}";
         ProjectionCategoryStreamConvention =(t) => $"$ce-{GetStreamCategoryConvention(t)}";
     }
 
@@ -110,6 +130,8 @@ class Conventions : IConventions
         }
         return obj;
     }
+
+    
 }
 [Flags]
 public enum StandardMetadataEnricherTypes
@@ -192,6 +214,13 @@ public static class MetadataExtensions
 
         if (m.Data.TryGetProperty("Created", out var v))
             return DateTimeOffset.Parse(v.GetString()!);
+        return null;
+    }
+
+    public static long? SnapshotVersion(this Metadata m)
+    {
+        if (m.Data.TryGetProperty("SnapshotVersion", out var v))
+            return v.GetInt64();
         return null;
     }
     public static Guid? CorrelationId(this Metadata m)

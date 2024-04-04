@@ -1,4 +1,6 @@
 ﻿using System.Collections.Concurrent;
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
@@ -22,6 +24,22 @@ class PlumberConfig : IPlumberConfig
     }
 
     public IConventions Conventions { get; } = new Conventions();
+
+    public PlumberConfig()
+    {
+        Conventions.SnapshotPolicyFactoryConvention = OnSnapshotPolicy;
+    }
+
+    private ISnapshotPolicy? OnSnapshotPolicy(Type ownerType)
+    {
+        var t = ownerType.GetCustomAttribute<AggregateAttribute>()?.SnaphotPolicy;
+        if (t != null)
+        {
+            if (t.IsGenericTypeDefinition) t = t.MakeGenericType(ownerType);
+            return (ISnapshotPolicy)ServiceProvider.GetRequiredService(t);
+        }
+        return null;
+    }
 
     public IServiceProvider ServiceProvider
     {

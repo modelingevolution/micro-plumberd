@@ -48,7 +48,7 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             
             var client = await _clientTestApp.Configure(x => x
-                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(120)))
                 .StartAsync();
 
             var bus = client.GetRequiredService<ICommandBus>();
@@ -57,7 +57,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             sw.Start();
             var recipientId = Guid.NewGuid();
             await bus.SendAsync(recipientId, new CreateBoo() { Name = $"Name1" });
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 1000; i++)
                 await bus.SendAsync(recipientId, new RefineBoo() { Name = $"Name_{i}" });
 
             _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed / 101);

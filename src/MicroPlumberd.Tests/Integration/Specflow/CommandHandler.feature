@@ -11,7 +11,7 @@ Scenario: Invoking one command
     When I change foo 'Orange' with:
       | Name   |
       | Blabla |
-	Then I expect, that Foo was updated with:
+	Then I expect, that Foo was refined with:
 	  | Name   |
 	  | Blabla | 
     And I expect, that Foo's state is set with:

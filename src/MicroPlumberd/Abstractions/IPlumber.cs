@@ -1,6 +1,30 @@
 ﻿using EventStore.Client;
 namespace MicroPlumberd;
 
+public interface ISnapshot
+{
+    object Data { get; }
+    DateTimeOffset Created { get; }
+    long Version { get;  }
+}
+
+public abstract record Snapshot
+{
+    internal abstract object Value { get; set; }
+    public DateTimeOffset Created { get; internal set; }
+    public long Version { get; internal set; }
+}
+
+public sealed record Snapshot<T> : Snapshot, ISnapshot
+{
+    object ISnapshot.Data => Data;
+    public T Data { get; internal set; }
+    internal override object Value
+    {
+        get => Data;
+        set => Data = (T)value;
+    }
+}
 /// <summary>
 /// Root interface for plumber
 /// </summary>
@@ -60,6 +84,9 @@ public interface IPlumber
     Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister;
     Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
     Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+    Task<Snapshot<T>?> GetSnapshot<T>(Guid id);
+    Task<Snapshot?> GetSnapshot(Guid id, Type snapshotType);
+
     Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null);
 
     Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
@@ -68,7 +95,10 @@ public interface IPlumber
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class, IEventHandler;
 
-    IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null) where TOwner : ITypeRegister;
-    IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null,Direction? direction=null) where TOwner : ITypeRegister;
-    IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null,Direction? direction=null);
+    IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null, long maxCount = long.MaxValue) where TOwner : ITypeRegister;
+    IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null,Direction? direction=null, long maxCount=long.MaxValue) where TOwner : ITypeRegister;
+    IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue);
+
+    IAsyncEnumerable<(object,Metadata)> ReadFull(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue);
+    Task<IWriteResult> AppendSnapshot(object snapshot, Guid id, long version, StreamState state);
 }

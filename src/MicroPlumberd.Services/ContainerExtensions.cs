@@ -29,6 +29,7 @@ public static class ContainerExtensions
             configure?.Invoke(x);
             x.ServiceProvider = sp;
         }));
+        collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));
         collection.TryAddSingleton<ICommandBus, CommandBus>();
         collection.TryAddSingleton( typeof(IEventHandler<>),typeof(EventHandlerExecutor<>));
         return collection;

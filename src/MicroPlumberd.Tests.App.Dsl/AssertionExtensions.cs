@@ -2,7 +2,7 @@
 
 public static class AssertionExtensions
 {
-    public static T State<T>(this IAggregateStateAccessor<T> aggregate)
+    public static T State<T>(this IStatefull<T> aggregate)
     {
         return aggregate.State;
     }

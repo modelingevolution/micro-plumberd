@@ -129,7 +129,7 @@ this.FeatureBackground();
                 table7.AddRow(new string[] {
                             "Blabla"});
 #line 14
- testRunner.Then("I expect, that Foo was updated with:", ((string)(null)), table7, "Then ");
+ testRunner.Then("I expect, that Foo was refined with:", ((string)(null)), table7, "Then ");
 #line hidden
                 TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name"});
