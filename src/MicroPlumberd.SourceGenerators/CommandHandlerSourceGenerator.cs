@@ -125,7 +125,9 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine("    {");
                         foreach (var command in commands)
                         {
+                            //.Decorate<ICommandHandler<CreateFoo>, CommandHandlerAttributeValidator<CreateFoo>>()
                             sb.AppendLine($"        services.AddScoped<ICommandHandler<{command}>, {className}>();");
+                            sb.AppendLine($"        services.Decorate<ICommandHandler<{command}>, CommandHandlerAttributeValidator<{command}>>();");
                         }
                         sb.AppendLine("    return services;");
                         sb.AppendLine("    }");

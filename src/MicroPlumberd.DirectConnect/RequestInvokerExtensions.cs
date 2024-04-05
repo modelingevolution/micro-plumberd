@@ -19,8 +19,8 @@ namespace MicroPlumberd
                 return (TResponse)result;
             var fault = (IFaultEnvelope)result;
             if (fault.Data != null)
-                throw FaultException.Create(fault.Error, fault.Data);
-            throw new FaultException(fault.Error);
+                throw FaultException.Create(fault.Error, fault.Data, (int)fault.Code);
+            throw new FaultException(fault.Error, (int)fault.Code);
         }
         private static readonly ConcurrentDictionary<Type, object> _invokers = new();
         public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, Guid id, object c)

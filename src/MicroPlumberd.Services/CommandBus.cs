@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
@@ -23,7 +24,7 @@ class CommandBus : ICommandBus, IEventHandler
     private readonly ConcurrentDictionary<string, Type> _commandMapping = new();
     private readonly ConcurrentHashSet<Type> _supportedCommands = new();
     private bool _initialized;
-    private object _sync = new object();
+    private readonly object _sync = new object();
 
     public Guid SessionId { get; } = Guid.NewGuid();
     public CommandBus(IPlumber plumber, ILogger<CommandBus> log)
@@ -97,7 +98,7 @@ class CommandBus : ICommandBus, IEventHandler
                 throw new TimeoutException("Command execution timeout.");
             }
             else if (executionResults.ErrorData != null)
-                throw FaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData);
+                throw FaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData, (int)executionResults.ErrorCode);
             throw new FaultException(executionResults.ErrorMessage);
         }
     }
@@ -161,7 +162,8 @@ public class CommandExecutionResults
                     IsSuccess = false;
                     ErrorMessage = ef.Message;
                     ErrorData = ef.Fault;
-                    IsReady.SetResult(true);
+                    ErrorCode = ef.Code;
+                        IsReady.SetResult(true);
                         return true;
                 }
 
@@ -173,6 +175,7 @@ public class CommandExecutionResults
                 {
                     IsSuccess = false;
                     ErrorMessage = cf.Message;
+                    ErrorCode = cf.Code;
                     IsReady.SetResult(true);
                     return true;
                 }
@@ -184,9 +187,9 @@ public class CommandExecutionResults
         return false;
     }
 
-    
+    public HttpStatusCode ErrorCode { get; private set; }
 
-    
+
     public string ErrorMessage { get; private set; }
     public object? ErrorData { get; private set; }
     public bool IsSuccess { get; private set; }

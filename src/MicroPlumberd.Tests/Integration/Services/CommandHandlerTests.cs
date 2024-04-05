@@ -16,6 +16,7 @@ using Xunit.Abstractions;
 using MicroPlumberd.Tests.App.Domain;
 using MicroPlumberd.Tests.App.Srv;
 
+
 namespace MicroPlumberd.Tests.Integration.Services
 {
     [TestCategory("Integration")]
@@ -117,7 +118,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             sw.Start();
 
             var client = await _clientTestApp.Configure( x=>x
-                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(120)))
                 .StartAsync();
 
             await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);

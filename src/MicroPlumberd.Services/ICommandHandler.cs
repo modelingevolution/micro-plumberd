@@ -6,5 +6,5 @@ public interface ICommandHandler
 }
 public interface ICommandHandler<in TCommand> : ICommandHandler
 {
-    Task<object> Execute(Guid id, TCommand command);
+    Task<object?> Execute(Guid id, TCommand command);
 }

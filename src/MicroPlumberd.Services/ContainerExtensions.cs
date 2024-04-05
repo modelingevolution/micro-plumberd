@@ -1,4 +1,5 @@
 ﻿using EventStore.Client;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +33,10 @@ public static class ContainerExtensions
         collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));
         collection.TryAddSingleton<ICommandBus, CommandBus>();
         collection.TryAddSingleton( typeof(IEventHandler<>),typeof(EventHandlerExecutor<>));
+        
+        
+        //collection.TryDecorate<ICommandBus, CommandBusAttributeValidator>();
+
         return collection;
     }
 

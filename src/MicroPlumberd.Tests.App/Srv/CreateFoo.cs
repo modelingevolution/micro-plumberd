@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Services;
 using MicroPlumberd.Tests.App.Domain;
@@ -13,6 +14,7 @@ namespace MicroPlumberd.Tests.App.Srv;
 public class CreateFoo : IId
 {
     [ProtoMember(2)]
+    [Required]
     public string? Name { get; set; }
     [ProtoMember(1)]
     public Guid Id { get; set; } = Guid.NewGuid();

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Net;
 using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -66,13 +68,24 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
                     CommandId = cmdId,
                     Duration = sw.Elapsed
                 });
-            log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name, cmdStream);
+            log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name,
+                cmdStream);
+        }
+        catch (ValidationException ex)
+        {
+            await plumber.AppendEvent(cmdStream, StreamState.StreamExists, $"{cmdName}Failed", new CommandFailed()
+            {
+                CommandId = cmdId,
+                Duration = sw.Elapsed,
+                Message = ex.Message,
+                Code = HttpStatusCode.BadRequest
+            });
         }
         catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
             await plumber.AppendEvent(cmdStream, StreamState.StreamExists,
-                $"{cmdName}Failed<{faultData.GetType().Name}>", CommandFailed.Create(cmdId, ex.Message, sw.Elapsed,faultData));
+                $"{cmdName}Failed<{faultData.GetType().Name}>", CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData));
             log.LogDebug(ex,"Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.", 
                 command.GetType().Name,
                 faultData.GetType().Name,
@@ -85,7 +98,8 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
                 {
                     CommandId = cmdId,
                     Duration = sw.Elapsed,
-                    Message = ex.Message
+                    Message = ex.Message,
+                    Code = HttpStatusCode.InternalServerError
                 });
             log.LogDebug(ex,"Command {CommandType}Failed appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
