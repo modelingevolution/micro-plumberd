@@ -11,6 +11,1299 @@
       }
     },
     {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.AcceptedTypeAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.AcceptedTypeAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.AggregateAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.AggregateAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.AggregateBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.AggregateBase-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.AsyncLazy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.AsyncLazy-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.AttributeSnaphotPolicy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.AttributeSnaphotPolicy-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.BuildInvocationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.BuildInvocationContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Collections.ConcurrentHashSet-1.Enumerator.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Collections.ConcurrentHashSet-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Collections.ConcurrentHashSet-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Collections.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Collections.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.CommandEnqueued-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.CommandEnqueued-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.CommandEnqueued.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.CommandEnqueued.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.CommandInvocationFailed.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.CommandInvocationFailed.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.CommandRequest-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.CommandRequest-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.CommandRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.CommandRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ContainerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ContainerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.CommandEnvelope-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.CommandEnvelope-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.ContainerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.ContainerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.FaultEnvelope-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.FaultEnvelope-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.FaultEnvelope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.FaultEnvelope.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.HandlerOperationStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.HandlerOperationStatus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.IFaultEnvelope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.IFaultEnvelope.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.ReturnsAttribute-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.ReturnsAttribute-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.ReturnsAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.ReturnsAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.DirectConnect.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.DirectConnect.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.EventDispatcher.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.EventDispatcher.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.EventHandlerAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.EventHandlerAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.EventIdConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.EventIdConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.EventNameConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.EventNameConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ExecutionContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ExecutionContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.FaultException-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.FaultException-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.FaultException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.FaultException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.GroupNameModelConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.GroupNameModelConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IAggregate-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IAggregate-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IAggregate.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IAggregate.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ICommandBus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ICommandBus.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ICommandEnqueued.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ICommandEnqueued.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ICommandRequest-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ICommandRequest-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ICommandRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ICommandRequest.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IConventions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IConventions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IEventHandler-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IEventHandler-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IEventHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IEventHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IEventRecord-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IEventRecord-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IEventRecord.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IEventRecord.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IExtension.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IExtension.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IId.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IIdAware.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IIdAware.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IObjectSerializer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IObjectSerializer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IPlumber.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IPlumber.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IPlumberConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IPlumberConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IPlumberReadOnlyConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IPlumberReadOnlyConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IProcessAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IProcessAction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IProcessManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IProcessManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IProjectionRegister.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IProjectionRegister.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IReadModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IReadModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IReadOnlyConventions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IReadOnlyConventions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ISnapshot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ISnapshot.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ISnapshotPolicy-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ISnapshotPolicy-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ISnapshotPolicy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ISnapshotPolicy.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IStateChangeAction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IStateChangeAction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IStatefull-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IStatefull-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IStatefull.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IStatefull.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ISubscriptionRunner.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ISubscriptionRunner.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ISubscriptionSet.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ISubscriptionSet.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ITypeHandlerRegisters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ITypeHandlerRegisters.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ITypeRegister.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ITypeRegister.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IVersionAware.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IVersionAware.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IVersioned.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IVersioned.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.InvocationContext.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.InvocationContext.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.InvocationScope.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.InvocationScope.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Metadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Metadata.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.MetadataConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.MetadataConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.MetadataExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.MetadataExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.OutputStreamAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.OutputStreamAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.OutputStreamModelConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.OutputStreamModelConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Plumber.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Plumber.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ProcessManagerAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ProcessManagerAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ProcessManagerBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ProcessManagerBase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ProjectionCategoryStreamConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ProjectionCategoryStreamConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Protobuf.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Protobuf.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.RequestInvokerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.RequestInvokerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.AppCommandStream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.AppCommandStream.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.CommandExecutionResults.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.CommandExecutionResults.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.CommandHandlerAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.CommandHandlerAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.CommandHandlerAttributeValidator-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.CommandHandlerMetadataExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.CommandHandlerMetadataExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.CommandMessageTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.CommandMessageTypes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.CommandName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.CommandName.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ContainerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ContainerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.GroupNameFromCommandHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.GroupNameFromCommandHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ICommandHandler-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ICommandHandler-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ICommandHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ICommandHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.IServiceTypeRegister.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.IServiceTypeRegister.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.IServicesConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.IServicesConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.IServicesConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.IServicesConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.IsHandlerExecutionPersistent.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.IsHandlerExecutionPersistent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.MetadataExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.MetadataExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.OutputSteamNameFromCommandHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.OutputSteamNameFromCommandHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.PlumberExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.PlumberExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.PlumberdConventionsExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.PlumberdConventionsExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ProcessManagers.IProcessManagerClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ProcessManagers.ProcessManagerClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.Lookup.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.Lookup.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ProcessManagers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ProcessManagers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.SessionStreamFromSessionId.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.SessionStreamFromSessionId.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.StreamPositionExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.StreamPositionExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ThrowsFaultExceptionAttribute-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ThrowsFaultExceptionAttribute-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ThrowsFaultExceptionAttribute.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ThrowsFaultExceptionAttribute.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.Uniqueness.IUniqueFrom-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.Uniqueness.IUniqueFrom-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.Uniqueness.UniqueAttribute-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.Uniqueness.UniqueAttribute-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.Uniqueness.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.Uniqueness.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Snapshot-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Snapshot-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Snapshot.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Snapshot.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.SnapshotEventName.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.SnapshotEventName.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.SnapshotPolicyFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.SnapshotPolicyFactory.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.StandardMetadataEnricherTypes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.StandardMetadataEnricherTypes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.StateChangeAction-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.StateChangeAction-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.StateInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.StateInfo.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.SteamNameConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.SteamNameConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.StreamCategoryConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.StreamCategoryConvention.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.TypeEventConverter.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.TypeEventConverter.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.TypeExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.TypeExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Utils.AsyncDisposableCollection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Utils.AsyncDisposableCollection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Utils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "docs/api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
       "type": "Conceptual",
       "source_relative_path": "docs/index.md",
       "output": {

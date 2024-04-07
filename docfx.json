@@ -14,7 +14,7 @@
           ]
         }
       ],
-      "dest": "api"
+      "dest": "docs/api"
     }
   ],
   "build": {
@@ -45,7 +45,7 @@
       "_appName": "MicroPlumberd",
       "_appTitle": "MicroPlumberd",
       "_enableSearch": true,
-      "pdf": true
+      "pdf": false
     }
   }
 }

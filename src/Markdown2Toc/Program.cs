@@ -14,6 +14,7 @@ class Program
         var outArg = new Argument<string>("--output-file", getDefaultValue: () => "./", description: "Output TOC file or directory path");
         var toc = new Option<string>("--toc-file", description: "TOC file to merge");
         var rootCommand = new RootCommand();
+        rootCommand.Description = "Simple tool to generate table-of-content yaml files from Markdown files";
         rootCommand.AddArgument(inArg);
         rootCommand.AddArgument(outArg);
         rootCommand.AddOption(toc);
