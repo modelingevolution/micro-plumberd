@@ -6,6 +6,16 @@ namespace MicroPlumberd.Testing;
 public class PortSearcher
 {
     private int lastPort = 2700;
+
+    public PortSearcher()
+    {
+        
+    }
+
+    public PortSearcher(int startPort)
+    {
+        lastPort = startPort;
+    }
     public int FindNextAvailablePort()
     {
         var actual = Interlocked.Increment(ref this.lastPort);

@@ -34,8 +34,7 @@ public static class ContainerExtensions
         collection.TryAddSingleton<ICommandBus, CommandBus>();
         collection.TryAddSingleton( typeof(IEventHandler<>),typeof(EventHandlerExecutor<>));
         
-        
-        //collection.TryDecorate<ICommandBus, CommandBusAttributeValidator>();
+        collection.TryDecorate<ICommandBus, CommandBusAttributeValidator>();
 
         return collection;
     }

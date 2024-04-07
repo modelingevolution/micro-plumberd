@@ -1,5 +1,5 @@
 # micro-plumberd
-Micro library for EventStore, CQRS and EventSourcing
+Micro library for EventStore, CQRS and EventSourcing.
 Just eXtreamly simple.
 
 Documentation can be found here:
@@ -10,45 +10,28 @@ Documentation can be found here:
 ### Install nugets: 
 
 ```powershell
-# For your domain
-dotnet add package MicroPlumberd
-dotnet add package MicroPlumberd.SourceGenerators
-```
-
-If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
-
-```powershell
-# For application-layer using EventStore as message-bus. 
-dotnet add package MicroPlumberd.Services
-
-# For application-layer communicating (dotnet-2-dotnet) using GRPC:
-dotnet add package MicroPlumberd.Services.Grpc.DirectConnect
-
-# EXPERIMENTAL ProcessManager support can be found here:
-dotnet add package MicroPlumberd.Services.ProcessManagers
+dotnet add package MicroPlumberd                      # For your domain
+dotnet add package MicroPlumberd.Services             # For IoC integration
+dotnet add package MicroPlumberd.SourceGenerators     # Code generators for Aggregates, EventHandlers and more.
 ```
 
 ### Configure plumber
 
 ```csharp
-/// change to your connection-string.
+// Vanilla
 string connectionString = $"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
 var settings = EventStoreClientSettings.Create(connectionString);
 var plumber = Plumber.Create(settings);
 ```
 
-If you'd want to do it at service-level with DI:
+However, typicly you would add plumberd to your app:
 ```csharp
-/// change to your connection-string.
-string connectionString = $"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
-var settings = EventStoreClientSettings.Create(connectionString);
-
-services.AddPlumberd(settings);
+services.AddPlumberd();
 ```
 
 ### Aggregates
 
-1) Write an aggregate.
+1) Let's start with an aggregate:
 ```csharp
 [Aggregate]
 public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState>(id)
@@ -67,7 +50,7 @@ Comments:
 
 - State is encapsulated in nested class FooState. 
 - Given methods, that are used when loading aggregate from the EventStoreDB are private and static. State is encouraged to be immutable.
-- [Aggregate] attribute is used by SourceGenerator that will generate dispatching code and handy metadata.
+- [Aggregate] attribute is used by **SourceGenerator** that will generate dispatching code and handy metadata.
 
 2) Consume an aggregate.
 
@@ -164,15 +147,9 @@ Implementing a processor is technically the same as implementing a read-model, b
 
 ## Features
 
-### Conventions
-  - SteamNameConvention - from aggregate type, and aggregate id
-  - EventNameConvention - from aggregate? instance and event instance
-  - MetadataConvention - to enrich event with metadata based on aggregate instance and event instance
-  - EventIdConvention - from aggregate instance and event instance
-  - OutputStreamModelConvention - for output stream name from model-type
-  - GroupNameModelConvention - for group name from model-type
+### Aggregates
 
-### Read-Models DX (EF example).
+### Read-Models
 
 Let's analyse this example:
 
@@ -185,7 +162,7 @@ Let's analyse this example:
 
 Comments:
 - By creating a new read-model you can always compare the differences with the previous one.
-- You can leverage canary-deployment strategy and have 2 versions of your system running in parallel.  
+- You can leverage canary-deployment strategy and have 2 versions of your system running in parallel.
 
 ```csharp
 [OutputStream(FooModel.MODEL_NAME)]
@@ -210,27 +187,9 @@ public partial class FooModel : DbContext
     }
 }
 ```
+### Command-Handlers & Message Bus
 
-### Subscription Sets - Models composition
-  - You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.
-  - In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one. 
-
-```csharp
-/// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
-
-var dimentionTable = new DimentionLookupModel();
-var factTable = new MasterModel(dimentionTable);
-
-await plumber.SubscribeSet()
-    .With(dimentionTable)
-    .With(factTable)
-    .SubscribeAsync("MasterStream", FromStream.Start);
-```
-
-
-### EventStoreDB as message-bus
-
-If you want to start as quickly as possible, you can start with EventStoreDB as command-message-bus. 
+If you want to start as quickly as possible, you can start with EventStoreDB as command-message-bus.
 ```csharp
 
 services.AddPlumberd()
@@ -241,6 +200,7 @@ ICommandBus bus; // from DI
 bus.SendAsync(Guid.NewGuid(), new CreateFoo() { Name = "Hello" });
 ```
 
+#### Scaling considerations
 If you are running many replicas of your service, you need to switch command-execution to persistent mode:
 
 ```csharp
@@ -253,20 +213,55 @@ This means, that once your microservice subscribes to commands, it will execute 
 To skip old commands, you can configure a filter.
 
 ```csharp
-
 services.AddPlumberd(configure: c => {
     c.Conventions.ServicesConventions().AreHandlersExecutedPersistently = () => true;
     c.Conventions.ServicesConventions().CommandHandlerSkipFilter = (m,ev) => DateTimeOffset.Now.Substract(m.Created()) > TimeSpan.FromSeconds(60);
     })
     .AddCommandHandler<FooCommandHandler>()
-
 ```
+    
+### Conventions
+  - SteamNameConvention - from aggregate type, and aggregate id
+  - EventNameConvention - from aggregate? instance and event instance
+  - MetadataConvention - to enrich event with metadata based on aggregate instance and event instance
+  - EventIdConvention - from aggregate instance and event instance
+  - OutputStreamModelConvention - for output stream name from model-type
+  - GroupNameModelConvention - for group name from model-type
+
+
+### Subscription Sets
+  - You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.
+  - In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one. 
+
+
+/// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
+
+```csharp
+var dimentionTable = new DimentionLookupModel();
+var factTable = new MasterModel(dimentionTable);
+
+await plumber.SubscribeSet()
+    .With(dimentionTable)
+    .With(factTable)
+    .SubscribeAsync("MasterStream", FromStream.Start);
+```
+
+### Integration tests support
+
 ### Specflow/Ghierkin step-files generation
 
 Given you have written your domain, you can generate step files that would populate Ghierkin API to your domain. 
 
 
 ### GRPC Direct communication
+
+If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
+
+```powershell
+
+dotnet add package MicroPlumberd.Services.Grpc.DirectConnect
+```
+
 
 If you prefer direct communication (like REST-API, but without the hassle for contract generation/etc.) you can use direct communication where client invokes command handle using grpc.
 Command is not stored in EventStore.
@@ -327,6 +322,11 @@ service.AddClientDirectConnect().AddCommandInvokers();
 
 Given diagram:
 ![Saga](./pm.png)
+
+```powershell
+# Add required packages:
+dotnet add package MicroPlumberd.Services.ProcessManagers
+```
 
 The code of Order Process Manager looks like this:
 

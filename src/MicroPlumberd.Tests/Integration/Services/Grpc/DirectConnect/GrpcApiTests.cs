@@ -35,7 +35,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         await using ServerApp srv = new ServerApp(_eventStore.HttpPort);
         await srv.StartAsync(x => { x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect(); });
 
-        var invoker = ArrangeClientApp();
+        var invoker = ArrangeClientApp(srv.HttpPort);
         var streamId = Guid.NewGuid();
 
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });
@@ -65,7 +65,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         await Task.Delay(1000);
 
         // Client App
-        var invoker = ArrangeClientApp();
+        var invoker = ArrangeClientApp(srv.HttpPort);
 
         // Invocation
         var streamId = Guid.NewGuid();
@@ -82,7 +82,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         srvModel.ModelStore.Index[2].Event.Should().BeOfType<FooCreated>();
     }
 
-    private IRequestInvoker ArrangeClientApp()
+    private IRequestInvoker ArrangeClientApp(int port)
     {
         client = new Fixtures.ClientApp();
 
@@ -90,7 +90,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
             .AddCommandInvokers(typeof(CreateFoo), typeof(RefineFoo)));
 
         var clientPool = sp.GetRequiredService<IRequestInvokerPool>();
-        var invoker = clientPool.Get("http://localhost:5001");
+        var invoker = clientPool.Get($"http://localhost:{port}");
 
         return invoker;
     }
@@ -103,7 +103,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
 
         await srv.StartAsync(x => { x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect(); });
 
-        var invoker = ArrangeClientApp();
+        var invoker = ArrangeClientApp(srv.HttpPort);
         var streamId = Guid.NewGuid();
 
         await invoker.Execute(streamId, new CreateFoo() { Name = "Hello" });

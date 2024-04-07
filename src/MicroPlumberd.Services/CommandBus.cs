@@ -19,7 +19,8 @@ class CommandBus : ICommandBus, IEventHandler
 {
     private readonly IPlumber _plumber;
     private readonly ILogger<CommandBus> _log;
-    private readonly string _stream;
+    private readonly string _streamIn;
+    private readonly string _streamOut;
     private readonly ConcurrentDictionary<Guid, CommandExecutionResults> _handlers = new();
     private readonly ConcurrentDictionary<string, Type> _commandMapping = new();
     private readonly ConcurrentHashSet<Type> _supportedCommands = new();
@@ -31,7 +32,9 @@ class CommandBus : ICommandBus, IEventHandler
     {
         _plumber = plumber;
         _log = log;
-        _stream = plumber.Config.Conventions.ServicesConventions().SessionStreamFromSessionIdConvention(SessionId);
+        var servicesConventions = plumber.Config.Conventions.ServicesConventions();
+        _streamIn = servicesConventions.SessionInStreamFromSessionIdConvention(SessionId);
+        _streamOut = servicesConventions.SessionOutStreamFromSessionIdConvention(SessionId);
     }
     
     
@@ -49,8 +52,8 @@ class CommandBus : ICommandBus, IEventHandler
 
         if (shouldSubscribe)
         {
-            await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _stream, FromStream.End, false);
-            _log.LogDebug("Session {steamId} subscribed.", _stream);
+            await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.End, false);
+            _log.LogDebug("Session {steamId} subscribed.", _streamOut);
         }
     }
 
@@ -86,7 +89,7 @@ class CommandBus : ICommandBus, IEventHandler
         CheckMapping(command);
         await CheckInitialized();
         
-        await _plumber.AppendEvents(_stream, StreamState.Any, [command], metadata);
+        await _plumber.AppendEvents(_streamIn, StreamState.Any, [command], metadata);
 
         bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(_plumber.Config.ServicesConfig().DefaultTimeout);
         

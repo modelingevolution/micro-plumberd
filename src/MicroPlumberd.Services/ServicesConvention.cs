@@ -16,7 +16,8 @@ public interface IServicesConvention
     AppCommandStream AppCommandStreamConvention { get; set; }
     CommandMessageTypes CommandMessageTypes { get; set; }
     CommandName CommandNameConvention { get; set; }
-    SessionStreamFromSessionId SessionStreamFromSessionIdConvention { get; set; }
+    SessionStreamFromSessionId SessionInStreamFromSessionIdConvention { get; set; }
+    SessionStreamFromSessionId SessionOutStreamFromSessionIdConvention { get; set; }
     /// <summary>
     /// Used only for manual subscribing: plumberd.SubscribeCommandHandler<THandler>()
     /// </summary>
@@ -44,7 +45,9 @@ class ServicesConvention : IServicesConvention
     public GroupNameFromCommandHandler GroupNameFromCommandHandlerConvention { get; set; } = static x => $"{x.GetFriendlyName()}";
     public AppCommandStream AppCommandStreamConvention { get; set; } = static () => $">{AppDomain.CurrentDomain.FriendlyName}";
     public CommandName CommandNameConvention { get; set; } = static x => $"{x.Name}";
-    public SessionStreamFromSessionId SessionStreamFromSessionIdConvention { get; set; } = static x => $">Session-{x}";
+    
+    public SessionStreamFromSessionId SessionInStreamFromSessionIdConvention { get; set; } = static x => $">SessionIn-{x}";
+    public SessionStreamFromSessionId SessionOutStreamFromSessionIdConvention { get; set; } = static x => $">SessionOut-{x}";
     public CommandMessageTypes CommandMessageTypes { get; set; }
 
     public ServicesConvention()

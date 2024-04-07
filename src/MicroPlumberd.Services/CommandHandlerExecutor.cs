@@ -52,7 +52,7 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
         var sessionId = m.SessionId() ?? Guid.Empty;
         if (sessionId == Guid.Empty) return;
 
-        var cmdStream = _serviceConventions.SessionStreamFromSessionIdConvention(sessionId);
+        var cmdStream = _serviceConventions.SessionOutStreamFromSessionIdConvention(sessionId);
         var cmdName = _serviceConventions.CommandNameConvention(command.GetType());
         var cmdId = (command is IId id) ? id.Id : m.EventId;
 

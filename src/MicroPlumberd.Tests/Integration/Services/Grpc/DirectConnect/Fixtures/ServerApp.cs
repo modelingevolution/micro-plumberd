@@ -1,4 +1,5 @@
 using EventStore.Client;
+using MicroPlumberd.Testing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -10,12 +11,14 @@ namespace MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 
 class ServerApp : IDisposable, IAsyncDisposable
 {
+    private static PortSearcher _portSearcher = new PortSearcher(5001);
     private readonly int _esPort;
     private WebApplication? app;
-
+    public int HttpPort { get; private set; }
     public ServerApp(int esPort)
     {
         _esPort = esPort;
+        HttpPort = _portSearcher.FindNextAvailablePort();
     }
     public async Task<IServiceProvider> StartAsync(Action<IServiceCollection>? configure = null)
     {
@@ -34,7 +37,7 @@ class ServerApp : IDisposable, IAsyncDisposable
         builder.WebHost.ConfigureKestrel(options =>
         {
             // Setup a HTTP/2 endpoint without TLS for development purposes.
-            options.ListenLocalhost(5001, o => o.Protocols = HttpProtocols.Http2);
+            options.ListenLocalhost(HttpPort, o => o.Protocols = HttpProtocols.Http2);
         });
 
         app = builder.Build();
