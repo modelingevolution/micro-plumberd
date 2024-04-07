@@ -37,6 +37,25 @@ public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
 
 public delegate string OutputStreamModelConvention(Type model);
 public delegate string GroupNameModelConvention(Type model);
+
+public interface IReadOnlyConventions : IExtension
+{
+    ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; }
+    StreamCategoryConvention GetStreamCategoryConvention { get;  }
+    SteamNameConvention GetStreamIdConvention { get; }
+    SteamNameConvention GetStreamIdSnapshotConvention { get;  }
+    SnapshotEventName SnapshotEventNameConvention { get;  }
+    EventNameConvention GetEventNameConvention { get;  }
+    BuildInvocationContext BuildInvocationContext { get;  }
+    MetadataConvention? MetadataEnrichers { get;  }
+    EventIdConvention GetEventIdConvention { get; }
+    OutputStreamModelConvention OutputStreamModelConvention { get;  }
+    GroupNameModelConvention GroupNameModelConvention { get;  }
+    SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get;  }
+    StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get;  }
+    object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
+
+}
 public interface IConventions : IExtension
 {
     ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
@@ -60,7 +79,7 @@ public interface IExtension
 {
     T GetExtension<T>() where T : new();
 }
-class Conventions : IConventions
+class Conventions : IConventions, IReadOnlyConventions
 {
     private readonly ConcurrentDictionary<Type,object> _extension = new();
     public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());

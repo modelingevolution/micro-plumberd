@@ -1,36 +1,48 @@
 ﻿using System.Collections.Concurrent;
 using System.Text;
 using EventStore.Client;
-using Grpc.Core;
 
 namespace MicroPlumberd;
 
-public class Plumber : IPlumber, IPlumberConfig
+/// <summary>
+///     Root class for ED plumbing.
+/// </summary>
+public class Plumber : IPlumber, IPlumberReadOnlyConfig
 {
     private readonly ConcurrentDictionary<Type, object> _extension = new();
-    private readonly EventStoreClientSettings _settings;
+    private readonly ConcurrentDictionary<Type, ISnapshotPolicy> _policies = new();
     private readonly TypeHandlerRegisters _typeHandlerRegisters;
+    private readonly ConcurrentDictionary<Type, IObjectSerializer> _serializers = new();
     private ProjectionRegister? _projectionRegister;
 
     internal Plumber(EventStoreClientSettings settings, PlumberConfig? config = null)
     {
         config ??= new PlumberConfig();
-        _settings = settings;
         Client = new EventStoreClient(settings);
         PersistentSubscriptionClient = new EventStorePersistentSubscriptionsClient(settings);
         ProjectionManagementClient = new EventStoreProjectionManagementClient(settings);
         Conventions = config.Conventions;
-        _serializerFactory = config.SerializerFactory;
+        SerializerFactory = config.SerializerFactory;
         ServiceProvider = config.ServiceProvider;
         _extension = config.Extension; // Shouldn't we make a copy?
         _typeHandlerRegisters = new TypeHandlerRegisters(Conventions.GetEventNameConvention);
     }
+    public IPlumberReadOnlyConfig Config => this;
 
     public ITypeHandlerRegisters TypeHandlerRegisters => _typeHandlerRegisters;
     public EventStoreClient Client { get; }
-    public IProjectionRegister ProjectionRegister => _projectionRegister ??= new ProjectionRegister(ProjectionManagementClient);
+
+    public IProjectionRegister ProjectionRegister =>
+        _projectionRegister ??= new ProjectionRegister(ProjectionManagementClient);
+
     public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
     public EventStoreProjectionManagementClient ProjectionManagementClient { get; }
+
+    /// <summary>
+    /// </summary>
+    public IServiceProvider ServiceProvider { get; }
+    public Func<Type, IObjectSerializer> SerializerFactory { get; }
+    public IReadOnlyConventions Conventions { get; }
 
     public ISubscriptionRunner Subscribe(string streamName, FromStream start,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new())
@@ -119,15 +131,17 @@ public class Plumber : IPlumber, IPlumberConfig
                 cancellationToken));
     }
 
-    public async Task Rehydrate<T>(T model, Guid id,StreamPosition? position = null) where T : IEventHandler, ITypeRegister
+    public async Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null)
+        where T : IEventHandler, ITypeRegister
     {
         var streamId = Conventions.GetStreamIdConvention(typeof(T), id);
         await Rehydrate(model, streamId, position);
     }
 
-    public async Task Rehydrate<T>(T model, string streamId, StreamPosition? position = null) where T : IEventHandler, ITypeRegister
+    public async Task Rehydrate<T>(T model, string streamId, StreamPosition? position = null)
+        where T : IEventHandler, ITypeRegister
     {
-        StreamPosition pos = position ?? StreamPosition.Start;
+        var pos = position ?? StreamPosition.Start;
         var items = Client.ReadStreamAsync(Direction.Forwards, streamId, pos, resolveLinkTos: true);
         var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
         var vAware = model as IVersionAware;
@@ -187,24 +201,29 @@ public class Plumber : IPlumber, IPlumberConfig
         return new SubscriptionSet(this);
     }
 
-    public IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null, long maxCount = long.MaxValue) where TOwner : ITypeRegister
+    public IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null, Direction? direction = null,
+        long maxCount = long.MaxValue) where TOwner : ITypeRegister
     {
         start ??= StreamPosition.Start;
-        
+
         var streamId = Conventions.GetStreamIdConvention(typeof(TOwner), id);
         var registry = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
         return Read(streamId, registry, start, direction, maxCount);
     }
-    public IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction=null, long maxCount = Int64.MaxValue) where TOwner : ITypeRegister
+
+    public IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction = null,
+        long maxCount = long.MaxValue) where TOwner : ITypeRegister
     {
         var streamId = Conventions.ProjectionCategoryStreamConvention(typeof(TOwner));
         var evNameConv = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
         return Read(streamId, evNameConv, start, direction, maxCount);
     }
-    public async IAsyncEnumerable<(object,Metadata)> ReadFull(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue)
+
+    public async IAsyncEnumerable<(object, Metadata)> ReadFull(string streamId, TypeEventConverter converter,
+        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue)
     {
-        Direction d = direction ?? Direction.Forwards;
-        StreamPosition p = start ?? StreamPosition.Start;
+        var d = direction ?? Direction.Forwards;
+        var p = start ?? StreamPosition.Start;
 
         var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount);
         if (await items.ReadState == ReadState.StreamNotFound) yield break;
@@ -216,14 +235,16 @@ public class Plumber : IPlumber, IPlumberConfig
         await foreach (var i in events)
             yield return i;
     }
-    public async IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue)
+
+    public async IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter,
+        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue)
     {
-        Direction d = direction ?? Direction.Forwards;
-        StreamPosition p = start ?? StreamPosition.Start;
-        
-        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos:true, maxCount:maxCount);
+        var d = direction ?? Direction.Forwards;
+        var p = start ?? StreamPosition.Start;
+
+        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount);
         if (await items.ReadState == ReadState.StreamNotFound) yield break;
-        
+
         var events = items.Select(x => new
                 { ResolvedEvent = x, EventType = converter(x.Event.EventType, out var t) ? t : null })
             .Where(x => x.EventType != null)
@@ -232,9 +253,6 @@ public class Plumber : IPlumber, IPlumberConfig
             yield return i;
     }
 
-    private ISnapshotPolicy? GetPolicy<TOwner>() => _policies.GetOrAdd(typeof(TOwner), x => Conventions.SnapshotPolicyFactoryConvention(x));
-
-    private readonly ConcurrentDictionary<Type, ISnapshotPolicy> _policies = new();
     public async Task<TOwner> Get<TOwner>(Guid id)
         where TOwner : IAggregate<TOwner>, ITypeRegister
     {
@@ -254,9 +272,8 @@ public class Plumber : IPlumber, IPlumberConfig
         return aggregate;
     }
 
-    
 
-    public IPlumberConfig Config => this;
+    
 
     public async Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
         object? metadata = null)
@@ -274,6 +291,7 @@ public class Plumber : IPlumber, IPlumberConfig
         var r = await Client.AppendToStreamAsync(streamId, state, evData);
         return r;
     }
+
     public async Task<IWriteResult> AppendSnapshot(object snapshot, Guid id, long version, StreamState state)
     {
         var m = Conventions.GetMetadata(null, snapshot, new { SnapshotVersion = version });
@@ -284,9 +302,13 @@ public class Plumber : IPlumber, IPlumberConfig
         var r = await Client.AppendToStreamAsync(streamId, state, [evData]);
         return r;
     }
+
     public async Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt,
         object? metadata = null)
     {
+        if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
+        if (string.IsNullOrEmpty(evtName)) throw new ArgumentException("evtName cannot be null or empty.");
+
         var m = Conventions.GetMetadata(null, evt, metadata);
         var evId = Conventions.GetEventIdConvention(null, evt);
         var evData = MakeEvent(evId, evtName, evt, m);
@@ -298,14 +320,16 @@ public class Plumber : IPlumber, IPlumberConfig
     public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
+        if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
+
         var streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
         var r = await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
         aggregate.AckCommitted();
 
-        ISnapshotPolicy? policy = GetPolicy<T>();
+        var policy = GetPolicy<T>();
         if (policy != null && aggregate is IStatefull i && policy.ShouldMakeSnapshot(aggregate, i.InitializedWith))
-            await this.AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.Any);
+            await AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.Any);
 
         return r;
     }
@@ -314,32 +338,37 @@ public class Plumber : IPlumber, IPlumberConfig
     public async Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null)
         where T : IAggregate<T>
     {
+        if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
+
         var streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
         var r = await Client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
         aggregate.AckCommitted();
 
-        ISnapshotPolicy? policy = GetPolicy<T>();
+        var policy = GetPolicy<T>();
         if (policy != null && aggregate is IStatefull i && policy.ShouldMakeSnapshot(aggregate, i.InitializedWith))
-            await this.AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.NoStream);
+            await AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.NoStream);
 
         return r;
     }
 
     public async Task<Snapshot?> GetSnapshot(Guid id, Type snapshotType)
     {
+        if (snapshotType == null) throw new ArgumentNullException("snapshotType cannot be null.");
+
         var streamId = Conventions.GetStreamIdSnapshotConvention(snapshotType, id);
-        SnapshotConverter c = new SnapshotConverter(snapshotType);
-        var e = await this.ReadFull(streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1).ToArrayAsync();
+        var c = new SnapshotConverter(snapshotType);
+        var e = await ReadFull(streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1).ToArrayAsync();
         if (!e.Any()) return null;
 
         var (evt, m) = e[0];
-        Snapshot s = (Snapshot)Activator.CreateInstance(typeof(Snapshot<>).MakeGenericType(snapshotType));
+        var s = (Snapshot)Activator.CreateInstance(typeof(Snapshot<>).MakeGenericType(snapshotType));
         s.Created = m.Created().Value;
         s.Value = evt;
-        s.Version = m.SnapshotVersion() ??0;
+        s.Version = m.SnapshotVersion() ?? 0;
         return s;
     }
+
     public async Task<Snapshot<T>?> GetSnapshot<T>(Guid id)
     {
         var s = await GetSnapshot(id, typeof(T));
@@ -355,6 +384,8 @@ public class Plumber : IPlumber, IPlumberConfig
     /// <returns></returns>
     public async Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null)
     {
+        if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
+
         var data = Encoding.UTF8.GetBytes($"{metadata.SourceStreamPosition}@{metadata.SourceStreamId}");
         const string eventType = "$>";
 
@@ -362,23 +393,29 @@ public class Plumber : IPlumber, IPlumberConfig
             new[] { new EventData(Uuid.NewUuid(), eventType, data) });
     }
 
+
+
+    private ISnapshotPolicy? GetPolicy<TOwner>()
+    {
+        return _policies.GetOrAdd(typeof(TOwner), x => Conventions.SnapshotPolicyFactoryConvention(x));
+    }
+
     public T GetExtension<T>() where T : new()
     {
         return (T)_extension.GetOrAdd(typeof(T), x => new T());
     }
 
-    public IServiceProvider ServiceProvider { get; set; }
-
-    private Func<Type, IObjectSerializer> _serializerFactory;
-    private ConcurrentDictionary<Type, IObjectSerializer> _serializers = new();
-    IObjectSerializer Serializer(Type t) => _serializers.GetOrAdd(t, _serializerFactory);
-    public Func<Type, IObjectSerializer> SerializerFactory
+    private IObjectSerializer Serializer(Type t)
     {
-        get => _serializerFactory;
-        set => _serializerFactory = value;
+        return _serializers.GetOrAdd(t, SerializerFactory);
     }
-    public IConventions Conventions { get; }
 
+    /// <summary>
+    ///     Creates instance of IPlumber.
+    /// </summary>
+    /// <param name="settings">Connection settings to EventStore</param>
+    /// <param name="configure">Additional configuration</param>
+    /// <returns></returns>
     public static IPlumber Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
     {
         settings ??=

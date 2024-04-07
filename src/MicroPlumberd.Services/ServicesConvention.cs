@@ -59,8 +59,12 @@ public static class PlumberdConventionsExtensions
 {
     public static IServicesConvention ServicesConventions(this IConventions conventions) =>
         conventions.GetExtension<ServicesConvention>();
+        public static IServicesConvention ServicesConventions(this IReadOnlyConventions conventions) =>
+            conventions.GetExtension<ServicesConvention>();
     public static IServicesConfig ServicesConfig(this IPlumberConfig config) =>
         config.GetExtension<ServicesConfig>();
+      public static IServicesConfig ServicesConfig(this IPlumberReadOnlyConfig config) =>
+            config.GetExtension<ServicesConfig>();
 }
 
 class CommandMappings

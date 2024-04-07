@@ -23,7 +23,8 @@ class PlumberConfig : IPlumberConfig
         }
     }
 
-    public IConventions Conventions { get; } = new Conventions();
+    public Conventions Conventions { get; } = new Conventions();
+    IConventions IPlumberConfig.Conventions => this.Conventions;
 
     public PlumberConfig()
     {

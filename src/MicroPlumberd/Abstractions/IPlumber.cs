@@ -26,19 +26,38 @@ public sealed record Snapshot<T> : Snapshot, ISnapshot
     }
 }
 /// <summary>
-/// Root interface for plumber
+/// Root interface for plumberd
 /// </summary>
 public interface IPlumber
 {
-    IPlumberConfig Config { get; }
+    /// <summary>
+    /// Plubers configuration.
+    /// </summary>
+    IPlumberReadOnlyConfig Config { get; }
+    
+    /// <summary>
+    /// EventStore's client
+    /// </summary>
     EventStoreClient Client { get; }
+    /// <summary>
+    /// EventStore's persistent subsctiption client
+    /// </summary>
     EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
+    /// <summary>
+    /// EventStore's projection managemenet client
+    /// </summary>
     EventStoreProjectionManagementClient ProjectionManagementClient { get; }
+    /// <summary>
+    /// Projection's register, responsible for caching information about projection from EventStore.
+    /// </summary>
     IProjectionRegister ProjectionRegister { get; }
+    /// <summary>
+    /// Metadata information about registered event-handlers.
+    /// </summary>
     ITypeHandlerRegisters TypeHandlerRegisters { get; }
 
     /// <summary>
-    /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
+    /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
     /// <param name="streamId">Full stream id, typically in format {category}-{id}</param>
     /// <param name="rev">Expected stream revision</param>
@@ -48,9 +67,18 @@ public interface IPlumber
     Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
         object? metadata = null);
 
+    /// <summary>
+    /// Appends event to a stream, uses relevant convention to create metadata.
+    /// </summary>
+    /// <param name="streamId">Full name of streamId for example: 'TicketBooked-b27f9322-7d73-4d98-a605-a731a2c373c6'</param>
+    /// <param name="state">Expected state of the stream</param>
+    /// <param name="evtName">Name of the event</param>
+    /// <param name="evt">Event object</param>
+    /// <param name="metadata">Additional metadata, can be null</param>
+    /// <returns></returns>
     Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null);
     /// <summary>
-    /// Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
+    /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
     /// <param name="streamId">Full stream id, typically in format {category}-{id}</param>
     /// <param name="state">State of the stream</param>
@@ -59,46 +87,252 @@ public interface IPlumber
     /// <returns></returns>
     Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
         object? metadata = null);
+
+    /// <summary>
+    /// Appends event to a stream, uses relevant convention to create metadata.
+    /// </summary>
+    /// <param name="streamId">Full name of streamId for example: 'TicketBooked-b27f9322-7d73-4d98-a605-a731a2c373c6'</param>
+    /// <param name="state"></param>
+    /// <param name="events"></param>
+    /// <returns></returns>
     Task AppendEvents(string streamId, StreamState state, params object[] events) => AppendEvents(streamId, state, events,null);
 
-    Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null,
-        Direction scanDirection = Direction.Backwards);
-    Task<IEventRecord?> FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping,
-        Direction scanDirection = Direction.Backwards);
+    /// <summary>
+    /// Finds the event in the stream.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="id">The identifier of the event.</param>
+    /// <param name="eventMapping">The event mapping.</param>
+    /// <param name="scanDirection">The scan direction.</param>
+    /// <returns></returns>
+    Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null, Direction scanDirection = Direction.Backwards);
+
+    /// <summary>
+    /// Finds the event in the stream.
+    /// </summary>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="id">The identifier of the event.</param>
+    /// <param name="eventMapping">The event mapping.</param>
+    /// <param name="scanDirection">The scan direction.</param>
+    /// <returns></returns>
+    Task<IEventRecord?> FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards);
+
+    /// <summary>
+    /// Returns a builder for creating composition of projections subscribed to a stream.
+    /// </summary>
+    /// <returns></returns>
     ISubscriptionSet SubscribeSet();
+
+    /// <summary>
+    /// Subscribes the specified stream name.
+    /// </summary>
+    /// <param name="streamName">Name of the stream.</param>
+    /// <param name="start">The start position</param>
+    /// <param name="userCredentials">The user credentials.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns></returns>
     ISubscriptionRunner Subscribe(string streamName, FromStream start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
 
+    /// <summary>
+    /// Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+    /// Then EventHandler subscribe the the output stream.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    /// <param name="mapFunc">The map function.</param>
+    /// <param name="eventTypes">Supported event types.</param>
+    /// <param name="eh">The event-handler</param>
+    /// <param name="outputStream">The output stream.</param>
+    /// <param name="start">The start of the stream</param>
+    /// <param name="ensureOutputStreamProjection">if set to <c>true</c> [ensure output stream projection].</param>
+    /// <returns></returns>
     Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes,
         TEventHandler? eh = default, string? outputStream = null,
-        FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler:class,IEventHandler;
-    Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh=default,string? outputStream=null, FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class,IEventHandler, ITypeRegister;
+        FromStream? start = null, 
+        bool ensureOutputStreamProjection = true) 
+        where TEventHandler:class,IEventHandler;
 
+    /// <summary>
+    /// Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+    /// Then EventHandler subscribe the the output stream.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    /// <param name="eh">The event-handler/model</param>
+    /// <param name="outputStream">The output stream.</param>
+    /// <param name="start">The start.</param>
+    /// <param name="ensureOutputStreamProjection">if set to <c>true</c> [ensure output stream projection].</param>
+    /// <returns></returns>
+    Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh=default,string? outputStream=null, FromStream? start = null, bool ensureOutputStreamProjection = true) 
+        where TEventHandler : class,IEventHandler, ITypeRegister;
+
+
+    /// <summary>
+    /// Subscribes the event handler persistently. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+    /// Then EventHandler subscribe the the output stream.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    /// <param name="model">Optional event-handler/model.</param>
+    /// <param name="outputStream">Optional output stream.</param>
+    /// <param name="groupName">Optional group name.</param>
+    /// <param name="startFrom">Optional start of the stream.</param>
+    /// <param name="ensureOutputStreamProjection">when true creates projection that creates output's stream</param>
+    /// <returns></returns>
     Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true) where TEventHandler : class,IEventHandler, ITypeRegister;
 
+    /// <summary>
+    /// Returns a subscription builder that will subscribe model persistently.
+    /// </summary>
+    /// <param name="streamName">Name of the stream.</param>
+    /// <param name="groupName">Name of the group.</param>
+    /// <param name="bufferSize">Size of the buffer.</param>
+    /// <param name="userCredentials">The user credentials.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns></returns>
     ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
-    
+
+    /// <summary>
+    /// Rehydrates the specified model.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="model">The model.</param>
+    /// <param name="stream">The stream.</param>
+    /// <param name="position">The position.</param>
+    /// <returns></returns>
     Task Rehydrate<T>(T model, string stream, StreamPosition? position = null) where T : IEventHandler, ITypeRegister;
+
+    /// <summary>
+    /// Rehydrates the specified model
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="model">The model.</param>
+    /// <param name="id">The identifier.</param>
+    /// <param name="position">The position from which reply events.</param>
+    /// <returns></returns>
     Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null) where T : IEventHandler, ITypeRegister;
 
+    /// <summary>
+    /// Returns the aggregate identified by id.
+    /// This usually mean that all the event will be loaded from the EventStoreDB and executed through 'Given' method on it's instance. 
+    /// If the aggregate supports snapshoting, it's state will be loaded from latest snapshot and relevant events from that time will be replied on it's instance.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="id">The identifier.</param>
+    /// <returns></returns>
     Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister;
+
+    /// <summary>
+    /// Saves all pending events from the aggregate. Uses optimistic concurrency.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="aggregate">The aggregate.</param>
+    /// <param name="metadata">The optional metadata.</param>
+    /// <returns></returns>
     Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+
+    /// <summary>
+    /// Saves the aggregate. Expects that no aggregate exists. 
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="aggregate">The aggregate.</param>
+    /// <param name="metadata">The optional metadata.</param>
+    /// <returns></returns>
     Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+
+    /// <summary>
+    /// Gets the snapshot - deserializes snapshot from the stream. Stream is identified by typeof(T). Deserialization is done from the latest event (snaphost) in the stream.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="id">The identifier.</param>
+    /// <returns></returns>
     Task<Snapshot<T>?> GetSnapshot<T>(Guid id);
+
+    /// <summary>
+    /// Gets the snapshot - deserializes snapshot from the stream. Stream is identified by snaphostType. Deserialization is done from the latest event (snaphost) in the stream.
+    /// </summary>
+    /// <param name="id">The identifier.</param>
+    /// <param name="snapshotType">Type of the snapshot.</param>
+    /// <returns>The snapshot information containing the snaphost and relevant metadata.</returns>
     Task<Snapshot?> GetSnapshot(Guid id, Type snapshotType);
 
+    /// <summary>
+    /// Appends the link to a stream.
+    /// </summary>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="metadata">The metadata.</param>
+    /// <param name="state">The expected state of the stream</param>
+    /// <returns></returns>
     Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null);
 
+    /// <summary>
+    /// Subscribes the event handler persistently. This means that at least once an event is processed successfully, it wont be processed anymore.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    /// <param name="mapFunc">The map function.</param>
+    /// <param name="events">The events.</param>
+    /// <param name="model">The model.</param>
+    /// <param name="outputStream">The output stream.</param>
+    /// <param name="groupName">Name of the group.</param>
+    /// <param name="startFrom">The start from.</param>
+    /// <param name="ensureOutputStreamProjection">if set to <c>true</c> [ensure output stream projection].</param>
+    /// <returns></returns>
     Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? events,
         TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class, IEventHandler;
 
+    /// <summary>
+    /// Reads stream and returns events.
+    /// </summary>
+    /// <typeparam name="TOwner">The type of the owner (aggregate).</typeparam>
+    /// <param name="id">The identifier (of the aggregate).</param>
+    /// <param name="start">The stream start position.</param>
+    /// <param name="direction">The direction of the reading.</param>
+    /// <param name="maxCount">The maximum number of read events.</param>
+    /// <returns></returns>
     IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null, long maxCount = long.MaxValue) where TOwner : ITypeRegister;
+
+    /// <summary>
+    /// Reads stream and returns events.
+    /// </summary>
+    /// <typeparam name="TOwner">The type of the owner(aggregate).</typeparam>
+    /// <param name="start">The stream start position.</param>
+    /// <param name="direction">The direction of the reading.</param>
+    /// <param name="maxCount">The maximum number of read events.</param>
+    /// <returns></returns>
     IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null,Direction? direction=null, long maxCount=long.MaxValue) where TOwner : ITypeRegister;
+
+    /// <summary>
+    /// Reads stream and returns events.
+    /// </summary>
+    /// <param name="streamId">The full stream name</param>
+    /// <param name="converter">The event-map converter.</param>
+    /// <param name="start">The stream start position.</param>
+    /// <param name="direction">The direction of the reading.</param>
+    /// <param name="maxCount">The maximum number of read events.</param>
+    /// <returns></returns>
     IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue);
 
+    /// <summary>
+    /// Reads stream and returns event and metadata information.
+    /// </summary>
+    /// <param name="streamId">The full stream name</param>
+    /// <param name="converter">The event-map converter.</param>
+    /// <param name="start">The stream start position.</param>
+    /// <param name="direction">The direction of the reading.</param>
+    /// <param name="maxCount">The maximum number of read events.</param>
+    /// <returns></returns>
     IAsyncEnumerable<(object,Metadata)> ReadFull(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue);
+
+
+    /// <summary>
+    /// Appends the snapshot to a stream determined by the type of the snapshot/state.
+    /// </summary>
+    /// <param name="snapshot">The snapshot.</param>
+    /// <param name="id">The identifier of the snapshot/state.</param>
+    /// <param name="version">The expected version.</param>
+    /// <param name="state">The expected state of the stream.</param>
+    /// <returns></returns>
     Task<IWriteResult> AppendSnapshot(object snapshot, Guid id, long version, StreamState state);
 }

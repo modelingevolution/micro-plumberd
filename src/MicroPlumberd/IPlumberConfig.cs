@@ -6,3 +6,10 @@ public interface IPlumberConfig : IExtension
     IConventions Conventions { get; }
     IServiceProvider ServiceProvider { get; set; }
 }
+
+public interface IPlumberReadOnlyConfig : IExtension
+{
+    Func<Type, IObjectSerializer> SerializerFactory { get; }
+    IReadOnlyConventions Conventions { get; }
+    IServiceProvider ServiceProvider { get; }
+}
