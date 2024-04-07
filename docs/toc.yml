@@ -1,9 +1,31 @@
-- name: Introduction
-  href: index.md
-- name: Getting Started
-  href: index.md#getting-started
-- name: API Reference
-  href: api/MicroPlumberd.html
-- name: Features
-  href: index.md#features
+- href: index.md#micro-plumberd
+  name: micro-plumberd
   items:
+  - href: index.md#getting-started
+    name: Getting started
+    items:
+    - name: 'Install nugets:'
+      href: index.md#install-nugets
+    - name: Configure plumber
+      href: index.md#configure-plumber
+    - name: Aggregates
+      href: index.md#aggregates
+    - name: Write a read-model/processor
+      href: index.md#write-a-read-modelprocessor
+  - href: index.md#features
+    name: Features
+    items:
+    - name: Conventions
+      href: index.md#conventions
+    - name: Ultra development cycle for Read-Models (EF example).
+      href: index.md#ultra-development-cycle-for-read-models-ef-ex
+    - name: Subscription Sets - Models ultra-composition
+      href: index.md#subscription-sets---models-ultra-composition
+    - name: EventStoreDB as message-bus
+      href: index.md#eventstoredb-as-message-bus
+    - name: GRPC Direct communication
+      href: index.md#grpc-direct-communication
+    - name: EXPERIMENTAL Process-Manager
+      href: index.md#experimental-process-manager
+    - name: EXPERIMENTAL Uniqueness support
+      href: index.md#experimental-uniqueness-support

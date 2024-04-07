@@ -34,7 +34,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Tests.App", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Tests.App.Dsl", "MicroPlumberd.Tests.App.Dsl\MicroPlumberd.Tests.App.Dsl.csproj", "{E52157F9-464A-4712-B905-F94175B970FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Protobuf", "MicroPlumberd.Protobuf\MicroPlumberd.Protobuf.csproj", "{79722960-21DA-451D-9B76-6998973EF127}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Protobuf", "MicroPlumberd.Protobuf\MicroPlumberd.Protobuf.csproj", "{79722960-21DA-451D-9B76-6998973EF127}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{7E88866D-D083-4C32-877D-A8FE03A220B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown2Toc", "Markdown2Toc\Markdown2Toc.csproj", "{E6499CAF-E1F0-4970-B695-78E7E359DCEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -98,9 +102,16 @@ Global
 		{79722960-21DA-451D-9B76-6998973EF127}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79722960-21DA-451D-9B76-6998973EF127}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79722960-21DA-451D-9B76-6998973EF127}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E6499CAF-E1F0-4970-B695-78E7E359DCEF} = {7E88866D-D083-4C32-877D-A8FE03A220B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CBFD8B4D-6BEE-45DF-8568-2B6CC0E5ACB2}

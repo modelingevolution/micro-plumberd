@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Markdown2Toc": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Users\\rafal\\Sources\\ModelingEvolution\\micro-plumberd\\docs\\index.md C:\\Users\\rafal\\Sources\\ModelingEvolution\\micro-plumberd\\docs\\toc.yml"
+    }
+  }
+}

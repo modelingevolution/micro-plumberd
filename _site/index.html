@@ -85,62 +85,49 @@
         </div>
 
         <article data-uid="">
-
-<p><img src="logo.png" alt="Logo"></p>
 <h1 id="micro-plumberd">micro-plumberd</h1>
-<p>Micro library for EventStore, CQRS and EventSourcing
+
+<p>Micro library for EventStore, CQRS and EventSourcing.
 Just eXtreamly simple.</p>
+<p>Documentation can be found here:
+<a href="https://modelingevolution.github.io/micro-plumberd/">MicroPlumberd Documentation</a></p>
 <h2 id="getting-started">Getting started</h2>
 <h3 id="install-nugets">Install nugets:</h3>
-<pre><code class="lang-powershell"># For your domain
-dotnet add package MicroPlumberd
-dotnet add package MicroPlumberd.SourceGenerators
-</code></pre>
-<p>If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect</p>
-<pre><code class="lang-powershell"># For application-layer using EventStore as message-bus. 
-dotnet add package MicroPlumberd.Services
-
-# For application-layer communicating (dotnet-2-dotnet) using GRPC:
-dotnet add package MicroPlumberd.Services.Grpc.DirectConnect
-
-# EXPERIMENTAL ProcessManager support can be found here:
-dotnet add package MicroPlumberd.Services.ProcessManagers
+<pre><code class="lang-powershell">dotnet add package MicroPlumberd                      # For your domain
+dotnet add package MicroPlumberd.Services             # For IoC integration
+dotnet add package MicroPlumberd.SourceGenerators     # Code generators for Aggregates, EventHandlers and more.
 </code></pre>
 <h3 id="configure-plumber">Configure plumber</h3>
-<pre><code class="lang-csharp">/// change to your connection-string.
+<pre><code class="lang-csharp">// Vanilla
 string connectionString = $&quot;esdb://admin:changeit@localhost:2113?tls=false&amp;tlsVerifyCert=false&quot;;
 var settings = EventStoreClientSettings.Create(connectionString);
 var plumber = Plumber.Create(settings);
 </code></pre>
-<p>If you'd want to do it at service-level with DI:</p>
-<pre><code class="lang-csharp">/// change to your connection-string.
-string connectionString = $&quot;esdb://admin:changeit@localhost:2113?tls=false&amp;tlsVerifyCert=false&quot;;
-var settings = EventStoreClientSettings.Create(connectionString);
-
-services.AddPlumberd(settings);
+<p>However, typicly you would add plumberd to your app:</p>
+<pre><code class="lang-csharp">services.AddPlumberd();
 </code></pre>
 <h3 id="aggregates">Aggregates</h3>
 <ol>
-<li>Write an aggregate.</li>
+<li>Let's start with an aggregate:</li>
 </ol>
 <pre><code class="lang-csharp">[Aggregate]
 public partial class FooAggregate(Guid id) : AggregateBase&lt;FooAggregate.FooState&gt;(id)
 {
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) =&gt; state with { Name = ev.Name };
-    private static FooState Given(FooState state, FooUpdated ev) =&gt; state with { Name =ev.Name };
+    private static FooState Given(FooState state, FooRefined ev) =&gt; state with { Name =ev.Name };
     public void Open(string msg) =&gt; AppendPendingChange(new FooCreated() { Name = msg });
-    public void Change(string msg) =&gt; AppendPendingChange(new FooUpdated() { Name = msg });
+    public void Change(string msg) =&gt; AppendPendingChange(new FooRefined() { Name = msg });
 }
 // And events:
 public record FooCreated { public string? Name { get; set; } }
-public record FooUpdated { public string? Name { get; set; } }
+public record FooRefined { public string? Name { get; set; } }
 </code></pre>
 <p>Comments:</p>
 <ul>
 <li>State is encapsulated in nested class FooState.</li>
 <li>Given methods, that are used when loading aggregate from the EventStoreDB are private and static. State is encouraged to be immutable.</li>
-<li>[Aggregate] attribute is used by SourceGenerator that will generate dispatching code and handy metadata.</li>
+<li>[Aggregate] attribute is used by <strong>SourceGenerator</strong> that will generate dispatching code and handy metadata.</li>
 </ul>
 <ol start="2">
 <li>Consume an aggregate.</li>
@@ -169,7 +156,7 @@ public partial class FooModel
     {
         // your code
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
          // your code
     }
@@ -201,7 +188,7 @@ public partial class FooModel : DbContext
     {
         // your code
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
          // your code
     }
@@ -214,7 +201,7 @@ public partial class FooModel : DbContext
 <pre><code class="lang-csharp">[EventHandler]
 public partial class FooProcessor(IPlumber plumber)
 {
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
         var agg = FooAggregate.New(Guid.NewGuid());
         agg.Open(ev.Name + &quot; new&quot;);
@@ -224,17 +211,9 @@ public partial class FooProcessor(IPlumber plumber)
 </code></pre>
 <p>Implementing a processor is technically the same as implementing a read-model, but inside the Given method you would typically invoke a command or execute an aggregate.</p>
 <h2 id="features">Features</h2>
-<h3 id="conventions">Conventions</h3>
-<ul>
-<li>SteamNameConvention - from aggregate type, and aggregate id</li>
-<li>EventNameConvention - from aggregate? instance and event instance</li>
-<li>MetadataConvention - to enrich event with metadata based on aggregate instance and event instance</li>
-<li>EventIdConvention - from aggregate instance and event instance</li>
-<li>OutputStreamModelConvention - for output stream name from model-type</li>
-<li>GroupNameModelConvention - for group name from model-type</li>
-</ul>
-<h3 id="ultra-development-cycle-for-read-models-ef-example">Ultra development cycle for Read-Models (EF example).</h3>
-<p>Imagine this:</p>
+<h3 id="aggregates-1">Aggregates</h3>
+<h3 id="read-models">Read-Models</h3>
+<p>Let's analyse this example:</p>
 <ol>
 <li>You create a read-model that subscribes persistently.</li>
 <li>You subscribe it with plumber.</li>
@@ -263,28 +242,13 @@ public partial class FooModel : DbContext
     {
         // your code
     }
-    private async Task Given(Metadata m, FooUpdated ev)
+    private async Task Given(Metadata m, FooRefined ev)
     {
         // your code
     }
 }
 </code></pre>
-<h3 id="subscription-sets---models-ultra-composition">Subscription Sets - Models ultra-composition</h3>
-<ul>
-<li>You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.</li>
-<li>In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one.</li>
-</ul>
-<pre><code class="lang-csharp">/// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel
-
-var dimentionTable = new DimentionLookupModel();
-var factTable = new MasterModel(dimentionTable);
-
-await plumber.SubscribeSet()
-    .With(dimentionTable)
-    .With(factTable)
-    .SubscribeAsync(&quot;MasterStream&quot;, FromStream.Start);
-</code></pre>
-<h3 id="eventstoredb-as-message-bus">EventStoreDB as message-bus</h3>
+<h3 id="command-handlers--message-bus">Command-Handlers &amp; Message Bus</h3>
 <p>If you want to start as quickly as possible, you can start with EventStoreDB as command-message-bus.</p>
 <pre><code class="lang-csharp">
 services.AddPlumberd()
@@ -294,6 +258,7 @@ services.AddPlumberd()
 ICommandBus bus; // from DI
 bus.SendAsync(Guid.NewGuid(), new CreateFoo() { Name = &quot;Hello&quot; });
 </code></pre>
+<h4 id="scaling-considerations">Scaling considerations</h4>
 <p>If you are running many replicas of your service, you need to switch command-execution to persistent mode:</p>
 <pre><code class="lang-csharp">
 services.AddPlumberd(configure: c =&gt; c.Conventions.ServicesConventions().AreHandlersExecutedPersistently = () =&gt; true)
@@ -302,15 +267,43 @@ services.AddPlumberd(configure: c =&gt; c.Conventions.ServicesConventions().AreH
 </code></pre>
 <p>This means, that once your microservice subscribes to commands, it will execute all. So if your service is down, and commands are saved, once your service is up, they will be executed.
 To skip old commands, you can configure a filter.</p>
-<pre><code class="lang-csharp">
-services.AddPlumberd(configure: c =&gt; {
+<pre><code class="lang-csharp">services.AddPlumberd(configure: c =&gt; {
     c.Conventions.ServicesConventions().AreHandlersExecutedPersistently = () =&gt; true;
     c.Conventions.ServicesConventions().CommandHandlerSkipFilter = (m,ev) =&gt; DateTimeOffset.Now.Substract(m.Created()) &gt; TimeSpan.FromSeconds(60);
     })
     .AddCommandHandler&lt;FooCommandHandler&gt;()
-
 </code></pre>
+<h3 id="conventions">Conventions</h3>
+<ul>
+<li>SteamNameConvention - from aggregate type, and aggregate id</li>
+<li>EventNameConvention - from aggregate? instance and event instance</li>
+<li>MetadataConvention - to enrich event with metadata based on aggregate instance and event instance</li>
+<li>EventIdConvention - from aggregate instance and event instance</li>
+<li>OutputStreamModelConvention - for output stream name from model-type</li>
+<li>GroupNameModelConvention - for group name from model-type</li>
+</ul>
+<h3 id="subscription-sets">Subscription Sets</h3>
+<ul>
+<li>You can easily create a stream that joins events together by event-type, and subscribe many read-models at once. Here it is named 'MasterStream', which is created out of events used to create DimentionLookupModel and MasterModel.</li>
+<li>In this way, you can easily manage the composition and decoupling of read-models. You can nicely composite your read-models. And if you don't wish to decouple read-models, you can reuse your existing one.</li>
+</ul>
+<p>/// Given simple models, where master-model has foreign-key used to obtain value from dimentionLookupModel</p>
+<pre><code class="lang-csharp">var dimentionTable = new DimentionLookupModel();
+var factTable = new MasterModel(dimentionTable);
+
+await plumber.SubscribeSet()
+    .With(dimentionTable)
+    .With(factTable)
+    .SubscribeAsync(&quot;MasterStream&quot;, FromStream.Start);
+</code></pre>
+<h3 id="integration-tests-support">Integration tests support</h3>
+<h3 id="specflowghierkin-step-files-generation">Specflow/Ghierkin step-files generation</h3>
+<p>Given you have written your domain, you can generate step files that would populate Ghierkin API to your domain.</p>
 <h3 id="grpc-direct-communication">GRPC Direct communication</h3>
+<p>If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect</p>
+<pre><code class="lang-powershell">
+dotnet add package MicroPlumberd.Services.Grpc.DirectConnect
+</code></pre>
 <p>If you prefer direct communication (like REST-API, but without the hassle for contract generation/etc.) you can use direct communication where client invokes command handle using grpc.
 Command is not stored in EventStore.</p>
 <pre><code class="lang-csharp">/// Let's configure server:
@@ -361,6 +354,9 @@ public partial class FooCommandHandler(IPlumber plumber)
 <h3 id="experimental-process-manager">EXPERIMENTAL Process-Manager</h3>
 <p>Given diagram:
 <img src="pm.png" alt="Saga"></p>
+<pre><code class="lang-powershell"># Add required packages:
+dotnet add package MicroPlumberd.Services.ProcessManagers
+</code></pre>
 <p>The code of Order Process Manager looks like this:</p>
 <pre><code class="lang-csharp">// Let's configure stuff beforehand
 services.AddPlumberd(eventStoreConfig)
@@ -422,17 +418,17 @@ public class FooCreated
 <p>For complex types, we need more flexibility.</p>
 <pre><code class="lang-csharp">// Let's define unique-category name, this will be mapped to columns in db
 // If you'd opt for domain-layer enforcment, you need to change commands to events.
-record BooCategory(string Name, string OtherName) : IUniqueFrom&lt;BooCategory, BooCreated&gt;, IUniqueFrom&lt;BooCategory, BooChanged&gt;
+record BooCategory(string Name, string OtherName) : IUniqueFrom&lt;BooCategory, BooCreated&gt;, IUniqueFrom&lt;BooCategory, BooRefined&gt;
 {
     public static BooCategory From(BooCreated x) =&gt; new(x.InitialName, x.OtherName);
-    public static BooCategory From(BooChanged x) =&gt; new(x.NewName, x.OtherName);
+    public static BooCategory From(BooRefined x) =&gt; new(x.NewName, x.OtherName);
 }
 
 [Unique&lt;BooCategory&gt;]
 public record BooCreated(string InitialName, string OtherName);
 
 [Unique&lt;BooCategory&gt;]
-public record BooChanged(string NewName, string OtherName);
+public record BooRefined(string NewName, string OtherName);
 </code></pre>
 
 </article>
