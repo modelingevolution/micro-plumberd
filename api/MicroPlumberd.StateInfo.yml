@@ -1,0 +1,394 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.StateInfo
+  commentId: T:MicroPlumberd.StateInfo
+  id: StateInfo
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
+  - MicroPlumberd.StateInfo.Created
+  - MicroPlumberd.StateInfo.Version
+  langs:
+  - csharp
+  - vb
+  name: StateInfo
+  nameWithType: StateInfo
+  fullName: MicroPlumberd.StateInfo
+  type: Struct
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StateInfo
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public readonly struct StateInfo
+    content.vb: Public Structure StateInfo
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: MicroPlumberd.StateInfo.Version
+  commentId: P:MicroPlumberd.StateInfo.Version
+  id: Version
+  parent: MicroPlumberd.StateInfo
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: StateInfo.Version
+  fullName: MicroPlumberd.StateInfo.Version
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Version
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 15
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public long Version { get; init; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property Version As Long
+  overload: MicroPlumberd.StateInfo.Version*
+- uid: MicroPlumberd.StateInfo.Created
+  commentId: P:MicroPlumberd.StateInfo.Created
+  id: Created
+  parent: MicroPlumberd.StateInfo
+  langs:
+  - csharp
+  - vb
+  name: Created
+  nameWithType: StateInfo.Created
+  fullName: MicroPlumberd.StateInfo.Created
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Created
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 16
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public DateTimeOffset Created { get; init; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: Public Property Created As DateTimeOffset
+  overload: MicroPlumberd.StateInfo.Created*
+- uid: MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
+  commentId: M:MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
+  id: '#ctor(System.Int64,System.DateTimeOffset)'
+  parent: MicroPlumberd.StateInfo
+  langs:
+  - csharp
+  - vb
+  name: StateInfo(long, DateTimeOffset)
+  nameWithType: StateInfo.StateInfo(long, DateTimeOffset)
+  fullName: MicroPlumberd.StateInfo.StateInfo(long, System.DateTimeOffset)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 18
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public StateInfo(long version, DateTimeOffset created)
+    parameters:
+    - id: version
+      type: System.Int64
+    - id: created
+      type: System.DateTimeOffset
+    content.vb: Public Sub New(version As Long, created As DateTimeOffset)
+  overload: MicroPlumberd.StateInfo.#ctor*
+  nameWithType.vb: StateInfo.New(Long, DateTimeOffset)
+  fullName.vb: MicroPlumberd.StateInfo.New(Long, System.DateTimeOffset)
+  name.vb: New(Long, DateTimeOffset)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.StateInfo.Version*
+  commentId: Overload:MicroPlumberd.StateInfo.Version
+  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo_Version
+  name: Version
+  nameWithType: StateInfo.Version
+  fullName: MicroPlumberd.StateInfo.Version
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: MicroPlumberd.StateInfo.Created*
+  commentId: Overload:MicroPlumberd.StateInfo.Created
+  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo_Created
+  name: Created
+  nameWithType: StateInfo.Created
+  fullName: MicroPlumberd.StateInfo.Created
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: MicroPlumberd.StateInfo.#ctor*
+  commentId: Overload:MicroPlumberd.StateInfo.#ctor
+  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo__ctor_System_Int64_System_DateTimeOffset_
+  name: StateInfo
+  nameWithType: StateInfo.StateInfo
+  fullName: MicroPlumberd.StateInfo.StateInfo
+  nameWithType.vb: StateInfo.New
+  fullName.vb: MicroPlumberd.StateInfo.New
+  name.vb: New

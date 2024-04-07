@@ -6,7 +6,7 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.IPlumberConfig.Conventions
-  - MicroPlumberd.IPlumberConfig.Serializer
+  - MicroPlumberd.IPlumberConfig.SerializerFactory
   - MicroPlumberd.IPlumberConfig.ServiceProvider
   langs:
   - csharp
@@ -33,35 +33,35 @@ items:
   - MicroPlumberd.IExtension.GetExtension``1
   extensionMethods:
   - MicroPlumberd.IPlumberConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
-- uid: MicroPlumberd.IPlumberConfig.Serializer
-  commentId: P:MicroPlumberd.IPlumberConfig.Serializer
-  id: Serializer
+- uid: MicroPlumberd.IPlumberConfig.SerializerFactory
+  commentId: P:MicroPlumberd.IPlumberConfig.SerializerFactory
+  id: SerializerFactory
   parent: MicroPlumberd.IPlumberConfig
   langs:
   - csharp
   - vb
-  name: Serializer
-  nameWithType: IPlumberConfig.Serializer
-  fullName: MicroPlumberd.IPlumberConfig.Serializer
+  name: SerializerFactory
+  nameWithType: IPlumberConfig.SerializerFactory
+  fullName: MicroPlumberd.IPlumberConfig.SerializerFactory
   type: Property
   source:
     remote:
       path: src/MicroPlumberd/IPlumberConfig.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Serializer
+    id: SerializerFactory
     path: src/MicroPlumberd/IPlumberConfig.cs
     startLine: 4
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: IObjectSerializer Serializer { get; set; }
+    content: Func<Type, IObjectSerializer> SerializerFactory { get; set; }
     parameters: []
     return:
-      type: MicroPlumberd.IObjectSerializer
-    content.vb: Property Serializer As IObjectSerializer
-  overload: MicroPlumberd.IPlumberConfig.Serializer*
+      type: System.Func{System.Type,MicroPlumberd.IObjectSerializer}
+    content.vb: Property SerializerFactory As Func(Of Type, IObjectSerializer)
+  overload: MicroPlumberd.IPlumberConfig.SerializerFactory*
 - uid: MicroPlumberd.IPlumberConfig.Conventions
   commentId: P:MicroPlumberd.IPlumberConfig.Conventions
   id: Conventions
@@ -243,19 +243,98 @@ references:
   - uid: MicroPlumberd.Services
     name: Services
     href: MicroPlumberd.Services.html
-- uid: MicroPlumberd.IPlumberConfig.Serializer*
-  commentId: Overload:MicroPlumberd.IPlumberConfig.Serializer
-  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Serializer
-  name: Serializer
-  nameWithType: IPlumberConfig.Serializer
-  fullName: MicroPlumberd.IPlumberConfig.Serializer
-- uid: MicroPlumberd.IObjectSerializer
-  commentId: T:MicroPlumberd.IObjectSerializer
-  parent: MicroPlumberd
-  href: MicroPlumberd.IObjectSerializer.html
-  name: IObjectSerializer
-  nameWithType: IObjectSerializer
-  fullName: MicroPlumberd.IObjectSerializer
+- uid: MicroPlumberd.IPlumberConfig.SerializerFactory*
+  commentId: Overload:MicroPlumberd.IPlumberConfig.SerializerFactory
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_SerializerFactory
+  name: SerializerFactory
+  nameWithType: IPlumberConfig.SerializerFactory
+  fullName: MicroPlumberd.IPlumberConfig.SerializerFactory
+- uid: System.Func{System.Type,MicroPlumberd.IObjectSerializer}
+  commentId: T:System.Func{System.Type,MicroPlumberd.IObjectSerializer}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<Type, IObjectSerializer>
+  nameWithType: Func<Type, IObjectSerializer>
+  fullName: System.Func<System.Type, MicroPlumberd.IObjectSerializer>
+  nameWithType.vb: Func(Of Type, IObjectSerializer)
+  fullName.vb: System.Func(Of System.Type, MicroPlumberd.IObjectSerializer)
+  name.vb: Func(Of Type, IObjectSerializer)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.IObjectSerializer
+    name: IObjectSerializer
+    href: MicroPlumberd.IObjectSerializer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.IObjectSerializer
+    name: IObjectSerializer
+    href: MicroPlumberd.IObjectSerializer.html
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: MicroPlumberd.IPlumberConfig.Conventions*
   commentId: Overload:MicroPlumberd.IPlumberConfig.Conventions
   href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_Conventions
@@ -283,10 +362,3 @@ references:
   name: IServiceProvider
   nameWithType: IServiceProvider
   fullName: System.IServiceProvider
-- uid: System
-  commentId: N:System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System
-  nameWithType: System
-  fullName: System

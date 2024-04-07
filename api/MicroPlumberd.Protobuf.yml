@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Protobuf
+  commentId: N:MicroPlumberd.Protobuf
+  id: MicroPlumberd.Protobuf
+  children:
+  - MicroPlumberd.Protobuf.ProtoBuffObjectSerialization
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Protobuf
+  nameWithType: MicroPlumberd.Protobuf
+  fullName: MicroPlumberd.Protobuf
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Protobuf
+references:
+- uid: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization
+  commentId: T:MicroPlumberd.Protobuf.ProtoBuffObjectSerialization
+  href: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.html
+  name: ProtoBuffObjectSerialization
+  nameWithType: ProtoBuffObjectSerialization
+  fullName: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization

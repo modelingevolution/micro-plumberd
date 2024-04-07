@@ -4,7 +4,10 @@ items:
   commentId: T:MicroPlumberd.AggregateAttribute
   id: AggregateAttribute
   parent: MicroPlumberd
-  children: []
+  children:
+  - MicroPlumberd.AggregateAttribute.SnaphotPolicy
+  - MicroPlumberd.AggregateAttribute.SnapshotAfter
+  - MicroPlumberd.AggregateAttribute.SnapshotEvery
   langs:
   - csharp
   - vb
@@ -19,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AggregateAttribute
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 2
+    startLine: 4
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -84,6 +87,95 @@ items:
     arguments:
     - type: System.AttributeTargets
       value: 4
+- uid: MicroPlumberd.AggregateAttribute.SnaphotPolicy
+  commentId: P:MicroPlumberd.AggregateAttribute.SnaphotPolicy
+  id: SnaphotPolicy
+  parent: MicroPlumberd.AggregateAttribute
+  langs:
+  - csharp
+  - vb
+  name: SnaphotPolicy
+  nameWithType: AggregateAttribute.SnaphotPolicy
+  fullName: MicroPlumberd.AggregateAttribute.SnaphotPolicy
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnaphotPolicy
+    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Type? SnaphotPolicy { get; set; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public Property SnaphotPolicy As Type
+  overload: MicroPlumberd.AggregateAttribute.SnaphotPolicy*
+- uid: MicroPlumberd.AggregateAttribute.SnapshotEvery
+  commentId: P:MicroPlumberd.AggregateAttribute.SnapshotEvery
+  id: SnapshotEvery
+  parent: MicroPlumberd.AggregateAttribute
+  langs:
+  - csharp
+  - vb
+  name: SnapshotEvery
+  nameWithType: AggregateAttribute.SnapshotEvery
+  fullName: MicroPlumberd.AggregateAttribute.SnapshotEvery
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotEvery
+    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public int SnapshotEvery { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property SnapshotEvery As Integer
+  overload: MicroPlumberd.AggregateAttribute.SnapshotEvery*
+- uid: MicroPlumberd.AggregateAttribute.SnapshotAfter
+  commentId: P:MicroPlumberd.AggregateAttribute.SnapshotAfter
+  id: SnapshotAfter
+  parent: MicroPlumberd.AggregateAttribute
+  langs:
+  - csharp
+  - vb
+  name: SnapshotAfter
+  nameWithType: AggregateAttribute.SnapshotAfter
+  fullName: MicroPlumberd.AggregateAttribute.SnapshotAfter
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotAfter
+    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+    startLine: 21
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: In seconds
+  example: []
+  syntax:
+    content: public long SnapshotAfter { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Public Property SnapshotAfter As Long
+  overload: MicroPlumberd.AggregateAttribute.SnapshotAfter*
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -1885,3 +1977,51 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: MicroPlumberd.AggregateAttribute.SnaphotPolicy*
+  commentId: Overload:MicroPlumberd.AggregateAttribute.SnaphotPolicy
+  href: MicroPlumberd.AggregateAttribute.html#MicroPlumberd_AggregateAttribute_SnaphotPolicy
+  name: SnaphotPolicy
+  nameWithType: AggregateAttribute.SnaphotPolicy
+  fullName: MicroPlumberd.AggregateAttribute.SnaphotPolicy
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: MicroPlumberd.AggregateAttribute.SnapshotEvery*
+  commentId: Overload:MicroPlumberd.AggregateAttribute.SnapshotEvery
+  href: MicroPlumberd.AggregateAttribute.html#MicroPlumberd_AggregateAttribute_SnapshotEvery
+  name: SnapshotEvery
+  nameWithType: AggregateAttribute.SnapshotEvery
+  fullName: MicroPlumberd.AggregateAttribute.SnapshotEvery
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: MicroPlumberd.AggregateAttribute.SnapshotAfter*
+  commentId: Overload:MicroPlumberd.AggregateAttribute.SnapshotAfter
+  href: MicroPlumberd.AggregateAttribute.html#MicroPlumberd_AggregateAttribute_SnapshotAfter
+  name: SnapshotAfter
+  nameWithType: AggregateAttribute.SnapshotAfter
+  fullName: MicroPlumberd.AggregateAttribute.SnapshotAfter
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

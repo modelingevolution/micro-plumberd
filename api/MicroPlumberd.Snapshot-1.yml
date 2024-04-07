@@ -1,0 +1,449 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Snapshot`1
+  commentId: T:MicroPlumberd.Snapshot`1
+  id: Snapshot`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.Snapshot`1.Data
+  langs:
+  - csharp
+  - vb
+  name: Snapshot<T>
+  nameWithType: Snapshot<T>
+  fullName: MicroPlumberd.Snapshot<T>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Snapshot
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 17
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public sealed record Snapshot<T> : Snapshot, IEquatable<Snapshot>, ISnapshot, IEquatable<Snapshot<T>>'
+    typeParameters:
+    - id: T
+    content.vb: Public NotInheritable Class Snapshot(Of T) Inherits Snapshot Implements IEquatable(Of Snapshot), ISnapshot, IEquatable(Of Snapshot(Of T))
+  inheritance:
+  - System.Object
+  - MicroPlumberd.Snapshot
+  implements:
+  - System.IEquatable{MicroPlumberd.Snapshot}
+  - MicroPlumberd.ISnapshot
+  - System.IEquatable{MicroPlumberd.Snapshot`1}
+  inheritedMembers:
+  - MicroPlumberd.Snapshot.Created
+  - MicroPlumberd.Snapshot.Version
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: Snapshot(Of T)
+  fullName.vb: MicroPlumberd.Snapshot(Of T)
+  name.vb: Snapshot(Of T)
+- uid: MicroPlumberd.Snapshot`1.Data
+  commentId: P:MicroPlumberd.Snapshot`1.Data
+  id: Data
+  parent: MicroPlumberd.Snapshot`1
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: Snapshot<T>.Data
+  fullName: MicroPlumberd.Snapshot<T>.Data
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Data
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 20
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public T Data { get; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public Property Data As T
+  overload: MicroPlumberd.Snapshot`1.Data*
+  nameWithType.vb: Snapshot(Of T).Data
+  fullName.vb: MicroPlumberd.Snapshot(Of T).Data
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.Snapshot
+  commentId: T:MicroPlumberd.Snapshot
+  parent: MicroPlumberd
+  href: MicroPlumberd.Snapshot.html
+  name: Snapshot
+  nameWithType: Snapshot
+  fullName: MicroPlumberd.Snapshot
+- uid: System.IEquatable{MicroPlumberd.Snapshot}
+  commentId: T:System.IEquatable{MicroPlumberd.Snapshot}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Snapshot>
+  nameWithType: IEquatable<Snapshot>
+  fullName: System.IEquatable<MicroPlumberd.Snapshot>
+  nameWithType.vb: IEquatable(Of Snapshot)
+  fullName.vb: System.IEquatable(Of MicroPlumberd.Snapshot)
+  name.vb: IEquatable(Of Snapshot)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.Snapshot
+    name: Snapshot
+    href: MicroPlumberd.Snapshot.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Snapshot
+    name: Snapshot
+    href: MicroPlumberd.Snapshot.html
+  - name: )
+- uid: MicroPlumberd.ISnapshot
+  commentId: T:MicroPlumberd.ISnapshot
+  parent: MicroPlumberd
+  href: MicroPlumberd.ISnapshot.html
+  name: ISnapshot
+  nameWithType: ISnapshot
+  fullName: MicroPlumberd.ISnapshot
+- uid: System.IEquatable{MicroPlumberd.Snapshot`1}
+  commentId: T:System.IEquatable{MicroPlumberd.Snapshot`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Snapshot<T>>
+  nameWithType: IEquatable<Snapshot<T>>
+  fullName: System.IEquatable<MicroPlumberd.Snapshot<T>>
+  nameWithType.vb: IEquatable(Of Snapshot(Of T))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.Snapshot(Of T))
+  name.vb: IEquatable(Of Snapshot(Of T))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot
+    href: MicroPlumberd.Snapshot-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot
+    href: MicroPlumberd.Snapshot-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: MicroPlumberd.Snapshot.Created
+  commentId: P:MicroPlumberd.Snapshot.Created
+  parent: MicroPlumberd.Snapshot
+  href: MicroPlumberd.Snapshot.html#MicroPlumberd_Snapshot_Created
+  name: Created
+  nameWithType: Snapshot.Created
+  fullName: MicroPlumberd.Snapshot.Created
+- uid: MicroPlumberd.Snapshot.Version
+  commentId: P:MicroPlumberd.Snapshot.Version
+  parent: MicroPlumberd.Snapshot
+  href: MicroPlumberd.Snapshot.html#MicroPlumberd_Snapshot_Version
+  name: Version
+  nameWithType: Snapshot.Version
+  fullName: MicroPlumberd.Snapshot.Version
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Snapshot`1.Data*
+  commentId: Overload:MicroPlumberd.Snapshot`1.Data
+  href: MicroPlumberd.Snapshot-1.html#MicroPlumberd_Snapshot_1_Data
+  name: Data
+  nameWithType: Snapshot<T>.Data
+  fullName: MicroPlumberd.Snapshot<T>.Data
+  nameWithType.vb: Snapshot(Of T).Data
+  fullName.vb: MicroPlumberd.Snapshot(Of T).Data
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

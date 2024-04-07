@@ -13,7 +13,8 @@ items:
   - MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention
   - MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
   - MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention
-  - MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  - MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention
+  - MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention
   langs:
   - csharp
   - vb
@@ -180,35 +181,64 @@ items:
       type: MicroPlumberd.Services.CommandName
     content.vb: Property CommandNameConvention As CommandName
   overload: MicroPlumberd.Services.IServicesConvention.CommandNameConvention*
-- uid: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
-  commentId: P:MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
-  id: SessionStreamFromSessionIdConvention
+- uid: MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention
+  id: SessionInStreamFromSessionIdConvention
   parent: MicroPlumberd.Services.IServicesConvention
   langs:
   - csharp
   - vb
-  name: SessionStreamFromSessionIdConvention
-  nameWithType: IServicesConvention.SessionStreamFromSessionIdConvention
-  fullName: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+  name: SessionInStreamFromSessionIdConvention
+  nameWithType: IServicesConvention.SessionInStreamFromSessionIdConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention
   type: Property
   source:
     remote:
       path: src/MicroPlumberd.Services/ServicesConvention.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: SessionStreamFromSessionIdConvention
+    id: SessionInStreamFromSessionIdConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
     startLine: 18
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
-    content: SessionStreamFromSessionId SessionStreamFromSessionIdConvention { get; set; }
+    content: SessionStreamFromSessionId SessionInStreamFromSessionIdConvention { get; set; }
     parameters: []
     return:
       type: MicroPlumberd.Services.SessionStreamFromSessionId
-    content.vb: Property SessionStreamFromSessionIdConvention As SessionStreamFromSessionId
-  overload: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention*
+    content.vb: Property SessionInStreamFromSessionIdConvention As SessionStreamFromSessionId
+  overload: MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention*
+- uid: MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention
+  commentId: P:MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention
+  id: SessionOutStreamFromSessionIdConvention
+  parent: MicroPlumberd.Services.IServicesConvention
+  langs:
+  - csharp
+  - vb
+  name: SessionOutStreamFromSessionIdConvention
+  nameWithType: IServicesConvention.SessionOutStreamFromSessionIdConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SessionOutStreamFromSessionIdConvention
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 19
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: SessionStreamFromSessionId SessionOutStreamFromSessionIdConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Services.SessionStreamFromSessionId
+    content.vb: Property SessionOutStreamFromSessionIdConvention As SessionStreamFromSessionId
+  overload: MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention*
 - uid: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
   commentId: P:MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
   id: IsHandlerExecutionPersistent
@@ -227,7 +257,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsHandlerExecutionPersistent
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 22
+    startLine: 23
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -256,7 +286,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AreHandlersExecutedPersistently
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 23
+    startLine: 24
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -285,7 +315,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandHandlerSkipFilter
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 24
+    startLine: 25
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -384,12 +414,12 @@ references:
   name: CommandName
   nameWithType: CommandName
   fullName: MicroPlumberd.Services.CommandName
-- uid: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention*
-  commentId: Overload:MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
-  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_SessionStreamFromSessionIdConvention
-  name: SessionStreamFromSessionIdConvention
-  nameWithType: IServicesConvention.SessionStreamFromSessionIdConvention
-  fullName: MicroPlumberd.Services.IServicesConvention.SessionStreamFromSessionIdConvention
+- uid: MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_SessionInStreamFromSessionIdConvention
+  name: SessionInStreamFromSessionIdConvention
+  nameWithType: IServicesConvention.SessionInStreamFromSessionIdConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention
 - uid: MicroPlumberd.Services.SessionStreamFromSessionId
   commentId: T:MicroPlumberd.Services.SessionStreamFromSessionId
   parent: MicroPlumberd.Services
@@ -397,6 +427,12 @@ references:
   name: SessionStreamFromSessionId
   nameWithType: SessionStreamFromSessionId
   fullName: MicroPlumberd.Services.SessionStreamFromSessionId
+- uid: MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_SessionOutStreamFromSessionIdConvention
+  name: SessionOutStreamFromSessionIdConvention
+  nameWithType: IServicesConvention.SessionOutStreamFromSessionIdConvention
+  fullName: MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention
 - uid: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent*
   commentId: Overload:MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent
   href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_IsHandlerExecutionPersistent

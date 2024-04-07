@@ -19,7 +19,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsHandlerExecutionPersistent
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 36
+    startLine: 37
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

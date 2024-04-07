@@ -9,10 +9,15 @@ items:
   - MicroPlumberd.IConventions.GetEventIdConvention
   - MicroPlumberd.IConventions.GetEventNameConvention
   - MicroPlumberd.IConventions.GetMetadata(MicroPlumberd.IAggregate,System.Object,System.Object)
+  - MicroPlumberd.IConventions.GetStreamCategoryConvention
   - MicroPlumberd.IConventions.GetStreamIdConvention
+  - MicroPlumberd.IConventions.GetStreamIdSnapshotConvention
   - MicroPlumberd.IConventions.GroupNameModelConvention
   - MicroPlumberd.IConventions.MetadataEnrichers
   - MicroPlumberd.IConventions.OutputStreamModelConvention
+  - MicroPlumberd.IConventions.ProjectionCategoryStreamConvention
+  - MicroPlumberd.IConventions.SnapshotEventNameConvention
+  - MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention
   - MicroPlumberd.IConventions.StandardMetadataEnricherTypes
   langs:
   - csharp
@@ -28,7 +33,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IConventions
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 24
+    startLine: 58
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -39,6 +44,64 @@ items:
   - MicroPlumberd.IExtension.GetExtension``1
   extensionMethods:
   - MicroPlumberd.IConventions.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
+- uid: MicroPlumberd.IConventions.ProjectionCategoryStreamConvention
+  commentId: P:MicroPlumberd.IConventions.ProjectionCategoryStreamConvention
+  id: ProjectionCategoryStreamConvention
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: ProjectionCategoryStreamConvention
+  nameWithType: IConventions.ProjectionCategoryStreamConvention
+  fullName: MicroPlumberd.IConventions.ProjectionCategoryStreamConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ProjectionCategoryStreamConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 60
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.ProjectionCategoryStreamConvention
+    content.vb: Property ProjectionCategoryStreamConvention As ProjectionCategoryStreamConvention
+  overload: MicroPlumberd.IConventions.ProjectionCategoryStreamConvention*
+- uid: MicroPlumberd.IConventions.GetStreamCategoryConvention
+  commentId: P:MicroPlumberd.IConventions.GetStreamCategoryConvention
+  id: GetStreamCategoryConvention
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: GetStreamCategoryConvention
+  nameWithType: IConventions.GetStreamCategoryConvention
+  fullName: MicroPlumberd.IConventions.GetStreamCategoryConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetStreamCategoryConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 61
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: StreamCategoryConvention GetStreamCategoryConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.StreamCategoryConvention
+    content.vb: Property GetStreamCategoryConvention As StreamCategoryConvention
+  overload: MicroPlumberd.IConventions.GetStreamCategoryConvention*
 - uid: MicroPlumberd.IConventions.GetStreamIdConvention
   commentId: P:MicroPlumberd.IConventions.GetStreamIdConvention
   id: GetStreamIdConvention
@@ -57,7 +120,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 27
+    startLine: 62
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -68,6 +131,64 @@ items:
       type: MicroPlumberd.SteamNameConvention
     content.vb: Property GetStreamIdConvention As SteamNameConvention
   overload: MicroPlumberd.IConventions.GetStreamIdConvention*
+- uid: MicroPlumberd.IConventions.GetStreamIdSnapshotConvention
+  commentId: P:MicroPlumberd.IConventions.GetStreamIdSnapshotConvention
+  id: GetStreamIdSnapshotConvention
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: GetStreamIdSnapshotConvention
+  nameWithType: IConventions.GetStreamIdSnapshotConvention
+  fullName: MicroPlumberd.IConventions.GetStreamIdSnapshotConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetStreamIdSnapshotConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 63
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: SteamNameConvention GetStreamIdSnapshotConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.SteamNameConvention
+    content.vb: Property GetStreamIdSnapshotConvention As SteamNameConvention
+  overload: MicroPlumberd.IConventions.GetStreamIdSnapshotConvention*
+- uid: MicroPlumberd.IConventions.SnapshotEventNameConvention
+  commentId: P:MicroPlumberd.IConventions.SnapshotEventNameConvention
+  id: SnapshotEventNameConvention
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: SnapshotEventNameConvention
+  nameWithType: IConventions.SnapshotEventNameConvention
+  fullName: MicroPlumberd.IConventions.SnapshotEventNameConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotEventNameConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 64
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: SnapshotEventName SnapshotEventNameConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.SnapshotEventName
+    content.vb: Property SnapshotEventNameConvention As SnapshotEventName
+  overload: MicroPlumberd.IConventions.SnapshotEventNameConvention*
 - uid: MicroPlumberd.IConventions.GetEventNameConvention
   commentId: P:MicroPlumberd.IConventions.GetEventNameConvention
   id: GetEventNameConvention
@@ -86,7 +207,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 28
+    startLine: 65
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -115,7 +236,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: BuildInvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 29
+    startLine: 66
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -144,7 +265,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataEnrichers
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 30
+    startLine: 67
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -173,7 +294,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 31
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -202,7 +323,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 32
+    startLine: 69
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -231,7 +352,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 33
+    startLine: 70
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -242,6 +363,35 @@ items:
       type: MicroPlumberd.GroupNameModelConvention
     content.vb: Property GroupNameModelConvention As GroupNameModelConvention
   overload: MicroPlumberd.IConventions.GroupNameModelConvention*
+- uid: MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention
+  commentId: P:MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention
+  id: SnapshotPolicyFactoryConvention
+  parent: MicroPlumberd.IConventions
+  langs:
+  - csharp
+  - vb
+  name: SnapshotPolicyFactoryConvention
+  nameWithType: IConventions.SnapshotPolicyFactoryConvention
+  fullName: MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotPolicyFactoryConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 71
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.SnapshotPolicyFactory
+    content.vb: Property SnapshotPolicyFactoryConvention As SnapshotPolicyFactory
+  overload: MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention*
 - uid: MicroPlumberd.IConventions.StandardMetadataEnricherTypes
   commentId: P:MicroPlumberd.IConventions.StandardMetadataEnricherTypes
   id: StandardMetadataEnricherTypes
@@ -260,7 +410,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StandardMetadataEnricherTypes
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 34
+    startLine: 72
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -289,7 +439,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetMetadata
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 35
+    startLine: 73
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -432,6 +582,32 @@ references:
   - uid: MicroPlumberd.Services
     name: Services
     href: MicroPlumberd.Services.html
+- uid: MicroPlumberd.IConventions.ProjectionCategoryStreamConvention*
+  commentId: Overload:MicroPlumberd.IConventions.ProjectionCategoryStreamConvention
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_ProjectionCategoryStreamConvention
+  name: ProjectionCategoryStreamConvention
+  nameWithType: IConventions.ProjectionCategoryStreamConvention
+  fullName: MicroPlumberd.IConventions.ProjectionCategoryStreamConvention
+- uid: MicroPlumberd.ProjectionCategoryStreamConvention
+  commentId: T:MicroPlumberd.ProjectionCategoryStreamConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.ProjectionCategoryStreamConvention.html
+  name: ProjectionCategoryStreamConvention
+  nameWithType: ProjectionCategoryStreamConvention
+  fullName: MicroPlumberd.ProjectionCategoryStreamConvention
+- uid: MicroPlumberd.IConventions.GetStreamCategoryConvention*
+  commentId: Overload:MicroPlumberd.IConventions.GetStreamCategoryConvention
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetStreamCategoryConvention
+  name: GetStreamCategoryConvention
+  nameWithType: IConventions.GetStreamCategoryConvention
+  fullName: MicroPlumberd.IConventions.GetStreamCategoryConvention
+- uid: MicroPlumberd.StreamCategoryConvention
+  commentId: T:MicroPlumberd.StreamCategoryConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.StreamCategoryConvention.html
+  name: StreamCategoryConvention
+  nameWithType: StreamCategoryConvention
+  fullName: MicroPlumberd.StreamCategoryConvention
 - uid: MicroPlumberd.IConventions.GetStreamIdConvention*
   commentId: Overload:MicroPlumberd.IConventions.GetStreamIdConvention
   href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetStreamIdConvention
@@ -445,6 +621,25 @@ references:
   name: SteamNameConvention
   nameWithType: SteamNameConvention
   fullName: MicroPlumberd.SteamNameConvention
+- uid: MicroPlumberd.IConventions.GetStreamIdSnapshotConvention*
+  commentId: Overload:MicroPlumberd.IConventions.GetStreamIdSnapshotConvention
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetStreamIdSnapshotConvention
+  name: GetStreamIdSnapshotConvention
+  nameWithType: IConventions.GetStreamIdSnapshotConvention
+  fullName: MicroPlumberd.IConventions.GetStreamIdSnapshotConvention
+- uid: MicroPlumberd.IConventions.SnapshotEventNameConvention*
+  commentId: Overload:MicroPlumberd.IConventions.SnapshotEventNameConvention
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_SnapshotEventNameConvention
+  name: SnapshotEventNameConvention
+  nameWithType: IConventions.SnapshotEventNameConvention
+  fullName: MicroPlumberd.IConventions.SnapshotEventNameConvention
+- uid: MicroPlumberd.SnapshotEventName
+  commentId: T:MicroPlumberd.SnapshotEventName
+  parent: MicroPlumberd
+  href: MicroPlumberd.SnapshotEventName.html
+  name: SnapshotEventName
+  nameWithType: SnapshotEventName
+  fullName: MicroPlumberd.SnapshotEventName
 - uid: MicroPlumberd.IConventions.GetEventNameConvention*
   commentId: Overload:MicroPlumberd.IConventions.GetEventNameConvention
   href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_GetEventNameConvention
@@ -523,6 +718,19 @@ references:
   name: GroupNameModelConvention
   nameWithType: GroupNameModelConvention
   fullName: MicroPlumberd.GroupNameModelConvention
+- uid: MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention*
+  commentId: Overload:MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention
+  href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_SnapshotPolicyFactoryConvention
+  name: SnapshotPolicyFactoryConvention
+  nameWithType: IConventions.SnapshotPolicyFactoryConvention
+  fullName: MicroPlumberd.IConventions.SnapshotPolicyFactoryConvention
+- uid: MicroPlumberd.SnapshotPolicyFactory
+  commentId: T:MicroPlumberd.SnapshotPolicyFactory
+  parent: MicroPlumberd
+  href: MicroPlumberd.SnapshotPolicyFactory.html
+  name: SnapshotPolicyFactory
+  nameWithType: SnapshotPolicyFactory
+  fullName: MicroPlumberd.SnapshotPolicyFactory
 - uid: MicroPlumberd.IConventions.StandardMetadataEnricherTypes*
   commentId: Overload:MicroPlumberd.IConventions.StandardMetadataEnricherTypes
   href: MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_StandardMetadataEnricherTypes

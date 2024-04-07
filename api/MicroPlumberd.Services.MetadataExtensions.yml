@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataExtensions
     path: src/MicroPlumberd.Services/CommandHandlerExecutor.cs
-    startLine: 18
+    startLine: 19
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SessionId
     path: src/MicroPlumberd.Services/CommandHandlerExecutor.cs
-    startLine: 20
+    startLine: 21
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

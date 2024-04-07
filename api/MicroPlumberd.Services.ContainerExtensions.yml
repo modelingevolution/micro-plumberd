@@ -98,7 +98,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddBackgroundServiceIfMissing
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 37
+    startLine: 41
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -135,7 +135,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddEventHandler
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 53
+    startLine: 57
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -176,7 +176,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandHandler
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 62
+    startLine: 66
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

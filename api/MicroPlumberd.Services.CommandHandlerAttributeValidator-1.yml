@@ -1,0 +1,736 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  commentId: T:MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  id: CommandHandlerAttributeValidator`1
+  parent: MicroPlumberd.Services
+  children:
+  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor(MicroPlumberd.Services.ICommandHandler{`0},System.IServiceProvider)
+  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
+  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
+  langs:
+  - csharp
+  - vb
+  name: CommandHandlerAttributeValidator<T>
+  nameWithType: CommandHandlerAttributeValidator<T>
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CommandHandlerAttributeValidator
+    path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: 'public class CommandHandlerAttributeValidator<T> : ICommandHandler<T>, ICommandHandler'
+    typeParameters:
+    - id: T
+    content.vb: Public Class CommandHandlerAttributeValidator(Of T) Implements ICommandHandler(Of T), ICommandHandler
+  inheritance:
+  - System.Object
+  implements:
+  - MicroPlumberd.Services.ICommandHandler{{T}}
+  - MicroPlumberd.Services.ICommandHandler
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T)
+  name.vb: CommandHandlerAttributeValidator(Of T)
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor(MicroPlumberd.Services.ICommandHandler{`0},System.IServiceProvider)
+  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor(MicroPlumberd.Services.ICommandHandler{`0},System.IServiceProvider)
+  id: '#ctor(MicroPlumberd.Services.ICommandHandler{`0},System.IServiceProvider)'
+  parent: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  langs:
+  - csharp
+  - vb
+  name: CommandHandlerAttributeValidator(ICommandHandler<T>, IServiceProvider)
+  nameWithType: CommandHandlerAttributeValidator<T>.CommandHandlerAttributeValidator(ICommandHandler<T>, IServiceProvider)
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.CommandHandlerAttributeValidator(MicroPlumberd.Services.ICommandHandler<T>, System.IServiceProvider)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public CommandHandlerAttributeValidator(ICommandHandler<T> nx, IServiceProvider sp)
+    parameters:
+    - id: nx
+      type: MicroPlumberd.Services.ICommandHandler{{T}}
+    - id: sp
+      type: System.IServiceProvider
+    content.vb: Public Sub New(nx As ICommandHandler(Of T), sp As IServiceProvider)
+  overload: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor*
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).New(ICommandHandler(Of T), IServiceProvider)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).New(MicroPlumberd.Services.ICommandHandler(Of T), System.IServiceProvider)
+  name.vb: New(ICommandHandler(Of T), IServiceProvider)
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
+  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
+  id: Execute(System.Guid,`0)
+  parent: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  langs:
+  - csharp
+  - vb
+  name: Execute(Guid, T)
+  nameWithType: CommandHandlerAttributeValidator<T>.Execute(Guid, T)
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(System.Guid, T)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Execute
+    path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  example: []
+  syntax:
+    content: public Task<object?> Execute(Guid id, T command)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: command
+      type: '{T}'
+    return:
+      type: System.Threading.Tasks.Task{System.Object}
+    content.vb: Public Function Execute(id As Guid, command As T) As Task(Of Object)
+  overload: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
+  implements:
+  - MicroPlumberd.Services.ICommandHandler{{T}}.Execute(System.Guid,{T})
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(Guid, T)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(System.Guid, T)
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
+  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
+  id: Execute(System.Guid,System.Object)
+  parent: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  langs:
+  - csharp
+  - vb
+  name: Execute(Guid, object)
+  nameWithType: CommandHandlerAttributeValidator<T>.Execute(Guid, object)
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(System.Guid, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Execute
+    path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  example: []
+  syntax:
+    content: public Task<object?> Execute(Guid id, object command)
+    parameters:
+    - id: id
+      type: System.Guid
+    - id: command
+      type: System.Object
+    return:
+      type: System.Threading.Tasks.Task{System.Object}
+    content.vb: Public Function Execute(id As Guid, command As Object) As Task(Of Object)
+  overload: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
+  implements:
+  - MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(Guid, Object)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(System.Guid, Object)
+  name.vb: Execute(Guid, Object)
+references:
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.Services.ICommandHandler{{T}}
+  commentId: T:MicroPlumberd.Services.ICommandHandler{`0}
+  parent: MicroPlumberd.Services
+  definition: MicroPlumberd.Services.ICommandHandler`1
+  href: MicroPlumberd.Services.ICommandHandler-1.html
+  name: ICommandHandler<T>
+  nameWithType: ICommandHandler<T>
+  fullName: MicroPlumberd.Services.ICommandHandler<T>
+  nameWithType.vb: ICommandHandler(Of T)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of T)
+  name.vb: ICommandHandler(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Services.ICommandHandler
+  commentId: T:MicroPlumberd.Services.ICommandHandler
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.ICommandHandler.html
+  name: ICommandHandler
+  nameWithType: ICommandHandler
+  fullName: MicroPlumberd.Services.ICommandHandler
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.ICommandHandler`1
+  commentId: T:MicroPlumberd.Services.ICommandHandler`1
+  href: MicroPlumberd.Services.ICommandHandler-1.html
+  name: ICommandHandler<TCommand>
+  nameWithType: ICommandHandler<TCommand>
+  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>
+  nameWithType.vb: ICommandHandler(Of TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand)
+  name.vb: ICommandHandler(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor*
+  commentId: Overload:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor
+  href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1__ctor_MicroPlumberd_Services_ICommandHandler__0__System_IServiceProvider_
+  name: CommandHandlerAttributeValidator
+  nameWithType: CommandHandlerAttributeValidator<T>.CommandHandlerAttributeValidator
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.CommandHandlerAttributeValidator
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).New
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).New
+  name.vb: New
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
+  commentId: Overload:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute
+  href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_System_Guid__0_
+  name: Execute
+  nameWithType: CommandHandlerAttributeValidator<T>.Execute
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute
+- uid: MicroPlumberd.Services.ICommandHandler{{T}}.Execute(System.Guid,{T})
+  commentId: M:MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.Guid,`0)
+  parent: MicroPlumberd.Services.ICommandHandler{{T}}
+  definition: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+  href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+  name: Execute(Guid, T)
+  nameWithType: ICommandHandler<T>.Execute(Guid, T)
+  fullName: MicroPlumberd.Services.ICommandHandler<T>.Execute(System.Guid, T)
+  nameWithType.vb: ICommandHandler(Of T).Execute(Guid, T)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of T).Execute(System.Guid, T)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.Guid,`0)
+    name: Execute
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.Guid,`0)
+    name: Execute
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - name: T
+  - name: )
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task{System.Object}
+  commentId: T:System.Threading.Tasks.Task{System.Object}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<object>
+  nameWithType: Task<object>
+  fullName: System.Threading.Tasks.Task<object>
+  nameWithType.vb: Task(Of Object)
+  fullName.vb: System.Threading.Tasks.Task(Of Object)
+  name.vb: Task(Of Object)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+  commentId: M:MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+  isExternal: true
+  href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+  name: Execute(Guid, TCommand)
+  nameWithType: ICommandHandler<TCommand>.Execute(Guid, TCommand)
+  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>.Execute(System.Guid, TCommand)
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute(Guid, TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand).Execute(System.Guid, TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+    name: Execute
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - name: TCommand
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+    name: Execute
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
+  commentId: M:MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
+  parent: MicroPlumberd.Services.ICommandHandler
+  isExternal: true
+  href: MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
+  name: Execute(Guid, object)
+  nameWithType: ICommandHandler.Execute(Guid, object)
+  fullName: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid, object)
+  nameWithType.vb: ICommandHandler.Execute(Guid, Object)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid, Object)
+  name.vb: Execute(Guid, Object)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
+    name: Execute
+    href: MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
+    name: Execute
+    href: MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
+  - name: (
+  - uid: System.Guid
+    name: Guid
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.guid
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )

@@ -3,22 +3,22 @@ items:
 - uid: MicroPlumberd
   name: MicroPlumberd
   items:
+  - uid: MicroPlumberd.AcceptedTypeAttribute
+    name: AcceptedTypeAttribute
   - uid: MicroPlumberd.AggregateAttribute
     name: AggregateAttribute
   - uid: MicroPlumberd.AggregateBase`1
     name: AggregateBase<TState>
   - uid: MicroPlumberd.AsyncLazy`1
     name: AsyncLazy<T>
+  - uid: MicroPlumberd.AttributeSnaphotPolicy`1
+    name: AttributeSnaphotPolicy<T>
   - uid: MicroPlumberd.BuildInvocationContext
     name: BuildInvocationContext
   - uid: MicroPlumberd.CommandEnqueued
     name: CommandEnqueued
   - uid: MicroPlumberd.CommandEnqueued`1
     name: CommandEnqueued<TCommand>
-  - uid: MicroPlumberd.CommandFaultException
-    name: CommandFaultException
-  - uid: MicroPlumberd.CommandFaultException`1
-    name: CommandFaultException<TData>
   - uid: MicroPlumberd.CommandInvocationFailed
     name: CommandInvocationFailed
   - uid: MicroPlumberd.CommandRequest
@@ -39,6 +39,10 @@ items:
     name: EventStoreProjectionManagementClientExtensions
   - uid: MicroPlumberd.ExecutionContext
     name: ExecutionContext
+  - uid: MicroPlumberd.FaultException
+    name: FaultException
+  - uid: MicroPlumberd.FaultException`1
+    name: FaultException<TData>
   - uid: MicroPlumberd.GroupNameModelConvention
     name: GroupNameModelConvention
   - uid: MicroPlumberd.IAggregate
@@ -75,6 +79,8 @@ items:
     name: IPlumber
   - uid: MicroPlumberd.IPlumberConfig
     name: IPlumberConfig
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig
+    name: IPlumberReadOnlyConfig
   - uid: MicroPlumberd.IProcessAction
     name: IProcessAction
   - uid: MicroPlumberd.IProcessManager
@@ -83,8 +89,20 @@ items:
     name: IProjectionRegister
   - uid: MicroPlumberd.IReadModel
     name: IReadModel
+  - uid: MicroPlumberd.IReadOnlyConventions
+    name: IReadOnlyConventions
+  - uid: MicroPlumberd.ISnapshot
+    name: ISnapshot
+  - uid: MicroPlumberd.ISnapshotPolicy
+    name: ISnapshotPolicy
+  - uid: MicroPlumberd.ISnapshotPolicy`1
+    name: ISnapshotPolicy<T>
   - uid: MicroPlumberd.IStateChangeAction
     name: IStateChangeAction
+  - uid: MicroPlumberd.IStatefull
+    name: IStatefull
+  - uid: MicroPlumberd.IStatefull`1
+    name: IStatefull<T>
   - uid: MicroPlumberd.ISubscriptionRunner
     name: ISubscriptionRunner
   - uid: MicroPlumberd.ISubscriptionSet
@@ -117,14 +135,28 @@ items:
     name: ProcessManagerAttribute
   - uid: MicroPlumberd.ProcessManagerBase
     name: ProcessManagerBase
+  - uid: MicroPlumberd.ProjectionCategoryStreamConvention
+    name: ProjectionCategoryStreamConvention
   - uid: MicroPlumberd.RequestInvokerExtensions
     name: RequestInvokerExtensions
+  - uid: MicroPlumberd.Snapshot
+    name: Snapshot
+  - uid: MicroPlumberd.SnapshotEventName
+    name: SnapshotEventName
+  - uid: MicroPlumberd.SnapshotPolicyFactory
+    name: SnapshotPolicyFactory
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot<T>
   - uid: MicroPlumberd.StandardMetadataEnricherTypes
     name: StandardMetadataEnricherTypes
   - uid: MicroPlumberd.StateChangeAction`1
     name: StateChangeAction<TOwner>
+  - uid: MicroPlumberd.StateInfo
+    name: StateInfo
   - uid: MicroPlumberd.SteamNameConvention
     name: SteamNameConvention
+  - uid: MicroPlumberd.StreamCategoryConvention
+    name: StreamCategoryConvention
   - uid: MicroPlumberd.TypeEventConverter
     name: TypeEventConverter
   - uid: MicroPlumberd.TypeExtensions
@@ -141,8 +173,6 @@ items:
   items:
   - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1
     name: CommandEnvelope<TCommand>
-  - uid: MicroPlumberd.DirectConnect.CommandHandlerAttribute
-    name: CommandHandlerAttribute
   - uid: MicroPlumberd.DirectConnect.ContainerExtensions
     name: ContainerExtensions
   - uid: MicroPlumberd.DirectConnect.FaultEnvelope
@@ -151,16 +181,17 @@ items:
     name: FaultEnvelope<TData>
   - uid: MicroPlumberd.DirectConnect.HandlerOperationStatus
     name: HandlerOperationStatus
-  - uid: MicroPlumberd.DirectConnect.ICommandHandler
-    name: ICommandHandler
-  - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
-    name: ICommandHandler<TCommand>
   - uid: MicroPlumberd.DirectConnect.IFaultEnvelope
     name: IFaultEnvelope
   - uid: MicroPlumberd.DirectConnect.ReturnsAttribute
     name: ReturnsAttribute
   - uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
     name: ReturnsAttribute<TResult>
+- uid: MicroPlumberd.Protobuf
+  name: MicroPlumberd.Protobuf
+  items:
+  - uid: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization
+    name: ProtoBuffObjectSerialization
 - uid: MicroPlumberd.Services
   name: MicroPlumberd.Services
   items:
@@ -168,6 +199,10 @@ items:
     name: AppCommandStream
   - uid: MicroPlumberd.Services.CommandExecutionResults
     name: CommandExecutionResults
+  - uid: MicroPlumberd.Services.CommandHandlerAttribute
+    name: CommandHandlerAttribute
+  - uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+    name: CommandHandlerAttributeValidator<T>
   - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions
     name: CommandHandlerMetadataExtensions
   - uid: MicroPlumberd.Services.CommandMessageTypes
@@ -178,6 +213,10 @@ items:
     name: ContainerExtensions
   - uid: MicroPlumberd.Services.GroupNameFromCommandHandler
     name: GroupNameFromCommandHandler
+  - uid: MicroPlumberd.Services.ICommandHandler
+    name: ICommandHandler
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler<TCommand>
   - uid: MicroPlumberd.Services.IServiceTypeRegister
     name: IServiceTypeRegister
   - uid: MicroPlumberd.Services.IServicesConfig
@@ -198,10 +237,10 @@ items:
     name: SessionStreamFromSessionId
   - uid: MicroPlumberd.Services.StreamPositionExtensions
     name: StreamPositionExtensions
-  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
-    name: ThrowsFaultCommandExceptionAttribute
-  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
-    name: ThrowsFaultCommandExceptionAttribute<TMessage>
+  - uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute
+    name: ThrowsFaultExceptionAttribute
+  - uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
+    name: ThrowsFaultExceptionAttribute<TMessage>
 - uid: MicroPlumberd.Services.ProcessManagers
   name: MicroPlumberd.Services.ProcessManagers
   items:
@@ -220,19 +259,6 @@ items:
     name: IUniqueFrom<TCategory, TCommand>
   - uid: MicroPlumberd.Services.Uniqueness.UniqueAttribute`1
     name: UniqueAttribute<TCategory>
-- uid: MicroPlumberd.SourceGenerators
-  name: MicroPlumberd.SourceGenerators
-  items:
-  - uid: MicroPlumberd.SourceGenerators.AggregateSourceGenerator
-    name: AggregateSourceGenerator
-  - uid: MicroPlumberd.SourceGenerators.CommandHandlerSourceGenerator
-    name: CommandHandlerSourceGenerator
-  - uid: MicroPlumberd.SourceGenerators.EventHandlerSourceGenerator
-    name: EventHandlerSourceGenerator
-  - uid: MicroPlumberd.SourceGenerators.ProcessManagerSourceGenerator
-    name: ProcessManagerSourceGenerator
-  - uid: MicroPlumberd.SourceGenerators.TypeSyntaxExtensions
-    name: TypeSyntaxExtensions
 - uid: MicroPlumberd.Utils
   name: MicroPlumberd.Utils
   items:

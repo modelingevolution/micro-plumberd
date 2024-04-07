@@ -21,7 +21,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamAttribute
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 7
+    startLine: 77
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -104,7 +104,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 10
+    startLine: 80
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -136,7 +136,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamName
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 17
+    startLine: 87
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

@@ -5,13 +5,10 @@ items:
   id: MicroPlumberd.DirectConnect
   children:
   - MicroPlumberd.DirectConnect.CommandEnvelope`1
-  - MicroPlumberd.DirectConnect.CommandHandlerAttribute
   - MicroPlumberd.DirectConnect.ContainerExtensions
   - MicroPlumberd.DirectConnect.FaultEnvelope
   - MicroPlumberd.DirectConnect.FaultEnvelope`1
   - MicroPlumberd.DirectConnect.HandlerOperationStatus
-  - MicroPlumberd.DirectConnect.ICommandHandler
-  - MicroPlumberd.DirectConnect.ICommandHandler`1
   - MicroPlumberd.DirectConnect.IFaultEnvelope
   - MicroPlumberd.DirectConnect.ReturnsAttribute
   - MicroPlumberd.DirectConnect.ReturnsAttribute`1
@@ -133,44 +130,6 @@ references:
   name: ReturnsAttribute
   nameWithType: ReturnsAttribute
   fullName: MicroPlumberd.DirectConnect.ReturnsAttribute
-- uid: MicroPlumberd.DirectConnect.CommandHandlerAttribute
-  commentId: T:MicroPlumberd.DirectConnect.CommandHandlerAttribute
-  href: MicroPlumberd.DirectConnect.CommandHandlerAttribute.html
-  name: CommandHandlerAttribute
-  nameWithType: CommandHandlerAttribute
-  fullName: MicroPlumberd.DirectConnect.CommandHandlerAttribute
-- uid: MicroPlumberd.DirectConnect.ICommandHandler
-  commentId: T:MicroPlumberd.DirectConnect.ICommandHandler
-  parent: MicroPlumberd.DirectConnect
-  href: MicroPlumberd.DirectConnect.ICommandHandler.html
-  name: ICommandHandler
-  nameWithType: ICommandHandler
-  fullName: MicroPlumberd.DirectConnect.ICommandHandler
-- uid: MicroPlumberd.DirectConnect.ICommandHandler`1
-  commentId: T:MicroPlumberd.DirectConnect.ICommandHandler`1
-  href: MicroPlumberd.DirectConnect.ICommandHandler-1.html
-  name: ICommandHandler<TCommand>
-  nameWithType: ICommandHandler<TCommand>
-  fullName: MicroPlumberd.DirectConnect.ICommandHandler<TCommand>
-  nameWithType.vb: ICommandHandler(Of TCommand)
-  fullName.vb: MicroPlumberd.DirectConnect.ICommandHandler(Of TCommand)
-  name.vb: ICommandHandler(Of TCommand)
-  spec.csharp:
-  - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
-    name: ICommandHandler
-    href: MicroPlumberd.DirectConnect.ICommandHandler-1.html
-  - name: <
-  - name: TCommand
-  - name: '>'
-  spec.vb:
-  - uid: MicroPlumberd.DirectConnect.ICommandHandler`1
-    name: ICommandHandler
-    href: MicroPlumberd.DirectConnect.ICommandHandler-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TCommand
-  - name: )
 - uid: MicroPlumberd.DirectConnect
   commentId: N:MicroPlumberd.DirectConnect
   href: MicroPlumberd.html

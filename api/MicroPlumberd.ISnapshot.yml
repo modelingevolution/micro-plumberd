@@ -1,0 +1,180 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ISnapshot
+  commentId: T:MicroPlumberd.ISnapshot
+  id: ISnapshot
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ISnapshot.Created
+  - MicroPlumberd.ISnapshot.Data
+  - MicroPlumberd.ISnapshot.Version
+  langs:
+  - csharp
+  - vb
+  name: ISnapshot
+  nameWithType: ISnapshot
+  fullName: MicroPlumberd.ISnapshot
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ISnapshot
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 3
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ISnapshot
+    content.vb: Public Interface ISnapshot
+- uid: MicroPlumberd.ISnapshot.Data
+  commentId: P:MicroPlumberd.ISnapshot.Data
+  id: Data
+  parent: MicroPlumberd.ISnapshot
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: ISnapshot.Data
+  fullName: MicroPlumberd.ISnapshot.Data
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Data
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: object Data { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property Data As Object
+  overload: MicroPlumberd.ISnapshot.Data*
+- uid: MicroPlumberd.ISnapshot.Created
+  commentId: P:MicroPlumberd.ISnapshot.Created
+  id: Created
+  parent: MicroPlumberd.ISnapshot
+  langs:
+  - csharp
+  - vb
+  name: Created
+  nameWithType: ISnapshot.Created
+  fullName: MicroPlumberd.ISnapshot.Created
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Created
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: DateTimeOffset Created { get; }
+    parameters: []
+    return:
+      type: System.DateTimeOffset
+    content.vb: ReadOnly Property Created As DateTimeOffset
+  overload: MicroPlumberd.ISnapshot.Created*
+- uid: MicroPlumberd.ISnapshot.Version
+  commentId: P:MicroPlumberd.ISnapshot.Version
+  id: Version
+  parent: MicroPlumberd.ISnapshot
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: ISnapshot.Version
+  fullName: MicroPlumberd.ISnapshot.Version
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Version
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: long Version { get; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: ReadOnly Property Version As Long
+  overload: MicroPlumberd.ISnapshot.Version*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ISnapshot.Data*
+  commentId: Overload:MicroPlumberd.ISnapshot.Data
+  href: MicroPlumberd.ISnapshot.html#MicroPlumberd_ISnapshot_Data
+  name: Data
+  nameWithType: ISnapshot.Data
+  fullName: MicroPlumberd.ISnapshot.Data
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.ISnapshot.Created*
+  commentId: Overload:MicroPlumberd.ISnapshot.Created
+  href: MicroPlumberd.ISnapshot.html#MicroPlumberd_ISnapshot_Created
+  name: Created
+  nameWithType: ISnapshot.Created
+  fullName: MicroPlumberd.ISnapshot.Created
+- uid: System.DateTimeOffset
+  commentId: T:System.DateTimeOffset
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
+  name: DateTimeOffset
+  nameWithType: DateTimeOffset
+  fullName: System.DateTimeOffset
+- uid: MicroPlumberd.ISnapshot.Version*
+  commentId: Overload:MicroPlumberd.ISnapshot.Version
+  href: MicroPlumberd.ISnapshot.html#MicroPlumberd_ISnapshot_Version
+  name: Version
+  nameWithType: ISnapshot.Version
+  fullName: MicroPlumberd.ISnapshot.Version
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long

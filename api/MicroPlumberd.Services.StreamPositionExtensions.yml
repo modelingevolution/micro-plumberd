@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StreamPositionExtensions
     path: src/MicroPlumberd.Services/CommandHandlerStarter.cs
-    startLine: 17
+    startLine: 16
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ToStreamPosition
     path: src/MicroPlumberd.Services/CommandHandlerStarter.cs
-    startLine: 19
+    startLine: 18
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

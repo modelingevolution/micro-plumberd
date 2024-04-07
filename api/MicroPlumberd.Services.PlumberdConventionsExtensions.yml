@@ -6,7 +6,9 @@ items:
   parent: MicroPlumberd.Services
   children:
   - MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
+  - MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
   - MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IConventions)
+  - MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
   langs:
   - csharp
   - vb
@@ -21,7 +23,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PlumberdConventionsExtensions
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 54
+    startLine: 57
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -57,7 +59,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServicesConventions
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 56
+    startLine: 59
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -69,6 +71,38 @@ items:
     return:
       type: MicroPlumberd.Services.IServicesConvention
     content.vb: Public Shared Function ServicesConventions(conventions As IConventions) As IServicesConvention
+  overload: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions*
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
+  id: ServicesConventions(MicroPlumberd.IReadOnlyConventions)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
+  langs:
+  - csharp
+  - vb
+  name: ServicesConventions(IReadOnlyConventions)
+  nameWithType: PlumberdConventionsExtensions.ServicesConventions(IReadOnlyConventions)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ServicesConventions
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 61
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static IServicesConvention ServicesConventions(this IReadOnlyConventions conventions)
+    parameters:
+    - id: conventions
+      type: MicroPlumberd.IReadOnlyConventions
+    return:
+      type: MicroPlumberd.Services.IServicesConvention
+    content.vb: Public Shared Function ServicesConventions(conventions As IReadOnlyConventions) As IServicesConvention
   overload: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions*
 - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
   commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberConfig)
@@ -89,7 +123,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServicesConfig
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 58
+    startLine: 63
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -101,6 +135,38 @@ items:
     return:
       type: MicroPlumberd.Services.IServicesConfig
     content.vb: Public Shared Function ServicesConfig(config As IPlumberConfig) As IServicesConfig
+  overload: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig*
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  id: ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
+  langs:
+  - csharp
+  - vb
+  name: ServicesConfig(IPlumberReadOnlyConfig)
+  nameWithType: PlumberdConventionsExtensions.ServicesConfig(IPlumberReadOnlyConfig)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ServicesConvention.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ServicesConfig
+    path: src/MicroPlumberd.Services/ServicesConvention.cs
+    startLine: 65
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static IServicesConfig ServicesConfig(this IPlumberReadOnlyConfig config)
+    parameters:
+    - id: config
+      type: MicroPlumberd.IPlumberReadOnlyConfig
+    return:
+      type: MicroPlumberd.Services.IServicesConfig
+    content.vb: Public Shared Function ServicesConfig(config As IPlumberReadOnlyConfig) As IServicesConfig
   overload: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig*
 references:
 - uid: MicroPlumberd.Services
@@ -388,6 +454,13 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
+- uid: MicroPlumberd.IReadOnlyConventions
+  commentId: T:MicroPlumberd.IReadOnlyConventions
+  parent: MicroPlumberd
+  href: MicroPlumberd.IReadOnlyConventions.html
+  name: IReadOnlyConventions
+  nameWithType: IReadOnlyConventions
+  fullName: MicroPlumberd.IReadOnlyConventions
 - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig*
   commentId: Overload:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
   href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberConfig_
@@ -408,3 +481,10 @@ references:
   name: IServicesConfig
   nameWithType: IServicesConfig
   fullName: MicroPlumberd.Services.IServicesConfig
+- uid: MicroPlumberd.IPlumberReadOnlyConfig
+  commentId: T:MicroPlumberd.IPlumberReadOnlyConfig
+  parent: MicroPlumberd
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html
+  name: IPlumberReadOnlyConfig
+  nameWithType: IPlumberReadOnlyConfig
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig

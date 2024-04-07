@@ -7,17 +7,3 @@
 - name: Features
   href: index.md#features
   items:
-    - name: Conventions
-      href: index.md#conventions
-    - name: Read-Models Development cycle
-      href: index.md#ultra-development-cycle-for-read-models-ef-example
-    - name: Subscription Sets
-      href: index.md#subscription-sets---models-ultra-composition
-    - name: EventStoreDB as message-bus
-      href: index.md#eventstoredb-as-message-bus
-    - name: Grpc direct communication
-      href: index.md#grpc-direct-communication
-    - name: EXPERIMENTAL Process-Manager
-      href: index.md#experimental-process-manager
-    - name: EXPERIMENTAL Uniqueness support
-      href: index.md#experimental-uniqueness-support

@@ -19,7 +19,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 22
+    startLine: 37
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

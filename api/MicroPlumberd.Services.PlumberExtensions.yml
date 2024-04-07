@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PlumberExtensions
     path: src/MicroPlumberd.Services/PlumberExtensions.cs
-    startLine: 6
+    startLine: 5
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeCommandHandler
     path: src/MicroPlumberd.Services/PlumberExtensions.cs
-    startLine: 8
+    startLine: 7
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

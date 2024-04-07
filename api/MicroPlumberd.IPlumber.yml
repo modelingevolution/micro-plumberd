@@ -10,16 +10,23 @@ items:
   - MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
   - MicroPlumberd.IPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Object[])
   - MicroPlumberd.IPlumber.AppendLink(System.String,MicroPlumberd.Metadata,System.Nullable{EventStore.Client.StreamState})
+  - MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
   - MicroPlumberd.IPlumber.Client
   - MicroPlumberd.IPlumber.Config
   - MicroPlumberd.IPlumber.FindEventInStream(System.String,System.Guid,MicroPlumberd.TypeEventConverter,EventStore.Client.Direction)
   - MicroPlumberd.IPlumber.FindEventInStream``1(System.String,System.Guid,MicroPlumberd.TypeEventConverter,EventStore.Client.Direction)
+  - MicroPlumberd.IPlumber.GetSnapshot(System.Guid,System.Type)
+  - MicroPlumberd.IPlumber.GetSnapshot``1(System.Guid)
   - MicroPlumberd.IPlumber.Get``1(System.Guid)
   - MicroPlumberd.IPlumber.PersistentSubscriptionClient
   - MicroPlumberd.IPlumber.ProjectionManagementClient
   - MicroPlumberd.IPlumber.ProjectionRegister
-  - MicroPlumberd.IPlumber.Rehydrate``1(``0,System.Guid)
-  - MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String)
+  - MicroPlumberd.IPlumber.Read(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  - MicroPlumberd.IPlumber.ReadFull(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  - MicroPlumberd.IPlumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  - MicroPlumberd.IPlumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  - MicroPlumberd.IPlumber.Rehydrate``1(``0,System.Guid,System.Nullable{EventStore.Client.StreamPosition})
+  - MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String,System.Nullable{EventStore.Client.StreamPosition})
   - MicroPlumberd.IPlumber.SaveChanges``1(``0,System.Object)
   - MicroPlumberd.IPlumber.SaveNew``1(``0,System.Object)
   - MicroPlumberd.IPlumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
@@ -44,11 +51,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IPlumber
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 6
+    startLine: 30
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Root interface for plumber
+  summary: Root interface for plumberd
   example: []
   syntax:
     content: public interface IPlumber
@@ -73,16 +80,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Config
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 8
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Plubers configuration.
+  example: []
   syntax:
-    content: IPlumberConfig Config { get; }
+    content: IPlumberReadOnlyConfig Config { get; }
     parameters: []
     return:
-      type: MicroPlumberd.IPlumberConfig
-    content.vb: ReadOnly Property Config As IPlumberConfig
+      type: MicroPlumberd.IPlumberReadOnlyConfig
+    content.vb: ReadOnly Property Config As IPlumberReadOnlyConfig
   overload: MicroPlumberd.IPlumber.Config*
 - uid: MicroPlumberd.IPlumber.Client
   commentId: P:MicroPlumberd.IPlumber.Client
@@ -102,10 +111,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Client
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 9
+    startLine: 40
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: EventStore's client
+  example: []
   syntax:
     content: EventStoreClient Client { get; }
     parameters: []
@@ -131,10 +142,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PersistentSubscriptionClient
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 10
+    startLine: 44
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: EventStore's persistent subsctiption client
+  example: []
   syntax:
     content: EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
     parameters: []
@@ -160,10 +173,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionManagementClient
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 11
+    startLine: 48
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: EventStore's projection managemenet client
+  example: []
   syntax:
     content: EventStoreProjectionManagementClient ProjectionManagementClient { get; }
     parameters: []
@@ -189,10 +204,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionRegister
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 12
+    startLine: 52
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Projection's register, responsible for caching information about projection from EventStore.
+  example: []
   syntax:
     content: IProjectionRegister ProjectionRegister { get; }
     parameters: []
@@ -218,10 +235,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TypeHandlerRegisters
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 13
+    startLine: 56
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Metadata information about registered event-handlers.
+  example: []
   syntax:
     content: ITypeHandlerRegisters TypeHandlerRegisters { get; }
     parameters: []
@@ -247,11 +266,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 23
+    startLine: 66
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
+  summary: Appends event to a stream, uses relevant convention to create metadata.
   example: []
   syntax:
     content: Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null)
@@ -294,25 +313,33 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 26
+    startLine: 78
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Appends event to a stream, uses relevant convention to create metadata.
+  example: []
   syntax:
     content: Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null)
     parameters:
     - id: streamId
       type: System.String
+      description: "Full name of streamId for example: 'TicketBooked-b27f9322-7d73-4d98-a605-a731a2c373c6'"
     - id: state
       type: EventStore.Client.StreamState
+      description: Expected state of the stream
     - id: evtName
       type: System.String
+      description: Name of the event
     - id: evt
       type: System.Object
+      description: Event object
     - id: metadata
       type: System.Object
+      description: Additional metadata, can be null
     return:
       type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
+      description: ''
     content.vb: Function AppendEvent(streamId As String, state As StreamState, evtName As String, evt As Object, metadata As Object = Nothing) As Task(Of IWriteResult)
   overload: MicroPlumberd.IPlumber.AppendEvent*
   nameWithType.vb: IPlumber.AppendEvent(String, StreamState, String, Object, Object)
@@ -336,11 +363,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 35
+    startLine: 87
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Appends event to a stream, uses relevant convention, however aggregate-type or instance are passed as null to conventions.
+  summary: Appends event to a stream, uses relevant convention to create metadata.
   example: []
   syntax:
     content: Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events, object? metadata = null)
@@ -383,21 +410,27 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 37
+    startLine: 97
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Appends event to a stream, uses relevant convention to create metadata.
+  example: []
   syntax:
     content: Task AppendEvents(string streamId, StreamState state, params object[] events)
     parameters:
     - id: streamId
       type: System.String
+      description: "Full name of streamId for example: 'TicketBooked-b27f9322-7d73-4d98-a605-a731a2c373c6'"
     - id: state
       type: EventStore.Client.StreamState
+      description: ''
     - id: events
       type: System.Object[]
+      description: ''
     return:
       type: System.Threading.Tasks.Task
+      description: ''
     content.vb: Function AppendEvents(streamId As String, state As StreamState, ParamArray events As Object()) As Task
   overload: MicroPlumberd.IPlumber.AppendEvents*
   nameWithType.vb: IPlumber.AppendEvents(String, StreamState, ParamArray Object())
@@ -421,25 +454,33 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 39
+    startLine: 108
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Finds the event in the stream.
+  example: []
   syntax:
     content: Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null, Direction scanDirection = Direction.Backwards)
     parameters:
     - id: streamId
       type: System.String
+      description: The stream identifier.
     - id: id
       type: System.Guid
+      description: The identifier of the event.
     - id: eventMapping
       type: MicroPlumberd.TypeEventConverter
+      description: The event mapping.
     - id: scanDirection
       type: EventStore.Client.Direction
+      description: The scan direction.
     typeParameters:
     - id: T
+      description: ''
     return:
       type: System.Threading.Tasks.Task{MicroPlumberd.IEventRecord{{T}}}
+      description: ''
     content.vb: Function FindEventInStream(Of T)(streamId As String, id As Guid, eventMapping As TypeEventConverter = Nothing, scanDirection As Direction = Direction.Backwards) As Task(Of IEventRecord(Of T))
   overload: MicroPlumberd.IPlumber.FindEventInStream*
   nameWithType.vb: IPlumber.FindEventInStream(Of T)(String, Guid, TypeEventConverter, Direction)
@@ -463,23 +504,30 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 41
+    startLine: 118
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Finds the event in the stream.
+  example: []
   syntax:
     content: Task<IEventRecord?> FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards)
     parameters:
     - id: streamId
       type: System.String
+      description: The stream identifier.
     - id: id
       type: System.Guid
+      description: The identifier of the event.
     - id: eventMapping
       type: MicroPlumberd.TypeEventConverter
+      description: The event mapping.
     - id: scanDirection
       type: EventStore.Client.Direction
+      description: The scan direction.
     return:
       type: System.Threading.Tasks.Task{MicroPlumberd.IEventRecord}
+      description: ''
     content.vb: Function FindEventInStream(streamId As String, id As Guid, eventMapping As TypeEventConverter, scanDirection As Direction = Direction.Backwards) As Task(Of IEventRecord)
   overload: MicroPlumberd.IPlumber.FindEventInStream*
   nameWithType.vb: IPlumber.FindEventInStream(String, Guid, TypeEventConverter, Direction)
@@ -503,14 +551,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 43
+    startLine: 124
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Returns a builder for creating composition of projections subscribed to a stream.
+  example: []
   syntax:
     content: ISubscriptionSet SubscribeSet()
     return:
       type: MicroPlumberd.ISubscriptionSet
+      description: ''
     content.vb: Function SubscribeSet() As ISubscriptionSet
   overload: MicroPlumberd.IPlumber.SubscribeSet*
 - uid: MicroPlumberd.IPlumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
@@ -531,23 +582,30 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Subscribe
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 44
+    startLine: 134
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Subscribes the specified stream name.
+  example: []
   syntax:
     content: ISubscriptionRunner Subscribe(string streamName, FromStream start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     parameters:
     - id: streamName
       type: System.String
+      description: Name of the stream.
     - id: start
       type: EventStore.Client.FromStream
+      description: The start position
     - id: userCredentials
       type: EventStore.Client.UserCredentials
+      description: The user credentials.
     - id: cancellationToken
       type: System.Threading.CancellationToken
+      description: The cancellation token.
     return:
       type: MicroPlumberd.ISubscriptionRunner
+      description: ''
     content.vb: Function Subscribe(streamName As String, start As FromStream, userCredentials As UserCredentials = Nothing, cancellationToken As CancellationToken = Nothing) As ISubscriptionRunner
   overload: MicroPlumberd.IPlumber.Subscribe*
   nameWithType.vb: IPlumber.Subscribe(String, FromStream, UserCredentials, CancellationToken)
@@ -571,29 +629,42 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 46
+    startLine: 148
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+
+    Then EventHandler subscribe the the output stream.
+  example: []
   syntax:
     content: 'Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc, IEnumerable<string>? eventTypes, TEventHandler? eh = null, string? outputStream = null, FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler'
     parameters:
     - id: mapFunc
       type: MicroPlumberd.TypeEventConverter
+      description: The map function.
     - id: eventTypes
       type: System.Collections.Generic.IEnumerable{System.String}
+      description: Supported event types.
     - id: eh
       type: '{TEventHandler}'
+      description: The event-handler
     - id: outputStream
       type: System.String
+      description: The output stream.
     - id: start
       type: System.Nullable{EventStore.Client.FromStream}
+      description: The start of the stream
     - id: ensureOutputStreamProjection
       type: System.Boolean
+      description: if set to <code>true</code> [ensure output stream projection].
     typeParameters:
     - id: TEventHandler
+      description: The type of the event handler.
     return:
       type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+      description: ''
     content.vb: Function SubscribeEventHandler(Of TEventHandler As {Class, IEventHandler})(mapFunc As TypeEventConverter, eventTypes As IEnumerable(Of String), eh As TEventHandler = Nothing, outputStream As String = Nothing, start As FromStream? = Nothing, ensureOutputStreamProjection As Boolean = True) As Task(Of IAsyncDisposable)
   overload: MicroPlumberd.IPlumber.SubscribeEventHandler*
   nameWithType.vb: IPlumber.SubscribeEventHandler(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, FromStream?, Boolean)
@@ -617,25 +688,36 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 50
+    startLine: 165
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+
+    Then EventHandler subscribe the the output stream.
+  example: []
   syntax:
     content: 'Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = null, string? outputStream = null, FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler, ITypeRegister'
     parameters:
     - id: eh
       type: '{TEventHandler}'
+      description: The event-handler/model
     - id: outputStream
       type: System.String
+      description: The output stream.
     - id: start
       type: System.Nullable{EventStore.Client.FromStream}
+      description: The start.
     - id: ensureOutputStreamProjection
       type: System.Boolean
+      description: if set to <code>true</code> [ensure output stream projection].
     typeParameters:
     - id: TEventHandler
+      description: The type of the event handler.
     return:
       type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+      description: ''
     content.vb: Function SubscribeEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(eh As TEventHandler = Nothing, outputStream As String = Nothing, start As FromStream? = Nothing, ensureOutputStreamProjection As Boolean = True) As Task(Of IAsyncDisposable)
   overload: MicroPlumberd.IPlumber.SubscribeEventHandler*
   nameWithType.vb: IPlumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromStream?, Boolean)
@@ -659,27 +741,39 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 52
+    startLine: 180
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Subscribes the event handler persistently. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+
+    Then EventHandler subscribe the the output stream.
+  example: []
   syntax:
     content: 'Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model = null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler, ITypeRegister'
     parameters:
     - id: model
       type: '{TEventHandler}'
+      description: Optional event-handler/model.
     - id: outputStream
       type: System.String
+      description: Optional output stream.
     - id: groupName
       type: System.String
+      description: Optional group name.
     - id: startFrom
       type: EventStore.Client.IPosition
+      description: Optional start of the stream.
     - id: ensureOutputStreamProjection
       type: System.Boolean
+      description: when true creates projection that creates output's stream
     typeParameters:
     - id: TEventHandler
+      description: The type of the event handler.
     return:
       type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+      description: ''
     content.vb: Function SubscribeEventHandlerPersistently(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(model As TEventHandler = Nothing, outputStream As String = Nothing, groupName As String = Nothing, startFrom As IPosition = Nothing, ensureOutputStreamProjection As Boolean = True) As Task(Of IAsyncDisposable)
   overload: MicroPlumberd.IPlumber.SubscribeEventHandlerPersistently*
   nameWithType.vb: IPlumber.SubscribeEventHandlerPersistently(Of TEventHandler)(TEventHandler, String, String, IPosition, Boolean)
@@ -703,40 +797,48 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 54
+    startLine: 191
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Returns a subscription builder that will subscribe model persistently.
+  example: []
   syntax:
     content: ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     parameters:
     - id: streamName
       type: System.String
+      description: Name of the stream.
     - id: groupName
       type: System.String
+      description: Name of the group.
     - id: bufferSize
       type: System.Int32
+      description: Size of the buffer.
     - id: userCredentials
       type: EventStore.Client.UserCredentials
+      description: The user credentials.
     - id: cancellationToken
       type: System.Threading.CancellationToken
+      description: The cancellation token.
     return:
       type: MicroPlumberd.ISubscriptionRunner
+      description: ''
     content.vb: Function SubscribePersistently(streamName As String, groupName As String, bufferSize As Integer = 10, userCredentials As UserCredentials = Nothing, cancellationToken As CancellationToken = Nothing) As ISubscriptionRunner
   overload: MicroPlumberd.IPlumber.SubscribePersistently*
   nameWithType.vb: IPlumber.SubscribePersistently(String, String, Integer, UserCredentials, CancellationToken)
   fullName.vb: MicroPlumberd.IPlumber.SubscribePersistently(String, String, Integer, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
   name.vb: SubscribePersistently(String, String, Integer, UserCredentials, CancellationToken)
-- uid: MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String)
-  commentId: M:MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String)
-  id: Rehydrate``1(``0,System.String)
+- uid: MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String,System.Nullable{EventStore.Client.StreamPosition})
+  commentId: M:MicroPlumberd.IPlumber.Rehydrate``1(``0,System.String,System.Nullable{EventStore.Client.StreamPosition})
+  id: Rehydrate``1(``0,System.String,System.Nullable{EventStore.Client.StreamPosition})
   parent: MicroPlumberd.IPlumber
   langs:
   - csharp
   - vb
-  name: Rehydrate<T>(T, string)
-  nameWithType: IPlumber.Rehydrate<T>(T, string)
-  fullName: MicroPlumberd.IPlumber.Rehydrate<T>(T, string)
+  name: Rehydrate<T>(T, string, StreamPosition?)
+  nameWithType: IPlumber.Rehydrate<T>(T, string, StreamPosition?)
+  fullName: MicroPlumberd.IPlumber.Rehydrate<T>(T, string, EventStore.Client.StreamPosition?)
   type: Method
   source:
     remote:
@@ -745,36 +847,45 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 56
+    startLine: 201
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Rehydrates the specified model.
+  example: []
   syntax:
-    content: 'Task Rehydrate<T>(T model, string stream) where T : IEventHandler, ITypeRegister'
+    content: 'Task Rehydrate<T>(T model, string stream, StreamPosition? position = null) where T : IEventHandler, ITypeRegister'
     parameters:
     - id: model
       type: '{T}'
+      description: The model.
     - id: stream
       type: System.String
+      description: The stream.
+    - id: position
+      type: System.Nullable{EventStore.Client.StreamPosition}
+      description: The position.
     typeParameters:
     - id: T
+      description: ''
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Function Rehydrate(Of T As {IEventHandler, ITypeRegister})(model As T, stream As String) As Task
+      description: ''
+    content.vb: Function Rehydrate(Of T As {IEventHandler, ITypeRegister})(model As T, stream As String, position As StreamPosition? = Nothing) As Task
   overload: MicroPlumberd.IPlumber.Rehydrate*
-  nameWithType.vb: IPlumber.Rehydrate(Of T)(T, String)
-  fullName.vb: MicroPlumberd.IPlumber.Rehydrate(Of T)(T, String)
-  name.vb: Rehydrate(Of T)(T, String)
-- uid: MicroPlumberd.IPlumber.Rehydrate``1(``0,System.Guid)
-  commentId: M:MicroPlumberd.IPlumber.Rehydrate``1(``0,System.Guid)
-  id: Rehydrate``1(``0,System.Guid)
+  nameWithType.vb: IPlumber.Rehydrate(Of T)(T, String, StreamPosition?)
+  fullName.vb: MicroPlumberd.IPlumber.Rehydrate(Of T)(T, String, EventStore.Client.StreamPosition?)
+  name.vb: Rehydrate(Of T)(T, String, StreamPosition?)
+- uid: MicroPlumberd.IPlumber.Rehydrate``1(``0,System.Guid,System.Nullable{EventStore.Client.StreamPosition})
+  commentId: M:MicroPlumberd.IPlumber.Rehydrate``1(``0,System.Guid,System.Nullable{EventStore.Client.StreamPosition})
+  id: Rehydrate``1(``0,System.Guid,System.Nullable{EventStore.Client.StreamPosition})
   parent: MicroPlumberd.IPlumber
   langs:
   - csharp
   - vb
-  name: Rehydrate<T>(T, Guid)
-  nameWithType: IPlumber.Rehydrate<T>(T, Guid)
-  fullName: MicroPlumberd.IPlumber.Rehydrate<T>(T, System.Guid)
+  name: Rehydrate<T>(T, Guid, StreamPosition?)
+  nameWithType: IPlumber.Rehydrate<T>(T, Guid, StreamPosition?)
+  fullName: MicroPlumberd.IPlumber.Rehydrate<T>(T, System.Guid, EventStore.Client.StreamPosition?)
   type: Method
   source:
     remote:
@@ -783,26 +894,35 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 57
+    startLine: 211
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Rehydrates the specified model
+  example: []
   syntax:
-    content: 'Task Rehydrate<T>(T model, Guid id) where T : IEventHandler, ITypeRegister'
+    content: 'Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null) where T : IEventHandler, ITypeRegister'
     parameters:
     - id: model
       type: '{T}'
+      description: The model.
     - id: id
       type: System.Guid
+      description: The identifier.
+    - id: position
+      type: System.Nullable{EventStore.Client.StreamPosition}
+      description: The position from which reply events.
     typeParameters:
     - id: T
+      description: ''
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Function Rehydrate(Of T As {IEventHandler, ITypeRegister})(model As T, id As Guid) As Task
+      description: ''
+    content.vb: Function Rehydrate(Of T As {IEventHandler, ITypeRegister})(model As T, id As Guid, position As StreamPosition? = Nothing) As Task
   overload: MicroPlumberd.IPlumber.Rehydrate*
-  nameWithType.vb: IPlumber.Rehydrate(Of T)(T, Guid)
-  fullName.vb: MicroPlumberd.IPlumber.Rehydrate(Of T)(T, System.Guid)
-  name.vb: Rehydrate(Of T)(T, Guid)
+  nameWithType.vb: IPlumber.Rehydrate(Of T)(T, Guid, StreamPosition?)
+  fullName.vb: MicroPlumberd.IPlumber.Rehydrate(Of T)(T, System.Guid, EventStore.Client.StreamPosition?)
+  name.vb: Rehydrate(Of T)(T, Guid, StreamPosition?)
 - uid: MicroPlumberd.IPlumber.Get``1(System.Guid)
   commentId: M:MicroPlumberd.IPlumber.Get``1(System.Guid)
   id: Get``1(System.Guid)
@@ -821,19 +941,29 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 59
+    startLine: 221
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Returns the aggregate identified by id.
+
+    This usually mean that all the event will be loaded from the EventStoreDB and executed through 'Given' method on it's instance. 
+
+    If the aggregate supports snapshoting, it's state will be loaded from latest snapshot and relevant events from that time will be replied on it's instance.
+  example: []
   syntax:
     content: 'Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister'
     parameters:
     - id: id
       type: System.Guid
+      description: The identifier.
     typeParameters:
     - id: T
+      description: ''
     return:
       type: System.Threading.Tasks.Task{{T}}
+      description: ''
     content.vb: Function [Get](Of T As {IAggregate(Of T), ITypeRegister})(id As Guid) As Task(Of T)
   overload: MicroPlumberd.IPlumber.Get*
   nameWithType.vb: IPlumber.Get(Of T)(Guid)
@@ -857,21 +987,27 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 60
+    startLine: 230
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Saves all pending events from the aggregate. Uses optimistic concurrency.
+  example: []
   syntax:
     content: 'Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>'
     parameters:
     - id: aggregate
       type: '{T}'
+      description: The aggregate.
     - id: metadata
       type: System.Object
+      description: The optional metadata.
     typeParameters:
     - id: T
+      description: ''
     return:
       type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
+      description: ''
     content.vb: Function SaveChanges(Of T As IAggregate(Of T))(aggregate As T, metadata As Object = Nothing) As Task(Of IWriteResult)
   overload: MicroPlumberd.IPlumber.SaveChanges*
   nameWithType.vb: IPlumber.SaveChanges(Of T)(T, Object)
@@ -895,26 +1031,111 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 61
+    startLine: 239
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Saves the aggregate. Expects that no aggregate exists.
+  example: []
   syntax:
     content: 'Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>'
     parameters:
     - id: aggregate
       type: '{T}'
+      description: The aggregate.
     - id: metadata
       type: System.Object
+      description: The optional metadata.
     typeParameters:
     - id: T
+      description: ''
     return:
       type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
+      description: ''
     content.vb: Function SaveNew(Of T As IAggregate(Of T))(aggregate As T, metadata As Object = Nothing) As Task(Of IWriteResult)
   overload: MicroPlumberd.IPlumber.SaveNew*
   nameWithType.vb: IPlumber.SaveNew(Of T)(T, Object)
   fullName.vb: MicroPlumberd.IPlumber.SaveNew(Of T)(T, Object)
   name.vb: SaveNew(Of T)(T, Object)
+- uid: MicroPlumberd.IPlumber.GetSnapshot``1(System.Guid)
+  commentId: M:MicroPlumberd.IPlumber.GetSnapshot``1(System.Guid)
+  id: GetSnapshot``1(System.Guid)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: GetSnapshot<T>(Guid)
+  nameWithType: IPlumber.GetSnapshot<T>(Guid)
+  fullName: MicroPlumberd.IPlumber.GetSnapshot<T>(System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetSnapshot
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 247
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Gets the snapshot - deserializes snapshot from the stream. Stream is identified by typeof(T). Deserialization is done from the latest event (snaphost) in the stream.
+  example: []
+  syntax:
+    content: Task<Snapshot<T>?> GetSnapshot<T>(Guid id)
+    parameters:
+    - id: id
+      type: System.Guid
+      description: The identifier.
+    typeParameters:
+    - id: T
+      description: ''
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.Snapshot{{T}}}
+      description: ''
+    content.vb: Function GetSnapshot(Of T)(id As Guid) As Task(Of Snapshot(Of T))
+  overload: MicroPlumberd.IPlumber.GetSnapshot*
+  nameWithType.vb: IPlumber.GetSnapshot(Of T)(Guid)
+  fullName.vb: MicroPlumberd.IPlumber.GetSnapshot(Of T)(System.Guid)
+  name.vb: GetSnapshot(Of T)(Guid)
+- uid: MicroPlumberd.IPlumber.GetSnapshot(System.Guid,System.Type)
+  commentId: M:MicroPlumberd.IPlumber.GetSnapshot(System.Guid,System.Type)
+  id: GetSnapshot(System.Guid,System.Type)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: GetSnapshot(Guid, Type)
+  nameWithType: IPlumber.GetSnapshot(Guid, Type)
+  fullName: MicroPlumberd.IPlumber.GetSnapshot(System.Guid, System.Type)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetSnapshot
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 255
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Gets the snapshot - deserializes snapshot from the stream. Stream is identified by snaphostType. Deserialization is done from the latest event (snaphost) in the stream.
+  example: []
+  syntax:
+    content: Task<Snapshot?> GetSnapshot(Guid id, Type snapshotType)
+    parameters:
+    - id: id
+      type: System.Guid
+      description: The identifier.
+    - id: snapshotType
+      type: System.Type
+      description: Type of the snapshot.
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.Snapshot}
+      description: The snapshot information containing the snaphost and relevant metadata.
+    content.vb: Function GetSnapshot(id As Guid, snapshotType As Type) As Task(Of Snapshot)
+  overload: MicroPlumberd.IPlumber.GetSnapshot*
 - uid: MicroPlumberd.IPlumber.AppendLink(System.String,MicroPlumberd.Metadata,System.Nullable{EventStore.Client.StreamState})
   commentId: M:MicroPlumberd.IPlumber.AppendLink(System.String,MicroPlumberd.Metadata,System.Nullable{EventStore.Client.StreamState})
   id: AppendLink(System.String,MicroPlumberd.Metadata,System.Nullable{EventStore.Client.StreamState})
@@ -933,21 +1154,27 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 62
+    startLine: 264
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Appends the link to a stream.
+  example: []
   syntax:
     content: Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null)
     parameters:
     - id: streamId
       type: System.String
+      description: The stream identifier.
     - id: metadata
       type: MicroPlumberd.Metadata
+      description: The metadata.
     - id: state
       type: System.Nullable{EventStore.Client.StreamState}
+      description: The expected state of the stream
     return:
       type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
+      description: ''
     content.vb: Function AppendLink(streamId As String, metadata As Metadata, state As StreamState? = Nothing) As Task(Of IWriteResult)
   overload: MicroPlumberd.IPlumber.AppendLink*
   nameWithType.vb: IPlumber.AppendLink(String, Metadata, StreamState?)
@@ -971,36 +1198,291 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 64
+    startLine: 278
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Subscribes the event handler persistently. This means that at least once an event is processed successfully, it wont be processed anymore.
+  example: []
   syntax:
     content: 'Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc, IEnumerable<string>? events, TEventHandler? model, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler'
     parameters:
     - id: mapFunc
       type: MicroPlumberd.TypeEventConverter
+      description: The map function.
     - id: events
       type: System.Collections.Generic.IEnumerable{System.String}
+      description: The events.
     - id: model
       type: '{TEventHandler}'
+      description: The model.
     - id: outputStream
       type: System.String
+      description: The output stream.
     - id: groupName
       type: System.String
+      description: Name of the group.
     - id: startFrom
       type: EventStore.Client.IPosition
+      description: The start from.
     - id: ensureOutputStreamProjection
       type: System.Boolean
+      description: if set to <code>true</code> [ensure output stream projection].
     typeParameters:
     - id: TEventHandler
+      description: The type of the event handler.
     return:
       type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+      description: ''
     content.vb: Function SubscribeEventHandlerPersistently(Of TEventHandler As {Class, IEventHandler})(mapFunc As TypeEventConverter, events As IEnumerable(Of String), model As TEventHandler, outputStream As String = Nothing, groupName As String = Nothing, startFrom As IPosition = Nothing, ensureOutputStreamProjection As Boolean = True) As Task(Of IAsyncDisposable)
   overload: MicroPlumberd.IPlumber.SubscribeEventHandlerPersistently*
   nameWithType.vb: IPlumber.SubscribeEventHandlerPersistently(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, String, IPosition, Boolean)
   fullName.vb: MicroPlumberd.IPlumber.SubscribeEventHandlerPersistently(Of TEventHandler)(MicroPlumberd.TypeEventConverter, System.Collections.Generic.IEnumerable(Of String), TEventHandler, String, String, EventStore.Client.IPosition, Boolean)
   name.vb: SubscribeEventHandlerPersistently(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, String, IPosition, Boolean)
+- uid: MicroPlumberd.IPlumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  commentId: M:MicroPlumberd.IPlumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  id: Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: Read<TOwner>(Guid, StreamPosition?, Direction?, long)
+  nameWithType: IPlumber.Read<TOwner>(Guid, StreamPosition?, Direction?, long)
+  fullName: MicroPlumberd.IPlumber.Read<TOwner>(System.Guid, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Read
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 293
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Reads stream and returns events.
+  example: []
+  syntax:
+    content: 'IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807) where TOwner : ITypeRegister'
+    parameters:
+    - id: id
+      type: System.Guid
+      description: The identifier (of the aggregate).
+    - id: start
+      type: System.Nullable{EventStore.Client.StreamPosition}
+      description: The stream start position.
+    - id: direction
+      type: System.Nullable{EventStore.Client.Direction}
+      description: The direction of the reading.
+    - id: maxCount
+      type: System.Int64
+      description: The maximum number of read events.
+    typeParameters:
+    - id: TOwner
+      description: The type of the owner (aggregate).
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+      description: ''
+    content.vb: Function Read(Of TOwner As ITypeRegister)(id As Guid, start As StreamPosition? = Nothing, direction As Direction? = Nothing, maxCount As Long = 9223372036854775807) As IAsyncEnumerable(Of Object)
+  overload: MicroPlumberd.IPlumber.Read*
+  nameWithType.vb: IPlumber.Read(Of TOwner)(Guid, StreamPosition?, Direction?, Long)
+  fullName.vb: MicroPlumberd.IPlumber.Read(Of TOwner)(System.Guid, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
+  name.vb: Read(Of TOwner)(Guid, StreamPosition?, Direction?, Long)
+- uid: MicroPlumberd.IPlumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  commentId: M:MicroPlumberd.IPlumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  id: Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: Read<TOwner>(StreamPosition?, Direction?, long)
+  nameWithType: IPlumber.Read<TOwner>(StreamPosition?, Direction?, long)
+  fullName: MicroPlumberd.IPlumber.Read<TOwner>(EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Read
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 303
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Reads stream and returns events.
+  example: []
+  syntax:
+    content: 'IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807) where TOwner : ITypeRegister'
+    parameters:
+    - id: start
+      type: System.Nullable{EventStore.Client.StreamPosition}
+      description: The stream start position.
+    - id: direction
+      type: System.Nullable{EventStore.Client.Direction}
+      description: The direction of the reading.
+    - id: maxCount
+      type: System.Int64
+      description: The maximum number of read events.
+    typeParameters:
+    - id: TOwner
+      description: The type of the owner(aggregate).
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+      description: ''
+    content.vb: Function Read(Of TOwner As ITypeRegister)(start As StreamPosition? = Nothing, direction As Direction? = Nothing, maxCount As Long = 9223372036854775807) As IAsyncEnumerable(Of Object)
+  overload: MicroPlumberd.IPlumber.Read*
+  nameWithType.vb: IPlumber.Read(Of TOwner)(StreamPosition?, Direction?, Long)
+  fullName.vb: MicroPlumberd.IPlumber.Read(Of TOwner)(EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
+  name.vb: Read(Of TOwner)(StreamPosition?, Direction?, Long)
+- uid: MicroPlumberd.IPlumber.Read(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  commentId: M:MicroPlumberd.IPlumber.Read(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  id: Read(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: Read(string, TypeEventConverter, StreamPosition?, Direction?, long)
+  nameWithType: IPlumber.Read(string, TypeEventConverter, StreamPosition?, Direction?, long)
+  fullName: MicroPlumberd.IPlumber.Read(string, MicroPlumberd.TypeEventConverter, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Read
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 314
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Reads stream and returns events.
+  example: []
+  syntax:
+    content: IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807)
+    parameters:
+    - id: streamId
+      type: System.String
+      description: The full stream name
+    - id: converter
+      type: MicroPlumberd.TypeEventConverter
+      description: The event-map converter.
+    - id: start
+      type: System.Nullable{EventStore.Client.StreamPosition}
+      description: The stream start position.
+    - id: direction
+      type: System.Nullable{EventStore.Client.Direction}
+      description: The direction of the reading.
+    - id: maxCount
+      type: System.Int64
+      description: The maximum number of read events.
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+      description: ''
+    content.vb: Function Read(streamId As String, converter As TypeEventConverter, start As StreamPosition? = Nothing, direction As Direction? = Nothing, maxCount As Long = 9223372036854775807) As IAsyncEnumerable(Of Object)
+  overload: MicroPlumberd.IPlumber.Read*
+  nameWithType.vb: IPlumber.Read(String, TypeEventConverter, StreamPosition?, Direction?, Long)
+  fullName.vb: MicroPlumberd.IPlumber.Read(String, MicroPlumberd.TypeEventConverter, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
+  name.vb: Read(String, TypeEventConverter, StreamPosition?, Direction?, Long)
+- uid: MicroPlumberd.IPlumber.ReadFull(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  commentId: M:MicroPlumberd.IPlumber.ReadFull(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  id: ReadFull(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: ReadFull(string, TypeEventConverter, StreamPosition?, Direction?, long)
+  nameWithType: IPlumber.ReadFull(string, TypeEventConverter, StreamPosition?, Direction?, long)
+  fullName: MicroPlumberd.IPlumber.ReadFull(string, MicroPlumberd.TypeEventConverter, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ReadFull
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 325
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Reads stream and returns event and metadata information.
+  example: []
+  syntax:
+    content: IAsyncEnumerable<(object, Metadata)> ReadFull(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807)
+    parameters:
+    - id: streamId
+      type: System.String
+      description: The full stream name
+    - id: converter
+      type: MicroPlumberd.TypeEventConverter
+      description: The event-map converter.
+    - id: start
+      type: System.Nullable{EventStore.Client.StreamPosition}
+      description: The stream start position.
+    - id: direction
+      type: System.Nullable{EventStore.Client.Direction}
+      description: The direction of the reading.
+    - id: maxCount
+      type: System.Int64
+      description: The maximum number of read events.
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{System.ValueTuple{System.Object,MicroPlumberd.Metadata}}
+      description: ''
+    content.vb: Function ReadFull(streamId As String, converter As TypeEventConverter, start As StreamPosition? = Nothing, direction As Direction? = Nothing, maxCount As Long = 9223372036854775807) As IAsyncEnumerable(Of (Object, Metadata))
+  overload: MicroPlumberd.IPlumber.ReadFull*
+  nameWithType.vb: IPlumber.ReadFull(String, TypeEventConverter, StreamPosition?, Direction?, Long)
+  fullName.vb: MicroPlumberd.IPlumber.ReadFull(String, MicroPlumberd.TypeEventConverter, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
+  name.vb: ReadFull(String, TypeEventConverter, StreamPosition?, Direction?, Long)
+- uid: MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
+  commentId: M:MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
+  id: AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: AppendSnapshot(object, Guid, long, StreamState)
+  nameWithType: IPlumber.AppendSnapshot(object, Guid, long, StreamState)
+  fullName: MicroPlumberd.IPlumber.AppendSnapshot(object, System.Guid, long, EventStore.Client.StreamState)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AppendSnapshot
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 336
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Appends the snapshot to a stream determined by the type of the snapshot/state.
+  example: []
+  syntax:
+    content: Task<IWriteResult> AppendSnapshot(object snapshot, Guid id, long version, StreamState state)
+    parameters:
+    - id: snapshot
+      type: System.Object
+      description: The snapshot.
+    - id: id
+      type: System.Guid
+      description: The identifier of the snapshot/state.
+    - id: version
+      type: System.Int64
+      description: The expected version.
+    - id: state
+      type: EventStore.Client.StreamState
+      description: The expected state of the stream.
+    return:
+      type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
+      description: ''
+    content.vb: Function AppendSnapshot(snapshot As Object, id As Guid, version As Long, state As StreamState) As Task(Of IWriteResult)
+  overload: MicroPlumberd.IPlumber.AppendSnapshot*
+  nameWithType.vb: IPlumber.AppendSnapshot(Object, Guid, Long, StreamState)
+  fullName.vb: MicroPlumberd.IPlumber.AppendSnapshot(Object, System.Guid, Long, EventStore.Client.StreamState)
+  name.vb: AppendSnapshot(Object, Guid, Long, StreamState)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -1115,13 +1597,13 @@ references:
   name: Config
   nameWithType: IPlumber.Config
   fullName: MicroPlumberd.IPlumber.Config
-- uid: MicroPlumberd.IPlumberConfig
-  commentId: T:MicroPlumberd.IPlumberConfig
+- uid: MicroPlumberd.IPlumberReadOnlyConfig
+  commentId: T:MicroPlumberd.IPlumberReadOnlyConfig
   parent: MicroPlumberd
-  href: MicroPlumberd.IPlumberConfig.html
-  name: IPlumberConfig
-  nameWithType: IPlumberConfig
-  fullName: MicroPlumberd.IPlumberConfig
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html
+  name: IPlumberReadOnlyConfig
+  nameWithType: IPlumberReadOnlyConfig
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig
 - uid: MicroPlumberd.IPlumber.Client*
   commentId: Overload:MicroPlumberd.IPlumber.Client
   href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Client
@@ -1844,7 +2326,7 @@ references:
   name.vb: Integer
 - uid: MicroPlumberd.IPlumber.Rehydrate*
   commentId: Overload:MicroPlumberd.IPlumber.Rehydrate
-  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Rehydrate__1___0_System_String_
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Rehydrate__1___0_System_String_System_Nullable_EventStore_Client_StreamPosition__
   name: Rehydrate
   nameWithType: IPlumber.Rehydrate
   fullName: MicroPlumberd.IPlumber.Rehydrate
@@ -1854,6 +2336,23 @@ references:
   name: T
   nameWithType: T
   fullName: T
+- uid: System.Nullable{EventStore.Client.StreamPosition}
+  commentId: T:System.Nullable{EventStore.Client.StreamPosition}
+  parent: System
+  definition: System.Nullable`1
+  name: StreamPosition?
+  nameWithType: StreamPosition?
+  fullName: EventStore.Client.StreamPosition?
+  spec.csharp:
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
 - uid: T
   name: T
   nameWithType: T
@@ -1905,6 +2404,94 @@ references:
   name: SaveNew
   nameWithType: IPlumber.SaveNew
   fullName: MicroPlumberd.IPlumber.SaveNew
+- uid: MicroPlumberd.IPlumber.GetSnapshot*
+  commentId: Overload:MicroPlumberd.IPlumber.GetSnapshot
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_GetSnapshot__1_System_Guid_
+  name: GetSnapshot
+  nameWithType: IPlumber.GetSnapshot
+  fullName: MicroPlumberd.IPlumber.GetSnapshot
+- uid: System.Threading.Tasks.Task{MicroPlumberd.Snapshot{{T}}}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.Snapshot{``0}}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Snapshot<T>>
+  nameWithType: Task<Snapshot<T>>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.Snapshot<T>>
+  nameWithType.vb: Task(Of Snapshot(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.Snapshot(Of T))
+  name.vb: Task(Of Snapshot(Of T))
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot
+    href: MicroPlumberd.Snapshot-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot
+    href: MicroPlumberd.Snapshot-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Threading.Tasks.Task{MicroPlumberd.Snapshot}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.Snapshot}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<Snapshot>
+  nameWithType: Task<Snapshot>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.Snapshot>
+  nameWithType.vb: Task(Of Snapshot)
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.Snapshot)
+  name.vb: Task(Of Snapshot)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.Snapshot
+    name: Snapshot
+    href: MicroPlumberd.Snapshot.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Snapshot
+    name: Snapshot
+    href: MicroPlumberd.Snapshot.html
+  - name: )
 - uid: MicroPlumberd.IPlumber.AppendLink*
   commentId: Overload:MicroPlumberd.IPlumber.AppendLink
   href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendLink_System_String_MicroPlumberd_Metadata_System_Nullable_EventStore_Client_StreamState__
@@ -1935,3 +2522,161 @@ references:
     name: StreamState
     isExternal: true
   - name: '?'
+- uid: MicroPlumberd.IPlumber.Read*
+  commentId: Overload:MicroPlumberd.IPlumber.Read
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Read__1_System_Guid_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
+  name: Read
+  nameWithType: IPlumber.Read
+  fullName: MicroPlumberd.IPlumber.Read
+- uid: System.Nullable{EventStore.Client.Direction}
+  commentId: T:System.Nullable{EventStore.Client.Direction}
+  parent: System
+  definition: System.Nullable`1
+  name: Direction?
+  nameWithType: Direction?
+  fullName: EventStore.Client.Direction?
+  spec.csharp:
+  - uid: EventStore.Client.Direction
+    name: Direction
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: EventStore.Client.Direction
+    name: Direction
+    isExternal: true
+  - name: '?'
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System.Collections.Generic.IAsyncEnumerable{System.Object}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{System.Object}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<object>
+  nameWithType: IAsyncEnumerable<object>
+  fullName: System.Collections.Generic.IAsyncEnumerable<object>
+  nameWithType.vb: IAsyncEnumerable(Of Object)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of Object)
+  name.vb: IAsyncEnumerable(Of Object)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Collections.Generic.IAsyncEnumerable`1
+  commentId: T:System.Collections.Generic.IAsyncEnumerable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<T>
+  nameWithType: IAsyncEnumerable<T>
+  fullName: System.Collections.Generic.IAsyncEnumerable<T>
+  nameWithType.vb: IAsyncEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of T)
+  name.vb: IAsyncEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.IPlumber.ReadFull*
+  commentId: Overload:MicroPlumberd.IPlumber.ReadFull
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_ReadFull_System_String_MicroPlumberd_TypeEventConverter_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
+  name: ReadFull
+  nameWithType: IPlumber.ReadFull
+  fullName: MicroPlumberd.IPlumber.ReadFull
+- uid: System.Collections.Generic.IAsyncEnumerable{System.ValueTuple{System.Object,MicroPlumberd.Metadata}}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{System.ValueTuple{System.Object,MicroPlumberd.Metadata}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<(object, Metadata)>
+  nameWithType: IAsyncEnumerable<(object, Metadata)>
+  fullName: System.Collections.Generic.IAsyncEnumerable<(object, MicroPlumberd.Metadata)>
+  nameWithType.vb: IAsyncEnumerable(Of (Object, Metadata))
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of (Object, MicroPlumberd.Metadata))
+  name.vb: IAsyncEnumerable(Of (Object, Metadata))
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  - name: )
+- uid: MicroPlumberd.IPlumber.AppendSnapshot*
+  commentId: Overload:MicroPlumberd.IPlumber.AppendSnapshot
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendSnapshot_System_Object_System_Guid_System_Int64_EventStore_Client_StreamState_
+  name: AppendSnapshot
+  nameWithType: IPlumber.AppendSnapshot
+  fullName: MicroPlumberd.IPlumber.AppendSnapshot

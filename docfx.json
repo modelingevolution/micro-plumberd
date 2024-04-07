@@ -8,7 +8,9 @@
           "exclude": [
             "**/obj/**",
             "**/bin/**",
-            "**/**Tests.csproj"
+            "**/**Tests.csproj",
+            "**/*Test*",
+            "**/*SourceGenerator*"
           ]
         }
       ],

@@ -5,6 +5,7 @@ items:
   id: CommandExecutionResults
   parent: MicroPlumberd.Services
   children:
+  - MicroPlumberd.Services.CommandExecutionResults.ErrorCode
   - MicroPlumberd.Services.CommandExecutionResults.ErrorData
   - MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
   - MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata,System.Object)
@@ -24,7 +25,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandExecutionResults
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 139
+    startLine: 143
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -59,7 +60,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Handle
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 141
+    startLine: 145
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -77,6 +78,35 @@ items:
   nameWithType.vb: CommandExecutionResults.Handle(Metadata, Object)
   fullName.vb: MicroPlumberd.Services.CommandExecutionResults.Handle(MicroPlumberd.Metadata, Object)
   name.vb: Handle(Metadata, Object)
+- uid: MicroPlumberd.Services.CommandExecutionResults.ErrorCode
+  commentId: P:MicroPlumberd.Services.CommandExecutionResults.ErrorCode
+  id: ErrorCode
+  parent: MicroPlumberd.Services.CommandExecutionResults
+  langs:
+  - csharp
+  - vb
+  name: ErrorCode
+  nameWithType: CommandExecutionResults.ErrorCode
+  fullName: MicroPlumberd.Services.CommandExecutionResults.ErrorCode
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/CommandBus.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ErrorCode
+    path: src/MicroPlumberd.Services/CommandBus.cs
+    startLine: 192
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public HttpStatusCode ErrorCode { get; }
+    parameters: []
+    return:
+      type: System.Net.HttpStatusCode
+    content.vb: Public Property ErrorCode As HttpStatusCode
+  overload: MicroPlumberd.Services.CommandExecutionResults.ErrorCode*
 - uid: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
   commentId: P:MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
   id: ErrorMessage
@@ -95,7 +125,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ErrorMessage
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 189
+    startLine: 195
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -124,7 +154,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ErrorData
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 190
+    startLine: 196
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -153,7 +183,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsSuccess
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 191
+    startLine: 197
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -182,7 +212,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsReady
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 192
+    startLine: 198
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -572,6 +602,47 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: MicroPlumberd.Services.CommandExecutionResults.ErrorCode*
+  commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.ErrorCode
+  href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_ErrorCode
+  name: ErrorCode
+  nameWithType: CommandExecutionResults.ErrorCode
+  fullName: MicroPlumberd.Services.CommandExecutionResults.ErrorCode
+- uid: System.Net.HttpStatusCode
+  commentId: T:System.Net.HttpStatusCode
+  parent: System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.httpstatuscode
+  name: HttpStatusCode
+  nameWithType: HttpStatusCode
+  fullName: System.Net.HttpStatusCode
+- uid: System.Net
+  commentId: N:System.Net
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net
+  nameWithType: System.Net
+  fullName: System.Net
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
 - uid: MicroPlumberd.Services.CommandExecutionResults.ErrorMessage*
   commentId: Overload:MicroPlumberd.Services.CommandExecutionResults.ErrorMessage
   href: MicroPlumberd.Services.CommandExecutionResults.html#MicroPlumberd_Services_CommandExecutionResults_ErrorMessage

@@ -43,6 +43,7 @@ items:
   - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CausationId
   - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.CorrelationId
   - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.Created
+  - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.SnapshotVersion
   - MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.TryGetValue``1(System.String,{TValue}@)
   - MicroPlumberd.Metadata.MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId
   - MicroPlumberd.Metadata.MicroPlumberd.Services.MetadataExtensions.SessionId
@@ -507,6 +508,32 @@ references:
     name: Metadata
     href: MicroPlumberd.Metadata.html
   - name: )
+- uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.SnapshotVersion
+  commentId: M:MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  parent: MicroPlumberd.MetadataExtensions
+  definition: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
+  name: SnapshotVersion(Metadata)
+  nameWithType: MetadataExtensions.SnapshotVersion(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+    name: SnapshotVersion
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+    name: SnapshotVersion
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
 - uid: MicroPlumberd.Metadata.MicroPlumberd.MetadataExtensions.TryGetValue``1(System.String,{TValue}@)
   commentId: M:MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
   parent: MicroPlumberd.MetadataExtensions
@@ -709,6 +736,30 @@ references:
   - uid: MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
     name: Created
     href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_Created_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+- uid: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
+  name: SnapshotVersion(Metadata)
+  nameWithType: MetadataExtensions.SnapshotVersion(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  spec.csharp:
+  - uid: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+    name: SnapshotVersion
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
+  - name: (
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+    name: SnapshotVersion
+    href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
   - name: (
   - uid: MicroPlumberd.Metadata
     name: Metadata

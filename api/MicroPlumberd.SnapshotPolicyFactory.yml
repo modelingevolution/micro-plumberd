@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.SnapshotPolicyFactory
+  commentId: T:MicroPlumberd.SnapshotPolicyFactory
+  id: SnapshotPolicyFactory
+  parent: MicroPlumberd
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: SnapshotPolicyFactory
+  nameWithType: SnapshotPolicyFactory
+  fullName: MicroPlumberd.SnapshotPolicyFactory
+  type: Delegate
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotPolicyFactory
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 31
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public delegate ISnapshotPolicy SnapshotPolicyFactory(Type owner)
+    parameters:
+    - id: owner
+      type: System.Type
+    return:
+      type: MicroPlumberd.ISnapshotPolicy
+    content.vb: Public Delegate Function SnapshotPolicyFactory(owner As Type) As ISnapshotPolicy
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: MicroPlumberd.ISnapshotPolicy
+  commentId: T:MicroPlumberd.ISnapshotPolicy
+  parent: MicroPlumberd
+  href: MicroPlumberd.ISnapshotPolicy.html
+  name: ISnapshotPolicy
+  nameWithType: ISnapshotPolicy
+  fullName: MicroPlumberd.ISnapshotPolicy
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

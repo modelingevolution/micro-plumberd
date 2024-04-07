@@ -1,0 +1,364 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IPlumberReadOnlyConfig
+  commentId: T:MicroPlumberd.IPlumberReadOnlyConfig
+  id: IPlumberReadOnlyConfig
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+  - MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
+  - MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+  langs:
+  - csharp
+  - vb
+  name: IPlumberReadOnlyConfig
+  nameWithType: IPlumberReadOnlyConfig
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IPlumberReadOnlyConfig
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IPlumberReadOnlyConfig : IExtension'
+    content.vb: Public Interface IPlumberReadOnlyConfig Inherits IExtension
+  inheritedMembers:
+  - MicroPlumberd.IExtension.GetExtension``1
+  extensionMethods:
+  - MicroPlumberd.IPlumberReadOnlyConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
+  commentId: P:MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
+  id: SerializerFactory
+  parent: MicroPlumberd.IPlumberReadOnlyConfig
+  langs:
+  - csharp
+  - vb
+  name: SerializerFactory
+  nameWithType: IPlumberReadOnlyConfig.SerializerFactory
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SerializerFactory
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Func<Type, IObjectSerializer> SerializerFactory { get; }
+    parameters: []
+    return:
+      type: System.Func{System.Type,MicroPlumberd.IObjectSerializer}
+    content.vb: ReadOnly Property SerializerFactory As Func(Of Type, IObjectSerializer)
+  overload: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory*
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+  commentId: P:MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+  id: Conventions
+  parent: MicroPlumberd.IPlumberReadOnlyConfig
+  langs:
+  - csharp
+  - vb
+  name: Conventions
+  nameWithType: IPlumberReadOnlyConfig.Conventions
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Conventions
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 12
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IReadOnlyConventions Conventions { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.IReadOnlyConventions
+    content.vb: ReadOnly Property Conventions As IReadOnlyConventions
+  overload: MicroPlumberd.IPlumberReadOnlyConfig.Conventions*
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+  commentId: P:MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+  id: ServiceProvider
+  parent: MicroPlumberd.IPlumberReadOnlyConfig
+  langs:
+  - csharp
+  - vb
+  name: ServiceProvider
+  nameWithType: IPlumberReadOnlyConfig.ServiceProvider
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ServiceProvider
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 13
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IServiceProvider ServiceProvider { get; }
+    parameters: []
+    return:
+      type: System.IServiceProvider
+    content.vb: ReadOnly Property ServiceProvider As IServiceProvider
+  overload: MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IExtension.GetExtension``1
+  commentId: M:MicroPlumberd.IExtension.GetExtension``1
+  parent: MicroPlumberd.IExtension
+  href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  name: GetExtension<T>()
+  nameWithType: IExtension.GetExtension<T>()
+  fullName: MicroPlumberd.IExtension.GetExtension<T>()
+  nameWithType.vb: IExtension.GetExtension(Of T)()
+  fullName.vb: MicroPlumberd.IExtension.GetExtension(Of T)()
+  name.vb: GetExtension(Of T)()
+  spec.csharp:
+  - uid: MicroPlumberd.IExtension.GetExtension``1
+    name: GetExtension
+    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  - name: <
+  - name: T
+  - name: '>'
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IExtension.GetExtension``1
+    name: GetExtension
+    href: MicroPlumberd.IExtension.html#MicroPlumberd_IExtension_GetExtension__1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: (
+  - name: )
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
+  definition: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
+  name: ServicesConfig(IPlumberReadOnlyConfig)
+  nameWithType: PlumberdConventionsExtensions.ServicesConfig(IPlumberReadOnlyConfig)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+    name: ServicesConfig
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
+  - name: (
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig
+    name: IPlumberReadOnlyConfig
+    href: MicroPlumberd.IPlumberReadOnlyConfig.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+    name: ServicesConfig
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
+  - name: (
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig
+    name: IPlumberReadOnlyConfig
+    href: MicroPlumberd.IPlumberReadOnlyConfig.html
+  - name: )
+- uid: MicroPlumberd.IExtension
+  commentId: T:MicroPlumberd.IExtension
+  parent: MicroPlumberd
+  href: MicroPlumberd.IExtension.html
+  name: IExtension
+  nameWithType: IExtension
+  fullName: MicroPlumberd.IExtension
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
+  name: ServicesConfig(IPlumberReadOnlyConfig)
+  nameWithType: PlumberdConventionsExtensions.ServicesConfig(IPlumberReadOnlyConfig)
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+    name: ServicesConfig
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
+  - name: (
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig
+    name: IPlumberReadOnlyConfig
+    href: MicroPlumberd.IPlumberReadOnlyConfig.html
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
+    name: ServicesConfig
+    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
+  - name: (
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig
+    name: IPlumberReadOnlyConfig
+    href: MicroPlumberd.IPlumberReadOnlyConfig.html
+  - name: )
+- uid: MicroPlumberd.Services.PlumberdConventionsExtensions
+  commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html
+  name: PlumberdConventionsExtensions
+  nameWithType: PlumberdConventionsExtensions
+  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
+- uid: MicroPlumberd.Services
+  commentId: N:MicroPlumberd.Services
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services
+  nameWithType: MicroPlumberd.Services
+  fullName: MicroPlumberd.Services
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory*
+  commentId: Overload:MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_SerializerFactory
+  name: SerializerFactory
+  nameWithType: IPlumberReadOnlyConfig.SerializerFactory
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
+- uid: System.Func{System.Type,MicroPlumberd.IObjectSerializer}
+  commentId: T:System.Func{System.Type,MicroPlumberd.IObjectSerializer}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<Type, IObjectSerializer>
+  nameWithType: Func<Type, IObjectSerializer>
+  fullName: System.Func<System.Type, MicroPlumberd.IObjectSerializer>
+  nameWithType.vb: Func(Of Type, IObjectSerializer)
+  fullName.vb: System.Func(Of System.Type, MicroPlumberd.IObjectSerializer)
+  name.vb: Func(Of Type, IObjectSerializer)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.IObjectSerializer
+    name: IObjectSerializer
+    href: MicroPlumberd.IObjectSerializer.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Type
+    name: Type
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.type
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.IObjectSerializer
+    name: IObjectSerializer
+    href: MicroPlumberd.IObjectSerializer.html
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.Conventions*
+  commentId: Overload:MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_Conventions
+  name: Conventions
+  nameWithType: IPlumberReadOnlyConfig.Conventions
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+- uid: MicroPlumberd.IReadOnlyConventions
+  commentId: T:MicroPlumberd.IReadOnlyConventions
+  parent: MicroPlumberd
+  href: MicroPlumberd.IReadOnlyConventions.html
+  name: IReadOnlyConventions
+  nameWithType: IReadOnlyConventions
+  fullName: MicroPlumberd.IReadOnlyConventions
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider*
+  commentId: Overload:MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_ServiceProvider
+  name: ServiceProvider
+  nameWithType: IPlumberReadOnlyConfig.ServiceProvider
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+- uid: System.IServiceProvider
+  commentId: T:System.IServiceProvider
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  name: IServiceProvider
+  nameWithType: IServiceProvider
+  fullName: System.IServiceProvider

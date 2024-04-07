@@ -1,0 +1,153 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ISnapshotPolicy
+  commentId: T:MicroPlumberd.ISnapshotPolicy
+  id: ISnapshotPolicy
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot(System.Object,System.Nullable{MicroPlumberd.StateInfo})
+  langs:
+  - csharp
+  - vb
+  name: ISnapshotPolicy
+  nameWithType: ISnapshotPolicy
+  fullName: MicroPlumberd.ISnapshotPolicy
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ISnapshotPolicy
+    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+    startLine: 57
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface ISnapshotPolicy
+    content.vb: Public Interface ISnapshotPolicy
+- uid: MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot(System.Object,System.Nullable{MicroPlumberd.StateInfo})
+  commentId: M:MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot(System.Object,System.Nullable{MicroPlumberd.StateInfo})
+  id: ShouldMakeSnapshot(System.Object,System.Nullable{MicroPlumberd.StateInfo})
+  parent: MicroPlumberd.ISnapshotPolicy
+  langs:
+  - csharp
+  - vb
+  name: ShouldMakeSnapshot(object, StateInfo?)
+  nameWithType: ISnapshotPolicy.ShouldMakeSnapshot(object, StateInfo?)
+  fullName: MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot(object, MicroPlumberd.StateInfo?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ShouldMakeSnapshot
+    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+    startLine: 59
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: bool ShouldMakeSnapshot(object owner, StateInfo? info)
+    parameters:
+    - id: owner
+      type: System.Object
+    - id: info
+      type: System.Nullable{MicroPlumberd.StateInfo}
+    return:
+      type: System.Boolean
+    content.vb: Function ShouldMakeSnapshot(owner As Object, info As StateInfo?) As Boolean
+  overload: MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot*
+  nameWithType.vb: ISnapshotPolicy.ShouldMakeSnapshot(Object, StateInfo?)
+  fullName.vb: MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot(Object, MicroPlumberd.StateInfo?)
+  name.vb: ShouldMakeSnapshot(Object, StateInfo?)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot*
+  commentId: Overload:MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot
+  href: MicroPlumberd.ISnapshotPolicy.html#MicroPlumberd_ISnapshotPolicy_ShouldMakeSnapshot_System_Object_System_Nullable_MicroPlumberd_StateInfo__
+  name: ShouldMakeSnapshot
+  nameWithType: ISnapshotPolicy.ShouldMakeSnapshot
+  fullName: MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Nullable{MicroPlumberd.StateInfo}
+  commentId: T:System.Nullable{MicroPlumberd.StateInfo}
+  parent: System
+  definition: System.Nullable`1
+  href: MicroPlumberd.StateInfo.html
+  name: StateInfo?
+  nameWithType: StateInfo?
+  fullName: MicroPlumberd.StateInfo?
+  spec.csharp:
+  - uid: MicroPlumberd.StateInfo
+    name: StateInfo
+    href: MicroPlumberd.StateInfo.html
+  - name: '?'
+  spec.vb:
+  - uid: MicroPlumberd.StateInfo
+    name: StateInfo
+    href: MicroPlumberd.StateInfo.html
+  - name: '?'
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

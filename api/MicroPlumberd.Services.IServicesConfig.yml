@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IServicesConfig
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 27
+    startLine: 28
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -45,7 +45,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: DefaultTimeout
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

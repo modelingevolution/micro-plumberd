@@ -28,20 +28,22 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AggregateBase
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 7
+    startLine: 32
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'public abstract class AggregateBase<TState> : IVersioned, IId where TState : new()'
+    content: 'public abstract class AggregateBase<TState> : IVersioned, IId, IStatefull<TState>, IStatefull where TState : new()'
     typeParameters:
     - id: TState
-    content.vb: Public MustInherit Class AggregateBase(Of TState As New) Implements IVersioned, IId
+    content.vb: Public MustInherit Class AggregateBase(Of TState As New) Implements IVersioned, IId, IStatefull(Of TState), IStatefull
   inheritance:
   - System.Object
   implements:
   - MicroPlumberd.IVersioned
   - MicroPlumberd.IId
+  - MicroPlumberd.IStatefull{{TState}}
+  - MicroPlumberd.IStatefull
   inheritedMembers:
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -71,7 +73,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 7
+    startLine: 32
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -103,7 +105,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: State
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 12
+    startLine: 47
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -134,7 +136,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 14
+    startLine: 49
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -168,7 +170,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 15
+    startLine: 51
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -202,7 +204,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 17
+    startLine: 53
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -233,7 +235,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendPendingChange
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 19
+    startLine: 55
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -265,7 +267,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 25
+    startLine: 61
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -299,7 +301,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 33
+    startLine: 69
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -327,7 +329,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Given
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 38
+    startLine: 74
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -377,6 +379,40 @@ references:
   name: IId
   nameWithType: IId
   fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IStatefull{{TState}}
+  commentId: T:MicroPlumberd.IStatefull{`0}
+  parent: MicroPlumberd
+  definition: MicroPlumberd.IStatefull`1
+  href: MicroPlumberd.IStatefull-1.html
+  name: IStatefull<TState>
+  nameWithType: IStatefull<TState>
+  fullName: MicroPlumberd.IStatefull<TState>
+  nameWithType.vb: IStatefull(Of TState)
+  fullName.vb: MicroPlumberd.IStatefull(Of TState)
+  name.vb: IStatefull(Of TState)
+  spec.csharp:
+  - uid: MicroPlumberd.IStatefull`1
+    name: IStatefull
+    href: MicroPlumberd.IStatefull-1.html
+  - name: <
+  - name: TState
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IStatefull`1
+    name: IStatefull
+    href: MicroPlumberd.IStatefull-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TState
+  - name: )
+- uid: MicroPlumberd.IStatefull
+  commentId: T:MicroPlumberd.IStatefull
+  parent: MicroPlumberd
+  href: MicroPlumberd.IStatefull.html
+  name: IStatefull
+  nameWithType: IStatefull
+  fullName: MicroPlumberd.IStatefull
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
   parent: System.Object
@@ -603,6 +639,31 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: MicroPlumberd.IStatefull`1
+  commentId: T:MicroPlumberd.IStatefull`1
+  href: MicroPlumberd.IStatefull-1.html
+  name: IStatefull<T>
+  nameWithType: IStatefull<T>
+  fullName: MicroPlumberd.IStatefull<T>
+  nameWithType.vb: IStatefull(Of T)
+  fullName.vb: MicroPlumberd.IStatefull(Of T)
+  name.vb: IStatefull(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.IStatefull`1
+    name: IStatefull
+    href: MicroPlumberd.IStatefull-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IStatefull`1
+    name: IStatefull
+    href: MicroPlumberd.IStatefull-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.AggregateBase`1.#ctor*
   commentId: Overload:MicroPlumberd.AggregateBase`1.#ctor
   href: MicroPlumberd.AggregateBase-1.html#MicroPlumberd_AggregateBase_1__ctor_System_Guid_

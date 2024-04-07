@@ -8,6 +8,7 @@ items:
   - MicroPlumberd.MetadataExtensions.CausationId(MicroPlumberd.Metadata)
   - MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
   - MicroPlumberd.MetadataExtensions.Created(MicroPlumberd.Metadata)
+  - MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
   - MicroPlumberd.MetadataExtensions.TryGetValue``1(MicroPlumberd.Metadata,System.String,``0@)
   langs:
   - csharp
@@ -23,7 +24,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataExtensions
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 179
+    startLine: 228
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -59,7 +60,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Created
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 181
+    startLine: 230
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -72,6 +73,38 @@ items:
       type: System.Nullable{System.DateTimeOffset}
     content.vb: Public Shared Function Created(m As Metadata) As DateTimeOffset?
   overload: MicroPlumberd.MetadataExtensions.Created*
+- uid: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  id: SnapshotVersion(MicroPlumberd.Metadata)
+  isExtensionMethod: true
+  parent: MicroPlumberd.MetadataExtensions
+  langs:
+  - csharp
+  - vb
+  name: SnapshotVersion(Metadata)
+  nameWithType: MetadataExtensions.SnapshotVersion(Metadata)
+  fullName: MicroPlumberd.MetadataExtensions.SnapshotVersion(MicroPlumberd.Metadata)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotVersion
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 238
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static long? SnapshotVersion(this Metadata m)
+    parameters:
+    - id: m
+      type: MicroPlumberd.Metadata
+    return:
+      type: System.Nullable{System.Int64}
+    content.vb: Public Shared Function SnapshotVersion(m As Metadata) As Long?
+  overload: MicroPlumberd.MetadataExtensions.SnapshotVersion*
 - uid: MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
   commentId: M:MicroPlumberd.MetadataExtensions.CorrelationId(MicroPlumberd.Metadata)
   id: CorrelationId(MicroPlumberd.Metadata)
@@ -91,7 +124,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CorrelationId
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 188
+    startLine: 244
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -123,7 +156,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CausationId
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 194
+    startLine: 250
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -155,7 +188,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TryGetValue
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 200
+    startLine: 256
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -482,6 +515,35 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: MicroPlumberd.MetadataExtensions.SnapshotVersion*
+  commentId: Overload:MicroPlumberd.MetadataExtensions.SnapshotVersion
+  href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_SnapshotVersion_MicroPlumberd_Metadata_
+  name: SnapshotVersion
+  nameWithType: MetadataExtensions.SnapshotVersion
+  fullName: MicroPlumberd.MetadataExtensions.SnapshotVersion
+- uid: System.Nullable{System.Int64}
+  commentId: T:System.Nullable{System.Int64}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long?
+  nameWithType: long?
+  fullName: long?
+  nameWithType.vb: Long?
+  fullName.vb: Long?
+  name.vb: Long?
+  spec.csharp:
+  - uid: System.Int64
+    name: long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
+  spec.vb:
+  - uid: System.Int64
+    name: Long
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.int64
+  - name: '?'
 - uid: MicroPlumberd.MetadataExtensions.CorrelationId*
   commentId: Overload:MicroPlumberd.MetadataExtensions.CorrelationId
   href: MicroPlumberd.MetadataExtensions.html#MicroPlumberd_MetadataExtensions_CorrelationId_MicroPlumberd_Metadata_

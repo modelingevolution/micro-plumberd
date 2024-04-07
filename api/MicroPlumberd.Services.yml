@@ -6,11 +6,15 @@ items:
   children:
   - MicroPlumberd.Services.AppCommandStream
   - MicroPlumberd.Services.CommandExecutionResults
+  - MicroPlumberd.Services.CommandHandlerAttribute
+  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1
   - MicroPlumberd.Services.CommandHandlerMetadataExtensions
   - MicroPlumberd.Services.CommandMessageTypes
   - MicroPlumberd.Services.CommandName
   - MicroPlumberd.Services.ContainerExtensions
   - MicroPlumberd.Services.GroupNameFromCommandHandler
+  - MicroPlumberd.Services.ICommandHandler
+  - MicroPlumberd.Services.ICommandHandler`1
   - MicroPlumberd.Services.IServiceTypeRegister
   - MicroPlumberd.Services.IServicesConfig
   - MicroPlumberd.Services.IServicesConvention
@@ -21,8 +25,8 @@ items:
   - MicroPlumberd.Services.PlumberdConventionsExtensions
   - MicroPlumberd.Services.SessionStreamFromSessionId
   - MicroPlumberd.Services.StreamPositionExtensions
-  - MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
-  - MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
+  - MicroPlumberd.Services.ThrowsFaultExceptionAttribute
+  - MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
   langs:
   - csharp
   - vb
@@ -33,44 +37,50 @@ items:
   assemblies:
   - MicroPlumberd.Services
 references:
-- uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
-  commentId: T:MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
-  href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute-1.html
-  name: ThrowsFaultCommandExceptionAttribute<TMessage>
-  nameWithType: ThrowsFaultCommandExceptionAttribute<TMessage>
-  fullName: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute<TMessage>
-  nameWithType.vb: ThrowsFaultCommandExceptionAttribute(Of TMessage)
-  fullName.vb: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute(Of TMessage)
-  name.vb: ThrowsFaultCommandExceptionAttribute(Of TMessage)
+- uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
+  commentId: T:MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
+  href: MicroPlumberd.Services.ThrowsFaultExceptionAttribute-1.html
+  name: ThrowsFaultExceptionAttribute<TMessage>
+  nameWithType: ThrowsFaultExceptionAttribute<TMessage>
+  fullName: MicroPlumberd.Services.ThrowsFaultExceptionAttribute<TMessage>
+  nameWithType.vb: ThrowsFaultExceptionAttribute(Of TMessage)
+  fullName.vb: MicroPlumberd.Services.ThrowsFaultExceptionAttribute(Of TMessage)
+  name.vb: ThrowsFaultExceptionAttribute(Of TMessage)
   spec.csharp:
-  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
-    name: ThrowsFaultCommandExceptionAttribute
-    href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute-1.html
+  - uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
+    name: ThrowsFaultExceptionAttribute
+    href: MicroPlumberd.Services.ThrowsFaultExceptionAttribute-1.html
   - name: <
   - name: TMessage
   - name: '>'
   spec.vb:
-  - uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute`1
-    name: ThrowsFaultCommandExceptionAttribute
-    href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute-1.html
+  - uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
+    name: ThrowsFaultExceptionAttribute
+    href: MicroPlumberd.Services.ThrowsFaultExceptionAttribute-1.html
   - name: (
   - name: Of
   - name: " "
   - name: TMessage
   - name: )
-- uid: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
-  commentId: T:MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+- uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute
+  commentId: T:MicroPlumberd.Services.ThrowsFaultExceptionAttribute
   parent: MicroPlumberd.Services
-  href: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute.html
-  name: ThrowsFaultCommandExceptionAttribute
-  nameWithType: ThrowsFaultCommandExceptionAttribute
-  fullName: MicroPlumberd.Services.ThrowsFaultCommandExceptionAttribute
+  href: MicroPlumberd.Services.ThrowsFaultExceptionAttribute.html
+  name: ThrowsFaultExceptionAttribute
+  nameWithType: ThrowsFaultExceptionAttribute
+  fullName: MicroPlumberd.Services.ThrowsFaultExceptionAttribute
 - uid: MicroPlumberd.Services.CommandExecutionResults
   commentId: T:MicroPlumberd.Services.CommandExecutionResults
   href: MicroPlumberd.Services.CommandExecutionResults.html
   name: CommandExecutionResults
   nameWithType: CommandExecutionResults
   fullName: MicroPlumberd.Services.CommandExecutionResults
+- uid: MicroPlumberd.Services.CommandHandlerAttribute
+  commentId: T:MicroPlumberd.Services.CommandHandlerAttribute
+  href: MicroPlumberd.Services.CommandHandlerAttribute.html
+  name: CommandHandlerAttribute
+  nameWithType: CommandHandlerAttribute
+  fullName: MicroPlumberd.Services.CommandHandlerAttribute
 - uid: MicroPlumberd.Services.MetadataExtensions
   commentId: T:MicroPlumberd.Services.MetadataExtensions
   parent: MicroPlumberd.Services
@@ -97,6 +107,38 @@ references:
   name: ContainerExtensions
   nameWithType: ContainerExtensions
   fullName: MicroPlumberd.Services.ContainerExtensions
+- uid: MicroPlumberd.Services.ICommandHandler
+  commentId: T:MicroPlumberd.Services.ICommandHandler
+  parent: MicroPlumberd.Services
+  href: MicroPlumberd.Services.ICommandHandler.html
+  name: ICommandHandler
+  nameWithType: ICommandHandler
+  fullName: MicroPlumberd.Services.ICommandHandler
+- uid: MicroPlumberd.Services.ICommandHandler`1
+  commentId: T:MicroPlumberd.Services.ICommandHandler`1
+  href: MicroPlumberd.Services.ICommandHandler-1.html
+  name: ICommandHandler<TCommand>
+  nameWithType: ICommandHandler<TCommand>
+  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>
+  nameWithType.vb: ICommandHandler(Of TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand)
+  name.vb: ICommandHandler(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler`1
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
 - uid: MicroPlumberd.Services.IServiceTypeRegister
   commentId: T:MicroPlumberd.Services.IServiceTypeRegister
   href: MicroPlumberd.Services.IServiceTypeRegister.html
@@ -180,6 +222,31 @@ references:
   name: PlumberdConventionsExtensions
   nameWithType: PlumberdConventionsExtensions
   fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  commentId: T:MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+  href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html
+  name: CommandHandlerAttributeValidator<T>
+  nameWithType: CommandHandlerAttributeValidator<T>
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T)
+  name.vb: CommandHandlerAttributeValidator(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+    name: CommandHandlerAttributeValidator
+    href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
+    name: CommandHandlerAttributeValidator
+    href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.Services
   commentId: N:MicroPlumberd.Services
   href: MicroPlumberd.html

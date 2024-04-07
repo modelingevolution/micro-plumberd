@@ -1,0 +1,263 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IStatefull
+  commentId: T:MicroPlumberd.IStatefull
+  id: IStatefull
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IStatefull.Initialize(System.Object,MicroPlumberd.StateInfo)
+  - MicroPlumberd.IStatefull.InitializedWith
+  - MicroPlumberd.IStatefull.SnapshotType
+  - MicroPlumberd.IStatefull.State
+  langs:
+  - csharp
+  - vb
+  name: IStatefull
+  nameWithType: IStatefull
+  fullName: MicroPlumberd.IStatefull
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IStatefull
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IStatefull
+    content.vb: Public Interface IStatefull
+- uid: MicroPlumberd.IStatefull.State
+  commentId: P:MicroPlumberd.IStatefull.State
+  id: State
+  parent: MicroPlumberd.IStatefull
+  langs:
+  - csharp
+  - vb
+  name: State
+  nameWithType: IStatefull.State
+  fullName: MicroPlumberd.IStatefull.State
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: State
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: object State { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property State As Object
+  overload: MicroPlumberd.IStatefull.State*
+- uid: MicroPlumberd.IStatefull.Initialize(System.Object,MicroPlumberd.StateInfo)
+  commentId: M:MicroPlumberd.IStatefull.Initialize(System.Object,MicroPlumberd.StateInfo)
+  id: Initialize(System.Object,MicroPlumberd.StateInfo)
+  parent: MicroPlumberd.IStatefull
+  langs:
+  - csharp
+  - vb
+  name: Initialize(object, StateInfo)
+  nameWithType: IStatefull.Initialize(object, StateInfo)
+  fullName: MicroPlumberd.IStatefull.Initialize(object, MicroPlumberd.StateInfo)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Initialize
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: void Initialize(object state, StateInfo version)
+    parameters:
+    - id: state
+      type: System.Object
+    - id: version
+      type: MicroPlumberd.StateInfo
+    content.vb: Sub Initialize(state As Object, version As StateInfo)
+  overload: MicroPlumberd.IStatefull.Initialize*
+  nameWithType.vb: IStatefull.Initialize(Object, StateInfo)
+  fullName.vb: MicroPlumberd.IStatefull.Initialize(Object, MicroPlumberd.StateInfo)
+  name.vb: Initialize(Object, StateInfo)
+- uid: MicroPlumberd.IStatefull.SnapshotType
+  commentId: P:MicroPlumberd.IStatefull.SnapshotType
+  id: SnapshotType
+  parent: MicroPlumberd.IStatefull
+  langs:
+  - csharp
+  - vb
+  name: SnapshotType
+  nameWithType: IStatefull.SnapshotType
+  fullName: MicroPlumberd.IStatefull.SnapshotType
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SnapshotType
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Type SnapshotType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: ReadOnly Property SnapshotType As Type
+  overload: MicroPlumberd.IStatefull.SnapshotType*
+- uid: MicroPlumberd.IStatefull.InitializedWith
+  commentId: P:MicroPlumberd.IStatefull.InitializedWith
+  id: InitializedWith
+  parent: MicroPlumberd.IStatefull
+  langs:
+  - csharp
+  - vb
+  name: InitializedWith
+  nameWithType: IStatefull.InitializedWith
+  fullName: MicroPlumberd.IStatefull.InitializedWith
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: InitializedWith
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: StateInfo? InitializedWith { get; }
+    parameters: []
+    return:
+      type: System.Nullable{MicroPlumberd.StateInfo}
+    content.vb: ReadOnly Property InitializedWith As StateInfo?
+  overload: MicroPlumberd.IStatefull.InitializedWith*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IStatefull.State*
+  commentId: Overload:MicroPlumberd.IStatefull.State
+  href: MicroPlumberd.IStatefull.html#MicroPlumberd_IStatefull_State
+  name: State
+  nameWithType: IStatefull.State
+  fullName: MicroPlumberd.IStatefull.State
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IStatefull.Initialize*
+  commentId: Overload:MicroPlumberd.IStatefull.Initialize
+  href: MicroPlumberd.IStatefull.html#MicroPlumberd_IStatefull_Initialize_System_Object_MicroPlumberd_StateInfo_
+  name: Initialize
+  nameWithType: IStatefull.Initialize
+  fullName: MicroPlumberd.IStatefull.Initialize
+- uid: MicroPlumberd.StateInfo
+  commentId: T:MicroPlumberd.StateInfo
+  parent: MicroPlumberd
+  href: MicroPlumberd.StateInfo.html
+  name: StateInfo
+  nameWithType: StateInfo
+  fullName: MicroPlumberd.StateInfo
+- uid: MicroPlumberd.IStatefull.SnapshotType*
+  commentId: Overload:MicroPlumberd.IStatefull.SnapshotType
+  href: MicroPlumberd.IStatefull.html#MicroPlumberd_IStatefull_SnapshotType
+  name: SnapshotType
+  nameWithType: IStatefull.SnapshotType
+  fullName: MicroPlumberd.IStatefull.SnapshotType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: MicroPlumberd.IStatefull.InitializedWith*
+  commentId: Overload:MicroPlumberd.IStatefull.InitializedWith
+  href: MicroPlumberd.IStatefull.html#MicroPlumberd_IStatefull_InitializedWith
+  name: InitializedWith
+  nameWithType: IStatefull.InitializedWith
+  fullName: MicroPlumberd.IStatefull.InitializedWith
+- uid: System.Nullable{MicroPlumberd.StateInfo}
+  commentId: T:System.Nullable{MicroPlumberd.StateInfo}
+  parent: System
+  definition: System.Nullable`1
+  href: MicroPlumberd.StateInfo.html
+  name: StateInfo?
+  nameWithType: StateInfo?
+  fullName: MicroPlumberd.StateInfo?
+  spec.csharp:
+  - uid: MicroPlumberd.StateInfo
+    name: StateInfo
+    href: MicroPlumberd.StateInfo.html
+  - name: '?'
+  spec.vb:
+  - uid: MicroPlumberd.StateInfo
+    name: StateInfo
+    href: MicroPlumberd.StateInfo.html
+  - name: '?'
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

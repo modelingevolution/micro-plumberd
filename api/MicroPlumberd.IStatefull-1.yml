@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IStatefull`1
+  commentId: T:MicroPlumberd.IStatefull`1
+  id: IStatefull`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IStatefull`1.State
+  langs:
+  - csharp
+  - vb
+  name: IStatefull<T>
+  nameWithType: IStatefull<T>
+  fullName: MicroPlumberd.IStatefull<T>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IStatefull
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 25
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public interface IStatefull<out T>
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IStatefull(Of Out T)
+  nameWithType.vb: IStatefull(Of T)
+  fullName.vb: MicroPlumberd.IStatefull(Of T)
+  name.vb: IStatefull(Of T)
+- uid: MicroPlumberd.IStatefull`1.State
+  commentId: P:MicroPlumberd.IStatefull`1.State
+  id: State
+  parent: MicroPlumberd.IStatefull`1
+  langs:
+  - csharp
+  - vb
+  name: State
+  nameWithType: IStatefull<T>.State
+  fullName: MicroPlumberd.IStatefull<T>.State
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: State
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 27
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: T State { get; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: ReadOnly Property State As T
+  overload: MicroPlumberd.IStatefull`1.State*
+  nameWithType.vb: IStatefull(Of T).State
+  fullName.vb: MicroPlumberd.IStatefull(Of T).State
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IStatefull`1.State*
+  commentId: Overload:MicroPlumberd.IStatefull`1.State
+  href: MicroPlumberd.IStatefull-1.html#MicroPlumberd_IStatefull_1_State
+  name: State
+  nameWithType: IStatefull<T>.State
+  fullName: MicroPlumberd.IStatefull<T>.State
+  nameWithType.vb: IStatefull(Of T).State
+  fullName.vb: MicroPlumberd.IStatefull(Of T).State
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
