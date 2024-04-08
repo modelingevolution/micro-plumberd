@@ -10,6 +10,7 @@ using Docker.DotNet.Models;
 using MicroPlumberd.Services;
 
 using FluentAssertions;
+using MicroPlumberd.Protobuf;
 using MicroPlumberd.Testing;
 using ModelingEvolution.DirectConnect;
 using Xunit.Abstractions;
@@ -34,7 +35,41 @@ namespace MicroPlumberd.Tests.Integration.Services
             _serverTestApp = new TestAppHost(testOutputHelper);
             _clientTestApp = new TestAppHost(testOutputHelper);
         }
+        [Fact]
+        public async Task HandleAggregateCommandsWithProtoSerialization()
+        {
+            await _eventStore.StartInDocker();
 
+            _serverTestApp.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=>x.SerializerFactory = x => new ProtoBuffObjectSerialization())
+                .AddCommandHandler<BooCommandHandler>());
+
+            var srv = await _serverTestApp.StartAsync();
+            await Task.Delay(1000);
+
+
+            var client = await _clientTestApp.Configure(x => x
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x =>
+                    {
+                        x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(120);
+                        x.SerializerFactory = x => new ProtoBuffObjectSerialization();
+                    }))
+                .StartAsync();
+
+            var bus = client.GetRequiredService<ICommandBus>();
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            var recipientId = Guid.NewGuid();
+            await bus.SendAsync(recipientId, new CreateBoo() { Name = $"Name1" });
+            for (int i = 0; i < 1000; i++)
+                await bus.SendAsync(recipientId, new RefineBoo() { Name = $"Name_{i}" });
+
+            _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed / 101);
+
+            await Task.Delay(3000);
+
+        }
         [Fact]
         public async Task HandleAggregateCommands()
         {
@@ -45,7 +80,7 @@ namespace MicroPlumberd.Tests.Integration.Services
                 .AddCommandHandler<BooCommandHandler>());
 
             var srv = await _serverTestApp.StartAsync();
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             
             var client = await _clientTestApp.Configure(x => x

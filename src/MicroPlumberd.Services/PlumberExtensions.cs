@@ -1,6 +1,6 @@
-﻿using EventStore.Client;
+﻿using System.Runtime.CompilerServices;
+using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
-
 namespace MicroPlumberd.Services;
 
 public static class PlumberExtensions

@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 using MicroPlumberd.Services;
 using MicroPlumberd.Services.Uniqueness;
 using ModelingEvolution.DirectConnect;
+using ProtoBuf;
 
 namespace MicroPlumberd.Tests.App.Domain;
 
@@ -38,7 +39,7 @@ public partial class FooAggregate(Guid id) : AggregateBase<Guid,FooAggregate.Foo
 public partial class BooAggregate(Guid id) : AggregateBase<Guid, BooAggregate.BooState>(id)
 {
     internal new BooState State => base.State;
-    public record BooState { public string? Name { get; set; } };
+    [ProtoContract] public record BooState { [ProtoMember(1)] public string? Name { get; set; } };
     private static BooState Given(BooState state, BooCreated ev) => state with { Name = ev.Name };
     private static BooState Given(BooState state, BooRefined ev) => state with { Name = ev.Name };
     public static BooAggregate Open(string msg)
@@ -56,10 +57,12 @@ public record FooCreated { [Unique<FooCategory>] public string? Name { get; set;
 public record FooRefined { public string? Name { get; set; } }
 
 [Unique<BooCategory>()]
-public class BooCreated { public string? Name { get; set; } }
+[ProtoContract]
+public class BooCreated { [ProtoMember(1)] public string? Name { get; set; } }
 
 [Unique<BooCategory>()]
-public class BooRefined { public string? Name { get; set; } }
+[ProtoContract]
+public class BooRefined { [ProtoMember(1)] public string? Name { get; set; } }
 
 record FooCategory;
 record BooCategory(string Name) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooRefined>

@@ -1,20 +1,28 @@
 ﻿using System.Net;
+using System.Runtime.Serialization;
 
 namespace MicroPlumberd.Services;
 
 
-record CommandExecuted
+[DataContract]
+internal record CommandExecuted
 {
-    public Guid CommandId { get; init; }
-    public TimeSpan Duration { get; init; }
+    [DataMember(Order=1)]
+    public Guid CommandId { get; set; }
+    [DataMember(Order=2)]
+    public TimeSpan Duration { get; set; }
 }
-
-record CommandFailed : ICommandFailed
+[DataContract]
+internal record CommandFailed : ICommandFailed
 {
-    public Guid CommandId { get; init; }
-    public TimeSpan Duration { get; init; }
-    public string Message { get; init; }
-    public HttpStatusCode Code { get; init; }
+    [DataMember(Order = 1)]
+    public Guid CommandId { get; set; }
+    [DataMember(Order = 2)]
+    public TimeSpan Duration { get; set; }
+    [DataMember(Order = 3)]
+    public string Message { get; set; }
+    [DataMember(Order = 4)]
+    public HttpStatusCode Code { get; set; }
 
     public static ICommandFailedEx Create(Guid commandId, string message, TimeSpan duration, HttpStatusCode code, object fault)
     {
@@ -36,7 +44,8 @@ interface ICommandFailedEx : ICommandFailed
     object Fault { get; }
 
 }
-record CommandFailed<TFault> : CommandFailed, ICommandFailedEx
+[DataContract]
+internal record CommandFailed<TFault> : CommandFailed, ICommandFailedEx
 {
     public CommandFailed() { }
 
@@ -49,6 +58,7 @@ record CommandFailed<TFault> : CommandFailed, ICommandFailedEx
         this.Message = message;
         this.Code = code;
     }
-    public TFault Fault { get; init; }
+    [DataMember(Order = 1)]
+    public TFault Fault { get; set; }
   
 }
