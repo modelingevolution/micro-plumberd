@@ -69,7 +69,7 @@ class CommandBus : ICommandBus, IEventHandler
     }
     
     
-    public async Task SendAsync(Guid recipientId, object command)
+    public async Task SendAsync(object recipientId, object command)
     {
         var causationId = InvocationContext.Current.CausactionId();
         var correlationId = InvocationContext.Current.CorrelationId();
@@ -78,7 +78,7 @@ class CommandBus : ICommandBus, IEventHandler
         {
             CorrelationId = (command is IId id && correlationId == null) ? id.Uuid : correlationId, 
             CausationId = ((command is IId id2 && causationId == null) ? id2.Uuid : causationId) ?? Guid.NewGuid(),
-            RecipientId = recipientId,
+            RecipientId = recipientId.ToString(),
             SessionId = SessionId,
         };
 

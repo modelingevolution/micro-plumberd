@@ -18,7 +18,7 @@ public record CommandEnvelope<TCommand>
     }
 
     [ProtoMember(1)]
-    public Guid StreamId { get; init; }
+    public string StreamId { get; init; }
 
     [ProtoMember(2)]
     public required TCommand Command { get; init; }

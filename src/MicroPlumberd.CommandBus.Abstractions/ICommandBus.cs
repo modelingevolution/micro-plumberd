@@ -11,5 +11,5 @@ public interface ICommandBus
     /// <param name="recipientId">The ID of the recipient.</param>
     /// <param name="command">The command to send.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task SendAsync(Guid recipientId, object command);
+    Task SendAsync(object recipientId, object command);
 }

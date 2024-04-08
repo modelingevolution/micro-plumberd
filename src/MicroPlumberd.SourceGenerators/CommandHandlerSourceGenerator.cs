@@ -77,6 +77,11 @@ namespace MicroPlumberd.SourceGenerators
 
                         
                         var commands =  methods.Select(x => x.ParameterList.Parameters[1].Type.ToString()).ToArray();
+                        var handerArgs = methods.Select(x => new
+                        {
+                            CommandType=x.ParameterList.Parameters[1].Type.ToString(),
+                            IdType = x.ParameterList.Parameters[0].Type.ToString(),
+                        }).ToArray();
                         var returnTypes = methods.Select(x => GetGenericArgument(x.ReturnType.ToString()))
                             .Where(x=>x!= null && x != "Task")
                             .Distinct()
@@ -84,35 +89,36 @@ namespace MicroPlumberd.SourceGenerators
 
                         var args = methods.Select(x =>
                             {
+                                var idType = x.ParameterList.Parameters[0].Type.ToString();
                                 var cmdType = x.ParameterList.Parameters[1].Type.ToString();
                                 if (x.ReturnType is GenericNameSyntax gn)
                                 {
                                     var resultType = gn.TypeArgumentList.Arguments.FirstOrDefault()?.ToString();
-                                    return (cmdType: cmdType, resultType);
+                                    return (cmdType: cmdType, resultType, idType);
                                 }
                                 else if (x.ReturnType.ToString() == "Task")
                                 {
-                                    return (cmdType: cmdType, null);
+                                    return (cmdType: cmdType, null, idType);
                                 }
-                                else return (null,null);
+                                else return (null,null, idType);
 
                             })
                             .Where(x => x.cmdType != null)
                             .Distinct()
                             .ToArray();
 
-                        sb.AppendLine($"partial class {className} : IServiceTypeRegister, {string.Join(", ",commands.Select(x=> $"ICommandHandler<{x}>"))} ");
+                        sb.AppendLine($"partial class {className} : IServiceTypeRegister, {string.Join(", ", handerArgs.Select(x=> $"ICommandHandler<{x.IdType},{x.CommandType}>"))} ");
                         sb.AppendLine("{");
                         foreach(var a in args) { 
                             if(a.resultType != null)
-                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.cmdType}>.Execute(Guid id, {a.cmdType} cmd) => await this.Handle(id, cmd);");
+                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) => await this.Handle(id, cmd);");
                             else
-                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.cmdType}>.Execute(Guid id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return HandlerOperationStatus.Ok(); }}");
+                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return HandlerOperationStatus.Ok(); }}");
                         }
 
 
 
-                        sb.AppendLine("    public async Task<object?> Execute(Guid id, object command) => command switch");
+                        sb.AppendLine("    public async Task<object?> Execute(string id, object command) => command switch");
                         sb.AppendLine("    {");
                         foreach (var command in commands)
                         {
