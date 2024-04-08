@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 37
+    startLine: 81
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that defines the convention for generating the output stream name based on the model type.
+  example: []
   syntax:
     content: public delegate string OutputStreamModelConvention(Type model)
     parameters:
     - id: model
       type: System.Type
+      description: The model type.
     return:
       type: System.String
+      description: The output stream name.
     content.vb: Public Delegate Function OutputStreamModelConvention(model As Type) As String
 references:
 - uid: MicroPlumberd

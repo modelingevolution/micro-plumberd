@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputSteamNameFromCommandHandler
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 4
+    startLine: 9
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that returns the output stream name from a command handler type.
+  example: []
   syntax:
     content: public delegate string OutputSteamNameFromCommandHandler(Type commandHandlerType)
     parameters:
     - id: commandHandlerType
       type: System.Type
+      description: The type of the command handler.
     return:
       type: System.String
+      description: The name of the output stream.
     content.vb: Public Delegate Function OutputSteamNameFromCommandHandler(commandHandlerType As Type) As String
 references:
 - uid: MicroPlumberd.Services

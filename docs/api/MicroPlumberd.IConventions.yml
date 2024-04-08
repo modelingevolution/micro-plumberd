@@ -33,7 +33,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IConventions
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 58
+    startLine: 110
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -62,7 +62,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionCategoryStreamConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 60
+    startLine: 112
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -91,7 +91,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamCategoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 61
+    startLine: 113
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -120,7 +120,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 62
+    startLine: 114
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -149,7 +149,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdSnapshotConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 63
+    startLine: 115
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -178,7 +178,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 64
+    startLine: 116
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -207,7 +207,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 65
+    startLine: 117
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -236,7 +236,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: BuildInvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 66
+    startLine: 118
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -265,7 +265,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataEnrichers
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 67
+    startLine: 119
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -294,7 +294,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 68
+    startLine: 120
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -323,7 +323,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 69
+    startLine: 121
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -352,7 +352,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 70
+    startLine: 122
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -381,7 +381,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotPolicyFactoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 71
+    startLine: 123
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -410,7 +410,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StandardMetadataEnricherTypes
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 72
+    startLine: 124
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -439,7 +439,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetMetadata
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 73
+    startLine: 125
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

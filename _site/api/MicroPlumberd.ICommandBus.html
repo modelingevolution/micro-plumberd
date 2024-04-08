@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Interface ICommandBus | MicroPlumberd ">
       
-      
+      <meta name="description" content="Represents a command bus for sending commands.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_ICommandBus" data-uid="MicroPlumberd.ICommandBus" class="text-break">
-Interface ICommandBus  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs/#L3"><i class="bi bi-code-slash"></i></a>
+Interface ICommandBus  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs/#L6"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,8 @@ Interface ICommandBus  <a class="header-action link-secondary" title="View sourc
   <dl><dt>Assembly</dt><dd>MicroPlumberd.CommandBus.Abstractions.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Represents a command bus for sending commands.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -124,10 +125,11 @@ Interface ICommandBus  <a class="header-action link-secondary" title="View sourc
 
   <h3 id="MicroPlumberd_ICommandBus_SendAsync_System_Guid_System_Object_" data-uid="MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)">
   SendAsync(Guid, object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs/#L5"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs/#L14"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Sends a command asynchronously to the specified recipient - command handler.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -137,15 +139,18 @@ Interface ICommandBus  <a class="header-action link-secondary" title="View sourc
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>recipientId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
-    <dd></dd>
+    <dd><p>The ID of the recipient.</p>
+</dd>
     <dt><code>command</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd></dd>
+    <dd><p>The command to send.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
-    <dd></dd>
+    <dd><p>A task representing the asynchronous operation.</p>
+</dd>
   </dl>
 
 
@@ -162,7 +167,7 @@ Interface ICommandBus  <a class="header-action link-secondary" title="View sourc
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs/#L3" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs/#L6" class="edit-link">Edit this page</a>
         </div>
 
 

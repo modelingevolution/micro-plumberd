@@ -22,10 +22,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ISnapshot
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 3
+    startLine: 6
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a snapshot object used in Plumberd.
+  example: []
   syntax:
     content: public interface ISnapshot
     content.vb: Public Interface ISnapshot
@@ -47,10 +49,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Data
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 5
+    startLine: 11
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the data of the snapshot.
+  example: []
   syntax:
     content: object Data { get; }
     parameters: []
@@ -76,10 +80,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Created
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 6
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the creation date of the snapshot.
+  example: []
   syntax:
     content: DateTimeOffset Created { get; }
     parameters: []
@@ -105,10 +111,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 7
+    startLine: 21
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the version of the snapshot.
+  example: []
   syntax:
     content: long Version { get; }
     parameters: []

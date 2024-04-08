@@ -100,16 +100,20 @@ items:
   assemblies:
   - MicroPlumberd.Services.ProcessManagers
   namespace: MicroPlumberd.Services.ProcessManagers
+  summary: Dispatching method. Handles the specified metadata and event.
   example: []
   syntax:
     content: public Task Handle(Metadata m, object ev)
     parameters:
     - id: m
       type: MicroPlumberd.Metadata
+      description: The m.
     - id: ev
       type: System.Object
+      description: The ev.
     return:
       type: System.Threading.Tasks.Task
+      description: ''
     content.vb: Public Function Handle(m As Metadata, ev As Object) As Task
   overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Handle*
   implements:
@@ -139,12 +143,14 @@ items:
   assemblies:
   - MicroPlumberd.Services.ProcessManagers
   namespace: MicroPlumberd.Services.ProcessManagers
+  summary: Supported event types.
   example: []
   syntax:
     content: public static IEnumerable<Type> Types { get; }
     parameters: []
     return:
       type: System.Collections.Generic.IEnumerable{System.Type}
+      description: Supported types.
     content.vb: Public Shared ReadOnly Property Types As IEnumerable(Of Type)
   overload: MicroPlumberd.Services.ProcessManagers.ProcessManagerExecutor`1.Lookup.Types*
   implements:

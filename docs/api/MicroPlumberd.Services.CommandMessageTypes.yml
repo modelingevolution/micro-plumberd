@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandMessageTypes
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 7
+    startLine: 27
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that returns a collection of command message types.
+  example: []
   syntax:
     content: public delegate IEnumerable<(string, Type)> CommandMessageTypes(Type command)
     parameters:
     - id: command
       type: System.Type
+      description: The command type.
     return:
       type: System.Collections.Generic.IEnumerable{System.ValueTuple{System.String,System.Type}}
+      description: A collection of tuples containing the message name and message type.
     content.vb: Public Delegate Function CommandMessageTypes(command As Type) As IEnumerable(Of (String, Type))
 references:
 - uid: MicroPlumberd.Services

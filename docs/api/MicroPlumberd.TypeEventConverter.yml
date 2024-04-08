@@ -19,19 +19,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TypeEventConverter
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 6
+    startLine: 12
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: A named delegate used for recognizing event type from a string.
+  example: []
   syntax:
     content: public delegate bool TypeEventConverter(string type, out Type t)
     parameters:
     - id: type
       type: System.String
+      description: The type.
     - id: t
       type: System.Type
+      description: The t.
     return:
       type: System.Boolean
+      description: ''
     content.vb: Public Delegate Function TypeEventConverter(type As String, t As Type) As Boolean
 references:
 - uid: MicroPlumberd

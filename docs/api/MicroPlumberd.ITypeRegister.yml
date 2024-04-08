@@ -20,10 +20,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ITypeRegister
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 7
+    startLine: 17
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: ITypeRegister is used to indicate which event types are supported by the class.
+  example: []
   syntax:
     content: public interface ITypeRegister
     content.vb: Public Interface ITypeRegister
@@ -45,15 +47,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Types
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 9
+    startLine: 25
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Supported event types.
+  example: []
   syntax:
     content: public static abstract IEnumerable<Type> Types { get; }
     parameters: []
     return:
       type: System.Collections.Generic.IEnumerable{System.Type}
+      description: Supported types.
     content.vb: Public Shared MustInherit ReadOnly Property Types As IEnumerable(Of Type)
   overload: MicroPlumberd.ITypeRegister.Types*
 references:

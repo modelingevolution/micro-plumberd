@@ -15,15 +15,17 @@ items:
   type: Interface
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/ISnapshotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ISnapshotPolicy
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 57
+    path: src/MicroPlumberd/Abstractions/ISnapshotPolicy.cs
+    startLine: 5
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Interface for creating snapshot policies, that manage when a snapshot is performed on an aggregate.
+  example: []
   syntax:
     content: public interface ISnapshotPolicy
     content.vb: Public Interface ISnapshotPolicy
@@ -40,12 +42,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/ISnapshotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ShouldMakeSnapshot
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 59
+    path: src/MicroPlumberd/Abstractions/ISnapshotPolicy.cs
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

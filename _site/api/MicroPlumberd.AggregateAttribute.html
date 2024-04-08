@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class AggregateAttribute | MicroPlumberd ">
       
-      
+      <meta name="description" content="Attribute that is used on aggregates. When a class is marked with this attribute, source generators will generate partial class that contains all boring dispatching code and metadata for plumberd to do its job.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_AggregateAttribute" data-uid="MicroPlumberd.AggregateAttribute" class="text-break">
-Class AggregateAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L5"><i class="bi bi-code-slash"></i></a>
+Class AggregateAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,9 @@ Class AggregateAttribute  <a class="header-action link-secondary" title="View so
   <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Attribute that is used on aggregates. When a class is marked with this attribute, source generators will generate partial class
+that contains all boring dispatching code and metadata for plumberd to do its job.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -263,7 +265,7 @@ public class AggregateAttribute : Attribute</code></pre>
 
   <h3 id="MicroPlumberd_AggregateAttribute_SnaphotPolicy" data-uid="MicroPlumberd.AggregateAttribute.SnaphotPolicy">
   SnaphotPolicy
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -294,10 +296,10 @@ public class AggregateAttribute : Attribute</code></pre>
 
   <h3 id="MicroPlumberd_AggregateAttribute_SnapshotAfter" data-uid="MicroPlumberd.AggregateAttribute.SnapshotAfter">
   SnapshotAfter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L31"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>In seconds</p>
+  <div class="markdown level1 summary"><p>Gets or sets the time from last snapshots (in seconds) before a new one is performed.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
@@ -326,10 +328,11 @@ public class AggregateAttribute : Attribute</code></pre>
 
   <h3 id="MicroPlumberd_AggregateAttribute_SnapshotEvery" data-uid="MicroPlumberd.AggregateAttribute.SnapshotEvery">
   SnapshotEvery
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the number of events from the last snapshot before a new one is performed.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -343,7 +346,8 @@ public class AggregateAttribute : Attribute</code></pre>
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
-    <dd></dd>
+    <dd><p>The snapshot every.</p>
+</dd>
   </dl>
 
 
@@ -353,11 +357,15 @@ public class AggregateAttribute : Attribute</code></pre>
 
 
 
+  <h2 id="seealso">See Also</h2>
+  <div class="seealso">
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
+  </div>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L5" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L8" class="edit-link">Edit this page</a>
         </div>
 
 

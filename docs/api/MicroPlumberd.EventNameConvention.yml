@@ -19,19 +19,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 27
+    startLine: 49
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that defines the convention for generating event names.
+  example: []
   syntax:
     content: public delegate string EventNameConvention(Type? ownerType, Type evtType)
     parameters:
     - id: ownerType
       type: System.Type
+      description: The type of the owner of the event.
     - id: evtType
       type: System.Type
+      description: The type of the event.
     return:
       type: System.String
+      description: A string representing the generated event name.
     content.vb: Public Delegate Function EventNameConvention(ownerType As Type, evtType As Type) As String
 references:
 - uid: MicroPlumberd

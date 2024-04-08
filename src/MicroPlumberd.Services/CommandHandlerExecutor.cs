@@ -10,6 +10,12 @@ namespace MicroPlumberd.Services;
 
 static class CommandHandlerExecutor
 {
+    /// <summary>
+    /// Creates a new concrete instance of the CommandHandlerExecutor.
+    /// </summary>
+    /// <param name="plumber">plumber instance</param>
+    /// <param name="t">Type fo the handler</param>
+    /// <returns></returns> <summary>
     public static IEventHandler Create(IPlumber plumber, Type t)
     {
         var executorType = typeof(CommandHandlerExecutor<>).MakeGenericType(t);
@@ -17,8 +23,16 @@ static class CommandHandlerExecutor
     }
 }
 
+/// <summary>
+/// Provides extension methods for working with metadata.
+/// </summary>
 public static class MetadataExtensions
 {
+    /// <summary>
+    /// Retrieves the session ID from the metadata.
+    /// </summary>
+    /// <param name="m">The metadata.</param>
+    /// <returns>The session ID, or null if not found.</returns>
     public static Guid? SessionId(this Metadata m)
     {
         if (m.Data.TryGetProperty("SessionId", out var v))
@@ -27,27 +41,27 @@ public static class MetadataExtensions
     }
 }
 
-class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor<T>> log) : IEventHandler, ITypeRegister
-    where T:ICommandHandler, IServiceTypeRegister
+class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerExecutor<THandler>> log) : IEventHandler, ITypeRegister
+    where THandler:ICommandHandler, IServiceTypeRegister
 {
     private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
-    class Invoker<TCommand>(CommandHandlerExecutor<T> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => await parent.Handle<TCommand>(m, (TCommand)ev); }
+    class Invoker<TCommand>(CommandHandlerExecutor<THandler> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => await parent.Handle<TCommand>(m, (TCommand)ev); }
     interface IInvoker { Task Handle(Metadata m, object ev); }
 
     private readonly ConcurrentDictionary<Type, IInvoker> _cached = new();
     public async Task Handle(Metadata m, object ev)
     {
-        var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(T), ev.GetType()), this));
+        var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(THandler), ev.GetType()), this)!);
         if (_serviceConventions.CommandHandlerSkipFilter(m, ev))
             return;
         await invoker.Handle(m, ev);
     }
 
-    private async Task Handle<T>(Metadata m, T command)
+    private async Task Handle<TCommand>(Metadata m, TCommand command)
     {
         
         await using var scope = plumber.Config.ServiceProvider.CreateAsyncScope();
-        var ch = (ICommandHandler<T>)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<T>));
+        var ch = (ICommandHandler<TCommand>)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<TCommand>));
         var recipientId = m.RecipientId();
         var sessionId = m.SessionId() ?? Guid.Empty;
         if (sessionId == Guid.Empty) return;
@@ -108,8 +122,8 @@ class CommandHandlerExecutor<T>(IPlumber plumber, ILogger<CommandHandlerExecutor
     
     public static IServiceCollection RegisterHandlers(IServiceCollection services)
     {
-        return T.RegisterHandlers(services);
+        return THandler.RegisterHandlers(services);
     }
     
-    static IEnumerable<Type> ITypeRegister.Types => T.CommandTypes;
+    static IEnumerable<Type> ITypeRegister.Types => THandler.CommandTypes;
 }

@@ -22,10 +22,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ISubscriptionSet
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 16
+    startLine: 31
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Subscription set builder.
+  example: []
   syntax:
     content: public interface ISubscriptionSet
     content.vb: Public Interface ISubscriptionSet
@@ -47,19 +49,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: With
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 18
+    startLine: 39
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Withes the specified model.
+  example: []
   syntax:
     content: 'ISubscriptionSet With<TModel>(TModel model) where TModel : IEventHandler, ITypeRegister'
     parameters:
     - id: model
       type: '{TModel}'
+      description: The model.
     typeParameters:
     - id: TModel
+      description: The type of the model.
     return:
       type: MicroPlumberd.ISubscriptionSet
+      description: ''
     content.vb: Function [With](Of TModel As {IEventHandler, ITypeRegister})(model As TModel) As ISubscriptionSet
   overload: MicroPlumberd.ISubscriptionSet.With*
   nameWithType.vb: ISubscriptionSet.With(Of TModel)(TModel)
@@ -83,19 +90,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistentlyAsync
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 21
+    startLine: 48
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Subscribes persistently.
+  example: []
   syntax:
     content: Task SubscribePersistentlyAsync(string outputStream, string? groupName = null)
     parameters:
     - id: outputStream
       type: System.String
+      description: The output stream.
     - id: groupName
       type: System.String
+      description: Name of the group.
     return:
       type: System.Threading.Tasks.Task
+      description: ''
     content.vb: Function SubscribePersistentlyAsync(outputStream As String, groupName As String = Nothing) As Task
   overload: MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync*
   nameWithType.vb: ISubscriptionSet.SubscribePersistentlyAsync(String, String)
@@ -119,19 +131,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeAsync
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 22
+    startLine: 56
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Subscribes to stream.
+  example: []
   syntax:
     content: Task SubscribeAsync(string name, FromStream start)
     parameters:
     - id: name
       type: System.String
+      description: The name of the stream.
     - id: start
       type: EventStore.Client.FromStream
+      description: The start.
     return:
       type: System.Threading.Tasks.Task
+      description: ''
     content.vb: Function SubscribeAsync(name As String, start As FromStream) As Task
   overload: MicroPlumberd.ISubscriptionSet.SubscribeAsync*
   nameWithType.vb: ISubscriptionSet.SubscribeAsync(String, FromStream)

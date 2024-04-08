@@ -23,10 +23,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IStatefull
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 5
+    startLine: 8
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a stateful object.
+  example: []
   syntax:
     content: public interface IStatefull
     content.vb: Public Interface IStatefull
@@ -48,10 +50,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: State
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 7
+    startLine: 13
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the state of the object.
+  example: []
   syntax:
     content: object State { get; }
     parameters: []
@@ -77,17 +81,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Initialize
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 8
+    startLine: 20
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Initializes the aggregate with the specified state and version information.
+  example: []
   syntax:
     content: void Initialize(object state, StateInfo version)
     parameters:
     - id: state
       type: System.Object
+      description: The state object.
     - id: version
       type: MicroPlumberd.StateInfo
+      description: The version information.
     content.vb: Sub Initialize(state As Object, version As StateInfo)
   overload: MicroPlumberd.IStatefull.Initialize*
   nameWithType.vb: IStatefull.Initialize(Object, StateInfo)
@@ -111,10 +119,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotType
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 9
+    startLine: 25
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the type of the snapshot.
+  example: []
   syntax:
     content: Type SnapshotType { get; }
     parameters: []
@@ -140,10 +150,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: InitializedWith
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 10
+    startLine: 31
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the state information with which the aggregate was initialized.
+  example: []
   syntax:
     content: StateInfo? InitializedWith { get; }
     parameters: []

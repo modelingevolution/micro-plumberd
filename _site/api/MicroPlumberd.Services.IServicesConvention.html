@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Interface IServicesConvention | MicroPlumberd ">
       
-      
+      <meta name="description" content="Convention setting interface for plumberd framework.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_Services_IServicesConvention" data-uid="MicroPlumberd.Services.IServicesConvention" class="text-break">
-Interface IServicesConvention  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L12"><i class="bi bi-code-slash"></i></a>
+Interface IServicesConvention  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,8 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
   <dl><dt>Assembly</dt><dd>MicroPlumberd.Services.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Convention setting interface for plumberd framework.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -124,10 +125,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_AppCommandStreamConvention" data-uid="MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention">
   AppCommandStreamConvention
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the application command's stream convention.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -151,18 +153,19 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
 
 
-  <a id="MicroPlumberd_Services_IServicesConvention_AreHandlersExecutedPersistently_" data-uid="MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently*"></a>
+  <a id="MicroPlumberd_Services_IServicesConvention_AreCommandHandlersExecutedPersistently_" data-uid="MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently*"></a>
 
-  <h3 id="MicroPlumberd_Services_IServicesConvention_AreHandlersExecutedPersistently" data-uid="MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently">
-  AreHandlersExecutedPersistently
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_Services_IServicesConvention_AreCommandHandlersExecutedPersistently" data-uid="MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently">
+  AreCommandHandlersExecutedPersistently
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L84"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets a function that determines whether the command handlers are executed persistently.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Func&lt;bool&gt; AreHandlersExecutedPersistently { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">Func&lt;bool&gt; AreCommandHandlersExecutedPersistently { get; set; }</code></pre>
   </div>
 
 
@@ -178,6 +181,9 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
 
 
+  <h4 class="section" id="MicroPlumberd_Services_IServicesConvention_AreCommandHandlersExecutedPersistently_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The value of this property should be a function that returns a boolean value indicating whether the handlers should be executed persistently.</p>
+</div>
 
 
 
@@ -186,10 +192,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_CommandHandlerSkipFilter" data-uid="MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter">
   CommandHandlerSkipFilter
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L92"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the filter used to determine whether a command handler should skip a command.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -209,6 +216,10 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
 
 
+  <h4 class="section" id="MicroPlumberd_Services_IServicesConvention_CommandHandlerSkipFilter_remarks">Remarks</h4>
+  <div class="markdown level1 remarks"><p>The filter is a function that takes a <a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a> object and an object as parameters,
+and returns a boolean value indicating whether the command handler should be skipped.</p>
+</div>
 
 
 
@@ -217,10 +228,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_CommandMessageTypes" data-uid="MicroPlumberd.Services.IServicesConvention.CommandMessageTypes">
   CommandMessageTypes
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L61"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the command message types.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -248,10 +260,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_CommandNameConvention" data-uid="MicroPlumberd.Services.IServicesConvention.CommandNameConvention">
   CommandNameConvention
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L65"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the command name convention.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -279,10 +292,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_GroupNameFromCommandHandlerConvention" data-uid="MicroPlumberd.Services.IServicesConvention.GroupNameFromCommandHandlerConvention">
   GroupNameFromCommandHandlerConvention
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L53"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the convention for determining the group name for a persisted subscription for a command handler.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -310,7 +324,7 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_IsHandlerExecutionPersistent" data-uid="MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent">
   IsHandlerExecutionPersistent
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L77"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -341,10 +355,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_OutputSteamNameFromCommandHandlerConvention" data-uid="MicroPlumberd.Services.IServicesConvention.OutputSteamNameFromCommandHandlerConvention">
   OutputSteamNameFromCommandHandlerConvention
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L14"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the convention for output stream name from command handler.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -372,10 +387,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_SessionInStreamFromSessionIdConvention" data-uid="MicroPlumberd.Services.IServicesConvention.SessionInStreamFromSessionIdConvention">
   SessionInStreamFromSessionIdConvention
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L69"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the convention for session command input stream from session ID.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -403,10 +419,11 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 
   <h3 id="MicroPlumberd_Services_IServicesConvention_SessionOutStreamFromSessionIdConvention" data-uid="MicroPlumberd.Services.IServicesConvention.SessionOutStreamFromSessionIdConvention">
   SessionOutStreamFromSessionIdConvention
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L20"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L73"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the convention for obtaining the session output stream from the session ID.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -434,7 +451,7 @@ Interface IServicesConvention  <a class="header-action link-secondary" title="Vi
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L12" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ServicesConvention.cs/#L44" class="edit-link">Edit this page</a>
         </div>
 
 

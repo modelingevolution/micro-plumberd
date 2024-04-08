@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class AttributeSnaphotPolicy&lt;T&gt; | MicroPlumberd ">
       
-      
+      <meta name="description" content="Standard snapshot policy that takes into the account time and minimal event occurence from the last taken snapshot.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_AttributeSnaphotPolicy_1" data-uid="MicroPlumberd.AttributeSnaphotPolicy`1" class="text-break">
-Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L33"><i class="bi bi-code-slash"></i></a>
+Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L10"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,8 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
   <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Standard snapshot policy that takes into the account time and minimal event occurence from the last taken snapshot.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -168,7 +169,7 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
 
   <h3 id="MicroPlumberd_AttributeSnaphotPolicy_1__ctor" data-uid="MicroPlumberd.AttributeSnaphotPolicy`1.#ctor">
   AttributeSnaphotPolicy()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L13"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -198,14 +199,14 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
 
   <h3 id="MicroPlumberd_AttributeSnaphotPolicy_1_MinEventCount" data-uid="MicroPlumberd.AttributeSnaphotPolicy`1.MinEventCount">
   MinEventCount
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L20"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int? MinEventCount { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int? MinEventCount { get; }</code></pre>
   </div>
 
 
@@ -229,7 +230,7 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
 
   <h3 id="MicroPlumberd_AttributeSnaphotPolicy_1_MinTime" data-uid="MicroPlumberd.AttributeSnaphotPolicy`1.MinTime">
   MinTime
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L22"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -264,7 +265,7 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
 
   <h3 id="MicroPlumberd_AttributeSnaphotPolicy_1_ShouldMakeSnapshot_System_Object_System_Nullable_MicroPlumberd_StateInfo__" data-uid="MicroPlumberd.AttributeSnaphotPolicy`1.ShouldMakeSnapshot(System.Object,System.Nullable{MicroPlumberd.StateInfo})">
   ShouldMakeSnapshot(object, StateInfo?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -302,14 +303,14 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
 
   <h3 id="MicroPlumberd_AttributeSnaphotPolicy_1_ShouldMakeSnapshot__0_System_Nullable_MicroPlumberd_StateInfo__" data-uid="MicroPlumberd.AttributeSnaphotPolicy`1.ShouldMakeSnapshot(`0,System.Nullable{MicroPlumberd.StateInfo})">
   ShouldMakeSnapshot(T, StateInfo?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L47"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ShouldMakeSnapshot(T aggregate, StateInfo? info)</code></pre>
+    <pre><code class="lang-csharp hljs">public virtual bool ShouldMakeSnapshot(T aggregate, StateInfo? info)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -336,11 +337,15 @@ Class AttributeSnaphotPolicy&lt;T&gt;  <a class="header-action link-secondary" t
 
 
 
+  <h2 id="seealso">See Also</h2>
+  <div class="seealso">
+      <div><a class="xref" href="MicroPlumberd.ISnapshotPolicy-1.html">ISnapshotPolicy</a>&lt;T&gt;</div>
+  </div>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L33" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs/#L10" class="edit-link">Edit this page</a>
         </div>
 
 

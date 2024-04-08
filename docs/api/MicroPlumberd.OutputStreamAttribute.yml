@@ -16,15 +16,37 @@ items:
   type: Class
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamAttribute
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 77
+    path: src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs
+    startLine: 20
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Use this attribute on Models where you want to override stream name convention.
+  remarks: >-
+    Your read-models/event-handlers typically subscribe to a stream that comes from a merge of event-type streams.
+
+    If you have a FooModel:
+
+    <pre><code class="lang-csharp">[EventHandler]
+
+    [OutputStream("Foo")]
+
+    class FooModel {
+
+    public async Task Given(Metadata m, FooEvent1 ev) { }
+
+    public async Task Given(Metadata m, FooEvent2 ev) { }
+
+    }</code></pre>
+
+    Without the OutputStream attribute a projection would be made in EventStoreDB that produces FooModel stream out of
+
+    $et-FooEvent1 and $et-FooEvent2. But, since there is the attribute the produced stream will be named 'Foo'.
+  example: []
   syntax:
     content: >-
       [AttributeUsage(AttributeTargets.Class)]
@@ -34,6 +56,9 @@ items:
       <AttributeUsage(AttributeTargets.Class)>
 
       Public Class OutputStreamAttribute Inherits Attribute
+  seealso:
+  - linkId: System.Attribute
+    commentId: T:System.Attribute
   inheritance:
   - System.Object
   - System.Attribute
@@ -99,12 +124,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 80
+    path: src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs
+    startLine: 23
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -131,23 +156,34 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamName
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 87
+    path: src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets or sets the name of the output stream, that is a joined stream from all event types used in model.
+  example: []
   syntax:
     content: public string OutputStreamName { get; }
     parameters: []
     return:
       type: System.String
+      description: The name of the output stream.
     content.vb: Public ReadOnly Property OutputStreamName As String
   overload: MicroPlumberd.OutputStreamAttribute.OutputStreamName*
 references:
+- uid: System.Attribute
+  commentId: T:System.Attribute
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute
+  name: Attribute
+  nameWithType: Attribute
+  fullName: System.Attribute
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -165,14 +201,6 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
-- uid: System.Attribute
-  commentId: T:System.Attribute
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.attribute
-  name: Attribute
-  nameWithType: Attribute
-  fullName: System.Attribute
 - uid: System.Attribute.Equals(System.Object)
   commentId: M:System.Attribute.Equals(System.Object)
   parent: System.Attribute

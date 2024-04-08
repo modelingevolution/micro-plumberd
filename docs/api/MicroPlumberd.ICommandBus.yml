@@ -20,10 +20,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ICommandBus
     path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
-    startLine: 2
+    startLine: 5
   assemblies:
   - MicroPlumberd.CommandBus.Abstractions
   namespace: MicroPlumberd
+  summary: Represents a command bus for sending commands.
+  example: []
   syntax:
     content: public interface ICommandBus
     content.vb: Public Interface ICommandBus
@@ -45,19 +47,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SendAsync
     path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
-    startLine: 4
+    startLine: 13
   assemblies:
   - MicroPlumberd.CommandBus.Abstractions
   namespace: MicroPlumberd
+  summary: Sends a command asynchronously to the specified recipient - command handler.
+  example: []
   syntax:
     content: Task SendAsync(Guid recipientId, object command)
     parameters:
     - id: recipientId
       type: System.Guid
+      description: The ID of the recipient.
     - id: command
       type: System.Object
+      description: The command to send.
     return:
       type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous operation.
     content.vb: Function SendAsync(recipientId As Guid, command As Object) As Task
   overload: MicroPlumberd.ICommandBus.SendAsync*
   nameWithType.vb: ICommandBus.SendAsync(Guid, Object)

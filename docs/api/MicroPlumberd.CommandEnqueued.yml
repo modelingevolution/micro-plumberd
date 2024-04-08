@@ -20,10 +20,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandEnqueued
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 3
+    startLine: 6
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Factory class for <xref href="MicroPlumberd.CommandEnqueued%601" data-throw-if-not-resolved="false"></xref> events.
+  example: []
   syntax:
     content: public static class CommandEnqueued
     content.vb: Public Module CommandEnqueued
@@ -55,25 +57,55 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Create
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 5
+    startLine: 14
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Creates the specified event.
+  example: []
   syntax:
     content: public static ICommandEnqueued Create(Guid recipient, object command)
     parameters:
     - id: recipient
       type: System.Guid
+      description: The recipient.
     - id: command
       type: System.Object
+      description: The command.
     return:
       type: MicroPlumberd.ICommandEnqueued
+      description: ''
     content.vb: Public Shared Function Create(recipient As Guid, command As Object) As ICommandEnqueued
   overload: MicroPlumberd.CommandEnqueued.Create*
   nameWithType.vb: CommandEnqueued.Create(Guid, Object)
   fullName.vb: MicroPlumberd.CommandEnqueued.Create(System.Guid, Object)
   name.vb: Create(Guid, Object)
 references:
+- uid: MicroPlumberd.CommandEnqueued`1
+  commentId: T:MicroPlumberd.CommandEnqueued`1
+  href: MicroPlumberd.CommandEnqueued-1.html
+  name: CommandEnqueued<TCommand>
+  nameWithType: CommandEnqueued<TCommand>
+  fullName: MicroPlumberd.CommandEnqueued<TCommand>
+  nameWithType.vb: CommandEnqueued(Of TCommand)
+  fullName.vb: MicroPlumberd.CommandEnqueued(Of TCommand)
+  name.vb: CommandEnqueued(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued
+    href: MicroPlumberd.CommandEnqueued-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued
+    href: MicroPlumberd.CommandEnqueued-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html

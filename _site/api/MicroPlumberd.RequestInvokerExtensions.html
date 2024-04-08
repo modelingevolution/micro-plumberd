@@ -156,10 +156,11 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
 
   <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)">
   Execute(IRequestInvoker, Guid, object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L52"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Executes a command and gets a response of type HandlerOperationStatus.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -169,17 +170,21 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>ri</code> <span class="xref">IRequestInvoker</span></dt>
-    <dd></dd>
+    <dd><p>The IRequestInvoker instance on which this method is invoked.</p>
+</dd>
     <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
-    <dd></dd>
+    <dd><p>The unique identifier for the command.</p>
+</dd>
     <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd></dd>
+    <dd><p>The command object.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
-    <dd></dd>
+    <dd><p>A Task that represents the asynchronous operation. The task result contains the response of type HandlerOperationStatus.</p>
+</dd>
   </dl>
 
 
@@ -196,10 +201,11 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
 
   <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)">
   Execute&lt;TResponse&gt;(IRequestInvoker, Guid, object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Executes a command and gets a response of type TResponse.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -209,23 +215,28 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>ri</code> <span class="xref">IRequestInvoker</span></dt>
-    <dd></dd>
+    <dd><p>The IRequestInvoker instance on which this method is invoked.</p>
+</dd>
     <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
-    <dd></dd>
+    <dd><p>The unique identifier for the command.</p>
+</dd>
     <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
-    <dd></dd>
+    <dd><p>The command object.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TResponse&gt;</dt>
-    <dd></dd>
+    <dd><p>A Task that represents the asynchronous operation. The task result contains the response of type TResponse.</p>
+</dd>
   </dl>
 
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
     <dt><code>TResponse</code></dt>
-    <dd></dd>
+    <dd><p>The type of the response.</p>
+</dd>
   </dl>
 
 

@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{80E95089-6BBE-4CE2-97FD-EAB8EDF7D0E4}"
 	ProjectSection(SolutionItems) = preProject
 		..\cake.ps1 = ..\cake.ps1
+		..\docfx.json = ..\docfx.json
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Services", "MicroPlumberd.Services\MicroPlumberd.Services.csproj", "{513E10D3-337C-4D76-AAA4-C630F56F995F}"

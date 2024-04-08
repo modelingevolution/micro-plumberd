@@ -22,13 +22,20 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 13
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Interface for an aggregate.
+  example: []
   syntax:
     content: 'public interface IAggregate : IId, IVersioned'
     content.vb: Public Interface IAggregate Inherits IId, IVersioned
+  seealso:
+  - linkId: MicroPlumberd.IId
+    commentId: T:MicroPlumberd.IId
+  - linkId: MicroPlumberd.IVersioned
+    commentId: T:MicroPlumberd.IVersioned
   inheritedMembers:
   - MicroPlumberd.IId.Id
   - MicroPlumberd.IVersioned.Version
@@ -50,15 +57,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 15
+    startLine: 43
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Pending events.
+  example: []
   syntax:
     content: IReadOnlyList<object> PendingEvents { get; }
     parameters: []
     return:
       type: System.Collections.Generic.IReadOnlyList{System.Object}
+      description: The pending events.
     content.vb: ReadOnly Property PendingEvents As IReadOnlyList(Of Object)
   overload: MicroPlumberd.IAggregate.PendingEvents*
 - uid: MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
@@ -79,17 +89,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 16
+    startLine: 50
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Rehydrates aggregate with specified events.
+  example: []
   syntax:
     content: Task Rehydrate(IAsyncEnumerable<object> events)
     parameters:
     - id: events
       type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+      description: The events.
     return:
       type: System.Threading.Tasks.Task
+      description: ''
     content.vb: Function Rehydrate(events As IAsyncEnumerable(Of Object)) As Task
   overload: MicroPlumberd.IAggregate.Rehydrate*
   nameWithType.vb: IAggregate.Rehydrate(IAsyncEnumerable(Of Object))
@@ -113,15 +127,31 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 17
+    startLine: 55
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Is used when all pending events are saved in eventstore.
+  example: []
   syntax:
     content: void AckCommitted()
     content.vb: Sub AckCommitted()
   overload: MicroPlumberd.IAggregate.AckCommitted*
 references:
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -142,20 +172,6 @@ references:
   name: Version
   nameWithType: IVersioned.Version
   fullName: MicroPlumberd.IVersioned.Version
-- uid: MicroPlumberd.IId
-  commentId: T:MicroPlumberd.IId
-  parent: MicroPlumberd
-  href: MicroPlumberd.IId.html
-  name: IId
-  nameWithType: IId
-  fullName: MicroPlumberd.IId
-- uid: MicroPlumberd.IVersioned
-  commentId: T:MicroPlumberd.IVersioned
-  parent: MicroPlumberd
-  href: MicroPlumberd.IVersioned.html
-  name: IVersioned
-  nameWithType: IVersioned
-  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd.IAggregate.PendingEvents*
   commentId: Overload:MicroPlumberd.IAggregate.PendingEvents
   href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_PendingEvents

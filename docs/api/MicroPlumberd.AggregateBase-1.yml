@@ -28,14 +28,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AggregateBase
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 32
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents the base class for aggregate roots in the application.
+  example: []
   syntax:
     content: 'public abstract class AggregateBase<TState> : IVersioned, IId, IStatefull<TState>, IStatefull where TState : new()'
     typeParameters:
     - id: TState
+      description: The type of the aggregate state.
     content.vb: Public MustInherit Class AggregateBase(Of TState As New) Implements IVersioned, IId, IStatefull(Of TState), IStatefull
   inheritance:
   - System.Object
@@ -73,10 +76,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 32
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents the base class for aggregate roots in the application.
+  example: []
   syntax:
     content: protected AggregateBase(Guid id)
     parameters:
@@ -105,10 +110,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: State
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 47
+    startLine: 87
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the state of the aggregate.
+  example: []
   syntax:
     content: protected TState State { get; }
     parameters: []
@@ -136,10 +143,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 49
+    startLine: 93
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the unique identifier of the aggregate.
   example: []
   syntax:
     content: public Guid Id { get; }
@@ -170,10 +178,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 51
+    startLine: 98
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the version of the aggregate.
   example: []
   syntax:
     content: public long Version { get; }
@@ -204,10 +213,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 53
+    startLine: 103
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets or sets the list of pending events for the aggregate.
+  example: []
   syntax:
     content: public IReadOnlyList<object> PendingEvents { get; }
     parameters: []
@@ -235,15 +246,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendPendingChange
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 55
+    startLine: 109
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Appends a pending change to the list of pending events and applies the change.
+  example: []
   syntax:
     content: protected void AppendPendingChange(object ev)
     parameters:
     - id: ev
       type: System.Object
+      description: The pending change to append.
     content.vb: Protected Sub AppendPendingChange(ev As Object)
   overload: MicroPlumberd.AggregateBase`1.AppendPendingChange*
   nameWithType.vb: AggregateBase(Of TState).AppendPendingChange(Object)
@@ -267,17 +281,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 61
+    startLine: 120
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Rehydrates the aggregate by applying a sequence of events.
+  example: []
   syntax:
     content: public Task Rehydrate(IAsyncEnumerable<object> events)
     parameters:
     - id: events
       type: System.Collections.Generic.IAsyncEnumerable{System.Object}
+      description: The sequence of events to apply.
     return:
       type: System.Threading.Tasks.Task
+      description: A task representing the asynchronous operation.
     content.vb: Public Function Rehydrate(events As IAsyncEnumerable(Of Object)) As Task
   overload: MicroPlumberd.AggregateBase`1.Rehydrate*
   nameWithType.vb: AggregateBase(Of TState).Rehydrate(IAsyncEnumerable(Of Object))
@@ -301,10 +319,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 69
+    startLine: 131
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Acknowledges the committed events and clears the pending events.
+  example: []
   syntax:
     content: public void AckCommitted()
     content.vb: Public Sub AckCommitted()
@@ -329,10 +349,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Given
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 74
+    startLine: 140
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Dispatches event to create a new state.
+  example: []
   syntax:
     content: protected abstract TState Given(TState state, object ev)
     parameters:

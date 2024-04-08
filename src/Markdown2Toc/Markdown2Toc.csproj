@@ -8,13 +8,27 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>markdown-to-toc</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
+    <Title>Markdown2Toc</Title>
+    <Authors>Rafal Maciag</Authors>
+    <Description>Simple console util to build toc.yml files out of markdown and other toc files.</Description>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageProjectUrl>https://github.com/modelingevolution/micro-plumberd</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>Utils Toc Markdown dotnet tools</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Markdig" Version="0.36.2" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="YamlDotNet" Version="15.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

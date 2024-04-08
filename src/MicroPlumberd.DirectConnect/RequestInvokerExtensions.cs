@@ -23,6 +23,14 @@ namespace MicroPlumberd
             throw new FaultException(fault.Error, (int)fault.Code);
         }
         private static readonly ConcurrentDictionary<Type, object> _invokers = new();
+        /// <summary>
+        /// Executes a command and gets a response of type TResponse.
+        /// </summary>
+        /// <typeparam name="TResponse">The type of the response.</typeparam>
+        /// <param name="ri">The IRequestInvoker instance on which this method is invoked.</param>
+        /// <param name="id">The unique identifier for the command.</param>
+        /// <param name="c">The command object.</param>
+        /// <returns>A Task that represents the asynchronous operation. The task result contains the response of type TResponse.</returns>
         public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, Guid id, object c)
         {
             var commandType = c.GetType();
@@ -33,6 +41,14 @@ namespace MicroPlumberd
             });
             return invoker.Execute(ri, id, c);
         }
+        /// <summary>
+        /// Executes a command and gets a response of type HandlerOperationStatus.
+        /// </summary>
+        /// <param name="ri">The IRequestInvoker instance on which this method is invoked.</param>
+        /// <param name="id">The unique identifier for the command.</param>
+        /// <param name="c">The command object.</param>
+        /// <returns>A Task that represents the asynchronous operation. The task result contains the response of type HandlerOperationStatus.</returns>
+
         public static Task Execute(this IRequestInvoker ri, Guid id, object c)
         {
             var commandType = c.GetType();

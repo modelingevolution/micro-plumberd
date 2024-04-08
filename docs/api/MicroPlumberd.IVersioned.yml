@@ -20,10 +20,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IVersioned
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 21
+    startLine: 61
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Simple interface for versioned objects.
+  example: []
   syntax:
     content: public interface IVersioned
     content.vb: Public Interface IVersioned
@@ -45,15 +47,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 23
+    startLine: 69
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the current version.
+  example: []
   syntax:
     content: long Version { get; }
     parameters: []
     return:
       type: System.Int64
+      description: The version.
     content.vb: ReadOnly Property Version As Long
   overload: MicroPlumberd.IVersioned.Version*
 references:

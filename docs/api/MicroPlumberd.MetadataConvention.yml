@@ -19,19 +19,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 32
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that defines a convention for handling metadata in an event.
+  example: []
   syntax:
     content: public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt)
     parameters:
     - id: metadata
       type: dynamic
+      description: The dynamic metadata associated with the event.
     - id: aggregate
       type: MicroPlumberd.IAggregate
+      description: The optional aggregate associated with the event.
     - id: evt
       type: System.Object
+      description: The event object.
     content.vb: Public Delegate Sub MetadataConvention(metadata As Object, aggregate As IAggregate, evt As Object)
 references:
 - uid: MicroPlumberd

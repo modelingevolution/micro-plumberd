@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class OutputStreamAttribute | MicroPlumberd ">
       
-      
+      <meta name="description" content="Use this attribute on Models where you want to override stream name convention.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_OutputStreamAttribute" data-uid="MicroPlumberd.OutputStreamAttribute" class="text-break">
-Class OutputStreamAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L78"><i class="bi bi-code-slash"></i></a>
+Class OutputStreamAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs/#L21"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,8 @@ Class OutputStreamAttribute  <a class="header-action link-secondary" title="View
   <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Use this attribute on Models where you want to override stream name convention.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -253,6 +254,18 @@ public class OutputStreamAttribute : Attribute</code></pre>
 
 
 
+  <h2 id="MicroPlumberd_OutputStreamAttribute_remarks">Remarks</h2>
+  <div class="markdown level0 remarks"><p>Your read-models/event-handlers typically subscribe to a stream that comes from a merge of event-type streams.
+If you have a FooModel:</p>
+<pre><code class="lang-csharp">[EventHandler]
+[OutputStream("Foo")]
+class FooModel {
+public async Task Given(Metadata m, FooEvent1 ev) { }
+public async Task Given(Metadata m, FooEvent2 ev) { }
+}</code></pre>
+<p>Without the OutputStream attribute a projection would be made in EventStoreDB that produces FooModel stream out of
+$et-FooEvent1 and $et-FooEvent2. But, since there is the attribute the produced stream will be named 'Foo'.</p>
+</div>
 
 
   <h2 class="section" id="constructors">Constructors
@@ -263,7 +276,7 @@ public class OutputStreamAttribute : Attribute</code></pre>
 
   <h3 id="MicroPlumberd_OutputStreamAttribute__ctor_System_String_" data-uid="MicroPlumberd.OutputStreamAttribute.#ctor(System.String)">
   OutputStreamAttribute(string)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs/#L24"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -298,10 +311,11 @@ public class OutputStreamAttribute : Attribute</code></pre>
 
   <h3 id="MicroPlumberd_OutputStreamAttribute_OutputStreamName" data-uid="MicroPlumberd.OutputStreamAttribute.OutputStreamName">
   OutputStreamName
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the output stream, that is a joined stream from all event types used in model.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -315,7 +329,8 @@ public class OutputStreamAttribute : Attribute</code></pre>
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
+    <dd><p>The name of the output stream.</p>
+</dd>
   </dl>
 
 
@@ -325,11 +340,15 @@ public class OutputStreamAttribute : Attribute</code></pre>
 
 
 
+  <h2 id="seealso">See Also</h2>
+  <div class="seealso">
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.attribute">Attribute</a></div>
+  </div>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/AggregateAttribute.cs/#L78" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/OutputStreamAttribute.cs/#L21" class="edit-link">Edit this page</a>
         </div>
 
 

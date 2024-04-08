@@ -19,10 +19,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 35
+    startLine: 74
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents delegate that creates Uuid from an event and optinally aggregate instance.
+  example: []
   syntax:
     content: public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt)
     parameters:

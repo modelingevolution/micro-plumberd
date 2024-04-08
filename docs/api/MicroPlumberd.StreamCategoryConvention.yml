@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StreamCategoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 22
+    startLine: 27
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that defines a convention for determining the stream category based on the aggregate type.
+  example: []
   syntax:
     content: public delegate string StreamCategoryConvention(Type aggregateType)
     parameters:
     - id: aggregateType
       type: System.Type
+      description: The type of the aggregate.
     return:
       type: System.String
+      description: A string representing the stream category.
     content.vb: Public Delegate Function StreamCategoryConvention(aggregateType As Type) As String
 references:
 - uid: MicroPlumberd

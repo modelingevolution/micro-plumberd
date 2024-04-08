@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Interface ISubscriptionSet | MicroPlumberd ">
       
-      
+      <meta name="description" content="Subscription set builder.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_ISubscriptionSet" data-uid="MicroPlumberd.ISubscriptionSet" class="text-break">
-Interface ISubscriptionSet  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L17"><i class="bi bi-code-slash"></i></a>
+Interface ISubscriptionSet  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L32"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,8 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
   <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Subscription set builder.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -124,10 +125,11 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
 
   <h3 id="MicroPlumberd_ISubscriptionSet_SubscribeAsync_System_String_EventStore_Client_FromStream_" data-uid="MicroPlumberd.ISubscriptionSet.SubscribeAsync(System.String,EventStore.Client.FromStream)">
   SubscribeAsync(string, FromStream)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L57"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Subscribes to stream.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -137,9 +139,11 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>name</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
+    <dd><p>The name of the stream.</p>
+</dd>
     <dt><code>start</code> <span class="xref">FromStream</span></dt>
-    <dd></dd>
+    <dd><p>The start.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
@@ -162,10 +166,11 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
 
   <h3 id="MicroPlumberd_ISubscriptionSet_SubscribePersistentlyAsync_System_String_System_String_" data-uid="MicroPlumberd.ISubscriptionSet.SubscribePersistentlyAsync(System.String,System.String)">
   SubscribePersistentlyAsync(string, string?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L22"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L49"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Subscribes persistently.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -175,9 +180,11 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
+    <dd><p>The output stream.</p>
+</dd>
     <dt><code>groupName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
+    <dd><p>Name of the group.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
@@ -200,10 +207,11 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
 
   <h3 id="MicroPlumberd_ISubscriptionSet_With__1___0_" data-uid="MicroPlumberd.ISubscriptionSet.With``1(``0)">
   With&lt;TModel&gt;(TModel)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L19"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L40"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Withes the specified model.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -213,7 +221,8 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>model</code> <span class="xref">TModel</span></dt>
-    <dd></dd>
+    <dd><p>The model.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
@@ -225,7 +234,8 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
     <dt><code>TModel</code></dt>
-    <dd></dd>
+    <dd><p>The type of the model.</p>
+</dd>
   </dl>
 
 
@@ -241,7 +251,7 @@ Interface ISubscriptionSet  <a class="header-action link-secondary" title="View 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L17" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IReadModel.cs/#L32" class="edit-link">Edit this page</a>
         </div>
 
 

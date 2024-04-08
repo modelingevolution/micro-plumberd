@@ -6,7 +6,7 @@ items:
   parent: MicroPlumberd.Services
   children:
   - MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
-  - MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  - MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
   - MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
   - MicroPlumberd.Services.IServicesConvention.CommandMessageTypes
   - MicroPlumberd.Services.IServicesConvention.CommandNameConvention
@@ -29,10 +29,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IServicesConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 11
+    startLine: 43
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Convention setting interface for plumberd framework.
+  example: []
   syntax:
     content: public interface IServicesConvention
     content.vb: Public Interface IServicesConvention
@@ -54,10 +56,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputSteamNameFromCommandHandlerConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 13
+    startLine: 48
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the convention for output stream name from command handler.
+  example: []
   syntax:
     content: OutputSteamNameFromCommandHandler OutputSteamNameFromCommandHandlerConvention { get; set; }
     parameters: []
@@ -83,10 +87,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameFromCommandHandlerConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 14
+    startLine: 52
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the convention for determining the group name for a persisted subscription for a command handler.
+  example: []
   syntax:
     content: GroupNameFromCommandHandler GroupNameFromCommandHandlerConvention { get; set; }
     parameters: []
@@ -112,10 +118,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppCommandStreamConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 15
+    startLine: 56
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the application command's stream convention.
+  example: []
   syntax:
     content: AppCommandStream AppCommandStreamConvention { get; set; }
     parameters: []
@@ -141,10 +149,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandMessageTypes
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 16
+    startLine: 60
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the command message types.
+  example: []
   syntax:
     content: CommandMessageTypes CommandMessageTypes { get; set; }
     parameters: []
@@ -170,10 +180,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandNameConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 17
+    startLine: 64
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the command name convention.
+  example: []
   syntax:
     content: CommandName CommandNameConvention { get; set; }
     parameters: []
@@ -199,10 +211,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SessionInStreamFromSessionIdConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 18
+    startLine: 68
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the convention for session command input stream from session ID.
+  example: []
   syntax:
     content: SessionStreamFromSessionId SessionInStreamFromSessionIdConvention { get; set; }
     parameters: []
@@ -228,10 +242,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SessionOutStreamFromSessionIdConvention
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 19
+    startLine: 72
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the convention for obtaining the session output stream from the session ID.
+  example: []
   syntax:
     content: SessionStreamFromSessionId SessionOutStreamFromSessionIdConvention { get; set; }
     parameters: []
@@ -257,7 +273,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsHandlerExecutionPersistent
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 23
+    startLine: 76
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -268,35 +284,38 @@ items:
       type: MicroPlumberd.Services.IsHandlerExecutionPersistent
     content.vb: Property IsHandlerExecutionPersistent As IsHandlerExecutionPersistent
   overload: MicroPlumberd.Services.IServicesConvention.IsHandlerExecutionPersistent*
-- uid: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  commentId: P:MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  id: AreHandlersExecutedPersistently
+- uid: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  commentId: P:MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  id: AreCommandHandlersExecutedPersistently
   parent: MicroPlumberd.Services.IServicesConvention
   langs:
   - csharp
   - vb
-  name: AreHandlersExecutedPersistently
-  nameWithType: IServicesConvention.AreHandlersExecutedPersistently
-  fullName: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+  name: AreCommandHandlersExecutedPersistently
+  nameWithType: IServicesConvention.AreCommandHandlersExecutedPersistently
+  fullName: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
   type: Property
   source:
     remote:
       path: src/MicroPlumberd.Services/ServicesConvention.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: AreHandlersExecutedPersistently
+    id: AreCommandHandlersExecutedPersistently
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 24
+    startLine: 83
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets a function that determines whether the command handlers are executed persistently.
+  remarks: The value of this property should be a function that returns a boolean value indicating whether the handlers should be executed persistently.
+  example: []
   syntax:
-    content: Func<bool> AreHandlersExecutedPersistently { get; set; }
+    content: Func<bool> AreCommandHandlersExecutedPersistently { get; set; }
     parameters: []
     return:
       type: System.Func{System.Boolean}
-    content.vb: Property AreHandlersExecutedPersistently As Func(Of Boolean)
-  overload: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently*
+    content.vb: Property AreCommandHandlersExecutedPersistently As Func(Of Boolean)
+  overload: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently*
 - uid: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
   commentId: P:MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
   id: CommandHandlerSkipFilter
@@ -315,10 +334,16 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandHandlerSkipFilter
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 25
+    startLine: 91
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the filter used to determine whether a command handler should skip a command.
+  remarks: >-
+    The filter is a function that takes a <xref href="MicroPlumberd.Metadata" data-throw-if-not-resolved="false"></xref> object and an object as parameters,
+
+    and returns a boolean value indicating whether the command handler should be skipped.
+  example: []
   syntax:
     content: Func<Metadata, object, bool> CommandHandlerSkipFilter { get; set; }
     parameters: []
@@ -446,12 +471,12 @@ references:
   name: IsHandlerExecutionPersistent
   nameWithType: IsHandlerExecutionPersistent
   fullName: MicroPlumberd.Services.IsHandlerExecutionPersistent
-- uid: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently*
-  commentId: Overload:MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreHandlersExecutedPersistently
-  name: AreHandlersExecutedPersistently
-  nameWithType: IServicesConvention.AreHandlersExecutedPersistently
-  fullName: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+- uid: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently*
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreCommandHandlersExecutedPersistently
+  name: AreCommandHandlersExecutedPersistently
+  nameWithType: IServicesConvention.AreCommandHandlersExecutedPersistently
+  fullName: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
 - uid: System.Func{System.Boolean}
   commentId: T:System.Func{System.Boolean}
   parent: System
@@ -522,6 +547,13 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
 - uid: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter*
   commentId: Overload:MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
   href: MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_CommandHandlerSkipFilter
@@ -585,6 +617,12 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.boolean
   - name: )
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
 - uid: System.Func`3
   commentId: T:System.Func`3
   isExternal: true

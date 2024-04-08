@@ -19,20 +19,26 @@ items:
   type: Class
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AttributeSnaphotPolicy
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 32
+    path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
+    startLine: 9
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Standard snapshot policy that takes into the account time and minimal event occurence from the last taken snapshot.
+  example: []
   syntax:
     content: 'public class AttributeSnaphotPolicy<T> : ISnapshotPolicy<T>, ISnapshotPolicy where T : IAggregate'
     typeParameters:
     - id: T
+      description: ''
     content.vb: Public Class AttributeSnaphotPolicy(Of T As IAggregate) Implements ISnapshotPolicy(Of T), ISnapshotPolicy
+  seealso:
+  - linkId: MicroPlumberd.ISnapshotPolicy`1
+    commentId: T:MicroPlumberd.ISnapshotPolicy`1
   inheritance:
   - System.Object
   implements:
@@ -62,12 +68,12 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 35
+    path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
+    startLine: 12
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -91,21 +97,21 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MinEventCount
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 42
+    path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
+    startLine: 19
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public int? MinEventCount { get; set; }
+    content: public int? MinEventCount { get; }
     parameters: []
     return:
       type: System.Nullable{System.Int32}
-    content.vb: Public Property MinEventCount As Integer?
+    content.vb: Public ReadOnly Property MinEventCount As Integer?
   overload: MicroPlumberd.AttributeSnaphotPolicy`1.MinEventCount*
   nameWithType.vb: AttributeSnaphotPolicy(Of T).MinEventCount
   fullName.vb: MicroPlumberd.AttributeSnaphotPolicy(Of T).MinEventCount
@@ -122,12 +128,12 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MinTime
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 44
+    path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
+    startLine: 21
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -153,18 +159,18 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ShouldMakeSnapshot
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 46
+    path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
+    startLine: 23
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   example: []
   syntax:
-    content: public bool ShouldMakeSnapshot(T aggregate, StateInfo? info)
+    content: public virtual bool ShouldMakeSnapshot(T aggregate, StateInfo? info)
     parameters:
     - id: aggregate
       type: '{T}'
@@ -172,7 +178,7 @@ items:
       type: System.Nullable{MicroPlumberd.StateInfo}
     return:
       type: System.Boolean
-    content.vb: Public Function ShouldMakeSnapshot(aggregate As T, info As StateInfo?) As Boolean
+    content.vb: Public Overridable Function ShouldMakeSnapshot(aggregate As T, info As StateInfo?) As Boolean
   overload: MicroPlumberd.AttributeSnaphotPolicy`1.ShouldMakeSnapshot*
   implements:
   - MicroPlumberd.ISnapshotPolicy{{T}}.ShouldMakeSnapshot({T},System.Nullable{MicroPlumberd.StateInfo})
@@ -191,12 +197,12 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
+      path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ShouldMakeSnapshot
-    path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 54
+    path: src/MicroPlumberd/Abstractions/AttributeSnaphotPolicy.cs
+    startLine: 31
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -218,6 +224,31 @@ items:
   fullName.vb: MicroPlumberd.AttributeSnaphotPolicy(Of T).ShouldMakeSnapshot(Object, MicroPlumberd.StateInfo?)
   name.vb: ShouldMakeSnapshot(Object, StateInfo?)
 references:
+- uid: MicroPlumberd.ISnapshotPolicy`1
+  commentId: T:MicroPlumberd.ISnapshotPolicy`1
+  href: MicroPlumberd.ISnapshotPolicy-1.html
+  name: ISnapshotPolicy<T>
+  nameWithType: ISnapshotPolicy<T>
+  fullName: MicroPlumberd.ISnapshotPolicy<T>
+  nameWithType.vb: ISnapshotPolicy(Of T)
+  fullName.vb: MicroPlumberd.ISnapshotPolicy(Of T)
+  name.vb: ISnapshotPolicy(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.ISnapshotPolicy`1
+    name: ISnapshotPolicy
+    href: MicroPlumberd.ISnapshotPolicy-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.ISnapshotPolicy`1
+    name: ISnapshotPolicy
+    href: MicroPlumberd.ISnapshotPolicy-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -495,31 +526,6 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: MicroPlumberd.ISnapshotPolicy`1
-  commentId: T:MicroPlumberd.ISnapshotPolicy`1
-  href: MicroPlumberd.ISnapshotPolicy-1.html
-  name: ISnapshotPolicy<T>
-  nameWithType: ISnapshotPolicy<T>
-  fullName: MicroPlumberd.ISnapshotPolicy<T>
-  nameWithType.vb: ISnapshotPolicy(Of T)
-  fullName.vb: MicroPlumberd.ISnapshotPolicy(Of T)
-  name.vb: ISnapshotPolicy(Of T)
-  spec.csharp:
-  - uid: MicroPlumberd.ISnapshotPolicy`1
-    name: ISnapshotPolicy
-    href: MicroPlumberd.ISnapshotPolicy-1.html
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: MicroPlumberd.ISnapshotPolicy`1
-    name: ISnapshotPolicy
-    href: MicroPlumberd.ISnapshotPolicy-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
 - uid: MicroPlumberd.AttributeSnaphotPolicy`1.#ctor*
   commentId: Overload:MicroPlumberd.AttributeSnaphotPolicy`1.#ctor
   href: MicroPlumberd.AttributeSnaphotPolicy-1.html#MicroPlumberd_AttributeSnaphotPolicy_1__ctor

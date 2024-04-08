@@ -10,7 +10,7 @@ class Program
 {
     static async Task<int> Main(string[] args)
     {
-        var inArg = new Argument<string>("--input-file", description: "Input markdown file path");
+        var inArg = new Argument<string>("--input-file", description: "Input markdown file(s) path");
         var outArg = new Argument<string>("--output-file", getDefaultValue: () => "./", description: "Output TOC file or directory path");
         var toc = new Option<string>("--toc-file", description: "TOC file to merge");
         var rootCommand = new RootCommand();

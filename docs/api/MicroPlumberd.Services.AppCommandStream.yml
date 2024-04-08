@@ -19,14 +19,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppCommandStream
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 8
+    startLine: 32
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that returns a string representing the application's command stream.
+  example: []
   syntax:
     content: public delegate string AppCommandStream()
     return:
       type: System.String
+      description: A string representing the application command stream.
     content.vb: Public Delegate Function AppCommandStream() As String
 references:
 - uid: MicroPlumberd.Services

@@ -7,7 +7,6 @@ items:
   - MicroPlumberd.AcceptedTypeAttribute
   - MicroPlumberd.AggregateAttribute
   - MicroPlumberd.AggregateBase`1
-  - MicroPlumberd.AsyncLazy`1
   - MicroPlumberd.AttributeSnaphotPolicy`1
   - MicroPlumberd.BuildInvocationContext
   - MicroPlumberd.CommandEnqueued
@@ -16,7 +15,6 @@ items:
   - MicroPlumberd.CommandRequest
   - MicroPlumberd.CommandRequest`1
   - MicroPlumberd.ContainerExtensions
-  - MicroPlumberd.EventDispatcher
   - MicroPlumberd.EventHandlerAttribute
   - MicroPlumberd.EventIdConvention
   - MicroPlumberd.EventNameConvention
@@ -46,7 +44,6 @@ items:
   - MicroPlumberd.IProcessAction
   - MicroPlumberd.IProcessManager
   - MicroPlumberd.IProjectionRegister
-  - MicroPlumberd.IReadModel
   - MicroPlumberd.IReadOnlyConventions
   - MicroPlumberd.ISnapshot
   - MicroPlumberd.ISnapshotPolicy
@@ -93,44 +90,18 @@ items:
   assemblies:
   - MicroPlumberd
 references:
+- uid: MicroPlumberd.AcceptedTypeAttribute
+  commentId: T:MicroPlumberd.AcceptedTypeAttribute
+  href: MicroPlumberd.AcceptedTypeAttribute.html
+  name: AcceptedTypeAttribute
+  nameWithType: AcceptedTypeAttribute
+  fullName: MicroPlumberd.AcceptedTypeAttribute
 - uid: MicroPlumberd.AggregateAttribute
   commentId: T:MicroPlumberd.AggregateAttribute
   href: MicroPlumberd.AggregateAttribute.html
   name: AggregateAttribute
   nameWithType: AggregateAttribute
   fullName: MicroPlumberd.AggregateAttribute
-- uid: MicroPlumberd.AttributeSnaphotPolicy`1
-  commentId: T:MicroPlumberd.AttributeSnaphotPolicy`1
-  href: MicroPlumberd.AttributeSnaphotPolicy-1.html
-  name: AttributeSnaphotPolicy<T>
-  nameWithType: AttributeSnaphotPolicy<T>
-  fullName: MicroPlumberd.AttributeSnaphotPolicy<T>
-  nameWithType.vb: AttributeSnaphotPolicy(Of T)
-  fullName.vb: MicroPlumberd.AttributeSnaphotPolicy(Of T)
-  name.vb: AttributeSnaphotPolicy(Of T)
-  spec.csharp:
-  - uid: MicroPlumberd.AttributeSnaphotPolicy`1
-    name: AttributeSnaphotPolicy
-    href: MicroPlumberd.AttributeSnaphotPolicy-1.html
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: MicroPlumberd.AttributeSnaphotPolicy`1
-    name: AttributeSnaphotPolicy
-    href: MicroPlumberd.AttributeSnaphotPolicy-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
-  - name: )
-- uid: MicroPlumberd.ISnapshotPolicy
-  commentId: T:MicroPlumberd.ISnapshotPolicy
-  parent: MicroPlumberd
-  href: MicroPlumberd.ISnapshotPolicy.html
-  name: ISnapshotPolicy
-  nameWithType: ISnapshotPolicy
-  fullName: MicroPlumberd.ISnapshotPolicy
 - uid: MicroPlumberd.ISnapshotPolicy`1
   commentId: T:MicroPlumberd.ISnapshotPolicy`1
   href: MicroPlumberd.ISnapshotPolicy-1.html
@@ -156,18 +127,31 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: MicroPlumberd.AcceptedTypeAttribute
-  commentId: T:MicroPlumberd.AcceptedTypeAttribute
-  href: MicroPlumberd.AcceptedTypeAttribute.html
-  name: AcceptedTypeAttribute
-  nameWithType: AcceptedTypeAttribute
-  fullName: MicroPlumberd.AcceptedTypeAttribute
-- uid: MicroPlumberd.OutputStreamAttribute
-  commentId: T:MicroPlumberd.OutputStreamAttribute
-  href: MicroPlumberd.OutputStreamAttribute.html
-  name: OutputStreamAttribute
-  nameWithType: OutputStreamAttribute
-  fullName: MicroPlumberd.OutputStreamAttribute
+- uid: MicroPlumberd.AttributeSnaphotPolicy`1
+  commentId: T:MicroPlumberd.AttributeSnaphotPolicy`1
+  href: MicroPlumberd.AttributeSnaphotPolicy-1.html
+  name: AttributeSnaphotPolicy<T>
+  nameWithType: AttributeSnaphotPolicy<T>
+  fullName: MicroPlumberd.AttributeSnaphotPolicy<T>
+  nameWithType.vb: AttributeSnaphotPolicy(Of T)
+  fullName.vb: MicroPlumberd.AttributeSnaphotPolicy(Of T)
+  name.vb: AttributeSnaphotPolicy(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.AttributeSnaphotPolicy`1
+    name: AttributeSnaphotPolicy
+    href: MicroPlumberd.AttributeSnaphotPolicy-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.AttributeSnaphotPolicy`1
+    name: AttributeSnaphotPolicy
+    href: MicroPlumberd.AttributeSnaphotPolicy-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.EventHandlerAttribute
   commentId: T:MicroPlumberd.EventHandlerAttribute
   href: MicroPlumberd.EventHandlerAttribute.html
@@ -301,12 +285,6 @@ references:
   name: IPlumber
   nameWithType: IPlumber
   fullName: MicroPlumberd.IPlumber
-- uid: MicroPlumberd.EventDispatcher
-  commentId: T:MicroPlumberd.EventDispatcher
-  href: MicroPlumberd.EventDispatcher.html
-  name: EventDispatcher
-  nameWithType: EventDispatcher
-  fullName: MicroPlumberd.EventDispatcher
 - uid: MicroPlumberd.IEventHandler`1
   commentId: T:MicroPlumberd.IEventHandler`1
   href: MicroPlumberd.IEventHandler-1.html
@@ -339,12 +317,6 @@ references:
   name: IEventHandler
   nameWithType: IEventHandler
   fullName: MicroPlumberd.IEventHandler
-- uid: MicroPlumberd.IReadModel
-  commentId: T:MicroPlumberd.IReadModel
-  href: MicroPlumberd.IReadModel.html
-  name: IReadModel
-  nameWithType: IReadModel
-  fullName: MicroPlumberd.IReadModel
 - uid: MicroPlumberd.ISubscriptionSet
   commentId: T:MicroPlumberd.ISubscriptionSet
   parent: MicroPlumberd
@@ -352,6 +324,13 @@ references:
   name: ISubscriptionSet
   nameWithType: ISubscriptionSet
   fullName: MicroPlumberd.ISubscriptionSet
+- uid: MicroPlumberd.ISnapshotPolicy
+  commentId: T:MicroPlumberd.ISnapshotPolicy
+  parent: MicroPlumberd
+  href: MicroPlumberd.ISnapshotPolicy.html
+  name: ISnapshotPolicy
+  nameWithType: ISnapshotPolicy
+  fullName: MicroPlumberd.ISnapshotPolicy
 - uid: MicroPlumberd.ISubscriptionRunner
   commentId: T:MicroPlumberd.ISubscriptionRunner
   parent: MicroPlumberd
@@ -359,6 +338,12 @@ references:
   name: ISubscriptionRunner
   nameWithType: ISubscriptionRunner
   fullName: MicroPlumberd.ISubscriptionRunner
+- uid: MicroPlumberd.OutputStreamAttribute
+  commentId: T:MicroPlumberd.OutputStreamAttribute
+  href: MicroPlumberd.OutputStreamAttribute.html
+  name: OutputStreamAttribute
+  nameWithType: OutputStreamAttribute
+  fullName: MicroPlumberd.OutputStreamAttribute
 - uid: MicroPlumberd.IStatefull
   commentId: T:MicroPlumberd.IStatefull
   parent: MicroPlumberd
@@ -422,31 +407,6 @@ references:
   - name: Of
   - name: " "
   - name: TState
-  - name: )
-- uid: MicroPlumberd.AsyncLazy`1
-  commentId: T:MicroPlumberd.AsyncLazy`1
-  href: MicroPlumberd.AsyncLazy-1.html
-  name: AsyncLazy<T>
-  nameWithType: AsyncLazy<T>
-  fullName: MicroPlumberd.AsyncLazy<T>
-  nameWithType.vb: AsyncLazy(Of T)
-  fullName.vb: MicroPlumberd.AsyncLazy(Of T)
-  name.vb: AsyncLazy(Of T)
-  spec.csharp:
-  - uid: MicroPlumberd.AsyncLazy`1
-    name: AsyncLazy
-    href: MicroPlumberd.AsyncLazy-1.html
-  - name: <
-  - name: T
-  - name: '>'
-  spec.vb:
-  - uid: MicroPlumberd.AsyncLazy`1
-    name: AsyncLazy
-    href: MicroPlumberd.AsyncLazy-1.html
-  - name: (
-  - name: Of
-  - name: " "
-  - name: T
   - name: )
 - uid: MicroPlumberd.StreamCategoryConvention
   commentId: T:MicroPlumberd.StreamCategoryConvention

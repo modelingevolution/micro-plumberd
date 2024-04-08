@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotEventName
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 29
+    startLine: 56
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that returns the name of a snapshot event for a given state type.
+  example: []
   syntax:
     content: public delegate string SnapshotEventName(Type stateType)
     parameters:
     - id: stateType
       type: System.Type
+      description: The type of the state.
     return:
       type: System.String
+      description: The name of the snapshot event.
     content.vb: Public Delegate Function SnapshotEventName(stateType As Type) As String
 references:
 - uid: MicroPlumberd

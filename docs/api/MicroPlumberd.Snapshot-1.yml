@@ -20,14 +20,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Snapshot
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 17
+    startLine: 46
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a generic snapshot object used in Plumberd.
+  example: []
   syntax:
     content: 'public sealed record Snapshot<T> : Snapshot, IEquatable<Snapshot>, ISnapshot, IEquatable<Snapshot<T>>'
     typeParameters:
     - id: T
+      description: The type of the snapshot data.
     content.vb: Public NotInheritable Class Snapshot(Of T) Inherits Snapshot Implements IEquatable(Of Snapshot), ISnapshot, IEquatable(Of Snapshot(Of T))
   inheritance:
   - System.Object
@@ -66,10 +69,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Data
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 20
+    startLine: 53
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the data of the snapshot.
+  example: []
   syntax:
     content: public T Data { get; }
     parameters: []

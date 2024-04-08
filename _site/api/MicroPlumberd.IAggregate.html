@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Interface IAggregate | MicroPlumberd ">
       
-      
+      <meta name="description" content="Interface for an aggregate.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_IAggregate" data-uid="MicroPlumberd.IAggregate" class="text-break">
-Interface IAggregate  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L14"><i class="bi bi-code-slash"></i></a>
+Interface IAggregate  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L36"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,8 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
   <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Interface for an aggregate.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -134,10 +135,11 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
 
   <h3 id="MicroPlumberd_IAggregate_PendingEvents" data-uid="MicroPlumberd.IAggregate.PendingEvents">
   PendingEvents
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L16"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L44"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Pending events.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -151,7 +153,8 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
-    <dd></dd>
+    <dd><p>The pending events.</p>
+</dd>
   </dl>
 
 
@@ -169,10 +172,11 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
 
   <h3 id="MicroPlumberd_IAggregate_AckCommitted" data-uid="MicroPlumberd.IAggregate.AckCommitted">
   AckCommitted()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L18"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L56"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Is used when all pending events are saved in eventstore.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -195,10 +199,11 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
 
   <h3 id="MicroPlumberd_IAggregate_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__" data-uid="MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})">
   Rehydrate(IAsyncEnumerable&lt;object&gt;)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L17"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L51"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Rehydrates aggregate with specified events.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
@@ -208,7 +213,8 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>events</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
-    <dd></dd>
+    <dd><p>The events.</p>
+</dd>
   </dl>
 
   <h4 class="section">Returns</h4>
@@ -227,11 +233,16 @@ Interface IAggregate  <a class="header-action link-secondary" title="View source
 
 
 
+  <h2 id="seealso">See Also</h2>
+  <div class="seealso">
+      <div><a class="xref" href="MicroPlumberd.IId.html">IId</a></div>
+      <div><a class="xref" href="MicroPlumberd.IVersioned.html">IVersioned</a></div>
+  </div>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L14" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L36" class="edit-link">Edit this page</a>
         </div>
 
 

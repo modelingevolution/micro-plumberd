@@ -23,14 +23,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandEnqueued
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 15
+    startLine: 27
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Immutable class used in ProcessManagers in Given methods the rebuild the state based on send commands.
+  example: []
   syntax:
     content: 'public sealed class CommandEnqueued<TCommand> : ICommandEnqueued'
     typeParameters:
     - id: TCommand
+      description: The type of the command.
     content.vb: Public NotInheritable Class CommandEnqueued(Of TCommand) Implements ICommandEnqueued
   inheritance:
   - System.Object
@@ -64,17 +67,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 17
+    startLine: 34
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Initializes a new instance of the <xref href="MicroPlumberd.CommandEnqueued%601" data-throw-if-not-resolved="false"></xref> class.
+  example: []
   syntax:
     content: public CommandEnqueued(Guid recipientId, TCommand command)
     parameters:
     - id: recipientId
       type: System.Guid
+      description: The recipient identifier.
     - id: command
       type: '{TCommand}'
+      description: The command.
     content.vb: Public Sub New(recipientId As Guid, command As TCommand)
   overload: MicroPlumberd.CommandEnqueued`1.#ctor*
   nameWithType.vb: CommandEnqueued(Of TCommand).New(Guid, TCommand)
@@ -98,10 +105,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 23
+    startLine: 42
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Initializes a new instance of the <xref href="MicroPlumberd.CommandEnqueued%601" data-throw-if-not-resolved="false"></xref> class.
+  example: []
   syntax:
     content: public CommandEnqueued()
     content.vb: Public Sub New()
@@ -127,15 +136,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Command
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 29
+    startLine: 51
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Gets the command.
+  example: []
   syntax:
     content: public TCommand Command { get; init; }
     parameters: []
     return:
       type: '{TCommand}'
+      description: The command.
     content.vb: Public Property Command As TCommand
   overload: MicroPlumberd.CommandEnqueued`1.Command*
   nameWithType.vb: CommandEnqueued(Of TCommand).Command
@@ -158,16 +170,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: RecipientId
     path: src/MicroPlumberd.ProcessManager.Abstractions/CommandEnqueued.cs
-    startLine: 31
+    startLine: 59
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Gets the recipient identifier.
   example: []
   syntax:
     content: public Guid RecipientId { get; init; }
     parameters: []
     return:
       type: System.Guid
+      description: The recipient identifier.
     content.vb: Public Property RecipientId As Guid
   overload: MicroPlumberd.CommandEnqueued`1.RecipientId*
   implements:
@@ -401,6 +415,31 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: MicroPlumberd.CommandEnqueued`1
+  commentId: T:MicroPlumberd.CommandEnqueued`1
+  href: MicroPlumberd.CommandEnqueued-1.html
+  name: CommandEnqueued<TCommand>
+  nameWithType: CommandEnqueued<TCommand>
+  fullName: MicroPlumberd.CommandEnqueued<TCommand>
+  nameWithType.vb: CommandEnqueued(Of TCommand)
+  fullName.vb: MicroPlumberd.CommandEnqueued(Of TCommand)
+  name.vb: CommandEnqueued(Of TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued
+    href: MicroPlumberd.CommandEnqueued-1.html
+  - name: <
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.CommandEnqueued`1
+    name: CommandEnqueued
+    href: MicroPlumberd.CommandEnqueued-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
 - uid: MicroPlumberd.CommandEnqueued`1.#ctor*
   commentId: Overload:MicroPlumberd.CommandEnqueued`1.#ctor
   href: MicroPlumberd.CommandEnqueued-1.html#MicroPlumberd_CommandEnqueued_1__ctor_System_Guid__0_

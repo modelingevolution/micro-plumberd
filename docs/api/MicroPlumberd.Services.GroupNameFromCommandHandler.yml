@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameFromCommandHandler
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 5
+    startLine: 15
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that returns the group name for a given command handler type.
+  example: []
   syntax:
     content: public delegate string GroupNameFromCommandHandler(Type commandHandlerType)
     parameters:
     - id: commandHandlerType
       type: System.Type
+      description: The type of the command handler.
     return:
       type: System.String
+      description: The group name for the command handler.
     content.vb: Public Delegate Function GroupNameFromCommandHandler(commandHandlerType As Type) As String
 references:
 - uid: MicroPlumberd.Services

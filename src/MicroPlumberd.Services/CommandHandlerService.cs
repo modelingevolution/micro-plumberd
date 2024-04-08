@@ -31,7 +31,7 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log, IPlumber 
         var settings = plumber.Config.Conventions.ServicesConventions();
         var outputStream = settings.AppCommandStreamConvention();
         
-        if(settings.AreHandlersExecutedPersistently())
+        if(settings.AreCommandHandlersExecutedPersistently())
             this._subscription = await plumber.SubscribeEventHandlerPersistently(MapCommandType, events, this, outputStream, AppDomain.CurrentDomain.FriendlyName , StreamPosition.End, true);
         else this._subscription = await plumber.SubscribeEventHandler(MapCommandType, events, this, outputStream, FromStream.End, true);
 

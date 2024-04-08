@@ -25,10 +25,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Metadata
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Metadata structure.
+  example: []
   syntax:
     content: public readonly struct Metadata
     content.vb: Public Structure Metadata
@@ -65,10 +67,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Metadata structure.
+  example: []
   syntax:
     content: public Metadata(Guid id, Guid eventId, long sourceStreamPosition, string sourceStreamId, JsonElement data)
     parameters:
@@ -105,15 +109,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 6
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the identifier or the stream. This is the second segment of the streamId (category-id).
+  example: []
   syntax:
     content: public Guid Id { get; }
     parameters: []
     return:
       type: System.Guid
+      description: The identifier.
     content.vb: Public ReadOnly Property Id As Guid
   overload: MicroPlumberd.Metadata.Id*
 - uid: MicroPlumberd.Metadata.Data
@@ -134,15 +141,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Data
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 7
+    startLine: 22
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Data from metadata is deserialized in JsonElement.
+  example: []
   syntax:
     content: public JsonElement Data { get; }
     parameters: []
     return:
       type: System.Text.Json.JsonElement
+      description: The data.
     content.vb: Public ReadOnly Property Data As JsonElement
   overload: MicroPlumberd.Metadata.Data*
 - uid: MicroPlumberd.Metadata.SourceStreamPosition
@@ -163,15 +173,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SourceStreamPosition
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 8
+    startLine: 29
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the source stream position.
+  example: []
   syntax:
     content: public long SourceStreamPosition { get; }
     parameters: []
     return:
       type: System.Int64
+      description: The source stream position.
     content.vb: Public ReadOnly Property SourceStreamPosition As Long
   overload: MicroPlumberd.Metadata.SourceStreamPosition*
 - uid: MicroPlumberd.Metadata.SourceStreamId
@@ -192,15 +205,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SourceStreamId
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 9
+    startLine: 36
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the full source stream-id
+  example: []
   syntax:
     content: public string SourceStreamId { get; }
     parameters: []
     return:
       type: System.String
+      description: The source stream identifier.
     content.vb: Public ReadOnly Property SourceStreamId As String
   overload: MicroPlumberd.Metadata.SourceStreamId*
 - uid: MicroPlumberd.Metadata.EventId
@@ -221,15 +237,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventId
     path: src/MicroPlumberd/Serialization/Metadata.cs
-    startLine: 10
+    startLine: 43
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the event identifier.
+  example: []
   syntax:
     content: public Guid EventId { get; }
     parameters: []
     return:
       type: System.Guid
+      description: The event identifier.
     content.vb: Public ReadOnly Property EventId As Guid
   overload: MicroPlumberd.Metadata.EventId*
 references:

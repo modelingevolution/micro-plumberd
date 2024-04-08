@@ -20,15 +20,23 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 43
+    startLine: 98
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Generic version of IAggregate interface that contains factory method.
+  example: []
   syntax:
     content: 'public interface IAggregate<out TSelf> : IAggregate, IId, IVersioned'
     typeParameters:
     - id: TSelf
+      description: The type of the self.
     content.vb: Public Interface IAggregate(Of Out TSelf) Inherits IAggregate, IId, IVersioned
+  seealso:
+  - linkId: MicroPlumberd.IId
+    commentId: T:MicroPlumberd.IId
+  - linkId: MicroPlumberd.IVersioned
+    commentId: T:MicroPlumberd.IVersioned
   inheritedMembers:
   - MicroPlumberd.IAggregate.PendingEvents
   - MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
@@ -56,22 +64,40 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: New
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 45
+    startLine: 105
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Factory method to create new Aggregates based on Guids.
+  example: []
   syntax:
     content: public static abstract TSelf New(Guid id)
     parameters:
     - id: id
       type: System.Guid
+      description: The identifier.
     return:
       type: '{TSelf}'
+      description: ''
     content.vb: Public Shared MustInherit Function [New](id As Guid) As TSelf
   overload: MicroPlumberd.IAggregate`1.New*
   nameWithType.vb: IAggregate(Of TSelf).New(Guid)
   fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New(System.Guid)
 references:
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -170,20 +196,6 @@ references:
   name: IAggregate
   nameWithType: IAggregate
   fullName: MicroPlumberd.IAggregate
-- uid: MicroPlumberd.IId
-  commentId: T:MicroPlumberd.IId
-  parent: MicroPlumberd
-  href: MicroPlumberd.IId.html
-  name: IId
-  nameWithType: IId
-  fullName: MicroPlumberd.IId
-- uid: MicroPlumberd.IVersioned
-  commentId: T:MicroPlumberd.IVersioned
-  parent: MicroPlumberd
-  href: MicroPlumberd.IVersioned.html
-  name: IVersioned
-  nameWithType: IVersioned
-  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd.IAggregate`1.New*
   commentId: Overload:MicroPlumberd.IAggregate`1.New
   href: MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_System_Guid_

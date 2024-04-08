@@ -20,10 +20,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IServicesConfig
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 28
+    startLine: 97
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents the configuration for services.
+  example: []
   syntax:
     content: public interface IServicesConfig
     content.vb: Public Interface IServicesConfig
@@ -45,10 +47,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: DefaultTimeout
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 30
+    startLine: 102
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Gets or sets the default timeout for services.
+  example: []
   syntax:
     content: TimeSpan DefaultTimeout { get; set; }
     parameters: []

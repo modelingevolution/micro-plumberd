@@ -9,8 +9,6 @@ items:
     name: AggregateAttribute
   - uid: MicroPlumberd.AggregateBase`1
     name: AggregateBase<TState>
-  - uid: MicroPlumberd.AsyncLazy`1
-    name: AsyncLazy<T>
   - uid: MicroPlumberd.AttributeSnaphotPolicy`1
     name: AttributeSnaphotPolicy<T>
   - uid: MicroPlumberd.BuildInvocationContext
@@ -27,8 +25,6 @@ items:
     name: CommandRequest<TCommand>
   - uid: MicroPlumberd.ContainerExtensions
     name: ContainerExtensions
-  - uid: MicroPlumberd.EventDispatcher
-    name: EventDispatcher
   - uid: MicroPlumberd.EventHandlerAttribute
     name: EventHandlerAttribute
   - uid: MicroPlumberd.EventIdConvention
@@ -87,8 +83,6 @@ items:
     name: IProcessManager
   - uid: MicroPlumberd.IProjectionRegister
     name: IProjectionRegister
-  - uid: MicroPlumberd.IReadModel
-    name: IReadModel
   - uid: MicroPlumberd.IReadOnlyConventions
     name: IReadOnlyConventions
   - uid: MicroPlumberd.ISnapshot

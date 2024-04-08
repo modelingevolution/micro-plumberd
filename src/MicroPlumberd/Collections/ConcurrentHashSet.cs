@@ -876,34 +876,20 @@ namespace MicroPlumberd.Collections
             }
         }
 
-        private class Tables
+        private class Tables(Node?[] buckets, object[] locks, int[] countPerLock)
         {
-            public readonly Node?[] Buckets;
-            public readonly object[] Locks;
+            public readonly Node?[] Buckets = buckets;
+            public readonly object[] Locks = locks;
 
-            public readonly int[] CountPerLock;
-
-            public Tables(Node?[] buckets, object[] locks, int[] countPerLock)
-            {
-                Buckets = buckets;
-                Locks = locks;
-                CountPerLock = countPerLock;
-            }
+            public readonly int[] CountPerLock = countPerLock;
         }
 
-        private class Node
+        private class Node(T item, int hashcode, Node? next)
         {
-            public readonly T Item;
-            public readonly int Hashcode;
+            public readonly T Item = item;
+            public readonly int Hashcode = hashcode;
 
-            public volatile Node? Next;
-
-            public Node(T item, int hashcode, Node? next)
-            {
-                Item = item;
-                Hashcode = hashcode;
-                Next = next;
-            }
+            public volatile Node? Next = next;
         }
     }
 }

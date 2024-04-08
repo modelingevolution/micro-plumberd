@@ -21,10 +21,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Snapshot
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 10
+    startLine: 27
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a snapshot object used in Plumberd.
+  example: []
   syntax:
     content: 'public abstract record Snapshot : IEquatable<Snapshot>'
     content.vb: Public MustInherit Class Snapshot Implements IEquatable(Of Snapshot)
@@ -60,10 +62,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Created
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 13
+    startLine: 34
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the creation date of the snapshot.
+  example: []
   syntax:
     content: public DateTimeOffset Created { get; }
     parameters: []
@@ -89,10 +93,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 14
+    startLine: 39
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the version of the snapshot.
+  example: []
   syntax:
     content: public long Version { get; }
     parameters: []

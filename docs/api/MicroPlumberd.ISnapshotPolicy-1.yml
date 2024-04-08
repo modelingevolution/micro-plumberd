@@ -20,14 +20,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ISnapshotPolicy
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 61
+    startLine: 45
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Interface for creating snapshot policies, that manage when a snapshot is performed on an aggregate.
+  example: []
   syntax:
     content: 'public interface ISnapshotPolicy<in T> : ISnapshotPolicy'
     typeParameters:
     - id: T
+      description: ''
     content.vb: Public Interface ISnapshotPolicy(Of In T) Inherits ISnapshotPolicy
   inheritedMembers:
   - MicroPlumberd.ISnapshotPolicy.ShouldMakeSnapshot(System.Object,System.Nullable{MicroPlumberd.StateInfo})
@@ -52,7 +55,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ShouldMakeSnapshot
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 63
+    startLine: 47
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

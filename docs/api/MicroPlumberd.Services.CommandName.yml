@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandName
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 6
+    startLine: 21
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that returns the name of a command based on its type.
+  example: []
   syntax:
     content: public delegate string CommandName(Type command)
     parameters:
     - id: command
       type: System.Type
+      description: The type of the command.
     return:
       type: System.String
+      description: The name of the command.
     content.vb: Public Delegate Function CommandName(command As Type) As String
 references:
 - uid: MicroPlumberd.Services

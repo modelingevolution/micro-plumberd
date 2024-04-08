@@ -19,18 +19,22 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionCategoryStreamConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 25
+    startLine: 41
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that defines the convention for determining the projection category stream for a given model type.
+  example: []
   syntax:
-    content: public delegate string ProjectionCategoryStreamConvention(Type aggregateType)
+    content: public delegate string ProjectionCategoryStreamConvention(Type type)
     parameters:
-    - id: aggregateType
+    - id: type
       type: System.Type
+      description: The type of the model.
     return:
       type: System.String
-    content.vb: Public Delegate Function ProjectionCategoryStreamConvention(aggregateType As Type) As String
+      description: The projection category stream.
+    content.vb: Public Delegate Function ProjectionCategoryStreamConvention(type As Type) As String
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd

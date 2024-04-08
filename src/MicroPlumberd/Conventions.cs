@@ -20,24 +20,76 @@ readonly struct SnapshotConverter(Type snapshot)
 }
 
 
+/// <summary>
+/// Represents a delegate that defines a convention for determining the stream category based on the aggregate type.
+/// </summary>
+/// <param name="aggregateType">The type of the aggregate.</param>
+/// <returns>A string representing the stream category.</returns>
 public delegate string StreamCategoryConvention(Type aggregateType);
+/// <summary>
+/// Represents a delegate that defines the convention for generating a steam name based on the aggregate type and aggregate ID.
+/// </summary>
+/// <param name="aggregateType">The type of the aggregate.</param>
+/// <param name="aggregateId">The ID of the aggregate.</param>
+/// <returns>A string representing the steam name.</returns>
 public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId);
 
-public delegate string ProjectionCategoryStreamConvention(Type aggregateType);
+/// <summary>
+/// Represents a delegate that defines the convention for determining the projection category stream for a given model type.
+/// </summary>
+/// <param name="type">The type of the model.</param>
+/// <returns>The projection category stream.</returns>
+public delegate string ProjectionCategoryStreamConvention(Type type);
 
+/// <summary>
+/// Represents a delegate that defines the convention for generating event names.
+/// </summary>
+/// <param name="ownerType">The type of the owner of the event.</param>
+/// <param name="evtType">The type of the event.</param>
+/// <returns>A string representing the generated event name.</returns>
 public delegate string EventNameConvention(Type? ownerType, Type evtType);
 
+/// <summary>
+/// Represents a delegate that returns the name of a snapshot event for a given state type.
+/// </summary>
+/// <param name="stateType">The type of the state.</param>
+/// <returns>The name of the snapshot event.</returns>
 public delegate string SnapshotEventName(Type stateType);
 
+/// <summary>
+/// Represents a policy for creating snapshots of a specific type.
+/// </summary>
 public delegate ISnapshotPolicy SnapshotPolicyFactory(Type owner);
+/// <summary>
+/// Represents a delegate that defines a convention for handling metadata in an event.
+/// </summary>
+/// <param name="metadata">The dynamic metadata associated with the event.</param>
+/// <param name="aggregate">The optional aggregate associated with the event.</param>
+/// <param name="evt">The event object.</param>
 public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
 
 public delegate void BuildInvocationContext(InvocationContext context, Metadata m);
+/// <summary>
+/// Represents delegate that creates Uuid from an event and optinally aggregate instance.
+/// </summary>
 public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
 
+/// <summary>
+/// Represents a delegate that defines the convention for generating the output stream name based on the model type.
+/// </summary>
+/// <param name="model">The model type.</param>
+/// <returns>The output stream name.</returns>
 public delegate string OutputStreamModelConvention(Type model);
+/// <summary>
+/// Represents a delegate that defines a naming convention for group name used in persistent subscription.
+/// </summary>
+/// <param name="model">The type of the model.</param>
+/// <returns>A string representing the group name for the model.</returns>
 public delegate string GroupNameModelConvention(Type model);
 
+/// <summary>
+/// Represents a set of read-only conventions used by the MicroPlumberd framework.
+/// </summary>
 public interface IReadOnlyConventions : IExtension
 {
     ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; }

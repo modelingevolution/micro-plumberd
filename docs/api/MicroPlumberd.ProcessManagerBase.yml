@@ -98,12 +98,14 @@ items:
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
+  summary: Gets the current version.
   example: []
   syntax:
     content: public long Version { get; }
     parameters: []
     return:
       type: System.Int64
+      description: The version.
     content.vb: Public ReadOnly Property Version As Long
   overload: MicroPlumberd.ProcessManagerBase.Version*
   implements:

@@ -5246,19 +5246,19 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.Services.IServicesConvention.AppCommandStreamConvention
   nameWithType: IServicesConvention.AppCommandStreamConvention
-- uid: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  name: AreHandlersExecutedPersistently
-  href: api/MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreHandlersExecutedPersistently
-  commentId: P:MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  fullName: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  nameWithType: IServicesConvention.AreHandlersExecutedPersistently
-- uid: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently*
-  name: AreHandlersExecutedPersistently
-  href: api/MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreHandlersExecutedPersistently_
-  commentId: Overload:MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
+- uid: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  name: AreCommandHandlersExecutedPersistently
+  href: api/MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreCommandHandlersExecutedPersistently
+  commentId: P:MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  fullName: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  nameWithType: IServicesConvention.AreCommandHandlersExecutedPersistently
+- uid: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently*
+  name: AreCommandHandlersExecutedPersistently
+  href: api/MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_AreCommandHandlersExecutedPersistently_
+  commentId: Overload:MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
   isSpec: "True"
-  fullName: MicroPlumberd.Services.IServicesConvention.AreHandlersExecutedPersistently
-  nameWithType: IServicesConvention.AreHandlersExecutedPersistently
+  fullName: MicroPlumberd.Services.IServicesConvention.AreCommandHandlersExecutedPersistently
+  nameWithType: IServicesConvention.AreCommandHandlersExecutedPersistently
 - uid: MicroPlumberd.Services.IServicesConvention.CommandHandlerSkipFilter
   name: CommandHandlerSkipFilter
   href: api/MicroPlumberd.Services.IServicesConvention.html#MicroPlumberd_Services_IServicesConvention_CommandHandlerSkipFilter

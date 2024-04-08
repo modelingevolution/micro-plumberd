@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 38
+    startLine: 87
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a delegate that defines a naming convention for group name used in persistent subscription.
+  example: []
   syntax:
     content: public delegate string GroupNameModelConvention(Type model)
     parameters:
     - id: model
       type: System.Type
+      description: The type of the model.
     return:
       type: System.String
+      description: A string representing the group name for the model.
     content.vb: Public Delegate Function GroupNameModelConvention(model As Type) As String
 references:
 - uid: MicroPlumberd

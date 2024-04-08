@@ -1,7 +1,10 @@
-﻿using System.Reflection;
+﻿namespace MicroPlumberd;
 
-namespace MicroPlumberd;
-
+/// <summary>
+/// Attribute that is used on aggregates. When a class is marked with this attribute, source generators will generate partial class
+/// that contains all boring dispatching code and metadata for plumberd to do its job.
+/// </summary>
+/// <seealso cref="System.Attribute" />
 [AttributeUsage(AttributeTargets.Class)]
 public class AggregateAttribute : Attribute
 {
@@ -9,6 +12,12 @@ public class AggregateAttribute : Attribute
     private long _snapshotAfter = -1;
     public Type? SnaphotPolicy { get; set; }
 
+    /// <summary>
+    /// Gets or sets the number of events from the last snapshot before a new one is performed.
+    /// </summary>
+    /// <value>
+    /// The snapshot every.
+    /// </value>
     public int SnapshotEvery
     {
         get => _snapshotEvery;
@@ -17,7 +26,7 @@ public class AggregateAttribute : Attribute
         }
     }
     /// <summary>
-    /// In seconds
+    /// Gets or sets the time from last snapshots (in seconds) before a new one is performed.
     /// </summary>
     public long SnapshotAfter
     {
@@ -30,60 +39,11 @@ public class AggregateAttribute : Attribute
     }
 }
 
-public class AttributeSnaphotPolicy<T> : ISnapshotPolicy<T>
- where T:IAggregate
-{
-    public AttributeSnaphotPolicy()
-    {
-        var att = typeof(T).GetCustomAttribute<AggregateAttribute>();
-        this.MinTime = att.SnapshotAfter > 0 ? TimeSpan.FromSeconds(att.SnapshotAfter) : null;
-        this.MinEventCount = att.SnapshotEvery > 0 ? att.SnapshotEvery : null;
-    }
-
-    public int? MinEventCount { get; set; }
-
-    public TimeSpan? MinTime { get;  }
-
-    public bool ShouldMakeSnapshot(T aggregate, StateInfo? info)
-    {
-        var n = DateTimeOffset.Now;
-        var i = info ?? new StateInfo(-1, n);
-        return MinEventCount.HasValue && aggregate.Version - i.Version >= MinEventCount.Value || 
-               MinTime.HasValue && n.Subtract(i.Created) >= MinTime.Value;
-    }
-
-    public bool ShouldMakeSnapshot(object owner, StateInfo? info) => this.ShouldMakeSnapshot((T)owner, info);
-}
-
-public interface ISnapshotPolicy
-{
-    bool ShouldMakeSnapshot(object owner, StateInfo? info);
-}
+/// <summary>
+/// Interface for creating snapshot policies, that manage when a snapshot is performed on an aggregate.
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public interface ISnapshotPolicy<in T> : ISnapshotPolicy
 {
     bool ShouldMakeSnapshot(T aggregate, StateInfo? info);
-}
-
-[AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-public class AcceptedTypeAttribute : Attribute
-{
-    public AcceptedTypeAttribute(Type acceptedType)
-    {
-        AcceptedType = acceptedType;
-    }
-
-    public Type AcceptedType { get; init; }
-}
-
-[AttributeUsage(AttributeTargets.Class)]
-public class OutputStreamAttribute : Attribute
-{
-    public OutputStreamAttribute(string outputStreamName)
-    {
-        if (string.IsNullOrWhiteSpace(outputStreamName))
-            throw new ArgumentException(nameof(outputStreamName));
-        this.OutputStreamName = outputStreamName;
-    }
-
-    public string OutputStreamName { get; }
 }

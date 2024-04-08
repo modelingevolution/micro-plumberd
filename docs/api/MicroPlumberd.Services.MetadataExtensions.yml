@@ -20,10 +20,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataExtensions
     path: src/MicroPlumberd.Services/CommandHandlerExecutor.cs
-    startLine: 19
+    startLine: 28
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Provides extension methods for working with metadata.
+  example: []
   syntax:
     content: public static class MetadataExtensions
     content.vb: Public Module MetadataExtensions
@@ -56,17 +58,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SessionId
     path: src/MicroPlumberd.Services/CommandHandlerExecutor.cs
-    startLine: 21
+    startLine: 35
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Retrieves the session ID from the metadata.
+  example: []
   syntax:
     content: public static Guid? SessionId(this Metadata m)
     parameters:
     - id: m
       type: MicroPlumberd.Metadata
+      description: The metadata.
     return:
       type: System.Nullable{System.Guid}
+      description: The session ID, or null if not found.
     content.vb: Public Shared Function SessionId(m As Metadata) As Guid?
   overload: MicroPlumberd.Services.MetadataExtensions.SessionId*
 references:

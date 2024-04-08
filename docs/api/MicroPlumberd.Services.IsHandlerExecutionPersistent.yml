@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsHandlerExecutionPersistent
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 37
+    startLine: 114
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that determines whether the execution of a handler is persistent.
+  example: []
   syntax:
     content: public delegate bool IsHandlerExecutionPersistent(Type handlerType)
     parameters:
     - id: handlerType
       type: System.Type
+      description: The type of the handler.
     return:
       type: System.Boolean
+      description: <code>true</code> if the execution of the handler is persistent; otherwise, <code>false</code>.
     content.vb: Public Delegate Function IsHandlerExecutionPersistent(handlerType As Type) As Boolean
 references:
 - uid: MicroPlumberd.Services

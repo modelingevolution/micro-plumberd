@@ -22,10 +22,15 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AggregateAttribute
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Attribute that is used on aggregates. When a class is marked with this attribute, source generators will generate partial class
+
+    that contains all boring dispatching code and metadata for plumberd to do its job.
+  example: []
   syntax:
     content: >-
       [AttributeUsage(AttributeTargets.Class)]
@@ -35,6 +40,9 @@ items:
       <AttributeUsage(AttributeTargets.Class)>
 
       Public Class AggregateAttribute Inherits Attribute
+  seealso:
+  - linkId: System.Attribute
+    commentId: T:System.Attribute
   inheritance:
   - System.Object
   - System.Attribute
@@ -105,7 +113,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnaphotPolicy
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 9
+    startLine: 12
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -134,15 +142,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotEvery
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 11
+    startLine: 20
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets or sets the number of events from the last snapshot before a new one is performed.
+  example: []
   syntax:
     content: public int SnapshotEvery { get; set; }
     parameters: []
     return:
       type: System.Int32
+      description: The snapshot every.
     content.vb: Public Property SnapshotEvery As Integer
   overload: MicroPlumberd.AggregateAttribute.SnapshotEvery*
 - uid: MicroPlumberd.AggregateAttribute.SnapshotAfter
@@ -163,11 +174,11 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotAfter
     path: src/MicroPlumberd/Abstractions/AggregateAttribute.cs
-    startLine: 21
+    startLine: 30
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: In seconds
+  summary: Gets or sets the time from last snapshots (in seconds) before a new one is performed.
   example: []
   syntax:
     content: public long SnapshotAfter { get; set; }
@@ -177,6 +188,14 @@ items:
     content.vb: Public Property SnapshotAfter As Long
   overload: MicroPlumberd.AggregateAttribute.SnapshotAfter*
 references:
+- uid: System.Attribute
+  commentId: T:System.Attribute
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.attribute
+  name: Attribute
+  nameWithType: Attribute
+  fullName: System.Attribute
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -194,14 +213,6 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
-- uid: System.Attribute
-  commentId: T:System.Attribute
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.attribute
-  name: Attribute
-  nameWithType: Attribute
-  fullName: System.Attribute
 - uid: System.Attribute.Equals(System.Object)
   commentId: M:System.Attribute.Equals(System.Object)
   parent: System.Attribute

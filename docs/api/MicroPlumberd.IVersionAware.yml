@@ -20,13 +20,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IVersionAware
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 26
+    startLine: 76
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Interface for increasing the version.
+  example: []
   syntax:
     content: 'public interface IVersionAware : IVersioned'
     content.vb: Public Interface IVersionAware Inherits IVersioned
+  seealso:
+  - linkId: MicroPlumberd.IVersioned
+    commentId: T:MicroPlumberd.IVersioned
   inheritedMembers:
   - MicroPlumberd.IVersioned.Version
 - uid: MicroPlumberd.IVersionAware.Increase
@@ -47,7 +52,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Increase
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 28
+    startLine: 78
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -56,6 +61,13 @@ items:
     content.vb: Sub Increase()
   overload: MicroPlumberd.IVersionAware.Increase*
 references:
+- uid: MicroPlumberd.IVersioned
+  commentId: T:MicroPlumberd.IVersioned
+  parent: MicroPlumberd
+  href: MicroPlumberd.IVersioned.html
+  name: IVersioned
+  nameWithType: IVersioned
+  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -69,13 +81,6 @@ references:
   name: Version
   nameWithType: IVersioned.Version
   fullName: MicroPlumberd.IVersioned.Version
-- uid: MicroPlumberd.IVersioned
-  commentId: T:MicroPlumberd.IVersioned
-  parent: MicroPlumberd
-  href: MicroPlumberd.IVersioned.html
-  name: IVersioned
-  nameWithType: IVersioned
-  fullName: MicroPlumberd.IVersioned
 - uid: MicroPlumberd.IVersionAware.Increase*
   commentId: Overload:MicroPlumberd.IVersionAware.Increase
   href: MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Increase

@@ -1,24 +1,58 @@
 ﻿using EventStore.Client;
 namespace MicroPlumberd;
 
+/// <summary>
+/// Represents a snapshot object used in Plumberd.
+/// </summary>
 public interface ISnapshot
 {
+    /// <summary>
+    /// Gets the data of the snapshot.
+    /// </summary>
     object Data { get; }
+    
+    /// <summary>
+    /// Gets the creation date of the snapshot.
+    /// </summary>
     DateTimeOffset Created { get; }
-    long Version { get;  }
+    
+    /// <summary>
+    /// Gets the version of the snapshot.
+    /// </summary>
+    long Version { get; }
 }
 
+/// <summary>
+/// Represents a snapshot object used in Plumberd.
+/// </summary>
 public abstract record Snapshot
 {
     internal abstract object Value { get; set; }
+    
+    /// <summary>
+    /// Gets the creation date of the snapshot.
+    /// </summary>
     public DateTimeOffset Created { get; internal set; }
+    
+    /// <summary>
+    /// Gets the version of the snapshot.
+    /// </summary>
     public long Version { get; internal set; }
 }
 
+/// <summary>
+/// Represents a generic snapshot object used in Plumberd.
+/// </summary>
+/// <typeparam name="T">The type of the snapshot data.</typeparam>
 public sealed record Snapshot<T> : Snapshot, ISnapshot
 {
     object ISnapshot.Data => Data;
+    
+    /// <summary>
+    /// Gets the data of the snapshot.
+    /// </summary>
     public T Data { get; internal set; }
+    
     internal override object Value
     {
         get => Data;

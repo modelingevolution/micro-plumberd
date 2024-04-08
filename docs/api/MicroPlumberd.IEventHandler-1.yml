@@ -19,21 +19,34 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IEventHandler
     path: src/MicroPlumberd/Abstractions/IReadModel.cs
-    startLine: 5
+    startLine: 10
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Interface for EventHandlers.
+  example: []
   syntax:
     content: 'public interface IEventHandler<TOwner> : IEventHandler where TOwner : IEventHandler'
     typeParameters:
     - id: TOwner
+      description: The type of the owner.
     content.vb: Public Interface IEventHandler(Of TOwner As IEventHandler) Inherits IEventHandler
+  seealso:
+  - linkId: MicroPlumberd.IEventHandler
+    commentId: T:MicroPlumberd.IEventHandler
   inheritedMembers:
   - MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
   nameWithType.vb: IEventHandler(Of TOwner)
   fullName.vb: MicroPlumberd.IEventHandler(Of TOwner)
   name.vb: IEventHandler(Of TOwner)
 references:
+- uid: MicroPlumberd.IEventHandler
+  commentId: T:MicroPlumberd.IEventHandler
+  parent: MicroPlumberd
+  href: MicroPlumberd.IEventHandler.html
+  name: IEventHandler
+  nameWithType: IEventHandler
+  fullName: MicroPlumberd.IEventHandler
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html
@@ -81,10 +94,3 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
-- uid: MicroPlumberd.IEventHandler
-  commentId: T:MicroPlumberd.IEventHandler
-  parent: MicroPlumberd
-  href: MicroPlumberd.IEventHandler.html
-  name: IEventHandler
-  nameWithType: IEventHandler
-  fullName: MicroPlumberd.IEventHandler

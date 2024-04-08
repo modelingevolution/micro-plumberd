@@ -22,10 +22,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StateInfo
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 13
+    startLine: 37
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents the state information of an aggregate.
+  example: []
   syntax:
     content: public readonly struct StateInfo
     content.vb: Public Structure StateInfo
@@ -36,6 +38,42 @@ items:
   - System.Object.Equals(System.Object,System.Object)
   - System.Object.GetType
   - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
+  commentId: M:MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
+  id: '#ctor(System.Int64,System.DateTimeOffset)'
+  parent: MicroPlumberd.StateInfo
+  langs:
+  - csharp
+  - vb
+  name: StateInfo(long, DateTimeOffset)
+  nameWithType: StateInfo.StateInfo(long, DateTimeOffset)
+  fullName: MicroPlumberd.StateInfo.StateInfo(long, System.DateTimeOffset)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/AggregateBase.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/AggregateBase.cs
+    startLine: 37
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Represents the state information of an aggregate.
+  example: []
+  syntax:
+    content: public StateInfo(long version, DateTimeOffset created)
+    parameters:
+    - id: version
+      type: System.Int64
+    - id: created
+      type: System.DateTimeOffset
+    content.vb: Public Sub New(version As Long, created As DateTimeOffset)
+  overload: MicroPlumberd.StateInfo.#ctor*
+  nameWithType.vb: StateInfo.New(Long, DateTimeOffset)
+  fullName.vb: MicroPlumberd.StateInfo.New(Long, System.DateTimeOffset)
+  name.vb: New(Long, DateTimeOffset)
 - uid: MicroPlumberd.StateInfo.Version
   commentId: P:MicroPlumberd.StateInfo.Version
   id: Version
@@ -54,10 +92,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 15
+    startLine: 42
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets or sets the version of the state.
+  example: []
   syntax:
     content: public long Version { get; init; }
     parameters: []
@@ -83,10 +123,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Created
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 16
+    startLine: 47
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets or sets the creation date and time of the state.
+  example: []
   syntax:
     content: public DateTimeOffset Created { get; init; }
     parameters: []
@@ -94,40 +136,6 @@ items:
       type: System.DateTimeOffset
     content.vb: Public Property Created As DateTimeOffset
   overload: MicroPlumberd.StateInfo.Created*
-- uid: MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
-  commentId: M:MicroPlumberd.StateInfo.#ctor(System.Int64,System.DateTimeOffset)
-  id: '#ctor(System.Int64,System.DateTimeOffset)'
-  parent: MicroPlumberd.StateInfo
-  langs:
-  - csharp
-  - vb
-  name: StateInfo(long, DateTimeOffset)
-  nameWithType: StateInfo.StateInfo(long, DateTimeOffset)
-  fullName: MicroPlumberd.StateInfo.StateInfo(long, System.DateTimeOffset)
-  type: Constructor
-  source:
-    remote:
-      path: src/MicroPlumberd/AggregateBase.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: .ctor
-    path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 18
-  assemblies:
-  - MicroPlumberd
-  namespace: MicroPlumberd
-  syntax:
-    content: public StateInfo(long version, DateTimeOffset created)
-    parameters:
-    - id: version
-      type: System.Int64
-    - id: created
-      type: System.DateTimeOffset
-    content.vb: Public Sub New(version As Long, created As DateTimeOffset)
-  overload: MicroPlumberd.StateInfo.#ctor*
-  nameWithType.vb: StateInfo.New(Long, DateTimeOffset)
-  fullName.vb: MicroPlumberd.StateInfo.New(Long, System.DateTimeOffset)
-  name.vb: New(Long, DateTimeOffset)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -352,12 +360,15 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: MicroPlumberd.StateInfo.Version*
-  commentId: Overload:MicroPlumberd.StateInfo.Version
-  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo_Version
-  name: Version
-  nameWithType: StateInfo.Version
-  fullName: MicroPlumberd.StateInfo.Version
+- uid: MicroPlumberd.StateInfo.#ctor*
+  commentId: Overload:MicroPlumberd.StateInfo.#ctor
+  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo__ctor_System_Int64_System_DateTimeOffset_
+  name: StateInfo
+  nameWithType: StateInfo.StateInfo
+  fullName: MicroPlumberd.StateInfo.StateInfo
+  nameWithType.vb: StateInfo.New
+  fullName.vb: MicroPlumberd.StateInfo.New
+  name.vb: New
 - uid: System.Int64
   commentId: T:System.Int64
   parent: System
@@ -369,12 +380,6 @@ references:
   nameWithType.vb: Long
   fullName.vb: Long
   name.vb: Long
-- uid: MicroPlumberd.StateInfo.Created*
-  commentId: Overload:MicroPlumberd.StateInfo.Created
-  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo_Created
-  name: Created
-  nameWithType: StateInfo.Created
-  fullName: MicroPlumberd.StateInfo.Created
 - uid: System.DateTimeOffset
   commentId: T:System.DateTimeOffset
   parent: System
@@ -383,12 +388,15 @@ references:
   name: DateTimeOffset
   nameWithType: DateTimeOffset
   fullName: System.DateTimeOffset
-- uid: MicroPlumberd.StateInfo.#ctor*
-  commentId: Overload:MicroPlumberd.StateInfo.#ctor
-  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo__ctor_System_Int64_System_DateTimeOffset_
-  name: StateInfo
-  nameWithType: StateInfo.StateInfo
-  fullName: MicroPlumberd.StateInfo.StateInfo
-  nameWithType.vb: StateInfo.New
-  fullName.vb: MicroPlumberd.StateInfo.New
-  name.vb: New
+- uid: MicroPlumberd.StateInfo.Version*
+  commentId: Overload:MicroPlumberd.StateInfo.Version
+  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo_Version
+  name: Version
+  nameWithType: StateInfo.Version
+  fullName: MicroPlumberd.StateInfo.Version
+- uid: MicroPlumberd.StateInfo.Created*
+  commentId: Overload:MicroPlumberd.StateInfo.Created
+  href: MicroPlumberd.StateInfo.html#MicroPlumberd_StateInfo_Created
+  name: Created
+  nameWithType: StateInfo.Created
+  fullName: MicroPlumberd.StateInfo.Created

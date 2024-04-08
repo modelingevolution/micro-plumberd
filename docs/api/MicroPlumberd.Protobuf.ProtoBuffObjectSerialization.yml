@@ -92,16 +92,20 @@ items:
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
+  summary: Deserializes the specified span for event's data.
   example: []
   syntax:
     content: public object? Deserialize(ReadOnlySpan<byte> span, Type t)
     parameters:
     - id: span
       type: System.ReadOnlySpan{System.Byte}
+      description: The span.
     - id: t
       type: System.Type
+      description: The t.
     return:
       type: System.Object
+      description: ''
     content.vb: Public Function Deserialize(span As ReadOnlySpan(Of Byte), t As Type) As Object
   overload: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.Deserialize*
   implements:
@@ -131,14 +135,17 @@ items:
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
+  summary: Parses span a JsonElement of the metadata.
   example: []
   syntax:
     content: public JsonElement ParseMetadata(ReadOnlySpan<byte> span)
     parameters:
     - id: span
       type: System.ReadOnlySpan{System.Byte}
+      description: The span.
     return:
       type: System.Text.Json.JsonElement
+      description: ''
     content.vb: Public Function ParseMetadata(span As ReadOnlySpan(Of Byte)) As JsonElement
   overload: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.ParseMetadata*
   implements:
@@ -168,14 +175,17 @@ items:
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
+  summary: Serializes the specified object.
   example: []
   syntax:
     content: public byte[] Serialize(object? t)
     parameters:
     - id: t
       type: System.Object
+      description: The t.
     return:
       type: System.Byte[]
+      description: ''
     content.vb: Public Function Serialize(t As Object) As Byte()
   overload: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.Serialize*
   implements:
@@ -205,12 +215,14 @@ items:
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
+  summary: Gets the type of the content. (application/json or application/octet-stream)
   example: []
   syntax:
     content: public string ContentType { get; }
     parameters: []
     return:
       type: System.String
+      description: The type of the content.
     content.vb: Public ReadOnly Property ContentType As String
   overload: MicroPlumberd.Protobuf.ProtoBuffObjectSerialization.ContentType*
   implements:

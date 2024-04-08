@@ -57,23 +57,30 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Execute
     path: src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs
-    startLine: 25
+    startLine: 33
   assemblies:
   - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd
+  summary: Executes a command and gets a response of type TResponse.
+  example: []
   syntax:
     content: public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, Guid id, object c)
     parameters:
     - id: ri
       type: ModelingEvolution.DirectConnect.IRequestInvoker
+      description: The IRequestInvoker instance on which this method is invoked.
     - id: id
       type: System.Guid
+      description: The unique identifier for the command.
     - id: c
       type: System.Object
+      description: The command object.
     typeParameters:
     - id: TResponse
+      description: The type of the response.
     return:
       type: System.Threading.Tasks.Task{{TResponse}}
+      description: A Task that represents the asynchronous operation. The task result contains the response of type TResponse.
     content.vb: Public Shared Function Execute(Of TResponse)(ri As IRequestInvoker, id As Guid, c As Object) As Task(Of TResponse)
   overload: MicroPlumberd.RequestInvokerExtensions.Execute*
   nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, Guid, Object)
@@ -98,21 +105,27 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Execute
     path: src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs
-    startLine: 35
+    startLine: 51
   assemblies:
   - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd
+  summary: Executes a command and gets a response of type HandlerOperationStatus.
+  example: []
   syntax:
     content: public static Task Execute(this IRequestInvoker ri, Guid id, object c)
     parameters:
     - id: ri
       type: ModelingEvolution.DirectConnect.IRequestInvoker
+      description: The IRequestInvoker instance on which this method is invoked.
     - id: id
       type: System.Guid
+      description: The unique identifier for the command.
     - id: c
       type: System.Object
+      description: The command object.
     return:
       type: System.Threading.Tasks.Task
+      description: A Task that represents the asynchronous operation. The task result contains the response of type HandlerOperationStatus.
     content.vb: Public Shared Function Execute(ri As IRequestInvoker, id As Guid, c As Object) As Task
   overload: MicroPlumberd.RequestInvokerExtensions.Execute*
   nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, Guid, Object)

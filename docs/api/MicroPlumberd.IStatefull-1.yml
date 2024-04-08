@@ -20,14 +20,17 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IStatefull
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 25
+    startLine: 54
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Represents a stateful object that exposes a read-only state.
+  example: []
   syntax:
     content: public interface IStatefull<out T>
     typeParameters:
     - id: T
+      description: The type of the state.
     content.vb: Public Interface IStatefull(Of Out T)
   nameWithType.vb: IStatefull(Of T)
   fullName.vb: MicroPlumberd.IStatefull(Of T)
@@ -50,10 +53,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: State
     path: src/MicroPlumberd/AggregateBase.cs
-    startLine: 27
+    startLine: 59
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the current state of the object.
+  example: []
   syntax:
     content: T State { get; }
     parameters: []

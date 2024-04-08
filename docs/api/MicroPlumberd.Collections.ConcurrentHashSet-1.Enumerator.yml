@@ -19,11 +19,11 @@ items:
   type: Struct
   source:
     remote:
-      path: src/MicroPlumberd/Collections/Class1.cs
+      path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Enumerator
-    path: src/MicroPlumberd/Collections/Class1.cs
+    path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
     startLine: 431
   assemblies:
   - MicroPlumberd
@@ -60,11 +60,11 @@ items:
   type: Constructor
   source:
     remote:
-      path: src/MicroPlumberd/Collections/Class1.cs
+      path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
-    path: src/MicroPlumberd/Collections/Class1.cs
+    path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
     startLine: 454
   assemblies:
   - MicroPlumberd
@@ -94,11 +94,11 @@ items:
   type: Property
   source:
     remote:
-      path: src/MicroPlumberd/Collections/Class1.cs
+      path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Current
-    path: src/MicroPlumberd/Collections/Class1.cs
+    path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
     startLine: 468
   assemblies:
   - MicroPlumberd
@@ -130,11 +130,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd/Collections/Class1.cs
+      path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Reset
-    path: src/MicroPlumberd/Collections/Class1.cs
+    path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
     startLine: 475
   assemblies:
   - MicroPlumberd
@@ -162,11 +162,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd/Collections/Class1.cs
+      path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Dispose
-    path: src/MicroPlumberd/Collections/Class1.cs
+    path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
     startLine: 487
   assemblies:
   - MicroPlumberd
@@ -194,11 +194,11 @@ items:
   type: Method
   source:
     remote:
-      path: src/MicroPlumberd/Collections/Class1.cs
+      path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MoveNext
-    path: src/MicroPlumberd/Collections/Class1.cs
+    path: src/MicroPlumberd/Collections/ConcurrentHashSet.cs
     startLine: 493
   assemblies:
   - MicroPlumberd

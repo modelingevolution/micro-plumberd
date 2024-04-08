@@ -23,10 +23,12 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IObjectSerializer
     path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
-    startLine: 4
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Object serializer used for event data and metadata serialization.
+  example: []
   syntax:
     content: public interface IObjectSerializer
     content.vb: Public Interface IObjectSerializer
@@ -48,19 +50,24 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Deserialize
     path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
-    startLine: 6
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Deserializes the specified span for event's data.
+  example: []
   syntax:
     content: object? Deserialize(ReadOnlySpan<byte> span, Type t)
     parameters:
     - id: span
       type: System.ReadOnlySpan{System.Byte}
+      description: The span.
     - id: t
       type: System.Type
+      description: The t.
     return:
       type: System.Object
+      description: ''
     content.vb: Function Deserialize(span As ReadOnlySpan(Of Byte), t As Type) As Object
   overload: MicroPlumberd.IObjectSerializer.Deserialize*
   nameWithType.vb: IObjectSerializer.Deserialize(ReadOnlySpan(Of Byte), Type)
@@ -84,17 +91,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ParseMetadata
     path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
-    startLine: 7
+    startLine: 21
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Parses span a JsonElement of the metadata.
+  example: []
   syntax:
     content: JsonElement ParseMetadata(ReadOnlySpan<byte> span)
     parameters:
     - id: span
       type: System.ReadOnlySpan{System.Byte}
+      description: The span.
     return:
       type: System.Text.Json.JsonElement
+      description: ''
     content.vb: Function ParseMetadata(span As ReadOnlySpan(Of Byte)) As JsonElement
   overload: MicroPlumberd.IObjectSerializer.ParseMetadata*
   nameWithType.vb: IObjectSerializer.ParseMetadata(ReadOnlySpan(Of Byte))
@@ -118,17 +129,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Serialize
     path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
-    startLine: 8
+    startLine: 28
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Serializes the specified object.
+  example: []
   syntax:
     content: byte[] Serialize(object? t)
     parameters:
     - id: t
       type: System.Object
+      description: The t.
     return:
       type: System.Byte[]
+      description: ''
     content.vb: Function Serialize(t As Object) As Byte()
   overload: MicroPlumberd.IObjectSerializer.Serialize*
   nameWithType.vb: IObjectSerializer.Serialize(Object)
@@ -152,15 +167,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ContentType
     path: src/MicroPlumberd/Abstractions/IObjectSerializer.cs
-    startLine: 9
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the type of the content. (application/json or application/octet-stream)
+  example: []
   syntax:
     content: string ContentType { get; }
     parameters: []
     return:
       type: System.String
+      description: The type of the content.
     content.vb: ReadOnly Property ContentType As String
   overload: MicroPlumberd.IObjectSerializer.ContentType*
 references:

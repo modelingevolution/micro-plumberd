@@ -19,17 +19,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SessionStreamFromSessionId
     path: src/MicroPlumberd.Services/ServicesConvention.cs
-    startLine: 10
+    startLine: 39
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: Represents a delegate that takes a session ID and returns a session stream.
+  example: []
   syntax:
     content: public delegate string SessionStreamFromSessionId(Guid id)
     parameters:
     - id: id
       type: System.Guid
+      description: The session ID.
     return:
       type: System.String
+      description: The session stream.
     content.vb: Public Delegate Function SessionStreamFromSessionId(id As Guid) As String
 references:
 - uid: MicroPlumberd.Services
