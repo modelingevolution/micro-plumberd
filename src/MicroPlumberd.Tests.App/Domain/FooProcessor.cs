@@ -5,8 +5,7 @@ public partial class FooProcessor(IPlumber plumber)
 {
     private async Task Given(Metadata m, FooRefined ev)
     {
-        var agg = App.Domain.FooAggregate.New(Guid.NewGuid());
-        agg.Open(ev.Name + "new");
+        var agg = FooAggregate.Open(ev.Name + "new");
         await plumber.SaveNew(agg);
     }
 }

@@ -98,7 +98,7 @@ namespace MicroPlumberd.SourceGenerators
                             .Distinct()
                             .ToArray();
 
-                        sb.AppendLine($"partial class {className} : ProcessManagerBase, IProcessManager, ITypeRegister");
+                        sb.AppendLine($"partial class {className} : ProcessManagerBase<Guid>, IProcessManager, ITypeRegister");
                         sb.AppendLine("{");
 
                         sb.AppendLine("static IEnumerable<Type> IProcessManager.CommandTypes");

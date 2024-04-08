@@ -14,12 +14,12 @@ namespace MicroPlumberd
     }
 
 
-    public abstract class ProcessManagerBase : IVersionAware, IIdAware, IId
+    public abstract class ProcessManagerBase<TId> : IVersionAware, IIdAware, IId<TId> where TId : IParsable<TId>
     {
         private long _version = -1;
-        private Guid _id;
-        public Guid Id => _id;
-        Guid IIdAware.Id { set => _id = value; }
+        private TId _id;
+        public TId Id => _id;
+        object IIdAware.Id { set => _id = (TId)value; }
         public long Version => _version;
         void IVersionAware.Increase() => _version += 1;
 

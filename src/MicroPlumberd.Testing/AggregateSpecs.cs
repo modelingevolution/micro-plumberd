@@ -5,7 +5,7 @@ using EventStore.Client;
 using MicroPlumberd;
 using Xunit;
 
-public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeRegister
+public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeRegister, IId
 {
     public IArgumentProvider ArgumentProvider => root.ArgumentProvider;
     

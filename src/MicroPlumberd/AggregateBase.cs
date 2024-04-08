@@ -60,14 +60,14 @@ public interface IStatefull<out T>
     T State { get; }
 }
 
-
-
 /// <summary>
 /// Represents the base class for aggregate roots in the application.
 /// </summary>
 /// <typeparam name="TState">The type of the aggregate state.</typeparam>
-public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IStatefull<TState>, IStatefull
-    where TState : new()
+/// <typeparam name="TId"></typeparam>
+public abstract class AggregateBase<TId, TState>(TId id) : IVersioned, IId<TId>, IStatefull<TState>, IStatefull
+    where TState : new() 
+    where TId : IParsable<TId>
 
 {
     private StateInfo? _initialized;
@@ -91,7 +91,7 @@ public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IStatefu
     /// <summary>
     /// Gets the unique identifier of the aggregate.
     /// </summary>
-    public Guid Id { get; } = id;
+    public TId Id { get; } = id;
 
     /// <summary>
     /// Gets the version of the aggregate.
@@ -102,6 +102,8 @@ public abstract class AggregateBase<TState>(Guid id) : IVersioned, IId, IStatefu
     /// Gets or sets the list of pending events for the aggregate.
     /// </summary>
     public IReadOnlyList<object> PendingEvents => _pendingEvents;
+
+    
 
     /// <summary>
     /// Appends a pending change to the list of pending events and applies the change.

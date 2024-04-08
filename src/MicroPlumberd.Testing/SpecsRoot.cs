@@ -62,7 +62,7 @@ public class SpecsRoot
         _stepInfoProvider = stepInfoProvider;
         ArgumentProvider = new ArgumentProvider();
     }
-    public AggregateSpecs<T> Aggregate<T>() where T : IAggregate<T>, ITypeRegister
+    public AggregateSpecs<T> Aggregate<T>() where T : IAggregate<T>, ITypeRegister, IId
     {
         return (AggregateSpecs<T>)_specs.GetOrAdd(typeof(T), x => new AggregateSpecs<T>(this));
     }

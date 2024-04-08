@@ -14,8 +14,7 @@ public partial class BooCommandHandler(IPlumber plumber)
         if (cmd.Name == "error")
             throw new BusinessFaultException("Boo");
 
-        var agg = BooAggregate.New(id);
-        agg.Open(cmd.Name!);
+        var agg = BooAggregate.Open(cmd.Name!);
 
         await plumber.SaveNew(agg);
         Debug.WriteLine("BooCreated");

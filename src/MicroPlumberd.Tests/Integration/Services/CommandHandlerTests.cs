@@ -144,6 +144,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
                 .AddCommandHandler<FooCommandHandler>());
+            await Task.Delay(1000);
 
             var sp = await _serverTestApp.StartAsync();
             

@@ -12,7 +12,7 @@ public record CommandEnvelope<TCommand>
     {
         get
         {
-            if (Command is IId i) return i.Id;
+            if (Command is IId i) return i.Uuid;
             return _id ??= Guid.NewGuid();
         }
     }

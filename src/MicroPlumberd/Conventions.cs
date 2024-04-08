@@ -32,7 +32,7 @@ public delegate string StreamCategoryConvention(Type aggregateType);
 /// <param name="aggregateType">The type of the aggregate.</param>
 /// <param name="aggregateId">The ID of the aggregate.</param>
 /// <returns>A string representing the steam name.</returns>
-public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId);
+public delegate string SteamNameConvention(Type aggregateType, object aggregateId);
 
 /// <summary>
 /// Represents a delegate that defines the convention for determining the projection category stream for a given model type.

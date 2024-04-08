@@ -6,7 +6,7 @@ namespace MicroPlumberd.Tests.App.Srv;
 
 [ProtoContract]
 [ThrowsFaultException<BusinessFault>]
-public class RefineFoo : IId
+public class RefineFoo : IId<Guid>
 {
     [ProtoMember(2)]
     public string? Name { get; set; }
@@ -15,7 +15,7 @@ public class RefineFoo : IId
 }
 [ProtoContract]
 [ThrowsFaultException<BusinessFault>]
-public class RefineBoo : IId
+public class RefineBoo : IId<Guid>
 {
     [ProtoMember(2)]
     public string? Name { get; set; }

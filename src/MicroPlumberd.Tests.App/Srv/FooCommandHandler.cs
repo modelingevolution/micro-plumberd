@@ -16,8 +16,7 @@ public partial class FooCommandHandler(IPlumber plumber)
         if (cmd.Name == "error")
             throw new BusinessFaultException("Foo");
 
-        var agg = FooAggregate.New(id);
-        agg.Open(cmd.Name!);
+        var agg = FooAggregate.Open(cmd.Name, id);
 
         await plumber.SaveNew(agg);
     }

@@ -20,7 +20,7 @@ public class AppStepsContext(ITestOutputHelper output, ScenarioContext context)
         _specs ?? (_specs = new SpecsRoot(App.Services.GetRequiredService<IPlumber>(),
             new StepInfoProvider(context)));
 
-    public AggregateSpecs<T> AggregateSpecs<T>() where T : IAggregate<T>, ITypeRegister => SpecsRoot.Aggregate<T>();
+    public AggregateSpecs<T> AggregateSpecs<T>() where T : IAggregate<T>, ITypeRegister, IId => SpecsRoot.Aggregate<T>();
     public CommandHandlerSpecs<T> CommandHandlerSpecs<T>() where T : IServiceTypeRegister => SpecsRoot.CommandHandler<T>();
     
     [AfterScenario]

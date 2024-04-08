@@ -11,7 +11,7 @@ namespace MicroPlumberd.Tests.App.Srv;
 [ProtoContract]
 [ThrowsFaultException<BusinessFault>]
 [Returns<HandlerOperationStatus>]
-public class CreateFoo : IId
+public class CreateFoo : IId<Guid>
 {
     [ProtoMember(2)]
     [Required]
@@ -24,7 +24,7 @@ public class CreateFoo : IId
 
 [ProtoContract]
 [Returns<HandlerOperationStatus>]
-public class CreateBoo : IId
+public class CreateBoo : IId<Guid>
 {
     [ProtoMember(2)]
     public string? Name { get; set; }
@@ -34,7 +34,7 @@ public class CreateBoo : IId
 
 [ProtoContract]
 [Returns<HandlerOperationStatus>]
-public class CreateLoo : IId
+public class CreateLoo : IId<Guid>
 {
     [ProtoMember(2)]
     public string? Name { get; set; }

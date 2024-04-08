@@ -76,8 +76,8 @@ class CommandBus : ICommandBus, IEventHandler
         
         var metadata = new
         {
-            CorrelationId = (command is IId id && correlationId == null) ? id.Id : correlationId, 
-            CausationId = ((command is IId id2 && causationId == null) ? id2.Id : causationId) ?? Guid.NewGuid(),
+            CorrelationId = (command is IId id && correlationId == null) ? id.Uuid : correlationId, 
+            CausationId = ((command is IId id2 && causationId == null) ? id2.Uuid : causationId) ?? Guid.NewGuid(),
             RecipientId = recipientId,
             SessionId = SessionId,
         };

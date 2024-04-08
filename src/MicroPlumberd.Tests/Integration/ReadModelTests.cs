@@ -72,8 +72,7 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
 
     private async Task AppendOneEvent()
     {
-        FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
-        aggregate.Open("Hello");
+        FooAggregate aggregate = FooAggregate.Open("Hello");
         await plumber.SaveNew(aggregate);
     }
 }

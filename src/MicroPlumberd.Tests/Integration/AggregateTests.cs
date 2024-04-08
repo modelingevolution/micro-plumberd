@@ -43,8 +43,7 @@ namespace MicroPlumberd.Tests.Integration
             using var scope = new InvocationScope();
             scope.SetCausation(Guid.NewGuid()).SetCorrelation(Guid.NewGuid()).SetUserId(Guid.NewGuid());
 
-            FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
-            aggregate.Open("Hello");
+            FooAggregate aggregate = FooAggregate.Open("Hello");
 
             await plumber.SaveNew(aggregate);
         }
@@ -52,8 +51,7 @@ namespace MicroPlumberd.Tests.Integration
         public async Task Get()
         {
             await es.StartInDocker();
-            FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
-            aggregate.Open("Hello");
+            FooAggregate aggregate = FooAggregate.Open("Hello");
 
             await plumber.SaveNew(aggregate);
 
@@ -66,8 +64,7 @@ namespace MicroPlumberd.Tests.Integration
         public async Task Update()
         {
             await es.StartInDocker();
-            FooAggregate aggregate = FooAggregate.New(Guid.NewGuid());
-            aggregate.Open("Hello");
+            FooAggregate aggregate = FooAggregate.Open("Hello");
             await plumber.SaveNew(aggregate);
 
             aggregate.Refine("World");

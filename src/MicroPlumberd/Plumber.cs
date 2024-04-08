@@ -201,7 +201,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return new SubscriptionSet(this);
     }
 
-    public IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null, Direction? direction = null,
+    public IAsyncEnumerable<object> Read<TOwner>(object id, StreamPosition? start = null, Direction? direction = null,
         long maxCount = long.MaxValue) where TOwner : ITypeRegister
     {
         start ??= StreamPosition.Start;
@@ -253,11 +253,11 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
             yield return i;
     }
 
-    public async Task<TOwner> Get<TOwner>(Guid id)
-        where TOwner : IAggregate<TOwner>, ITypeRegister
+    public async Task<TOwner> Get<TOwner>(object id)
+        where TOwner : IAggregate<TOwner>, ITypeRegister, IId
     {
         var sp = StreamPosition.Start;
-        var aggregate = TOwner.New(id);
+        var aggregate = TOwner.Empty(id);
         if (GetPolicy<TOwner>() != null && aggregate is IStatefull i)
         {
             var snapshot = await GetSnapshot(id, i.SnapshotType);
@@ -292,7 +292,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return r;
     }
 
-    public async Task<IWriteResult> AppendSnapshot(object snapshot, Guid id, long version, StreamState state)
+    public async Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState state)
     {
         var m = Conventions.GetMetadata(null, snapshot, new { SnapshotVersion = version });
         var stateType = snapshot.GetType();
@@ -318,7 +318,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null)
-        where T : IAggregate<T>
+        where T : IAggregate<T>, IId
     {
         if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
 
@@ -336,7 +336,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
 
     public async Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null)
-        where T : IAggregate<T>
+        where T : IAggregate<T>, IId
     {
         if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
 
@@ -352,7 +352,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return r;
     }
 
-    public async Task<Snapshot?> GetSnapshot(Guid id, Type snapshotType)
+    public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType)
     {
         if (snapshotType == null) throw new ArgumentNullException("snapshotType cannot be null.");
 

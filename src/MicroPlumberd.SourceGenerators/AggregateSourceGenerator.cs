@@ -42,7 +42,9 @@ namespace MicroPlumberd.SourceGenerators
                         .FirstOrDefault(gn => gn.Identifier.ValueText.Contains("AggregateBase"));
 
                     if (baseType == null) continue;
-                    var stateClassName = baseType.TypeArgumentList.Arguments.FirstOrDefault();
+                    var idType = baseType.TypeArgumentList.Arguments.FirstOrDefault();
+                    var stateClassName = baseType.TypeArgumentList.Arguments.LastOrDefault();
+
                     if (stateClassName == null) continue;
 
                     if (classSymbol.GetAttributes().Any(ad => ad.AttributeClass.Name == "AggregateAttribute" || ad.AttributeClass.Name == "Aggregate"))
@@ -93,7 +95,7 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine("        };");
                         sb.AppendLine("    }");
 
-                        sb.AppendLine($"   public static {className} New(Guid id) => new {className}(id);");
+                        sb.AppendLine($"   public static {className} Empty(object id) => new {className}(({idType})id);");
 
 
                         var typeOfs = methods.Select(x => x.ParameterList.Parameters[1].Type)

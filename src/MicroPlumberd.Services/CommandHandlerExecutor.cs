@@ -68,7 +68,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
 
         var cmdStream = _serviceConventions.SessionOutStreamFromSessionIdConvention(sessionId);
         var cmdName = _serviceConventions.CommandNameConvention(command.GetType());
-        var cmdId = (command is IId id) ? id.Id : m.EventId;
+        var cmdId = (command is IId id) ? id.Uuid : m.EventId;
 
         Stopwatch sw = new Stopwatch();
         try
@@ -87,7 +87,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
         }
         catch (ValidationException ex)
         {
-            await plumber.AppendEvent(cmdStream, StreamState.StreamExists, $"{cmdName}Failed", new CommandFailed()
+            await plumber.AppendEvent(cmdStream, StreamState.Any, $"{cmdName}Failed", new CommandFailed()
             {
                 CommandId = cmdId,
                 Duration = sw.Elapsed,
@@ -98,7 +98,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
         catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
-            await plumber.AppendEvent(cmdStream, StreamState.StreamExists,
+            await plumber.AppendEvent(cmdStream, StreamState.Any,
                 $"{cmdName}Failed<{faultData.GetType().Name}>", CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData));
             log.LogDebug(ex,"Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.", 
                 command.GetType().Name,
@@ -107,7 +107,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
         }
         catch(Exception ex)
         {
-            await plumber.AppendEvent(cmdStream, StreamState.StreamExists,
+            await plumber.AppendEvent(cmdStream, StreamState.Any,
                 $"{cmdName}Failed", new CommandFailed()
                 {
                     CommandId = cmdId,

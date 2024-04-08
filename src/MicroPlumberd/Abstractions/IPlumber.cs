@@ -253,7 +253,7 @@ public interface IPlumber
     /// <typeparam name="T"></typeparam>
     /// <param name="id">The identifier.</param>
     /// <returns></returns>
-    Task<T> Get<T>(Guid id) where T : IAggregate<T>, ITypeRegister;
+    Task<T> Get<T>(object id) where T : IAggregate<T>, ITypeRegister,IId;
 
     /// <summary>
     /// Saves all pending events from the aggregate. Uses optimistic concurrency.
@@ -262,7 +262,7 @@ public interface IPlumber
     /// <param name="aggregate">The aggregate.</param>
     /// <param name="metadata">The optional metadata.</param>
     /// <returns></returns>
-    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>, IId;
 
     /// <summary>
     /// Saves the aggregate. Expects that no aggregate exists. 
@@ -271,7 +271,7 @@ public interface IPlumber
     /// <param name="aggregate">The aggregate.</param>
     /// <param name="metadata">The optional metadata.</param>
     /// <returns></returns>
-    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>;
+    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>, IId;
 
     /// <summary>
     /// Gets the snapshot - deserializes snapshot from the stream. Stream is identified by typeof(T). Deserialization is done from the latest event (snaphost) in the stream.
@@ -287,7 +287,7 @@ public interface IPlumber
     /// <param name="id">The identifier.</param>
     /// <param name="snapshotType">Type of the snapshot.</param>
     /// <returns>The snapshot information containing the snaphost and relevant metadata.</returns>
-    Task<Snapshot?> GetSnapshot(Guid id, Type snapshotType);
+    Task<Snapshot?> GetSnapshot(object id, Type snapshotType);
 
     /// <summary>
     /// Appends the link to a stream.
@@ -325,7 +325,8 @@ public interface IPlumber
     /// <param name="direction">The direction of the reading.</param>
     /// <param name="maxCount">The maximum number of read events.</param>
     /// <returns></returns>
-    IAsyncEnumerable<object> Read<TOwner>(Guid id, StreamPosition? start = null,Direction? direction=null, long maxCount = long.MaxValue) where TOwner : ITypeRegister;
+    IAsyncEnumerable<object> Read<TOwner>(object id, StreamPosition? start = null, Direction? direction = null,
+        long maxCount = 9223372036854775807L) where TOwner : ITypeRegister;
 
     /// <summary>
     /// Reads stream and returns events.
@@ -368,5 +369,5 @@ public interface IPlumber
     /// <param name="version">The expected version.</param>
     /// <param name="state">The expected state of the stream.</param>
     /// <returns></returns>
-    Task<IWriteResult> AppendSnapshot(object snapshot, Guid id, long version, StreamState state);
+    Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState state);
 }
