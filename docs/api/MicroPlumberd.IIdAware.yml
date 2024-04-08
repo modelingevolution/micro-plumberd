@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IIdAware
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 86
+    startLine: 137
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -45,16 +45,16 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 88
+    startLine: 139
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: Guid Id { set; }
+    content: object Id { set; }
     parameters: []
     return:
-      type: System.Guid
-    content.vb: WriteOnly Property Id As Guid
+      type: System.Object
+    content.vb: WriteOnly Property Id As Object
   overload: MicroPlumberd.IIdAware.Id*
 references:
 - uid: MicroPlumberd
@@ -69,14 +69,17 @@ references:
   name: Id
   nameWithType: IIdAware.Id
   fullName: MicroPlumberd.IIdAware.Id
-- uid: System.Guid
-  commentId: T:System.Guid
+- uid: System.Object
+  commentId: T:System.Object
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
 - uid: System
   commentId: N:System
   isExternal: true

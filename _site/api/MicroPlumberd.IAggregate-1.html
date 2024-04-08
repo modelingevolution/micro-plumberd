@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_IAggregate_1" data-uid="MicroPlumberd.IAggregate`1" class="text-break">
-Interface IAggregate&lt;TSelf&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L99"><i class="bi bi-code-slash"></i></a>
+Interface IAggregate&lt;TSelf&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L148"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -102,7 +102,7 @@ Interface IAggregate&lt;TSelf&gt;  <a class="header-action link-secondary" title
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface IAggregate&lt;out TSelf&gt; : IAggregate, IId, IVersioned</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IAggregate&lt;out TSelf&gt; : IAggregate, IVersioned</code></pre>
   </div>
 
 
@@ -130,9 +130,6 @@ Interface IAggregate&lt;TSelf&gt;  <a class="header-action link-secondary" title
       <a class="xref" href="MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted">IAggregate.AckCommitted()</a>
     </div>
     <div>
-      <a class="xref" href="MicroPlumberd.IId.html#MicroPlumberd_IId_Id">IId.Id</a>
-    </div>
-    <div>
       <a class="xref" href="MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version">IVersioned.Version</a>
     </div>
   </dd></dl>
@@ -146,24 +143,24 @@ Interface IAggregate&lt;TSelf&gt;  <a class="header-action link-secondary" title
 </h2>
 
 
-  <a id="MicroPlumberd_IAggregate_1_New_" data-uid="MicroPlumberd.IAggregate`1.New*"></a>
+  <a id="MicroPlumberd_IAggregate_1_Empty_" data-uid="MicroPlumberd.IAggregate`1.Empty*"></a>
 
-  <h3 id="MicroPlumberd_IAggregate_1_New_System_Guid_" data-uid="MicroPlumberd.IAggregate`1.New(System.Guid)">
-  New(Guid)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L106"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_IAggregate_1_Empty_System_Object_" data-uid="MicroPlumberd.IAggregate`1.Empty(System.Object)">
+  Empty(object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L155"><i class="bi bi-code-slash"></i></a>
   </h3>
 
-  <div class="markdown level1 summary"><p>Factory method to create new Aggregates based on Guids.</p>
+  <div class="markdown level1 summary"><p>Factory method to create new Aggregates based on identifiers.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static abstract TSelf New(Guid id)</code></pre>
+    <pre><code class="lang-csharp hljs">public static abstract TSelf Empty(object id)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
     <dd><p>The identifier.</p>
 </dd>
   </dl>
@@ -186,14 +183,13 @@ Interface IAggregate&lt;TSelf&gt;  <a class="header-action link-secondary" title
 
   <h2 id="seealso">See Also</h2>
   <div class="seealso">
-      <div><a class="xref" href="MicroPlumberd.IId.html">IId</a></div>
       <div><a class="xref" href="MicroPlumberd.IVersioned.html">IVersioned</a></div>
   </div>
 
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L99" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L148" class="edit-link">Edit this page</a>
         </div>
 
 

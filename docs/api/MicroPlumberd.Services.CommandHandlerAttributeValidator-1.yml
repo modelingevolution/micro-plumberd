@@ -6,8 +6,7 @@ items:
   parent: MicroPlumberd.Services
   children:
   - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.#ctor(MicroPlumberd.Services.ICommandHandler{`0},System.IServiceProvider)
-  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
-  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
+  - MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.String,`0)
   langs:
   - csharp
   - vb
@@ -81,16 +80,16 @@ items:
   nameWithType.vb: CommandHandlerAttributeValidator(Of T).New(ICommandHandler(Of T), IServiceProvider)
   fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).New(MicroPlumberd.Services.ICommandHandler(Of T), System.IServiceProvider)
   name.vb: New(ICommandHandler(Of T), IServiceProvider)
-- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
-  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
-  id: Execute(System.Guid,`0)
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.String,`0)
+  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.String,`0)
+  id: Execute(System.String,`0)
   parent: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
   langs:
   - csharp
   - vb
-  name: Execute(Guid, T)
-  nameWithType: CommandHandlerAttributeValidator<T>.Execute(Guid, T)
-  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(System.Guid, T)
+  name: Execute(string, T)
+  nameWithType: CommandHandlerAttributeValidator<T>.Execute(string, T)
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(string, T)
   type: Method
   source:
     remote:
@@ -105,59 +104,21 @@ items:
   namespace: MicroPlumberd.Services
   example: []
   syntax:
-    content: public Task<object?> Execute(Guid id, T command)
+    content: public Task<object?> Execute(string id, T command)
     parameters:
     - id: id
-      type: System.Guid
+      type: System.String
     - id: command
       type: '{T}'
     return:
       type: System.Threading.Tasks.Task{System.Object}
-    content.vb: Public Function Execute(id As Guid, command As T) As Task(Of Object)
+    content.vb: Public Function Execute(id As String, command As T) As Task(Of Object)
   overload: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
   implements:
-  - MicroPlumberd.Services.ICommandHandler{{T}}.Execute(System.Guid,{T})
-  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(Guid, T)
-  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(System.Guid, T)
-- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
-  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
-  id: Execute(System.Guid,System.Object)
-  parent: MicroPlumberd.Services.CommandHandlerAttributeValidator`1
-  langs:
-  - csharp
-  - vb
-  name: Execute(Guid, object)
-  nameWithType: CommandHandlerAttributeValidator<T>.Execute(Guid, object)
-  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(System.Guid, object)
-  type: Method
-  source:
-    remote:
-      path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
-      branch: master
-      repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Execute
-    path: src/MicroPlumberd.Services/Validation/CommandHandlerAttributeValidator.cs
-    startLine: 13
-  assemblies:
-  - MicroPlumberd.Services
-  namespace: MicroPlumberd.Services
-  example: []
-  syntax:
-    content: public Task<object?> Execute(Guid id, object command)
-    parameters:
-    - id: id
-      type: System.Guid
-    - id: command
-      type: System.Object
-    return:
-      type: System.Threading.Tasks.Task{System.Object}
-    content.vb: Public Function Execute(id As Guid, command As Object) As Task(Of Object)
-  overload: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
-  implements:
-  - MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(Guid, Object)
-  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(System.Guid, Object)
-  name.vb: Execute(Guid, Object)
+  - MicroPlumberd.Services.ICommandHandler{{T}}.Execute(System.String,{T})
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(String, T)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(String, T)
+  name.vb: Execute(String, T)
 references:
 - uid: MicroPlumberd.Services
   commentId: N:MicroPlumberd.Services
@@ -496,56 +457,60 @@ references:
   fullName: System.IServiceProvider
 - uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
   commentId: Overload:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute
-  href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_System_Guid__0_
+  href: MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_System_String__0_
   name: Execute
   nameWithType: CommandHandlerAttributeValidator<T>.Execute
   fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute
   nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute
   fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute
-- uid: MicroPlumberd.Services.ICommandHandler{{T}}.Execute(System.Guid,{T})
-  commentId: M:MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.Guid,`0)
+- uid: MicroPlumberd.Services.ICommandHandler{{T}}.Execute(System.String,{T})
+  commentId: M:MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.String,`0)
   parent: MicroPlumberd.Services.ICommandHandler{{T}}
-  definition: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
-  href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
-  name: Execute(Guid, T)
-  nameWithType: ICommandHandler<T>.Execute(Guid, T)
-  fullName: MicroPlumberd.Services.ICommandHandler<T>.Execute(System.Guid, T)
-  nameWithType.vb: ICommandHandler(Of T).Execute(Guid, T)
-  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of T).Execute(System.Guid, T)
+  definition: MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
+  href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
+  name: Execute(string, T)
+  nameWithType: ICommandHandler<T>.Execute(string, T)
+  fullName: MicroPlumberd.Services.ICommandHandler<T>.Execute(string, T)
+  nameWithType.vb: ICommandHandler(Of T).Execute(String, T)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of T).Execute(String, T)
+  name.vb: Execute(String, T)
   spec.csharp:
-  - uid: MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.Guid,`0)
+  - uid: MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.String,`0)
     name: Execute
-    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
   - name: (
-  - uid: System.Guid
-    name: Guid
+  - uid: System.String
+    name: string
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.guid
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
   - name: T
   - name: )
   spec.vb:
-  - uid: MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.Guid,`0)
+  - uid: MicroPlumberd.Services.ICommandHandler{`0}.Execute(System.String,`0)
     name: Execute
-    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
   - name: (
-  - uid: System.Guid
-    name: Guid
+  - uid: System.String
+    name: String
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.guid
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
   - name: T
   - name: )
-- uid: System.Guid
-  commentId: T:System.Guid
+- uid: System.String
+  commentId: T:System.String
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: '{T}'
   commentId: '!:T'
   definition: T
@@ -587,37 +552,38 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.object
   - name: )
-- uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
-  commentId: M:MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+- uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
+  commentId: M:MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
   isExternal: true
-  href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
-  name: Execute(Guid, TCommand)
-  nameWithType: ICommandHandler<TCommand>.Execute(Guid, TCommand)
-  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>.Execute(System.Guid, TCommand)
-  nameWithType.vb: ICommandHandler(Of TCommand).Execute(Guid, TCommand)
-  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand).Execute(System.Guid, TCommand)
+  href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
+  name: Execute(string, TCommand)
+  nameWithType: ICommandHandler<TCommand>.Execute(string, TCommand)
+  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>.Execute(string, TCommand)
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute(String, TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand).Execute(String, TCommand)
+  name.vb: Execute(String, TCommand)
   spec.csharp:
-  - uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+  - uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
     name: Execute
-    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
   - name: (
-  - uid: System.Guid
-    name: Guid
+  - uid: System.String
+    name: string
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.guid
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
   - name: TCommand
   - name: )
   spec.vb:
-  - uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
+  - uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
     name: Execute
-    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
+    href: MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
   - name: (
-  - uid: System.Guid
-    name: Guid
+  - uid: System.String
+    name: String
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.guid
+    href: https://learn.microsoft.com/dotnet/api/system.string
   - name: ','
   - name: " "
   - name: TCommand
@@ -691,46 +657,3 @@ references:
     name: Tasks
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-- uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-  commentId: M:MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-  parent: MicroPlumberd.Services.ICommandHandler
-  isExternal: true
-  href: MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
-  name: Execute(Guid, object)
-  nameWithType: ICommandHandler.Execute(Guid, object)
-  fullName: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid, object)
-  nameWithType.vb: ICommandHandler.Execute(Guid, Object)
-  fullName.vb: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid, Object)
-  name.vb: Execute(Guid, Object)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-    name: Execute
-    href: MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
-  - name: (
-  - uid: System.Guid
-    name: Guid
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.guid
-  - name: ','
-  - name: " "
-  - uid: System.Object
-    name: object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-    name: Execute
-    href: MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
-  - name: (
-  - uid: System.Guid
-    name: Guid
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.guid
-  - name: ','
-  - name: " "
-  - uid: System.Object
-    name: Object
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.object
-  - name: )

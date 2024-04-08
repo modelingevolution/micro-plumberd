@@ -26,18 +26,18 @@ items:
   summary: Represents a delegate that defines the convention for generating a steam name based on the aggregate type and aggregate ID.
   example: []
   syntax:
-    content: public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId)
+    content: public delegate string SteamNameConvention(Type aggregateType, object aggregateId)
     parameters:
     - id: aggregateType
       type: System.Type
       description: The type of the aggregate.
     - id: aggregateId
-      type: System.Guid
+      type: System.Object
       description: The ID of the aggregate.
     return:
       type: System.String
       description: A string representing the steam name.
-    content.vb: Public Delegate Function SteamNameConvention(aggregateType As Type, aggregateId As Guid) As String
+    content.vb: Public Delegate Function SteamNameConvention(aggregateType As Type, aggregateId As Object) As String
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -53,14 +53,17 @@ references:
   name: Type
   nameWithType: Type
   fullName: System.Type
-- uid: System.Guid
-  commentId: T:System.Guid
+- uid: System.Object
+  commentId: T:System.Object
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
 - uid: System.String
   commentId: T:System.String
   parent: System

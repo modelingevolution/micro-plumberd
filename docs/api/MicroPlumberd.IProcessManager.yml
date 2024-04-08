@@ -35,6 +35,7 @@ items:
   - MicroPlumberd.IEventHandler.Handle(MicroPlumberd.Metadata,System.Object)
   - MicroPlumberd.IVersioned.Version
   - MicroPlumberd.IId.Id
+  - MicroPlumberd.IId.Uuid
 - uid: MicroPlumberd.IProcessManager.StartEvent
   commentId: P:MicroPlumberd.IProcessManager.StartEvent
   id: StartEvent
@@ -258,6 +259,13 @@ references:
   name: Id
   nameWithType: IId.Id
   fullName: MicroPlumberd.IId.Id
+- uid: MicroPlumberd.IId.Uuid
+  commentId: P:MicroPlumberd.IId.Uuid
+  parent: MicroPlumberd.IId
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Uuid
+  name: Uuid
+  nameWithType: IId.Uuid
+  fullName: MicroPlumberd.IId.Uuid
 - uid: MicroPlumberd.IEventHandler
   commentId: T:MicroPlumberd.IEventHandler
   parent: MicroPlumberd

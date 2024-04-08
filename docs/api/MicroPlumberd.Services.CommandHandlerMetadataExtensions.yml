@@ -61,13 +61,13 @@ items:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
-    content: public static Guid RecipientId(this Metadata m)
+    content: public static string RecipientId(this Metadata m)
     parameters:
     - id: m
       type: MicroPlumberd.Metadata
     return:
-      type: System.Guid
-    content.vb: Public Shared Function RecipientId(m As Metadata) As Guid
+      type: System.String
+    content.vb: Public Shared Function RecipientId(m As Metadata) As String
   overload: MicroPlumberd.Services.CommandHandlerMetadataExtensions.RecipientId*
 references:
 - uid: MicroPlumberd.Services
@@ -342,14 +342,17 @@ references:
   name: Metadata
   nameWithType: Metadata
   fullName: MicroPlumberd.Metadata
-- uid: System.Guid
-  commentId: T:System.Guid
+- uid: System.String
+  commentId: T:System.String
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
   href: MicroPlumberd.html

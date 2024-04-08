@@ -22,22 +22,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 35
+    startLine: 38
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   summary: Interface for an aggregate.
   example: []
   syntax:
-    content: 'public interface IAggregate : IId, IVersioned'
-    content.vb: Public Interface IAggregate Inherits IId, IVersioned
+    content: 'public interface IAggregate : IVersioned'
+    content.vb: Public Interface IAggregate Inherits IVersioned
   seealso:
   - linkId: MicroPlumberd.IId
     commentId: T:MicroPlumberd.IId
   - linkId: MicroPlumberd.IVersioned
     commentId: T:MicroPlumberd.IVersioned
   inheritedMembers:
-  - MicroPlumberd.IId.Id
   - MicroPlumberd.IVersioned.Version
 - uid: MicroPlumberd.IAggregate.PendingEvents
   commentId: P:MicroPlumberd.IAggregate.PendingEvents
@@ -57,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 43
+    startLine: 46
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -89,7 +88,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 50
+    startLine: 53
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -127,7 +126,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 55
+    startLine: 58
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -158,13 +157,6 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: MicroPlumberd.IId.Id
-  commentId: P:MicroPlumberd.IId.Id
-  parent: MicroPlumberd.IId
-  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
-  name: Id
-  nameWithType: IId.Id
-  fullName: MicroPlumberd.IId.Id
 - uid: MicroPlumberd.IVersioned.Version
   commentId: P:MicroPlumberd.IVersioned.Version
   parent: MicroPlumberd.IVersioned

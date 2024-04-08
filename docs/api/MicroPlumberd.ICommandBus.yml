@@ -5,7 +5,7 @@ items:
   id: ICommandBus
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
+  - MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
   langs:
   - csharp
   - vb
@@ -29,16 +29,16 @@ items:
   syntax:
     content: public interface ICommandBus
     content.vb: Public Interface ICommandBus
-- uid: MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
-  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
-  id: SendAsync(System.Guid,System.Object)
+- uid: MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
+  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
+  id: SendAsync(System.Object,System.Object)
   parent: MicroPlumberd.ICommandBus
   langs:
   - csharp
   - vb
-  name: SendAsync(Guid, object)
-  nameWithType: ICommandBus.SendAsync(Guid, object)
-  fullName: MicroPlumberd.ICommandBus.SendAsync(System.Guid, object)
+  name: SendAsync(object, object)
+  nameWithType: ICommandBus.SendAsync(object, object)
+  fullName: MicroPlumberd.ICommandBus.SendAsync(object, object)
   type: Method
   source:
     remote:
@@ -54,10 +54,10 @@ items:
   summary: Sends a command asynchronously to the specified recipient - command handler.
   example: []
   syntax:
-    content: Task SendAsync(Guid recipientId, object command)
+    content: Task SendAsync(object recipientId, object command)
     parameters:
     - id: recipientId
-      type: System.Guid
+      type: System.Object
       description: The ID of the recipient.
     - id: command
       type: System.Object
@@ -65,11 +65,11 @@ items:
     return:
       type: System.Threading.Tasks.Task
       description: A task representing the asynchronous operation.
-    content.vb: Function SendAsync(recipientId As Guid, command As Object) As Task
+    content.vb: Function SendAsync(recipientId As Object, command As Object) As Task
   overload: MicroPlumberd.ICommandBus.SendAsync*
-  nameWithType.vb: ICommandBus.SendAsync(Guid, Object)
-  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(System.Guid, Object)
-  name.vb: SendAsync(Guid, Object)
+  nameWithType.vb: ICommandBus.SendAsync(Object, Object)
+  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(Object, Object)
+  name.vb: SendAsync(Object, Object)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -79,18 +79,10 @@ references:
   fullName: MicroPlumberd
 - uid: MicroPlumberd.ICommandBus.SendAsync*
   commentId: Overload:MicroPlumberd.ICommandBus.SendAsync
-  href: MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Guid_System_Object_
+  href: MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Object_System_Object_
   name: SendAsync
   nameWithType: ICommandBus.SendAsync
   fullName: MicroPlumberd.ICommandBus.SendAsync
-- uid: System.Guid
-  commentId: T:System.Guid
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
 - uid: System.Object
   commentId: T:System.Object
   parent: System

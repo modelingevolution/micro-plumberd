@@ -15,6 +15,7 @@ items:
   - MicroPlumberd.Services.GroupNameFromCommandHandler
   - MicroPlumberd.Services.ICommandHandler
   - MicroPlumberd.Services.ICommandHandler`1
+  - MicroPlumberd.Services.ICommandHandler`2
   - MicroPlumberd.Services.IServiceTypeRegister
   - MicroPlumberd.Services.IServicesConfig
   - MicroPlumberd.Services.IServicesConvention
@@ -136,6 +137,37 @@ references:
     href: MicroPlumberd.Services.ICommandHandler-1.html
   - name: (
   - name: Of
+  - name: " "
+  - name: TCommand
+  - name: )
+- uid: MicroPlumberd.Services.ICommandHandler`2
+  commentId: T:MicroPlumberd.Services.ICommandHandler`2
+  href: MicroPlumberd.Services.ICommandHandler-2.html
+  name: ICommandHandler<TId, TCommand>
+  nameWithType: ICommandHandler<TId, TCommand>
+  fullName: MicroPlumberd.Services.ICommandHandler<TId, TCommand>
+  nameWithType.vb: ICommandHandler(Of TId, TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TId, TCommand)
+  name.vb: ICommandHandler(Of TId, TCommand)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.ICommandHandler`2
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-2.html
+  - name: <
+  - name: TId
+  - name: ','
+  - name: " "
+  - name: TCommand
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.ICommandHandler`2
+    name: ICommandHandler
+    href: MicroPlumberd.Services.ICommandHandler-2.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: ','
   - name: " "
   - name: TCommand
   - name: )

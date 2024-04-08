@@ -257,6 +257,173 @@ references:
   fullName.vb: MicroPlumberd.AggregateBase(Of TState).Version
   nameWithType: AggregateBase<TState>.Version
   nameWithType.vb: AggregateBase(Of TState).Version
+- uid: MicroPlumberd.AggregateBase`2
+  name: AggregateBase<TId, TState>
+  href: api/MicroPlumberd.AggregateBase-2.html
+  commentId: T:MicroPlumberd.AggregateBase`2
+  name.vb: AggregateBase(Of TId, TState)
+  fullName: MicroPlumberd.AggregateBase<TId, TState>
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState)
+  nameWithType: AggregateBase<TId, TState>
+  nameWithType.vb: AggregateBase(Of TId, TState)
+- uid: MicroPlumberd.AggregateBase`2.#ctor(`0)
+  name: AggregateBase(TId)
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2__ctor__0_
+  commentId: M:MicroPlumberd.AggregateBase`2.#ctor(`0)
+  name.vb: New(TId)
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.AggregateBase(TId)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).New(TId)
+  nameWithType: AggregateBase<TId, TState>.AggregateBase(TId)
+  nameWithType.vb: AggregateBase(Of TId, TState).New(TId)
+- uid: MicroPlumberd.AggregateBase`2.#ctor*
+  name: AggregateBase
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2__ctor_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.AggregateBase
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).New
+  nameWithType: AggregateBase<TId, TState>.AggregateBase
+  nameWithType.vb: AggregateBase(Of TId, TState).New
+- uid: MicroPlumberd.AggregateBase`2.AckCommitted
+  name: AckCommitted()
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_AckCommitted
+  commentId: M:MicroPlumberd.AggregateBase`2.AckCommitted
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.AckCommitted()
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).AckCommitted()
+  nameWithType: AggregateBase<TId, TState>.AckCommitted()
+  nameWithType.vb: AggregateBase(Of TId, TState).AckCommitted()
+- uid: MicroPlumberd.AggregateBase`2.AckCommitted*
+  name: AckCommitted
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_AckCommitted_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.AckCommitted
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.AckCommitted
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).AckCommitted
+  nameWithType: AggregateBase<TId, TState>.AckCommitted
+  nameWithType.vb: AggregateBase(Of TId, TState).AckCommitted
+- uid: MicroPlumberd.AggregateBase`2.AppendPendingChange(System.Object)
+  name: AppendPendingChange(object)
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_AppendPendingChange_System_Object_
+  commentId: M:MicroPlumberd.AggregateBase`2.AppendPendingChange(System.Object)
+  name.vb: AppendPendingChange(Object)
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.AppendPendingChange(object)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).AppendPendingChange(Object)
+  nameWithType: AggregateBase<TId, TState>.AppendPendingChange(object)
+  nameWithType.vb: AggregateBase(Of TId, TState).AppendPendingChange(Object)
+- uid: MicroPlumberd.AggregateBase`2.AppendPendingChange*
+  name: AppendPendingChange
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_AppendPendingChange_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.AppendPendingChange
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.AppendPendingChange
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).AppendPendingChange
+  nameWithType: AggregateBase<TId, TState>.AppendPendingChange
+  nameWithType.vb: AggregateBase(Of TId, TState).AppendPendingChange
+- uid: MicroPlumberd.AggregateBase`2.Given(`1,System.Object)
+  name: Given(TState, object)
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Given__1_System_Object_
+  commentId: M:MicroPlumberd.AggregateBase`2.Given(`1,System.Object)
+  name.vb: Given(TState, Object)
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Given(TState, object)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Given(TState, Object)
+  nameWithType: AggregateBase<TId, TState>.Given(TState, object)
+  nameWithType.vb: AggregateBase(Of TId, TState).Given(TState, Object)
+- uid: MicroPlumberd.AggregateBase`2.Given*
+  name: Given
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Given_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.Given
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Given
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Given
+  nameWithType: AggregateBase<TId, TState>.Given
+  nameWithType.vb: AggregateBase(Of TId, TState).Given
+- uid: MicroPlumberd.AggregateBase`2.Id
+  name: Id
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Id
+  commentId: P:MicroPlumberd.AggregateBase`2.Id
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Id
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Id
+  nameWithType: AggregateBase<TId, TState>.Id
+  nameWithType.vb: AggregateBase(Of TId, TState).Id
+- uid: MicroPlumberd.AggregateBase`2.Id*
+  name: Id
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Id_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Id
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Id
+  nameWithType: AggregateBase<TId, TState>.Id
+  nameWithType.vb: AggregateBase(Of TId, TState).Id
+- uid: MicroPlumberd.AggregateBase`2.PendingEvents
+  name: PendingEvents
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_PendingEvents
+  commentId: P:MicroPlumberd.AggregateBase`2.PendingEvents
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.PendingEvents
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).PendingEvents
+  nameWithType: AggregateBase<TId, TState>.PendingEvents
+  nameWithType.vb: AggregateBase(Of TId, TState).PendingEvents
+- uid: MicroPlumberd.AggregateBase`2.PendingEvents*
+  name: PendingEvents
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_PendingEvents_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.PendingEvents
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.PendingEvents
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).PendingEvents
+  nameWithType: AggregateBase<TId, TState>.PendingEvents
+  nameWithType.vb: AggregateBase(Of TId, TState).PendingEvents
+- uid: MicroPlumberd.AggregateBase`2.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  name: Rehydrate(IAsyncEnumerable<object>)
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Rehydrate_System_Collections_Generic_IAsyncEnumerable_System_Object__
+  commentId: M:MicroPlumberd.AggregateBase`2.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
+  name.vb: Rehydrate(IAsyncEnumerable(Of Object))
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Rehydrate(System.Collections.Generic.IAsyncEnumerable<object>)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Rehydrate(System.Collections.Generic.IAsyncEnumerable(Of Object))
+  nameWithType: AggregateBase<TId, TState>.Rehydrate(IAsyncEnumerable<object>)
+  nameWithType.vb: AggregateBase(Of TId, TState).Rehydrate(IAsyncEnumerable(Of Object))
+- uid: MicroPlumberd.AggregateBase`2.Rehydrate*
+  name: Rehydrate
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Rehydrate_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.Rehydrate
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Rehydrate
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Rehydrate
+  nameWithType: AggregateBase<TId, TState>.Rehydrate
+  nameWithType.vb: AggregateBase(Of TId, TState).Rehydrate
+- uid: MicroPlumberd.AggregateBase`2.State
+  name: State
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_State
+  commentId: P:MicroPlumberd.AggregateBase`2.State
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.State
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).State
+  nameWithType: AggregateBase<TId, TState>.State
+  nameWithType.vb: AggregateBase(Of TId, TState).State
+- uid: MicroPlumberd.AggregateBase`2.State*
+  name: State
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_State_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.State
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.State
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).State
+  nameWithType: AggregateBase<TId, TState>.State
+  nameWithType.vb: AggregateBase(Of TId, TState).State
+- uid: MicroPlumberd.AggregateBase`2.Version
+  name: Version
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Version
+  commentId: P:MicroPlumberd.AggregateBase`2.Version
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Version
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Version
+  nameWithType: AggregateBase<TId, TState>.Version
+  nameWithType.vb: AggregateBase(Of TId, TState).Version
+- uid: MicroPlumberd.AggregateBase`2.Version*
+  name: Version
+  href: api/MicroPlumberd.AggregateBase-2.html#MicroPlumberd_AggregateBase_2_Version_
+  commentId: Overload:MicroPlumberd.AggregateBase`2.Version
+  isSpec: "True"
+  fullName: MicroPlumberd.AggregateBase<TId, TState>.Version
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState).Version
+  nameWithType: AggregateBase<TId, TState>.Version
+  nameWithType.vb: AggregateBase(Of TId, TState).Version
 - uid: MicroPlumberd.AsyncLazy`1
   name: AsyncLazy<T>
   href: api/MicroPlumberd.AsyncLazy-1.html
@@ -1794,38 +1961,39 @@ references:
   fullName.vb: MicroPlumberd.IAggregate(Of TSelf)
   nameWithType: IAggregate<TSelf>
   nameWithType.vb: IAggregate(Of TSelf)
-- uid: MicroPlumberd.IAggregate`1.New(System.Guid)
-  name: New(Guid)
-  href: api/MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_System_Guid_
-  commentId: M:MicroPlumberd.IAggregate`1.New(System.Guid)
-  fullName: MicroPlumberd.IAggregate<TSelf>.New(System.Guid)
-  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New(System.Guid)
-  nameWithType: IAggregate<TSelf>.New(Guid)
-  nameWithType.vb: IAggregate(Of TSelf).New(Guid)
-- uid: MicroPlumberd.IAggregate`1.New*
-  name: New
-  href: api/MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_
-  commentId: Overload:MicroPlumberd.IAggregate`1.New
+- uid: MicroPlumberd.IAggregate`1.Empty(System.Object)
+  name: Empty(object)
+  href: api/MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_Empty_System_Object_
+  commentId: M:MicroPlumberd.IAggregate`1.Empty(System.Object)
+  name.vb: Empty(Object)
+  fullName: MicroPlumberd.IAggregate<TSelf>.Empty(object)
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).Empty(Object)
+  nameWithType: IAggregate<TSelf>.Empty(object)
+  nameWithType.vb: IAggregate(Of TSelf).Empty(Object)
+- uid: MicroPlumberd.IAggregate`1.Empty*
+  name: Empty
+  href: api/MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_Empty_
+  commentId: Overload:MicroPlumberd.IAggregate`1.Empty
   isSpec: "True"
-  fullName: MicroPlumberd.IAggregate<TSelf>.New
-  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New
-  nameWithType: IAggregate<TSelf>.New
-  nameWithType.vb: IAggregate(Of TSelf).New
+  fullName: MicroPlumberd.IAggregate<TSelf>.Empty
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).Empty
+  nameWithType: IAggregate<TSelf>.Empty
+  nameWithType.vb: IAggregate(Of TSelf).Empty
 - uid: MicroPlumberd.ICommandBus
   name: ICommandBus
   href: api/MicroPlumberd.ICommandBus.html
   commentId: T:MicroPlumberd.ICommandBus
   fullName: MicroPlumberd.ICommandBus
   nameWithType: ICommandBus
-- uid: MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
-  name: SendAsync(Guid, object)
-  href: api/MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Guid_System_Object_
-  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Guid,System.Object)
-  name.vb: SendAsync(Guid, Object)
-  fullName: MicroPlumberd.ICommandBus.SendAsync(System.Guid, object)
-  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(System.Guid, Object)
-  nameWithType: ICommandBus.SendAsync(Guid, object)
-  nameWithType.vb: ICommandBus.SendAsync(Guid, Object)
+- uid: MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
+  name: SendAsync(object, object)
+  href: api/MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Object_System_Object_
+  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
+  name.vb: SendAsync(Object, Object)
+  fullName: MicroPlumberd.ICommandBus.SendAsync(object, object)
+  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(Object, Object)
+  nameWithType: ICommandBus.SendAsync(object, object)
+  nameWithType.vb: ICommandBus.SendAsync(Object, Object)
 - uid: MicroPlumberd.ICommandBus.SendAsync*
   name: SendAsync
   href: api/MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_
@@ -2244,6 +2412,19 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IId.Id
   nameWithType: IId.Id
+- uid: MicroPlumberd.IId.Uuid
+  name: Uuid
+  href: api/MicroPlumberd.IId.html#MicroPlumberd_IId_Uuid
+  commentId: P:MicroPlumberd.IId.Uuid
+  fullName: MicroPlumberd.IId.Uuid
+  nameWithType: IId.Uuid
+- uid: MicroPlumberd.IId.Uuid*
+  name: Uuid
+  href: api/MicroPlumberd.IId.html#MicroPlumberd_IId_Uuid_
+  commentId: Overload:MicroPlumberd.IId.Uuid
+  isSpec: "True"
+  fullName: MicroPlumberd.IId.Uuid
+  nameWithType: IId.Uuid
 - uid: MicroPlumberd.IIdAware
   name: IIdAware
   href: api/MicroPlumberd.IIdAware.html
@@ -2263,6 +2444,32 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IIdAware.Id
   nameWithType: IIdAware.Id
+- uid: MicroPlumberd.IId`1
+  name: IId<T>
+  href: api/MicroPlumberd.IId-1.html
+  commentId: T:MicroPlumberd.IId`1
+  name.vb: IId(Of T)
+  fullName: MicroPlumberd.IId<T>
+  fullName.vb: MicroPlumberd.IId(Of T)
+  nameWithType: IId<T>
+  nameWithType.vb: IId(Of T)
+- uid: MicroPlumberd.IId`1.Id
+  name: Id
+  href: api/MicroPlumberd.IId-1.html#MicroPlumberd_IId_1_Id
+  commentId: P:MicroPlumberd.IId`1.Id
+  fullName: MicroPlumberd.IId<T>.Id
+  fullName.vb: MicroPlumberd.IId(Of T).Id
+  nameWithType: IId<T>.Id
+  nameWithType.vb: IId(Of T).Id
+- uid: MicroPlumberd.IId`1.Id*
+  name: Id
+  href: api/MicroPlumberd.IId-1.html#MicroPlumberd_IId_1_Id_
+  commentId: Overload:MicroPlumberd.IId`1.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.IId<T>.Id
+  fullName.vb: MicroPlumberd.IId(Of T).Id
+  nameWithType: IId<T>.Id
+  nameWithType.vb: IId(Of T).Id
 - uid: MicroPlumberd.IObjectSerializer
   name: IObjectSerializer
   href: api/MicroPlumberd.IObjectSerializer.html
@@ -2402,15 +2609,15 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IPlumber.AppendLink
   nameWithType: IPlumber.AppendLink
-- uid: MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
-  name: AppendSnapshot(object, Guid, long, StreamState)
-  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendSnapshot_System_Object_System_Guid_System_Int64_EventStore_Client_StreamState_
-  commentId: M:MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
-  name.vb: AppendSnapshot(Object, Guid, Long, StreamState)
-  fullName: MicroPlumberd.IPlumber.AppendSnapshot(object, System.Guid, long, EventStore.Client.StreamState)
-  fullName.vb: MicroPlumberd.IPlumber.AppendSnapshot(Object, System.Guid, Long, EventStore.Client.StreamState)
-  nameWithType: IPlumber.AppendSnapshot(object, Guid, long, StreamState)
-  nameWithType.vb: IPlumber.AppendSnapshot(Object, Guid, Long, StreamState)
+- uid: MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Object,System.Int64,EventStore.Client.StreamState)
+  name: AppendSnapshot(object, object, long, StreamState)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendSnapshot_System_Object_System_Object_System_Int64_EventStore_Client_StreamState_
+  commentId: M:MicroPlumberd.IPlumber.AppendSnapshot(System.Object,System.Object,System.Int64,EventStore.Client.StreamState)
+  name.vb: AppendSnapshot(Object, Object, Long, StreamState)
+  fullName: MicroPlumberd.IPlumber.AppendSnapshot(object, object, long, EventStore.Client.StreamState)
+  fullName.vb: MicroPlumberd.IPlumber.AppendSnapshot(Object, Object, Long, EventStore.Client.StreamState)
+  nameWithType: IPlumber.AppendSnapshot(object, object, long, StreamState)
+  nameWithType.vb: IPlumber.AppendSnapshot(Object, Object, Long, StreamState)
 - uid: MicroPlumberd.IPlumber.AppendSnapshot*
   name: AppendSnapshot
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendSnapshot_
@@ -2476,12 +2683,15 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IPlumber.Get
   nameWithType: IPlumber.Get
-- uid: MicroPlumberd.IPlumber.GetSnapshot(System.Guid,System.Type)
-  name: GetSnapshot(Guid, Type)
-  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_GetSnapshot_System_Guid_System_Type_
-  commentId: M:MicroPlumberd.IPlumber.GetSnapshot(System.Guid,System.Type)
-  fullName: MicroPlumberd.IPlumber.GetSnapshot(System.Guid, System.Type)
-  nameWithType: IPlumber.GetSnapshot(Guid, Type)
+- uid: MicroPlumberd.IPlumber.GetSnapshot(System.Object,System.Type)
+  name: GetSnapshot(object, Type)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_GetSnapshot_System_Object_System_Type_
+  commentId: M:MicroPlumberd.IPlumber.GetSnapshot(System.Object,System.Type)
+  name.vb: GetSnapshot(Object, Type)
+  fullName: MicroPlumberd.IPlumber.GetSnapshot(object, System.Type)
+  fullName.vb: MicroPlumberd.IPlumber.GetSnapshot(Object, System.Type)
+  nameWithType: IPlumber.GetSnapshot(object, Type)
+  nameWithType.vb: IPlumber.GetSnapshot(Object, Type)
 - uid: MicroPlumberd.IPlumber.GetSnapshot*
   name: GetSnapshot
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_GetSnapshot_
@@ -2498,15 +2708,15 @@ references:
   fullName.vb: MicroPlumberd.IPlumber.GetSnapshot(Of T)(System.Guid)
   nameWithType: IPlumber.GetSnapshot<T>(Guid)
   nameWithType.vb: IPlumber.GetSnapshot(Of T)(Guid)
-- uid: MicroPlumberd.IPlumber.Get``1(System.Guid)
-  name: Get<T>(Guid)
-  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Get__1_System_Guid_
-  commentId: M:MicroPlumberd.IPlumber.Get``1(System.Guid)
-  name.vb: Get(Of T)(Guid)
-  fullName: MicroPlumberd.IPlumber.Get<T>(System.Guid)
-  fullName.vb: MicroPlumberd.IPlumber.Get(Of T)(System.Guid)
-  nameWithType: IPlumber.Get<T>(Guid)
-  nameWithType.vb: IPlumber.Get(Of T)(Guid)
+- uid: MicroPlumberd.IPlumber.Get``1(System.Object)
+  name: Get<T>(object)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Get__1_System_Object_
+  commentId: M:MicroPlumberd.IPlumber.Get``1(System.Object)
+  name.vb: Get(Of T)(Object)
+  fullName: MicroPlumberd.IPlumber.Get<T>(object)
+  fullName.vb: MicroPlumberd.IPlumber.Get(Of T)(Object)
+  nameWithType: IPlumber.Get<T>(object)
+  nameWithType.vb: IPlumber.Get(Of T)(Object)
 - uid: MicroPlumberd.IPlumber.PersistentSubscriptionClient
   name: PersistentSubscriptionClient
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_PersistentSubscriptionClient
@@ -2578,15 +2788,6 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IPlumber.ReadFull
   nameWithType: IPlumber.ReadFull
-- uid: MicroPlumberd.IPlumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
-  name: Read<TOwner>(Guid, StreamPosition?, Direction?, long)
-  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Read__1_System_Guid_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
-  commentId: M:MicroPlumberd.IPlumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
-  name.vb: Read(Of TOwner)(Guid, StreamPosition?, Direction?, Long)
-  fullName: MicroPlumberd.IPlumber.Read<TOwner>(System.Guid, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
-  fullName.vb: MicroPlumberd.IPlumber.Read(Of TOwner)(System.Guid, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
-  nameWithType: IPlumber.Read<TOwner>(Guid, StreamPosition?, Direction?, long)
-  nameWithType.vb: IPlumber.Read(Of TOwner)(Guid, StreamPosition?, Direction?, Long)
 - uid: MicroPlumberd.IPlumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
   name: Read<TOwner>(StreamPosition?, Direction?, long)
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Read__1_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
@@ -2596,6 +2797,15 @@ references:
   fullName.vb: MicroPlumberd.IPlumber.Read(Of TOwner)(EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
   nameWithType: IPlumber.Read<TOwner>(StreamPosition?, Direction?, long)
   nameWithType.vb: IPlumber.Read(Of TOwner)(StreamPosition?, Direction?, Long)
+- uid: MicroPlumberd.IPlumber.Read``1(System.Object,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  name: Read<TOwner>(object, StreamPosition?, Direction?, long)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Read__1_System_Object_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
+  commentId: M:MicroPlumberd.IPlumber.Read``1(System.Object,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  name.vb: Read(Of TOwner)(Object, StreamPosition?, Direction?, Long)
+  fullName: MicroPlumberd.IPlumber.Read<TOwner>(object, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
+  fullName.vb: MicroPlumberd.IPlumber.Read(Of TOwner)(Object, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
+  nameWithType: IPlumber.Read<TOwner>(object, StreamPosition?, Direction?, long)
+  nameWithType.vb: IPlumber.Read(Of TOwner)(Object, StreamPosition?, Direction?, Long)
 - uid: MicroPlumberd.IPlumber.Rehydrate*
   name: Rehydrate
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Rehydrate_
@@ -4239,15 +4449,15 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.Plumber.AppendLink
   nameWithType: Plumber.AppendLink
-- uid: MicroPlumberd.Plumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
-  name: AppendSnapshot(object, Guid, long, StreamState)
-  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendSnapshot_System_Object_System_Guid_System_Int64_EventStore_Client_StreamState_
-  commentId: M:MicroPlumberd.Plumber.AppendSnapshot(System.Object,System.Guid,System.Int64,EventStore.Client.StreamState)
-  name.vb: AppendSnapshot(Object, Guid, Long, StreamState)
-  fullName: MicroPlumberd.Plumber.AppendSnapshot(object, System.Guid, long, EventStore.Client.StreamState)
-  fullName.vb: MicroPlumberd.Plumber.AppendSnapshot(Object, System.Guid, Long, EventStore.Client.StreamState)
-  nameWithType: Plumber.AppendSnapshot(object, Guid, long, StreamState)
-  nameWithType.vb: Plumber.AppendSnapshot(Object, Guid, Long, StreamState)
+- uid: MicroPlumberd.Plumber.AppendSnapshot(System.Object,System.Object,System.Int64,EventStore.Client.StreamState)
+  name: AppendSnapshot(object, object, long, StreamState)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendSnapshot_System_Object_System_Object_System_Int64_EventStore_Client_StreamState_
+  commentId: M:MicroPlumberd.Plumber.AppendSnapshot(System.Object,System.Object,System.Int64,EventStore.Client.StreamState)
+  name.vb: AppendSnapshot(Object, Object, Long, StreamState)
+  fullName: MicroPlumberd.Plumber.AppendSnapshot(object, object, long, EventStore.Client.StreamState)
+  fullName.vb: MicroPlumberd.Plumber.AppendSnapshot(Object, Object, Long, EventStore.Client.StreamState)
+  nameWithType: Plumber.AppendSnapshot(object, object, long, StreamState)
+  nameWithType.vb: Plumber.AppendSnapshot(Object, Object, Long, StreamState)
 - uid: MicroPlumberd.Plumber.AppendSnapshot*
   name: AppendSnapshot
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendSnapshot_
@@ -4358,12 +4568,15 @@ references:
   fullName.vb: MicroPlumberd.Plumber.GetExtension(Of T)()
   nameWithType: Plumber.GetExtension<T>()
   nameWithType.vb: Plumber.GetExtension(Of T)()
-- uid: MicroPlumberd.Plumber.GetSnapshot(System.Guid,System.Type)
-  name: GetSnapshot(Guid, Type)
-  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_GetSnapshot_System_Guid_System_Type_
-  commentId: M:MicroPlumberd.Plumber.GetSnapshot(System.Guid,System.Type)
-  fullName: MicroPlumberd.Plumber.GetSnapshot(System.Guid, System.Type)
-  nameWithType: Plumber.GetSnapshot(Guid, Type)
+- uid: MicroPlumberd.Plumber.GetSnapshot(System.Object,System.Type)
+  name: GetSnapshot(object, Type)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_GetSnapshot_System_Object_System_Type_
+  commentId: M:MicroPlumberd.Plumber.GetSnapshot(System.Object,System.Type)
+  name.vb: GetSnapshot(Object, Type)
+  fullName: MicroPlumberd.Plumber.GetSnapshot(object, System.Type)
+  fullName.vb: MicroPlumberd.Plumber.GetSnapshot(Object, System.Type)
+  nameWithType: Plumber.GetSnapshot(object, Type)
+  nameWithType.vb: Plumber.GetSnapshot(Object, Type)
 - uid: MicroPlumberd.Plumber.GetSnapshot*
   name: GetSnapshot
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_GetSnapshot_
@@ -4380,15 +4593,15 @@ references:
   fullName.vb: MicroPlumberd.Plumber.GetSnapshot(Of T)(System.Guid)
   nameWithType: Plumber.GetSnapshot<T>(Guid)
   nameWithType.vb: Plumber.GetSnapshot(Of T)(Guid)
-- uid: MicroPlumberd.Plumber.Get``1(System.Guid)
-  name: Get<TOwner>(Guid)
-  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Get__1_System_Guid_
-  commentId: M:MicroPlumberd.Plumber.Get``1(System.Guid)
-  name.vb: Get(Of TOwner)(Guid)
-  fullName: MicroPlumberd.Plumber.Get<TOwner>(System.Guid)
-  fullName.vb: MicroPlumberd.Plumber.Get(Of TOwner)(System.Guid)
-  nameWithType: Plumber.Get<TOwner>(Guid)
-  nameWithType.vb: Plumber.Get(Of TOwner)(Guid)
+- uid: MicroPlumberd.Plumber.Get``1(System.Object)
+  name: Get<TOwner>(object)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Get__1_System_Object_
+  commentId: M:MicroPlumberd.Plumber.Get``1(System.Object)
+  name.vb: Get(Of TOwner)(Object)
+  fullName: MicroPlumberd.Plumber.Get<TOwner>(object)
+  fullName.vb: MicroPlumberd.Plumber.Get(Of TOwner)(Object)
+  nameWithType: Plumber.Get<TOwner>(object)
+  nameWithType.vb: Plumber.Get(Of TOwner)(Object)
 - uid: MicroPlumberd.Plumber.PersistentSubscriptionClient
   name: PersistentSubscriptionClient
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_PersistentSubscriptionClient
@@ -4460,15 +4673,6 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.Plumber.ReadFull
   nameWithType: Plumber.ReadFull
-- uid: MicroPlumberd.Plumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
-  name: Read<TOwner>(Guid, StreamPosition?, Direction?, long)
-  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Read__1_System_Guid_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
-  commentId: M:MicroPlumberd.Plumber.Read``1(System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
-  name.vb: Read(Of TOwner)(Guid, StreamPosition?, Direction?, Long)
-  fullName: MicroPlumberd.Plumber.Read<TOwner>(System.Guid, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
-  fullName.vb: MicroPlumberd.Plumber.Read(Of TOwner)(System.Guid, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
-  nameWithType: Plumber.Read<TOwner>(Guid, StreamPosition?, Direction?, long)
-  nameWithType.vb: Plumber.Read(Of TOwner)(Guid, StreamPosition?, Direction?, Long)
 - uid: MicroPlumberd.Plumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
   name: Read<TOwner>(StreamPosition?, Direction?, long)
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Read__1_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
@@ -4478,6 +4682,15 @@ references:
   fullName.vb: MicroPlumberd.Plumber.Read(Of TOwner)(EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
   nameWithType: Plumber.Read<TOwner>(StreamPosition?, Direction?, long)
   nameWithType.vb: Plumber.Read(Of TOwner)(StreamPosition?, Direction?, Long)
+- uid: MicroPlumberd.Plumber.Read``1(System.Object,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  name: Read<TOwner>(object, StreamPosition?, Direction?, long)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Read__1_System_Object_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_
+  commentId: M:MicroPlumberd.Plumber.Read``1(System.Object,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64)
+  name.vb: Read(Of TOwner)(Object, StreamPosition?, Direction?, Long)
+  fullName: MicroPlumberd.Plumber.Read<TOwner>(object, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long)
+  fullName.vb: MicroPlumberd.Plumber.Read(Of TOwner)(Object, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long)
+  nameWithType: Plumber.Read<TOwner>(object, StreamPosition?, Direction?, long)
+  nameWithType.vb: Plumber.Read(Of TOwner)(Object, StreamPosition?, Direction?, Long)
 - uid: MicroPlumberd.Plumber.Rehydrate*
   name: Rehydrate
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Rehydrate_
@@ -4720,6 +4933,66 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.ProcessManagerBase.Version
   nameWithType: ProcessManagerBase.Version
+- uid: MicroPlumberd.ProcessManagerBase`1
+  name: ProcessManagerBase<TId>
+  href: api/MicroPlumberd.ProcessManagerBase-1.html
+  commentId: T:MicroPlumberd.ProcessManagerBase`1
+  name.vb: ProcessManagerBase(Of TId)
+  fullName: MicroPlumberd.ProcessManagerBase<TId>
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId)
+  nameWithType: ProcessManagerBase<TId>
+  nameWithType.vb: ProcessManagerBase(Of TId)
+- uid: MicroPlumberd.ProcessManagerBase`1.HandleError(MicroPlumberd.ExecutionContext)
+  name: HandleError(ExecutionContext)
+  href: api/MicroPlumberd.ProcessManagerBase-1.html#MicroPlumberd_ProcessManagerBase_1_HandleError_MicroPlumberd_ExecutionContext_
+  commentId: M:MicroPlumberd.ProcessManagerBase`1.HandleError(MicroPlumberd.ExecutionContext)
+  fullName: MicroPlumberd.ProcessManagerBase<TId>.HandleError(MicroPlumberd.ExecutionContext)
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).HandleError(MicroPlumberd.ExecutionContext)
+  nameWithType: ProcessManagerBase<TId>.HandleError(ExecutionContext)
+  nameWithType.vb: ProcessManagerBase(Of TId).HandleError(ExecutionContext)
+- uid: MicroPlumberd.ProcessManagerBase`1.HandleError*
+  name: HandleError
+  href: api/MicroPlumberd.ProcessManagerBase-1.html#MicroPlumberd_ProcessManagerBase_1_HandleError_
+  commentId: Overload:MicroPlumberd.ProcessManagerBase`1.HandleError
+  isSpec: "True"
+  fullName: MicroPlumberd.ProcessManagerBase<TId>.HandleError
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).HandleError
+  nameWithType: ProcessManagerBase<TId>.HandleError
+  nameWithType.vb: ProcessManagerBase(Of TId).HandleError
+- uid: MicroPlumberd.ProcessManagerBase`1.Id
+  name: Id
+  href: api/MicroPlumberd.ProcessManagerBase-1.html#MicroPlumberd_ProcessManagerBase_1_Id
+  commentId: P:MicroPlumberd.ProcessManagerBase`1.Id
+  fullName: MicroPlumberd.ProcessManagerBase<TId>.Id
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).Id
+  nameWithType: ProcessManagerBase<TId>.Id
+  nameWithType.vb: ProcessManagerBase(Of TId).Id
+- uid: MicroPlumberd.ProcessManagerBase`1.Id*
+  name: Id
+  href: api/MicroPlumberd.ProcessManagerBase-1.html#MicroPlumberd_ProcessManagerBase_1_Id_
+  commentId: Overload:MicroPlumberd.ProcessManagerBase`1.Id
+  isSpec: "True"
+  fullName: MicroPlumberd.ProcessManagerBase<TId>.Id
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).Id
+  nameWithType: ProcessManagerBase<TId>.Id
+  nameWithType.vb: ProcessManagerBase(Of TId).Id
+- uid: MicroPlumberd.ProcessManagerBase`1.Version
+  name: Version
+  href: api/MicroPlumberd.ProcessManagerBase-1.html#MicroPlumberd_ProcessManagerBase_1_Version
+  commentId: P:MicroPlumberd.ProcessManagerBase`1.Version
+  fullName: MicroPlumberd.ProcessManagerBase<TId>.Version
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).Version
+  nameWithType: ProcessManagerBase<TId>.Version
+  nameWithType.vb: ProcessManagerBase(Of TId).Version
+- uid: MicroPlumberd.ProcessManagerBase`1.Version*
+  name: Version
+  href: api/MicroPlumberd.ProcessManagerBase-1.html#MicroPlumberd_ProcessManagerBase_1_Version_
+  commentId: Overload:MicroPlumberd.ProcessManagerBase`1.Version
+  isSpec: "True"
+  fullName: MicroPlumberd.ProcessManagerBase<TId>.Version
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).Version
+  nameWithType: ProcessManagerBase<TId>.Version
+  nameWithType.vb: ProcessManagerBase(Of TId).Version
 - uid: MicroPlumberd.ProjectionCategoryStreamConvention
   name: ProjectionCategoryStreamConvention
   href: api/MicroPlumberd.ProjectionCategoryStreamConvention.html
@@ -4811,15 +5084,24 @@ references:
   commentId: T:MicroPlumberd.RequestInvokerExtensions
   fullName: MicroPlumberd.RequestInvokerExtensions
   nameWithType: RequestInvokerExtensions
-- uid: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  name: Execute(IRequestInvoker, Guid, object)
-  href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_
-  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  name.vb: Execute(IRequestInvoker, Guid, Object)
-  fullName: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, object)
-  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, Object)
-  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, Guid, object)
-  nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, Guid, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  name: Execute(IRequestInvoker, object, object)
+  href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_Object_System_Object_
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  name.vb: Execute(IRequestInvoker, Object, Object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, object, object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, Object, Object)
+  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, object, object)
+  nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, Object, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  name: Execute(IRequestInvoker, string, object)
+  href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_String_System_Object_
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  name.vb: Execute(IRequestInvoker, String, Object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, string, object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, String, Object)
+  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, string, object)
+  nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, String, Object)
 - uid: MicroPlumberd.RequestInvokerExtensions.Execute*
   name: Execute
   href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute_
@@ -4827,15 +5109,24 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.RequestInvokerExtensions.Execute
   nameWithType: RequestInvokerExtensions.Execute
-- uid: MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  name: Execute<TResponse>(IRequestInvoker, Guid, object)
-  href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_
-  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  name.vb: Execute(Of TResponse)(IRequestInvoker, Guid, Object)
-  fullName: MicroPlumberd.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, object)
-  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, Object)
-  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, Guid, object)
-  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, Guid, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  name: Execute<TResponse>(IRequestInvoker, object, object)
+  href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Object_System_Object_
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  name.vb: Execute(Of TResponse)(IRequestInvoker, Object, Object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, object, object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, Object, Object)
+  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, object, object)
+  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, Object, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  name: Execute<TResponse>(IRequestInvoker, string, object)
+  href: api/MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_String_System_Object_
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  name.vb: Execute(Of TResponse)(IRequestInvoker, String, Object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, string, object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, String, Object)
+  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, string, object)
+  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, String, Object)
 - uid: MicroPlumberd.Services
   name: MicroPlumberd.Services
   href: api/MicroPlumberd.Services.html
@@ -4969,23 +5260,15 @@ references:
   fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).New
   nameWithType: CommandHandlerAttributeValidator<T>.CommandHandlerAttributeValidator
   nameWithType.vb: CommandHandlerAttributeValidator(Of T).New
-- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
-  name: Execute(Guid, object)
-  href: api/MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_System_Guid_System_Object_
-  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,System.Object)
-  name.vb: Execute(Guid, Object)
-  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(System.Guid, object)
-  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(System.Guid, Object)
-  nameWithType: CommandHandlerAttributeValidator<T>.Execute(Guid, object)
-  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(Guid, Object)
-- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
-  name: Execute(Guid, T)
-  href: api/MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_System_Guid__0_
-  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.Guid,`0)
-  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(System.Guid, T)
-  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(System.Guid, T)
-  nameWithType: CommandHandlerAttributeValidator<T>.Execute(Guid, T)
-  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(Guid, T)
+- uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.String,`0)
+  name: Execute(string, T)
+  href: api/MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_System_String__0_
+  commentId: M:MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute(System.String,`0)
+  name.vb: Execute(String, T)
+  fullName: MicroPlumberd.Services.CommandHandlerAttributeValidator<T>.Execute(string, T)
+  fullName.vb: MicroPlumberd.Services.CommandHandlerAttributeValidator(Of T).Execute(String, T)
+  nameWithType: CommandHandlerAttributeValidator<T>.Execute(string, T)
+  nameWithType.vb: CommandHandlerAttributeValidator(Of T).Execute(String, T)
 - uid: MicroPlumberd.Services.CommandHandlerAttributeValidator`1.Execute*
   name: Execute
   href: api/MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html#MicroPlumberd_Services_CommandHandlerAttributeValidator_1_Execute_
@@ -5108,15 +5391,15 @@ references:
   commentId: T:MicroPlumberd.Services.ICommandHandler
   fullName: MicroPlumberd.Services.ICommandHandler
   nameWithType: ICommandHandler
-- uid: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-  name: Execute(Guid, object)
-  href: api/MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_Guid_System_Object_
-  commentId: M:MicroPlumberd.Services.ICommandHandler.Execute(System.Guid,System.Object)
-  name.vb: Execute(Guid, Object)
-  fullName: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid, object)
-  fullName.vb: MicroPlumberd.Services.ICommandHandler.Execute(System.Guid, Object)
-  nameWithType: ICommandHandler.Execute(Guid, object)
-  nameWithType.vb: ICommandHandler.Execute(Guid, Object)
+- uid: MicroPlumberd.Services.ICommandHandler.Execute(System.String,System.Object)
+  name: Execute(string, object)
+  href: api/MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_String_System_Object_
+  commentId: M:MicroPlumberd.Services.ICommandHandler.Execute(System.String,System.Object)
+  name.vb: Execute(String, Object)
+  fullName: MicroPlumberd.Services.ICommandHandler.Execute(string, object)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler.Execute(String, Object)
+  nameWithType: ICommandHandler.Execute(string, object)
+  nameWithType.vb: ICommandHandler.Execute(String, Object)
 - uid: MicroPlumberd.Services.ICommandHandler.Execute*
   name: Execute
   href: api/MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_
@@ -5133,14 +5416,15 @@ references:
   fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand)
   nameWithType: ICommandHandler<TCommand>
   nameWithType.vb: ICommandHandler(Of TCommand)
-- uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
-  name: Execute(Guid, TCommand)
-  href: api/MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_Guid__0_
-  commentId: M:MicroPlumberd.Services.ICommandHandler`1.Execute(System.Guid,`0)
-  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>.Execute(System.Guid, TCommand)
-  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand).Execute(System.Guid, TCommand)
-  nameWithType: ICommandHandler<TCommand>.Execute(Guid, TCommand)
-  nameWithType.vb: ICommandHandler(Of TCommand).Execute(Guid, TCommand)
+- uid: MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
+  name: Execute(string, TCommand)
+  href: api/MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_
+  commentId: M:MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)
+  name.vb: Execute(String, TCommand)
+  fullName: MicroPlumberd.Services.ICommandHandler<TCommand>.Execute(string, TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand).Execute(String, TCommand)
+  nameWithType: ICommandHandler<TCommand>.Execute(string, TCommand)
+  nameWithType.vb: ICommandHandler(Of TCommand).Execute(String, TCommand)
 - uid: MicroPlumberd.Services.ICommandHandler`1.Execute*
   name: Execute
   href: api/MicroPlumberd.Services.ICommandHandler-1.html#MicroPlumberd_Services_ICommandHandler_1_Execute_
@@ -5150,6 +5434,32 @@ references:
   fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TCommand).Execute
   nameWithType: ICommandHandler<TCommand>.Execute
   nameWithType.vb: ICommandHandler(Of TCommand).Execute
+- uid: MicroPlumberd.Services.ICommandHandler`2
+  name: ICommandHandler<TId, TCommand>
+  href: api/MicroPlumberd.Services.ICommandHandler-2.html
+  commentId: T:MicroPlumberd.Services.ICommandHandler`2
+  name.vb: ICommandHandler(Of TId, TCommand)
+  fullName: MicroPlumberd.Services.ICommandHandler<TId, TCommand>
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TId, TCommand)
+  nameWithType: ICommandHandler<TId, TCommand>
+  nameWithType.vb: ICommandHandler(Of TId, TCommand)
+- uid: MicroPlumberd.Services.ICommandHandler`2.Execute(`0,`1)
+  name: Execute(TId, TCommand)
+  href: api/MicroPlumberd.Services.ICommandHandler-2.html#MicroPlumberd_Services_ICommandHandler_2_Execute__0__1_
+  commentId: M:MicroPlumberd.Services.ICommandHandler`2.Execute(`0,`1)
+  fullName: MicroPlumberd.Services.ICommandHandler<TId, TCommand>.Execute(TId, TCommand)
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TId, TCommand).Execute(TId, TCommand)
+  nameWithType: ICommandHandler<TId, TCommand>.Execute(TId, TCommand)
+  nameWithType.vb: ICommandHandler(Of TId, TCommand).Execute(TId, TCommand)
+- uid: MicroPlumberd.Services.ICommandHandler`2.Execute*
+  name: Execute
+  href: api/MicroPlumberd.Services.ICommandHandler-2.html#MicroPlumberd_Services_ICommandHandler_2_Execute_
+  commentId: Overload:MicroPlumberd.Services.ICommandHandler`2.Execute
+  isSpec: "True"
+  fullName: MicroPlumberd.Services.ICommandHandler<TId, TCommand>.Execute
+  fullName.vb: MicroPlumberd.Services.ICommandHandler(Of TId, TCommand).Execute
+  nameWithType: ICommandHandler<TId, TCommand>.Execute
+  nameWithType.vb: ICommandHandler(Of TId, TCommand).Execute
 - uid: MicroPlumberd.Services.IServiceTypeRegister
   name: IServiceTypeRegister
   href: api/MicroPlumberd.Services.IServiceTypeRegister.html

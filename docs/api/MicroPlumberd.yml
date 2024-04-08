@@ -6,7 +6,7 @@ items:
   children:
   - MicroPlumberd.AcceptedTypeAttribute
   - MicroPlumberd.AggregateAttribute
-  - MicroPlumberd.AggregateBase`1
+  - MicroPlumberd.AggregateBase`2
   - MicroPlumberd.AttributeSnaphotPolicy`1
   - MicroPlumberd.BuildInvocationContext
   - MicroPlumberd.CommandEnqueued
@@ -37,6 +37,7 @@ items:
   - MicroPlumberd.IExtension
   - MicroPlumberd.IId
   - MicroPlumberd.IIdAware
+  - MicroPlumberd.IId`1
   - MicroPlumberd.IObjectSerializer
   - MicroPlumberd.IPlumber
   - MicroPlumberd.IPlumberConfig
@@ -66,7 +67,7 @@ items:
   - MicroPlumberd.OutputStreamModelConvention
   - MicroPlumberd.Plumber
   - MicroPlumberd.ProcessManagerAttribute
-  - MicroPlumberd.ProcessManagerBase
+  - MicroPlumberd.ProcessManagerBase`1
   - MicroPlumberd.ProjectionCategoryStreamConvention
   - MicroPlumberd.RequestInvokerExtensions
   - MicroPlumberd.Snapshot
@@ -200,6 +201,31 @@ references:
   name: IId
   nameWithType: IId
   fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IId`1
+  commentId: T:MicroPlumberd.IId`1
+  href: MicroPlumberd.IId-1.html
+  name: IId<T>
+  nameWithType: IId<T>
+  fullName: MicroPlumberd.IId<T>
+  nameWithType.vb: IId(Of T)
+  fullName.vb: MicroPlumberd.IId(Of T)
+  name.vb: IId(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.IId`1
+    name: IId
+    href: MicroPlumberd.IId-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IId`1
+    name: IId
+    href: MicroPlumberd.IId-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.IIdAware
   commentId: T:MicroPlumberd.IIdAware
   parent: MicroPlumberd
@@ -383,28 +409,34 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: MicroPlumberd.AggregateBase`1
-  commentId: T:MicroPlumberd.AggregateBase`1
-  href: MicroPlumberd.AggregateBase-1.html
-  name: AggregateBase<TState>
-  nameWithType: AggregateBase<TState>
-  fullName: MicroPlumberd.AggregateBase<TState>
-  nameWithType.vb: AggregateBase(Of TState)
-  fullName.vb: MicroPlumberd.AggregateBase(Of TState)
-  name.vb: AggregateBase(Of TState)
+- uid: MicroPlumberd.AggregateBase`2
+  commentId: T:MicroPlumberd.AggregateBase`2
+  href: MicroPlumberd.AggregateBase-2.html
+  name: AggregateBase<TId, TState>
+  nameWithType: AggregateBase<TId, TState>
+  fullName: MicroPlumberd.AggregateBase<TId, TState>
+  nameWithType.vb: AggregateBase(Of TId, TState)
+  fullName.vb: MicroPlumberd.AggregateBase(Of TId, TState)
+  name.vb: AggregateBase(Of TId, TState)
   spec.csharp:
-  - uid: MicroPlumberd.AggregateBase`1
+  - uid: MicroPlumberd.AggregateBase`2
     name: AggregateBase
-    href: MicroPlumberd.AggregateBase-1.html
+    href: MicroPlumberd.AggregateBase-2.html
   - name: <
+  - name: TId
+  - name: ','
+  - name: " "
   - name: TState
   - name: '>'
   spec.vb:
-  - uid: MicroPlumberd.AggregateBase`1
+  - uid: MicroPlumberd.AggregateBase`2
     name: AggregateBase
-    href: MicroPlumberd.AggregateBase-1.html
+    href: MicroPlumberd.AggregateBase-2.html
   - name: (
   - name: Of
+  - name: " "
+  - name: TId
+  - name: ','
   - name: " "
   - name: TState
   - name: )
@@ -822,12 +854,31 @@ references:
   name: IProcessManager
   nameWithType: IProcessManager
   fullName: MicroPlumberd.IProcessManager
-- uid: MicroPlumberd.ProcessManagerBase
-  commentId: T:MicroPlumberd.ProcessManagerBase
-  href: MicroPlumberd.ProcessManagerBase.html
-  name: ProcessManagerBase
-  nameWithType: ProcessManagerBase
-  fullName: MicroPlumberd.ProcessManagerBase
+- uid: MicroPlumberd.ProcessManagerBase`1
+  commentId: T:MicroPlumberd.ProcessManagerBase`1
+  href: MicroPlumberd.ProcessManagerBase-1.html
+  name: ProcessManagerBase<TId>
+  nameWithType: ProcessManagerBase<TId>
+  fullName: MicroPlumberd.ProcessManagerBase<TId>
+  nameWithType.vb: ProcessManagerBase(Of TId)
+  fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId)
+  name.vb: ProcessManagerBase(Of TId)
+  spec.csharp:
+  - uid: MicroPlumberd.ProcessManagerBase`1
+    name: ProcessManagerBase
+    href: MicroPlumberd.ProcessManagerBase-1.html
+  - name: <
+  - name: TId
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.ProcessManagerBase`1
+    name: ProcessManagerBase
+    href: MicroPlumberd.ProcessManagerBase-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TId
+  - name: )
 - uid: MicroPlumberd.ProcessManagerAttribute
   commentId: T:MicroPlumberd.ProcessManagerAttribute
   href: MicroPlumberd.ProcessManagerAttribute.html

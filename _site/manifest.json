@@ -42,6 +42,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.AggregateBase-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.AggregateBase-2.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.AsyncLazy-1.yml",
       "output": {
         ".html": {
@@ -462,6 +472,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IId-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IId-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.IId.yml",
       "output": {
         ".html": {
@@ -782,6 +802,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ProcessManagerBase-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ProcessManagerBase-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.ProcessManagerBase.yml",
       "output": {
         ".html": {
@@ -926,6 +956,16 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.Services.ICommandHandler-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.ICommandHandler-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.ICommandHandler-2.html"
         }
       },
       "version": ""

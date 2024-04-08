@@ -6,6 +6,7 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.IId.Id
+  - MicroPlumberd.IId.Uuid
   langs:
   - csharp
   - vb
@@ -20,7 +21,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IId
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 81
+    startLine: 114
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -45,17 +46,46 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 83
+    startLine: 116
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: Guid Id { get; }
+    content: object Id { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: ReadOnly Property Id As Object
+  overload: MicroPlumberd.IId.Id*
+- uid: MicroPlumberd.IId.Uuid
+  commentId: P:MicroPlumberd.IId.Uuid
+  id: Uuid
+  parent: MicroPlumberd.IId
+  langs:
+  - csharp
+  - vb
+  name: Uuid
+  nameWithType: IId.Uuid
+  fullName: MicroPlumberd.IId.Uuid
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Uuid
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 118
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Guid Uuid { get; }
     parameters: []
     return:
       type: System.Guid
-    content.vb: ReadOnly Property Id As Guid
-  overload: MicroPlumberd.IId.Id*
+    content.vb: ReadOnly Property Uuid As Guid
+  overload: MicroPlumberd.IId.Uuid*
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -69,6 +99,30 @@ references:
   name: Id
   nameWithType: IId.Id
   fullName: MicroPlumberd.IId.Id
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.IId.Uuid*
+  commentId: Overload:MicroPlumberd.IId.Uuid
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Uuid
+  name: Uuid
+  nameWithType: IId.Uuid
+  fullName: MicroPlumberd.IId.Uuid
 - uid: System.Guid
   commentId: T:System.Guid
   parent: System
@@ -77,10 +131,3 @@ references:
   name: Guid
   nameWithType: Guid
   fullName: System.Guid
-- uid: System
-  commentId: N:System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System
-  nameWithType: System
-  fullName: System

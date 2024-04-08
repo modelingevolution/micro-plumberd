@@ -7,8 +7,8 @@ items:
     name: AcceptedTypeAttribute
   - uid: MicroPlumberd.AggregateAttribute
     name: AggregateAttribute
-  - uid: MicroPlumberd.AggregateBase`1
-    name: AggregateBase<TState>
+  - uid: MicroPlumberd.AggregateBase`2
+    name: AggregateBase<TId, TState>
   - uid: MicroPlumberd.AttributeSnaphotPolicy`1
     name: AttributeSnaphotPolicy<T>
   - uid: MicroPlumberd.BuildInvocationContext
@@ -69,6 +69,8 @@ items:
     name: IId
   - uid: MicroPlumberd.IIdAware
     name: IIdAware
+  - uid: MicroPlumberd.IId`1
+    name: IId<T>
   - uid: MicroPlumberd.IObjectSerializer
     name: IObjectSerializer
   - uid: MicroPlumberd.IPlumber
@@ -127,8 +129,8 @@ items:
     name: Plumber
   - uid: MicroPlumberd.ProcessManagerAttribute
     name: ProcessManagerAttribute
-  - uid: MicroPlumberd.ProcessManagerBase
-    name: ProcessManagerBase
+  - uid: MicroPlumberd.ProcessManagerBase`1
+    name: ProcessManagerBase<TId>
   - uid: MicroPlumberd.ProjectionCategoryStreamConvention
     name: ProjectionCategoryStreamConvention
   - uid: MicroPlumberd.RequestInvokerExtensions
@@ -211,6 +213,8 @@ items:
     name: ICommandHandler
   - uid: MicroPlumberd.Services.ICommandHandler`1
     name: ICommandHandler<TCommand>
+  - uid: MicroPlumberd.Services.ICommandHandler`2
+    name: ICommandHandler<TId, TCommand>
   - uid: MicroPlumberd.Services.IServiceTypeRegister
     name: IServiceTypeRegister
   - uid: MicroPlumberd.Services.IServicesConfig

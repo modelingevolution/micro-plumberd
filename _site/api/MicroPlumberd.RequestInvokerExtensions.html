@@ -154,9 +154,9 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
 
   <a id="MicroPlumberd_RequestInvokerExtensions_Execute_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute*"></a>
 
-  <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)">
-  Execute(IRequestInvoker, Guid, object)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_Object_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)">
+  Execute(IRequestInvoker, object, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L82"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"><p>Executes a command and gets a response of type HandlerOperationStatus.</p>
@@ -164,7 +164,7 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task Execute(this IRequestInvoker ri, Guid id, object c)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task Execute(this IRequestInvoker ri, object id, object c)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -172,7 +172,7 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
     <dt><code>ri</code> <span class="xref">IRequestInvoker</span></dt>
     <dd><p>The IRequestInvoker instance on which this method is invoked.</p>
 </dd>
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
     <dd><p>The unique identifier for the command.</p>
 </dd>
     <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
@@ -199,8 +199,103 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
 
   <a id="MicroPlumberd_RequestInvokerExtensions_Execute_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute*"></a>
 
-  <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)">
-  Execute&lt;TResponse&gt;(IRequestInvoker, Guid, object)
+  <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute_ModelingEvolution_DirectConnect_IRequestInvoker_System_String_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)">
+  Execute(IRequestInvoker, string, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Executes a command and gets a response of type HandlerOperationStatus.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task Execute(this IRequestInvoker ri, string id, object c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ri</code> <span class="xref">IRequestInvoker</span></dt>
+    <dd><p>The IRequestInvoker instance on which this method is invoked.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identifier for the command.</p>
+</dd>
+    <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The command object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd><p>A Task that represents the asynchronous operation. The task result contains the response of type HandlerOperationStatus.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_RequestInvokerExtensions_Execute_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute*"></a>
+
+  <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Object_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)">
+  Execute&lt;TResponse&gt;(IRequestInvoker, object, object)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Executes a command and gets a response of type TResponse.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Task&lt;TResponse&gt; Execute&lt;TResponse&gt;(this IRequestInvoker ri, object id, object c)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>ri</code> <span class="xref">IRequestInvoker</span></dt>
+    <dd><p>The IRequestInvoker instance on which this method is invoked.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier.</p>
+</dd>
+    <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The command object.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;TResponse&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TResponse</code></dt>
+    <dd><p>The type of the response.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_RequestInvokerExtensions_Execute_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute*"></a>
+
+  <h3 id="MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_String_System_Object_" data-uid="MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)">
+  Execute&lt;TResponse&gt;(IRequestInvoker, string, object)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs/#L34"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -209,7 +304,7 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;TResponse&gt; Execute&lt;TResponse&gt;(this IRequestInvoker ri, Guid id, object c)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;TResponse&gt; Execute&lt;TResponse&gt;(this IRequestInvoker ri, string id, object c)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -217,7 +312,7 @@ Class RequestInvokerExtensions  <a class="header-action link-secondary" title="V
     <dt><code>ri</code> <span class="xref">IRequestInvoker</span></dt>
     <dd><p>The IRequestInvoker instance on which this method is invoked.</p>
 </dd>
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd><p>The unique identifier for the command.</p>
 </dd>
     <dt><code>c</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>

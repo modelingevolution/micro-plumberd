@@ -1,0 +1,106 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IId`1
+  commentId: T:MicroPlumberd.IId`1
+  id: IId`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IId`1.Id
+  langs:
+  - csharp
+  - vb
+  name: IId<T>
+  nameWithType: IId<T>
+  fullName: MicroPlumberd.IId<T>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IId
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 130
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IId<out T> : IId where T : IParsable<out T>'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IId(Of Out T As IParsable(Of Out T)) Inherits IId
+  inheritedMembers:
+  - MicroPlumberd.IId.Uuid
+  nameWithType.vb: IId(Of T)
+  fullName.vb: MicroPlumberd.IId(Of T)
+  name.vb: IId(Of T)
+- uid: MicroPlumberd.IId`1.Id
+  commentId: P:MicroPlumberd.IId`1.Id
+  id: Id
+  parent: MicroPlumberd.IId`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IId<T>.Id
+  fullName: MicroPlumberd.IId<T>.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 133
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: T Id { get; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: ReadOnly Property Id As T
+  overload: MicroPlumberd.IId`1.Id*
+  nameWithType.vb: IId(Of T).Id
+  fullName.vb: MicroPlumberd.IId(Of T).Id
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IId.Uuid
+  commentId: P:MicroPlumberd.IId.Uuid
+  parent: MicroPlumberd.IId
+  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Uuid
+  name: Uuid
+  nameWithType: IId.Uuid
+  fullName: MicroPlumberd.IId.Uuid
+- uid: MicroPlumberd.IId
+  commentId: T:MicroPlumberd.IId
+  parent: MicroPlumberd
+  href: MicroPlumberd.IId.html
+  name: IId
+  nameWithType: IId
+  fullName: MicroPlumberd.IId
+- uid: MicroPlumberd.IId`1.Id*
+  commentId: Overload:MicroPlumberd.IId`1.Id
+  href: MicroPlumberd.IId-1.html#MicroPlumberd_IId_1_Id
+  name: Id
+  nameWithType: IId<T>.Id
+  fullName: MicroPlumberd.IId<T>.Id
+  nameWithType.vb: IId(Of T).Id
+  fullName.vb: MicroPlumberd.IId(Of T).Id
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

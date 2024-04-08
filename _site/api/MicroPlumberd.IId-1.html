@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Interface ICommandHandler&lt;TCommand&gt; | MicroPlumberd </title>
+      <title>Interface IId&lt;T&gt; | MicroPlumberd </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Interface ICommandHandler&lt;TCommand&gt; | MicroPlumberd ">
+      <meta name="title" content="Interface IId&lt;T&gt; | MicroPlumberd ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/new/master/apiSpec/new?filename=MicroPlumberd_Services_ICommandHandler_1.md&amp;value=---%0Auid%3A%20MicroPlumberd.Services.ICommandHandler%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/new/master/apiSpec/new?filename=MicroPlumberd_IId_1.md&amp;value=---%0Auid%3A%20MicroPlumberd.IId%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,31 +84,31 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="MicroPlumberd.Services.ICommandHandler`1">
+        <article data-uid="MicroPlumberd.IId`1">
 
 
 
-  <h1 id="MicroPlumberd_Services_ICommandHandler_1" data-uid="MicroPlumberd.Services.ICommandHandler`1" class="text-break">
-Interface ICommandHandler&lt;TCommand&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ICommandHandler.cs/#L7"><i class="bi bi-code-slash"></i></a>
+  <h1 id="MicroPlumberd_IId_1" data-uid="MicroPlumberd.IId`1" class="text-break">
+Interface IId&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L131"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
-    <dl><dt>Namespace</dt><dd><a class="xref" href="MicroPlumberd.html">MicroPlumberd</a>.<a class="xref" href="MicroPlumberd.Services.html">Services</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>MicroPlumberd.Services.dll</dd></dl>
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MicroPlumberd.html">MicroPlumberd</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
   <div class="markdown summary"></div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public interface ICommandHandler&lt;in TCommand&gt; : ICommandHandler</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IId&lt;out T&gt; : IId where T : IParsable&lt;out T&gt;</code></pre>
   </div>
 
 
 
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
-    <dt><code>TCommand</code></dt>
+    <dt><code>T</code></dt>
     <dd></dd>
   </dl>
 
@@ -119,7 +119,7 @@ Interface ICommandHandler&lt;TCommand&gt;  <a class="header-action link-secondar
     <dt>Inherited Members</dt>
     <dd>
     <div>
-      <a class="xref" href="MicroPlumberd.Services.ICommandHandler.html#MicroPlumberd_Services_ICommandHandler_Execute_System_String_System_Object_">ICommandHandler.Execute(string, object)</a>
+      <a class="xref" href="MicroPlumberd.IId.html#MicroPlumberd_IId_Uuid">IId.Uuid</a>
     </div>
   </dd></dl>
 
@@ -128,40 +128,33 @@ Interface ICommandHandler&lt;TCommand&gt;  <a class="header-action link-secondar
 
 
 
-  <h2 class="section" id="methods">Methods
+  <h2 class="section" id="properties">Properties
 </h2>
 
 
-  <a id="MicroPlumberd_Services_ICommandHandler_1_Execute_" data-uid="MicroPlumberd.Services.ICommandHandler`1.Execute*"></a>
+  <a id="MicroPlumberd_IId_1_Id_" data-uid="MicroPlumberd.IId`1.Id*"></a>
 
-  <h3 id="MicroPlumberd_Services_ICommandHandler_1_Execute_System_String__0_" data-uid="MicroPlumberd.Services.ICommandHandler`1.Execute(System.String,`0)">
-  Execute(string, TCommand)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ICommandHandler.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_IId_1_Id" data-uid="MicroPlumberd.IId`1.Id">
+  Id
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L134"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;object?&gt; Execute(string id, TCommand command)</code></pre>
+    <pre><code class="lang-csharp hljs">T Id { get; }</code></pre>
   </div>
 
-  <h4 class="section">Parameters</h4>
+
+
+
+
+  <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
-    <dd></dd>
-    <dt><code>command</code> <span class="xref">TCommand</span></dt>
+    <dt><span class="xref">T</span></dt>
     <dd></dd>
   </dl>
-
-  <h4 class="section">Returns</h4>
-  <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
-    <dd></dd>
-  </dl>
-
-
-
 
 
 
@@ -174,7 +167,7 @@ Interface ICommandHandler&lt;TCommand&gt;  <a class="header-action link-secondar
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ICommandHandler.cs/#L7" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IAggregate.cs/#L131" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -5,7 +5,7 @@ items:
   id: IAggregate`1
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.IAggregate`1.New(System.Guid)
+  - MicroPlumberd.IAggregate`1.Empty(System.Object)
   langs:
   - csharp
   - vb
@@ -20,77 +20,68 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 98
+    startLine: 147
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
   summary: Generic version of IAggregate interface that contains factory method.
   example: []
   syntax:
-    content: 'public interface IAggregate<out TSelf> : IAggregate, IId, IVersioned'
+    content: 'public interface IAggregate<out TSelf> : IAggregate, IVersioned'
     typeParameters:
     - id: TSelf
       description: The type of the self.
-    content.vb: Public Interface IAggregate(Of Out TSelf) Inherits IAggregate, IId, IVersioned
+    content.vb: Public Interface IAggregate(Of Out TSelf) Inherits IAggregate, IVersioned
   seealso:
-  - linkId: MicroPlumberd.IId
-    commentId: T:MicroPlumberd.IId
   - linkId: MicroPlumberd.IVersioned
     commentId: T:MicroPlumberd.IVersioned
   inheritedMembers:
   - MicroPlumberd.IAggregate.PendingEvents
   - MicroPlumberd.IAggregate.Rehydrate(System.Collections.Generic.IAsyncEnumerable{System.Object})
   - MicroPlumberd.IAggregate.AckCommitted
-  - MicroPlumberd.IId.Id
   - MicroPlumberd.IVersioned.Version
   nameWithType.vb: IAggregate(Of TSelf)
   fullName.vb: MicroPlumberd.IAggregate(Of TSelf)
   name.vb: IAggregate(Of TSelf)
-- uid: MicroPlumberd.IAggregate`1.New(System.Guid)
-  commentId: M:MicroPlumberd.IAggregate`1.New(System.Guid)
-  id: New(System.Guid)
+- uid: MicroPlumberd.IAggregate`1.Empty(System.Object)
+  commentId: M:MicroPlumberd.IAggregate`1.Empty(System.Object)
+  id: Empty(System.Object)
   parent: MicroPlumberd.IAggregate`1
   langs:
   - csharp
   - vb
-  name: New(Guid)
-  nameWithType: IAggregate<TSelf>.New(Guid)
-  fullName: MicroPlumberd.IAggregate<TSelf>.New(System.Guid)
+  name: Empty(object)
+  nameWithType: IAggregate<TSelf>.Empty(object)
+  fullName: MicroPlumberd.IAggregate<TSelf>.Empty(object)
   type: Method
   source:
     remote:
       path: src/MicroPlumberd/Abstractions/IAggregate.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: New
+    id: Empty
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 105
+    startLine: 154
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Factory method to create new Aggregates based on Guids.
+  summary: Factory method to create new Aggregates based on identifiers.
   example: []
   syntax:
-    content: public static abstract TSelf New(Guid id)
+    content: public static abstract TSelf Empty(object id)
     parameters:
     - id: id
-      type: System.Guid
+      type: System.Object
       description: The identifier.
     return:
       type: '{TSelf}'
       description: ''
-    content.vb: Public Shared MustInherit Function [New](id As Guid) As TSelf
-  overload: MicroPlumberd.IAggregate`1.New*
-  nameWithType.vb: IAggregate(Of TSelf).New(Guid)
-  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New(System.Guid)
+    content.vb: Public Shared MustInherit Function Empty(id As Object) As TSelf
+  overload: MicroPlumberd.IAggregate`1.Empty*
+  nameWithType.vb: IAggregate(Of TSelf).Empty(Object)
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).Empty(Object)
+  name.vb: Empty(Object)
 references:
-- uid: MicroPlumberd.IId
-  commentId: T:MicroPlumberd.IId
-  parent: MicroPlumberd
-  href: MicroPlumberd.IId.html
-  name: IId
-  nameWithType: IId
-  fullName: MicroPlumberd.IId
 - uid: MicroPlumberd.IVersioned
   commentId: T:MicroPlumberd.IVersioned
   parent: MicroPlumberd
@@ -175,13 +166,6 @@ references:
     href: MicroPlumberd.IAggregate.html#MicroPlumberd_IAggregate_AckCommitted
   - name: (
   - name: )
-- uid: MicroPlumberd.IId.Id
-  commentId: P:MicroPlumberd.IId.Id
-  parent: MicroPlumberd.IId
-  href: MicroPlumberd.IId.html#MicroPlumberd_IId_Id
-  name: Id
-  nameWithType: IId.Id
-  fullName: MicroPlumberd.IId.Id
 - uid: MicroPlumberd.IVersioned.Version
   commentId: P:MicroPlumberd.IVersioned.Version
   parent: MicroPlumberd.IVersioned
@@ -196,22 +180,25 @@ references:
   name: IAggregate
   nameWithType: IAggregate
   fullName: MicroPlumberd.IAggregate
-- uid: MicroPlumberd.IAggregate`1.New*
-  commentId: Overload:MicroPlumberd.IAggregate`1.New
-  href: MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_New_System_Guid_
-  name: New
-  nameWithType: IAggregate<TSelf>.New
-  fullName: MicroPlumberd.IAggregate<TSelf>.New
-  nameWithType.vb: IAggregate(Of TSelf).New
-  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).New
-- uid: System.Guid
-  commentId: T:System.Guid
+- uid: MicroPlumberd.IAggregate`1.Empty*
+  commentId: Overload:MicroPlumberd.IAggregate`1.Empty
+  href: MicroPlumberd.IAggregate-1.html#MicroPlumberd_IAggregate_1_Empty_System_Object_
+  name: Empty
+  nameWithType: IAggregate<TSelf>.Empty
+  fullName: MicroPlumberd.IAggregate<TSelf>.Empty
+  nameWithType.vb: IAggregate(Of TSelf).Empty
+  fullName.vb: MicroPlumberd.IAggregate(Of TSelf).Empty
+- uid: System.Object
+  commentId: T:System.Object
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
 - uid: '{TSelf}'
   commentId: '!:TSelf'
   definition: TSelf

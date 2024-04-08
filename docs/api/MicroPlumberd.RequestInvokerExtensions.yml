@@ -5,8 +5,10 @@ items:
   id: RequestInvokerExtensions
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  - MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
+  - MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  - MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  - MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  - MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
   langs:
   - csharp
   - vb
@@ -38,17 +40,17 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  id: Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  id: Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
   isExtensionMethod: true
   parent: MicroPlumberd.RequestInvokerExtensions
   langs:
   - csharp
   - vb
-  name: Execute<TResponse>(IRequestInvoker, Guid, object)
-  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, Guid, object)
-  fullName: MicroPlumberd.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, object)
+  name: Execute<TResponse>(IRequestInvoker, string, object)
+  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, string, object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, string, object)
   type: Method
   source:
     remote:
@@ -64,13 +66,13 @@ items:
   summary: Executes a command and gets a response of type TResponse.
   example: []
   syntax:
-    content: public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, Guid id, object c)
+    content: public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, string id, object c)
     parameters:
     - id: ri
       type: ModelingEvolution.DirectConnect.IRequestInvoker
       description: The IRequestInvoker instance on which this method is invoked.
     - id: id
-      type: System.Guid
+      type: System.String
       description: The unique identifier for the command.
     - id: c
       type: System.Object
@@ -81,22 +83,22 @@ items:
     return:
       type: System.Threading.Tasks.Task{{TResponse}}
       description: A Task that represents the asynchronous operation. The task result contains the response of type TResponse.
-    content.vb: Public Shared Function Execute(Of TResponse)(ri As IRequestInvoker, id As Guid, c As Object) As Task(Of TResponse)
+    content.vb: Public Shared Function Execute(Of TResponse)(ri As IRequestInvoker, id As String, c As Object) As Task(Of TResponse)
   overload: MicroPlumberd.RequestInvokerExtensions.Execute*
-  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, Guid, Object)
-  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, Object)
-  name.vb: Execute(Of TResponse)(IRequestInvoker, Guid, Object)
-- uid: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
-  id: Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Guid,System.Object)
+  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, String, Object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, String, Object)
+  name.vb: Execute(Of TResponse)(IRequestInvoker, String, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  id: Execute``1(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
   isExtensionMethod: true
   parent: MicroPlumberd.RequestInvokerExtensions
   langs:
   - csharp
   - vb
-  name: Execute(IRequestInvoker, Guid, object)
-  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, Guid, object)
-  fullName: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, object)
+  name: Execute<TResponse>(IRequestInvoker, object, object)
+  nameWithType: RequestInvokerExtensions.Execute<TResponse>(IRequestInvoker, object, object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute<TResponse>(ModelingEvolution.DirectConnect.IRequestInvoker, object, object)
   type: Method
   source:
     remote:
@@ -109,16 +111,64 @@ items:
   assemblies:
   - MicroPlumberd.Services.Grpc.DirectConnect
   namespace: MicroPlumberd
-  summary: Executes a command and gets a response of type HandlerOperationStatus.
+  summary: Executes a command and gets a response of type TResponse.
   example: []
   syntax:
-    content: public static Task Execute(this IRequestInvoker ri, Guid id, object c)
+    content: public static Task<TResponse> Execute<TResponse>(this IRequestInvoker ri, object id, object c)
     parameters:
     - id: ri
       type: ModelingEvolution.DirectConnect.IRequestInvoker
       description: The IRequestInvoker instance on which this method is invoked.
     - id: id
-      type: System.Guid
+      type: System.Object
+      description: The identifier.
+    - id: c
+      type: System.Object
+      description: The command object.
+    typeParameters:
+    - id: TResponse
+      description: The type of the response.
+    return:
+      type: System.Threading.Tasks.Task{{TResponse}}
+      description: ''
+    content.vb: Public Shared Function Execute(Of TResponse)(ri As IRequestInvoker, id As Object, c As Object) As Task(Of TResponse)
+  overload: MicroPlumberd.RequestInvokerExtensions.Execute*
+  nameWithType.vb: RequestInvokerExtensions.Execute(Of TResponse)(IRequestInvoker, Object, Object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(Of TResponse)(ModelingEvolution.DirectConnect.IRequestInvoker, Object, Object)
+  name.vb: Execute(Of TResponse)(IRequestInvoker, Object, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  id: Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.String,System.Object)
+  isExtensionMethod: true
+  parent: MicroPlumberd.RequestInvokerExtensions
+  langs:
+  - csharp
+  - vb
+  name: Execute(IRequestInvoker, string, object)
+  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, string, object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, string, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Execute
+    path: src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs
+    startLine: 63
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd
+  summary: Executes a command and gets a response of type HandlerOperationStatus.
+  example: []
+  syntax:
+    content: public static Task Execute(this IRequestInvoker ri, string id, object c)
+    parameters:
+    - id: ri
+      type: ModelingEvolution.DirectConnect.IRequestInvoker
+      description: The IRequestInvoker instance on which this method is invoked.
+    - id: id
+      type: System.String
       description: The unique identifier for the command.
     - id: c
       type: System.Object
@@ -126,11 +176,56 @@ items:
     return:
       type: System.Threading.Tasks.Task
       description: A Task that represents the asynchronous operation. The task result contains the response of type HandlerOperationStatus.
-    content.vb: Public Shared Function Execute(ri As IRequestInvoker, id As Guid, c As Object) As Task
+    content.vb: Public Shared Function Execute(ri As IRequestInvoker, id As String, c As Object) As Task
   overload: MicroPlumberd.RequestInvokerExtensions.Execute*
-  nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, Guid, Object)
-  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, System.Guid, Object)
-  name.vb: Execute(IRequestInvoker, Guid, Object)
+  nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, String, Object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, String, Object)
+  name.vb: Execute(IRequestInvoker, String, Object)
+- uid: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  commentId: M:MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  id: Execute(ModelingEvolution.DirectConnect.IRequestInvoker,System.Object,System.Object)
+  isExtensionMethod: true
+  parent: MicroPlumberd.RequestInvokerExtensions
+  langs:
+  - csharp
+  - vb
+  name: Execute(IRequestInvoker, object, object)
+  nameWithType: RequestInvokerExtensions.Execute(IRequestInvoker, object, object)
+  fullName: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, object, object)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Execute
+    path: src/MicroPlumberd.DirectConnect/RequestInvokerExtensions.cs
+    startLine: 81
+  assemblies:
+  - MicroPlumberd.Services.Grpc.DirectConnect
+  namespace: MicroPlumberd
+  summary: Executes a command and gets a response of type HandlerOperationStatus.
+  example: []
+  syntax:
+    content: public static Task Execute(this IRequestInvoker ri, object id, object c)
+    parameters:
+    - id: ri
+      type: ModelingEvolution.DirectConnect.IRequestInvoker
+      description: The IRequestInvoker instance on which this method is invoked.
+    - id: id
+      type: System.Object
+      description: The unique identifier for the command.
+    - id: c
+      type: System.Object
+      description: The command object.
+    return:
+      type: System.Threading.Tasks.Task
+      description: A Task that represents the asynchronous operation. The task result contains the response of type HandlerOperationStatus.
+    content.vb: Public Shared Function Execute(ri As IRequestInvoker, id As Object, c As Object) As Task
+  overload: MicroPlumberd.RequestInvokerExtensions.Execute*
+  nameWithType.vb: RequestInvokerExtensions.Execute(IRequestInvoker, Object, Object)
+  fullName.vb: MicroPlumberd.RequestInvokerExtensions.Execute(ModelingEvolution.DirectConnect.IRequestInvoker, Object, Object)
+  name.vb: Execute(IRequestInvoker, Object, Object)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -377,7 +472,7 @@ references:
   fullName: System
 - uid: MicroPlumberd.RequestInvokerExtensions.Execute*
   commentId: Overload:MicroPlumberd.RequestInvokerExtensions.Execute
-  href: MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_Guid_System_Object_
+  href: MicroPlumberd.RequestInvokerExtensions.html#MicroPlumberd_RequestInvokerExtensions_Execute__1_ModelingEvolution_DirectConnect_IRequestInvoker_System_String_System_Object_
   name: Execute
   nameWithType: RequestInvokerExtensions.Execute
   fullName: MicroPlumberd.RequestInvokerExtensions.Execute
@@ -388,14 +483,17 @@ references:
   name: IRequestInvoker
   nameWithType: IRequestInvoker
   fullName: ModelingEvolution.DirectConnect.IRequestInvoker
-- uid: System.Guid
-  commentId: T:System.Guid
+- uid: System.String
+  commentId: T:System.String
   parent: System
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.guid
-  name: Guid
-  nameWithType: Guid
-  fullName: System.Guid
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: System.Threading.Tasks.Task{{TResponse}}
   commentId: T:System.Threading.Tasks.Task{``0}
   parent: System.Threading.Tasks

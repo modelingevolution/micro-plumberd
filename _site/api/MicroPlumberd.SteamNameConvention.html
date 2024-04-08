@@ -102,7 +102,7 @@ Delegate SteamNameConvention  <a class="header-action link-secondary" title="Vie
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public delegate string SteamNameConvention(Type aggregateType, Guid aggregateId)</code></pre>
+    <pre><code class="lang-csharp hljs">public delegate string SteamNameConvention(Type aggregateType, object aggregateId)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -110,7 +110,7 @@ Delegate SteamNameConvention  <a class="header-action link-secondary" title="Vie
     <dt><code>aggregateType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
     <dd><p>The type of the aggregate.</p>
 </dd>
-    <dt><code>aggregateId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dt><code>aggregateId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
     <dd><p>The ID of the aggregate.</p>
 </dd>
   </dl>

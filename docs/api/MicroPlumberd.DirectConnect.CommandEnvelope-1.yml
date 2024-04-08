@@ -114,14 +114,14 @@ items:
     content: >-
       [ProtoMember(1)]
 
-      public Guid StreamId { get; init; }
+      public string StreamId { get; init; }
     parameters: []
     return:
-      type: System.Guid
+      type: System.String
     content.vb: >-
       <ProtoMember(1)>
 
-      Public Property StreamId As Guid
+      Public Property StreamId As String
   overload: MicroPlumberd.DirectConnect.CommandEnvelope`1.StreamId*
   attributes:
   - type: ProtoBuf.ProtoMemberAttribute
@@ -570,6 +570,17 @@ references:
   fullName: MicroPlumberd.DirectConnect.CommandEnvelope<TCommand>.StreamId
   nameWithType.vb: CommandEnvelope(Of TCommand).StreamId
   fullName.vb: MicroPlumberd.DirectConnect.CommandEnvelope(Of TCommand).StreamId
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
 - uid: MicroPlumberd.DirectConnect.CommandEnvelope`1.Command*
   commentId: Overload:MicroPlumberd.DirectConnect.CommandEnvelope`1.Command
   href: MicroPlumberd.DirectConnect.CommandEnvelope-1.html#MicroPlumberd_DirectConnect_CommandEnvelope_1_Command
