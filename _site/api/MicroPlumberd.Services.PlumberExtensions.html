@@ -154,8 +154,8 @@ Class PlumberExtensions  <a class="header-action link-secondary" title="View sou
 
   <a id="MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler_" data-uid="MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler*"></a>
 
-  <h3 id="MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_" data-uid="MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)">
-  SubscribeCommandHandler&lt;TCommandHandler&gt;(IPlumber)
+  <h3 id="MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__" data-uid="MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})">
+  SubscribeCommandHandler&lt;TCommandHandler&gt;(IPlumber, bool?, StreamPosition?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/PlumberExtensions.cs/#L8"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -163,12 +163,16 @@ Class PlumberExtensions  <a class="header-action link-secondary" title="View sou
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task&lt;IAsyncDisposable&gt; SubscribeCommandHandler&lt;TCommandHandler&gt;(this IPlumber plumber) where TCommandHandler : ICommandHandler, IServiceTypeRegister</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task&lt;IAsyncDisposable&gt; SubscribeCommandHandler&lt;TCommandHandler&gt;(this IPlumber plumber, bool? subscribePersistently, StreamPosition? streamStartPosition) where TCommandHandler : ICommandHandler, IServiceTypeRegister</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
   <dl class="parameters">
     <dt><code>plumber</code> <a class="xref" href="MicroPlumberd.IPlumber.html">IPlumber</a></dt>
+    <dd></dd>
+    <dt><code>subscribePersistently</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>?</dt>
+    <dd></dd>
+    <dt><code>streamStartPosition</code> <span class="xref">StreamPosition</span>?</dt>
     <dd></dd>
   </dl>
 

@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IProjectionRegister
     path: src/MicroPlumberd/ProjectionRegister.cs
-    startLine: 4
+    startLine: 5
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -45,7 +45,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/ProjectionRegister.cs
-    startLine: 6
+    startLine: 7
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

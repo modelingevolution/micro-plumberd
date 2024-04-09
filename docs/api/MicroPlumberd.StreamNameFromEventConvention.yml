@@ -1,40 +1,42 @@
 ### YamlMime:ManagedReference
 items:
-- uid: MicroPlumberd.GroupNameModelConvention
-  commentId: T:MicroPlumberd.GroupNameModelConvention
-  id: GroupNameModelConvention
+- uid: MicroPlumberd.StreamNameFromEventConvention
+  commentId: T:MicroPlumberd.StreamNameFromEventConvention
+  id: StreamNameFromEventConvention
   parent: MicroPlumberd
   children: []
   langs:
   - csharp
   - vb
-  name: GroupNameModelConvention
-  nameWithType: GroupNameModelConvention
-  fullName: MicroPlumberd.GroupNameModelConvention
+  name: StreamNameFromEventConvention
+  nameWithType: StreamNameFromEventConvention
+  fullName: MicroPlumberd.StreamNameFromEventConvention
   type: Delegate
   source:
     remote:
       path: src/MicroPlumberd/Conventions.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: GroupNameModelConvention
+    id: StreamNameFromEventConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 94
+    startLine: 41
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Represents a delegate that defines a naming convention for group name used in persistent subscription.
+  summary: Represents a delegate that defines a convention for determining the stream category named based on event-type.
   example: []
   syntax:
-    content: public delegate string GroupNameModelConvention(Type model)
+    content: public delegate string StreamNameFromEventConvention(Type eventType, object? id)
     parameters:
-    - id: model
+    - id: eventType
       type: System.Type
-      description: The type of the model.
+      description: Type of the event.
+    - id: id
+      type: System.Object
     return:
       type: System.String
-      description: A string representing the group name for the model.
-    content.vb: Public Delegate Function GroupNameModelConvention(model As Type) As String
+      description: ''
+    content.vb: Public Delegate Function StreamNameFromEventConvention(eventType As Type, id As Object) As String
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -50,6 +52,17 @@ references:
   name: Type
   nameWithType: Type
   fullName: System.Type
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
 - uid: System.String
   commentId: T:System.String
   parent: System

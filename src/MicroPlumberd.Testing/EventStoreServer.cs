@@ -92,29 +92,11 @@ public class EventStoreServer :  IDisposable
             await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
         }
 
-        await WaitUntilReady(TimeSpan.FromSeconds(100));
+        await this.GetEventStoreSettings().WaitUntilReady(TimeSpan.FromSeconds(30));
         return this;
     }
 
-    public async Task WaitUntilReady(TimeSpan timeout)
-    {
-        using var c = new HttpClient();
-        DateTime until = DateTime.Now.Add(timeout);
-        c.BaseAddress = new Uri($"http://localhost:{HttpPort}");
-        c.Timeout = TimeSpan.FromMilliseconds(100);
-        while (DateTime.Now < until)
-        {
-            try
-            {
-                var ret = await c.GetAsync("health/live");
-                if (ret.IsSuccessStatusCode)
-                    return;
-            }
-            catch{}
-        }
-
-        throw new TimeoutException("EventStore is not ready, check docker-containers.");
-    }
+   
     private static async Task CheckDns(string eventStoreHostName)
     {
         try
@@ -150,3 +132,4 @@ public class EventStoreServer :  IDisposable
         Task.Run(Cleanup).Wait();
     }
 }
+

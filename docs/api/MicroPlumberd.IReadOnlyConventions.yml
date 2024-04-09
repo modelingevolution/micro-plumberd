@@ -19,6 +19,7 @@ items:
   - MicroPlumberd.IReadOnlyConventions.SnapshotEventNameConvention
   - MicroPlumberd.IReadOnlyConventions.SnapshotPolicyFactoryConvention
   - MicroPlumberd.IReadOnlyConventions.StandardMetadataEnricherTypes
+  - MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
   langs:
   - csharp
   - vb
@@ -33,7 +34,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IReadOnlyConventions
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 92
+    startLine: 99
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -64,7 +65,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionCategoryStreamConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 94
+    startLine: 101
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -75,6 +76,35 @@ items:
       type: MicroPlumberd.ProjectionCategoryStreamConvention
     content.vb: ReadOnly Property ProjectionCategoryStreamConvention As ProjectionCategoryStreamConvention
   overload: MicroPlumberd.IReadOnlyConventions.ProjectionCategoryStreamConvention*
+- uid: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  commentId: P:MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  id: StreamNameFromEventConvention
+  parent: MicroPlumberd.IReadOnlyConventions
+  langs:
+  - csharp
+  - vb
+  name: StreamNameFromEventConvention
+  nameWithType: IReadOnlyConventions.StreamNameFromEventConvention
+  fullName: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Conventions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StreamNameFromEventConvention
+    path: src/MicroPlumberd/Conventions.cs
+    startLine: 102
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: StreamNameFromEventConvention StreamNameFromEventConvention { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.StreamNameFromEventConvention
+    content.vb: ReadOnly Property StreamNameFromEventConvention As StreamNameFromEventConvention
+  overload: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.GetStreamCategoryConvention
   commentId: P:MicroPlumberd.IReadOnlyConventions.GetStreamCategoryConvention
   id: GetStreamCategoryConvention
@@ -93,7 +123,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamCategoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 95
+    startLine: 103
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -122,7 +152,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 96
+    startLine: 104
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -151,7 +181,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdSnapshotConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 97
+    startLine: 105
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -180,7 +210,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 98
+    startLine: 106
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -209,7 +239,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 99
+    startLine: 107
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -238,7 +268,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: BuildInvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 100
+    startLine: 108
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -267,7 +297,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataEnrichers
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 101
+    startLine: 109
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -296,7 +326,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 102
+    startLine: 110
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -325,7 +355,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 103
+    startLine: 111
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -354,7 +384,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 104
+    startLine: 112
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -383,7 +413,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotPolicyFactoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 105
+    startLine: 113
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -412,7 +442,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StandardMetadataEnricherTypes
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 106
+    startLine: 114
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -441,7 +471,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetMetadata
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 107
+    startLine: 115
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -597,6 +627,19 @@ references:
   name: ProjectionCategoryStreamConvention
   nameWithType: ProjectionCategoryStreamConvention
   fullName: MicroPlumberd.ProjectionCategoryStreamConvention
+- uid: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention*
+  commentId: Overload:MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  href: MicroPlumberd.IReadOnlyConventions.html#MicroPlumberd_IReadOnlyConventions_StreamNameFromEventConvention
+  name: StreamNameFromEventConvention
+  nameWithType: IReadOnlyConventions.StreamNameFromEventConvention
+  fullName: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+- uid: MicroPlumberd.StreamNameFromEventConvention
+  commentId: T:MicroPlumberd.StreamNameFromEventConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.StreamNameFromEventConvention.html
+  name: StreamNameFromEventConvention
+  nameWithType: StreamNameFromEventConvention
+  fullName: MicroPlumberd.StreamNameFromEventConvention
 - uid: MicroPlumberd.IReadOnlyConventions.GetStreamCategoryConvention*
   commentId: Overload:MicroPlumberd.IReadOnlyConventions.GetStreamCategoryConvention
   href: MicroPlumberd.IReadOnlyConventions.html#MicroPlumberd_IReadOnlyConventions_GetStreamCategoryConvention

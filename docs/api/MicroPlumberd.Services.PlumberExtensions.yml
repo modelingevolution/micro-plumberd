@@ -5,7 +5,7 @@ items:
   id: PlumberExtensions
   parent: MicroPlumberd.Services
   children:
-  - MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+  - MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
   langs:
   - csharp
   - vb
@@ -37,17 +37,17 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  id: SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  id: SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
   isExtensionMethod: true
   parent: MicroPlumberd.Services.PlumberExtensions
   langs:
   - csharp
   - vb
-  name: SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber)
+  name: SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber, bool?, EventStore.Client.StreamPosition?)
   type: Method
   source:
     remote:
@@ -61,19 +61,23 @@ items:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
-    content: 'public static Task<IAsyncDisposable> SubscribeCommandHandler<TCommandHandler>(this IPlumber plumber) where TCommandHandler : ICommandHandler, IServiceTypeRegister'
+    content: 'public static Task<IAsyncDisposable> SubscribeCommandHandler<TCommandHandler>(this IPlumber plumber, bool? subscribePersistently, StreamPosition? streamStartPosition) where TCommandHandler : ICommandHandler, IServiceTypeRegister'
     parameters:
     - id: plumber
       type: MicroPlumberd.IPlumber
+    - id: subscribePersistently
+      type: System.Nullable{System.Boolean}
+    - id: streamStartPosition
+      type: System.Nullable{EventStore.Client.StreamPosition}
     typeParameters:
     - id: TCommandHandler
     return:
       type: System.Threading.Tasks.Task{System.IAsyncDisposable}
-    content.vb: Public Shared Function SubscribeCommandHandler(Of TCommandHandler As {ICommandHandler, IServiceTypeRegister})(plumber As IPlumber) As Task(Of IAsyncDisposable)
+    content.vb: Public Shared Function SubscribeCommandHandler(Of TCommandHandler As {ICommandHandler, IServiceTypeRegister})(plumber As IPlumber, subscribePersistently As Boolean?, streamStartPosition As StreamPosition?) As Task(Of IAsyncDisposable)
   overload: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler*
-  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
-  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber)
-  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
+  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
+  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber, Boolean?, EventStore.Client.StreamPosition?)
+  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
 references:
 - uid: MicroPlumberd.Services
   commentId: N:MicroPlumberd.Services
@@ -336,7 +340,7 @@ references:
   fullName: System
 - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler*
   commentId: Overload:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler
-  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
+  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
   name: SubscribeCommandHandler
   nameWithType: PlumberExtensions.SubscribeCommandHandler
   fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler
@@ -347,6 +351,46 @@ references:
   name: IPlumber
   nameWithType: IPlumber
   fullName: MicroPlumberd.IPlumber
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool?
+  nameWithType: bool?
+  fullName: bool?
+  nameWithType.vb: Boolean?
+  fullName.vb: Boolean?
+  name.vb: Boolean?
+  spec.csharp:
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  spec.vb:
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+- uid: System.Nullable{EventStore.Client.StreamPosition}
+  commentId: T:System.Nullable{EventStore.Client.StreamPosition}
+  parent: System
+  definition: System.Nullable`1
+  name: StreamPosition?
+  nameWithType: StreamPosition?
+  fullName: EventStore.Client.StreamPosition?
+  spec.csharp:
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
 - uid: System.Threading.Tasks.Task{System.IAsyncDisposable}
   commentId: T:System.Threading.Tasks.Task{System.IAsyncDisposable}
   parent: System.Threading.Tasks
@@ -388,6 +432,34 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.nullable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: System.Threading.Tasks.Task`1
   commentId: T:System.Threading.Tasks.Task`1
   isExternal: true

@@ -5,6 +5,7 @@ items:
   id: Plumber
   parent: MicroPlumberd
   children:
+  - MicroPlumberd.Plumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
   - MicroPlumberd.Plumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   - MicroPlumberd.Plumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object)
   - MicroPlumberd.Plumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object)
@@ -55,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Plumber
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 9
+    startLine: 10
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -79,7 +80,7 @@ items:
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
   extensionMethods:
-  - MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1
+  - MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
   - MicroPlumberd.IPlumberReadOnlyConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
 - uid: MicroPlumberd.Plumber.Config
   commentId: P:MicroPlumberd.Plumber.Config
@@ -99,7 +100,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Config
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 29
+    startLine: 30
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -132,7 +133,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TypeHandlerRegisters
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 31
+    startLine: 32
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -165,7 +166,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Client
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 32
+    startLine: 33
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -198,7 +199,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionRegister
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 34
+    startLine: 35
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -231,7 +232,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PersistentSubscriptionClient
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 37
+    startLine: 38
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -264,7 +265,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionManagementClient
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -297,7 +298,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServiceProvider
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 42
+    startLine: 43
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -330,7 +331,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SerializerFactory
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 43
+    startLine: 44
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -362,7 +363,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Conventions
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 44
+    startLine: 45
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -394,7 +395,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Subscribe
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 46
+    startLine: 47
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -443,7 +444,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 53
+    startLine: 54
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -498,7 +499,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 63
+    startLine: 64
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -559,7 +560,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 81
+    startLine: 82
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -620,7 +621,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 114
+    startLine: 115
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -678,7 +679,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 125
+    startLine: 126
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -730,7 +731,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 133
+    startLine: 134
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -779,7 +780,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 140
+    startLine: 141
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -827,7 +828,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 160
+    startLine: 161
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -876,7 +877,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 166
+    startLine: 167
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -927,7 +928,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 198
+    startLine: 199
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -960,7 +961,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 203
+    startLine: 204
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1012,7 +1013,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 213
+    startLine: 214
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1061,7 +1062,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReadFull
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 221
+    startLine: 222
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1113,7 +1114,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 238
+    startLine: 239
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1165,7 +1166,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 255
+    startLine: 256
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1341,6 +1342,58 @@ items:
   nameWithType.vb: Plumber.AppendSnapshot(Object, Object, Long, StreamState)
   fullName.vb: MicroPlumberd.Plumber.AppendSnapshot(Object, Object, Long, EventStore.Client.StreamState)
   name.vb: AppendSnapshot(Object, Object, Long, StreamState)
+- uid: MicroPlumberd.Plumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  commentId: M:MicroPlumberd.Plumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  id: AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: AppendEvent(object, object?, object?, StreamState?, string?)
+  nameWithType: Plumber.AppendEvent(object, object?, object?, StreamState?, string?)
+  fullName: MicroPlumberd.Plumber.AppendEvent(object, object?, object?, EventStore.Client.StreamState?, string?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AppendEvent
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 305
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Appends the event. StreamId is determined using conventions.
+  example: []
+  syntax:
+    content: public Task<IWriteResult> AppendEvent(object evt, object? id = null, object? metadata = null, StreamState? state = null, string? evtName = null)
+    parameters:
+    - id: evt
+      type: System.Object
+      description: The evt.
+    - id: id
+      type: System.Object
+      description: The identifier of stream.(second segment of typical streamId, So if streamId is 'foo-123', 123 would be the id.)
+    - id: metadata
+      type: System.Object
+      description: Optional metadata.
+    - id: state
+      type: System.Nullable{EventStore.Client.StreamState}
+      description: Expected state.
+    - id: evtName
+      type: System.String
+      description: Optional name of the event.
+    return:
+      type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
+      description: ''
+    content.vb: Public Function AppendEvent(evt As Object, id As Object = Nothing, metadata As Object = Nothing, state As StreamState? = Nothing, evtName As String = Nothing) As Task(Of IWriteResult)
+  overload: MicroPlumberd.Plumber.AppendEvent*
+  implements:
+  - MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  nameWithType.vb: Plumber.AppendEvent(Object, Object, Object, StreamState?, String)
+  fullName.vb: MicroPlumberd.Plumber.AppendEvent(Object, Object, Object, EventStore.Client.StreamState?, String)
+  name.vb: AppendEvent(Object, Object, Object, StreamState?, String)
 - uid: MicroPlumberd.Plumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   commentId: M:MicroPlumberd.Plumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   id: AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
@@ -1359,7 +1412,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 305
+    startLine: 320
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1411,7 +1464,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 319
+    startLine: 333
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1457,7 +1510,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 337
+    startLine: 351
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1503,7 +1556,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 354
+    startLine: 368
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1546,7 +1599,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 371
+    startLine: 385
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1589,7 +1642,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 384
+    startLine: 398
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1635,7 +1688,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetExtension
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 402
+    startLine: 416
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1671,7 +1724,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Create
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 418
+    startLine: 432
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1952,21 +2005,21 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.object.tostring
   - name: (
   - name: )
-- uid: MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1
-  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+- uid: MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
   parent: MicroPlumberd.Services.PlumberExtensions
-  definition: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
-  name: SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber)
-  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
-  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber)
-  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
+  definition: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
+  name: SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber, bool?, EventStore.Client.StreamPosition?)
+  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
+  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber, Boolean?, EventStore.Client.StreamPosition?)
+  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
   spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
     name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
+    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
   - name: <
   - name: TCommandHandler
   - name: '>'
@@ -1974,11 +2027,24 @@ references:
   - uid: MicroPlumberd.IPlumber
     name: IPlumber
     href: MicroPlumberd.IPlumber.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
   - name: )
   spec.vb:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
     name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
+    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
   - name: (
   - name: Of
   - name: " "
@@ -1988,6 +2054,19 @@ references:
   - uid: MicroPlumberd.IPlumber
     name: IPlumber
     href: MicroPlumberd.IPlumber.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
   - name: )
 - uid: MicroPlumberd.IPlumberReadOnlyConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
   commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
@@ -2022,19 +2101,20 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
-  name: SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber)
-  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
-  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber)
-  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
+- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  isExternal: true
+  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
+  name: SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber, bool?, EventStore.Client.StreamPosition?)
+  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
+  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber, Boolean?, EventStore.Client.StreamPosition?)
+  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
   spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
     name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
+    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
   - name: <
   - name: TCommandHandler
   - name: '>'
@@ -2042,11 +2122,24 @@ references:
   - uid: MicroPlumberd.IPlumber
     name: IPlumber
     href: MicroPlumberd.IPlumber.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: bool
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
   - name: )
   spec.vb:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
+  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
     name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
+    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
   - name: (
   - name: Of
   - name: " "
@@ -2056,6 +2149,19 @@ references:
   - uid: MicroPlumberd.IPlumber
     name: IPlumber
     href: MicroPlumberd.IPlumber.html
+  - name: ','
+  - name: " "
+  - uid: System.Boolean
+    name: Boolean
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.boolean
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
   - name: )
 - uid: MicroPlumberd.Services.PlumberExtensions
   commentId: T:MicroPlumberd.Services.PlumberExtensions
@@ -5004,10 +5110,106 @@ references:
   - name: )
 - uid: MicroPlumberd.Plumber.AppendEvent*
   commentId: Overload:MicroPlumberd.Plumber.AppendEvent
-  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvent_System_String_EventStore_Client_StreamState_System_String_System_Object_System_Object_
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_
   name: AppendEvent
   nameWithType: Plumber.AppendEvent
   fullName: MicroPlumberd.Plumber.AppendEvent
+- uid: MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  commentId: M:MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  parent: MicroPlumberd.IPlumber
+  isExternal: true
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_
+  name: AppendEvent(object, object, object, StreamState?, string)
+  nameWithType: IPlumber.AppendEvent(object, object, object, StreamState?, string)
+  fullName: MicroPlumberd.IPlumber.AppendEvent(object, object, object, EventStore.Client.StreamState?, string)
+  nameWithType.vb: IPlumber.AppendEvent(Object, Object, Object, StreamState?, String)
+  fullName.vb: MicroPlumberd.IPlumber.AppendEvent(Object, Object, Object, EventStore.Client.StreamState?, String)
+  name.vb: AppendEvent(Object, Object, Object, StreamState?, String)
+  spec.csharp:
+  - uid: MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+    name: AppendEvent
+    href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.StreamState
+    name: StreamState
+    isExternal: true
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+    name: AppendEvent
+    href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.StreamState
+    name: StreamState
+    isExternal: true
+  - name: '?'
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+- uid: System.Nullable{EventStore.Client.StreamState}
+  commentId: T:System.Nullable{EventStore.Client.StreamState}
+  parent: System
+  definition: System.Nullable`1
+  name: StreamState?
+  nameWithType: StreamState?
+  fullName: EventStore.Client.StreamState?
+  spec.csharp:
+  - uid: EventStore.Client.StreamState
+    name: StreamState
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: EventStore.Client.StreamState
+    name: StreamState
+    isExternal: true
+  - name: '?'
 - uid: MicroPlumberd.IPlumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   commentId: M:MicroPlumberd.IPlumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   parent: MicroPlumberd.IPlumber
@@ -5511,23 +5713,6 @@ references:
   name: Metadata
   nameWithType: Metadata
   fullName: MicroPlumberd.Metadata
-- uid: System.Nullable{EventStore.Client.StreamState}
-  commentId: T:System.Nullable{EventStore.Client.StreamState}
-  parent: System
-  definition: System.Nullable`1
-  name: StreamState?
-  nameWithType: StreamState?
-  fullName: EventStore.Client.StreamState?
-  spec.csharp:
-  - uid: EventStore.Client.StreamState
-    name: StreamState
-    isExternal: true
-  - name: '?'
-  spec.vb:
-  - uid: EventStore.Client.StreamState
-    name: StreamState
-    isExternal: true
-  - name: '?'
 - uid: MicroPlumberd.Plumber.GetExtension*
   commentId: Overload:MicroPlumberd.Plumber.GetExtension
   href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_GetExtension__1

@@ -24,7 +24,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataExtensions
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 280
+    startLine: 300
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -60,7 +60,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Created
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 282
+    startLine: 302
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -92,7 +92,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotVersion
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 290
+    startLine: 310
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -124,7 +124,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CorrelationId
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 296
+    startLine: 316
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -156,7 +156,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CausationId
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 302
+    startLine: 322
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -188,7 +188,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TryGetValue
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 308
+    startLine: 328
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

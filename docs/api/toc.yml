@@ -153,6 +153,8 @@ items:
     name: SteamNameConvention
   - uid: MicroPlumberd.StreamCategoryConvention
     name: StreamCategoryConvention
+  - uid: MicroPlumberd.StreamNameFromEventConvention
+    name: StreamNameFromEventConvention
   - uid: MicroPlumberd.TypeEventConverter
     name: TypeEventConverter
   - uid: MicroPlumberd.TypeExtensions

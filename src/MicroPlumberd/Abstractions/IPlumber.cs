@@ -111,7 +111,7 @@ public interface IPlumber
     /// <param name="metadata">Additional metadata, can be null</param>
     /// <returns></returns>
     Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null);
-    /// <summary>
+        /// <summary>
     /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
     /// <param name="streamId">Full stream id, typically in format {category}-{id}</param>
@@ -370,4 +370,15 @@ public interface IPlumber
     /// <param name="state">The expected state of the stream.</param>
     /// <returns></returns>
     Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState state);
+
+    /// <summary>
+    /// Appends the event. StreamId is determined using conventions.
+    /// </summary>
+    /// <param name="evt">The evt.</param>
+    /// <param name="id">The identifier of stream.(second segment of typical streamId, So if streamId is 'foo-123', 123 would be the id.)</param>
+    /// <param name="metadata">Optional metadata.</param>
+    /// <param name="state">Expected state.</param>
+    /// <param name="evtName">Optional name of the event.</param>
+    /// <returns></returns>
+    Task<IWriteResult> AppendEvent(object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null);
 }

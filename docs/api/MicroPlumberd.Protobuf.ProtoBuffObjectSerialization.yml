@@ -24,7 +24,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProtoBuffObjectSerialization
     path: src/MicroPlumberd.Protobuf/ProtoBuffObjectSerialization.cs
-    startLine: 8
+    startLine: 11
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
@@ -61,7 +61,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Options
     path: src/MicroPlumberd.Protobuf/ProtoBuffObjectSerialization.cs
-    startLine: 26
+    startLine: 37
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
@@ -88,7 +88,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Deserialize
     path: src/MicroPlumberd.Protobuf/ProtoBuffObjectSerialization.cs
-    startLine: 28
+    startLine: 52
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
@@ -131,7 +131,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ParseMetadata
     path: src/MicroPlumberd.Protobuf/ProtoBuffObjectSerialization.cs
-    startLine: 33
+    startLine: 57
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
@@ -171,7 +171,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Serialize
     path: src/MicroPlumberd.Protobuf/ProtoBuffObjectSerialization.cs
-    startLine: 39
+    startLine: 63
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf
@@ -211,7 +211,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ContentType
     path: src/MicroPlumberd.Protobuf/ProtoBuffObjectSerialization.cs
-    startLine: 45
+    startLine: 74
   assemblies:
   - MicroPlumberd.Protobuf
   namespace: MicroPlumberd.Protobuf

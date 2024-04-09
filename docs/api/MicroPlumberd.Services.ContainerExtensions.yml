@@ -6,7 +6,7 @@ items:
   parent: MicroPlumberd.Services
   children:
   - MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  - MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  - MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
   - MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})
   - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
   langs:
@@ -157,17 +157,17 @@ items:
   nameWithType.vb: ContainerExtensions.AddEventHandler(Of TEventHandler)(IServiceCollection, Boolean, FromStream?)
   fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection, Boolean, EventStore.Client.FromStream?)
   name.vb: AddEventHandler(Of TEventHandler)(IServiceCollection, Boolean, FromStream?)
-- uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  id: AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
+  id: AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
   isExtensionMethod: true
   parent: MicroPlumberd.Services.ContainerExtensions
   langs:
   - csharp
   - vb
-  name: AddCommandHandler<TCommandHandler>(IServiceCollection)
-  nameWithType: ContainerExtensions.AddCommandHandler<TCommandHandler>(IServiceCollection)
-  fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler<TCommandHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name: AddCommandHandler<TCommandHandler>(IServiceCollection, bool, StreamPosition?)
+  nameWithType: ContainerExtensions.AddCommandHandler<TCommandHandler>(IServiceCollection, bool, StreamPosition?)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler<TCommandHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection, bool, EventStore.Client.StreamPosition?)
   type: Method
   source:
     remote:
@@ -181,19 +181,23 @@ items:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
-    content: 'public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler : ICommandHandler, IServiceTypeRegister'
+    content: 'public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, bool persistently = false, StreamPosition? start = null) where TCommandHandler : ICommandHandler, IServiceTypeRegister'
     parameters:
     - id: services
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    - id: persistently
+      type: System.Boolean
+    - id: start
+      type: System.Nullable{EventStore.Client.StreamPosition}
     typeParameters:
     - id: TCommandHandler
     return:
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    content.vb: Public Shared Function AddCommandHandler(Of TCommandHandler As {ICommandHandler, IServiceTypeRegister})(services As IServiceCollection) As IServiceCollection
+    content.vb: Public Shared Function AddCommandHandler(Of TCommandHandler As {ICommandHandler, IServiceTypeRegister})(services As IServiceCollection, persistently As Boolean = False, start As StreamPosition? = Nothing) As IServiceCollection
   overload: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
-  nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection)
-  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  name.vb: AddCommandHandler(Of TCommandHandler)(IServiceCollection)
+  nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection, Boolean, StreamPosition?)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection, Boolean, EventStore.Client.StreamPosition?)
+  name.vb: AddCommandHandler(Of TCommandHandler)(IServiceCollection, Boolean, StreamPosition?)
 references:
 - uid: MicroPlumberd.Services
   commentId: N:MicroPlumberd.Services
@@ -665,7 +669,24 @@ references:
   - name: )
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
-  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Boolean_System_Nullable_EventStore_Client_StreamPosition__
   name: AddCommandHandler
   nameWithType: ContainerExtensions.AddCommandHandler
   fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
+- uid: System.Nullable{EventStore.Client.StreamPosition}
+  commentId: T:System.Nullable{EventStore.Client.StreamPosition}
+  parent: System
+  definition: System.Nullable`1
+  name: StreamPosition?
+  nameWithType: StreamPosition?
+  fullName: EventStore.Client.StreamPosition?
+  spec.csharp:
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'
+  spec.vb:
+  - uid: EventStore.Client.StreamPosition
+    name: StreamPosition
+    isExternal: true
+  - name: '?'

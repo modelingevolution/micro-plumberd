@@ -79,6 +79,7 @@ items:
   - MicroPlumberd.StateInfo
   - MicroPlumberd.SteamNameConvention
   - MicroPlumberd.StreamCategoryConvention
+  - MicroPlumberd.StreamNameFromEventConvention
   - MicroPlumberd.TypeEventConverter
   - MicroPlumberd.TypeExtensions
   langs:
@@ -454,6 +455,13 @@ references:
   name: SteamNameConvention
   nameWithType: SteamNameConvention
   fullName: MicroPlumberd.SteamNameConvention
+- uid: MicroPlumberd.StreamNameFromEventConvention
+  commentId: T:MicroPlumberd.StreamNameFromEventConvention
+  parent: MicroPlumberd
+  href: MicroPlumberd.StreamNameFromEventConvention.html
+  name: StreamNameFromEventConvention
+  nameWithType: StreamNameFromEventConvention
+  fullName: MicroPlumberd.StreamNameFromEventConvention
 - uid: MicroPlumberd.ProjectionCategoryStreamConvention
   commentId: T:MicroPlumberd.ProjectionCategoryStreamConvention
   parent: MicroPlumberd

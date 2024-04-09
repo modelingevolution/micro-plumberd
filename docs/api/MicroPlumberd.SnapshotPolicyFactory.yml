@@ -19,7 +19,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotPolicyFactory
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 61
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

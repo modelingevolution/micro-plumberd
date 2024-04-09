@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.IO;
 using System.Text;
 using EventStore.Client;
 
@@ -272,7 +273,6 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return aggregate;
     }
 
-
     
 
     public async Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
@@ -303,8 +303,22 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return r;
     }
 
-    public async Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt,
-        object? metadata = null)
+    public async Task<IWriteResult> AppendEvent(object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null)
+    {
+        if (evt == null) throw new ArgumentException("evt cannot be null.");
+        
+
+        evtName ??= Conventions.GetEventNameConvention(null, evt.GetType());
+        var m = Conventions.GetMetadata(null, evt, metadata);
+        var st = state ?? StreamState.Any;
+        var streamId = Conventions.StreamNameFromEventConvention(evt.GetType(), id);
+        var evId = Conventions.GetEventIdConvention(null, evt);
+        var evData = MakeEvent(evId, evtName, evt, m);
+
+        var r = await Client.AppendToStreamAsync(streamId, st, [evData]);
+        return r;
+    }
+    public async Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null)
     {
         if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
         if (string.IsNullOrEmpty(evtName)) throw new ArgumentException("evtName cannot be null or empty.");

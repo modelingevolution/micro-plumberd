@@ -19,7 +19,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 49
+    startLine: 56
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

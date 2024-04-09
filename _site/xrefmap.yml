@@ -2282,6 +2282,19 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IConventions.StandardMetadataEnricherTypes
   nameWithType: IConventions.StandardMetadataEnricherTypes
+- uid: MicroPlumberd.IConventions.StreamNameFromEventConvention
+  name: StreamNameFromEventConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_StreamNameFromEventConvention
+  commentId: P:MicroPlumberd.IConventions.StreamNameFromEventConvention
+  fullName: MicroPlumberd.IConventions.StreamNameFromEventConvention
+  nameWithType: IConventions.StreamNameFromEventConvention
+- uid: MicroPlumberd.IConventions.StreamNameFromEventConvention*
+  name: StreamNameFromEventConvention
+  href: api/MicroPlumberd.IConventions.html#MicroPlumberd_IConventions_StreamNameFromEventConvention_
+  commentId: Overload:MicroPlumberd.IConventions.StreamNameFromEventConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IConventions.StreamNameFromEventConvention
+  nameWithType: IConventions.StreamNameFromEventConvention
 - uid: MicroPlumberd.IEventHandler
   name: IEventHandler
   href: api/MicroPlumberd.IEventHandler.html
@@ -2543,6 +2556,15 @@ references:
   commentId: T:MicroPlumberd.IPlumber
   fullName: MicroPlumberd.IPlumber
   nameWithType: IPlumber
+- uid: MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  name: AppendEvent(object, object?, object?, StreamState?, string?)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_
+  commentId: M:MicroPlumberd.IPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  name.vb: AppendEvent(Object, Object, Object, StreamState?, String)
+  fullName: MicroPlumberd.IPlumber.AppendEvent(object, object?, object?, EventStore.Client.StreamState?, string?)
+  fullName.vb: MicroPlumberd.IPlumber.AppendEvent(Object, Object, Object, EventStore.Client.StreamState?, String)
+  nameWithType: IPlumber.AppendEvent(object, object?, object?, StreamState?, string?)
+  nameWithType.vb: IPlumber.AppendEvent(Object, Object, Object, StreamState?, String)
 - uid: MicroPlumberd.IPlumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   name: AppendEvent(string, StreamState, string, object, object?)
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_AppendEvent_System_String_EventStore_Client_StreamState_System_String_System_Object_System_Object_
@@ -3379,6 +3401,19 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IReadOnlyConventions.StandardMetadataEnricherTypes
   nameWithType: IReadOnlyConventions.StandardMetadataEnricherTypes
+- uid: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  name: StreamNameFromEventConvention
+  href: api/MicroPlumberd.IReadOnlyConventions.html#MicroPlumberd_IReadOnlyConventions_StreamNameFromEventConvention
+  commentId: P:MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  fullName: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  nameWithType: IReadOnlyConventions.StreamNameFromEventConvention
+- uid: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention*
+  name: StreamNameFromEventConvention
+  href: api/MicroPlumberd.IReadOnlyConventions.html#MicroPlumberd_IReadOnlyConventions_StreamNameFromEventConvention_
+  commentId: Overload:MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  isSpec: "True"
+  fullName: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
+  nameWithType: IReadOnlyConventions.StreamNameFromEventConvention
 - uid: MicroPlumberd.ISnapshot
   name: ISnapshot
   href: api/MicroPlumberd.ISnapshot.html
@@ -4392,6 +4427,15 @@ references:
   commentId: T:MicroPlumberd.Plumber
   fullName: MicroPlumberd.Plumber
   nameWithType: Plumber
+- uid: MicroPlumberd.Plumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  name: AppendEvent(object, object?, object?, StreamState?, string?)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_
+  commentId: M:MicroPlumberd.Plumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String)
+  name.vb: AppendEvent(Object, Object, Object, StreamState?, String)
+  fullName: MicroPlumberd.Plumber.AppendEvent(object, object?, object?, EventStore.Client.StreamState?, string?)
+  fullName.vb: MicroPlumberd.Plumber.AppendEvent(Object, Object, Object, EventStore.Client.StreamState?, String)
+  nameWithType: Plumber.AppendEvent(object, object?, object?, StreamState?, string?)
+  nameWithType.vb: Plumber.AppendEvent(Object, Object, Object, StreamState?, String)
 - uid: MicroPlumberd.Plumber.AppendEvent(System.String,EventStore.Client.StreamState,System.String,System.Object,System.Object)
   name: AppendEvent(string, StreamState, string, object, object?)
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_AppendEvent_System_String_EventStore_Client_StreamState_System_String_System_Object_System_Object_
@@ -5338,15 +5382,15 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
   nameWithType: ContainerExtensions.AddCommandHandler
-- uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  name: AddCommandHandler<TCommandHandler>(IServiceCollection)
-  href: api/MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
-  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  name.vb: AddCommandHandler(Of TCommandHandler)(IServiceCollection)
-  fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler<TCommandHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
-  nameWithType: ContainerExtensions.AddCommandHandler<TCommandHandler>(IServiceCollection)
-  nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
+  name: AddCommandHandler<TCommandHandler>(IServiceCollection, bool, StreamPosition?)
+  href: api/MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Boolean_System_Nullable_EventStore_Client_StreamPosition__
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
+  name.vb: AddCommandHandler(Of TCommandHandler)(IServiceCollection, Boolean, StreamPosition?)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler<TCommandHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection, bool, EventStore.Client.StreamPosition?)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler(Of TCommandHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection, Boolean, EventStore.Client.StreamPosition?)
+  nameWithType: ContainerExtensions.AddCommandHandler<TCommandHandler>(IServiceCollection, bool, StreamPosition?)
+  nameWithType.vb: ContainerExtensions.AddCommandHandler(Of TCommandHandler)(IServiceCollection, Boolean, StreamPosition?)
 - uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler*
   name: AddEventHandler
   href: api/MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddEventHandler_
@@ -5717,15 +5761,15 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler
   nameWithType: PlumberExtensions.SubscribeCommandHandler
-- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  name: SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  href: api/MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_
-  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber)
-  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
-  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber)
-  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber)
-  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber)
-  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber)
+- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  name: SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  href: api/MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
+  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
+  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
+  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber, bool?, EventStore.Client.StreamPosition?)
+  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber, Boolean?, EventStore.Client.StreamPosition?)
+  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
+  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
 - uid: MicroPlumberd.Services.PlumberdConventionsExtensions
   name: PlumberdConventionsExtensions
   href: api/MicroPlumberd.Services.PlumberdConventionsExtensions.html
@@ -6455,6 +6499,12 @@ references:
   commentId: T:MicroPlumberd.StreamCategoryConvention
   fullName: MicroPlumberd.StreamCategoryConvention
   nameWithType: StreamCategoryConvention
+- uid: MicroPlumberd.StreamNameFromEventConvention
+  name: StreamNameFromEventConvention
+  href: api/MicroPlumberd.StreamNameFromEventConvention.html
+  commentId: T:MicroPlumberd.StreamNameFromEventConvention
+  fullName: MicroPlumberd.StreamNameFromEventConvention
+  nameWithType: StreamNameFromEventConvention
 - uid: MicroPlumberd.TypeEventConverter
   name: TypeEventConverter
   href: api/MicroPlumberd.TypeEventConverter.html

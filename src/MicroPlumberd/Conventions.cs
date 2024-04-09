@@ -35,6 +35,13 @@ public delegate string StreamCategoryConvention(Type aggregateType);
 public delegate string SteamNameConvention(Type aggregateType, object aggregateId);
 
 /// <summary>
+/// Represents a delegate that defines a convention for determining the stream category named based on event-type.
+/// </summary>
+/// <param name="eventType">Type of the event.</param>
+/// <returns></returns>
+public delegate string StreamNameFromEventConvention(Type eventType, object? id);
+
+/// <summary>
 /// Represents a delegate that defines the convention for determining the projection category stream for a given model type.
 /// </summary>
 /// <param name="type">The type of the model.</param>
@@ -93,6 +100,7 @@ public delegate string GroupNameModelConvention(Type model);
 public interface IReadOnlyConventions : IExtension
 {
     ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; }
+    StreamNameFromEventConvention StreamNameFromEventConvention { get;}
     StreamCategoryConvention GetStreamCategoryConvention { get;  }
     SteamNameConvention GetStreamIdConvention { get; }
     SteamNameConvention GetStreamIdSnapshotConvention { get;  }
@@ -124,7 +132,8 @@ public interface IConventions : IExtension
     SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
     object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
-    
+    StreamNameFromEventConvention StreamNameFromEventConvention { get; set; }
+
 }
 
 public interface IExtension
@@ -148,7 +157,7 @@ class Conventions : IConventions, IReadOnlyConventions
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
     public SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     public ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
-
+    public StreamNameFromEventConvention StreamNameFromEventConvention { get; set; }
     public StandardMetadataEnricherTypes StandardMetadataEnricherTypes
     {
         get => _standardMetadataEnricherTypes;
@@ -180,6 +189,17 @@ class Conventions : IConventions, IReadOnlyConventions
         GetStreamIdConvention = (aggregateType,id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
         GetStreamIdSnapshotConvention = (aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}Snapshot-{id}";
         ProjectionCategoryStreamConvention =(t) => $"$ce-{GetStreamCategoryConvention(t)}";
+        StreamNameFromEventConvention = ComputeStreamName;
+    }
+
+    private static string ComputeStreamName(Type eventType, object? id)
+    {
+        var o = eventType.GetCustomAttribute<OutputStreamAttribute>();
+        var category = o != null
+            ? o.OutputStreamName
+            : eventType.Namespace?.Split('.').LastOrDefault(x => x != "Events") ?? "None";
+
+        return id != null ? $"{category}-{id}" : category;
     }
 
     private static string OutputStreamFromModel(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.Name;
