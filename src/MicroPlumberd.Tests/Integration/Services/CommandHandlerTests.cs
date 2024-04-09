@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Docker.DotNet.Models;
+using EventStore.Client;
 using MicroPlumberd.Services;
 
 using FluentAssertions;
@@ -42,16 +43,15 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings(), x=>x.SerializerFactory = x => new ProtoBuffObjectSerialization())
-                .AddCommandHandler<BooCommandHandler>());
+                .AddCommandHandler<BooCommandHandler>(start: StreamPosition.Start));
 
             var srv = await _serverTestApp.StartAsync();
-            await Task.Delay(1000);
-
+            
 
             var client = await _clientTestApp.Configure(x => x
                     .AddPlumberd(_eventStore.GetEventStoreSettings(), x =>
                     {
-                        x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(120);
+                        x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10);
                         x.SerializerFactory = x => new ProtoBuffObjectSerialization();
                     }))
                 .StartAsync();
@@ -77,14 +77,12 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
-                .AddCommandHandler<BooCommandHandler>());
+                .AddCommandHandler<BooCommandHandler>(start: StreamPosition.Start));
 
             var srv = await _serverTestApp.StartAsync();
-            await Task.Delay(2000);
-
             
             var client = await _clientTestApp.Configure(x => x
-                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(120)))
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
                 .StartAsync();
 
             var bus = client.GetRequiredService<ICommandBus>();
@@ -109,10 +107,9 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
-                .AddCommandHandler<FooCommandHandler>());
+                .AddCommandHandler<FooCommandHandler>(start: StreamPosition.Start));
 
             var srv = await _serverTestApp.StartAsync();
-            await Task.Delay(1000);
             
             var fooModel = new FooModel(new InMemoryModelStore());
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
@@ -142,10 +139,10 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
-                .AddCommandHandler<FooCommandHandler>());
+                .AddCommandHandler<FooCommandHandler>(start: StreamPosition.Start));
 
             var srv = await _serverTestApp.StartAsync();
-            await Task.Delay(1000);
+            
             var cmd = new CreateFoo() { Name = "Hello" };
             var recipientId = Guid.NewGuid();
 
@@ -153,7 +150,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             sw.Start();
 
             var client = await _clientTestApp.Configure( x=>x
-                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(120)))
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
                 .StartAsync();
 
             await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
@@ -178,8 +175,8 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings())
-                .AddCommandHandler<FooCommandHandler>());
-            await Task.Delay(1000);
+                .AddCommandHandler<FooCommandHandler>(start: StreamPosition.Start));
+            
 
             var sp = await _serverTestApp.StartAsync();
             

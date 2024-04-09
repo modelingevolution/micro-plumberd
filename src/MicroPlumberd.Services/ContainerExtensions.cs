@@ -64,10 +64,11 @@ public static class ContainerExtensions
         services.TryAddScoped<TEventHandler>();
         return services;
     }
-    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services) where TCommandHandler:ICommandHandler, IServiceTypeRegister
+    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, bool persistently = false, StreamPosition? start = null) where TCommandHandler:ICommandHandler, IServiceTypeRegister
     {
         services.AddBackgroundServiceIfMissing<CommandHandlerService>();
-        services.AddSingleton<ICommandHandlerStarter, CommandHandlerStarter<TCommandHandler>>();
+        services.AddSingleton<CommandHandlerStarter<TCommandHandler>>();
+        services.AddSingleton<ICommandHandlerStarter>(sp => sp.GetRequiredService<CommandHandlerStarter<TCommandHandler>>().Configure(persistently, start));
         services.TryAddSingleton(typeof(CommandHandlerExecutor<>));
         TCommandHandler.RegisterHandlers(services);
         return services;

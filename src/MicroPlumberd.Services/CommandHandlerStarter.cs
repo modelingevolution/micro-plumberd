@@ -7,11 +7,22 @@ class CommandHandlerStarter<THandler>(IPlumber plumber) : ICommandHandlerStarter
 {
     public async Task Start()
     {
-        await plumber.SubscribeCommandHandler<THandler>();
+        await plumber.SubscribeCommandHandler<THandler>(Persistently, StreamStartPosition);
     }
 
     public IEnumerable<Type> CommandTypes => THandler.CommandTypes;
     public Type HandlerType => typeof(THandler);
+
+    public ICommandHandlerStarter Configure(bool? persistently, StreamPosition? start)
+    {
+        this.Persistently = persistently;
+        this.StreamStartPosition = start;
+        return this;
+    }
+
+    public StreamPosition? StreamStartPosition { get; private set; }
+
+    public bool? Persistently { get; private set; }
 }
 
 public static class StreamPositionExtensions
