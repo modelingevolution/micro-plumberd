@@ -1,11 +1,52 @@
 ﻿using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
 
 namespace MicroPlumberd;
 
-class DelayedSubscriptionRunner(Plumber plumber, Func<Task<EventStoreClient.StreamSubscriptionResult>> subscription) : ISubscriptionRunner
+class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelativeStreamPosition start,
+    UserCredentials? userCredentials = null, CancellationToken cancellationToken = new()) : ISubscriptionRunner
 {
     private SubscriptionRunner? _runner;
+
+    private async Task<EventStoreClient.StreamSubscriptionResult> Subscribe()
+    {
+        StreamPosition sp = StreamPosition.Start;
+        FromStream subscriptionStart = FromStream.Start;
+
+        if (start.StartPosition == FromStream.End)
+        {
+            sp = StreamPosition.End;
+            subscriptionStart = FromStream.End;
+        }
+        else if (start.StartPosition != FromStream.Start)
+            sp = start.StartPosition.ToUInt64();
+
+        var records = plumber.Client.ReadStreamAsync(start.Direction, streamName, sp, 1);
+        StreamPosition dstPosition;
+        if (await records.ReadState == ReadState.StreamNotFound)
+            return plumber.Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials, cancellationToken);
+
+        var record = await records.FirstAsync();
+        if (start.Direction == Direction.Forwards)
+        {
+            dstPosition = record.Event.EventNumber + start.Count;
+            subscriptionStart = FromStream.After(dstPosition);
+        }
+        else
+        {
+            ulong en = record.OriginalEventNumber.ToUInt64();
+            if (en >= start.Count)
+            {
+                dstPosition = record.Event.EventNumber - start.Count;
+                subscriptionStart = FromStream.After(dstPosition);
+            }
+            else subscriptionStart = FromStream.Start;
+        }
+
+        return plumber.Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials,
+            cancellationToken);
+    }
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
     {
@@ -19,7 +60,7 @@ class DelayedSubscriptionRunner(Plumber plumber, Func<Task<EventStoreClient.Stre
     }
     public async Task<IEventHandler> WithHandler(IEventHandler model, TypeEventConverter func)
     {
-        _runner = new SubscriptionRunner(plumber, await subscription());
+        _runner = new SubscriptionRunner(plumber, await Subscribe());
         await _runner.WithHandler(model, func);
         
         return model;

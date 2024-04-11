@@ -52,46 +52,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
             return new SubscriptionRunner(this,
             Client.SubscribeToStream(streamName, start.StartPosition, true, userCredentials, cancellationToken));
         {
-            async Task<EventStoreClient.StreamSubscriptionResult> SubscribeToStreamDelayed()
-            {
-                StreamPosition sp = StreamPosition.Start;
-                FromStream subscriptionStart = FromStream.Start;
+            
 
-                if (start.StartPosition == FromStream.End)
-                {
-                    sp = StreamPosition.End;
-                    subscriptionStart = FromStream.End;
-                }
-                else if (start.StartPosition != FromStream.Start) 
-                    sp = start.StartPosition.ToUInt64();
-
-                var records = Client.ReadStreamAsync(start.Direction, streamName, sp, 1);
-                StreamPosition dstPosition;
-                if (await records.ReadState == ReadState.StreamNotFound)
-                    return Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials, cancellationToken);
-
-                var record = await records.FirstAsync();
-                if (start.Direction == Direction.Forwards)
-                {
-                    dstPosition = record.Event.EventNumber + start.Count;
-                    subscriptionStart = FromStream.After(dstPosition);
-                }
-                else
-                {
-                    ulong en = record.OriginalEventNumber.ToUInt64();
-                    if (en >= start.Count)
-                    {
-                        dstPosition = record.Event.EventNumber - start.Count;
-                        subscriptionStart = FromStream.After(dstPosition);
-                    }
-                    else subscriptionStart = FromStream.Start;
-                }
-                
-                return Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials,
-                    cancellationToken);
-            }
-
-            return new DelayedSubscriptionRunner(this, SubscribeToStreamDelayed);
+            return new DelayedSubscriptionRunner(this, streamName, start, userCredentials, cancellationToken);
 
         }
     }
