@@ -35,7 +35,21 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
 
         fooModel.ModelStore.Index.Should().HaveCount(1);
     }
+    [Fact]
+    public async Task SubscribeModelFromEnd()
+    {
+        await _eventStore.StartInDocker();
+        await AppendOneEvent();
+        await AppendOneEvent();
 
+        var fooModel = new FooModel(new InMemoryModelStore());
+
+        var sub = await plumber.SubscribeEventHandler(fooModel, start: FromRelativeStreamPosition.End-1);
+
+        await Task.Delay(1000);
+
+        fooModel.ModelStore.Index.Should().HaveCount(1);
+    }
     [Fact]
     public async Task SubscribeModel()
     {

@@ -45,17 +45,68 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     public Func<Type, IObjectSerializer> SerializerFactory { get; }
     public IReadOnlyConventions Conventions { get; }
 
-    public ISubscriptionRunner Subscribe(string streamName, FromStream start,
+    public ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = new())
     {
-        return new SubscriptionRunner(this,
-            Client.SubscribeToStream(streamName, start, true, userCredentials, cancellationToken));
+        if(start.Count == 0)
+            return new SubscriptionRunner(this,
+            Client.SubscribeToStream(streamName, start.StartPosition, true, userCredentials, cancellationToken));
+        {
+            async Task<EventStoreClient.StreamSubscriptionResult> SubscribeToStreamDelayed()
+            {
+                StreamPosition sp = StreamPosition.Start;
+                FromStream subscriptionStart = FromStream.Start;
+
+                if (start.StartPosition == FromStream.End)
+                {
+                    sp = StreamPosition.End;
+                    subscriptionStart = FromStream.End;
+                }
+                else if (start.StartPosition != FromStream.Start) 
+                    sp = start.StartPosition.ToUInt64();
+
+                var records = Client.ReadStreamAsync(start.Direction, streamName, sp, 1);
+                StreamPosition dstPosition;
+                if (await records.ReadState == ReadState.StreamNotFound)
+                    return Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials, cancellationToken);
+
+                var record = await records.FirstAsync();
+                if (start.Direction == Direction.Forwards)
+                {
+                    dstPosition = record.Event.EventNumber + start.Count;
+                    subscriptionStart = FromStream.After(dstPosition);
+                }
+                else
+                {
+                    ulong en = record.OriginalEventNumber.ToUInt64();
+                    if (en >= start.Count)
+                    {
+                        dstPosition = record.Event.EventNumber - start.Count;
+                        subscriptionStart = FromStream.After(dstPosition);
+                    }
+                    else subscriptionStart = FromStream.Start;
+                }
+                
+                return Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials,
+                    cancellationToken);
+            }
+
+            return new DelayedSubscriptionRunner(this, SubscribeToStreamDelayed);
+
+        }
     }
 
-    public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default,
-        string? outputStream = null,
-        FromStream? start = null, bool ensureOutputStreamProjection = true)
-        where TEventHandler : class, IEventHandler, ITypeRegister
+    public Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc, IEnumerable<string>? eventTypes,
+        TEventHandler? eh = default, string? outputStream = null, FromStream? start = null,
+        bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler
+    {
+        return SubscribeEventHandler<TEventHandler>(mapFunc, eventTypes, eh, outputStream,
+            start != null ? (FromRelativeStreamPosition)start.Value : null, ensureOutputStreamProjection);
+    }
+
+    
+    public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
+        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return await SubscribeEventHandler(_typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>()!,
             _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
@@ -64,7 +115,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
     public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes, TEventHandler? eh = default, string? outputStream = null,
-        FromStream? start = null, bool ensureOutputStreamProjection = true)
+        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true)
         where TEventHandler : class, IEventHandler
     {
         eventTypes ??= Array.Empty<string>();

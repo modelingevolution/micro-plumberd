@@ -69,7 +69,7 @@ namespace MicroPlumberd.SourceGenerators
                         foreach (var usingDirective in usingDirectives) sb.AppendLine(usingDirective);
                         sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
                         sb.AppendLine("using MicroPlumberd.Services;");
-                        sb.AppendLine("using MicroPlumberd.DirectConnect;");
+                        //sb.AppendLine("using MicroPlumberd.DirectConnect;");
 
                         sb.AppendLine(); // Add a line break after using directives
 
@@ -113,7 +113,7 @@ namespace MicroPlumberd.SourceGenerators
                             if(a.resultType != null)
                                 sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) => await this.Handle(id, cmd);");
                             else
-                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return HandlerOperationStatus.Ok(); }}");
+                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok(); }}");
                         }
 
 

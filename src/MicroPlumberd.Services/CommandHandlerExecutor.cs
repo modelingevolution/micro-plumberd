@@ -76,30 +76,30 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
             sw.Start();
             await ch.Execute(recipientId, command);
             log.LogDebug("Command {CommandType} executed.", command.GetType().Name);
-            await plumber.AppendEvent(cmdStream, StreamState.Any, $"{cmdName}Executed",
-                new CommandExecuted()
-                {
-                    CommandId = cmdId,
-                    Duration = sw.Elapsed
-                });
+            var evt = new CommandExecuted() { CommandId = cmdId, Duration = sw.Elapsed };
+            var evtName = $"{cmdName}Executed";
+            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
             log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
         }
         catch (ValidationException ex)
         {
-            await plumber.AppendEvent(cmdStream, StreamState.Any, $"{cmdName}Failed", new CommandFailed()
+            var evt = new CommandFailed()
             {
                 CommandId = cmdId,
                 Duration = sw.Elapsed,
                 Message = ex.Message,
                 Code = HttpStatusCode.BadRequest
-            });
+            };
+            var evtName = $"{cmdName}Failed";
+            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
         }
         catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
-            await plumber.AppendEvent(cmdStream, StreamState.Any,
-                $"{cmdName}Failed<{faultData.GetType().Name}>", CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData));
+            var evt = CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData);
+            var evtName = $"{cmdName}Failed<{faultData.GetType().Name}>";
+            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
             log.LogDebug(ex,"Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.", 
                 command.GetType().Name,
                 faultData.GetType().Name,
@@ -107,14 +107,15 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
         }
         catch(Exception ex)
         {
-            await plumber.AppendEvent(cmdStream, StreamState.Any,
-                $"{cmdName}Failed", new CommandFailed()
-                {
-                    CommandId = cmdId,
-                    Duration = sw.Elapsed,
-                    Message = ex.Message,
-                    Code = HttpStatusCode.InternalServerError
-                });
+            var evt = new CommandFailed()
+            {
+                CommandId = cmdId,
+                Duration = sw.Elapsed,
+                Message = ex.Message,
+                Code = HttpStatusCode.InternalServerError
+            };
+            var evtName = $"{cmdName}Failed";
+            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
             log.LogDebug(ex,"Command {CommandType}Failed appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
         }

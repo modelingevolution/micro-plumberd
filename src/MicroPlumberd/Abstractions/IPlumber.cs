@@ -59,6 +59,7 @@ public sealed record Snapshot<T> : Snapshot, ISnapshot
         set => Data = (T)value;
     }
 }
+
 /// <summary>
 /// Root interface for plumberd
 /// </summary>
@@ -166,7 +167,7 @@ public interface IPlumber
     /// <param name="userCredentials">The user credentials.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    ISubscriptionRunner Subscribe(string streamName, FromStream start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
+    ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
 
     /// <summary>
     /// Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
@@ -187,9 +188,10 @@ public interface IPlumber
         bool ensureOutputStreamProjection = true) 
         where TEventHandler:class,IEventHandler;
 
+
     /// <summary>
     /// Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
-    /// Then EventHandler subscribe the the output stream.
+    /// Then EventHandler subscribe the output stream.
     /// </summary>
     /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
     /// <param name="eh">The event-handler/model</param>
@@ -197,10 +199,10 @@ public interface IPlumber
     /// <param name="start">The start.</param>
     /// <param name="ensureOutputStreamProjection">if set to <c>true</c> [ensure output stream projection].</param>
     /// <returns></returns>
-    Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh=default,string? outputStream=null, FromStream? start = null, bool ensureOutputStreamProjection = true) 
-        where TEventHandler : class,IEventHandler, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true)
+        where TEventHandler : class, IEventHandler, ITypeRegister;
 
-
+   
     /// <summary>
     /// Subscribes the event handler persistently. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
     /// Then EventHandler subscribe the the output stream.

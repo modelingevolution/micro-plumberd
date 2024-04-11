@@ -3,6 +3,37 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
+class DelayedSubscriptionRunner(Plumber plumber, Func<Task<EventStoreClient.StreamSubscriptionResult>> subscription) : ISubscriptionRunner
+{
+    private SubscriptionRunner? _runner;
+    public async Task<T> WithHandler<T>(T model)
+        where T : IEventHandler, ITypeRegister
+    {
+        return await WithHandler<T>(model, plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
+    }
+
+    public async Task<T> WithHandler<T>(T model, TypeEventConverter func)
+        where T : IEventHandler
+    {
+        return (T)await WithHandler((IEventHandler)model, func);
+    }
+    public async Task<IEventHandler> WithHandler(IEventHandler model, TypeEventConverter func)
+    {
+        _runner = new SubscriptionRunner(plumber, await subscription());
+        await _runner.WithHandler(model, func);
+        
+        return model;
+    }
+
+    public async Task<IEventHandler> WithHandler<T>(TypeEventConverter func) where T : IEventHandler
+    {
+        var handler = plumber.ServiceProvider.GetService<IEventHandler<T>>() ?? (IEventHandler)plumber.ServiceProvider.GetRequiredService<T>();
+        return (IEventHandler)await WithHandler(handler, func);
+    }
+    public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
+
+    public async ValueTask DisposeAsync() => await _runner.DisposeAsync();
+}
 class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionResult subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
