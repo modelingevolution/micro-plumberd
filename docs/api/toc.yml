@@ -39,6 +39,8 @@ items:
     name: FaultException
   - uid: MicroPlumberd.FaultException`1
     name: FaultException<TData>
+  - uid: MicroPlumberd.FromRelativeStreamPosition
+    name: FromRelativeStreamPosition
   - uid: MicroPlumberd.GroupNameModelConvention
     name: GroupNameModelConvention
   - uid: MicroPlumberd.IAggregate

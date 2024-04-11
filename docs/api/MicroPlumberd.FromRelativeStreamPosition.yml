@@ -1,0 +1,799 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.FromRelativeStreamPosition
+  commentId: T:MicroPlumberd.FromRelativeStreamPosition
+  id: FromRelativeStreamPosition
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.FromRelativeStreamPosition.#ctor(EventStore.Client.FromStream,System.Int64)
+  - MicroPlumberd.FromRelativeStreamPosition.Count
+  - MicroPlumberd.FromRelativeStreamPosition.Direction
+  - MicroPlumberd.FromRelativeStreamPosition.End
+  - MicroPlumberd.FromRelativeStreamPosition.Start
+  - MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  - MicroPlumberd.FromRelativeStreamPosition.op_Addition(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  - MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  - MicroPlumberd.FromRelativeStreamPosition.op_Implicit(EventStore.Client.FromStream)~MicroPlumberd.FromRelativeStreamPosition
+  - MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  - MicroPlumberd.FromRelativeStreamPosition.op_Subtraction(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  langs:
+  - csharp
+  - vb
+  name: FromRelativeStreamPosition
+  nameWithType: FromRelativeStreamPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition
+  type: Struct
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: FromRelativeStreamPosition
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public readonly struct FromRelativeStreamPosition
+    content.vb: Public Structure FromRelativeStreamPosition
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  id: StartPosition
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: StartPosition
+  nameWithType: FromRelativeStreamPosition.StartPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: StartPosition
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public FromStream StartPosition { get; }
+    parameters: []
+    return:
+      type: EventStore.Client.FromStream
+    content.vb: Public ReadOnly Property StartPosition As FromStream
+  overload: MicroPlumberd.FromRelativeStreamPosition.StartPosition*
+- uid: MicroPlumberd.FromRelativeStreamPosition.Direction
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.Direction
+  id: Direction
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: Direction
+  nameWithType: FromRelativeStreamPosition.Direction
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Direction
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Direction
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Direction Direction { get; }
+    parameters: []
+    return:
+      type: EventStore.Client.Direction
+    content.vb: Public ReadOnly Property Direction As Direction
+  overload: MicroPlumberd.FromRelativeStreamPosition.Direction*
+- uid: MicroPlumberd.FromRelativeStreamPosition.Count
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.Count
+  id: Count
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: FromRelativeStreamPosition.Count
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Count
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Count
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public ulong Count { get; }
+    parameters: []
+    return:
+      type: System.UInt64
+    content.vb: Public ReadOnly Property Count As ULong
+  overload: MicroPlumberd.FromRelativeStreamPosition.Count*
+- uid: MicroPlumberd.FromRelativeStreamPosition.#ctor(EventStore.Client.FromStream,System.Int64)
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.#ctor(EventStore.Client.FromStream,System.Int64)
+  id: '#ctor(EventStore.Client.FromStream,System.Int64)'
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: FromRelativeStreamPosition(FromStream, long)
+  nameWithType: FromRelativeStreamPosition.FromRelativeStreamPosition(FromStream, long)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.FromRelativeStreamPosition(EventStore.Client.FromStream, long)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public FromRelativeStreamPosition(FromStream start, long delta)
+    parameters:
+    - id: start
+      type: EventStore.Client.FromStream
+    - id: delta
+      type: System.Int64
+    content.vb: Public Sub New(start As FromStream, delta As Long)
+  overload: MicroPlumberd.FromRelativeStreamPosition.#ctor*
+  nameWithType.vb: FromRelativeStreamPosition.New(FromStream, Long)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.New(EventStore.Client.FromStream, Long)
+  name.vb: New(FromStream, Long)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Implicit(EventStore.Client.FromStream)~MicroPlumberd.FromRelativeStreamPosition
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Implicit(EventStore.Client.FromStream)~MicroPlumberd.FromRelativeStreamPosition
+  id: op_Implicit(EventStore.Client.FromStream)~MicroPlumberd.FromRelativeStreamPosition
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: implicit operator FromRelativeStreamPosition(FromStream)
+  nameWithType: FromRelativeStreamPosition.implicit operator FromRelativeStreamPosition(FromStream)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.implicit operator MicroPlumberd.FromRelativeStreamPosition(EventStore.Client.FromStream)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Implicit
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 17
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static implicit operator FromRelativeStreamPosition(FromStream st)
+    parameters:
+    - id: st
+      type: EventStore.Client.FromStream
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared Widening Operator CType(st As FromStream) As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.op_Implicit*
+  nameWithType.vb: FromRelativeStreamPosition.CType(FromStream)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.CType(EventStore.Client.FromStream)
+  name.vb: CType(FromStream)
+- uid: MicroPlumberd.FromRelativeStreamPosition.Start
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.Start
+  id: Start
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: Start
+  nameWithType: FromRelativeStreamPosition.Start
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Start
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Start
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 18
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static FromRelativeStreamPosition Start { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared ReadOnly Property Start As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.Start*
+- uid: MicroPlumberd.FromRelativeStreamPosition.End
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.End
+  id: End
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: End
+  nameWithType: FromRelativeStreamPosition.End
+  fullName: MicroPlumberd.FromRelativeStreamPosition.End
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: End
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 19
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static FromRelativeStreamPosition End { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared ReadOnly Property [End] As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.End*
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  id: op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: operator ++(FromRelativeStreamPosition)
+  nameWithType: FromRelativeStreamPosition.operator ++(FromRelativeStreamPosition)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator ++(MicroPlumberd.FromRelativeStreamPosition)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Increment
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 20
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static FromRelativeStreamPosition operator ++(FromRelativeStreamPosition p)
+    parameters:
+    - id: p
+      type: MicroPlumberd.FromRelativeStreamPosition
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared Function op_Increment(p As FromRelativeStreamPosition) As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.op_Increment*
+  nameWithType.vb: FromRelativeStreamPosition.op_Increment(FromRelativeStreamPosition)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  name.vb: op_Increment(FromRelativeStreamPosition)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  id: op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: operator --(FromRelativeStreamPosition)
+  nameWithType: FromRelativeStreamPosition.operator --(FromRelativeStreamPosition)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator --(MicroPlumberd.FromRelativeStreamPosition)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Decrement
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 21
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static FromRelativeStreamPosition operator --(FromRelativeStreamPosition p)
+    parameters:
+    - id: p
+      type: MicroPlumberd.FromRelativeStreamPosition
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared Function op_Decrement(p As FromRelativeStreamPosition) As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.op_Decrement*
+  nameWithType.vb: FromRelativeStreamPosition.op_Decrement(FromRelativeStreamPosition)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  name.vb: op_Decrement(FromRelativeStreamPosition)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Addition(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Addition(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  id: op_Addition(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: operator +(FromRelativeStreamPosition, long)
+  nameWithType: FromRelativeStreamPosition.operator +(FromRelativeStreamPosition, long)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator +(MicroPlumberd.FromRelativeStreamPosition, long)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Addition
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static FromRelativeStreamPosition operator +(FromRelativeStreamPosition p, long d)
+    parameters:
+    - id: p
+      type: MicroPlumberd.FromRelativeStreamPosition
+    - id: d
+      type: System.Int64
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared Operator +(p As FromRelativeStreamPosition, d As Long) As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.op_Addition*
+  nameWithType.vb: FromRelativeStreamPosition.+(FromRelativeStreamPosition, Long)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.+(MicroPlumberd.FromRelativeStreamPosition, Long)
+  name.vb: +(FromRelativeStreamPosition, Long)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Subtraction(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Subtraction(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  id: op_Subtraction(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  parent: MicroPlumberd.FromRelativeStreamPosition
+  langs:
+  - csharp
+  - vb
+  name: operator -(FromRelativeStreamPosition, long)
+  nameWithType: FromRelativeStreamPosition.operator -(FromRelativeStreamPosition, long)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator -(MicroPlumberd.FromRelativeStreamPosition, long)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Subtraction
+    path: src/MicroPlumberd/Abstractions/StreamRelativePosition.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static FromRelativeStreamPosition operator -(FromRelativeStreamPosition p, long d)
+    parameters:
+    - id: p
+      type: MicroPlumberd.FromRelativeStreamPosition
+    - id: d
+      type: System.Int64
+    return:
+      type: MicroPlumberd.FromRelativeStreamPosition
+    content.vb: Public Shared Operator -(p As FromRelativeStreamPosition, d As Long) As FromRelativeStreamPosition
+  overload: MicroPlumberd.FromRelativeStreamPosition.op_Subtraction*
+  nameWithType.vb: FromRelativeStreamPosition.-(FromRelativeStreamPosition, Long)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.-(MicroPlumberd.FromRelativeStreamPosition, Long)
+  name.vb: -(FromRelativeStreamPosition, Long)
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.FromRelativeStreamPosition.StartPosition*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_StartPosition
+  name: StartPosition
+  nameWithType: FromRelativeStreamPosition.StartPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition.StartPosition
+- uid: EventStore.Client.FromStream
+  commentId: T:EventStore.Client.FromStream
+  parent: EventStore.Client
+  isExternal: true
+  name: FromStream
+  nameWithType: FromStream
+  fullName: EventStore.Client.FromStream
+- uid: EventStore.Client
+  commentId: N:EventStore.Client
+  isExternal: true
+  name: EventStore.Client
+  nameWithType: EventStore.Client
+  fullName: EventStore.Client
+  spec.csharp:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+  spec.vb:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+- uid: MicroPlumberd.FromRelativeStreamPosition.Direction*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.Direction
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Direction
+  name: Direction
+  nameWithType: FromRelativeStreamPosition.Direction
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Direction
+- uid: EventStore.Client.Direction
+  commentId: T:EventStore.Client.Direction
+  parent: EventStore.Client
+  isExternal: true
+  name: Direction
+  nameWithType: Direction
+  fullName: EventStore.Client.Direction
+- uid: MicroPlumberd.FromRelativeStreamPosition.Count*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.Count
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Count
+  name: Count
+  nameWithType: FromRelativeStreamPosition.Count
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Count
+- uid: System.UInt64
+  commentId: T:System.UInt64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint64
+  name: ulong
+  nameWithType: ulong
+  fullName: ulong
+  nameWithType.vb: ULong
+  fullName.vb: ULong
+  name.vb: ULong
+- uid: MicroPlumberd.FromRelativeStreamPosition.#ctor*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.#ctor
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition__ctor_EventStore_Client_FromStream_System_Int64_
+  name: FromRelativeStreamPosition
+  nameWithType: FromRelativeStreamPosition.FromRelativeStreamPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition.FromRelativeStreamPosition
+  nameWithType.vb: FromRelativeStreamPosition.New
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.New
+  name.vb: New
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Implicit*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Implicit
+  name: implicit operator
+  nameWithType: FromRelativeStreamPosition.implicit operator
+  fullName: MicroPlumberd.FromRelativeStreamPosition.implicit operator
+  nameWithType.vb: FromRelativeStreamPosition.CType
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: MicroPlumberd.FromRelativeStreamPosition
+  commentId: T:MicroPlumberd.FromRelativeStreamPosition
+  parent: MicroPlumberd
+  href: MicroPlumberd.FromRelativeStreamPosition.html
+  name: FromRelativeStreamPosition
+  nameWithType: FromRelativeStreamPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition
+- uid: MicroPlumberd.FromRelativeStreamPosition.Start*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.Start
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Start
+  name: Start
+  nameWithType: FromRelativeStreamPosition.Start
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Start
+- uid: MicroPlumberd.FromRelativeStreamPosition.End*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.End
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_End
+  name: End
+  nameWithType: FromRelativeStreamPosition.End
+  fullName: MicroPlumberd.FromRelativeStreamPosition.End
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Increment*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Increment
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Increment_MicroPlumberd_FromRelativeStreamPosition_
+  name: operator ++
+  nameWithType: FromRelativeStreamPosition.operator ++
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator ++
+  nameWithType.vb: FromRelativeStreamPosition.op_Increment
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Increment
+  name.vb: op_Increment
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: MicroPlumberd.FromRelativeStreamPosition.op_Increment*
+    name: ++
+    href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Increment_MicroPlumberd_FromRelativeStreamPosition_
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Decrement*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Decrement
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Decrement_MicroPlumberd_FromRelativeStreamPosition_
+  name: operator --
+  nameWithType: FromRelativeStreamPosition.operator --
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator --
+  nameWithType.vb: FromRelativeStreamPosition.op_Decrement
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Decrement
+  name.vb: op_Decrement
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: MicroPlumberd.FromRelativeStreamPosition.op_Decrement*
+    name: --
+    href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Decrement_MicroPlumberd_FromRelativeStreamPosition_
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Addition*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Addition
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Addition_MicroPlumberd_FromRelativeStreamPosition_System_Int64_
+  name: operator +
+  nameWithType: FromRelativeStreamPosition.operator +
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator +
+  nameWithType.vb: FromRelativeStreamPosition.+
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.+
+  name.vb: +
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: MicroPlumberd.FromRelativeStreamPosition.op_Addition*
+    name: +
+    href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Addition_MicroPlumberd_FromRelativeStreamPosition_System_Int64_
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Subtraction*
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Subtraction
+  href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Subtraction_MicroPlumberd_FromRelativeStreamPosition_System_Int64_
+  name: operator -
+  nameWithType: FromRelativeStreamPosition.operator -
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator -
+  nameWithType.vb: FromRelativeStreamPosition.-
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.-
+  name.vb: '-'
+  spec.csharp:
+  - name: operator
+  - name: " "
+  - uid: MicroPlumberd.FromRelativeStreamPosition.op_Subtraction*
+    name: '-'
+    href: MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Subtraction_MicroPlumberd_FromRelativeStreamPosition_System_Int64_

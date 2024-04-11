@@ -1898,6 +1898,191 @@ references:
   fullName.vb: MicroPlumberd.FaultException(Of TData).GetFaultData
   nameWithType: FaultException<TData>.GetFaultData
   nameWithType.vb: FaultException(Of TData).GetFaultData
+- uid: MicroPlumberd.FromRelativeStreamPosition
+  name: FromRelativeStreamPosition
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html
+  commentId: T:MicroPlumberd.FromRelativeStreamPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition
+  nameWithType: FromRelativeStreamPosition
+- uid: MicroPlumberd.FromRelativeStreamPosition.#ctor(EventStore.Client.FromStream,System.Int64)
+  name: FromRelativeStreamPosition(FromStream, long)
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition__ctor_EventStore_Client_FromStream_System_Int64_
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.#ctor(EventStore.Client.FromStream,System.Int64)
+  name.vb: New(FromStream, Long)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.FromRelativeStreamPosition(EventStore.Client.FromStream, long)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.New(EventStore.Client.FromStream, Long)
+  nameWithType: FromRelativeStreamPosition.FromRelativeStreamPosition(FromStream, long)
+  nameWithType.vb: FromRelativeStreamPosition.New(FromStream, Long)
+- uid: MicroPlumberd.FromRelativeStreamPosition.#ctor*
+  name: FromRelativeStreamPosition
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition__ctor_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.#ctor
+  isSpec: "True"
+  name.vb: New
+  fullName: MicroPlumberd.FromRelativeStreamPosition.FromRelativeStreamPosition
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.New
+  nameWithType: FromRelativeStreamPosition.FromRelativeStreamPosition
+  nameWithType.vb: FromRelativeStreamPosition.New
+- uid: MicroPlumberd.FromRelativeStreamPosition.Count
+  name: Count
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Count
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.Count
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Count
+  nameWithType: FromRelativeStreamPosition.Count
+- uid: MicroPlumberd.FromRelativeStreamPosition.Count*
+  name: Count
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Count_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.Count
+  isSpec: "True"
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Count
+  nameWithType: FromRelativeStreamPosition.Count
+- uid: MicroPlumberd.FromRelativeStreamPosition.Direction
+  name: Direction
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Direction
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.Direction
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Direction
+  nameWithType: FromRelativeStreamPosition.Direction
+- uid: MicroPlumberd.FromRelativeStreamPosition.Direction*
+  name: Direction
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Direction_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.Direction
+  isSpec: "True"
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Direction
+  nameWithType: FromRelativeStreamPosition.Direction
+- uid: MicroPlumberd.FromRelativeStreamPosition.End
+  name: End
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_End
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.End
+  fullName: MicroPlumberd.FromRelativeStreamPosition.End
+  nameWithType: FromRelativeStreamPosition.End
+- uid: MicroPlumberd.FromRelativeStreamPosition.End*
+  name: End
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_End_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.End
+  isSpec: "True"
+  fullName: MicroPlumberd.FromRelativeStreamPosition.End
+  nameWithType: FromRelativeStreamPosition.End
+- uid: MicroPlumberd.FromRelativeStreamPosition.Start
+  name: Start
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Start
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.Start
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Start
+  nameWithType: FromRelativeStreamPosition.Start
+- uid: MicroPlumberd.FromRelativeStreamPosition.Start*
+  name: Start
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_Start_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.Start
+  isSpec: "True"
+  fullName: MicroPlumberd.FromRelativeStreamPosition.Start
+  nameWithType: FromRelativeStreamPosition.Start
+- uid: MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  name: StartPosition
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_StartPosition
+  commentId: P:MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  nameWithType: FromRelativeStreamPosition.StartPosition
+- uid: MicroPlumberd.FromRelativeStreamPosition.StartPosition*
+  name: StartPosition
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_StartPosition_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  isSpec: "True"
+  fullName: MicroPlumberd.FromRelativeStreamPosition.StartPosition
+  nameWithType: FromRelativeStreamPosition.StartPosition
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Addition(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  name: operator +(FromRelativeStreamPosition, long)
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Addition_MicroPlumberd_FromRelativeStreamPosition_System_Int64_
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Addition(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  name.vb: +(FromRelativeStreamPosition, Long)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator +(MicroPlumberd.FromRelativeStreamPosition, long)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.+(MicroPlumberd.FromRelativeStreamPosition, Long)
+  nameWithType: FromRelativeStreamPosition.operator +(FromRelativeStreamPosition, long)
+  nameWithType.vb: FromRelativeStreamPosition.+(FromRelativeStreamPosition, Long)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Addition*
+  name: operator +
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Addition_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Addition
+  isSpec: "True"
+  name.vb: +
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator +
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.+
+  nameWithType: FromRelativeStreamPosition.operator +
+  nameWithType.vb: FromRelativeStreamPosition.+
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  name: operator --(FromRelativeStreamPosition)
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Decrement_MicroPlumberd_FromRelativeStreamPosition_
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  name.vb: op_Decrement(FromRelativeStreamPosition)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator --(MicroPlumberd.FromRelativeStreamPosition)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Decrement(MicroPlumberd.FromRelativeStreamPosition)
+  nameWithType: FromRelativeStreamPosition.operator --(FromRelativeStreamPosition)
+  nameWithType.vb: FromRelativeStreamPosition.op_Decrement(FromRelativeStreamPosition)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Decrement*
+  name: operator --
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Decrement_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Decrement
+  isSpec: "True"
+  name.vb: op_Decrement
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator --
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Decrement
+  nameWithType: FromRelativeStreamPosition.operator --
+  nameWithType.vb: FromRelativeStreamPosition.op_Decrement
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Implicit(EventStore.Client.FromStream)~MicroPlumberd.FromRelativeStreamPosition
+  name: implicit operator FromRelativeStreamPosition(FromStream)
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Implicit_EventStore_Client_FromStream__MicroPlumberd_FromRelativeStreamPosition
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Implicit(EventStore.Client.FromStream)~MicroPlumberd.FromRelativeStreamPosition
+  name.vb: CType(FromStream)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.implicit operator MicroPlumberd.FromRelativeStreamPosition(EventStore.Client.FromStream)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.CType(EventStore.Client.FromStream)
+  nameWithType: FromRelativeStreamPosition.implicit operator FromRelativeStreamPosition(FromStream)
+  nameWithType.vb: FromRelativeStreamPosition.CType(FromStream)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Implicit*
+  name: implicit operator
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Implicit_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Implicit
+  isSpec: "True"
+  name.vb: CType
+  fullName: MicroPlumberd.FromRelativeStreamPosition.implicit operator
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.CType
+  nameWithType: FromRelativeStreamPosition.implicit operator
+  nameWithType.vb: FromRelativeStreamPosition.CType
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  name: operator ++(FromRelativeStreamPosition)
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Increment_MicroPlumberd_FromRelativeStreamPosition_
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  name.vb: op_Increment(FromRelativeStreamPosition)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator ++(MicroPlumberd.FromRelativeStreamPosition)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Increment(MicroPlumberd.FromRelativeStreamPosition)
+  nameWithType: FromRelativeStreamPosition.operator ++(FromRelativeStreamPosition)
+  nameWithType.vb: FromRelativeStreamPosition.op_Increment(FromRelativeStreamPosition)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Increment*
+  name: operator ++
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Increment_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Increment
+  isSpec: "True"
+  name.vb: op_Increment
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator ++
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.op_Increment
+  nameWithType: FromRelativeStreamPosition.operator ++
+  nameWithType.vb: FromRelativeStreamPosition.op_Increment
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Subtraction(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  name: operator -(FromRelativeStreamPosition, long)
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Subtraction_MicroPlumberd_FromRelativeStreamPosition_System_Int64_
+  commentId: M:MicroPlumberd.FromRelativeStreamPosition.op_Subtraction(MicroPlumberd.FromRelativeStreamPosition,System.Int64)
+  name.vb: -(FromRelativeStreamPosition, Long)
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator -(MicroPlumberd.FromRelativeStreamPosition, long)
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.-(MicroPlumberd.FromRelativeStreamPosition, Long)
+  nameWithType: FromRelativeStreamPosition.operator -(FromRelativeStreamPosition, long)
+  nameWithType.vb: FromRelativeStreamPosition.-(FromRelativeStreamPosition, Long)
+- uid: MicroPlumberd.FromRelativeStreamPosition.op_Subtraction*
+  name: operator -
+  href: api/MicroPlumberd.FromRelativeStreamPosition.html#MicroPlumberd_FromRelativeStreamPosition_op_Subtraction_
+  commentId: Overload:MicroPlumberd.FromRelativeStreamPosition.op_Subtraction
+  isSpec: "True"
+  name.vb: '-'
+  fullName: MicroPlumberd.FromRelativeStreamPosition.operator -
+  fullName.vb: MicroPlumberd.FromRelativeStreamPosition.-
+  nameWithType: FromRelativeStreamPosition.operator -
+  nameWithType.vb: FromRelativeStreamPosition.-
 - uid: MicroPlumberd.GroupNameModelConvention
   name: GroupNameModelConvention
   href: api/MicroPlumberd.GroupNameModelConvention.html
@@ -2885,15 +3070,15 @@ references:
   fullName.vb: MicroPlumberd.IPlumber.SaveNew(Of T)(T, Object)
   nameWithType: IPlumber.SaveNew<T>(T, object?)
   nameWithType.vb: IPlumber.SaveNew(Of T)(T, Object)
-- uid: MicroPlumberd.IPlumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
-  name: Subscribe(string, FromStream, UserCredentials?, CancellationToken)
-  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Subscribe_System_String_EventStore_Client_FromStream_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
-  commentId: M:MicroPlumberd.IPlumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
-  name.vb: Subscribe(String, FromStream, UserCredentials, CancellationToken)
-  fullName: MicroPlumberd.IPlumber.Subscribe(string, EventStore.Client.FromStream, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
-  fullName.vb: MicroPlumberd.IPlumber.Subscribe(String, EventStore.Client.FromStream, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
-  nameWithType: IPlumber.Subscribe(string, FromStream, UserCredentials?, CancellationToken)
-  nameWithType.vb: IPlumber.Subscribe(String, FromStream, UserCredentials, CancellationToken)
+- uid: MicroPlumberd.IPlumber.Subscribe(System.String,MicroPlumberd.FromRelativeStreamPosition,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name: Subscribe(string, FromRelativeStreamPosition, UserCredentials?, CancellationToken)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Subscribe_System_String_MicroPlumberd_FromRelativeStreamPosition_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.IPlumber.Subscribe(System.String,MicroPlumberd.FromRelativeStreamPosition,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name.vb: Subscribe(String, FromRelativeStreamPosition, UserCredentials, CancellationToken)
+  fullName: MicroPlumberd.IPlumber.Subscribe(string, MicroPlumberd.FromRelativeStreamPosition, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumber.Subscribe(String, MicroPlumberd.FromRelativeStreamPosition, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
+  nameWithType: IPlumber.Subscribe(string, FromRelativeStreamPosition, UserCredentials?, CancellationToken)
+  nameWithType.vb: IPlumber.Subscribe(String, FromRelativeStreamPosition, UserCredentials, CancellationToken)
 - uid: MicroPlumberd.IPlumber.Subscribe*
   name: Subscribe
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Subscribe_
@@ -2942,15 +3127,15 @@ references:
   fullName.vb: MicroPlumberd.IPlumber.SubscribeEventHandler(Of TEventHandler)(MicroPlumberd.TypeEventConverter, System.Collections.Generic.IEnumerable(Of String), TEventHandler, String, EventStore.Client.FromStream?, Boolean)
   nameWithType: IPlumber.SubscribeEventHandler<TEventHandler>(TypeEventConverter, IEnumerable<string>?, TEventHandler?, string?, FromStream?, bool)
   nameWithType.vb: IPlumber.SubscribeEventHandler(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, FromStream?, Boolean)
-- uid: MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)
-  name: SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromStream?, bool)
-  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeEventHandler__1___0_System_String_System_Nullable_EventStore_Client_FromStream__System_Boolean_
-  commentId: M:MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)
-  name.vb: SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromStream?, Boolean)
-  fullName: MicroPlumberd.IPlumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, EventStore.Client.FromStream?, bool)
-  fullName.vb: MicroPlumberd.IPlumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, EventStore.Client.FromStream?, Boolean)
-  nameWithType: IPlumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromStream?, bool)
-  nameWithType.vb: IPlumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromStream?, Boolean)
+- uid: MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean)
+  name: SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromRelativeStreamPosition?, bool)
+  href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeEventHandler__1___0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_
+  commentId: M:MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean)
+  name.vb: SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromRelativeStreamPosition?, Boolean)
+  fullName: MicroPlumberd.IPlumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, MicroPlumberd.FromRelativeStreamPosition?, bool)
+  fullName.vb: MicroPlumberd.IPlumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, MicroPlumberd.FromRelativeStreamPosition?, Boolean)
+  nameWithType: IPlumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromRelativeStreamPosition?, bool)
+  nameWithType.vb: IPlumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromRelativeStreamPosition?, Boolean)
 - uid: MicroPlumberd.IPlumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
   name: SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
   href: api/MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribePersistently_System_String_System_String_System_Int32_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
@@ -4818,15 +5003,15 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.Plumber.ServiceProvider
   nameWithType: Plumber.ServiceProvider
-- uid: MicroPlumberd.Plumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
-  name: Subscribe(string, FromStream, UserCredentials?, CancellationToken)
-  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Subscribe_System_String_EventStore_Client_FromStream_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
-  commentId: M:MicroPlumberd.Plumber.Subscribe(System.String,EventStore.Client.FromStream,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
-  name.vb: Subscribe(String, FromStream, UserCredentials, CancellationToken)
-  fullName: MicroPlumberd.Plumber.Subscribe(string, EventStore.Client.FromStream, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
-  fullName.vb: MicroPlumberd.Plumber.Subscribe(String, EventStore.Client.FromStream, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
-  nameWithType: Plumber.Subscribe(string, FromStream, UserCredentials?, CancellationToken)
-  nameWithType.vb: Plumber.Subscribe(String, FromStream, UserCredentials, CancellationToken)
+- uid: MicroPlumberd.Plumber.Subscribe(System.String,MicroPlumberd.FromRelativeStreamPosition,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name: Subscribe(string, FromRelativeStreamPosition, UserCredentials?, CancellationToken)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Subscribe_System_String_MicroPlumberd_FromRelativeStreamPosition_EventStore_Client_UserCredentials_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.Plumber.Subscribe(System.String,MicroPlumberd.FromRelativeStreamPosition,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
+  name.vb: Subscribe(String, FromRelativeStreamPosition, UserCredentials, CancellationToken)
+  fullName: MicroPlumberd.Plumber.Subscribe(string, MicroPlumberd.FromRelativeStreamPosition, EventStore.Client.UserCredentials?, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.Plumber.Subscribe(String, MicroPlumberd.FromRelativeStreamPosition, EventStore.Client.UserCredentials, System.Threading.CancellationToken)
+  nameWithType: Plumber.Subscribe(string, FromRelativeStreamPosition, UserCredentials?, CancellationToken)
+  nameWithType.vb: Plumber.Subscribe(String, FromRelativeStreamPosition, UserCredentials, CancellationToken)
 - uid: MicroPlumberd.Plumber.Subscribe*
   name: Subscribe
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_Subscribe_
@@ -4875,15 +5060,24 @@ references:
   fullName.vb: MicroPlumberd.Plumber.SubscribeEventHandler(Of TEventHandler)(MicroPlumberd.TypeEventConverter, System.Collections.Generic.IEnumerable(Of String), TEventHandler, String, EventStore.Client.FromStream?, Boolean)
   nameWithType: Plumber.SubscribeEventHandler<TEventHandler>(TypeEventConverter, IEnumerable<string>?, TEventHandler?, string?, FromStream?, bool)
   nameWithType.vb: Plumber.SubscribeEventHandler(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, FromStream?, Boolean)
-- uid: MicroPlumberd.Plumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)
-  name: SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromStream?, bool)
-  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeEventHandler__1___0_System_String_System_Nullable_EventStore_Client_FromStream__System_Boolean_
-  commentId: M:MicroPlumberd.Plumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)
-  name.vb: SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromStream?, Boolean)
-  fullName: MicroPlumberd.Plumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, EventStore.Client.FromStream?, bool)
-  fullName.vb: MicroPlumberd.Plumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, EventStore.Client.FromStream?, Boolean)
-  nameWithType: Plumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromStream?, bool)
-  nameWithType.vb: Plumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromStream?, Boolean)
+- uid: MicroPlumberd.Plumber.SubscribeEventHandler``1(MicroPlumberd.TypeEventConverter,System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean)
+  name: SubscribeEventHandler<TEventHandler>(TypeEventConverter, IEnumerable<string>?, TEventHandler?, string?, FromRelativeStreamPosition?, bool)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeEventHandler__1_MicroPlumberd_TypeEventConverter_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_
+  commentId: M:MicroPlumberd.Plumber.SubscribeEventHandler``1(MicroPlumberd.TypeEventConverter,System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean)
+  name.vb: SubscribeEventHandler(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, FromRelativeStreamPosition?, Boolean)
+  fullName: MicroPlumberd.Plumber.SubscribeEventHandler<TEventHandler>(MicroPlumberd.TypeEventConverter, System.Collections.Generic.IEnumerable<string>?, TEventHandler?, string?, MicroPlumberd.FromRelativeStreamPosition?, bool)
+  fullName.vb: MicroPlumberd.Plumber.SubscribeEventHandler(Of TEventHandler)(MicroPlumberd.TypeEventConverter, System.Collections.Generic.IEnumerable(Of String), TEventHandler, String, MicroPlumberd.FromRelativeStreamPosition?, Boolean)
+  nameWithType: Plumber.SubscribeEventHandler<TEventHandler>(TypeEventConverter, IEnumerable<string>?, TEventHandler?, string?, FromRelativeStreamPosition?, bool)
+  nameWithType.vb: Plumber.SubscribeEventHandler(Of TEventHandler)(TypeEventConverter, IEnumerable(Of String), TEventHandler, String, FromRelativeStreamPosition?, Boolean)
+- uid: MicroPlumberd.Plumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean)
+  name: SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromRelativeStreamPosition?, bool)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeEventHandler__1___0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_
+  commentId: M:MicroPlumberd.Plumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean)
+  name.vb: SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromRelativeStreamPosition?, Boolean)
+  fullName: MicroPlumberd.Plumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, MicroPlumberd.FromRelativeStreamPosition?, bool)
+  fullName.vb: MicroPlumberd.Plumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, MicroPlumberd.FromRelativeStreamPosition?, Boolean)
+  nameWithType: Plumber.SubscribeEventHandler<TEventHandler>(TEventHandler?, string?, FromRelativeStreamPosition?, bool)
+  nameWithType.vb: Plumber.SubscribeEventHandler(Of TEventHandler)(TEventHandler, String, FromRelativeStreamPosition?, Boolean)
 - uid: MicroPlumberd.Plumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
   name: SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribePersistently_System_String_System_String_System_Int32_EventStore_Client_UserCredentials_System_Threading_CancellationToken_

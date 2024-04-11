@@ -22,6 +22,7 @@ items:
   - MicroPlumberd.ExecutionContext
   - MicroPlumberd.FaultException
   - MicroPlumberd.FaultException`1
+  - MicroPlumberd.FromRelativeStreamPosition
   - MicroPlumberd.GroupNameModelConvention
   - MicroPlumberd.IAggregate
   - MicroPlumberd.IAggregate`1
@@ -371,6 +372,13 @@ references:
   name: OutputStreamAttribute
   nameWithType: OutputStreamAttribute
   fullName: MicroPlumberd.OutputStreamAttribute
+- uid: MicroPlumberd.FromRelativeStreamPosition
+  commentId: T:MicroPlumberd.FromRelativeStreamPosition
+  parent: MicroPlumberd
+  href: MicroPlumberd.FromRelativeStreamPosition.html
+  name: FromRelativeStreamPosition
+  nameWithType: FromRelativeStreamPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition
 - uid: MicroPlumberd.IStatefull
   commentId: T:MicroPlumberd.IStatefull
   parent: MicroPlumberd
