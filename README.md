@@ -1,7 +1,7 @@
 # micro-plumberd
 Micro library for EventStore, CQRS and EventSourcing.
 Just eXtreamly simple.
-
+Quick "how to" section is [here](#quick-how-to-section)
 Documentation can be found here:
 [MicroPlumberd Documentation](https://modelingevolution.github.io/micro-plumberd/)
 
@@ -366,6 +366,195 @@ public class OrderProcessManager(IPlumberd plumberd)
 }
 
 ```
+# Quick "How to" section:
+
+All "How to's" are in [MicroPlumber.Tests](https://github.com/modelingevolution/micro-plumberd/tree/master/src/MicroPlumberd.Tests/) projects, so you can easily run it!
+
+## How to append event to his default stream
+
+Example event:
+```csharp
+[OutputStream("ReservationStream")]
+public record TicketReserved { 
+    public string? MovieName { get; set; } 
+    public string? RoomName { get; set; }
+}
+```
+Code:
+```csharp
+public async Task HowToAppendEventToHisDefaultStream(IPlumber plumber)
+{
+ var ourLovelyEvent = new TicketReserved();
+ var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+ await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+}
+```
+## How to append event to specific stream
+
+Code:
+```csharp
+public async Task HowToAppendEventToSpecificStream(IPlumber plumber)
+{
+  var streamIdentifier = Guid.NewGuid();
+  var ourLovelyEvent = new TicketReserved();
+
+  await plumber.AppendEvent(ourLovelyEvent, $"VIPReservationStream-{streamIdentifier}");
+}
+```
+
+## How to make a model subscribe
+
+Model:
+```csharp
+[OutputStream("ReservationModel_v1")]
+[EventHandler]
+public partial class ReservationModel(InMemoryModelStore assertionModelStore)
+{
+    public InMemoryModelStore ModelStore => assertionModelStore;
+    public bool EventHandled{ get; set; } = false;
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        EventHandled = true;
+        assertionModelStore.Given(m, ev);
+        await Task.Delay(0);
+    }
+   
+
+}
+```
+
+Code:
+```csharp
+public async Task HowToMakeAModelSubscribe(IPlumber plumber)
+{
+ var fromWhenShouldWeSubscribeOurStream = FromRelativeStreamPosition.Start;
+ var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+          
+ await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: fromWhenShouldWeSubscribeOurStream);
+
+ var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+ var ourLovelyEvent = new TicketReserved();
+
+ await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+ await Task.Delay(1000);
+
+ modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+}
+```
+
+## How to make a model subscribe but from last event
+
+Code:
+```csharp 
+public async Task HowToMakeAModelSubscribeButFromLastEvent(IPlumber plumber)
+{
+            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+            var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+            var someVeryOldEvent = new TicketReserved();
+
+            await plumber.AppendEvent(someVeryOldEvent, suffixOfStreamWhereOurEventWillBeAppend);
+            await Task.Delay(1000);
+
+            await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: FromRelativeStreamPosition.End-1);
+            modelThatWantToSubscribeToStream.EventHandled.Should().BeFalse();
+
+            var ourLovelyEvent = new TicketReserved();
+
+            await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+            await Task.Delay(1000);
+            modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+}
+```
+## How to link events to another stream
+
+Projection:
+```csharp
+[EventHandler]
+public partial class TicketProjection(IPlumber plumber)
+{
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        await plumber.AppendLink($"RoomOccupancy-{ev.RoomName}", m);
+    }
+}
+```
+Model:
+
+```csharp
+[EventHandler]
+public partial class RoomOccupancy
+{
+    public int HowManySeatsAreReserved { get; set; }
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        HowManySeatsAreReserved++;
+    }
+}
+```
+Code:
+```csharp
+public async Task HowToLinkEventsToAnotherStream(IPlumber plumber)
+{
+var ourLovelyEvent = new TicketReserved()
+{
+    MovieName = "Scream",
+    RoomName = "Venus"
+};
+await plumber.SubscribeEventHandlerPersistently(new TicketProjection(plumber));
+await plumber.AppendEvent(ourLovelyEvent);
+
+await plumber.Subscribe($"RoomOccupancy-{ourLovelyEvent.RoomName}", FromRelativeStreamPosition.Start)
+    .WithHandler(new RoomOccupancy());
+}
+```
+
+## How to rehydrate model (run all events again)
+
+Model:
+```csharp
+[OutputStream("ReservationModel_v1")]
+[EventHandler]
+public partial class ReservationModel(InMemoryModelStore assertionModelStore)
+{
+    public InMemoryModelStore ModelStore => assertionModelStore;
+    public bool EventHandled{ get; set; } = false;
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        EventHandled = true;
+        assertionModelStore.Given(m, ev);
+        await Task.Delay(0);
+    }
+   
+
+}
+```
+
+Code:
+```csharp
+public async Task HowToRehydrateModel(IPlumber plumber)
+{
+   var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+   var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+   var ourLovelyEvent = new TicketReserved();
+
+   await plumber.AppendEvent( ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+   await Task.Delay(1000);
+
+   await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: FromRelativeStreamPosition.Start);
+
+   await Task.Delay(1000);
+
+   modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+   modelThatWantToSubscribeToStream.EventHandled = false;
+   modelThatWantToSubscribeToStream.EventHandled.Should().BeFalse();
+
+   await plumber.Rehydrate(modelThatWantToSubscribeToStream,
+       $"ReservationStream-{suffixOfStreamWhereOurEventWillBeAppend}");
+
+   modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+}
+```
+
 
 ### EXPERIMENTAL Uniqueness support
 
