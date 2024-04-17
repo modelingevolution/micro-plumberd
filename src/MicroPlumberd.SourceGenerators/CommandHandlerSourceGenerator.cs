@@ -113,7 +113,7 @@ namespace MicroPlumberd.SourceGenerators
                             if(a.resultType != null)
                                 sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) => await this.Handle(id, cmd);");
                             else
-                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return MicroPlumberd.DirectConnect.HandlerOperationStatus.Ok(); }}");
+                                sb.AppendLine($"    async Task<object> ICommandHandler<{a.idType},{a.cmdType}>.Execute({a.idType} id, {a.cmdType} cmd) {{ await this.Handle(id, cmd); return null; }}");
                         }
 
 

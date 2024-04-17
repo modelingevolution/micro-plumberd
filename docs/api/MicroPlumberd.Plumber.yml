@@ -445,7 +445,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 98
+    startLine: 61
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -506,7 +506,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 107
+    startLine: 70
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -561,7 +561,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 115
+    startLine: 78
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -607,7 +607,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 133
+    startLine: 96
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -668,7 +668,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 166
+    startLine: 129
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -726,7 +726,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 177
+    startLine: 140
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -778,7 +778,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 185
+    startLine: 148
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -827,7 +827,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 192
+    startLine: 155
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -875,7 +875,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 212
+    startLine: 175
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -924,7 +924,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 218
+    startLine: 181
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -975,7 +975,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 250
+    startLine: 213
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1008,7 +1008,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 255
+    startLine: 218
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1060,7 +1060,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 265
+    startLine: 228
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1109,7 +1109,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReadFull
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 273
+    startLine: 236
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1161,7 +1161,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 290
+    startLine: 253
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1213,7 +1213,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 307
+    startLine: 270
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1260,7 +1260,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 328
+    startLine: 291
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1309,7 +1309,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 336
+    startLine: 299
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1358,7 +1358,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 345
+    startLine: 308
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1407,7 +1407,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 356
+    startLine: 319
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1459,7 +1459,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 371
+    startLine: 334
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1511,7 +1511,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 384
+    startLine: 347
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1557,7 +1557,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 402
+    startLine: 365
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1603,7 +1603,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 419
+    startLine: 382
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1646,7 +1646,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 436
+    startLine: 399
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1689,7 +1689,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 449
+    startLine: 412
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1735,7 +1735,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetExtension
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 467
+    startLine: 430
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1771,7 +1771,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Create
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 483
+    startLine: 446
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

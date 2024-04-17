@@ -15,7 +15,7 @@ internal class CommandHandlerCore<TCommand>(IServiceProvider serviceProvider) : 
         var ch = sp.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
         try
         {
-            return await ch.Execute(request.StreamId, request.Command);
+            return await ch.Execute(request.StreamId, request.Command) ?? HandlerOperationStatus.Ok();
         }
         catch (FaultException ex)
         {
