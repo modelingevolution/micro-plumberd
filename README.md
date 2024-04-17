@@ -34,7 +34,7 @@ services.AddPlumberd();
 1) Let's start with an aggregate:
 ```csharp
 [Aggregate]
-public partial class FooAggregate(Guid id) : AggregateBase<FooAggregate.FooState>(id)
+public partial class FooAggregate(Guid id) : AggregateBase<Guid,FooAggregate.FooState>(id)
 {
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) => state with { Name = ev.Name };

@@ -88,8 +88,9 @@
 <h1 id="micro-plumberd">micro-plumberd</h1>
 
 <p>Micro library for EventStore, CQRS and EventSourcing.
-Just eXtreamly simple.</p>
-<p>Documentation can be found here:
+Just eXtreamly simple.
+Quick &quot;how to&quot; section is <a href="#quick-how-to-section">here</a>
+Documentation can be found here:
 <a href="https://modelingevolution.github.io/micro-plumberd/">MicroPlumberd Documentation</a></p>
 <h2 id="getting-started">Getting started</h2>
 <h3 id="install-nugets">Install nugets:</h3>
@@ -111,7 +112,7 @@ var plumber = Plumber.Create(settings);
 <li>Let's start with an aggregate:</li>
 </ol>
 <pre><code class="lang-csharp">[Aggregate]
-public partial class FooAggregate(Guid id) : AggregateBase&lt;FooAggregate.FooState&gt;(id)
+public partial class FooAggregate(Guid id) : AggregateBase&lt;Guid,FooAggregate.FooState&gt;(id)
 {
     public record FooState { public string Name { get; set; } };
     private static FooState Given(FooState state, FooCreated ev) =&gt; state with { Name = ev.Name };
@@ -392,6 +393,169 @@ public class OrderProcessManager(IPlumberd plumberd)
     }
 }
 
+</code></pre>
+<h1 id="quick-how-to-section">Quick &quot;How to&quot; section:</h1>
+<p>All &quot;How to's&quot; are in <a href="https://github.com/modelingevolution/micro-plumberd/tree/master/src/MicroPlumberd.Tests/">MicroPlumber.Tests</a> projects, so you can easily run it!</p>
+<h2 id="how-to-append-event-to-his-default-stream">How to append event to his default stream</h2>
+<p>Example event:</p>
+<pre><code class="lang-csharp">[OutputStream(&quot;ReservationStream&quot;)]
+public record TicketReserved { 
+    public string? MovieName { get; set; } 
+    public string? RoomName { get; set; }
+}
+</code></pre>
+<p>Code:</p>
+<pre><code class="lang-csharp">public async Task HowToAppendEventToHisDefaultStream(IPlumber plumber)
+{
+ var ourLovelyEvent = new TicketReserved();
+ var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+ await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+}
+</code></pre>
+<h2 id="how-to-append-event-to-specific-stream">How to append event to specific stream</h2>
+<p>Code:</p>
+<pre><code class="lang-csharp">public async Task HowToAppendEventToSpecificStream(IPlumber plumber)
+{
+  var streamIdentifier = Guid.NewGuid();
+  var ourLovelyEvent = new TicketReserved();
+
+  await plumber.AppendEvent(ourLovelyEvent, $&quot;VIPReservationStream-{streamIdentifier}&quot;);
+}
+</code></pre>
+<h2 id="how-to-make-a-model-subscribe">How to make a model subscribe</h2>
+<p>Model:</p>
+<pre><code class="lang-csharp">[OutputStream(&quot;ReservationModel_v1&quot;)]
+[EventHandler]
+public partial class ReservationModel(InMemoryModelStore assertionModelStore)
+{
+    public InMemoryModelStore ModelStore =&gt; assertionModelStore;
+    public bool EventHandled{ get; set; } = false;
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        EventHandled = true;
+        assertionModelStore.Given(m, ev);
+        await Task.Delay(0);
+    }
+   
+
+}
+</code></pre>
+<p>Code:</p>
+<pre><code class="lang-csharp">public async Task HowToMakeAModelSubscribe(IPlumber plumber)
+{
+ var fromWhenShouldWeSubscribeOurStream = FromRelativeStreamPosition.Start;
+ var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+          
+ await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: fromWhenShouldWeSubscribeOurStream);
+
+ var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+ var ourLovelyEvent = new TicketReserved();
+
+ await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+ await Task.Delay(1000);
+
+ modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+}
+</code></pre>
+<h2 id="how-to-make-a-model-subscribe-but-from-last-event">How to make a model subscribe but from last event</h2>
+<p>Code:</p>
+<pre><code class="lang-csharp">public async Task HowToMakeAModelSubscribeButFromLastEvent(IPlumber plumber)
+{
+            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+            var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+            var someVeryOldEvent = new TicketReserved();
+
+            await plumber.AppendEvent(someVeryOldEvent, suffixOfStreamWhereOurEventWillBeAppend);
+            await Task.Delay(1000);
+
+            await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: FromRelativeStreamPosition.End-1);
+            modelThatWantToSubscribeToStream.EventHandled.Should().BeFalse();
+
+            var ourLovelyEvent = new TicketReserved();
+
+            await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+            await Task.Delay(1000);
+            modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+}
+</code></pre>
+<h2 id="how-to-link-events-to-another-stream">How to link events to another stream</h2>
+<p>Projection:</p>
+<pre><code class="lang-csharp">[EventHandler]
+public partial class TicketProjection(IPlumber plumber)
+{
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        await plumber.AppendLink($&quot;RoomOccupancy-{ev.RoomName}&quot;, m);
+    }
+}
+</code></pre>
+<p>Model:</p>
+<pre><code class="lang-csharp">[EventHandler]
+public partial class RoomOccupancy
+{
+    public int HowManySeatsAreReserved { get; set; }
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        HowManySeatsAreReserved++;
+    }
+}
+</code></pre>
+<p>Code:</p>
+<pre><code class="lang-csharp">public async Task HowToLinkEventsToAnotherStream(IPlumber plumber)
+{
+var ourLovelyEvent = new TicketReserved()
+{
+    MovieName = &quot;Scream&quot;,
+    RoomName = &quot;Venus&quot;
+};
+await plumber.SubscribeEventHandlerPersistently(new TicketProjection(plumber));
+await plumber.AppendEvent(ourLovelyEvent);
+
+await plumber.Subscribe($&quot;RoomOccupancy-{ourLovelyEvent.RoomName}&quot;, FromRelativeStreamPosition.Start)
+    .WithHandler(new RoomOccupancy());
+}
+</code></pre>
+<h2 id="how-to-rehydrate-model-run-all-events-again">How to rehydrate model (run all events again)</h2>
+<p>Model:</p>
+<pre><code class="lang-csharp">[OutputStream(&quot;ReservationModel_v1&quot;)]
+[EventHandler]
+public partial class ReservationModel(InMemoryModelStore assertionModelStore)
+{
+    public InMemoryModelStore ModelStore =&gt; assertionModelStore;
+    public bool EventHandled{ get; set; } = false;
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        EventHandled = true;
+        assertionModelStore.Given(m, ev);
+        await Task.Delay(0);
+    }
+   
+
+}
+</code></pre>
+<p>Code:</p>
+<pre><code class="lang-csharp">public async Task HowToRehydrateModel(IPlumber plumber)
+{
+   var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+   var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+   var ourLovelyEvent = new TicketReserved();
+
+   await plumber.AppendEvent( ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+   await Task.Delay(1000);
+
+   await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: FromRelativeStreamPosition.Start);
+
+   await Task.Delay(1000);
+
+   modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+   modelThatWantToSubscribeToStream.EventHandled = false;
+   modelThatWantToSubscribeToStream.EventHandled.Should().BeFalse();
+
+   await plumber.Rehydrate(modelThatWantToSubscribeToStream,
+       $&quot;ReservationStream-{suffixOfStreamWhereOurEventWillBeAppend}&quot;);
+
+   modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+}
 </code></pre>
 <h3 id="experimental-uniqueness-support">EXPERIMENTAL Uniqueness support</h3>
 <p>Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some &quot;hacks&quot; but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose.</p>

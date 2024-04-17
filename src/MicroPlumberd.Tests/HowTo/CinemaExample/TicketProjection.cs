@@ -9,12 +9,3 @@ public partial class TicketProjection(IPlumber plumber)
     }
 }
 
-[EventHandler]
-public partial class RoomOccupancy
-{
-
-    private async Task Given(Metadata m, TicketReserved ev)
-    {
-
-    }
-}
