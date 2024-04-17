@@ -332,16 +332,19 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var r = await Client.AppendToStreamAsync(streamId, st, [evData]);
         return r;
     }
-    public async Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null)
+    public async Task<IWriteResult> AppendEventToStream(string streamId, object evt, StreamState? state = null, string? evtName = null,
+        object? metadata = null)
     {
         if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
-        if (string.IsNullOrEmpty(evtName)) throw new ArgumentException("evtName cannot be null or empty.");
+        if (evt == null) throw new ArgumentException("Event cannot be null");
 
+        StreamState st = state ?? StreamState.Any;
+        var eventName = evtName ?? Conventions.GetEventNameConvention(null, evt.GetType());
         var m = Conventions.GetMetadata(null, evt, metadata);
         var evId = Conventions.GetEventIdConvention(null, evt);
-        var evData = MakeEvent(evId, evtName, evt, m);
+        var evData = MakeEvent(evId, eventName, evt, m);
 
-        var r = await Client.AppendToStreamAsync(streamId, state, [evData]);
+        var r = await Client.AppendToStreamAsync(streamId, st, [evData]);
         return r;
     }
 

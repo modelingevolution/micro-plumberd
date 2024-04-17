@@ -38,7 +38,7 @@ namespace MicroPlumberd.Tests.HowTo
             var streamIdentifier = Guid.NewGuid();
             var ourLovelyEvent = new TicketReserved();
 
-            await plumber.AppendEvent(ourLovelyEvent, $"VIPReservationStream-{streamIdentifier}");
+            await plumber.AppendEventToStream($"VIPReservationStream-{streamIdentifier}", ourLovelyEvent, StreamState.Any, "");
 
         }
 

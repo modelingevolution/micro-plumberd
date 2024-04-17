@@ -46,7 +46,7 @@ public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeReg
         var eventHandler = typeof(T);
         var streamId = root.Plumber.Config.Conventions.GetStreamIdConvention(eventHandler, id);
         var eventName = root.Plumber.Config.Conventions.GetEventNameConvention(eventHandler, typeof(TEvent));
-        await root.Plumber.AppendEvent(streamId, StreamState.Any, eventName, ev);
+        await root.Plumber.AppendEventToStream(streamId, ev, StreamState.Any, eventName);
         root.RegisterStepExecution<T>(StepType.Given, ev);
     }
     public Task Given<TEvent>(TEvent ev)

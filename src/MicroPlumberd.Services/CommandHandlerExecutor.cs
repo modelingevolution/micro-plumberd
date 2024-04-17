@@ -78,7 +78,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
             log.LogDebug("Command {CommandType} executed.", command.GetType().Name);
             var evt = new CommandExecuted() { CommandId = cmdId, Duration = sw.Elapsed };
             var evtName = $"{cmdName}Executed";
-            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
+            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
         }
@@ -92,14 +92,14 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
                 Code = HttpStatusCode.BadRequest
             };
             var evtName = $"{cmdName}Failed";
-            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
+            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
         }
         catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
             var evt = CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData);
             var evtName = $"{cmdName}Failed<{faultData.GetType().Name}>";
-            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
+            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug(ex,"Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.", 
                 command.GetType().Name,
                 faultData.GetType().Name,
@@ -115,7 +115,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
                 Code = HttpStatusCode.InternalServerError
             };
             var evtName = $"{cmdName}Failed";
-            await plumber.AppendEvent(cmdStream, StreamState.Any, evtName, evt);
+            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug(ex,"Command {CommandType}Failed appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
         }

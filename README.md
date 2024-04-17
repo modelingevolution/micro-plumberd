@@ -370,7 +370,7 @@ public class OrderProcessManager(IPlumberd plumberd)
 
 All "How to's" are in [MicroPlumber.Tests](https://github.com/modelingevolution/micro-plumberd/tree/master/src/MicroPlumberd.Tests/) projects, so you can easily run it!
 
-## How to append event to his default stream
+## How to append event to its default stream
 
 Example event:
 ```csharp
@@ -398,11 +398,11 @@ public async Task HowToAppendEventToSpecificStream(IPlumber plumber)
   var streamIdentifier = Guid.NewGuid();
   var ourLovelyEvent = new TicketReserved();
 
-  await plumber.AppendEvent(ourLovelyEvent, $"VIPReservationStream-{streamIdentifier}");
+  await plumber.AppendEventToStream($"VIPReservationStream-{streamIdentifier}", ourLovelyEvent);
 }
 ```
 
-## How to make a model subscribe
+## How to subscribe a model
 
 Model:
 ```csharp
@@ -427,18 +427,18 @@ Code:
 ```csharp
 public async Task HowToMakeAModelSubscribe(IPlumber plumber)
 {
- var fromWhenShouldWeSubscribeOurStream = FromRelativeStreamPosition.Start;
- var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+    var fromWhenShouldWeSubscribeOurStream = FromRelativeStreamPosition.Start;
+    var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
           
- await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: fromWhenShouldWeSubscribeOurStream);
+    await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: fromWhenShouldWeSubscribeOurStream);
 
- var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
- var ourLovelyEvent = new TicketReserved();
+    var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+    var ourLovelyEvent = new TicketReserved();
 
- await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
- await Task.Delay(1000);
+    await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+    await Task.Delay(1000);
 
- modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+    modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
 }
 ```
 
@@ -448,21 +448,21 @@ Code:
 ```csharp 
 public async Task HowToMakeAModelSubscribeButFromLastEvent(IPlumber plumber)
 {
-            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
-            var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
-            var someVeryOldEvent = new TicketReserved();
+    var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+    var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+    var someVeryOldEvent = new TicketReserved();
 
-            await plumber.AppendEvent(someVeryOldEvent, suffixOfStreamWhereOurEventWillBeAppend);
-            await Task.Delay(1000);
+    await plumber.AppendEvent(someVeryOldEvent, suffixOfStreamWhereOurEventWillBeAppend);
+    await Task.Delay(1000);
 
-            await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: FromRelativeStreamPosition.End-1);
-            modelThatWantToSubscribeToStream.EventHandled.Should().BeFalse();
+    await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: FromRelativeStreamPosition.End-1);
+    modelThatWantToSubscribeToStream.EventHandled.Should().BeFalse();
 
-            var ourLovelyEvent = new TicketReserved();
+    var ourLovelyEvent = new TicketReserved();
 
-            await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
-            await Task.Delay(1000);
-            modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
+    await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+    await Task.Delay(1000);
+    modelThatWantToSubscribeToStream.EventHandled.Should().BeTrue();
 }
 ```
 ## How to link events to another stream

@@ -106,12 +106,13 @@ public interface IPlumber
     /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
     /// <param name="streamId">Full name of streamId for example: 'TicketBooked-b27f9322-7d73-4d98-a605-a731a2c373c6'</param>
+    /// <param name="evt">Event object</param>
     /// <param name="state">Expected state of the stream</param>
     /// <param name="evtName">Name of the event</param>
-    /// <param name="evt">Event object</param>
     /// <param name="metadata">Additional metadata, can be null</param>
     /// <returns></returns>
-    Task<IWriteResult> AppendEvent(string streamId, StreamState state, string evtName, object evt, object? metadata = null);
+    Task<IWriteResult> AppendEventToStream(string streamId, object evt, StreamState? state = null, string? evtName = null,
+        object? metadata = null);
         /// <summary>
     /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
