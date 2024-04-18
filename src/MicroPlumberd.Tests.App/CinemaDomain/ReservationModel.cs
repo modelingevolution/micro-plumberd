@@ -29,8 +29,9 @@ public partial class DbReservationModel
     public DbReservationModel(LiteDatabase db)
     {
         _db = db;
-        this.Reservations = db.GetCollection<Reservation>("reservations");
-        
+        this.Reservations = db.Reservations();
+
+
     }
 
     public ILiteCollection<Reservation> Reservations { get; set; }
@@ -41,7 +42,11 @@ public partial class DbReservationModel
         Reservations.Insert(new Reservation() { RoomName = ev.RoomName, MovieName = ev.MovieName });
         
     }
+}
 
+public static class DbExtensions
+{
+    public static ILiteCollection<Reservation> Reservations(this LiteDatabase db) => db.GetCollection<Reservation>("reservations");
 }
 public record Reservation
 {

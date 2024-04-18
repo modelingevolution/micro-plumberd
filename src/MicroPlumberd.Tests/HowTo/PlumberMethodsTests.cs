@@ -1,6 +1,7 @@
 ﻿using EventStore.Client;
 using FluentAssertions;
 using LiteDB;
+using MicroPlumberd.Services;
 using MicroPlumberd.Testing;
 
 using MicroPlumberd.Tests.App.CinemaDomain;
@@ -8,20 +9,23 @@ using MicroPlumberd.Tests.App.Domain;
 using MicroPlumberd.Tests.App.Infrastructure;
 
 using MicroPlumberd.Tests.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
+using Xunit.Abstractions;
 
 namespace MicroPlumberd.Tests.HowTo
 {
     [TestCategory("HowTo")]
-    public class PlumberMethodsTests : IClassFixture<EventStoreServer>
+    public class PlumberMethodsTests : IClassFixture<EventStoreServer>, IDisposable
     {
         private readonly IPlumber plumber;
         private readonly EventStoreServer es;
+        private readonly TestAppHost _host;
 
-
-        public PlumberMethodsTests(EventStoreServer es)
+        public PlumberMethodsTests(EventStoreServer es, ITestOutputHelper logger)
         {
             plumber = Plumber.Create(es.GetEventStoreSettings());
+            _host = new TestAppHost(logger);
             this.es = es;
         }
         [Fact]
@@ -69,12 +73,12 @@ namespace MicroPlumberd.Tests.HowTo
         }
 
         [Fact]
-        public async Task HowToMakeSubscribeRealModel()
+        public async Task HowToSubscribeRealModel()
         {
             await es.StartInDocker();
 
             using var db = LiteDbFactory.Get();
-            var dbModel = new DbReservationModel(db);
+            var dbModel = new DbReservationModel(LiteDbFactory.Get());
 
             await plumber.SubscribeEventHandler(dbModel);
 
@@ -85,6 +89,26 @@ namespace MicroPlumberd.Tests.HowTo
             await Task.Delay(1000);
 
             dbModel.Reservations.Query().Count().Should().Be(1);
+
+        }
+        [Fact]
+        public async Task HowToSubscribeRealModelWithHost()
+        {
+            await es.StartInDocker();
+
+            var sp = await _host.Configure(x => x
+                    .AddSingleton<LiteDatabase>((sp) => LiteDbFactory.Get())
+                    .AddEventHandler<DbReservationModel>()
+                    .AddPlumberd(es.GetEventStoreSettings()))
+                .StartAsync();
+            
+            var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+            var ourLovelyEvent = new TicketReserved() { MovieName = "Golden Eye", RoomName = "101" };
+
+            await sp.GetRequiredService<IPlumber>().AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+            await Task.Delay(1000);
+
+            sp.GetRequiredService<LiteDatabase>().Reservations().Query().Count().Should().Be(1);
 
         }
 
@@ -169,7 +193,10 @@ namespace MicroPlumberd.Tests.HowTo
 
         }
 
-       
 
+        public void Dispose()
+        {
+            _host?.Dispose();
+        }
     }
 }
