@@ -3,6 +3,7 @@ using FluentAssertions;
 using MicroPlumberd.Services;
 using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.App.Infrastructure;
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,13 +28,13 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         await _eventStore.StartInDocker();
         await AppendOneEvent();
 
-        var fooModel = new FooModel(new InMemoryModelStore());
+        var fooModel = new FooModel(new InMemoryAssertionDb());
 
         var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom:StreamPosition.Start);
 
         await Task.Delay(1000);
 
-        fooModel.ModelStore.Index.Should().HaveCount(1);
+        fooModel.AssertionDb.Index.Should().HaveCount(1);
     }
     [Fact]
     public async Task SubscribeModelFromEnd()
@@ -43,16 +44,16 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         await AppendOneEvent();
         await Task.Delay(100);
 
-        var fooModel = new FooModel(new InMemoryModelStore());
+        var fooModel = new FooModel(new InMemoryAssertionDb());
         var sub = await plumber.SubscribeEventHandler(fooModel, start: FromRelativeStreamPosition.End-1);
 
         await Task.Delay(1000);
 
-        fooModel.ModelStore.Index.Should().HaveCount(1);
+        fooModel.AssertionDb.Index.Should().HaveCount(1);
 
         await AppendOneEvent();
         await Task.Delay(200);
-        fooModel.ModelStore.Index.Should().HaveCount(2);
+        fooModel.AssertionDb.Index.Should().HaveCount(2);
     }
     [Fact]
     public async Task SubscribeModel()
@@ -60,13 +61,13 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         await _eventStore.StartInDocker();
         await AppendOneEvent();
 
-        var fooModel = new FooModel(new InMemoryModelStore());
+        var fooModel = new FooModel(new InMemoryAssertionDb());
 
         var sub = await plumber.SubscribeEventHandler(fooModel);
 
         await Task.Delay(1000);
 
-        fooModel.ModelStore.Index.Should().HaveCount(1);
+        fooModel.AssertionDb.Index.Should().HaveCount(1);
     }
     [Fact]
     public async Task SubscribeScopedModel()

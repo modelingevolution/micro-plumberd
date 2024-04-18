@@ -1,50 +1,21 @@
-using System.Collections.Concurrent;
+using MicroPlumberd.Tests.App.Infrastructure;
 
 namespace MicroPlumberd.Tests.App.Domain;
 
-public class InMemoryModelStore
-{
-    public record Item(Metadata Metadata, object Event);
-
-    public readonly SortedList<int, Item> Index = new();
-    public readonly ConcurrentDictionary<Guid, List<Item>> IndexById = new();
-
-    private int _i = -1;
-    public void Given(Metadata m, object evt)
-    {
-        var i = new Item(m,evt);
-        Index.Add(Interlocked.Increment(ref _i),i);
-        IndexById.GetOrAdd(m.Id, x => new()).Add(i);
-    }
-
-    public async Task<T?> FindLast<T>(Guid id)
-    {
-        for(int i = 0; i < 100; i++)
-            if (!IndexById.ContainsKey(id))
-                await Task.Delay(100);
-        return IndexById[id]
-            .Where(x=>x.Event is T)
-            .Select(x=>x.Event)
-            .OfType<T>()
-            .Reverse()
-            .FirstOrDefault();
-    }
-}
-
 [OutputStream("FooModel_v1")]
 [EventHandler]
-public partial class FooModel(InMemoryModelStore assertionModelStore)
+public partial class FooModel(InMemoryAssertionDb assertionDb)
 {
-    public InMemoryModelStore ModelStore => assertionModelStore;
-    public async Task<string?> FindById(Guid id) => (await assertionModelStore.FindLast<FooCreated>(id))?.Name;
+    public InMemoryAssertionDb AssertionDb => assertionDb;
+    public async Task<string?> FindById(Guid id) => (await assertionDb.FindLast<FooCreated>(id))?.Name;
     private async Task Given(Metadata m, FooCreated ev)
     {
-        assertionModelStore.Given(m,ev);
+        assertionDb.Add(m,ev);
          await Task.Delay(0);
     }
     private async Task Given(Metadata m, FooRefined ev)
     {
-        assertionModelStore.Given(m, ev);
+        assertionDb.Add(m, ev);
         await Task.Delay(0);
     }
 }

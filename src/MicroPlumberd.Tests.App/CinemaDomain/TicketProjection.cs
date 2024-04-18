@@ -1,4 +1,4 @@
-﻿namespace MicroPlumberd.Tests.HowTo.CinemaExample;
+﻿namespace MicroPlumberd.Tests.App.CinemaDomain;
 
 [EventHandler]
 public partial class TicketProjection(IPlumber plumber)

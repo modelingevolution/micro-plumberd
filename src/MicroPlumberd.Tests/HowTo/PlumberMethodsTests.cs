@@ -1,14 +1,18 @@
 ﻿using EventStore.Client;
 using FluentAssertions;
+using LiteDB;
 using MicroPlumberd.Testing;
+
+using MicroPlumberd.Tests.App.CinemaDomain;
 using MicroPlumberd.Tests.App.Domain;
-using MicroPlumberd.Tests.HowTo.CinemaExample;
+using MicroPlumberd.Tests.App.Infrastructure;
+
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Identity.Client;
 
 namespace MicroPlumberd.Tests.HowTo
 {
-    [TestCategory("MethodsExample")]
+    [TestCategory("HowTo")]
     public class PlumberMethodsTests : IClassFixture<EventStoreServer>
     {
         private readonly IPlumber plumber;
@@ -23,7 +27,7 @@ namespace MicroPlumberd.Tests.HowTo
         [Fact]
         public async Task HowToAppendEventToHisBaseStream()
         {
-            await RunEventStoreForTestPurpose();
+            await es.StartInDocker();
 
             var ourLovelyEvent = new TicketReserved();
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
@@ -33,12 +37,12 @@ namespace MicroPlumberd.Tests.HowTo
         [Fact]
         public async Task HowToAppendEventToSpecificStream()
         {
-            await RunEventStoreForTestPurpose();
+            await es.StartInDocker();
 
             var streamIdentifier = Guid.NewGuid();
             var ourLovelyEvent = new TicketReserved();
 
-            await plumber.AppendEventToStream($"VIPReservationStream-{streamIdentifier}", ourLovelyEvent, StreamState.Any, "");
+            await plumber.AppendEventToStream($"VIPReservationStream-{streamIdentifier}", ourLovelyEvent);
 
         }
 
@@ -46,10 +50,10 @@ namespace MicroPlumberd.Tests.HowTo
         [Fact]
         public async Task HowToMakeModelSubscribe()
         {
-            await RunEventStoreForTestPurpose();
+            await es.StartInDocker();
 
             var fromWhenShouldWeSubscribeOurStream = FromRelativeStreamPosition.Start;
-            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryAssertionDb());
           
 
             await plumber.SubscribeEventHandler(modelThatWantToSubscribeToStream, start: fromWhenShouldWeSubscribeOurStream);
@@ -65,11 +69,31 @@ namespace MicroPlumberd.Tests.HowTo
         }
 
         [Fact]
+        public async Task HowToMakeSubscribeRealModel()
+        {
+            await es.StartInDocker();
+
+            using var db = LiteDbFactory.Get();
+            var dbModel = new DbReservationModel(db);
+
+            await plumber.SubscribeEventHandler(dbModel);
+
+            var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
+            var ourLovelyEvent = new TicketReserved() { MovieName = "Golden Eye", RoomName = "101"};
+
+            await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
+            await Task.Delay(1000);
+
+            dbModel.Reservations.Query().Count().Should().Be(1);
+
+        }
+
+        [Fact]
         public async Task HowToMakeModelSubscribeFromLastEvent()
         {
-            await RunEventStoreForTestPurpose();
+            await es.StartInDocker();
 
-            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryAssertionDb());
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
             var someVeryOldEvent = new TicketReserved();
 
@@ -90,7 +114,7 @@ namespace MicroPlumberd.Tests.HowTo
         [Fact]
         public async Task HowToLinkEventsToOtherStream()
         {
-            await RunEventStoreForTestPurpose();
+            await es.StartInDocker();
 
             var ourLovelyEvent = new TicketReserved()
             {
@@ -108,7 +132,7 @@ namespace MicroPlumberd.Tests.HowTo
         [Fact]
         public async Task HowToFindEventInStream()
         {
-            await RunEventStoreForTestPurpose();
+            await es.StartInDocker();
 
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
             var ourLovelyEvent = new TicketReserved();
@@ -122,8 +146,8 @@ namespace MicroPlumberd.Tests.HowTo
         [Fact]
         public async Task HowToRehydrateModel()
         {
-            await RunEventStoreForTestPurpose();
-            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryModelStore());
+            await es.StartInDocker();
+            var modelThatWantToSubscribeToStream = new ReservationModel(new InMemoryAssertionDb());
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
             var ourLovelyEvent = new TicketReserved();
 
@@ -145,10 +169,7 @@ namespace MicroPlumberd.Tests.HowTo
 
         }
 
-        private async Task RunEventStoreForTestPurpose()
-        {
-            await es.StartInDocker();
-        }
+       
 
     }
 }

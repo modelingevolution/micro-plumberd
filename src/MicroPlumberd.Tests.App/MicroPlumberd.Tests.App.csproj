@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LiteDB" Version="5.0.19" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MicroPlumberd.DirectConnect\MicroPlumberd.Services.Grpc.DirectConnect.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services.ProcessManager\MicroPlumberd.Services.ProcessManagers.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj" />

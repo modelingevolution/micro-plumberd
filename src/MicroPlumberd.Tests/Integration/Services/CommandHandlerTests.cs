@@ -16,6 +16,7 @@ using MicroPlumberd.Testing;
 using ModelingEvolution.DirectConnect;
 using Xunit.Abstractions;
 using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.App.Infrastructure;
 using MicroPlumberd.Tests.App.Srv;
 
 
@@ -111,7 +112,7 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             var srv = await _serverTestApp.StartAsync();
             
-            var fooModel = new FooModel(new InMemoryModelStore());
+            var fooModel = new FooModel(new InMemoryAssertionDb());
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
 
             var client = await _clientTestApp.Configure(x => x
@@ -129,7 +130,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             
             await Task.Delay(3000);
 
-            fooModel.ModelStore.Index.Should().HaveCount(100);
+            fooModel.AssertionDb.Index.Should().HaveCount(100);
            
         }
         [Fact]
@@ -158,14 +159,14 @@ namespace MicroPlumberd.Tests.Integration.Services
             _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed);
             
 
-            var fooModel = new FooModel(new InMemoryModelStore());
+            var fooModel = new FooModel(new InMemoryAssertionDb());
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
             await Task.Delay(1000);
 
-            fooModel.ModelStore.Index.Should().HaveCount(1);
-            fooModel.ModelStore.Index[0].Metadata.CausationId().Should().Be(cmd.Id);
-            fooModel.ModelStore.Index[0].Metadata.CorrelationId().Should().Be(cmd.Id);
-            fooModel.ModelStore.Index[0].Metadata.SourceStreamId.Should().Be($"FooAggregate-{recipientId}");
+            fooModel.AssertionDb.Index.Should().HaveCount(1);
+            fooModel.AssertionDb.Index[0].Metadata.CausationId().Should().Be(cmd.Id);
+            fooModel.AssertionDb.Index[0].Metadata.CorrelationId().Should().Be(cmd.Id);
+            fooModel.AssertionDb.Index[0].Metadata.SourceStreamId.Should().Be($"FooAggregate-{recipientId}");
         }
 
         [Fact]

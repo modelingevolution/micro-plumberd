@@ -2,6 +2,7 @@
 using MicroPlumberd.Services;
 using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.App.Infrastructure;
 using MicroPlumberd.Tests.App.Srv;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,7 +34,7 @@ public class AppSteps
             .Configure(x => x
                 .AddPlumberd(_context.EventStore.GetEventStoreSettings())
                 .AddCommandHandler<FooCommandHandler>()
-                .AddSingleton<InMemoryModelStore>()
+                .AddSingleton<InMemoryAssertionDb>()
                 .AddEventHandler<FooModel>());
         _context.App = testAppHost.Host;
 

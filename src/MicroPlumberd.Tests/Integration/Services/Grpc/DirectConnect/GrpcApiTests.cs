@@ -5,6 +5,7 @@ using FluentAssertions;
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;
+using MicroPlumberd.Tests.App.Infrastructure;
 using MicroPlumberd.Tests.App.Srv;
 using MicroPlumberd.Tests.Integration.Services.Grpc.DirectConnect.Fixtures;
 using MicroPlumberd.Tests.Utils;
@@ -56,7 +57,7 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
         {
             x.AddCommandHandler<FooCommandHandler>().AddServerDirectConnect();
         });
-        FooModel srvModel = new FooModel(new InMemoryModelStore());
+        FooModel srvModel = new FooModel(new InMemoryAssertionDb());
 
         await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandler(srvModel, start: FromStream.End);
         await srvProvider.GetRequiredService<IPlumber>().SubscribeEventHandler(new FooProcessor(srvProvider.GetRequiredService<IPlumber>()), start: FromStream.End);
@@ -77,9 +78,9 @@ public class GrpcApiTests : IClassFixture<EventStoreServer>, IAsyncDisposable, I
 
         await Task.Delay(1000);
         // Let's wait for results to flow back.
-        srvModel.ModelStore.Index.Should().HaveCount(3);
-        srvModel.ModelStore.Index[2].Metadata.CorrelationId().Should().Be(secondCommand.Id);
-        srvModel.ModelStore.Index[2].Event.Should().BeOfType<FooCreated>();
+        srvModel.AssertionDb.Index.Should().HaveCount(3);
+        srvModel.AssertionDb.Index[2].Metadata.CorrelationId().Should().Be(secondCommand.Id);
+        srvModel.AssertionDb.Index[2].Event.Should().BeOfType<FooCreated>();
     }
 
     private IRequestInvoker ArrangeClientApp(int port)
