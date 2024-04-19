@@ -2,7 +2,7 @@
 
 interface IEventHandlerStarter
 {
-    Task Start();
+    Task Start(CancellationToken stoppingToken);
 }
 interface ICommandHandlerStarter
 {

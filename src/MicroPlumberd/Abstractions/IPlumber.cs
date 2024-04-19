@@ -180,7 +180,7 @@ public interface IPlumber
     /// <param name="userCredentials">The user credentials.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
+    ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
@@ -211,11 +211,12 @@ public interface IPlumber
     /// <param name="outputStream">The output stream.</param>
     /// <param name="start">The start.</param>
     /// <param name="ensureOutputStreamProjection">if set to <c>true</c> [ensure output stream projection].</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true)
+    Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default)
         where TEventHandler : class, IEventHandler, ITypeRegister;
 
-   
+
     /// <summary>
     /// Subscribes the event handler persistently. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
     /// Then EventHandler subscribe the the output stream.
@@ -226,8 +227,9 @@ public interface IPlumber
     /// <param name="groupName">Optional group name.</param>
     /// <param name="startFrom">Optional start of the stream.</param>
     /// <param name="ensureOutputStreamProjection">when true creates projection that creates output's stream</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true) where TEventHandler : class,IEventHandler, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class,IEventHandler, ITypeRegister;
 
     /// <summary>
     /// Returns a subscription builder that will subscribe model persistently.
@@ -333,11 +335,13 @@ public interface IPlumber
     /// <param name="groupName">Name of the group.</param>
     /// <param name="startFrom">The start from.</param>
     /// <param name="ensureOutputStreamProjection">if set to <c>true</c> [ensure output stream projection].</param>
+    /// <param name="token"></param>
     /// <returns></returns>
     Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? events,
         TEventHandler? model,
-        string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true)
+        string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
+        bool ensureOutputStreamProjection = true, CancellationToken token = default)
         where TEventHandler : class, IEventHandler;
 
     /// <summary>

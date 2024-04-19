@@ -44,7 +44,7 @@ public static class StreamPositionExtensions
 class EventHandlerStarter<THandler>(IPlumber plumber) : IEventHandlerStarter
     where THandler : class, IEventHandler, ITypeRegister
 {
-    public async Task Start()
+    public async Task Start(CancellationToken stoppingToken)
     {
         if (!Persistently)
             await plumber.SubscribeEventHandler<THandler>(start: StartPosition);

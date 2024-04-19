@@ -79,7 +79,8 @@ public interface IVersioned
 /// <seealso cref="MicroPlumberd.IVersioned" />
 public interface IVersionAware : IVersioned
 {
-    void Increase();
+    void Increase() => SetValue(this.Version + 1);
+    void SetValue(long nv);
 }
 static class Extensions
 {

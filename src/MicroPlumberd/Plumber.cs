@@ -47,7 +47,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     public IReadOnlyConventions Conventions { get; }
 
     public ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start,
-        UserCredentials? userCredentials = null, CancellationToken cancellationToken = new())
+        UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     {
         if(start.Count == 0)
             return new SubscriptionRunner(this,
@@ -69,25 +69,27 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     
-    public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = default, string? outputStream = null,
-        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler, ITypeRegister
+    public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = null,
+        string? outputStream = null,
+        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,
+        CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return await SubscribeEventHandler(_typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>()!,
             _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
-            eh, outputStream, start, ensureOutputStreamProjection);
+            eh, outputStream, start, ensureOutputStreamProjection, token);
     }
 
     public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes, TEventHandler? eh = default, string? outputStream = null,
-        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true)
+        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default)
         where TEventHandler : class, IEventHandler
     {
         eventTypes ??= Array.Empty<string>();
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, eventTypes);
-        var sub = Subscribe(outputStream, start ?? FromStream.Start);
+            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, eventTypes, token: token);
+        var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken:token);
         if (eh == null)
             await sub.WithHandler<TEventHandler>(mapFunc);
         else
@@ -99,7 +101,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         IEnumerable<string>? events,
         TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
-        bool ensureOutputStreamProjection = true)
+        bool ensureOutputStreamProjection = true, CancellationToken token = default)
         where TEventHandler : class, IEventHandler
     {
         var handlerType = typeof(TEventHandler);
@@ -107,19 +109,19 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
         groupName ??= Conventions.GroupNameModelConvention(handlerType);
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events);
+            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, events, token);
 
         try
         {
-            await PersistentSubscriptionClient.GetInfoToStreamAsync(outputStream, groupName);
+            await PersistentSubscriptionClient.GetInfoToStreamAsync(outputStream, groupName, cancellationToken: token);
         }
         catch (PersistentSubscriptionNotFoundException)
         {
             await PersistentSubscriptionClient.CreateToStreamAsync(outputStream, groupName,
-                new PersistentSubscriptionSettings(true, startFrom));
+                new PersistentSubscriptionSettings(true, startFrom), cancellationToken: token);
         }
 
-        var sub = SubscribePersistently(outputStream, groupName);
+        var sub = SubscribePersistently(outputStream, groupName, cancellationToken:token);
         if (model == null)
             await sub.WithHandler<TEventHandler>(mapFunc);
         else
@@ -130,17 +132,17 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
     public Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
-        bool ensureOutputStreamProjection = true)
+        bool ensureOutputStreamProjection = true, CancellationToken token = default)
         where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return SubscribeEventHandlerPersistently(_typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>(),
             _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
-            model, outputStream, groupName, startFrom, ensureOutputStreamProjection);
+            model, outputStream, groupName, startFrom, ensureOutputStreamProjection, token);
     }
 
 
     public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10,
-        UserCredentials? userCredentials = null, CancellationToken cancellationToken = new())
+        UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     {
         return new PersistentSubscriptionRunner(this,
             PersistentSubscriptionClient.SubscribeToStream(streamName, groupName, bufferSize, userCredentials,
@@ -309,16 +311,19 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
     public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId, IVersioned => AppendState(state, state.Id, state.Version, token);
 
-    public Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default) 
+    public async Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default) 
     {
         var m = Conventions.GetMetadata(null, state, null);
         var stateType = state.GetType();
-        var streamId = Conventions.GetStreamIdSnapshotConvention(stateType, id);
+        var streamId = Conventions.GetStreamIdStateConvention(stateType, id);
         var evId = Conventions.GetEventIdConvention(null, state);
         var evData = MakeEvent(evId, Conventions.SnapshotEventNameConvention(stateType), state, m);
-        return version == null ? 
-            Client.AppendToStreamAsync(streamId, StreamState.Any, [evData], cancellationToken: token) : 
-            Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
+        var ret = (version == null || version < 0) ? 
+            await Client.AppendToStreamAsync(streamId, StreamState.Any, [evData], cancellationToken: token) : 
+            await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
+        if(state is IVersionAware va) 
+            va.Increase();
+        return ret;
     }
     public async Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default)
     {
@@ -407,7 +412,8 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         if (!e.Any()) return null;
 
         var (evt, m) = e[0];
-        
+        if (evt is IVersionAware va)
+            va.SetValue(m.SourceStreamPosition);
         return new State<T>((T)evt, m);
     }
     public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType, CancellationToken token = default)

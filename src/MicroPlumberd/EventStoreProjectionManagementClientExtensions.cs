@@ -16,16 +16,16 @@ public static class EventStoreProjectionManagementClientExtensions
             await client.CreateContinuousAsync(outputStream, query, true);
     }
 
-    private static async Task Update(EventStoreProjectionManagementClient client, string outputStream, string query)
+    private static async Task Update(EventStoreProjectionManagementClient client, string outputStream, string query, CancellationToken token = default)
     {
-        var state = await client.GetStatusAsync(outputStream);
+        var state = await client.GetStatusAsync(outputStream, cancellationToken: token);
         if (state!.Status != "Stopped")
-            await client.DisableAsync(outputStream);
-        await client.UpdateAsync(outputStream, query, true);
-        await client.EnableAsync(outputStream);
+            await client.DisableAsync(outputStream, cancellationToken: token);
+        await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
+        await client.EnableAsync(outputStream, cancellationToken: token);
     }
 
-    public static async Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory)
+    public static async Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)
     {
         string query =
             $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
@@ -33,25 +33,25 @@ public static class EventStoreProjectionManagementClientExtensions
             await Update(client, outputStreamCategory, query);
         else
         {
-            await client.CreateContinuousAsync(outputStreamCategory, query, false);
-            await client.DisableAsync(outputStreamCategory);
-            await client.UpdateAsync(outputStreamCategory, query, true);
-            await client.EnableAsync(outputStreamCategory);
+            await client.CreateContinuousAsync(outputStreamCategory, query, false, cancellationToken: token);
+            await client.DisableAsync(outputStreamCategory, cancellationToken: token);
+            await client.UpdateAsync(outputStreamCategory, query, true, cancellationToken: token);
+            await client.EnableAsync(outputStreamCategory, cancellationToken: token);
         }
     }
     public static async Task EnsureJoinProjection(this EventStoreProjectionManagementClient client,
-        string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes)
+        string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
         var query = CreateQuery(outputStream, eventTypes);
 
         if ((await register.Get(outputStream)) != null)
-            await Update(client, outputStream, query);
+            await Update(client, outputStream, query, token);
         else
         {
-            await client.CreateContinuousAsync(outputStream, query, false);
-            await client.DisableAsync(outputStream);
-            await client.UpdateAsync(outputStream, query, true);
-            await client.EnableAsync(outputStream);
+            await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+            await client.DisableAsync(outputStream, cancellationToken: token);
+            await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
+            await client.EnableAsync(outputStream, cancellationToken: token);
         }
     }
 

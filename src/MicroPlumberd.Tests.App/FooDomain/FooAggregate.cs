@@ -7,7 +7,13 @@ using ProtoBuf;
 
 namespace MicroPlumberd.Tests.App.Domain;
 
-
+public record FooEntityState : IId<Guid>, IVersionAware
+{
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public string Name { get; set; }
+    public long Version { get; private set; } = -1;
+    void IVersionAware.SetValue(long nv) => Version = nv;
+}
 
 [Aggregate]
 [ThrowsFaultException<BusinessFaultException>()]

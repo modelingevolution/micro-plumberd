@@ -11,7 +11,7 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         foreach (var i in starters) 
-            await i.Start();
+            await i.Start(stoppingToken);
     }
 
 }

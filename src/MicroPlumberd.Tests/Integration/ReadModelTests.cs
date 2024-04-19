@@ -30,7 +30,7 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
 
         var fooModel = new FooModel(new InMemoryAssertionDb());
 
-        var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom:StreamPosition.Start);
+        var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom: StreamPosition.Start);
 
         await Task.Delay(1000);
 

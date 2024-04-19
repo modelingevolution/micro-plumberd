@@ -78,8 +78,8 @@ namespace MicroPlumberd.Services.ProcessManagers
             ProcessManagerExecutor<TProcessManager>.Sender sender =
                 new ProcessManagerExecutor<TProcessManager>.Sender(this);
             var c = AsyncDisposableCollection.New();
-            c += await Plumber.SubscribeEventHandlerPersistently(sender, $"{typeof(TProcessManager).Name}Outbox", ensureOutputStreamProjection:true);
-            c += await Plumber.SubscribeEventHandlerPersistently(executor, $"{typeof(TProcessManager).Name}Inbox", ensureOutputStreamProjection:true);
+            c += await Plumber.SubscribeEventHandlerPersistently(sender, $"{typeof(TProcessManager).Name}Outbox", ensureOutputStreamProjection: true);
+            c += await Plumber.SubscribeEventHandlerPersistently(executor, $"{typeof(TProcessManager).Name}Inbox", ensureOutputStreamProjection: true);
 
             await Plumber.ProjectionManagementClient.EnsureLookupProjection(Plumber.ProjectionRegister,
                 typeof(TProcessManager).Name, "RecipientId", $"{typeof(TProcessManager).Name}Lookup");

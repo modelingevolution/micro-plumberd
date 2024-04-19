@@ -22,6 +22,7 @@ namespace MicroPlumberd
         object IIdAware.Id { set => _id = (TId)value; }
         public long Version => _version;
         void IVersionAware.Increase() => _version += 1;
+        void IVersionAware.SetValue(long nv) { _version = nv; }
 
         public virtual async Task<ICommandRequest?> HandleError(ExecutionContext executionContext) => null;
     }
