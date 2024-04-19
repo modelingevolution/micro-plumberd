@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using EventStore.Client;
+using Grpc.Core;
 
 namespace MicroPlumberd;
 
@@ -146,18 +147,18 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
                 cancellationToken));
     }
 
-    public async Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null)
+    public async Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null, CancellationToken token = default)
         where T : IEventHandler, ITypeRegister
     {
         var streamId = Conventions.GetStreamIdConvention(typeof(T), id);
-        await Rehydrate(model, streamId, position);
+        await Rehydrate(model, streamId, position, token);
     }
 
-    public async Task Rehydrate<T>(T model, string streamId, StreamPosition? position = null)
+    public async Task Rehydrate<T>(T model, string streamId, StreamPosition? position = null, CancellationToken token = default)
         where T : IEventHandler, ITypeRegister
     {
         var pos = position ?? StreamPosition.Start;
-        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, pos, resolveLinkTos: true);
+        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, pos, resolveLinkTos: true, cancellationToken: token);
         var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
         var vAware = model as IVersionAware;
 
@@ -174,15 +175,15 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public async Task<IEventRecord?> FindEventInStream(string streamId, Guid id,
-        TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards)
+        TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards, CancellationToken token = default)
     {
-        return await FindEventInStream<object>(streamId, id, eventMapping, scanDirection);
+        return await FindEventInStream<object>(streamId, id, eventMapping, scanDirection, token);
     }
 
     public async Task<IEventRecord<TEvent>?> FindEventInStream<TEvent>(string streamId, Guid id,
-        TypeEventConverter? eventMapping = null, Direction scanDirection = Direction.Backwards)
+        TypeEventConverter? eventMapping = null, Direction scanDirection = Direction.Backwards, CancellationToken token = default)
     {
-        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start);
+        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, StreamPosition.Start, cancellationToken:token);
 
         bool TryMapEventByName(string x, out Type tt)
         {
@@ -217,30 +218,30 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public IAsyncEnumerable<object> Read<TOwner>(object id, StreamPosition? start = null, Direction? direction = null,
-        long maxCount = long.MaxValue) where TOwner : ITypeRegister
+        long maxCount = long.MaxValue, CancellationToken token = default) where TOwner : ITypeRegister
     {
         start ??= StreamPosition.Start;
 
         var streamId = Conventions.GetStreamIdConvention(typeof(TOwner), id);
         var registry = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
-        return Read(streamId, registry, start, direction, maxCount);
+        return Read(streamId, registry, start, direction, maxCount, token);
     }
 
     public IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction = null,
-        long maxCount = long.MaxValue) where TOwner : ITypeRegister
+        long maxCount = long.MaxValue, CancellationToken token = default) where TOwner : ITypeRegister
     {
         var streamId = Conventions.ProjectionCategoryStreamConvention(typeof(TOwner));
         var evNameConv = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
-        return Read(streamId, evNameConv, start, direction, maxCount);
+        return Read(streamId, evNameConv, start, direction, maxCount, token);
     }
 
     public async IAsyncEnumerable<(object, Metadata)> ReadFull(string streamId, TypeEventConverter converter,
-        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue)
+        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue, CancellationToken token = default)
     {
         var d = direction ?? Direction.Forwards;
         var p = start ?? StreamPosition.Start;
 
-        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount);
+        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount, cancellationToken:token);
         if (await items.ReadState == ReadState.StreamNotFound) yield break;
 
         var events = items.Select(x => new
@@ -252,12 +253,12 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public async IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter,
-        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue)
+        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue, CancellationToken token = default)
     {
         var d = direction ?? Direction.Forwards;
         var p = start ?? StreamPosition.Start;
 
-        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount);
+        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount, cancellationToken: token);
         if (await items.ReadState == ReadState.StreamNotFound) yield break;
 
         var events = items.Select(x => new
@@ -268,14 +269,14 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
             yield return i;
     }
 
-    public async Task<TOwner> Get<TOwner>(object id)
+    public async Task<TOwner> Get<TOwner>(object id, CancellationToken token = default)
         where TOwner : IAggregate<TOwner>, ITypeRegister, IId
     {
         var sp = StreamPosition.Start;
         var aggregate = TOwner.Empty(id);
         if (GetPolicy<TOwner>() != null && aggregate is IStatefull i)
         {
-            var snapshot = await GetSnapshot(id, i.SnapshotType);
+            var snapshot = await GetSnapshot(id, i.SnapshotType, token);
             if (snapshot != null)
             {
                 i.Initialize(snapshot.Value, new StateInfo(snapshot.Version, snapshot.Created));
@@ -283,41 +284,55 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
             }
         }
 
-        await aggregate.Rehydrate(Read<TOwner>(id, sp));
+        await aggregate.Rehydrate(Read<TOwner>(id, sp, token: token));
         return aggregate;
     }
 
     
 
     public async Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
-        object? metadata = null)
+        object? metadata = null, CancellationToken token = default)
     {
         var evData = MakeEvents(events, metadata);
 
-        return await Client.AppendToStreamAsync(streamId, rev, evData);
+        return await Client.AppendToStreamAsync(streamId, rev, evData, cancellationToken: token);
     }
 
     public async Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
-        object? metadata = null)
+        object? metadata = null, CancellationToken token = default)
     {
         var evData = MakeEvents(events, metadata);
 
-        var r = await Client.AppendToStreamAsync(streamId, state, evData);
+        var r = await Client.AppendToStreamAsync(streamId, state, evData, cancellationToken: token);
         return r;
     }
 
-    public async Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState state)
+    public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId, IVersioned => AppendState(state, state.Id, state.Version, token);
+
+    public Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default) 
+    {
+        var m = Conventions.GetMetadata(null, state, null);
+        var stateType = state.GetType();
+        var streamId = Conventions.GetStreamIdSnapshotConvention(stateType, id);
+        var evId = Conventions.GetEventIdConvention(null, state);
+        var evData = MakeEvent(evId, Conventions.SnapshotEventNameConvention(stateType), state, m);
+        return version == null ? 
+            Client.AppendToStreamAsync(streamId, StreamState.Any, [evData], cancellationToken: token) : 
+            Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
+    }
+    public async Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default)
     {
         var m = Conventions.GetMetadata(null, snapshot, new { SnapshotVersion = version });
         var stateType = snapshot.GetType();
         var streamId = Conventions.GetStreamIdSnapshotConvention(stateType, id);
         var evId = Conventions.GetEventIdConvention(null, snapshot);
         var evData = MakeEvent(evId, Conventions.SnapshotEventNameConvention(stateType), snapshot, m);
-        var r = await Client.AppendToStreamAsync(streamId, state, [evData]);
-        return r;
+
+        return await Client.AppendToStreamAsync(streamId, state ?? StreamState.Any, [evData], cancellationToken:token);
+        
     }
 
-    public async Task<IWriteResult> AppendEvent(object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null)
+    public async Task<IWriteResult> AppendEvent(object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null, CancellationToken token = default)
     {
         if (evt == null) throw new ArgumentException("evt cannot be null.");
         
@@ -329,11 +344,11 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var evId = Conventions.GetEventIdConvention(null, evt);
         var evData = MakeEvent(evId, evtName, evt, m);
 
-        var r = await Client.AppendToStreamAsync(streamId, st, [evData]);
+        var r = await Client.AppendToStreamAsync(streamId, st, [evData], cancellationToken:token);
         return r;
     }
     public async Task<IWriteResult> AppendEventToStream(string streamId, object evt, StreamState? state = null, string? evtName = null,
-        object? metadata = null)
+        object? metadata = null, CancellationToken token = default)
     {
         if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
         if (evt == null) throw new ArgumentException("Event cannot be null");
@@ -344,52 +359,64 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var evId = Conventions.GetEventIdConvention(null, evt);
         var evData = MakeEvent(evId, eventName, evt, m);
 
-        var r = await Client.AppendToStreamAsync(streamId, st, [evData]);
+        var r = await Client.AppendToStreamAsync(streamId, st, [evData], cancellationToken: token);
         return r;
     }
 
-    public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null)
+    public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
         if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
 
         var streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
-        var r = await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData);
+        var r = await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData, cancellationToken: token);
         aggregate.AckCommitted();
 
         var policy = GetPolicy<T>();
         if (policy != null && aggregate is IStatefull i && policy.ShouldMakeSnapshot(aggregate, i.InitializedWith))
-            await AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.Any);
+            await AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.Any, token);
 
         return r;
     }
 
 
-    public async Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null)
+    public async Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
         if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
 
         var streamId = Conventions.GetStreamIdConvention(typeof(T), aggregate.Id);
         var evData = MakeEvents(aggregate.PendingEvents, metadata, aggregate);
-        var r = await Client.AppendToStreamAsync(streamId, StreamState.NoStream, evData);
+        var r = await Client.AppendToStreamAsync(streamId, StreamState.NoStream, evData, cancellationToken: token);
         aggregate.AckCommitted();
 
         var policy = GetPolicy<T>();
         if (policy != null && aggregate is IStatefull i && policy.ShouldMakeSnapshot(aggregate, i.InitializedWith))
-            await AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.NoStream);
+            await AppendSnapshot(i.State, aggregate.Id, aggregate.Version, StreamState.NoStream, token);
 
         return r;
     }
 
-    public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType)
+    public async Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class
+    {
+        var streamType = typeof(T);
+        streamId ??= Conventions.GetStreamIdStateConvention(streamType, id);
+        var c = new SingleTypeConverter(streamType);
+        var e = await ReadFull(streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1, token).ToArrayAsync();
+        if (!e.Any()) return null;
+
+        var (evt, m) = e[0];
+        
+        return new State<T>((T)evt, m);
+    }
+    public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType, CancellationToken token = default)
     {
         if (snapshotType == null) throw new ArgumentNullException("snapshotType cannot be null.");
 
         var streamId = Conventions.GetStreamIdSnapshotConvention(snapshotType, id);
-        var c = new SnapshotConverter(snapshotType);
-        var e = await ReadFull(streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1).ToArrayAsync();
+        var c = new SingleTypeConverter(snapshotType);
+        var e = await ReadFull(streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1, token).ToArrayAsync();
         if (!e.Any()) return null;
 
         var (evt, m) = e[0];
@@ -400,9 +427,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return s;
     }
 
-    public async Task<Snapshot<T>?> GetSnapshot<T>(Guid id)
+    public async Task<Snapshot<T>?> GetSnapshot<T>(Guid id, CancellationToken token = default)
     {
-        var s = await GetSnapshot(id, typeof(T));
+        var s = await GetSnapshot(id, typeof(T), token);
         return (Snapshot<T>)s;
     }
 
@@ -412,8 +439,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     /// <param name="streamId">Full name of the stream.</param>
     /// <param name="metadata">Event's metadata that link will point to.</param>
     /// <param name="state">StreamState, default is Any</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    public async Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null)
+    public async Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null, CancellationToken token = default)
     {
         if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
 
@@ -421,9 +449,28 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         const string eventType = "$>";
 
         return await Client.AppendToStreamAsync(streamId, state ?? StreamState.Any,
-            new[] { new EventData(Uuid.NewUuid(), eventType, data) });
+            new[] { new EventData(Uuid.NewUuid(), eventType, data) }, cancellationToken: token);
     }
+    /// <summary>
+    /// Appends the link.
+    /// </summary>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="streamPosition">Stream position in original stream</param>
+    /// <param name="streamSourceId">The stream source identifier.</param>
+    /// <param name="state">Optional expected stream state.</param>
+    /// <returns></returns>
+    public async Task<IWriteResult> AppendLink(string streamId, ulong streamPosition, string streamSourceId,
+            StreamState? state = null, CancellationToken token = default)
+    {
+        if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
+        if (string.IsNullOrEmpty(streamSourceId)) throw new ArgumentException("StreamSourceId is required.");
 
+        var data = Encoding.UTF8.GetBytes($"{streamPosition}@{streamSourceId}");
+        const string eventType = "$>";
+
+        return await Client.AppendToStreamAsync(streamId, state ?? StreamState.Any,
+            new[] { new EventData(Uuid.NewUuid(), eventType, data) }, cancellationToken:token);
+    }
 
 
     private ISnapshotPolicy? GetPolicy<TOwner>()

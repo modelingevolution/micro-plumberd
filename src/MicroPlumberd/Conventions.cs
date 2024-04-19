@@ -10,7 +10,7 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace MicroPlumberd;
 
-readonly struct SnapshotConverter(Type snapshot)
+readonly struct SingleTypeConverter(Type snapshot)
 {
     public bool Convert(string evName, out Type t)
     {
@@ -104,6 +104,7 @@ public interface IReadOnlyConventions : IExtension
     StreamCategoryConvention GetStreamCategoryConvention { get;  }
     SteamNameConvention GetStreamIdConvention { get; }
     SteamNameConvention GetStreamIdSnapshotConvention { get;  }
+    SteamNameConvention GetStreamIdStateConvention { get; }
     SnapshotEventName SnapshotEventNameConvention { get;  }
     EventNameConvention GetEventNameConvention { get;  }
     BuildInvocationContext BuildInvocationContext { get;  }
@@ -147,13 +148,14 @@ class Conventions : IConventions, IReadOnlyConventions
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
     public SteamNameConvention GetStreamIdConvention { get; set; }
     public SteamNameConvention GetStreamIdSnapshotConvention { get; set; }
+    public SteamNameConvention GetStreamIdStateConvention { get; set; }
     public SnapshotEventName SnapshotEventNameConvention { get; set; } = t => $"{t.GetFriendlyName()}SnapShotted";
-    public StreamCategoryConvention GetStreamCategoryConvention { get; set; } = agg => $"{agg.GetFriendlyName()}";
+    public StreamCategoryConvention GetStreamCategoryConvention { get; set; } = OutputStreamOrFriendlyTypeName;
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
     public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
     public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
-    public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamFromModel;
+    public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamOrFriendlyTypeName;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
     public SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     public ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
@@ -188,6 +190,7 @@ class Conventions : IConventions, IReadOnlyConventions
         MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
         GetStreamIdConvention = (aggregateType,id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
         GetStreamIdSnapshotConvention = (aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}Snapshot-{id}";
+        GetStreamIdStateConvention = (aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
         ProjectionCategoryStreamConvention =(t) => $"$ce-{GetStreamCategoryConvention(t)}";
         StreamNameFromEventConvention = ComputeStreamName;
     }
@@ -202,7 +205,7 @@ class Conventions : IConventions, IReadOnlyConventions
         return id != null ? $"{category}-{id}" : category;
     }
 
-    private static string OutputStreamFromModel(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.Name;
+    private static string OutputStreamOrFriendlyTypeName(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.GetFriendlyName();
 
     public object GetMetadata(IAggregate? aggregate, object evt, object? metadata)
     {

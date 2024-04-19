@@ -22,6 +22,10 @@ public interface ISnapshot
     long Version { get; }
 }
 
+public record State<T>(T Value, Metadata Metadata)
+{
+    public static implicit operator T(State<T> st) => st.Value;
+}
 /// <summary>
 /// Represents a snapshot object used in Plumberd.
 /// </summary>
@@ -52,7 +56,8 @@ public sealed record Snapshot<T> : Snapshot, ISnapshot
     /// Gets the data of the snapshot.
     /// </summary>
     public T Data { get; internal set; }
-    
+
+    public static implicit operator T(Snapshot<T> st) => st.Data;
     internal override object Value
     {
         get => Data;
@@ -98,9 +103,10 @@ public interface IPlumber
     /// <param name="rev">Expected stream revision</param>
     /// <param name="events">Events that are going to be serialized and appended</param>
     /// <param name="metadata">Metadata that will be merged with metadata created from conventions</param>
+    /// <param name="token"></param>
     /// <returns></returns>
     Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
-        object? metadata = null);
+        object? metadata = null, CancellationToken token = default);
 
     /// <summary>
     /// Appends event to a stream, uses relevant convention to create metadata.
@@ -112,17 +118,19 @@ public interface IPlumber
     /// <param name="metadata">Additional metadata, can be null</param>
     /// <returns></returns>
     Task<IWriteResult> AppendEventToStream(string streamId, object evt, StreamState? state = null, string? evtName = null,
-        object? metadata = null);
-        /// <summary>
+        object? metadata = null, CancellationToken token = default);
+
+    /// <summary>
     /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
     /// <param name="streamId">Full stream id, typically in format {category}-{id}</param>
     /// <param name="state">State of the stream</param>
     /// <param name="events">Events that are going to be serialized and appended</param>
     /// <param name="metadata">Metadata that will be merged with metadata created from conventions</param>
+    /// <param name="token"></param>
     /// <returns></returns>
     Task<IWriteResult> AppendEvents(string streamId, StreamState state, IEnumerable<object> events,
-        object? metadata = null);
+        object? metadata = null, CancellationToken token = default);
 
     /// <summary>
     /// Appends event to a stream, uses relevant convention to create metadata.
@@ -141,8 +149,10 @@ public interface IPlumber
     /// <param name="id">The identifier of the event.</param>
     /// <param name="eventMapping">The event mapping.</param>
     /// <param name="scanDirection">The scan direction.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null, Direction scanDirection = Direction.Backwards);
+    Task<IEventRecord<T>?> FindEventInStream<T>(string streamId, Guid id, TypeEventConverter eventMapping = null,
+        Direction scanDirection = Direction.Backwards, CancellationToken token = default);
 
     /// <summary>
     /// Finds the event in the stream.
@@ -151,8 +161,10 @@ public interface IPlumber
     /// <param name="id">The identifier of the event.</param>
     /// <param name="eventMapping">The event mapping.</param>
     /// <param name="scanDirection">The scan direction.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IEventRecord?> FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards);
+    Task<IEventRecord?> FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping,
+        Direction scanDirection = Direction.Backwards, CancellationToken token = default);
 
     /// <summary>
     /// Returns a builder for creating composition of projections subscribed to a stream.
@@ -235,8 +247,9 @@ public interface IPlumber
     /// <param name="model">The model.</param>
     /// <param name="stream">The stream.</param>
     /// <param name="position">The position.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task Rehydrate<T>(T model, string stream, StreamPosition? position = null) where T : IEventHandler, ITypeRegister;
+    Task Rehydrate<T>(T model, string stream, StreamPosition? position = null, CancellationToken token = default) where T : IEventHandler, ITypeRegister;
 
     /// <summary>
     /// Rehydrates the specified model
@@ -245,8 +258,9 @@ public interface IPlumber
     /// <param name="model">The model.</param>
     /// <param name="id">The identifier.</param>
     /// <param name="position">The position from which reply events.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null) where T : IEventHandler, ITypeRegister;
+    Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null, CancellationToken token = default) where T : IEventHandler, ITypeRegister;
 
     /// <summary>
     /// Returns the aggregate identified by id.
@@ -255,8 +269,9 @@ public interface IPlumber
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="id">The identifier.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<T> Get<T>(object id) where T : IAggregate<T>, ITypeRegister,IId;
+    Task<T> Get<T>(object id, CancellationToken token = default) where T : IAggregate<T>, ITypeRegister,IId;
 
     /// <summary>
     /// Saves all pending events from the aggregate. Uses optimistic concurrency.
@@ -264,8 +279,9 @@ public interface IPlumber
     /// <typeparam name="T"></typeparam>
     /// <param name="aggregate">The aggregate.</param>
     /// <param name="metadata">The optional metadata.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null) where T : IAggregate<T>, IId;
+    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId;
 
     /// <summary>
     /// Saves the aggregate. Expects that no aggregate exists. 
@@ -273,24 +289,27 @@ public interface IPlumber
     /// <typeparam name="T"></typeparam>
     /// <param name="aggregate">The aggregate.</param>
     /// <param name="metadata">The optional metadata.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null) where T : IAggregate<T>, IId;
+    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId;
 
     /// <summary>
     /// Gets the snapshot - deserializes snapshot from the stream. Stream is identified by typeof(T). Deserialization is done from the latest event (snaphost) in the stream.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="id">The identifier.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<Snapshot<T>?> GetSnapshot<T>(Guid id);
+    Task<Snapshot<T>?> GetSnapshot<T>(Guid id, CancellationToken token = default);
 
     /// <summary>
     /// Gets the snapshot - deserializes snapshot from the stream. Stream is identified by snaphostType. Deserialization is done from the latest event (snaphost) in the stream.
     /// </summary>
     /// <param name="id">The identifier.</param>
     /// <param name="snapshotType">Type of the snapshot.</param>
+    /// <param name="token"></param>
     /// <returns>The snapshot information containing the snaphost and relevant metadata.</returns>
-    Task<Snapshot?> GetSnapshot(object id, Type snapshotType);
+    Task<Snapshot?> GetSnapshot(object id, Type snapshotType, CancellationToken token = default);
 
     /// <summary>
     /// Appends the link to a stream.
@@ -298,8 +317,10 @@ public interface IPlumber
     /// <param name="streamId">The stream identifier.</param>
     /// <param name="metadata">The metadata.</param>
     /// <param name="state">The expected state of the stream</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null);
+    Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null,
+        CancellationToken token = default);
 
     /// <summary>
     /// Subscribes the event handler persistently. This means that at least once an event is processed successfully, it wont be processed anymore.
@@ -327,9 +348,10 @@ public interface IPlumber
     /// <param name="start">The stream start position.</param>
     /// <param name="direction">The direction of the reading.</param>
     /// <param name="maxCount">The maximum number of read events.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
     IAsyncEnumerable<object> Read<TOwner>(object id, StreamPosition? start = null, Direction? direction = null,
-        long maxCount = 9223372036854775807L) where TOwner : ITypeRegister;
+        long maxCount = 9223372036854775807L, CancellationToken token = default) where TOwner : ITypeRegister;
 
     /// <summary>
     /// Reads stream and returns events.
@@ -338,8 +360,10 @@ public interface IPlumber
     /// <param name="start">The stream start position.</param>
     /// <param name="direction">The direction of the reading.</param>
     /// <param name="maxCount">The maximum number of read events.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null,Direction? direction=null, long maxCount=long.MaxValue) where TOwner : ITypeRegister;
+    IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction = null,
+        long maxCount = 9223372036854775807L, CancellationToken token = default) where TOwner : ITypeRegister;
 
     /// <summary>
     /// Reads stream and returns events.
@@ -349,8 +373,10 @@ public interface IPlumber
     /// <param name="start">The stream start position.</param>
     /// <param name="direction">The direction of the reading.</param>
     /// <param name="maxCount">The maximum number of read events.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue);
+    IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter, StreamPosition? start = null,
+        Direction? direction = null, long maxCount = 9223372036854775807L, CancellationToken token = default);
 
     /// <summary>
     /// Reads stream and returns event and metadata information.
@@ -360,8 +386,11 @@ public interface IPlumber
     /// <param name="start">The stream start position.</param>
     /// <param name="direction">The direction of the reading.</param>
     /// <param name="maxCount">The maximum number of read events.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    IAsyncEnumerable<(object,Metadata)> ReadFull(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue);
+    IAsyncEnumerable<(object, Metadata)> ReadFull(string streamId, TypeEventConverter converter,
+        StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807L,
+        CancellationToken token = default);
 
 
     /// <summary>
@@ -372,7 +401,7 @@ public interface IPlumber
     /// <param name="version">The expected version.</param>
     /// <param name="state">The expected state of the stream.</param>
     /// <returns></returns>
-    Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState state);
+    Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default);
 
     /// <summary>
     /// Appends the event. StreamId is determined using conventions.
@@ -382,6 +411,40 @@ public interface IPlumber
     /// <param name="metadata">Optional metadata.</param>
     /// <param name="state">Expected state.</param>
     /// <param name="evtName">Optional name of the event.</param>
+    /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> AppendEvent(object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null);
+    Task<IWriteResult> AppendEvent(object evt, object? id = null, object? metadata = null, StreamState? state = null,
+        string? evtName = null, CancellationToken token = default);
+
+    /// <summary>
+    /// Appends the link.
+    /// </summary>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="streamPosition">Stream position in original stream</param>
+    /// <param name="streamSourceId">The stream source identifier.</param>
+    /// <param name="state">Optional expected stream state.</param>
+    /// <returns></returns>
+    Task<IWriteResult> AppendLink(string streamId, ulong streamPosition, string streamSourceId,
+        StreamState? state = null, CancellationToken token = default);
+
+    /// <summary>
+    /// Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.
+    /// </summary>
+    /// <param name="state">The entity.</param>
+    /// <param name="id">The identifier.</param>
+    /// <param name="version">The version.</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default);
+
+    /// <summary>
+    /// Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="state">The entity.</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId, IVersioned;
+
+    Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class;
 }
