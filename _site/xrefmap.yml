@@ -4115,22 +4115,19 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IVersionAware.Increase
   nameWithType: IVersionAware.Increase
-- uid: MicroPlumberd.IVersionAware.SetValue(System.Int64)
-  name: SetValue(long)
-  href: api/MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_SetValue_System_Int64_
-  commentId: M:MicroPlumberd.IVersionAware.SetValue(System.Int64)
-  name.vb: SetValue(Long)
-  fullName: MicroPlumberd.IVersionAware.SetValue(long)
-  fullName.vb: MicroPlumberd.IVersionAware.SetValue(Long)
-  nameWithType: IVersionAware.SetValue(long)
-  nameWithType.vb: IVersionAware.SetValue(Long)
-- uid: MicroPlumberd.IVersionAware.SetValue*
-  name: SetValue
-  href: api/MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_SetValue_
-  commentId: Overload:MicroPlumberd.IVersionAware.SetValue
+- uid: MicroPlumberd.IVersionAware.Version
+  name: Version
+  href: api/MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Version
+  commentId: P:MicroPlumberd.IVersionAware.Version
+  fullName: MicroPlumberd.IVersionAware.Version
+  nameWithType: IVersionAware.Version
+- uid: MicroPlumberd.IVersionAware.Version*
+  name: Version
+  href: api/MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Version_
+  commentId: Overload:MicroPlumberd.IVersionAware.Version
   isSpec: "True"
-  fullName: MicroPlumberd.IVersionAware.SetValue
-  nameWithType: IVersionAware.SetValue
+  fullName: MicroPlumberd.IVersionAware.Version
+  nameWithType: IVersionAware.Version
 - uid: MicroPlumberd.IVersioned
   name: IVersioned
   href: api/MicroPlumberd.IVersioned.html
