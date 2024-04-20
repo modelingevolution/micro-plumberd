@@ -78,6 +78,7 @@ items:
   - MicroPlumberd.StandardMetadataEnricherTypes
   - MicroPlumberd.StateChangeAction`1
   - MicroPlumberd.StateInfo
+  - MicroPlumberd.State`1
   - MicroPlumberd.SteamNameConvention
   - MicroPlumberd.StreamCategoryConvention
   - MicroPlumberd.StreamNameFromEventConvention
@@ -274,6 +275,32 @@ references:
   name: ISnapshot
   nameWithType: ISnapshot
   fullName: MicroPlumberd.ISnapshot
+- uid: MicroPlumberd.State`1
+  commentId: T:MicroPlumberd.State`1
+  parent: MicroPlumberd
+  href: MicroPlumberd.State-1.html
+  name: State<T>
+  nameWithType: State<T>
+  fullName: MicroPlumberd.State<T>
+  nameWithType.vb: State(Of T)
+  fullName.vb: MicroPlumberd.State(Of T)
+  name.vb: State(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.State`1
+    name: State
+    href: MicroPlumberd.State-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.State`1
+    name: State
+    href: MicroPlumberd.State-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.Snapshot
   commentId: T:MicroPlumberd.Snapshot
   parent: MicroPlumberd
@@ -283,6 +310,7 @@ references:
   fullName: MicroPlumberd.Snapshot
 - uid: MicroPlumberd.Snapshot`1
   commentId: T:MicroPlumberd.Snapshot`1
+  parent: MicroPlumberd
   href: MicroPlumberd.Snapshot-1.html
   name: Snapshot<T>
   nameWithType: Snapshot<T>

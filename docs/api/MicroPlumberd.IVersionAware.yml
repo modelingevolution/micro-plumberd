@@ -6,6 +6,7 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.IVersionAware.Increase
+  - MicroPlumberd.IVersionAware.Version
   langs:
   - csharp
   - vb
@@ -20,7 +21,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IVersionAware
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 79
+    startLine: 81
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -32,8 +33,35 @@ items:
   seealso:
   - linkId: MicroPlumberd.IVersioned
     commentId: T:MicroPlumberd.IVersioned
-  inheritedMembers:
-  - MicroPlumberd.IVersioned.Version
+- uid: MicroPlumberd.IVersionAware.Version
+  commentId: P:MicroPlumberd.IVersionAware.Version
+  id: Version
+  parent: MicroPlumberd.IVersionAware
+  langs:
+  - csharp
+  - vb
+  name: Version
+  nameWithType: IVersionAware.Version
+  fullName: MicroPlumberd.IVersionAware.Version
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Version
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 83
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: long Version { get; set; }
+    parameters: []
+    return:
+      type: System.Int64
+    content.vb: Property Version As Long
+  overload: MicroPlumberd.IVersionAware.Version*
 - uid: MicroPlumberd.IVersionAware.Increase
   commentId: M:MicroPlumberd.IVersionAware.Increase
   id: Increase
@@ -52,7 +80,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Increase
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 81
+    startLine: 84
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -74,13 +102,30 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: MicroPlumberd.IVersioned.Version
-  commentId: P:MicroPlumberd.IVersioned.Version
-  parent: MicroPlumberd.IVersioned
-  href: MicroPlumberd.IVersioned.html#MicroPlumberd_IVersioned_Version
+- uid: MicroPlumberd.IVersionAware.Version*
+  commentId: Overload:MicroPlumberd.IVersionAware.Version
+  href: MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Version
   name: Version
-  nameWithType: IVersioned.Version
-  fullName: MicroPlumberd.IVersioned.Version
+  nameWithType: IVersionAware.Version
+  fullName: MicroPlumberd.IVersionAware.Version
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int64
+  name: long
+  nameWithType: long
+  fullName: long
+  nameWithType.vb: Long
+  fullName.vb: Long
+  name.vb: Long
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
 - uid: MicroPlumberd.IVersionAware.Increase*
   commentId: Overload:MicroPlumberd.IVersionAware.Increase
   href: MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Increase

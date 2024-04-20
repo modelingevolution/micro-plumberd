@@ -5,9 +5,9 @@ items:
   id: EventStoreProjectionManagementClientExtensions
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
   - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,System.Collections.Generic.IEnumerable{System.String})
-  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
+  - MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String,System.Threading.CancellationToken)
   langs:
   - csharp
   - vb
@@ -78,17 +78,17 @@ items:
   nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
   fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, System.Collections.Generic.IEnumerable(Of String))
   name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IEnumerable(Of String))
-- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
-  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
-  id: EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String,System.Threading.CancellationToken)
+  id: EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String,System.Threading.CancellationToken)
   isExtensionMethod: true
   parent: MicroPlumberd.EventStoreProjectionManagementClientExtensions
   langs:
   - csharp
   - vb
-  name: EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string)
-  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string)
-  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient, MicroPlumberd.IProjectionRegister, string, string, string)
+  name: EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string, CancellationToken)
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string, CancellationToken)
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient, MicroPlumberd.IProjectionRegister, string, string, string, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
@@ -102,7 +102,7 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public static Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory)
+    content: public static Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)
     parameters:
     - id: client
       type: EventStore.Client.EventStoreProjectionManagementClient
@@ -114,24 +114,26 @@ items:
       type: System.String
     - id: outputStreamCategory
       type: System.String
+    - id: token
+      type: System.Threading.CancellationToken
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Public Shared Function EnsureLookupProjection(client As EventStoreProjectionManagementClient, register As IProjectionRegister, category As String, eventProperty As String, outputStreamCategory As String) As Task
+    content.vb: Public Shared Function EnsureLookupProjection(client As EventStoreProjectionManagementClient, register As IProjectionRegister, category As String, eventProperty As String, outputStreamCategory As String, token As CancellationToken = Nothing) As Task
   overload: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection*
-  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, String, String, String)
-  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient, MicroPlumberd.IProjectionRegister, String, String, String)
-  name.vb: EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, String, String, String)
-- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
-  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
-  id: EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, String, String, String, CancellationToken)
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient, MicroPlumberd.IProjectionRegister, String, String, String, System.Threading.CancellationToken)
+  name.vb: EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, String, String, String, CancellationToken)
+- uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
+  id: EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)
   isExtensionMethod: true
   parent: MicroPlumberd.EventStoreProjectionManagementClientExtensions
   langs:
   - csharp
   - vb
-  name: EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>)
-  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>)
-  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, string, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable<string>)
+  name: EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>, CancellationToken)
+  nameWithType: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable<string>, CancellationToken)
+  fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, string, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable<string>, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
@@ -145,7 +147,7 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: public static Task EnsureJoinProjection(this EventStoreProjectionManagementClient client, string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes)
+    content: public static Task EnsureJoinProjection(this EventStoreProjectionManagementClient client, string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, CancellationToken token = default)
     parameters:
     - id: client
       type: EventStore.Client.EventStoreProjectionManagementClient
@@ -155,13 +157,15 @@ items:
       type: MicroPlumberd.IProjectionRegister
     - id: eventTypes
       type: System.Collections.Generic.IEnumerable{System.String}
+    - id: token
+      type: System.Threading.CancellationToken
     return:
       type: System.Threading.Tasks.Task
-    content.vb: Public Shared Function EnsureJoinProjection(client As EventStoreProjectionManagementClient, outputStream As String, register As IProjectionRegister, eventTypes As IEnumerable(Of String)) As Task
+    content.vb: Public Shared Function EnsureJoinProjection(client As EventStoreProjectionManagementClient, outputStream As String, register As IProjectionRegister, eventTypes As IEnumerable(Of String), token As CancellationToken = Nothing) As Task
   overload: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection*
-  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String))
-  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable(Of String))
-  name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String))
+  nameWithType.vb: EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String), CancellationToken)
+  fullName.vb: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient, String, MicroPlumberd.IProjectionRegister, System.Collections.Generic.IEnumerable(Of String), System.Threading.CancellationToken)
+  name.vb: EnsureJoinProjection(EventStoreProjectionManagementClient, String, IProjectionRegister, IEnumerable(Of String), CancellationToken)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -599,7 +603,7 @@ references:
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
 - uid: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection*
   commentId: Overload:MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection
-  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureLookupProjection_EventStore_Client_EventStoreProjectionManagementClient_MicroPlumberd_IProjectionRegister_System_String_System_String_System_String_
+  href: MicroPlumberd.EventStoreProjectionManagementClientExtensions.html#MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureLookupProjection_EventStore_Client_EventStoreProjectionManagementClient_MicroPlumberd_IProjectionRegister_System_String_System_String_System_String_System_Threading_CancellationToken_
   name: EnsureLookupProjection
   nameWithType: EventStoreProjectionManagementClientExtensions.EnsureLookupProjection
   fullName: MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection
@@ -610,3 +614,38 @@ references:
   name: IProjectionRegister
   nameWithType: IProjectionRegister
   fullName: MicroPlumberd.IProjectionRegister
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading

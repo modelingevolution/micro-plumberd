@@ -68,7 +68,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Id
     path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
-    startLine: 20
+    startLine: 19
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
@@ -102,21 +102,20 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
-    startLine: 22
+    startLine: 21
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
-  summary: Gets the current version.
   example: []
   syntax:
-    content: public long Version { get; }
+    content: public long Version { get; set; }
     parameters: []
     return:
       type: System.Int64
-      description: The version.
-    content.vb: Public ReadOnly Property Version As Long
+    content.vb: Public Property Version As Long
   overload: MicroPlumberd.ProcessManagerBase`1.Version*
   implements:
+  - MicroPlumberd.IVersionAware.Version
   - MicroPlumberd.IVersioned.Version
   nameWithType.vb: ProcessManagerBase(Of TId).Version
   fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).Version
@@ -138,7 +137,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: HandleError
     path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
-    startLine: 25
+    startLine: 24
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
@@ -521,6 +520,13 @@ references:
   fullName: MicroPlumberd.ProcessManagerBase<TId>.Version
   nameWithType.vb: ProcessManagerBase(Of TId).Version
   fullName.vb: MicroPlumberd.ProcessManagerBase(Of TId).Version
+- uid: MicroPlumberd.IVersionAware.Version
+  commentId: P:MicroPlumberd.IVersionAware.Version
+  parent: MicroPlumberd.IVersionAware
+  href: MicroPlumberd.IVersionAware.html#MicroPlumberd_IVersionAware_Version
+  name: Version
+  nameWithType: IVersionAware.Version
+  fullName: MicroPlumberd.IVersionAware.Version
 - uid: MicroPlumberd.IVersioned.Version
   commentId: P:MicroPlumberd.IVersioned.Version
   parent: MicroPlumberd.IVersioned

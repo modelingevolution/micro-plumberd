@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-      <title>Class CommandRequest&lt;TCommand&gt; | MicroPlumberd </title>
+      <title>Class State&lt;T&gt; | MicroPlumberd </title>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="title" content="Class CommandRequest&lt;TCommand&gt; | MicroPlumberd ">
+      <meta name="title" content="Class State&lt;T&gt; | MicroPlumberd ">
       
       
       <link rel="icon" href="../favicon.ico">
@@ -16,7 +16,7 @@
       <meta name="docfx:rel" content="../">
       
       
-      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/new/master/apiSpec/new?filename=MicroPlumberd_CommandRequest_1.md&amp;value=---%0Auid%3A%20MicroPlumberd.CommandRequest%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/new/master/apiSpec/new?filename=MicroPlumberd_State_1.md&amp;value=---%0Auid%3A%20MicroPlumberd.State%601%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
       <meta name="loc:inThisArticle" content="In this article">
       <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
       <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
@@ -84,31 +84,31 @@
           <nav id="breadcrumb"></nav>
         </div>
 
-        <article data-uid="MicroPlumberd.CommandRequest`1">
+        <article data-uid="MicroPlumberd.State`1">
 
 
 
-  <h1 id="MicroPlumberd_CommandRequest_1" data-uid="MicroPlumberd.CommandRequest`1" class="text-break">
-Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs/#L15"><i class="bi bi-code-slash"></i></a>
+  <h1 id="MicroPlumberd_State_1" data-uid="MicroPlumberd.State`1" class="text-break">
+Class State&lt;T&gt;  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
     <dl><dt>Namespace</dt><dd><a class="xref" href="MicroPlumberd.html">MicroPlumberd</a></dd></dl>
-  <dl><dt>Assembly</dt><dd>MicroPlumberd.ProcessManager.Abstractions.dll</dd></dl>
+  <dl><dt>Assembly</dt><dd>MicroPlumberd.dll</dd></dl>
   </div>
 
   <div class="markdown summary"></div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public record CommandRequest&lt;TCommand&gt; : ICommandRequest&lt;TCommand&gt;, ICommandRequest, IProcessAction, IEquatable&lt;CommandRequest&lt;TCommand&gt;&gt;</code></pre>
+    <pre><code class="lang-csharp hljs">public record State&lt;T&gt; : IEquatable&lt;State&lt;T&gt;&gt;</code></pre>
   </div>
 
 
 
   <h4 class="section">Type Parameters</h4>
   <dl class="parameters">
-    <dt><code>TCommand</code></dt>
+    <dt><code>T</code></dt>
     <dd></dd>
   </dl>
 
@@ -116,17 +116,14 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
     <dt>Inheritance</dt>
     <dd>
       <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
-      <div><span class="xref">CommandRequest&lt;TCommand&gt;</span></div>
+      <div><span class="xref">State&lt;T&gt;</span></div>
     </dd>
   </dl>
 
   <dl class="typelist implements">
     <dt>Implements</dt>
     <dd>
-      <div><a class="xref" href="MicroPlumberd.ICommandRequest-1.html">ICommandRequest</a>&lt;TCommand&gt;</div>
-      <div><a class="xref" href="MicroPlumberd.ICommandRequest.html">ICommandRequest</a></div>
-      <div><a class="xref" href="MicroPlumberd.IProcessAction.html">IProcessAction</a></div>
-      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="MicroPlumberd.CommandRequest-1.html">CommandRequest</a>&lt;TCommand&gt;&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="MicroPlumberd.State-1.html">State</a>&lt;T&gt;&gt;</div>
     </dd>
   </dl>
 
@@ -166,20 +163,27 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
 </h2>
 
 
-  <a id="MicroPlumberd_CommandRequest_1__ctor_" data-uid="MicroPlumberd.CommandRequest`1.#ctor*"></a>
+  <a id="MicroPlumberd_State_1__ctor_" data-uid="MicroPlumberd.State`1.#ctor*"></a>
 
-  <h3 id="MicroPlumberd_CommandRequest_1__ctor" data-uid="MicroPlumberd.CommandRequest`1.#ctor">
-  CommandRequest()
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_State_1__ctor__0_MicroPlumberd_Metadata_" data-uid="MicroPlumberd.State`1.#ctor(`0,MicroPlumberd.Metadata)">
+  State(T, Metadata)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public CommandRequest()</code></pre>
+    <pre><code class="lang-csharp hljs">public State(T Value, Metadata Metadata)</code></pre>
   </div>
 
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>Value</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>Metadata</code> <a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a></dt>
+    <dd></dd>
+  </dl>
 
 
 
@@ -196,18 +200,18 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
 </h2>
 
 
-  <a id="MicroPlumberd_CommandRequest_1_Command_" data-uid="MicroPlumberd.CommandRequest`1.Command*"></a>
+  <a id="MicroPlumberd_State_1_Metadata_" data-uid="MicroPlumberd.State`1.Metadata*"></a>
 
-  <h3 id="MicroPlumberd_CommandRequest_1_Command" data-uid="MicroPlumberd.CommandRequest`1.Command">
-  Command
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs/#L24"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_State_1_Metadata" data-uid="MicroPlumberd.State`1.Metadata">
+  Metadata
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TCommand Command { get; init; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Metadata Metadata { get; init; }</code></pre>
   </div>
 
 
@@ -216,7 +220,7 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><span class="xref">TCommand</span></dt>
+    <dt><a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a></dt>
     <dd></dd>
   </dl>
 
@@ -227,18 +231,18 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
 
 
 
-  <a id="MicroPlumberd_CommandRequest_1_RecipientId_" data-uid="MicroPlumberd.CommandRequest`1.RecipientId*"></a>
+  <a id="MicroPlumberd_State_1_Value_" data-uid="MicroPlumberd.State`1.Value*"></a>
 
-  <h3 id="MicroPlumberd_CommandRequest_1_RecipientId" data-uid="MicroPlumberd.CommandRequest`1.RecipientId">
-  RecipientId
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  <h3 id="MicroPlumberd_State_1_Value" data-uid="MicroPlumberd.State`1.Value">
+  Value
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Guid RecipientId { get; init; }</code></pre>
+    <pre><code class="lang-csharp hljs">public T Value { get; init; }</code></pre>
   </div>
 
 
@@ -247,9 +251,49 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
 
   <h4 class="section">Property Value</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dt><span class="xref">T</span></dt>
     <dd></dd>
   </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="operators">Operators
+</h2>
+
+
+  <a id="MicroPlumberd_State_1_op_Implicit_" data-uid="MicroPlumberd.State`1.op_Implicit*"></a>
+
+  <h3 id="MicroPlumberd_State_1_op_Implicit_MicroPlumberd_State__0____0" data-uid="MicroPlumberd.State`1.op_Implicit(MicroPlumberd.State{`0})~`0">
+  implicit operator T(State&lt;T&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static implicit operator T(State&lt;T&gt; st)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>st</code> <a class="xref" href="MicroPlumberd.State-1.html">State</a>&lt;T&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
 
 
 
@@ -262,7 +306,7 @@ Class CommandRequest&lt;TCommand&gt;  <a class="header-action link-secondary" ti
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.ProcessManager.Abstractions/CommandRequest.cs/#L15" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L25" class="edit-link">Edit this page</a>
         </div>
 
 

@@ -151,6 +151,8 @@ items:
     name: StateChangeAction<TOwner>
   - uid: MicroPlumberd.StateInfo
     name: StateInfo
+  - uid: MicroPlumberd.State`1
+    name: State<T>
   - uid: MicroPlumberd.SteamNameConvention
     name: SteamNameConvention
   - uid: MicroPlumberd.StreamCategoryConvention

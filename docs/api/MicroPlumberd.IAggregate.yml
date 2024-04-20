@@ -22,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IAggregate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 38
+    startLine: 39
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -56,7 +56,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PendingEvents
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 46
+    startLine: 47
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -88,7 +88,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 53
+    startLine: 54
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -126,7 +126,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AckCommitted
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 58
+    startLine: 59
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

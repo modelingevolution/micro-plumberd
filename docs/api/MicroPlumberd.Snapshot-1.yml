@@ -6,6 +6,7 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.Snapshot`1.Data
+  - MicroPlumberd.Snapshot`1.op_Implicit(MicroPlumberd.Snapshot{`0})~`0
   langs:
   - csharp
   - vb
@@ -20,7 +21,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Snapshot
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 46
+    startLine: 50
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -69,7 +70,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Data
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 53
+    startLine: 57
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -84,6 +85,40 @@ items:
   overload: MicroPlumberd.Snapshot`1.Data*
   nameWithType.vb: Snapshot(Of T).Data
   fullName.vb: MicroPlumberd.Snapshot(Of T).Data
+- uid: MicroPlumberd.Snapshot`1.op_Implicit(MicroPlumberd.Snapshot{`0})~`0
+  commentId: M:MicroPlumberd.Snapshot`1.op_Implicit(MicroPlumberd.Snapshot{`0})~`0
+  id: op_Implicit(MicroPlumberd.Snapshot{`0})~`0
+  parent: MicroPlumberd.Snapshot`1
+  langs:
+  - csharp
+  - vb
+  name: implicit operator T(Snapshot<T>)
+  nameWithType: Snapshot<T>.implicit operator T(Snapshot<T>)
+  fullName: MicroPlumberd.Snapshot<T>.implicit operator T(MicroPlumberd.Snapshot<T>)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Implicit
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 59
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static implicit operator T(Snapshot<T> st)
+    parameters:
+    - id: st
+      type: MicroPlumberd.Snapshot`1
+    return:
+      type: '{T}'
+    content.vb: Public Shared Widening Operator CType(st As Snapshot(Of T)) As T
+  overload: MicroPlumberd.Snapshot`1.op_Implicit*
+  nameWithType.vb: Snapshot(Of T).CType(Snapshot(Of T))
+  fullName.vb: MicroPlumberd.Snapshot(Of T).CType(MicroPlumberd.Snapshot(Of T))
+  name.vb: CType(Snapshot(Of T))
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -452,3 +487,41 @@ references:
   name: T
   nameWithType: T
   fullName: T
+- uid: MicroPlumberd.Snapshot`1.op_Implicit*
+  commentId: Overload:MicroPlumberd.Snapshot`1.op_Implicit
+  name: implicit operator
+  nameWithType: Snapshot<T>.implicit operator
+  fullName: MicroPlumberd.Snapshot<T>.implicit operator
+  nameWithType.vb: Snapshot(Of T).CType
+  fullName.vb: MicroPlumberd.Snapshot(Of T).CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: MicroPlumberd.Snapshot`1
+  commentId: T:MicroPlumberd.Snapshot`1
+  parent: MicroPlumberd
+  href: MicroPlumberd.Snapshot-1.html
+  name: Snapshot<T>
+  nameWithType: Snapshot<T>
+  fullName: MicroPlumberd.Snapshot<T>
+  nameWithType.vb: Snapshot(Of T)
+  fullName.vb: MicroPlumberd.Snapshot(Of T)
+  name.vb: Snapshot(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot
+    href: MicroPlumberd.Snapshot-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Snapshot`1
+    name: Snapshot
+    href: MicroPlumberd.Snapshot-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

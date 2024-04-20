@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IVersioned
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 64
+    startLine: 65
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -47,7 +47,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 72
+    startLine: 73
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

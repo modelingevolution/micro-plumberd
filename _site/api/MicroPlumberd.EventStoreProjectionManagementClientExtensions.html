@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -154,8 +154,8 @@ Class EventStoreProjectionManagementClientExtensions  <a class="header-action li
 
   <a id="MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_" data-uid="MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection*"></a>
 
-  <h3 id="MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_EventStore_Client_EventStoreProjectionManagementClient_System_String_MicroPlumberd_IProjectionRegister_System_Collections_Generic_IEnumerable_System_String__" data-uid="MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String})">
-  EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable&lt;string&gt;)
+  <h3 id="MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureJoinProjection_EventStore_Client_EventStoreProjectionManagementClient_System_String_MicroPlumberd_IProjectionRegister_System_Collections_Generic_IEnumerable_System_String__System_Threading_CancellationToken_" data-uid="MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureJoinProjection(EventStore.Client.EventStoreProjectionManagementClient,System.String,MicroPlumberd.IProjectionRegister,System.Collections.Generic.IEnumerable{System.String},System.Threading.CancellationToken)">
+  EnsureJoinProjection(EventStoreProjectionManagementClient, string, IProjectionRegister, IEnumerable&lt;string&gt;, CancellationToken)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs/#L42"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -163,7 +163,7 @@ Class EventStoreProjectionManagementClientExtensions  <a class="header-action li
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task EnsureJoinProjection(this EventStoreProjectionManagementClient client, string outputStream, IProjectionRegister register, IEnumerable&lt;string&gt; eventTypes)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task EnsureJoinProjection(this EventStoreProjectionManagementClient client, string outputStream, IProjectionRegister register, IEnumerable&lt;string&gt; eventTypes, CancellationToken token = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -175,6 +175,8 @@ Class EventStoreProjectionManagementClientExtensions  <a class="header-action li
     <dt><code>register</code> <a class="xref" href="MicroPlumberd.IProjectionRegister.html">IProjectionRegister</a></dt>
     <dd></dd>
     <dt><code>eventTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
     <dd></dd>
   </dl>
 
@@ -236,8 +238,8 @@ Class EventStoreProjectionManagementClientExtensions  <a class="header-action li
 
   <a id="MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureLookupProjection_" data-uid="MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection*"></a>
 
-  <h3 id="MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureLookupProjection_EventStore_Client_EventStoreProjectionManagementClient_MicroPlumberd_IProjectionRegister_System_String_System_String_System_String_" data-uid="MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String)">
-  EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string)
+  <h3 id="MicroPlumberd_EventStoreProjectionManagementClientExtensions_EnsureLookupProjection_EventStore_Client_EventStoreProjectionManagementClient_MicroPlumberd_IProjectionRegister_System_String_System_String_System_String_System_Threading_CancellationToken_" data-uid="MicroPlumberd.EventStoreProjectionManagementClientExtensions.EnsureLookupProjection(EventStore.Client.EventStoreProjectionManagementClient,MicroPlumberd.IProjectionRegister,System.String,System.String,System.String,System.Threading.CancellationToken)">
+  EnsureLookupProjection(EventStoreProjectionManagementClient, IProjectionRegister, string, string, string, CancellationToken)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs/#L28"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -245,7 +247,7 @@ Class EventStoreProjectionManagementClientExtensions  <a class="header-action li
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory)</code></pre>
+    <pre><code class="lang-csharp hljs">public static Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -259,6 +261,8 @@ Class EventStoreProjectionManagementClientExtensions  <a class="header-action li
     <dt><code>eventProperty</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
     <dd></dd>
     <dt><code>outputStreamCategory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
     <dd></dd>
   </dl>
 

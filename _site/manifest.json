@@ -1252,6 +1252,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.State-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.State-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.StateChangeAction-1.yml",
       "output": {
         ".html": {

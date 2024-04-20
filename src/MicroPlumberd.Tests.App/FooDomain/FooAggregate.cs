@@ -11,8 +11,7 @@ public record FooEntityState : IId<Guid>, IVersionAware
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; }
-    public long Version { get; private set; } = -1;
-    void IVersionAware.SetValue(long nv) => Version = nv;
+    public long Version { get; set; } = -1;
 }
 
 [Aggregate]

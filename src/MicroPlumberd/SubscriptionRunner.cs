@@ -5,7 +5,7 @@ using System.Threading;
 namespace MicroPlumberd;
 
 class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelativeStreamPosition start,
-    UserCredentials? userCredentials = null, CancellationToken cancellationToken = new()) : ISubscriptionRunner
+    UserCredentials? userCredentials = null, CancellationToken cancellationToken = default) : ISubscriptionRunner
 {
     private SubscriptionRunner? _runner;
 
@@ -22,7 +22,8 @@ class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelative
         else if (start.StartPosition != FromStream.Start)
             sp = start.StartPosition.ToUInt64();
 
-        var records = plumber.Client.ReadStreamAsync(start.Direction, streamName, sp, 1);
+        var records = plumber.Client.ReadStreamAsync(start.Direction, streamName, sp, 1, 
+            cancellationToken:cancellationToken);
         StreamPosition dstPosition;
         if (await records.ReadState == ReadState.StreamNotFound)
             return plumber.Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials, cancellationToken);

@@ -309,7 +309,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return r;
     }
 
-    public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId, IVersioned => AppendState(state, state.Id, state.Version, token);
+    public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId => 
+        AppendState(state, state.Id, state is IVersioned v ? v.Version : null, token);
+    
 
     public async Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default) 
     {
@@ -413,7 +415,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
         var (evt, m) = e[0];
         if (evt is IVersionAware va)
-            va.SetValue(m.SourceStreamPosition);
+            va.Version = m.SourceStreamPosition;
         return new State<T>((T)evt, m);
     }
     public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType, CancellationToken token = default)

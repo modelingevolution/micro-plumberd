@@ -1,41 +1,41 @@
 ### YamlMime:ManagedReference
 items:
-- uid: MicroPlumberd.Snapshot
-  commentId: T:MicroPlumberd.Snapshot
-  id: Snapshot
+- uid: MicroPlumberd.State`1
+  commentId: T:MicroPlumberd.State`1
+  id: State`1
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.Snapshot.Created
-  - MicroPlumberd.Snapshot.Version
+  - MicroPlumberd.State`1.#ctor(`0,MicroPlumberd.Metadata)
+  - MicroPlumberd.State`1.Metadata
+  - MicroPlumberd.State`1.Value
+  - MicroPlumberd.State`1.op_Implicit(MicroPlumberd.State{`0})~`0
   langs:
   - csharp
   - vb
-  name: Snapshot
-  nameWithType: Snapshot
-  fullName: MicroPlumberd.Snapshot
+  name: State<T>
+  nameWithType: State<T>
+  fullName: MicroPlumberd.State<T>
   type: Class
   source:
     remote:
       path: src/MicroPlumberd/Abstractions/IPlumber.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Snapshot
+    id: State
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 31
+    startLine: 24
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Represents a snapshot object used in Plumberd.
-  example: []
   syntax:
-    content: 'public abstract record Snapshot : IEquatable<Snapshot>'
-    content.vb: Public MustInherit Class Snapshot Implements IEquatable(Of Snapshot)
+    content: 'public record State<T> : IEquatable<State<T>>'
+    typeParameters:
+    - id: T
+    content.vb: Public Class State(Of T) Implements IEquatable(Of State(Of T))
   inheritance:
   - System.Object
-  derivedClasses:
-  - MicroPlumberd.Snapshot`1
   implements:
-  - System.IEquatable{MicroPlumberd.Snapshot}
+  - System.IEquatable{MicroPlumberd.State`1}
   inheritedMembers:
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -44,68 +44,139 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: MicroPlumberd.Snapshot.Created
-  commentId: P:MicroPlumberd.Snapshot.Created
-  id: Created
-  parent: MicroPlumberd.Snapshot
+  nameWithType.vb: State(Of T)
+  fullName.vb: MicroPlumberd.State(Of T)
+  name.vb: State(Of T)
+- uid: MicroPlumberd.State`1.#ctor(`0,MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.State`1.#ctor(`0,MicroPlumberd.Metadata)
+  id: '#ctor(`0,MicroPlumberd.Metadata)'
+  parent: MicroPlumberd.State`1
   langs:
   - csharp
   - vb
-  name: Created
-  nameWithType: Snapshot.Created
-  fullName: MicroPlumberd.Snapshot.Created
+  name: State(T, Metadata)
+  nameWithType: State<T>.State(T, Metadata)
+  fullName: MicroPlumberd.State<T>.State(T, MicroPlumberd.Metadata)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public State(T Value, Metadata Metadata)
+    parameters:
+    - id: Value
+      type: '{T}'
+    - id: Metadata
+      type: MicroPlumberd.Metadata
+    content.vb: Public Sub New(Value As T, Metadata As Metadata)
+  overload: MicroPlumberd.State`1.#ctor*
+  nameWithType.vb: State(Of T).New(T, Metadata)
+  fullName.vb: MicroPlumberd.State(Of T).New(T, MicroPlumberd.Metadata)
+  name.vb: New(T, Metadata)
+- uid: MicroPlumberd.State`1.Value
+  commentId: P:MicroPlumberd.State`1.Value
+  id: Value
+  parent: MicroPlumberd.State`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: State<T>.Value
+  fullName: MicroPlumberd.State<T>.Value
   type: Property
   source:
     remote:
       path: src/MicroPlumberd/Abstractions/IPlumber.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Created
+    id: Value
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 38
+    startLine: 24
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Gets the creation date of the snapshot.
-  example: []
   syntax:
-    content: public DateTimeOffset Created { get; }
+    content: public T Value { get; init; }
     parameters: []
     return:
-      type: System.DateTimeOffset
-    content.vb: Public Property Created As DateTimeOffset
-  overload: MicroPlumberd.Snapshot.Created*
-- uid: MicroPlumberd.Snapshot.Version
-  commentId: P:MicroPlumberd.Snapshot.Version
-  id: Version
-  parent: MicroPlumberd.Snapshot
+      type: '{T}'
+    content.vb: Public Property Value As T
+  overload: MicroPlumberd.State`1.Value*
+  nameWithType.vb: State(Of T).Value
+  fullName.vb: MicroPlumberd.State(Of T).Value
+- uid: MicroPlumberd.State`1.Metadata
+  commentId: P:MicroPlumberd.State`1.Metadata
+  id: Metadata
+  parent: MicroPlumberd.State`1
   langs:
   - csharp
   - vb
-  name: Version
-  nameWithType: Snapshot.Version
-  fullName: MicroPlumberd.Snapshot.Version
+  name: Metadata
+  nameWithType: State<T>.Metadata
+  fullName: MicroPlumberd.State<T>.Metadata
   type: Property
   source:
     remote:
       path: src/MicroPlumberd/Abstractions/IPlumber.cs
       branch: master
       repo: https://github.com/modelingevolution/micro-plumberd.git
-    id: Version
+    id: Metadata
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 43
+    startLine: 24
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Gets the version of the snapshot.
-  example: []
   syntax:
-    content: public long Version { get; }
+    content: public Metadata Metadata { get; init; }
     parameters: []
     return:
-      type: System.Int64
-    content.vb: Public Property Version As Long
-  overload: MicroPlumberd.Snapshot.Version*
+      type: MicroPlumberd.Metadata
+    content.vb: Public Property Metadata As Metadata
+  overload: MicroPlumberd.State`1.Metadata*
+  nameWithType.vb: State(Of T).Metadata
+  fullName.vb: MicroPlumberd.State(Of T).Metadata
+- uid: MicroPlumberd.State`1.op_Implicit(MicroPlumberd.State{`0})~`0
+  commentId: M:MicroPlumberd.State`1.op_Implicit(MicroPlumberd.State{`0})~`0
+  id: op_Implicit(MicroPlumberd.State{`0})~`0
+  parent: MicroPlumberd.State`1
+  langs:
+  - csharp
+  - vb
+  name: implicit operator T(State<T>)
+  nameWithType: State<T>.implicit operator T(State<T>)
+  fullName: MicroPlumberd.State<T>.implicit operator T(MicroPlumberd.State<T>)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Implicit
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 26
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static implicit operator T(State<T> st)
+    parameters:
+    - id: st
+      type: MicroPlumberd.State`1
+    return:
+      type: '{T}'
+    content.vb: Public Shared Widening Operator CType(st As State(Of T)) As T
+  overload: MicroPlumberd.State`1.op_Implicit*
+  nameWithType.vb: State(Of T).CType(State(Of T))
+  fullName.vb: MicroPlumberd.State(Of T).CType(MicroPlumberd.State(Of T))
+  name.vb: CType(State(Of T))
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -124,26 +195,29 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
-- uid: System.IEquatable{MicroPlumberd.Snapshot}
-  commentId: T:System.IEquatable{MicroPlumberd.Snapshot}
+- uid: System.IEquatable{MicroPlumberd.State`1}
+  commentId: T:System.IEquatable{MicroPlumberd.State`1}
   parent: System
   definition: System.IEquatable`1
   href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
-  name: IEquatable<Snapshot>
-  nameWithType: IEquatable<Snapshot>
-  fullName: System.IEquatable<MicroPlumberd.Snapshot>
-  nameWithType.vb: IEquatable(Of Snapshot)
-  fullName.vb: System.IEquatable(Of MicroPlumberd.Snapshot)
-  name.vb: IEquatable(Of Snapshot)
+  name: IEquatable<State<T>>
+  nameWithType: IEquatable<State<T>>
+  fullName: System.IEquatable<MicroPlumberd.State<T>>
+  nameWithType.vb: IEquatable(Of State(Of T))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.State(Of T))
+  name.vb: IEquatable(Of State(Of T))
   spec.csharp:
   - uid: System.IEquatable`1
     name: IEquatable
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
   - name: <
-  - uid: MicroPlumberd.Snapshot
-    name: Snapshot
-    href: MicroPlumberd.Snapshot.html
+  - uid: MicroPlumberd.State`1
+    name: State
+    href: MicroPlumberd.State-1.html
+  - name: <
+  - name: T
+  - name: '>'
   - name: '>'
   spec.vb:
   - uid: System.IEquatable`1
@@ -153,9 +227,14 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: MicroPlumberd.Snapshot
-    name: Snapshot
-    href: MicroPlumberd.Snapshot.html
+  - uid: MicroPlumberd.State`1
+    name: State
+    href: MicroPlumberd.State-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
   - name: )
 - uid: System.Object.Equals(System.Object)
   commentId: M:System.Object.Equals(System.Object)
@@ -411,34 +490,83 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: MicroPlumberd.Snapshot.Created*
-  commentId: Overload:MicroPlumberd.Snapshot.Created
-  href: MicroPlumberd.Snapshot.html#MicroPlumberd_Snapshot_Created
-  name: Created
-  nameWithType: Snapshot.Created
-  fullName: MicroPlumberd.Snapshot.Created
-- uid: System.DateTimeOffset
-  commentId: T:System.DateTimeOffset
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.datetimeoffset
-  name: DateTimeOffset
-  nameWithType: DateTimeOffset
-  fullName: System.DateTimeOffset
-- uid: MicroPlumberd.Snapshot.Version*
-  commentId: Overload:MicroPlumberd.Snapshot.Version
-  href: MicroPlumberd.Snapshot.html#MicroPlumberd_Snapshot_Version
-  name: Version
-  nameWithType: Snapshot.Version
-  fullName: MicroPlumberd.Snapshot.Version
-- uid: System.Int64
-  commentId: T:System.Int64
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.int64
-  name: long
-  nameWithType: long
-  fullName: long
-  nameWithType.vb: Long
-  fullName.vb: Long
-  name.vb: Long
+- uid: MicroPlumberd.State`1.#ctor*
+  commentId: Overload:MicroPlumberd.State`1.#ctor
+  href: MicroPlumberd.State-1.html#MicroPlumberd_State_1__ctor__0_MicroPlumberd_Metadata_
+  name: State
+  nameWithType: State<T>.State
+  fullName: MicroPlumberd.State<T>.State
+  nameWithType.vb: State(Of T).New
+  fullName.vb: MicroPlumberd.State(Of T).New
+  name.vb: New
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: MicroPlumberd.State`1.Value*
+  commentId: Overload:MicroPlumberd.State`1.Value
+  href: MicroPlumberd.State-1.html#MicroPlumberd_State_1_Value
+  name: Value
+  nameWithType: State<T>.Value
+  fullName: MicroPlumberd.State<T>.Value
+  nameWithType.vb: State(Of T).Value
+  fullName.vb: MicroPlumberd.State(Of T).Value
+- uid: MicroPlumberd.State`1.Metadata*
+  commentId: Overload:MicroPlumberd.State`1.Metadata
+  href: MicroPlumberd.State-1.html#MicroPlumberd_State_1_Metadata
+  name: Metadata
+  nameWithType: State<T>.Metadata
+  fullName: MicroPlumberd.State<T>.Metadata
+  nameWithType.vb: State(Of T).Metadata
+  fullName.vb: MicroPlumberd.State(Of T).Metadata
+- uid: MicroPlumberd.State`1.op_Implicit*
+  commentId: Overload:MicroPlumberd.State`1.op_Implicit
+  name: implicit operator
+  nameWithType: State<T>.implicit operator
+  fullName: MicroPlumberd.State<T>.implicit operator
+  nameWithType.vb: State(Of T).CType
+  fullName.vb: MicroPlumberd.State(Of T).CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: MicroPlumberd.State`1
+  commentId: T:MicroPlumberd.State`1
+  parent: MicroPlumberd
+  href: MicroPlumberd.State-1.html
+  name: State<T>
+  nameWithType: State<T>
+  fullName: MicroPlumberd.State<T>
+  nameWithType.vb: State(Of T)
+  fullName.vb: MicroPlumberd.State(Of T)
+  name.vb: State(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.State`1
+    name: State
+    href: MicroPlumberd.State-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.State`1
+    name: State
+    href: MicroPlumberd.State-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

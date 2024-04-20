@@ -19,7 +19,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TypeEventConverter
     path: src/MicroPlumberd/Abstractions/IAggregate.cs
-    startLine: 15
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

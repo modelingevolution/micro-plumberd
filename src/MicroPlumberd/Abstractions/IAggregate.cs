@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
+using Grpc.Core;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
@@ -73,14 +74,15 @@ public interface IVersioned
     long Version { get; }
 }
 
+
 /// <summary>
 /// Interface for increasing the version.
 /// </summary>
 /// <seealso cref="MicroPlumberd.IVersioned" />
 public interface IVersionAware : IVersioned
 {
-    void Increase() => SetValue(this.Version + 1);
-    void SetValue(long nv);
+    long Version { get; set; }
+    void Increase() => this.Version += 1;
 }
 static class Extensions
 {
