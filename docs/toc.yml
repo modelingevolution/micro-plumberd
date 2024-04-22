@@ -8,17 +8,19 @@
       href: index.md#install-nugets
     - name: Configure plumber
       href: index.md#configure-plumber
+  - href: index.md#features
+    name: Features
+    items:
+    - name: State
+      href: index.md#state
     - name: Aggregates
       href: index.md#aggregates
     - name: Write a read-model/processor
       href: index.md#write-a-read-modelprocessor
-  - href: index.md#features
-    name: Features
-    items:
-    - name: Aggregates
-      href: index.md#aggregates
-    - name: Read-Models
-      href: index.md#read-models
+    - name: Read-Model with EF (EntityFramework)
+      href: index.md#read-model-with-ef-entityframework
+    - name: Read-Model with LiteDB
+      href: index.md#read-model-with-litedb
     - href: index.md#command-handlers-message-bus
       name: Command-Handlers & Message Bus
       items:
@@ -32,12 +34,14 @@
       href: index.md#integration-tests-support
     - name: Specflow/Ghierkin step-files generation
       href: index.md#specflowghierkin-step-files-generation
-    - name: GRPC Direct communication
-      href: index.md#grpc-direct-communication
+    - name: EXPERIMENTAL GRPC Direct communication
+      href: index.md#experimental-grpc-direct-communication
     - name: EXPERIMENTAL Process-Manager
       href: index.md#experimental-process-manager
-- href: index.md#quick-how-to-section
-  name: 'Quick "How to" section:'
+    - name: EXPERIMENTAL Uniqueness support
+      href: index.md#experimental-uniqueness-support
+- href: index.md#how-to
+  name: How-to
   items:
   - name: How to append event to its default stream
     href: index.md#how-to-append-event-to-its-default-stream
@@ -46,11 +50,10 @@
   - name: How to subscribe a model
     href: index.md#how-to-subscribe-a-model
   - name: How to make a model subscribe but from last event
-    href: index.md#how-to-make-a-model-subscribe-but-from-last-e
+    href: index.md#how-to-make-a-model-subscribe-but-from-last-event
   - name: How to link events to another stream
     href: index.md#how-to-link-events-to-another-stream
-  - href: index.md#how-to-rehydrate-model-run-all-events-again
-    name: How to rehydrate model (run all events again)
-    items:
-    - name: EXPERIMENTAL Uniqueness support
-      href: index.md#experimental-uniqueness-support
+  - name: How to rehydrate model (run all events again)
+    href: index.md#how-to-rehydrate-model-run-all-events-again
+- name: API Reference
+  href: api/MicroPlumberd.html

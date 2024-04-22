@@ -98,15 +98,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StreamNameFromEventConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 109
+    startLine: 115
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the stream name from event convention. This is used only in AppendEvent. The default searches for [OutputStreamAttribute]. If not found than the last segment of the namespace is used as category, that is not named "Events".
+  example: []
   syntax:
     content: StreamNameFromEventConvention StreamNameFromEventConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.StreamNameFromEventConvention
+      description: The stream name from event convention.
     content.vb: ReadOnly Property StreamNameFromEventConvention As StreamNameFromEventConvention
   overload: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.GetStreamCategoryConvention
@@ -127,7 +130,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamCategoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 116
+    startLine: 122
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -159,7 +162,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 130
+    startLine: 136
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -196,7 +199,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdSnapshotConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 142
+    startLine: 148
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -233,7 +236,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdStateConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 154
+    startLine: 160
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -268,7 +271,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 161
+    startLine: 167
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -300,7 +303,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 168
+    startLine: 174
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -332,7 +335,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: BuildInvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 169
+    startLine: 175
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -361,7 +364,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataEnrichers
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 170
+    startLine: 176
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -390,7 +393,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 171
+    startLine: 179
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -419,7 +422,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 172
+    startLine: 180
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -448,7 +451,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 173
+    startLine: 181
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -477,7 +480,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotPolicyFactoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 174
+    startLine: 182
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -506,7 +509,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StandardMetadataEnricherTypes
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 175
+    startLine: 183
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -535,7 +538,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetMetadata
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 176
+    startLine: 184
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

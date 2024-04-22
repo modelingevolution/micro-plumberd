@@ -20,7 +20,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IExtension
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 252
+    startLine: 266
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -45,7 +45,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetExtension
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 254
+    startLine: 268
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
