@@ -98,7 +98,7 @@ namespace MicroPlumberd.Tests.HowTo
 
             var sp = await _host.Configure(x => x
                     .AddSingleton<LiteDatabase>((sp) => LiteDbFactory.Get())
-                    .AddEventHandler<DbReservationModel>()
+                    .AddEventHandler<DbReservationModel>(true)
                     .AddPlumberd(es.GetEventStoreSettings()))
                 .StartAsync();
             

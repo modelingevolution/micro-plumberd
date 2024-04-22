@@ -71,7 +71,7 @@ class Md2TocGenerator
         string slug = title.ToLower();
         slug = Regex.Replace(slug, @"[^a-z0-9\s-]", ""); // Remove invalid characters
         slug = Regex.Replace(slug, @"\s+", " ").Trim(); // Convert multiple spaces into one space
-        slug = slug.Substring(0, slug.Length <= 45 ? slug.Length : 45).Trim(); // Cut and trim
+        slug = slug.Substring(0, slug.Length <= 64 ? slug.Length : 64).Trim(); // Cut and trim
         slug = Regex.Replace(slug, @"\s", "-"); // Replace spaces with hyphens
         return slug;
     }

@@ -20,22 +20,13 @@ public partial class ReservationModel(InMemoryAssertionDb assertionModelStore)
 
 
 
-[OutputStream("ReservationModel_v2")]
+[OutputStream(DbReservationModel.MODEL_NAME)]
 [EventHandler]
-public partial class DbReservationModel
+public partial class DbReservationModel(LiteDatabase db)
 {
-    private readonly LiteDatabase _db;
-
-    public DbReservationModel(LiteDatabase db)
-    {
-        _db = db;
-        this.Reservations = db.Reservations();
-
-
-    }
-
-    public ILiteCollection<Reservation> Reservations { get; set; }
-
+    internal const string MODEL_VER = "_v2";
+    internal const string MODEL_NAME = $"Reservations{MODEL_VER}";
+    public ILiteCollection<Reservation> Reservations { get; } = db.Reservations();
 
     private async Task Given(Metadata m, TicketReserved ev)
     {
@@ -46,12 +37,11 @@ public partial class DbReservationModel
 
 public static class DbExtensions
 {
-    public static ILiteCollection<Reservation> Reservations(this LiteDatabase db) => db.GetCollection<Reservation>("reservations");
+    public static ILiteCollection<Reservation> Reservations(this LiteDatabase db) => db.GetCollection<Reservation>(DbReservationModel.MODEL_NAME);
 }
 public record Reservation
 {
     public ObjectId ReservationId { get; set; }
     public string RoomName { get; set; }
     public string MovieName { get; set; }
-
 }

@@ -99,16 +99,84 @@ public delegate string GroupNameModelConvention(Type model);
 /// </summary>
 public interface IReadOnlyConventions : IExtension
 {
+    /// <summary>
+    /// Gets the projection category stream convention. Used in plumber.Read operations to find out full stream-id from TOwner and Id.
+    /// </summary>
+    /// <value>
+    /// The projection category stream convention.
+    /// </value>
     ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; }
+
+    /// <summary>
+    /// Gets the stream name from event convention. This is used only in AppendEvent. The default searches for [OutputStreamAttribute]. If not found than the last segment of the namespace is used as category, that is not named "Events". 
+    /// </summary>
+    /// <value>
+    /// The stream name from event convention.
+    /// </value>
     StreamNameFromEventConvention StreamNameFromEventConvention { get;}
+    /// <summary>
+    /// Gets the get stream category convention. 
+    /// </summary>
+    /// <value>
+    /// The get stream category convention.
+    /// </value>
     StreamCategoryConvention GetStreamCategoryConvention { get;  }
+    /// <summary>
+    /// Gets or sets the get stream id convention. The default searches for [OutputStreamAttribute], if not present will return name of class and make it friendly (Generic names will be nicely formated).
+    /// Used in:
+    /// <list type="bullet">
+    /// <item>Rehydrate</item>
+    /// <item>Read</item>
+    /// <item>SaveChanges</item>
+    /// <item>SaveNew</item>
+    /// </list>
+    /// </summary>
+    /// <value>
+    /// The get stream identifier convention.
+    /// </value>
     SteamNameConvention GetStreamIdConvention { get; }
+    /// <summary>
+    /// Gets or sets the get stream identifier snapshot convention. The default appends "Snapshot" suffix to the name found in [OutputStreamAttribute], if not present then will append to the name of class.
+    /// Used in:
+    /// <list type="bullet">
+    /// <item>GetSnapshot</item>
+    /// <item>AppendSnapshot</item>
+    /// </list>
+    /// </summary>
+    /// <value>
+    /// The get stream identifier snapshot convention.
+    /// </value>
     SteamNameConvention GetStreamIdSnapshotConvention { get;  }
+
+    /// <summary>
+    /// Gets the stream identifier state convention. The default searches for [OutputStreamAttribute], if not present will return name of class and make it friendly (Generic names will be nicely formated).
+    /// <list type="bullet">
+    /// <item>AppendState</item>
+    /// <item>GetState</item>
+    /// </list>
+    /// </summary>
+    /// <value>
+    /// The get stream identifier state convention.
+    /// </value>
     SteamNameConvention GetStreamIdStateConvention { get; }
+    /// <summary>
+    /// Gets the snapshot event name convention. It appends to the name of the event suffix: "SnapShotted"
+    /// </summary>
+    /// <value>
+    /// The snapshot event name convention.
+    /// </value>
     SnapshotEventName SnapshotEventNameConvention { get;  }
-    EventNameConvention GetEventNameConvention { get;  }
+    /// <summary>
+    /// Gets the get event name convention. Used almost everywhere an event is saved to EventStoreDB.
+    /// </summary>
+    /// <value>
+    /// The get event name convention.
+    /// </value>
+    EventNameConvention GetEventNameConvention { get; }
     BuildInvocationContext BuildInvocationContext { get;  }
     MetadataConvention? MetadataEnrichers { get;  }
+
+
     EventIdConvention GetEventIdConvention { get; }
     OutputStreamModelConvention OutputStreamModelConvention { get;  }
     GroupNameModelConvention GroupNameModelConvention { get;  }
@@ -117,14 +185,67 @@ public interface IReadOnlyConventions : IExtension
     object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
 
 }
+/// <summary>
+/// An interface used to configure and provide conventions for Plumber.
+/// </summary>
+/// <seealso cref="MicroPlumberd.IExtension" />
 public interface IConventions : IExtension
 {
+    /// <summary>
+    /// Gets or sets the projection category stream convention. Used in plumber.Read operations to find out full stream-id from TOwner and Id.
+    /// </summary>
+    /// <value>
+    /// The projection category stream convention.
+    /// </value>
     ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; set; }
+    /// <summary>
+    /// Gets or sets the stream category convention. 
+    /// </summary>
+    /// <value>
+    /// The get stream category convention.
+    /// </value>
     StreamCategoryConvention GetStreamCategoryConvention { get; set; }
+    /// <summary>
+    /// Gets or sets the stream id convention. The default searches for [OutputStreamAttribute], if not present will return name of class and make it friendly (Generic names will be nicely formated).
+    /// Used in:
+    /// <list type="bullet">
+    /// <item>Rehydrate</item>
+    /// <item>Read</item>
+    /// <item>SaveChanges</item>
+    /// <item>SaveNew</item>
+    /// </list>
+    /// </summary>
+    /// <value>
+    /// The get stream identifier convention.
+    /// </value>
     SteamNameConvention GetStreamIdConvention { get; set; }
+    /// <summary>
+    /// Gets or sets the stream identifier snapshot convention. The default appends "Snapshot" suffix to the name found in [OutputStreamAttribute], if not present then will append to the name of class.
+    /// Used in:
+    /// <list type="bullet">
+    /// <item>GetSnapshot</item>
+    /// <item>AppendSnapshot</item>
+    /// </list>
+    /// </summary>
+    /// <value>
+    /// The get stream identifier snapshot convention.
+    /// </value>
     SteamNameConvention GetStreamIdSnapshotConvention { get; set; }
+    /// <summary>
+    /// Gets or sets the snapshot event name convention. It appends to the name of the event suffix: "SnapShotted"
+    /// </summary>
+    /// <value>
+    /// The snapshot event name convention.
+    /// </value>
     SnapshotEventName SnapshotEventNameConvention { get; set; }
+    /// <summary>
+    /// Gets or sets the event name convention. Used almost everywhere an event is saved to EventStoreDB.
+    /// </summary>
+    /// <value>
+    /// The get event name convention.
+    /// </value>
     EventNameConvention GetEventNameConvention { get; set; }
+
     BuildInvocationContext BuildInvocationContext { get; set; }
     MetadataConvention? MetadataEnrichers { get; set; }
     EventIdConvention GetEventIdConvention { get; set; }
@@ -133,6 +254,12 @@ public interface IConventions : IExtension
     SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
     object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
+    /// <summary>
+    /// Gets or sets the stream name from event convention. This is used only in AppendEvent. The default searches for [OutputStreamAttribute]. If not found than the last segment of the namespace is used as category, that is not named "Events". 
+    /// </summary>
+    /// <value>
+    /// The stream name from event convention.
+    /// </value>
     StreamNameFromEventConvention StreamNameFromEventConvention { get; set; }
 
 }

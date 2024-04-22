@@ -1312,11 +1312,16 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 356
+    startLine: 358
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Reads stream and returns events.
+  summary: >-
+    Reads stream and returns events.
+
+    Conventions used:
+
+    ProjectionCategoryStreamConvention - to construct streamId that shall be read.
   example: []
   syntax:
     content: 'IAsyncEnumerable<object> Read<TOwner>(object id, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default) where TOwner : ITypeRegister'
@@ -1365,11 +1370,16 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 368
+    startLine: 372
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
-  summary: Reads stream and returns events.
+  summary: >-
+    Reads stream and returns events.
+
+    Conventions used:
+
+    ProjectionCategoryStreamConvention - to construct streamId that shall be read.
   example: []
   syntax:
     content: 'IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default) where TOwner : ITypeRegister'
@@ -1415,7 +1425,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 381
+    startLine: 385
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1468,7 +1478,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReadFull
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 394
+    startLine: 398
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1521,7 +1531,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendSnapshot
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 407
+    startLine: 411
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1570,7 +1580,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 419
+    startLine: 423
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1623,7 +1633,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 430
+    startLine: 434
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1672,7 +1682,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendState
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 441
+    startLine: 445
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1719,7 +1729,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendState
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 450
+    startLine: 454
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1763,7 +1773,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetState
     path: src/MicroPlumberd/Abstractions/IPlumber.cs
-    startLine: 452
+    startLine: 456
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

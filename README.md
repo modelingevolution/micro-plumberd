@@ -11,7 +11,7 @@ Documentation can be found here:
 
 ```powershell
 dotnet add package MicroPlumberd                      # For your domain
-dotnet add package MicroPlumberd.Services             # For IoC integration
+dotnet add package MicroPlumberd.Services             # For IoC integration and CommandBus
 dotnet add package MicroPlumberd.SourceGenerators     # Code generators for Aggregates, EventHandlers and more.
 ```
 
@@ -29,11 +29,44 @@ However, typicly you would add plumberd to your app:
 services.AddPlumberd();
 ```
 
+## Features
+
+### State
+
+Suppose you want to save some small "state" to your EventStoreDB. For example. current configuration of your Raspherry PI Camera. You can expect that state would be dependend only on previous state.
+
+```csharp
+record class CameraConfiguration : IVersionAware: {
+    public int Shutter {get;set;}
+    public float Contrast {get;set;}
+    // ...
+    public Guid Id { get; set; } = Guid.NewGuid();
+    public long Version { get; set; } = -1;
+}
+
+// To save the state:
+var state = new CameraConfiguration { /* ... */ };
+plumber.AppendState(state); // 
+
+// To retrive latest state:
+var id = state.Id; // We need to have Id from somewhere...
+var actual = plumber.GetState<CameraConfiguration>(id);
+```
+
 ### Aggregates
 
-1) Let's start with an aggregate:
+Event-sourced aggregates are the guardians of transaction. They encapsulate object(s) that we want to threat in isolation to 
+the rest of the world because we want its data to be consistent. 
+
+Event-sourced aggregates are "rehydrated" from history (its stream) every time we need them. This means that theirs streams should be relatively short ~1K events max, to accomplish this usually you would you "close-the-books" pattern. 
+
+For performance reasons, sometimes you would want to have "snapshots". Snapshots are saved in related snapshot stream. When you want to retrive an aggregate:
+
+1) plumber would try to read latest event from shaphost stream.
+2) retrive and apply all the events that were from latest snahshot till now.
+
 ```csharp
-[Aggregate]
+[Aggregate(SnapshotEvery = 50)]
 public partial class FooAggregate(Guid id) : AggregateBase<Guid,FooAggregate.FooState>(id)
 {
     public record FooState { public string Name { get; set; } };
@@ -143,13 +176,9 @@ public partial class FooProcessor(IPlumber plumber)
 }
 ```
 
-Implementing a processor is technically the same as implementing a read-model, but inside the Given method you would typically invoke a command or execute an aggregate.
+Implementing a processor is technically the same as implementing a read-model, but inside the Given method you would typically invoke a command or execute an aggregate. A process would subscribe persistently. 
 
-## Features
-
-### Aggregates
-
-### Read-Models
+### Read-Model with EF (EntityFramework)
 
 Let's analyse this example:
 
@@ -187,6 +216,44 @@ public partial class FooModel : DbContext
     }
 }
 ```
+
+### Read-Model with LiteDB
+
+With LiteDB you can easily achive the same without a hassle of schema recreation.
+
+
+```csharp
+[OutputStream(DbReservationModel.MODEL_NAME)]
+[EventHandler]
+public partial class DbReservationModel(LiteDatabase db)
+{
+    internal const string MODEL_VER = "_v2";
+    internal const string MODEL_NAME = $"Reservations{MODEL_VER}";
+    public ILiteCollection<Reservation> Reservations { get; } = db.Reservations();
+
+    private async Task Given(Metadata m, TicketReserved ev)
+    {
+        Reservations.Insert(new Reservation() { RoomName = ev.RoomName, MovieName = ev.MovieName });
+        
+    }
+}
+
+public static class DbExtensions
+{
+    public static ILiteCollection<Reservation> Reservations(this LiteDatabase db) => db.GetCollection<Reservation>(DbReservationModel.MODEL_NAME);
+}
+public record Reservation
+{
+    public ObjectId ReservationId { get; set; }
+    public string RoomName { get; set; }
+    public string MovieName { get; set; }
+}
+
+/// Configure your app:
+services.AddEventHandler<DbReservationModel>(true)
+
+```
+
 ### Command-Handlers & Message Bus
 
 If you want to start as quickly as possible, you can start with EventStoreDB as command-message-bus.
@@ -253,7 +320,7 @@ await plumber.SubscribeSet()
 Given you have written your domain, you can generate step files that would populate Ghierkin API to your domain. 
 
 
-### GRPC Direct communication
+### EXPERIMENTAL GRPC Direct communication
 
 If you'd like to use direct dotnet-dotnet communication to execute command-handlers install MicroPlumberd.DirectConnect
 
@@ -366,7 +433,52 @@ public class OrderProcessManager(IPlumberd plumberd)
 }
 
 ```
-# Quick "How to" section:
+
+### EXPERIMENTAL Uniqueness support
+
+Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some "hacks" but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose. 
+
+However, you can leverage typical reservation patterns. At the moment the library supports only the first option:
+
+- At domain-layer, a domain-service usually would enforce uniqueness. This commonly requires a round-trip to a database. So just before actual event(s) are saved in a stream, a check against uniqueness constraints should be evaluated - thus reservation is made. When the event is appended to the stream, a confirmation is done automatically (on db).
+
+- At a app-layer, command-handler would typically reserve a name. And when aggregate, which is being executed by the handler, saves its events successfully, then the reservation is confirmed. If the handler fails, then the reservation is deleted. Seems simple? Under the hood, it is not that simple, because what if the process is terminated while the command-handler is executing? We need to make sure, that we can recover successfully from this situation.
+
+Let's see the API proposal:
+
+```csharp
+// Let's define unique-category name
+record FooCategory;
+
+
+public class FooCreated 
+    // and apply it to one fo the columns.
+    [Unique<FooCategory>]
+    public string? Name { get; set; }
+    
+    // other stuff   
+}
+```
+
+For complex types, we need more flexibility.
+
+```csharp
+// Let's define unique-category name, this will be mapped to columns in db
+// If you'd opt for domain-layer enforcment, you need to change commands to events.
+record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooRefined>
+{
+    public static BooCategory From(BooCreated x) => new(x.InitialName, x.OtherName);
+    public static BooCategory From(BooRefined x) => new(x.NewName, x.OtherName);
+}
+
+[Unique<BooCategory>]
+public record BooCreated(string InitialName, string OtherName);
+
+[Unique<BooCategory>]
+public record BooRefined(string NewName, string OtherName);
+```
+
+# How-to
 
 All "How to's" are in [MicroPlumber.Tests](https://github.com/modelingevolution/micro-plumberd/tree/master/src/MicroPlumberd.Tests/) projects, so you can easily run it!
 
@@ -556,46 +668,3 @@ public async Task HowToRehydrateModel(IPlumber plumber)
 ```
 
 
-### EXPERIMENTAL Uniqueness support
-
-Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some "hacks" but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose. 
-
-However, you can leverage typical reservation patterns. At the moment the library supports only the first option:
-
-- At domain-layer, a domain-service usually would enforce uniqueness. This commonly requires a round-trip to a database. So just before actual event(s) are saved in a stream, a check against uniqueness constraints should be evaluated - thus reservation is made. When the event is appended to the stream, a confirmation is done automatically (on db).
-
-- At a app-layer, command-handler would typically reserve a name. And when aggregate, which is being executed by the handler, saves its events successfully, then the reservation is confirmed. If the handler fails, then the reservation is deleted. Seems simple? Under the hood, it is not that simple, because what if the process is terminated while the command-handler is executing? We need to make sure, that we can recover successfully from this situation.
-
-Let's see the API proposal:
-
-```csharp
-// Let's define unique-category name
-record FooCategory;
-
-
-public class FooCreated 
-    // and apply it to one fo the columns.
-    [Unique<FooCategory>]
-    public string? Name { get; set; }
-    
-    // other stuff   
-}
-```
-
-For complex types, we need more flexibility.
-
-```csharp
-// Let's define unique-category name, this will be mapped to columns in db
-// If you'd opt for domain-layer enforcment, you need to change commands to events.
-record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooRefined>
-{
-    public static BooCategory From(BooCreated x) => new(x.InitialName, x.OtherName);
-    public static BooCategory From(BooRefined x) => new(x.NewName, x.OtherName);
-}
-
-[Unique<BooCategory>]
-public record BooCreated(string InitialName, string OtherName);
-
-[Unique<BooCategory>]
-public record BooRefined(string NewName, string OtherName);
-```

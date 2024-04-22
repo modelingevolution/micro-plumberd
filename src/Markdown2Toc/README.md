@@ -2,7 +2,7 @@ Description: Simple tool to generate table-of-content yml files from Markdown fi
 
 Usage:
 ```
-Markdown2Toc <--input-file> [<--output-file>] [options]
+markdown-to-toc <--input-file> [<--output-file>] [options]
 
 Arguments:
   <--input-file>   Input markdown file path

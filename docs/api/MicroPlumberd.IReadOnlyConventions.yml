@@ -66,15 +66,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionCategoryStreamConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 101
+    startLine: 107
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the projection category stream convention. Used in plumber.Read operations to find out full stream-id from TOwner and Id.
+  example: []
   syntax:
     content: ProjectionCategoryStreamConvention ProjectionCategoryStreamConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.ProjectionCategoryStreamConvention
+      description: The projection category stream convention.
     content.vb: ReadOnly Property ProjectionCategoryStreamConvention As ProjectionCategoryStreamConvention
   overload: MicroPlumberd.IReadOnlyConventions.ProjectionCategoryStreamConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.StreamNameFromEventConvention
@@ -95,7 +98,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StreamNameFromEventConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 102
+    startLine: 109
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -124,15 +127,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamCategoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 103
+    startLine: 116
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the get stream category convention.
+  example: []
   syntax:
     content: StreamCategoryConvention GetStreamCategoryConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.StreamCategoryConvention
+      description: The get stream category convention.
     content.vb: ReadOnly Property GetStreamCategoryConvention As StreamCategoryConvention
   overload: MicroPlumberd.IReadOnlyConventions.GetStreamCategoryConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.GetStreamIdConvention
@@ -153,15 +159,23 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 104
+    startLine: 130
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Gets or sets the get stream id convention. The default searches for [OutputStreamAttribute], if not present will return name of class and make it friendly (Generic names will be nicely formated).
+
+    Used in:
+
+    <ul><li>Rehydrate</li><li>Read</li><li>SaveChanges</li><li>SaveNew</li></ul>
+  example: []
   syntax:
     content: SteamNameConvention GetStreamIdConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.SteamNameConvention
+      description: The get stream identifier convention.
     content.vb: ReadOnly Property GetStreamIdConvention As SteamNameConvention
   overload: MicroPlumberd.IReadOnlyConventions.GetStreamIdConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.GetStreamIdSnapshotConvention
@@ -182,15 +196,23 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdSnapshotConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 105
+    startLine: 142
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Gets or sets the get stream identifier snapshot convention. The default appends "Snapshot" suffix to the name found in [OutputStreamAttribute], if not present then will append to the name of class.
+
+    Used in:
+
+    <ul><li>GetSnapshot</li><li>AppendSnapshot</li></ul>
+  example: []
   syntax:
     content: SteamNameConvention GetStreamIdSnapshotConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.SteamNameConvention
+      description: The get stream identifier snapshot convention.
     content.vb: ReadOnly Property GetStreamIdSnapshotConvention As SteamNameConvention
   overload: MicroPlumberd.IReadOnlyConventions.GetStreamIdSnapshotConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.GetStreamIdStateConvention
@@ -211,15 +233,21 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetStreamIdStateConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 106
+    startLine: 154
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: >-
+    Gets the stream identifier state convention. The default searches for [OutputStreamAttribute], if not present will return name of class and make it friendly (Generic names will be nicely formated).
+
+    <ul><li>AppendState</li><li>GetState</li></ul>
+  example: []
   syntax:
     content: SteamNameConvention GetStreamIdStateConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.SteamNameConvention
+      description: The get stream identifier state convention.
     content.vb: ReadOnly Property GetStreamIdStateConvention As SteamNameConvention
   overload: MicroPlumberd.IReadOnlyConventions.GetStreamIdStateConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.SnapshotEventNameConvention
@@ -240,15 +268,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 107
+    startLine: 161
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: 'Gets the snapshot event name convention. It appends to the name of the event suffix: "SnapShotted"'
+  example: []
   syntax:
     content: SnapshotEventName SnapshotEventNameConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.SnapshotEventName
+      description: The snapshot event name convention.
     content.vb: ReadOnly Property SnapshotEventNameConvention As SnapshotEventName
   overload: MicroPlumberd.IReadOnlyConventions.SnapshotEventNameConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.GetEventNameConvention
@@ -269,15 +300,18 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventNameConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 108
+    startLine: 168
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
+  summary: Gets the get event name convention. Used almost everywhere an event is saved to EventStoreDB.
+  example: []
   syntax:
     content: EventNameConvention GetEventNameConvention { get; }
     parameters: []
     return:
       type: MicroPlumberd.EventNameConvention
+      description: The get event name convention.
     content.vb: ReadOnly Property GetEventNameConvention As EventNameConvention
   overload: MicroPlumberd.IReadOnlyConventions.GetEventNameConvention*
 - uid: MicroPlumberd.IReadOnlyConventions.BuildInvocationContext
@@ -298,7 +332,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: BuildInvocationContext
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 109
+    startLine: 169
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -327,7 +361,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: MetadataEnrichers
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 110
+    startLine: 170
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -356,7 +390,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetEventIdConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 111
+    startLine: 171
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -385,7 +419,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: OutputStreamModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 112
+    startLine: 172
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -414,7 +448,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GroupNameModelConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 113
+    startLine: 173
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -443,7 +477,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SnapshotPolicyFactoryConvention
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 114
+    startLine: 174
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -472,7 +506,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: StandardMetadataEnricherTypes
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 115
+    startLine: 175
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -501,7 +535,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetMetadata
     path: src/MicroPlumberd/Conventions.cs
-    startLine: 116
+    startLine: 176
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

@@ -346,6 +346,8 @@ public interface IPlumber
 
     /// <summary>
     /// Reads stream and returns events.
+    /// Conventions used:
+    /// ProjectionCategoryStreamConvention - to construct streamId that shall be read.
     /// </summary>
     /// <typeparam name="TOwner">The type of the owner (aggregate).</typeparam>
     /// <param name="id">The identifier (of the aggregate).</param>
@@ -359,6 +361,8 @@ public interface IPlumber
 
     /// <summary>
     /// Reads stream and returns events.
+    /// Conventions used:
+    /// ProjectionCategoryStreamConvention - to construct streamId that shall be read.
     /// </summary>
     /// <typeparam name="TOwner">The type of the owner(aggregate).</typeparam>
     /// <param name="start">The stream start position.</param>

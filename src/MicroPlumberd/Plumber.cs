@@ -321,7 +321,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var evId = Conventions.GetEventIdConvention(null, state);
         var evData = MakeEvent(evId, Conventions.SnapshotEventNameConvention(stateType), state, m);
         var ret = (version == null || version < 0) ? 
-            await Client.AppendToStreamAsync(streamId, StreamState.Any, [evData], cancellationToken: token) : 
+            await Client.AppendToStreamAsync(streamId, version == -1 ? StreamState.NoStream : StreamState.Any, [evData], cancellationToken: token) : 
             await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
         if(state is IVersionAware va) 
             va.Increase();
