@@ -39,7 +39,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroPlumberd.Protobuf", "M
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{7E88866D-D083-4C32-877D-A8FE03A220B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown2Toc", "Markdown2Toc\Markdown2Toc.csproj", "{E6499CAF-E1F0-4970-B695-78E7E359DCEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Markdown2Toc", "Markdown2Toc\Markdown2Toc.csproj", "{E6499CAF-E1F0-4970-B695-78E7E359DCEF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{9C767501-1305-4751-9F94-0801E9CC82C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Examples.Cinema", "MicroPlumberd.Examples.Cinema\MicroPlumberd.Examples.Cinema.csproj", "{7A8AE12D-3950-40DD-BC12-0606DE62538C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,12 +111,17 @@ Global
 		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6499CAF-E1F0-4970-B695-78E7E359DCEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A8AE12D-3950-40DD-BC12-0606DE62538C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A8AE12D-3950-40DD-BC12-0606DE62538C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A8AE12D-3950-40DD-BC12-0606DE62538C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A8AE12D-3950-40DD-BC12-0606DE62538C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E6499CAF-E1F0-4970-B695-78E7E359DCEF} = {7E88866D-D083-4C32-877D-A8FE03A220B8}
+		{7A8AE12D-3950-40DD-BC12-0606DE62538C} = {9C767501-1305-4751-9F94-0801E9CC82C8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CBFD8B4D-6BEE-45DF-8568-2B6CC0E5ACB2}

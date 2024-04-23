@@ -1,5 +1,6 @@
 using System.Data.SqlTypes;
 using System.Runtime.CompilerServices;
+using System.Text.Json.Serialization;
 using MicroPlumberd.Services;
 using MicroPlumberd.Services.Uniqueness;
 using ModelingEvolution.DirectConnect;
@@ -7,10 +8,11 @@ using ProtoBuf;
 
 namespace MicroPlumberd.Tests.App.Domain;
 
-public record FooEntityState : IId<Guid>, IVersionAware
-{
+public record FooEntityState {
+    [JsonIgnore]
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; }
+    [JsonIgnore]
     public long Version { get; set; } = -1;
 }
 

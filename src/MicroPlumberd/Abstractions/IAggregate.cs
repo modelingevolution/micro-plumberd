@@ -134,13 +134,25 @@ public interface IId
 public interface IId<out T>  : IId
     where T:IParsable<T>
 {
-    T Id { get; }
+    new T Id { get; }
     object IId.Id => Id;
 }
 
-public interface IIdAware
+public interface IIdAware 
 {
-    object Id { set; }
+    object Id { get; set; }
+}
+
+public interface IIdAware<T> : IIdAware
+    where T : IParsable<T>
+{
+    new T Id { get; set; }
+    
+    object IIdAware.Id
+    {
+        get => Id;
+        set => Id = (T)value;
+    }
 }
 
 /// <summary>

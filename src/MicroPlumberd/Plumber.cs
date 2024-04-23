@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using EventStore.Client;
 using Grpc.Core;
+using MicroPlumberd.Utils;
 
 namespace MicroPlumberd;
 
@@ -309,10 +310,10 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return r;
     }
 
-    public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId => 
-        AppendState(state, state.Id, state is IVersioned v ? v.Version : null, token);
-    
+    public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) => 
+        AppendState(state, _idTyping.GetId(state), _versionTyping.GetVersion(state), token);
 
+    
     public async Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default) 
     {
         var m = Conventions.GetMetadata(null, state, null);
@@ -323,8 +324,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var ret = (version == null || version < 0) ? 
             await Client.AppendToStreamAsync(streamId, version == -1 ? StreamState.NoStream : StreamState.Any, [evData], cancellationToken: token) : 
             await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
-        if(state is IVersionAware va) 
-            va.Increase();
+        _versionTyping.SetVersion(state, (version??-1) + 1);
         return ret;
     }
     public async Task<IWriteResult> AppendSnapshot(object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default)
@@ -370,6 +370,8 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         return r;
     }
 
+    
+    
     public async Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
@@ -404,7 +406,8 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
         return r;
     }
-
+    private readonly IdDuckTyping _idTyping = new();
+    private readonly VersionDuckTyping _versionTyping = new();
     public async Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class
     {
         var streamType = typeof(T);
@@ -412,10 +415,11 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var c = new SingleTypeConverter(streamType);
         var e = await ReadFull(streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1, token).ToArrayAsync();
         if (!e.Any()) return null;
-
+        
+        //TODO: DuckTyping
         var (evt, m) = e[0];
-        if (evt is IVersionAware va)
-            va.Version = m.SourceStreamPosition;
+        _versionTyping.SetVersion(evt, m.SourceStreamPosition);
+        _idTyping.SetId(evt, id);
         return new State<T>((T)evt, m);
     }
     public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType, CancellationToken token = default)

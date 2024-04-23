@@ -85,11 +85,9 @@ public class EventStoreServer :  IDisposable
         {
             var data = await client.Containers.InspectContainerAsync(container.ID);
             if (data.State.Running)
-            {
-                await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
-            }
-
-            await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
+                await client.Containers.RestartContainerAsync(data.ID, new ContainerRestartParameters());
+            else
+                await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
         }
 
         await this.GetEventStoreSettings().WaitUntilReady(TimeSpan.FromSeconds(30));

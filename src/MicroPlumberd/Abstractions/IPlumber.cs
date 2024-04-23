@@ -452,7 +452,7 @@ public interface IPlumber
     /// <param name="state">The entity.</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T:IId;
+    Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default);
 
     Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class;
 }

@@ -18,7 +18,9 @@ namespace MicroPlumberd
     {
         private TId _id;
         public TId Id => _id;
-        object IIdAware.Id { set => _id = (TId)value; }
+        object IIdAware.Id { set => _id = (TId)value;
+            get => _id;
+        }
         public long Version { get; set; } = -1;
         
 

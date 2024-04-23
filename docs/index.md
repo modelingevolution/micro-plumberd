@@ -46,7 +46,8 @@ record class CameraConfiguration : IVersionAware: {
 
 // To save the state:
 var state = new CameraConfiguration { /* ... */ };
-plumber.AppendState(state); // 
+plumber.AppendState(state); // because CameraConfiguration implements IVersionAware, 
+                            // optimistic concurrency check will be performed.
 
 // To retrive latest state:
 var id = state.Id; // We need to have Id from somewhere...
