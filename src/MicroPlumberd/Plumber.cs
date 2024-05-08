@@ -524,7 +524,10 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     /// <returns></returns>
     internal (object, Metadata) ReadEventData(EventRecord er, Type t)
     {
-        var aggregateId = Guid.Parse(er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1));
+        var streamIdSuffix = er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1);
+        if (!Guid.TryParse(streamIdSuffix, out var aggregateId)) 
+            aggregateId = streamIdSuffix.ToGuid();
+
         var s = Serializer(t);
         var ev = s.Deserialize(er.Data.Span, t)!;
         var m = s.ParseMetadata(er.Metadata.Span);

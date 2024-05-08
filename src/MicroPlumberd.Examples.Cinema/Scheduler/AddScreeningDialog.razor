@@ -1,0 +1,24 @@
+﻿@using MicroPlumberd.Examples.Cinema.Utils
+@using MudBlazor
+<MudDialog>
+    <DialogContent>
+
+        <MudForm>
+            @* <MudTextField Label="Movie" @bind-Value="_cmd.Movie" Converter="OptionConverters.String"/> *@
+        </MudForm>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Primary" OnClick="Close">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code
+{
+    private CreateScreening _cmd = new CreateScreening();
+
+    public void Close()
+    {
+        
+    }
+}

@@ -1,5 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using MicroPlumberd.Services;
 
 namespace MicroPlumberd.Examples.Cinema.Scheduler
@@ -8,14 +11,15 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
     public partial class ScheduleCommandHandler(IPlumber plumber)
     {
         [ThrowsFaultException<ScreeningTimeCannotBeInPast>]
-        public async Task Handle(Guid id, DefineScreening cmd)
+        public async Task Handle(Guid id, PathScreening cmd)
         {
             if (cmd.Date.IsDefined && cmd.Time.IsDefined)
-            if (cmd.Date.Value.ToDateTime(cmd.Time.Value) < DateTime.Now)
-                throw new FaultException<ScreeningTimeCannotBeInPast>(new ScreeningTimeCannotBeInPast());
+                if (cmd.Date.Value.ToDateTime(cmd.Time.Value) < DateTime.Now)
+                    throw new FaultException<ScreeningTimeCannotBeInPast>(new ScreeningTimeCannotBeInPast());
 
-           
-            ScreeningStateDefined state = await plumber.GetState<ScreeningStateDefined>(id);
+
+            ScreeningStateDefined state = await plumber.GetState<ScreeningStateDefined>(id) ?? throw new Exception();
+            
             if (cmd.SeatConfiguration.IsDefined)
             {
                 SeatRoomConfiguration conf = cmd.SeatConfiguration;
@@ -36,7 +40,7 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
             if (cmd.Date.IsDefined)
                 state.When = cmd.Date.Value.ToDateTime(TimeOnly.MinValue).Add(state.When.TimeOfDay);
 
-            //await plumber.AppendState(state);
+            await plumber.AppendState(state);
         }
     }
 
@@ -47,28 +51,29 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
     }
 
     public readonly record struct SeatLocation(ushort Row, ushort Seat);
-
-    public readonly record struct Property<T>
-    {
-        public T Value { get; init; }
-        public static implicit operator T(Property<T> value) => value.Value;
-        public static implicit operator Property<T>(T value) => new Property<T>() { Value = value, IsDefined = true};
-
-        public bool IsDefined { get; init; }
-    }
+    
     public record SeatRoomConfiguration
     {
         public int SeatCount { get; init; }
         public int RowCount { get; init; }
         public SeatLocation[] EmptySpaces { get; init; }
     }
-    public record DefineScreening
+
+    public record PathScreening
     {
-       public Property<SeatRoomConfiguration> SeatConfiguration { get; init; }
-        public Property<string> Movie { get; init; }
-        public Property<string> Room { get; init; }
-        public Property<TimeOnly> Time { get; init; }
-        public Property<DateOnly> Date { get; init; }
+        public Option<SeatRoomConfiguration> SeatConfiguration { get; set; }
+        public Option<string> Movie { get; set; }
+        public Option<string> Room { get; set; }
+        public Option<TimeOnly> Time { get; set; }
+        public Option<DateOnly> Date { get; set; }
+    }
+    public record CreateScreening
+    {
+        public SeatRoomConfiguration SeatConfiguration { get; set; }
+        public string Movie { get; set; }
+        public string Room { get; set; }
+        public TimeOnly Time { get; set; }
+        public DateOnly Date { get; set; }
 
     }
 

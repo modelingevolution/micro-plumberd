@@ -43,14 +43,14 @@ namespace MicroPlumberd.Tests.Integration.Services
             await _eventStore.StartInDocker();
 
             _serverTestApp.Configure(x => x
-                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=>x.SerializerFactory = x => new ProtoBuffObjectSerialization())
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp,x)=>x.SerializerFactory = x => new ProtoBuffObjectSerialization())
                 .AddCommandHandler<BooCommandHandler>(start: StreamPosition.Start));
 
             var srv = await _serverTestApp.StartAsync();
             
 
             var client = await _clientTestApp.Configure(x => x
-                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x =>
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) =>
                     {
                         x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10);
                         x.SerializerFactory = x => new ProtoBuffObjectSerialization();
@@ -83,7 +83,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             var srv = await _serverTestApp.StartAsync();
             
             var client = await _clientTestApp.Configure(x => x
-                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
                 .StartAsync();
 
             var bus = client.GetRequiredService<ICommandBus>();
@@ -102,6 +102,29 @@ namespace MicroPlumberd.Tests.Integration.Services
         }
 
         [Fact]
+        public async Task HandleStrCommandHandle()
+        {
+            await _eventStore.StartInDocker();
+
+            _serverTestApp.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .AddCommandHandler<StrCommandHandler>(start: StreamPosition.Start));
+
+            var srv = await _serverTestApp.StartAsync();
+
+            var client = await _clientTestApp.Configure(x => x
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
+                .StartAsync();
+
+            var bus = client.GetRequiredService<ICommandBus>();
+
+            await bus.SendAsync("Fun", new CreateStrFoo() { Name = "Cool" });
+
+            var state = await srv.GetRequiredService<IPlumber>().GetState<StrEntityState>("Fun");
+            state.Should().NotBeNull();
+        }
+
+        [Fact]
         public async Task HandleCommands()
         {
             await _eventStore.StartInDocker();
@@ -116,7 +139,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             var sub = await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
 
             var client = await _clientTestApp.Configure(x => x
-                    .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5)))
                 .StartAsync();
 
             var bus = client.GetRequiredService<ICommandBus>();
@@ -151,7 +174,7 @@ namespace MicroPlumberd.Tests.Integration.Services
             sw.Start();
 
             var client = await _clientTestApp.Configure( x=>x
-                .AddPlumberd(_eventStore.GetEventStoreSettings(), x=> x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(10)))
                 .StartAsync();
 
             await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);

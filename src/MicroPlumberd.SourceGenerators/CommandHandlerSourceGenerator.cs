@@ -45,7 +45,6 @@ namespace MicroPlumberd.SourceGenerators
                         var methods = classDecl.Members.OfType<MethodDeclarationSyntax>()
                             .Where(m => m.Identifier.ValueText == "Handle" &&
                                         m.ParameterList.Parameters.Count == 2 &&
-                                        m.ParameterList.Parameters[0].Type.ToString() == "Guid" &&
                                         m.Modifiers.Any(SyntaxKind.PublicKeyword))
                             .ToList();
 

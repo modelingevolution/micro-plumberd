@@ -15,10 +15,10 @@ public class CommandHandlerAttributeValidator<T>(ICommandHandler<T> nx, IService
 
 class CommandBusAttributeValidator(ICommandBus cb, IServiceProvider sp) : ICommandBus
 {
-    public async Task SendAsync(object recipientId, object command)
+    public async Task SendAsync(object recipientId, object command, CancellationToken token = default)
     {
         var validationContext = new ValidationContext(command, sp, null);
         Validator.ValidateObject(command, validationContext);
-        await cb.SendAsync(recipientId, command);
+        await cb.SendAsync(recipientId, command, token);
     }
 }

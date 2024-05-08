@@ -1,15 +1,103 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Dynamic;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MicroPlumberd;
 
+class OptionJsonConverter<T> : JsonConverter<Option<T>>
+{
+    public override Option<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        if (reader.TokenType == JsonTokenType.Null)
+            return new Option<T> { IsDefined = true };
 
+        return JsonSerializer.Deserialize<T>(ref reader, options);
+    }
+
+    public override void Write(Utf8JsonWriter writer, Option<T> value, JsonSerializerOptions options)
+    {
+        if (!value.IsDefined)
+        {
+            writer.WriteNullValue();
+        }
+        else
+        {
+            JsonSerializer.Serialize(writer, value.Value, options);
+        }
+    }
+}
+/// <summary>
+/// Json Option factory used to support Option<T> struct deserialization/serialization.
+/// </summary>
+/// <seealso cref="System.Text.Json.Serialization.JsonConverterFactory" />
+public class OptionConverterFactory : JsonConverterFactory
+{
+    public override bool CanConvert(Type typeToConvert)
+    {
+        if (!typeToConvert.IsGenericType) return false;
+
+        return typeToConvert.GetGenericTypeDefinition() == typeof(Option<>);
+    }
+
+    public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
+    {
+        Type valueType = typeToConvert.GetGenericArguments()[0];
+
+        var specificType = typeof(OptionJsonConverter<>).MakeGenericType(valueType);
+        JsonConverter converter = (JsonConverter)Activator.CreateInstance(specificType)!;
+
+        return converter;
+    }
+}
+
+class OptionTypeConverter<T> : TypeConverter
+{
+    public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+    {
+        if (sourceType == typeof(T))
+        {
+            return true;
+        }
+
+        return base.CanConvertFrom(context, sourceType);
+    }
+
+    public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
+    {
+        if (value is T s)
+            return new Option<T> { Value = s, IsDefined = true };
+
+        return base.ConvertFrom(context, culture, value);
+    }
+}
+
+
+/// <summary>
+/// For command/event properties usefull to get rid of property-sourcing.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+public readonly record struct Option<T> 
+{
+    public static Option<T> Empty { get; } = new Option<T>();
+    public T Value { get; init; }
+    public static implicit operator T(Option<T> v)
+    {
+        if (!v.IsDefined) throw new InvalidOperationException("Option was not defined.");
+
+        return v.Value;
+    }
+    public static implicit operator Option<T>(T value) => new Option<T>() { Value = value, IsDefined = true };
+
+    public bool IsDefined { get; init; }
+
+}
 class JsonObjectSerializer : IObjectSerializer
 {
-    public static JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter() }};
+    public static JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };
     private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
     public object? Deserialize(ReadOnlySpan<byte> span, Type t)
     {

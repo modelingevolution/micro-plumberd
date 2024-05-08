@@ -23,17 +23,21 @@ class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TO
 public static class ContainerExtensions
 {
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
-        EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
+        EventStoreClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null) =>
+        collection.AddPlumberd(sp => settings, configure);
+
+    public static IServiceCollection AddPlumberd(this IServiceCollection collection,
+        Func<IServiceProvider, EventStoreClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null)
     {
-        collection.AddSingleton(sp => Plumber.Create(settings, x =>
+        collection.AddSingleton(sp => Plumber.Create(settingsFactory(sp), x =>
         {
-            configure?.Invoke(x);
+            configure?.Invoke(sp, x);
             x.ServiceProvider = sp;
         }));
         collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));
         collection.TryAddSingleton<ICommandBus, CommandBus>();
-        collection.TryAddSingleton( typeof(IEventHandler<>),typeof(EventHandlerExecutor<>));
-        
+        collection.TryAddSingleton(typeof(IEventHandler<>), typeof(EventHandlerExecutor<>));
+
         collection.TryDecorate<ICommandBus, CommandBusAttributeValidator>();
 
         return collection;

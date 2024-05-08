@@ -24,7 +24,7 @@ public interface ISnapshot
 
 public record State<T>(T Value, Metadata Metadata)
 {
-    public static implicit operator T(State<T> st) => st.Value;
+    public static implicit operator T?(State<T>? st) => st != null ? st.Value : default;
 }
 /// <summary>
 /// Represents a snapshot object used in Plumberd.

@@ -19,6 +19,17 @@ public class CreateFoo : IId<Guid>
     [ProtoMember(1)]
     public Guid Id { get; set; } = Guid.NewGuid();
 }
+[ProtoContract]
+[ThrowsFaultException<BusinessFault>]
+[Returns<HandlerOperationStatus>]
+public class CreateStrFoo 
+{
+    [ProtoMember(2)]
+    [Required]
+    public string? Name { get; set; }
+    [ProtoMember(1)]
+    public Guid Id { get; set; } = Guid.NewGuid();
+}
 
 
 

@@ -48,7 +48,7 @@ class VersionDuckTyping
         })?.Invoke(instance, value);
     }
 }
-class IdDuckTyping
+public class IdDuckTyping
 {
     private readonly ConcurrentDictionary<Type, Action<object, object>> _setters = new();
     private readonly ConcurrentDictionary<Type, Func<object, object>> _getters = new();

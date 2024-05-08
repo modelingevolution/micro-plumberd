@@ -11,6 +11,7 @@ using EventStore.Client;
 using MicroPlumberd;
 using MicroPlumberd.Collections;
 using MicroPlumberd.Services;
+using MicroPlumberd.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
@@ -67,17 +68,19 @@ class CommandBus : ICommandBus, IEventHandler
 
         return true;
     }
-    
-    
-    public async Task SendAsync(object recipientId, object command)
+
+    private readonly IdDuckTyping _idTyping = new();
+    public async Task SendAsync(object recipientId, object command, CancellationToken token = default)
     {
-        var causationId = InvocationContext.Current.CausactionId();
-        var correlationId = InvocationContext.Current.CorrelationId();
-        
+        var commandId = GetCommandId(command);
+        var causationId = InvocationContext.Current.CausactionId() ?? commandId;
+        var correlationId = InvocationContext.Current.CorrelationId() ?? commandId;
+
+
         var metadata = new
         {
-            CorrelationId = (command is IId id && correlationId == null) ? id.Uuid : correlationId, 
-            CausationId = ((command is IId id2 && causationId == null) ? id2.Uuid : causationId) ?? Guid.NewGuid(),
+            CorrelationId =  (Guid)correlationId!, 
+            CausationId = (Guid)causationId!,
             RecipientId = recipientId.ToString(),
             SessionId = SessionId,
         };
@@ -89,9 +92,9 @@ class CommandBus : ICommandBus, IEventHandler
         CheckMapping(command);
         await CheckInitialized();
         
-        await _plumber.AppendEvents(_streamIn, StreamState.Any, [command], metadata);
+        await _plumber.AppendEvents(_streamIn, StreamState.Any, [command], metadata, token);
 
-        bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(_plumber.Config.ServicesConfig().DefaultTimeout);
+        bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(_plumber.Config.ServicesConfig().DefaultTimeout, token);
         
         if (!executionResults.IsSuccess)
         {
@@ -104,6 +107,26 @@ class CommandBus : ICommandBus, IEventHandler
                 throw FaultException.Create(executionResults.ErrorMessage, executionResults.ErrorData, (int)executionResults.ErrorCode);
             throw new FaultException(executionResults.ErrorMessage);
         }
+    }
+
+    private Guid GetCommandId(object command)
+    {
+        Guid commandId = Guid.NewGuid();
+        if (command is IId iid)
+        {
+            commandId = iid.Uuid;
+        }
+        else
+        {
+            var tmpId = _idTyping.GetId(command);
+            if (tmpId is Guid g)
+            {
+                commandId = g;
+            }
+            else commandId = Guid.NewGuid();
+        }
+
+        return commandId;
     }
 
     private void CheckMapping(object command)

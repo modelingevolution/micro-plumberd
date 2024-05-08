@@ -68,7 +68,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
 
         var cmdStream = _serviceConventions.SessionOutStreamFromSessionIdConvention(sessionId);
         var cmdName = _serviceConventions.CommandNameConvention(command.GetType());
-        var cmdId = (command is IId id) ? id.Uuid : m.EventId;
+        var cmdId = m.CausationId() ?? m.EventId;//(command is IId id) ? id.Uuid : m.EventId;
 
         Stopwatch sw = new Stopwatch();
         try

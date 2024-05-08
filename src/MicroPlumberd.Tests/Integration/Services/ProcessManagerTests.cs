@@ -31,7 +31,7 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
         await _eventStore.StartInDocker();
 
         await _serverTestApp.Configure(x => x
-            .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(100))
+            .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(100))
             .AddCommandHandler<FooCommandHandler>()
             .AddCommandHandler<BooCommandHandler>()
             .AddProcessManager<XooProcessManager>())
@@ -41,7 +41,7 @@ public class ProcessManagerTests : IClassFixture<EventStoreServer>
 
         
         var client = await _clientTestApp.Configure(x=> x
-            .AddPlumberd(_eventStore.GetEventStoreSettings(), x => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(100)))
+            .AddPlumberd(_eventStore.GetEventStoreSettings(), (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(100)))
             .StartAsync();
         var clientBus = client.GetRequiredService<ICommandBus>();
 
