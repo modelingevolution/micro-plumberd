@@ -44,4 +44,10 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
     public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
 
     public async ValueTask DisposeAsync() => await subscription.DisposeAsync();
+
+    public async Task<IEventHandler> WithHandler<T>(ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(register.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithHandler<T>(T model, ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model,register.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithSnapshotHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(new TypeHandlerRegisters((ownerType, eventType) => plumber.Conventions.SnapshotEventNameConvention(eventType)).GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithSnapshotHandler<T>(T model) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model, new TypeHandlerRegisters((ownerType, eventType) => plumber.Conventions.SnapshotEventNameConvention(eventType)).GetEventNameConverterFor<T>());
+
 }

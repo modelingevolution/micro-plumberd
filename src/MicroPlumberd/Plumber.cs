@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using EventStore.Client;
 using Grpc.Core;
@@ -239,7 +240,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public async IAsyncEnumerable<(object, Metadata)> ReadFull(string streamId, TypeEventConverter converter,
-        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue, CancellationToken token = default)
+        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue, [EnumeratorCancellation] CancellationToken token = default)
     {
         var d = direction ?? Direction.Forwards;
         var p = start ?? StreamPosition.Start;
@@ -256,7 +257,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public async IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter,
-        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue, CancellationToken token = default)
+        StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue,[EnumeratorCancellation] CancellationToken token = default)
     {
         var d = direction ?? Direction.Forwards;
         var p = start ?? StreamPosition.Start;

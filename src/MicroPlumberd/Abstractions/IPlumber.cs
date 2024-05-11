@@ -95,7 +95,7 @@ public interface IPlumber
     /// Metadata information about registered event-handlers.
     /// </summary>
     ITypeHandlerRegisters TypeHandlerRegisters { get; }
-
+    
     /// <summary>
     /// Appends event to a stream, uses relevant convention to create metadata.
     /// </summary>
@@ -443,7 +443,7 @@ public interface IPlumber
     /// <param name="version">The version.</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default);
+    Task<IWriteResult> AppendState(object state, object id, long? version = null, CancellationToken token = default);
 
     /// <summary>
     /// Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.

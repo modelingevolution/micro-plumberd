@@ -155,7 +155,7 @@ class CommandBus : ICommandBus, IEventHandler
 }
 
 
-[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple=true)]
 public class ThrowsFaultExceptionAttribute<TMessage>() : ThrowsFaultExceptionAttribute(typeof(TMessage));
 
 public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute

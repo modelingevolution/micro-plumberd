@@ -73,6 +73,10 @@ class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelative
         return (IEventHandler)await WithHandler(handler, func);
     }
     public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithHandler<T>(ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(register.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithHandler<T>(T model, ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model, register.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithSnapshotHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(new TypeHandlerRegisters((ownerType, eventType) => plumber.Conventions.SnapshotEventNameConvention(eventType)).GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithSnapshotHandler<T>(T model) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model, new TypeHandlerRegisters((ownerType, eventType) => plumber.Conventions.SnapshotEventNameConvention(eventType)).GetEventNameConverterFor<T>());
 
     public async ValueTask DisposeAsync() => await _runner.DisposeAsync();
 }
@@ -116,5 +120,11 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
 
     public async ValueTask DisposeAsync() => await subscription.DisposeAsync();
+
+    public async Task<IEventHandler> WithHandler<T>(ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(register.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithHandler<T>(T model, ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model, register.GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithSnapshotHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(new TypeHandlerRegisters((ownerType, eventType) => plumber.Conventions.SnapshotEventNameConvention(eventType)).GetEventNameConverterFor<T>());
+    public async Task<IEventHandler> WithSnapshotHandler<T>(T model) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model, new TypeHandlerRegisters((ownerType, eventType) => plumber.Conventions.SnapshotEventNameConvention(eventType)).GetEventNameConverterFor<T>());
+
 }
 
