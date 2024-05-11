@@ -63,7 +63,16 @@ class CommandBus : ICommandBus, IEventHandler
         if (_commandMapping.TryGetValue(type, out t)) return true;
 
         string supportedMessages = string.Join("\r\n-> ", _commandMapping.Keys);
-        _log.LogWarning("Received unrecognized message type: {type}; Supported message types:{supportedMessages}", type, supportedMessages);
+        string helpMsg;
+        int index = type.IndexOf("Failed<");
+        if (index != -1)
+        {
+            string arg = type.Substring(index + 7);
+            helpMsg = $"\r\nHave you forgotten to decorate command with [ThrowsFaultException<{arg}] attribute??";
+        }
+        else
+            helpMsg = string.Empty;
+        _log.LogWarning("Received unrecognized message type: {type}; Supported message types:{supportedMessages}"+ helpMsg, type, supportedMessages);
         return false;
 
     }
