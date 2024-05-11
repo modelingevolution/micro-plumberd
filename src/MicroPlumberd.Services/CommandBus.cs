@@ -60,13 +60,12 @@ class CommandBus : ICommandBus, IEventHandler
 
     private bool TryMapEventResponse(string type, out Type t)
     {
-        if (!_commandMapping.TryGetValue(type, out t))
-        {
-            _log.LogWarning("Received unrecognized message type: {type}", type);
-            return false;
-        }
+        if (_commandMapping.TryGetValue(type, out t)) return true;
 
-        return true;
+        string supportedMessages = string.Join("\r\n-> ", _commandMapping.Keys);
+        _log.LogWarning("Received unrecognized message type: {type}; Supported message types:{supportedMessages}", type, supportedMessages);
+        return false;
+
     }
 
     private readonly IdDuckTyping _idTyping = new();
