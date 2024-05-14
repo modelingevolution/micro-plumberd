@@ -32,6 +32,13 @@ public class CreateStrFoo
 }
 
 
+public class ValidateBoo : IId<Guid>
+{
+    [Required]
+    [Length(5, 10)]    
+    public string? Name { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
+}
 
 [ProtoContract]
 [Returns<HandlerOperationStatus>]

@@ -19,7 +19,16 @@ public partial class BooCommandHandler(IPlumber plumber)
         await plumber.SaveNew(agg);
         Debug.WriteLine("BooCreated");
     }
+    public async Task Handle(Guid id, ValidateBoo cmd)
+    {
+        if (cmd.Name == "error")
+            throw new BusinessFaultException("Boo");
 
+        var agg = BooAggregate.Open(cmd.Name!);
+
+        await plumber.SaveNew(agg);
+        Debug.WriteLine("BooCreated");
+    }
 
     [ThrowsFaultException<BusinessFault>]
     public async Task Handle(Guid id, RefineBoo cmd)
