@@ -9,8 +9,6 @@ namespace MicroPlumberd.Tests.App.Srv;
 [CommandHandler]
 public partial class FooCommandHandler(IPlumber plumber)
 {
-
-    
     public async Task Handle(Guid id, CreateFoo cmd)
     {
         if (cmd.Name == "error")
@@ -30,6 +28,14 @@ public partial class FooCommandHandler(IPlumber plumber)
 
         await plumber.SaveChanges(agg);
         return HandlerOperationStatus.Ok();
+    }
+}
+[CommandHandler]
+public partial class SecretCommandHandler(IPlumber plumber)
+{
+    public async Task Handle(Guid id, CreateSecret cmd)
+    {
+        await plumber.AppendEvent(new SecretCreated() { Password = cmd.Password }, id);
     }
 
 }

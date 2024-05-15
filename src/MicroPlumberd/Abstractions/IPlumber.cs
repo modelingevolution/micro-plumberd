@@ -455,4 +455,8 @@ public interface IPlumber
     Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default);
 
     Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class;
+
+    IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(string? streamId = null,
+        StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807L,
+        CancellationToken token = default);
 }

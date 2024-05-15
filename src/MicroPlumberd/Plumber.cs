@@ -30,6 +30,8 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         ServiceProvider = config.ServiceProvider;
         _extension = config.Extension; // Shouldn't we make a copy?
         _typeHandlerRegisters = new TypeHandlerRegisters(Conventions.GetEventNameConvention);
+
+        config.OnCreated(this);
     }
     public IPlumberReadOnlyConfig Config => this;
 
@@ -255,7 +257,38 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         await foreach (var i in events)
             yield return i;
     }
+    public async IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(string? streamId = null, StreamPosition? start = null, Direction? direction = null,
+        long maxCount = 9223372036854775807, CancellationToken token = default)
+    {
+        string eventName = this.Conventions.GetEventNameConvention(null, typeof(T));
 
+        bool converter(string en, out Type t)
+        {
+            if (en == eventName)
+            {
+                t = typeof(T);
+                return true;
+            }
+
+            t = null;
+            return false;
+        }
+
+        streamId ??= $"$et-{eventName}";
+
+        var d = direction ?? Direction.Forwards;
+        var p = start ?? StreamPosition.Start;
+
+        var items = Client.ReadStreamAsync(d, streamId, p, resolveLinkTos: true, maxCount: maxCount, cancellationToken: token);
+        if (await items.ReadState == ReadState.StreamNotFound) yield break;
+
+        var events = items.Select(x => new
+                { ResolvedEvent = x, EventType = converter(x.Event.EventType, out var t) ? t : null })
+            .Where(x => x.EventType != null)
+            .Select(ev => ReadEventData(ev.ResolvedEvent.Event, ev.EventType));
+        await foreach (var i in events)
+            yield return ((T)i.Item1, i.Item2);
+    }
     public async IAsyncEnumerable<object> Read(string streamId, TypeEventConverter converter,
         StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue,[EnumeratorCancellation] CancellationToken token = default)
     {
@@ -423,6 +456,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         _idTyping.SetId(evt, id);
         return new State<T>((T)evt, m);
     }
+
+   
+
     public async Task<Snapshot?> GetSnapshot(object id, Type snapshotType, CancellationToken token = default)
     {
         if (snapshotType == null) throw new ArgumentNullException("snapshotType cannot be null.");

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using MicroPlumberd.DirectConnect;
+using MicroPlumberd.Encryption;
 using MicroPlumberd.Services;
 using MicroPlumberd.Tests.App.Domain;
 using ProtoBuf;
@@ -58,4 +59,15 @@ public class CreateLoo : IId<Guid>
     public string? Name { get; set; }
     [ProtoMember(1)]
     public Guid Id { get; set; } = Guid.NewGuid();
+
+}
+
+public class CreateSecret
+{
+    public SecretObject<string> Password { get; set; }
+}
+[OutputStream("Password")]
+public class SecretCreated
+{
+    public SecretObject<string> Password { get; set; }
 }

@@ -95,9 +95,9 @@ public readonly record struct Option<T>
     public bool IsDefined { get; init; }
 
 }
-class JsonObjectSerializer : IObjectSerializer
+public sealed class JsonObjectSerializer : IObjectSerializer
 {
-    public static JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };
+    public static readonly JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };
     private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
     public object? Deserialize(ReadOnlySpan<byte> span, Type t)
     {

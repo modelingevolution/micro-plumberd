@@ -51,4 +51,16 @@ class PlumberConfig : IPlumberConfig
             _serviceProvider = value;
         }
     }
+
+    public event Action<IPlumber>? Created;
+    public event Action<IServiceCollection>? Configured;
+
+    internal void OnConfigured(IServiceCollection collection)
+    {
+        Configured?.Invoke(collection);
+    }
+    internal void OnCreated(Plumber plumber)
+    {
+        Created?.Invoke(plumber);
+    }
 }

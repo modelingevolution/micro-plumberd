@@ -1,6 +1,7 @@
 using System.Data.SqlTypes;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
+using MicroPlumberd.Encryption;
 using MicroPlumberd.Services;
 using MicroPlumberd.Services.Uniqueness;
 using ModelingEvolution.DirectConnect;
@@ -60,7 +61,7 @@ public partial class BooAggregate(Guid id) : AggregateBase<Guid, BooAggregate.Bo
 }
 
 
-public record FooCreated { [Unique<FooCategory>] public string? Name { get; set; } }
+public record FooCreated { [Unique<FooCategory>] public string? Name { get; set; }  }
 public record FooRefined { public string? Name { get; set; } }
 
 [Unique<BooCategory>()]

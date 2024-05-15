@@ -22,6 +22,7 @@ namespace MicroPlumberd.Tests.Integration
             acceptedTypeAttributes.Should().HaveCountGreaterThan(1);
         }
     }
+   
 
     [TestCategory("Integration")]
     public class AggregateTests : IClassFixture<EventStoreServer>
