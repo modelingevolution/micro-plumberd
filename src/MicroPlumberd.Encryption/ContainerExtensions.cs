@@ -7,6 +7,7 @@ public static class ContainerExtensions
 {
     public static IServiceCollection AddEncryption(this IServiceCollection services)
     {
+        services.AddHostedService<CertManagerInitializer>();
         services.TryAddSingleton<IEncryptor, Encryptor>();
         services.TryAddSingleton<ICertManager, CertManager>();
         return services;

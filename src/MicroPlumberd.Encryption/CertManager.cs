@@ -1,10 +1,30 @@
 ﻿using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace MicroPlumberd.Encryption;
 
+[OutputStream("PublicCertificate")]
+class PublicCertificate
+{
+    public byte[] Data { get; set; }
+}
+
+public class CertificateNotFoundException : Exception
+{
+    public string Recipient { get; init; }
+}
+
+class CertManagerInitializer(ICertManager cm) : BackgroundService
+{
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        await cm.Init();
+    }
+}
 class CertManager(IPlumber plumber, IConfiguration configuration) : ICertManager
 {
     private ConcurrentDictionary<string, X509Certificate2> _private = new();
@@ -21,12 +41,43 @@ class CertManager(IPlumber plumber, IConfiguration configuration) : ICertManager
                 return new X509Certificate2(file);
             else
             {
-                var cert = GenerateCertificate(r);
-                byte[] certData = cert.Export(X509ContentType.Pfx, "");
-                File.WriteAllBytes(file, certData);
-                return cert;
+                var result = plumber.GetState<PublicCertificate>(recipient).Result;
+                if (result == null)
+                    throw new CertificateNotFoundException() { Recipient = recipient };
+
+                return new X509Certificate2(result.Value.Data);
             }
         });
+    }
+
+    public async Task Init()
+    {
+        var r = Environment.MachineName;
+        var certDir = configuration.GetValue<string>("CertsPath") ?? "./certs";
+        var file = Path.Combine(certDir, r + ".pfx");
+        if (!Directory.Exists(certDir))
+            Directory.CreateDirectory(certDir);
+        if (File.Exists(file))
+        {
+            var result = await plumber.GetState<PublicCertificate>(r);
+            if (result == null)
+            {
+                // stores are not in sync.
+                var cert = new X509Certificate2(file);
+                byte[] pubCer = cert.Export(X509ContentType.Cert);
+                PublicCertificate pc = new PublicCertificate() { Data = pubCer };
+                await plumber.AppendState(pc, r);
+            }
+        }
+        else
+        {
+            var cert = GenerateCertificate(r);
+            byte[] certData = cert.Export(X509ContentType.Pfx, "");
+            byte[] pubCer = cert.Export(X509ContentType.Cert);
+            await File.WriteAllBytesAsync(file, certData);
+            PublicCertificate pc = new PublicCertificate() { Data = pubCer };
+            await plumber.AppendState(pc, r);
+        }
     }
     public X509Certificate2 GetPrivate(string recipient)
     {
@@ -42,7 +93,11 @@ class CertManager(IPlumber plumber, IConfiguration configuration) : ICertManager
             {
                 var cert = GenerateCertificate(r);
                 byte[] certData = cert.Export(X509ContentType.Pfx, "");
+                byte[] pubCer = cert.Export(X509ContentType.Cert);
                 File.WriteAllBytes(file, certData);
+                PublicCertificate pc = new PublicCertificate() { Data = pubCer };
+                Task.Run(() => plumber.AppendState(pc, recipient));
+                
                 return cert;
             }
         });

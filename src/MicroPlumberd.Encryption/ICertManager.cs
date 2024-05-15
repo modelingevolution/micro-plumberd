@@ -6,4 +6,5 @@ public interface ICertManager
 {
     X509Certificate2 GetPrivate(string recipient);
     X509Certificate2 Get(string recipient);
+    Task Init();
 }
