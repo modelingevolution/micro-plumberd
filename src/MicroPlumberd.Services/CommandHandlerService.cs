@@ -13,7 +13,8 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log, IPlumber 
     private Dictionary<string, Type> _eventMapper;
     public override void Dispose()
     {
-        Task.WaitAll(_subscription.DisposeAsync().AsTask());
+        if(_subscription != null)
+            Task.WaitAll(_subscription.DisposeAsync().AsTask());
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
