@@ -18,13 +18,16 @@ public class CertificateNotFoundException : Exception
     public string Recipient { get; init; }
 }
 
-class CertManagerInitializer(ICertManager cm) : BackgroundService
+class CertManagerInitializer(ICertManager cm, IPlumber plumber) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await cm.Init();
+        await plumber.Subscribe("$et-PublicCertificateSnapShotted", FromRelativeStreamPosition.Start)
+            .WithSnapshotHandler<PubCertEventHandler>();
     }
 }
+
 class CertManager(IPlumber plumber, IConfiguration configuration) : ICertManager
 {
     private ConcurrentDictionary<string, X509Certificate2> _private = new();
@@ -34,19 +37,16 @@ class CertManager(IPlumber plumber, IConfiguration configuration) : ICertManager
         return _public.GetOrAdd(recipient, r =>
         {
             var certDir = configuration.GetValue<string>("CertsPath") ?? "./certs";
-            var file = Path.Combine(certDir, r + ".pfx");
+            
             if (!Directory.Exists(certDir))
                 Directory.CreateDirectory(certDir);
+            var file = Path.Combine(certDir, $"{r}.cer");
             if (File.Exists(file))
                 return new X509Certificate2(file);
-            else
-            {
-                var result = plumber.GetState<PublicCertificate>(recipient).Result;
-                if (result == null)
-                    throw new CertificateNotFoundException() { Recipient = recipient };
-
-                return new X509Certificate2(result.Value.Data);
-            }
+            file = Path.Combine(certDir, $"{r}.pfx");
+            if (File.Exists(file))
+                return new X509Certificate2(file);
+            throw new CertificateNotFoundException() { Recipient = recipient};
         });
     }
 
@@ -78,6 +78,7 @@ class CertManager(IPlumber plumber, IConfiguration configuration) : ICertManager
             PublicCertificate pc = new PublicCertificate() { Data = pubCer };
             await plumber.AppendState(pc, r);
         }
+
     }
     public X509Certificate2 GetPrivate(string recipient)
     {

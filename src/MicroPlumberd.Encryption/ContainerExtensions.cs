@@ -10,6 +10,7 @@ public static class ContainerExtensions
         services.AddHostedService<CertManagerInitializer>();
         services.TryAddSingleton<IEncryptor, Encryptor>();
         services.TryAddSingleton<ICertManager, CertManager>();
+        services.AddSingleton<PubCertEventHandler>();
         return services;
     }
     public static IPlumberConfig EnableEncryption(this IPlumberConfig services)
