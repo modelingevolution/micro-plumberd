@@ -44,20 +44,48 @@ public static class StreamPositionExtensions
 class EventHandlerStarter<THandler>(IPlumber plumber) : IEventHandlerStarter
     where THandler : class, IEventHandler, ITypeRegister
 {
+    private FromStream _startPosition;
+    private FromRelativeStreamPosition _relativeStartPosition;
+    private bool _persistently;
     public async Task Start(CancellationToken stoppingToken)
     {
-        if (!Persistently)
-            await plumber.SubscribeEventHandler<THandler>(start: StartPosition);
+        if (!_persistently)
+            await plumber.SubscribeEventHandler<THandler>(start: _relativeStartPosition, token: stoppingToken);
         else
-            await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: StartPosition.ToStreamPosition());
+            await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: _startPosition.ToStreamPosition(), token: stoppingToken);
     }
 
     public EventHandlerStarter<THandler> Configure(bool persistently = false, FromStream? start = null)
     {
-        this.Persistently = persistently;
-        this.StartPosition = start ?? FromStream.Start;
+        this._persistently = persistently;
+        this._startPosition = start ?? FromStream.Start;
+        this._relativeStartPosition = _startPosition;
         return this;
     }
-    public FromStream StartPosition { get; private set; }
-    public bool Persistently { get; private set; }
+    public EventHandlerStarter<THandler> Configure(FromRelativeStreamPosition? start = null)
+    {
+        this._persistently = false;
+        this._relativeStartPosition = start ?? FromRelativeStreamPosition.Start;
+        return this;
+    }
+
+}
+class EventStateHandlerStarter<THandler>(IPlumber plumber) : IEventHandlerStarter
+    where THandler : class, IEventHandler, ITypeRegister
+{
+    
+    private FromRelativeStreamPosition _relativeStartPosition;
+    
+    public async Task Start(CancellationToken stoppingToken)
+    {
+        await plumber.SubscribeStateEventHandler<THandler>(start:_relativeStartPosition, token: stoppingToken);
+    }
+
+   
+    public EventStateHandlerStarter<THandler> Configure(FromRelativeStreamPosition? start = null)
+    {
+        this._relativeStartPosition = start ?? FromRelativeStreamPosition.End - 1;
+        return this;
+    }
+
 }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using EventStore.Client;
@@ -82,7 +84,35 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
             _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
             eh, outputStream, start, ensureOutputStreamProjection, token);
     }
+    public async Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(TEventHandler? eh = null,
+        string? outputStream = null,
+        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,
+        CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        var evts = TEventHandler.Types.Select(x => this.Conventions.SnapshotEventNameConvention(x)).ToArray();
+        return await SubscribeStateEventHandler(evts, eh, outputStream, start, ensureOutputStreamProjection, token);
+    }
+    public async Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(
+        IEnumerable<string>? eventTypes, 
+        TEventHandler? eh = default,
+        string? outputStream = null,
+        FromRelativeStreamPosition? start = null, 
+        bool ensureOutputStreamProjection = true, 
+        CancellationToken token = default)
+        where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        eventTypes ??= Array.Empty<string>();
 
+        outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
+        if (ensureOutputStreamProjection)
+            await ProjectionManagementClient.EnsureJoinProjection(outputStream, ProjectionRegister, eventTypes, token: token);
+        var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken: token);
+        if (eh == null)
+            await sub.WithSnapshotHandler<TEventHandler>();
+        else
+            await sub.WithSnapshotHandler(eh);
+        return sub;
+    }
     public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes, TEventHandler? eh = default, string? outputStream = null,
         FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default)

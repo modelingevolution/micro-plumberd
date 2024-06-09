@@ -459,4 +459,18 @@ public interface IPlumber
     IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(string? streamId = null,
         StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807L,
         CancellationToken token = default);
+
+    Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(
+        IEnumerable<string>? eventTypes, 
+        TEventHandler? eh = default,
+        string? outputStream = null,
+        FromRelativeStreamPosition? start = null, 
+        bool ensureOutputStreamProjection = true, 
+        CancellationToken token = default)
+        where TEventHandler : class, IEventHandler, ITypeRegister;
+
+    Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(TEventHandler? eh = null,
+        string? outputStream = null,
+        FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,
+        CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister;
 }

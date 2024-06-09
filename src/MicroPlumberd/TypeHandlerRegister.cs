@@ -20,5 +20,6 @@ sealed class TypeHandlerRegisters(EventNameConvention conventions) : ITypeHandle
     {
         return Get<T>();
     }
+
     public IEnumerable<string> GetEventNamesFor<T>() where T : ITypeRegister => Get<T>().Keys;
 }
