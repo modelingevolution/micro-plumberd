@@ -10,7 +10,7 @@
     <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
     <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
-    <PackageReference Include="MudBlazor" Version="6.19.1" />
+    <PackageReference Include="MudBlazor" Version="7.10.0" />
   </ItemGroup>
 
 </Project>

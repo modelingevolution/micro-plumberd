@@ -16,15 +16,14 @@
     </PackageReference>
     <PackageReference Include="Divergic.Logging.Xunit" Version="4.3.0" />
     <PackageReference Include="Docker.DotNet" Version="3.125.15" />
-    <PackageReference Include="FluentAssertions" Version="6.12.0" />
-    <PackageReference Include="MicroPlumberd.SourceGenerators" Version="1.0.41.97" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
+    <PackageReference Include="FluentAssertions" Version="6.12.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
     <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="SpecFlow" Version="3.9.74" />
     <PackageReference Include="SpecFlow.CustomPlugin" Version="3.9.74" />
     <PackageReference Include="SpecFlow.xUnit" Version="3.9.74" />
-    <PackageReference Include="xunit" Version="2.7.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.7">
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -37,6 +36,7 @@
     <ProjectReference Include="..\MicroPlumberd.Services.ProcessManager\MicroPlumberd.Services.ProcessManagers.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Testing\MicroPlumberd.Testing.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Tests.App.Dsl\MicroPlumberd.Tests.App.Dsl.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Tests.App\MicroPlumberd.Tests.App.csproj" />

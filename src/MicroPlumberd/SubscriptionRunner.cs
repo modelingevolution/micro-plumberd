@@ -93,23 +93,41 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     {
         return (T)await WithHandler((IEventHandler)model, func);
     }
+    
     public async Task<IEventHandler> WithHandler(IEventHandler model, TypeEventConverter func)
     {
         var state = new Tuple<EventStoreClient.StreamSubscriptionResult, IEventHandler>(subscription, model);
         await Task.Factory.StartNew(async (x) =>
         {
+            
             var (sub, model) = (Tuple<EventStoreClient.StreamSubscriptionResult, IEventHandler>)x!;
-            await foreach (var e in sub)
+            await foreach (var m in sub.Messages)
             {
-                if (!func(e.Event.EventType, out var t)) continue;
-
-                var (ev, metadata) = plumber.ReadEventData(e.Event, t);
-                using var scope = new InvocationScope();
-                plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
-                await model.Handle(metadata, ev);
+                switch (m)
+                {
+                    case StreamMessage.Event(var e):
+                        await OnEvent(func, e, model);
+                        break;
+                    case StreamMessage.CaughtUp:
+                        if (model is ICatchUpHandler cuh) await cuh.CatchtUp();
+                        break;
+                    default: break;
+                    
+                }
+                
             }
         }, state, TaskCreationOptions.LongRunning);
         return model;
+    }
+
+    private async Task OnEvent(TypeEventConverter func, ResolvedEvent e, IEventHandler model)
+    {
+        if (!func(e.Event.EventType, out var t)) return;
+
+        var (ev, metadata) = plumber.ReadEventData(e.Event, t);
+        using var scope = new InvocationScope();
+        plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
+        await model.Handle(metadata, ev);
     }
 
     public async Task<IEventHandler> WithHandler<T>(TypeEventConverter func) where T : IEventHandler

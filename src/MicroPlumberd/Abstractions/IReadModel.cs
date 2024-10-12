@@ -27,6 +27,14 @@ public interface IEventHandler
 }
 
 /// <summary>
+/// Interface for event-handlers to be invoke when a subscription has catchup.
+/// </summary>
+public interface ICatchUpHandler
+{
+    Task CatchtUp();
+}
+
+/// <summary>
 /// Subscription set builder.
 /// </summary>
 public interface ISubscriptionSet
