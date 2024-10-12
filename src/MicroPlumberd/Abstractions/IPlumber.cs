@@ -22,9 +22,9 @@ public interface ISnapshot
     long Version { get; }
 }
 
-public record State<T>(T Value, Metadata Metadata)
+public record SubscriptionRunnerState<T>(T Value, Metadata Metadata)
 {
-    public static implicit operator T?(State<T>? st) => st != null ? st.Value : default;
+    public static implicit operator T?(SubscriptionRunnerState<T>? st) => st != null ? st.Value : default;
 }
 /// <summary>
 /// Represents a snapshot object used in Plumberd.
@@ -454,7 +454,7 @@ public interface IPlumber
     /// <returns></returns>
     Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default);
 
-    Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class;
+    Task<SubscriptionRunnerState<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class;
 
     IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(string? streamId = null,
         StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807L,

@@ -1,15 +1,53 @@
 ﻿using EventStore.Client;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd;
 
-class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelativeStreamPosition start,
+
+record SubscriptionRunnerState : IDisposable
+{
+    private IDisposable? _subscription;
+
+    public SubscriptionRunnerState(FromStream initialPosition, EventStoreClient client, string streamName, UserCredentials? userCredentials, CancellationToken cancellationToken)
+    {
+        _initialPosition = initialPosition;
+        _client = client;
+        this.StreamName = streamName;
+        this.UserCredentials = userCredentials;
+        this.CancellationToken = cancellationToken;
+        Position = initialPosition;
+    }
+
+    public EventStoreClient.StreamSubscriptionResult Subscribe()
+    {
+        var result = _client.SubscribeToStream(StreamName, Position, true, UserCredentials, CancellationToken);
+        _subscription = result;
+        return result;
+    }
+    public FromStream Position { get; set; }
+    public IEventHandler Handler { get; set; }
+    private readonly FromStream _initialPosition;
+    private readonly EventStoreClient _client;
+    public string StreamName { get; init; }
+    public UserCredentials? UserCredentials { get; init; }
+    public CancellationToken CancellationToken { get; init; }
+
+    public void Dispose()
+    {
+        _subscription?.Dispose();
+    }
+
+   
+};
+class SubscriptionSeeker(Plumber plumber, string streamName, FromRelativeStreamPosition start,
     UserCredentials? userCredentials = null, CancellationToken cancellationToken = default) : ISubscriptionRunner
 {
     private SubscriptionRunner? _runner;
 
-    private async Task<EventStoreClient.StreamSubscriptionResult> Subscribe()
+    
+    private async Task<SubscriptionRunnerState> Subscribe()
     {
         StreamPosition sp = StreamPosition.Start;
         FromStream subscriptionStart = FromStream.Start;
@@ -26,7 +64,7 @@ class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelative
             cancellationToken:cancellationToken);
         StreamPosition dstPosition;
         if (await records.ReadState == ReadState.StreamNotFound)
-            return plumber.Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials, cancellationToken);
+            return new (subscriptionStart,plumber.Client,streamName, userCredentials,  cancellationToken);
 
         var record = await records.FirstAsync();
         if (start.Direction == Direction.Forwards)
@@ -45,8 +83,7 @@ class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelative
             else subscriptionStart = FromStream.Start;
         }
 
-        return plumber.Client.SubscribeToStream(streamName, subscriptionStart, true, userCredentials,
-            cancellationToken);
+        return new(subscriptionStart, plumber.Client, streamName, userCredentials, cancellationToken);
     }
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
@@ -80,7 +117,7 @@ class DelayedSubscriptionRunner(Plumber plumber, string streamName, FromRelative
 
     public async ValueTask DisposeAsync() => await _runner.DisposeAsync();
 }
-class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionResult subscription) : ISubscriptionRunner
+class SubscriptionRunner(Plumber plumber, SubscriptionRunnerState subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
@@ -96,38 +133,70 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     
     public async Task<IEventHandler> WithHandler(IEventHandler model, TypeEventConverter func)
     {
-        var state = new Tuple<EventStoreClient.StreamSubscriptionResult, IEventHandler>(subscription, model);
-        await Task.Factory.StartNew(async (x) =>
+        subscription.Handler = model;
+        await Task.Factory.StartNew(async (_) =>
         {
-            
-            var (sub, model) = (Tuple<EventStoreClient.StreamSubscriptionResult, IEventHandler>)x!;
-            await foreach (var m in sub.Messages)
+            var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
+            while (!subscription.CancellationToken.IsCancellationRequested)
             {
-                switch (m)
+                try
                 {
-                    case StreamMessage.Event(var e):
-                        await OnEvent(func, e, model);
-                        break;
-                    case StreamMessage.CaughtUp:
-                        if (model is ICatchUpHandler cuh) await cuh.CatchtUp();
-                        break;
-                    default: break;
-                    
+                    await using var sub = subscription.Subscribe();
+                    await foreach (var m in sub.Messages)
+                    {
+                        switch (m)
+                        {
+                            case StreamMessage.Event(var e):
+                                await OnEvent(func, e, model);
+                                subscription.Position = FromStream.After(e.OriginalEventNumber);
+                                break;
+                            case StreamMessage.CaughtUp:
+                                if (model is ICatchUpHandler cuh) await cuh.CatchtUp();
+                                break;
+                            default: break;
+
+                        }
+                    }
                 }
-                
+                catch (OperationCanceledException)
+                {
+                    l?.LogDebug($"Subscription '{subscription.StreamName}' was canceled.");
+                    return;
+                }
+                catch (ObjectDisposedException)
+                {
+                    l?.LogDebug($"Subscription '{subscription.StreamName}' was canceled.");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    l?.LogWarning($"Subscription '{subscription.StreamName}' was dropped. Will retry in 5sec.");
+                    await Task.Delay(5000, subscription.CancellationToken);
+                }
             }
-        }, state, TaskCreationOptions.LongRunning);
+        }, subscription, TaskCreationOptions.LongRunning);
         return model;
     }
 
     private async Task OnEvent(TypeEventConverter func, ResolvedEvent e, IEventHandler model)
     {
-        if (!func(e.Event.EventType, out var t)) return;
+        while(!subscription.CancellationToken.IsCancellationRequested)
+        try
+        {
+            if (!func(e.Event.EventType, out var t)) return;
 
-        var (ev, metadata) = plumber.ReadEventData(e.Event, t);
-        using var scope = new InvocationScope();
-        plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
-        await model.Handle(metadata, ev);
+            var (ev, metadata) = plumber.ReadEventData(e.Event, t);
+            using var scope = new InvocationScope();
+            plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
+            await model.Handle(metadata, ev);
+            return;
+        }
+        catch (Exception ex)
+        {
+            var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
+            l?.LogError($"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+            await Task.Delay(30000, subscription.CancellationToken);
+        }
     }
 
     public async Task<IEventHandler> WithHandler<T>(TypeEventConverter func) where T : IEventHandler
@@ -137,7 +206,7 @@ class SubscriptionRunner(Plumber plumber, EventStoreClient.StreamSubscriptionRes
     }
     public async Task<IEventHandler> WithHandler<T>() where T : IEventHandler, ITypeRegister => await WithHandler<T>(plumber.TypeHandlerRegisters.GetEventNameConverterFor<T>());
 
-    public async ValueTask DisposeAsync() => await subscription.DisposeAsync();
+    public async ValueTask DisposeAsync() => subscription.Dispose();
 
     public async Task<IEventHandler> WithHandler<T>(ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(register.GetEventNameConverterFor<T>());
     public async Task<IEventHandler> WithHandler<T>(T model, ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister => await WithHandler<T>(model, register.GetEventNameConverterFor<T>());

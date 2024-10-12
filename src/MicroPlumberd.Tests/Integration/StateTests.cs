@@ -7,12 +7,12 @@ using MicroPlumberd.Tests.Utils;
 namespace MicroPlumberd.Tests.Integration;
 
 [TestCategory("Integration")]
-public class StateTests : IClassFixture<EventStoreServer>
+public class SubscriptionRunnerStateTests : IClassFixture<EventStoreServer>
 {
     private readonly IPlumber plumber;
     private readonly EventStoreServer es;
 
-    public StateTests(EventStoreServer es)
+    public SubscriptionRunnerStateTests(EventStoreServer es)
     {
         plumber = Plumber.Create(es.GetEventStoreSettings());
         this.es = es;

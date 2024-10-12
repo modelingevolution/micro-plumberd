@@ -55,15 +55,10 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     public ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     {
-        if(start.Count == 0)
+        if (start.Count == 0)
             return new SubscriptionRunner(this,
-            Client.SubscribeToStream(streamName, start.StartPosition, true, userCredentials, cancellationToken));
-        {
-            
-
-            return new DelayedSubscriptionRunner(this, streamName, start, userCredentials, cancellationToken);
-
-        }
+                new SubscriptionRunnerState(start.StartPosition, Client, streamName, userCredentials, cancellationToken));
+        return new SubscriptionSeeker(this, streamName, start, userCredentials, cancellationToken);
     }
 
     public Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc, IEnumerable<string>? eventTypes,
@@ -472,7 +467,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
     private readonly IdDuckTyping _idTyping = new();
     private readonly VersionDuckTyping _versionTyping = new();
-    public async Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class
+    public async Task<SubscriptionRunnerState<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class
     {
         var streamType = typeof(T);
         streamId ??= Conventions.GetStreamIdStateConvention(streamType, id);
@@ -484,7 +479,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var (evt, m) = e[0];
         _versionTyping.SetVersion(evt, m.SourceStreamPosition);
         _idTyping.SetId(evt, id);
-        return new State<T>((T)evt, m);
+        return new SubscriptionRunnerState<T>((T)evt, m);
     }
 
    

@@ -70,6 +70,26 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
         fooModel.AssertionDb.Index.Should().HaveCount(1);
     }
     [Fact]
+    public async Task SubscribeModelWithEventStoreRestart()
+    {
+        await _eventStore.StartInDocker(inMemory:false);
+        await AppendOneEvent();
+
+        var fooModel = new FooModel(new InMemoryAssertionDb());
+
+        var sub = await plumber.SubscribeEventHandler(fooModel);
+
+        await Task.Delay(1000);
+
+        fooModel.AssertionDb.Index.Should().HaveCount(1);
+
+        await _eventStore.Restart(TimeSpan.FromSeconds(5));
+        await AppendOneEvent();
+        await Task.Delay(1000);
+        fooModel.AssertionDb.Index.Should().HaveCount(2);
+
+    }
+    [Fact]
     public async Task SubscribeScopedModel()
     {
         // TODO: Switch to EF to check

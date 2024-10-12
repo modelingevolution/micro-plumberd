@@ -4,6 +4,7 @@ using Docker.DotNet;
 using Docker.DotNet.Models;
 using EventStore.Client;
 using Xunit;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MicroPlumberd.Testing;
 
@@ -45,9 +46,51 @@ public class EventStoreServer :  IDisposable
         var container = containers.FirstOrDefault(x => x.Names.Any(n => n.Contains(ContainerName)));
         return container;
     }
-    public async Task<EventStoreServer> StartInDocker(bool wait = true)
+
+    public async Task<bool> Stop()
     {
         var container = await GetEventStoreContainer();
+        if (container != null)
+        {
+            var data = await client.Containers.InspectContainerAsync(container.ID);
+            if (data.State.Running)
+            {
+                await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public async Task Restart(TimeSpan delay)
+    {
+        var container = await GetEventStoreContainer();
+        if (container != null)
+        {
+            var data = await client.Containers.InspectContainerAsync(container.ID);
+            if (data.State.Running)
+            {
+                await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
+                await Task.Delay(delay);
+                await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
+                await Task.Delay(10000);
+                return;
+            }
+        }
+
+        throw new InvalidOperationException("No event-store container found");
+
+    }
+    public async Task<EventStoreServer> StartInDocker(bool wait = true, bool inMemory=true)
+    {
+        var container = await GetEventStoreContainer();
+        if (!inMemory && container != null)
+        {
+            var data = await client.Containers.InspectContainerAsync(container.ID);
+            await client.Containers.RemoveContainerAsync(data.ID, new ContainerRemoveParameters() { RemoveVolumes = true});
+            container = null;
+        }
         if (container == null)
         {
             var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters()
@@ -59,7 +102,7 @@ public class EventStoreServer :  IDisposable
                     "EVENTSTORE_START_STANDARD_PROJECTIONS=true",
                     "EVENTSTORE_INSECURE=true",
                     "EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true",
-                    "EVENTSTORE_MEM_DB=true",
+                    $"EVENTSTORE_MEM_DB={inMemory.ToString().ToLower()}",
                     //"EVENTSTORE_CERTIFICATE_PASSWORD=ca",
                     //"EVENTSTORE_CERTIFICATE_FILE=/cert/eventstore.p12",
                     //"EVENTSTORE_TRUSTED_ROOT_CERTIFICATES_PATH=/cert/ca-certificates/"

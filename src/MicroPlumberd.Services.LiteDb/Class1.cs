@@ -190,7 +190,7 @@ namespace MicroPlumberd.Services.LiteDb
             throw new NotImplementedException();
         }
 
-        public async Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T : class
+        public async Task<SubscriptionRunnerState<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T : class
         {
             throw new NotImplementedException();
         }
