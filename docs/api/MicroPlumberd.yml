@@ -26,6 +26,7 @@ items:
   - MicroPlumberd.GroupNameModelConvention
   - MicroPlumberd.IAggregate
   - MicroPlumberd.IAggregate`1
+  - MicroPlumberd.ICatchUpHandler
   - MicroPlumberd.ICommandBus
   - MicroPlumberd.ICommandEnqueued
   - MicroPlumberd.ICommandRequest
@@ -38,6 +39,7 @@ items:
   - MicroPlumberd.IExtension
   - MicroPlumberd.IId
   - MicroPlumberd.IIdAware
+  - MicroPlumberd.IIdAware`1
   - MicroPlumberd.IId`1
   - MicroPlumberd.IObjectSerializer
   - MicroPlumberd.IPlumber
@@ -61,9 +63,12 @@ items:
   - MicroPlumberd.IVersioned
   - MicroPlumberd.InvocationContext
   - MicroPlumberd.InvocationScope
+  - MicroPlumberd.JsonObjectSerializer
   - MicroPlumberd.Metadata
   - MicroPlumberd.MetadataConvention
   - MicroPlumberd.MetadataExtensions
+  - MicroPlumberd.OptionConverterFactory
+  - MicroPlumberd.Option`1
   - MicroPlumberd.OutputStreamAttribute
   - MicroPlumberd.OutputStreamModelConvention
   - MicroPlumberd.Plumber
@@ -78,10 +83,10 @@ items:
   - MicroPlumberd.StandardMetadataEnricherTypes
   - MicroPlumberd.StateChangeAction`1
   - MicroPlumberd.StateInfo
-  - MicroPlumberd.State`1
   - MicroPlumberd.SteamNameConvention
   - MicroPlumberd.StreamCategoryConvention
   - MicroPlumberd.StreamNameFromEventConvention
+  - MicroPlumberd.SubscriptionRunnerState`1
   - MicroPlumberd.TypeEventConverter
   - MicroPlumberd.TypeExtensions
   langs:
@@ -236,6 +241,31 @@ references:
   name: IIdAware
   nameWithType: IIdAware
   fullName: MicroPlumberd.IIdAware
+- uid: MicroPlumberd.IIdAware`1
+  commentId: T:MicroPlumberd.IIdAware`1
+  href: MicroPlumberd.IIdAware-1.html
+  name: IIdAware<T>
+  nameWithType: IIdAware<T>
+  fullName: MicroPlumberd.IIdAware<T>
+  nameWithType.vb: IIdAware(Of T)
+  fullName.vb: MicroPlumberd.IIdAware(Of T)
+  name.vb: IIdAware(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.IIdAware`1
+    name: IIdAware
+    href: MicroPlumberd.IIdAware-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.IIdAware`1
+    name: IIdAware
+    href: MicroPlumberd.IIdAware-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
 - uid: MicroPlumberd.IAggregate`1
   commentId: T:MicroPlumberd.IAggregate`1
   href: MicroPlumberd.IAggregate-1.html
@@ -275,27 +305,27 @@ references:
   name: ISnapshot
   nameWithType: ISnapshot
   fullName: MicroPlumberd.ISnapshot
-- uid: MicroPlumberd.State`1
-  commentId: T:MicroPlumberd.State`1
+- uid: MicroPlumberd.SubscriptionRunnerState`1
+  commentId: T:MicroPlumberd.SubscriptionRunnerState`1
   parent: MicroPlumberd
-  href: MicroPlumberd.State-1.html
-  name: State<T>
-  nameWithType: State<T>
-  fullName: MicroPlumberd.State<T>
-  nameWithType.vb: State(Of T)
-  fullName.vb: MicroPlumberd.State(Of T)
-  name.vb: State(Of T)
+  href: MicroPlumberd.SubscriptionRunnerState-1.html
+  name: SubscriptionRunnerState<T>
+  nameWithType: SubscriptionRunnerState<T>
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>
+  nameWithType.vb: SubscriptionRunnerState(Of T)
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T)
+  name.vb: SubscriptionRunnerState(Of T)
   spec.csharp:
-  - uid: MicroPlumberd.State`1
-    name: State
-    href: MicroPlumberd.State-1.html
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
   - name: <
   - name: T
   - name: '>'
   spec.vb:
-  - uid: MicroPlumberd.State`1
-    name: State
-    href: MicroPlumberd.State-1.html
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
   - name: (
   - name: Of
   - name: " "
@@ -373,6 +403,12 @@ references:
   name: IEventHandler
   nameWithType: IEventHandler
   fullName: MicroPlumberd.IEventHandler
+- uid: MicroPlumberd.ICatchUpHandler
+  commentId: T:MicroPlumberd.ICatchUpHandler
+  href: MicroPlumberd.ICatchUpHandler.html
+  name: ICatchUpHandler
+  nameWithType: ICatchUpHandler
+  fullName: MicroPlumberd.ICatchUpHandler
 - uid: MicroPlumberd.ISubscriptionSet
   commentId: T:MicroPlumberd.ISubscriptionSet
   parent: MicroPlumberd
@@ -396,6 +432,7 @@ references:
   fullName: MicroPlumberd.ISubscriptionRunner
 - uid: MicroPlumberd.OutputStreamAttribute
   commentId: T:MicroPlumberd.OutputStreamAttribute
+  parent: MicroPlumberd
   href: MicroPlumberd.OutputStreamAttribute.html
   name: OutputStreamAttribute
   nameWithType: OutputStreamAttribute
@@ -694,6 +731,44 @@ references:
   name: Metadata
   nameWithType: Metadata
   fullName: MicroPlumberd.Metadata
+- uid: MicroPlumberd.OptionConverterFactory
+  commentId: T:MicroPlumberd.OptionConverterFactory
+  href: MicroPlumberd.OptionConverterFactory.html
+  name: OptionConverterFactory
+  nameWithType: OptionConverterFactory
+  fullName: MicroPlumberd.OptionConverterFactory
+- uid: MicroPlumberd.Option`1
+  commentId: T:MicroPlumberd.Option`1
+  parent: MicroPlumberd
+  href: MicroPlumberd.Option-1.html
+  name: Option<T>
+  nameWithType: Option<T>
+  fullName: MicroPlumberd.Option<T>
+  nameWithType.vb: Option(Of T)
+  fullName.vb: MicroPlumberd.Option(Of T)
+  name.vb: Option(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Option`1
+    name: Option
+    href: MicroPlumberd.Option-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Option`1
+    name: Option
+    href: MicroPlumberd.Option-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.JsonObjectSerializer
+  commentId: T:MicroPlumberd.JsonObjectSerializer
+  href: MicroPlumberd.JsonObjectSerializer.html
+  name: JsonObjectSerializer
+  nameWithType: JsonObjectSerializer
+  fullName: MicroPlumberd.JsonObjectSerializer
 - uid: MicroPlumberd.FaultException`1
   commentId: T:MicroPlumberd.FaultException`1
   href: MicroPlumberd.FaultException-1.html

@@ -1,0 +1,572 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.SubscriptionRunnerState`1
+  commentId: T:MicroPlumberd.SubscriptionRunnerState`1
+  id: SubscriptionRunnerState`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.SubscriptionRunnerState`1.#ctor(`0,MicroPlumberd.Metadata)
+  - MicroPlumberd.SubscriptionRunnerState`1.Metadata
+  - MicroPlumberd.SubscriptionRunnerState`1.Value
+  - MicroPlumberd.SubscriptionRunnerState`1.op_Implicit(MicroPlumberd.SubscriptionRunnerState{`0})~`0
+  langs:
+  - csharp
+  - vb
+  name: SubscriptionRunnerState<T>
+  nameWithType: SubscriptionRunnerState<T>
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SubscriptionRunnerState
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public record SubscriptionRunnerState<T> : IEquatable<SubscriptionRunnerState<T>>'
+    typeParameters:
+    - id: T
+    content.vb: Public Class SubscriptionRunnerState(Of T) Implements IEquatable(Of SubscriptionRunnerState(Of T))
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{MicroPlumberd.SubscriptionRunnerState`1}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+  nameWithType.vb: SubscriptionRunnerState(Of T)
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T)
+  name.vb: SubscriptionRunnerState(Of T)
+- uid: MicroPlumberd.SubscriptionRunnerState`1.#ctor(`0,MicroPlumberd.Metadata)
+  commentId: M:MicroPlumberd.SubscriptionRunnerState`1.#ctor(`0,MicroPlumberd.Metadata)
+  id: '#ctor(`0,MicroPlumberd.Metadata)'
+  parent: MicroPlumberd.SubscriptionRunnerState`1
+  langs:
+  - csharp
+  - vb
+  name: SubscriptionRunnerState(T, Metadata)
+  nameWithType: SubscriptionRunnerState<T>.SubscriptionRunnerState(T, Metadata)
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.SubscriptionRunnerState(T, MicroPlumberd.Metadata)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public SubscriptionRunnerState(T Value, Metadata Metadata)
+    parameters:
+    - id: Value
+      type: '{T}'
+    - id: Metadata
+      type: MicroPlumberd.Metadata
+    content.vb: Public Sub New(Value As T, Metadata As Metadata)
+  overload: MicroPlumberd.SubscriptionRunnerState`1.#ctor*
+  nameWithType.vb: SubscriptionRunnerState(Of T).New(T, Metadata)
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).New(T, MicroPlumberd.Metadata)
+  name.vb: New(T, Metadata)
+- uid: MicroPlumberd.SubscriptionRunnerState`1.Value
+  commentId: P:MicroPlumberd.SubscriptionRunnerState`1.Value
+  id: Value
+  parent: MicroPlumberd.SubscriptionRunnerState`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: SubscriptionRunnerState<T>.Value
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.Value
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Value
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public T Value { get; init; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public Property Value As T
+  overload: MicroPlumberd.SubscriptionRunnerState`1.Value*
+  nameWithType.vb: SubscriptionRunnerState(Of T).Value
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).Value
+- uid: MicroPlumberd.SubscriptionRunnerState`1.Metadata
+  commentId: P:MicroPlumberd.SubscriptionRunnerState`1.Metadata
+  id: Metadata
+  parent: MicroPlumberd.SubscriptionRunnerState`1
+  langs:
+  - csharp
+  - vb
+  name: Metadata
+  nameWithType: SubscriptionRunnerState<T>.Metadata
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.Metadata
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Metadata
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public Metadata Metadata { get; init; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Metadata
+    content.vb: Public Property Metadata As Metadata
+  overload: MicroPlumberd.SubscriptionRunnerState`1.Metadata*
+  nameWithType.vb: SubscriptionRunnerState(Of T).Metadata
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).Metadata
+- uid: MicroPlumberd.SubscriptionRunnerState`1.op_Implicit(MicroPlumberd.SubscriptionRunnerState{`0})~`0
+  commentId: M:MicroPlumberd.SubscriptionRunnerState`1.op_Implicit(MicroPlumberd.SubscriptionRunnerState{`0})~`0
+  id: op_Implicit(MicroPlumberd.SubscriptionRunnerState{`0})~`0
+  parent: MicroPlumberd.SubscriptionRunnerState`1
+  langs:
+  - csharp
+  - vb
+  name: implicit operator T?(SubscriptionRunnerState<T>?)
+  nameWithType: SubscriptionRunnerState<T>.implicit operator T?(SubscriptionRunnerState<T>?)
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.implicit operator T?(MicroPlumberd.SubscriptionRunnerState<T>?)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Implicit
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 26
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static implicit operator T?(SubscriptionRunnerState<T>? st)
+    parameters:
+    - id: st
+      type: MicroPlumberd.SubscriptionRunnerState`1
+    return:
+      type: '{T}'
+    content.vb: Public Shared Widening Operator CType(st As SubscriptionRunnerState(Of T)) As T
+  overload: MicroPlumberd.SubscriptionRunnerState`1.op_Implicit*
+  nameWithType.vb: SubscriptionRunnerState(Of T).CType(SubscriptionRunnerState(Of T))
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).CType(MicroPlumberd.SubscriptionRunnerState(Of T))
+  name.vb: CType(SubscriptionRunnerState(Of T))
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{MicroPlumberd.SubscriptionRunnerState`1}
+  commentId: T:System.IEquatable{MicroPlumberd.SubscriptionRunnerState`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<SubscriptionRunnerState<T>>
+  nameWithType: IEquatable<SubscriptionRunnerState<T>>
+  fullName: System.IEquatable<MicroPlumberd.SubscriptionRunnerState<T>>
+  nameWithType.vb: IEquatable(Of SubscriptionRunnerState(Of T))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.SubscriptionRunnerState(Of T))
+  name.vb: IEquatable(Of SubscriptionRunnerState(Of T))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.SubscriptionRunnerState`1.#ctor*
+  commentId: Overload:MicroPlumberd.SubscriptionRunnerState`1.#ctor
+  href: MicroPlumberd.SubscriptionRunnerState-1.html#MicroPlumberd_SubscriptionRunnerState_1__ctor__0_MicroPlumberd_Metadata_
+  name: SubscriptionRunnerState
+  nameWithType: SubscriptionRunnerState<T>.SubscriptionRunnerState
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.SubscriptionRunnerState
+  nameWithType.vb: SubscriptionRunnerState(Of T).New
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).New
+  name.vb: New
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: MicroPlumberd.Metadata
+  commentId: T:MicroPlumberd.Metadata
+  parent: MicroPlumberd
+  href: MicroPlumberd.Metadata.html
+  name: Metadata
+  nameWithType: Metadata
+  fullName: MicroPlumberd.Metadata
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: MicroPlumberd.SubscriptionRunnerState`1.Value*
+  commentId: Overload:MicroPlumberd.SubscriptionRunnerState`1.Value
+  href: MicroPlumberd.SubscriptionRunnerState-1.html#MicroPlumberd_SubscriptionRunnerState_1_Value
+  name: Value
+  nameWithType: SubscriptionRunnerState<T>.Value
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.Value
+  nameWithType.vb: SubscriptionRunnerState(Of T).Value
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).Value
+- uid: MicroPlumberd.SubscriptionRunnerState`1.Metadata*
+  commentId: Overload:MicroPlumberd.SubscriptionRunnerState`1.Metadata
+  href: MicroPlumberd.SubscriptionRunnerState-1.html#MicroPlumberd_SubscriptionRunnerState_1_Metadata
+  name: Metadata
+  nameWithType: SubscriptionRunnerState<T>.Metadata
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.Metadata
+  nameWithType.vb: SubscriptionRunnerState(Of T).Metadata
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).Metadata
+- uid: MicroPlumberd.SubscriptionRunnerState`1.op_Implicit*
+  commentId: Overload:MicroPlumberd.SubscriptionRunnerState`1.op_Implicit
+  name: implicit operator
+  nameWithType: SubscriptionRunnerState<T>.implicit operator
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>.implicit operator
+  nameWithType.vb: SubscriptionRunnerState(Of T).CType
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T).CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: MicroPlumberd.SubscriptionRunnerState`1
+  commentId: T:MicroPlumberd.SubscriptionRunnerState`1
+  parent: MicroPlumberd
+  href: MicroPlumberd.SubscriptionRunnerState-1.html
+  name: SubscriptionRunnerState<T>
+  nameWithType: SubscriptionRunnerState<T>
+  fullName: MicroPlumberd.SubscriptionRunnerState<T>
+  nameWithType.vb: SubscriptionRunnerState(Of T)
+  fullName.vb: MicroPlumberd.SubscriptionRunnerState(Of T)
+  name.vb: SubscriptionRunnerState(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

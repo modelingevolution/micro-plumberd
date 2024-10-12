@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta name="title" content="Class CommandHandlerAttribute | MicroPlumberd ">
       
-      
+      <meta name="description" content="Attribute for marking a class suitable for command-handler code-generation. The class should have methods with signature: public async Task Handle(Guid id, YourFancyCommand cmd) { /* ... */ } Where type of id can be any Parsable class/struct.">
       <link rel="icon" href="../favicon.ico">
       <link rel="stylesheet" href="../public/docfx.min.css">
       <link rel="stylesheet" href="../public/main.css">
@@ -89,7 +89,7 @@
 
 
   <h1 id="MicroPlumberd_Services_CommandHandlerAttribute" data-uid="MicroPlumberd.Services.CommandHandlerAttribute" class="text-break">
-Class CommandHandlerAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/CommandHandlerAttribute.cs/#L3"><i class="bi bi-code-slash"></i></a>
+Class CommandHandlerAttribute  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/CommandHandlerAttribute.cs/#L12"><i class="bi bi-code-slash"></i></a>
   </h1>
 
   <div class="facts text-secondary">
@@ -97,7 +97,11 @@ Class CommandHandlerAttribute  <a class="header-action link-secondary" title="Vi
   <dl><dt>Assembly</dt><dd>MicroPlumberd.Services.dll</dd></dl>
   </div>
 
-  <div class="markdown summary"></div>
+  <div class="markdown summary"><p>Attribute for marking a class suitable for command-handler code-generation.
+The class should have methods with signature:</p>
+<pre><code class="lang-csharp">public async Task Handle(Guid id, YourFancyCommand cmd) { /* ... */ }</code></pre>
+<p>Where type of id can be any Parsable class/struct.</p>
+</div>
   <div class="markdown conceptual"></div>
 
   <div class="codewrapper">
@@ -259,7 +263,7 @@ public class CommandHandlerAttribute : Attribute</code></pre>
 </article>
 
         <div class="contribution d-print-none">
-          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/CommandHandlerAttribute.cs/#L3" class="edit-link">Edit this page</a>
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/CommandHandlerAttribute.cs/#L12" class="edit-link">Edit this page</a>
         </div>
 
 

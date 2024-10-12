@@ -681,7 +681,6 @@ references:
 - uid: MicroPlumberd.ITypeRegister.Types
   commentId: P:MicroPlumberd.ITypeRegister.Types
   parent: MicroPlumberd.ITypeRegister
-  href: MicroPlumberd.ITypeRegister.html#MicroPlumberd_ITypeRegister_Types
   name: Types
   nameWithType: ITypeRegister.Types
   fullName: MicroPlumberd.ITypeRegister.Types

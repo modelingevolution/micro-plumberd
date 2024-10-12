@@ -27,6 +27,7 @@ items:
   - MicroPlumberd.IPlumber.ProjectionManagementClient
   - MicroPlumberd.IPlumber.ProjectionRegister
   - MicroPlumberd.IPlumber.Read(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
+  - MicroPlumberd.IPlumber.ReadEventsOfType``1(System.String,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.ReadFull(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.Read``1(System.Object,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
@@ -41,6 +42,8 @@ items:
   - MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.SubscribeSet
+  - MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  - MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumber.TypeHandlerRegisters
   langs:
   - csharp
@@ -65,8 +68,6 @@ items:
   syntax:
     content: public interface IPlumber
     content.vb: Public Interface IPlumber
-  extensionMethods:
-  - MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
 - uid: MicroPlumberd.IPlumber.Config
   commentId: P:MicroPlumberd.IPlumber.Config
   id: Config
@@ -1689,7 +1690,7 @@ items:
   summary: Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.
   example: []
   syntax:
-    content: Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default)
+    content: Task<IWriteResult> AppendState(object state, object id, long? version = null, CancellationToken token = default)
     parameters:
     - id: state
       type: System.Object
@@ -1706,7 +1707,7 @@ items:
     return:
       type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
       description: ''
-    content.vb: Function AppendState(state As Object, id As Object, version As Long?, token As CancellationToken = Nothing) As Task(Of IWriteResult)
+    content.vb: Function AppendState(state As Object, id As Object, version As Long? = Nothing, token As CancellationToken = Nothing) As Task(Of IWriteResult)
   overload: MicroPlumberd.IPlumber.AppendState*
   nameWithType.vb: IPlumber.AppendState(Object, Object, Long?, CancellationToken)
   fullName.vb: MicroPlumberd.IPlumber.AppendState(Object, Object, Long?, System.Threading.CancellationToken)
@@ -1736,7 +1737,7 @@ items:
   summary: Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.
   example: []
   syntax:
-    content: 'Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) where T : IId'
+    content: Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default)
     parameters:
     - id: state
       type: '{T}'
@@ -1750,7 +1751,7 @@ items:
     return:
       type: System.Threading.Tasks.Task{EventStore.Client.IWriteResult}
       description: ''
-    content.vb: Function AppendState(Of T As IId)(state As T, token As CancellationToken = Nothing) As Task(Of IWriteResult)
+    content.vb: Function AppendState(Of T)(state As T, token As CancellationToken = Nothing) As Task(Of IWriteResult)
   overload: MicroPlumberd.IPlumber.AppendState*
   nameWithType.vb: IPlumber.AppendState(Of T)(T, CancellationToken)
   fullName.vb: MicroPlumberd.IPlumber.AppendState(Of T)(T, System.Threading.CancellationToken)
@@ -1778,7 +1779,7 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: 'Task<State<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T : class'
+    content: 'Task<SubscriptionRunnerState<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T : class'
     parameters:
     - id: id
       type: System.Object
@@ -1789,12 +1790,146 @@ items:
     typeParameters:
     - id: T
     return:
-      type: System.Threading.Tasks.Task{MicroPlumberd.State{{T}}}
-    content.vb: Function GetState(Of T As Class)(id As Object, streamId As String = Nothing, token As CancellationToken = Nothing) As Task(Of State(Of T))
+      type: System.Threading.Tasks.Task{MicroPlumberd.SubscriptionRunnerState{{T}}}
+    content.vb: Function GetState(Of T As Class)(id As Object, streamId As String = Nothing, token As CancellationToken = Nothing) As Task(Of SubscriptionRunnerState(Of T))
   overload: MicroPlumberd.IPlumber.GetState*
   nameWithType.vb: IPlumber.GetState(Of T)(Object, String, CancellationToken)
   fullName.vb: MicroPlumberd.IPlumber.GetState(Of T)(Object, String, System.Threading.CancellationToken)
   name.vb: GetState(Of T)(Object, String, CancellationToken)
+- uid: MicroPlumberd.IPlumber.ReadEventsOfType``1(System.String,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.IPlumber.ReadEventsOfType``1(System.String,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
+  id: ReadEventsOfType``1(System.String,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: ReadEventsOfType<T>(string?, StreamPosition?, Direction?, long, CancellationToken)
+  nameWithType: IPlumber.ReadEventsOfType<T>(string?, StreamPosition?, Direction?, long, CancellationToken)
+  fullName: MicroPlumberd.IPlumber.ReadEventsOfType<T>(string?, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, long, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ReadEventsOfType
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 458
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(string? streamId = null, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default)
+    parameters:
+    - id: streamId
+      type: System.String
+    - id: start
+      type: System.Nullable{EventStore.Client.StreamPosition}
+    - id: direction
+      type: System.Nullable{EventStore.Client.Direction}
+    - id: maxCount
+      type: System.Int64
+    - id: token
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: T
+    return:
+      type: System.Collections.Generic.IAsyncEnumerable{System.ValueTuple{{T},MicroPlumberd.Metadata}}
+    content.vb: Function ReadEventsOfType(Of T)(streamId As String = Nothing, start As StreamPosition? = Nothing, direction As Direction? = Nothing, maxCount As Long = 9223372036854775807, token As CancellationToken = Nothing) As IAsyncEnumerable(Of (T, Metadata))
+  overload: MicroPlumberd.IPlumber.ReadEventsOfType*
+  nameWithType.vb: IPlumber.ReadEventsOfType(Of T)(String, StreamPosition?, Direction?, Long, CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumber.ReadEventsOfType(Of T)(String, EventStore.Client.StreamPosition?, EventStore.Client.Direction?, Long, System.Threading.CancellationToken)
+  name.vb: ReadEventsOfType(Of T)(String, StreamPosition?, Direction?, Long, CancellationToken)
+- uid: MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  id: SubscribeStateEventHandler``1(System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: SubscribeStateEventHandler<TEventHandler>(IEnumerable<string>?, TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  nameWithType: IPlumber.SubscribeStateEventHandler<TEventHandler>(IEnumerable<string>?, TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  fullName: MicroPlumberd.IPlumber.SubscribeStateEventHandler<TEventHandler>(System.Collections.Generic.IEnumerable<string>?, TEventHandler?, string?, MicroPlumberd.FromRelativeStreamPosition?, bool, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SubscribeStateEventHandler
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 462
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(IEnumerable<string>? eventTypes, TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister'
+    parameters:
+    - id: eventTypes
+      type: System.Collections.Generic.IEnumerable{System.String}
+    - id: eh
+      type: '{TEventHandler}'
+    - id: outputStream
+      type: System.String
+    - id: start
+      type: System.Nullable{MicroPlumberd.FromRelativeStreamPosition}
+    - id: ensureOutputStreamProjection
+      type: System.Boolean
+    - id: token
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: TEventHandler
+    return:
+      type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+    content.vb: Function SubscribeStateEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(eventTypes As IEnumerable(Of String), eh As TEventHandler = Nothing, outputStream As String = Nothing, start As FromRelativeStreamPosition? = Nothing, ensureOutputStreamProjection As Boolean = True, token As CancellationToken = Nothing) As Task(Of IAsyncDisposable)
+  overload: MicroPlumberd.IPlumber.SubscribeStateEventHandler*
+  nameWithType.vb: IPlumber.SubscribeStateEventHandler(Of TEventHandler)(IEnumerable(Of String), TEventHandler, String, FromRelativeStreamPosition?, Boolean, CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumber.SubscribeStateEventHandler(Of TEventHandler)(System.Collections.Generic.IEnumerable(Of String), TEventHandler, String, MicroPlumberd.FromRelativeStreamPosition?, Boolean, System.Threading.CancellationToken)
+  name.vb: SubscribeStateEventHandler(Of TEventHandler)(IEnumerable(Of String), TEventHandler, String, FromRelativeStreamPosition?, Boolean, CancellationToken)
+- uid: MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  id: SubscribeStateEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
+  parent: MicroPlumberd.IPlumber
+  langs:
+  - csharp
+  - vb
+  name: SubscribeStateEventHandler<TEventHandler>(TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  nameWithType: IPlumber.SubscribeStateEventHandler<TEventHandler>(TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  fullName: MicroPlumberd.IPlumber.SubscribeStateEventHandler<TEventHandler>(TEventHandler?, string?, MicroPlumberd.FromRelativeStreamPosition?, bool, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IPlumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SubscribeStateEventHandler
+    path: src/MicroPlumberd/Abstractions/IPlumber.cs
+    startLine: 471
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister'
+    parameters:
+    - id: eh
+      type: '{TEventHandler}'
+    - id: outputStream
+      type: System.String
+    - id: start
+      type: System.Nullable{MicroPlumberd.FromRelativeStreamPosition}
+    - id: ensureOutputStreamProjection
+      type: System.Boolean
+    - id: token
+      type: System.Threading.CancellationToken
+    typeParameters:
+    - id: TEventHandler
+    return:
+      type: System.Threading.Tasks.Task{System.IAsyncDisposable}
+    content.vb: Function SubscribeStateEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(eh As TEventHandler = Nothing, outputStream As String = Nothing, start As FromRelativeStreamPosition? = Nothing, ensureOutputStreamProjection As Boolean = True, token As CancellationToken = Nothing) As Task(Of IAsyncDisposable)
+  overload: MicroPlumberd.IPlumber.SubscribeStateEventHandler*
+  nameWithType.vb: IPlumber.SubscribeStateEventHandler(Of TEventHandler)(TEventHandler, String, FromRelativeStreamPosition?, Boolean, CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumber.SubscribeStateEventHandler(Of TEventHandler)(TEventHandler, String, MicroPlumberd.FromRelativeStreamPosition?, Boolean, System.Threading.CancellationToken)
+  name.vb: SubscribeStateEventHandler(Of TEventHandler)(TEventHandler, String, FromRelativeStreamPosition?, Boolean, CancellationToken)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -1802,160 +1937,6 @@ references:
   name: MicroPlumberd
   nameWithType: MicroPlumberd
   fullName: MicroPlumberd
-- uid: MicroPlumberd.IPlumber.MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-  parent: MicroPlumberd.Services.PlumberExtensions
-  definition: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
-  name: SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
-  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
-  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber, bool?, EventStore.Client.StreamPosition?)
-  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
-  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber, Boolean?, EventStore.Client.StreamPosition?)
-  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-    name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
-  - name: <
-  - name: TCommandHandler
-  - name: '>'
-  - name: (
-  - uid: MicroPlumberd.IPlumber
-    name: IPlumber
-    href: MicroPlumberd.IPlumber.html
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: '?'
-  - name: ','
-  - name: " "
-  - uid: EventStore.Client.StreamPosition
-    name: StreamPosition
-    isExternal: true
-  - name: '?'
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-    name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TCommandHandler
-  - name: )
-  - name: (
-  - uid: MicroPlumberd.IPlumber
-    name: IPlumber
-    href: MicroPlumberd.IPlumber.html
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: '?'
-  - name: ','
-  - name: " "
-  - uid: EventStore.Client.StreamPosition
-    name: StreamPosition
-    isExternal: true
-  - name: '?'
-  - name: )
-- uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-  commentId: M:MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-  isExternal: true
-  href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
-  name: SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
-  nameWithType: PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(IPlumber, bool?, StreamPosition?)
-  fullName: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler<TCommandHandler>(MicroPlumberd.IPlumber, bool?, EventStore.Client.StreamPosition?)
-  nameWithType.vb: PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
-  fullName.vb: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler(Of TCommandHandler)(MicroPlumberd.IPlumber, Boolean?, EventStore.Client.StreamPosition?)
-  name.vb: SubscribeCommandHandler(Of TCommandHandler)(IPlumber, Boolean?, StreamPosition?)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-    name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
-  - name: <
-  - name: TCommandHandler
-  - name: '>'
-  - name: (
-  - uid: MicroPlumberd.IPlumber
-    name: IPlumber
-    href: MicroPlumberd.IPlumber.html
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: bool
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: '?'
-  - name: ','
-  - name: " "
-  - uid: EventStore.Client.StreamPosition
-    name: StreamPosition
-    isExternal: true
-  - name: '?'
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.PlumberExtensions.SubscribeCommandHandler``1(MicroPlumberd.IPlumber,System.Nullable{System.Boolean},System.Nullable{EventStore.Client.StreamPosition})
-    name: SubscribeCommandHandler
-    href: MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TCommandHandler
-  - name: )
-  - name: (
-  - uid: MicroPlumberd.IPlumber
-    name: IPlumber
-    href: MicroPlumberd.IPlumber.html
-  - name: ','
-  - name: " "
-  - uid: System.Boolean
-    name: Boolean
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.boolean
-  - name: '?'
-  - name: ','
-  - name: " "
-  - uid: EventStore.Client.StreamPosition
-    name: StreamPosition
-    isExternal: true
-  - name: '?'
-  - name: )
-- uid: MicroPlumberd.Services.PlumberExtensions
-  commentId: T:MicroPlumberd.Services.PlumberExtensions
-  parent: MicroPlumberd.Services
-  href: MicroPlumberd.Services.PlumberExtensions.html
-  name: PlumberExtensions
-  nameWithType: PlumberExtensions
-  fullName: MicroPlumberd.Services.PlumberExtensions
-- uid: MicroPlumberd.Services
-  commentId: N:MicroPlumberd.Services
-  href: MicroPlumberd.html
-  name: MicroPlumberd.Services
-  nameWithType: MicroPlumberd.Services
-  fullName: MicroPlumberd.Services
-  spec.csharp:
-  - uid: MicroPlumberd
-    name: MicroPlumberd
-    href: MicroPlumberd.html
-  - name: .
-  - uid: MicroPlumberd.Services
-    name: Services
-    href: MicroPlumberd.Services.html
-  spec.vb:
-  - uid: MicroPlumberd
-    name: MicroPlumberd
-    href: MicroPlumberd.html
-  - name: .
-  - uid: MicroPlumberd.Services
-    name: Services
-    href: MicroPlumberd.Services.html
 - uid: MicroPlumberd.IPlumber.Config*
   commentId: Overload:MicroPlumberd.IPlumber.Config
   href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_Config
@@ -3115,26 +3096,26 @@ references:
   name: GetState
   nameWithType: IPlumber.GetState
   fullName: MicroPlumberd.IPlumber.GetState
-- uid: System.Threading.Tasks.Task{MicroPlumberd.State{{T}}}
-  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.State{``0}}
+- uid: System.Threading.Tasks.Task{MicroPlumberd.SubscriptionRunnerState{{T}}}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.SubscriptionRunnerState{``0}}
   parent: System.Threading.Tasks
   definition: System.Threading.Tasks.Task`1
   href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  name: Task<State<T>>
-  nameWithType: Task<State<T>>
-  fullName: System.Threading.Tasks.Task<MicroPlumberd.State<T>>
-  nameWithType.vb: Task(Of State(Of T))
-  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.State(Of T))
-  name.vb: Task(Of State(Of T))
+  name: Task<SubscriptionRunnerState<T>>
+  nameWithType: Task<SubscriptionRunnerState<T>>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.SubscriptionRunnerState<T>>
+  nameWithType.vb: Task(Of SubscriptionRunnerState(Of T))
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.SubscriptionRunnerState(Of T))
+  name.vb: Task(Of SubscriptionRunnerState(Of T))
   spec.csharp:
   - uid: System.Threading.Tasks.Task`1
     name: Task
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
   - name: <
-  - uid: MicroPlumberd.State`1
-    name: State
-    href: MicroPlumberd.State-1.html
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
   - name: <
   - name: T
   - name: '>'
@@ -3147,12 +3128,67 @@ references:
   - name: (
   - name: Of
   - name: " "
-  - uid: MicroPlumberd.State`1
-    name: State
-    href: MicroPlumberd.State-1.html
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState
+    href: MicroPlumberd.SubscriptionRunnerState-1.html
   - name: (
   - name: Of
   - name: " "
   - name: T
   - name: )
   - name: )
+- uid: MicroPlumberd.IPlumber.ReadEventsOfType*
+  commentId: Overload:MicroPlumberd.IPlumber.ReadEventsOfType
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_ReadEventsOfType__1_System_String_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_
+  name: ReadEventsOfType
+  nameWithType: IPlumber.ReadEventsOfType
+  fullName: MicroPlumberd.IPlumber.ReadEventsOfType
+- uid: System.Collections.Generic.IAsyncEnumerable{System.ValueTuple{{T},MicroPlumberd.Metadata}}
+  commentId: T:System.Collections.Generic.IAsyncEnumerable{System.ValueTuple{``0,MicroPlumberd.Metadata}}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IAsyncEnumerable`1
+  href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  name: IAsyncEnumerable<(T, Metadata)>
+  nameWithType: IAsyncEnumerable<(T, Metadata)>
+  fullName: System.Collections.Generic.IAsyncEnumerable<(T, MicroPlumberd.Metadata)>
+  nameWithType.vb: IAsyncEnumerable(Of (T, Metadata))
+  fullName.vb: System.Collections.Generic.IAsyncEnumerable(Of (T, MicroPlumberd.Metadata))
+  name.vb: IAsyncEnumerable(Of (T, Metadata))
+  spec.csharp:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: <
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  - name: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IAsyncEnumerable`1
+    name: IAsyncEnumerable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: (
+  - name: T
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.Metadata
+    name: Metadata
+    href: MicroPlumberd.Metadata.html
+  - name: )
+  - name: )
+- uid: MicroPlumberd.IPlumber.SubscribeStateEventHandler*
+  commentId: Overload:MicroPlumberd.IPlumber.SubscribeStateEventHandler
+  href: MicroPlumberd.IPlumber.html#MicroPlumberd_IPlumber_SubscribeStateEventHandler__1_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_System_Threading_CancellationToken_
+  name: SubscribeStateEventHandler
+  nameWithType: IPlumber.SubscribeStateEventHandler
+  fullName: MicroPlumberd.IPlumber.SubscribeStateEventHandler

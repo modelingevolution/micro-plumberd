@@ -112,13 +112,6 @@ Interface IPlumber  <a class="header-action link-secondary" title="View source" 
 
 
 
-  <dl class="typelist extensionMethods">
-    <dt>Extension Methods</dt>
-    <dd>
-  <div>
-      <a class="xref" href="MicroPlumberd.Services.PlumberExtensions.html#MicroPlumberd_Services_PlumberExtensions_SubscribeCommandHandler__1_MicroPlumberd_IPlumber_System_Nullable_System_Boolean__System_Nullable_EventStore_Client_StreamPosition__">PlumberExtensions.SubscribeCommandHandler&lt;TCommandHandler&gt;(IPlumber, bool?, StreamPosition?)</a>
-  </div>
-  </dd></dl>
 
 
 
@@ -724,7 +717,7 @@ Interface IPlumber  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IWriteResult&gt; AppendState(object state, object id, long? version, CancellationToken token = default)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IWriteResult&gt; AppendState(object state, object id, long? version = null, CancellationToken token = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -770,7 +763,7 @@ Interface IPlumber  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;IWriteResult&gt; AppendState&lt;T&gt;(T state, CancellationToken token = default) where T : IId</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;IWriteResult&gt; AppendState&lt;T&gt;(T state, CancellationToken token = default)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -1006,7 +999,7 @@ Interface IPlumber  <a class="header-action link-secondary" title="View source" 
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;State&lt;T&gt;?&gt; GetState&lt;T&gt;(object id, string? streamId = null, CancellationToken token = default) where T : class</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;SubscriptionRunnerState&lt;T&gt;?&gt; GetState&lt;T&gt;(object id, string? streamId = null, CancellationToken token = default) where T : class</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -1021,7 +1014,7 @@ Interface IPlumber  <a class="header-action link-secondary" title="View source" 
 
   <h4 class="section">Returns</h4>
   <dl class="parameters">
-    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.State-1.html">State</a>&lt;T&gt;&gt;</dt>
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.SubscriptionRunnerState-1.html">SubscriptionRunnerState</a>&lt;T&gt;&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -1129,6 +1122,55 @@ If the aggregate supports snapshoting, it's state will be loaded from latest sna
     <dd></dd>
   </dl>
 
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_IPlumber_ReadEventsOfType_" data-uid="MicroPlumberd.IPlumber.ReadEventsOfType*"></a>
+
+  <h3 id="MicroPlumberd_IPlumber_ReadEventsOfType__1_System_String_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_" data-uid="MicroPlumberd.IPlumber.ReadEventsOfType``1(System.String,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)">
+  ReadEventsOfType&lt;T&gt;(string?, StreamPosition?, Direction?, long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L459"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">IAsyncEnumerable&lt;(T, Metadata)&gt; ReadEventsOfType&lt;T&gt;(string? streamId = null, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd></dd>
+    <dt><code>direction</code> <span class="xref">Direction</span>?</dt>
+    <dd></dd>
+    <dt><code>maxCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;(T, <a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a>)&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
 
 
 
@@ -1858,6 +1900,106 @@ Then EventHandler subscribe the output stream.</p>
     <dd></dd>
   </dl>
 
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_IPlumber_SubscribeStateEventHandler_" data-uid="MicroPlumberd.IPlumber.SubscribeStateEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_IPlumber_SubscribeStateEventHandler__1_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)">
+  SubscribeStateEventHandler&lt;TEventHandler&gt;(IEnumerable&lt;string&gt;?, TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L463"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IAsyncDisposable&gt; SubscribeStateEventHandler&lt;TEventHandler&gt;(IEnumerable&lt;string&gt;? eventTypes, TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eventTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>eh</code> <span class="xref">TEventHandler</span></dt>
+    <dd></dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a>?</dt>
+    <dd></dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_IPlumber_SubscribeStateEventHandler_" data-uid="MicroPlumberd.IPlumber.SubscribeStateEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_IPlumber_SubscribeStateEventHandler__1___0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.IPlumber.SubscribeStateEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)">
+  SubscribeStateEventHandler&lt;TEventHandler&gt;(TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/IPlumber.cs/#L472"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IAsyncDisposable&gt; SubscribeStateEventHandler&lt;TEventHandler&gt;(TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eh</code> <span class="xref">TEventHandler</span></dt>
+    <dd></dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a>?</dt>
+    <dd></dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd></dd>
+  </dl>
 
 
 

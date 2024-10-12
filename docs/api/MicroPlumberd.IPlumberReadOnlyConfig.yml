@@ -22,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IPlumberReadOnlyConfig
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 9
+    startLine: 12
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -31,8 +31,6 @@ items:
     content.vb: Public Interface IPlumberReadOnlyConfig Inherits IExtension
   inheritedMembers:
   - MicroPlumberd.IExtension.GetExtension``1
-  extensionMethods:
-  - MicroPlumberd.IPlumberReadOnlyConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
 - uid: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
   commentId: P:MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
   id: SerializerFactory
@@ -51,7 +49,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SerializerFactory
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 11
+    startLine: 14
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -80,7 +78,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Conventions
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 12
+    startLine: 15
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -109,7 +107,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServiceProvider
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 13
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -157,32 +155,6 @@ references:
   - name: )
   - name: (
   - name: )
-- uid: MicroPlumberd.IPlumberReadOnlyConfig.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig
-  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
-  definition: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
-  name: ServicesConfig(IPlumberReadOnlyConfig)
-  nameWithType: PlumberdConventionsExtensions.ServicesConfig(IPlumberReadOnlyConfig)
-  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-    name: ServicesConfig
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
-  - name: (
-  - uid: MicroPlumberd.IPlumberReadOnlyConfig
-    name: IPlumberReadOnlyConfig
-    href: MicroPlumberd.IPlumberReadOnlyConfig.html
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-    name: ServicesConfig
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
-  - name: (
-  - uid: MicroPlumberd.IPlumberReadOnlyConfig
-    name: IPlumberReadOnlyConfig
-    href: MicroPlumberd.IPlumberReadOnlyConfig.html
-  - name: )
 - uid: MicroPlumberd.IExtension
   commentId: T:MicroPlumberd.IExtension
   parent: MicroPlumberd
@@ -190,59 +162,6 @@ references:
   name: IExtension
   nameWithType: IExtension
   fullName: MicroPlumberd.IExtension
-- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
-  name: ServicesConfig(IPlumberReadOnlyConfig)
-  nameWithType: PlumberdConventionsExtensions.ServicesConfig(IPlumberReadOnlyConfig)
-  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-    name: ServicesConfig
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
-  - name: (
-  - uid: MicroPlumberd.IPlumberReadOnlyConfig
-    name: IPlumberReadOnlyConfig
-    href: MicroPlumberd.IPlumberReadOnlyConfig.html
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConfig(MicroPlumberd.IPlumberReadOnlyConfig)
-    name: ServicesConfig
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConfig_MicroPlumberd_IPlumberReadOnlyConfig_
-  - name: (
-  - uid: MicroPlumberd.IPlumberReadOnlyConfig
-    name: IPlumberReadOnlyConfig
-    href: MicroPlumberd.IPlumberReadOnlyConfig.html
-  - name: )
-- uid: MicroPlumberd.Services.PlumberdConventionsExtensions
-  commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
-  parent: MicroPlumberd.Services
-  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html
-  name: PlumberdConventionsExtensions
-  nameWithType: PlumberdConventionsExtensions
-  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
-- uid: MicroPlumberd.Services
-  commentId: N:MicroPlumberd.Services
-  href: MicroPlumberd.html
-  name: MicroPlumberd.Services
-  nameWithType: MicroPlumberd.Services
-  fullName: MicroPlumberd.Services
-  spec.csharp:
-  - uid: MicroPlumberd
-    name: MicroPlumberd
-    href: MicroPlumberd.html
-  - name: .
-  - uid: MicroPlumberd.Services
-    name: Services
-    href: MicroPlumberd.Services.html
-  spec.vb:
-  - uid: MicroPlumberd
-    name: MicroPlumberd
-    href: MicroPlumberd.html
-  - name: .
-  - uid: MicroPlumberd.Services
-    name: Services
-    href: MicroPlumberd.Services.html
 - uid: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory*
   commentId: Overload:MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
   href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_SerializerFactory

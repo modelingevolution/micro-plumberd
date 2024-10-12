@@ -1,0 +1,885 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+  commentId: T:MicroPlumberd.Services.LiteDb.LiteEventStore
+  id: LiteEventStore
+  parent: MicroPlumberd.Services.LiteDb
+  children:
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.#ctor(LiteDB.LiteDatabase)
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.Commit
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.Events
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection(System.Type,System.String)
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload(System.Object,System.String,EventStore.Client.Uuid)
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads``1(System.String)
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.Streams
+  langs:
+  - csharp
+  - vb
+  name: LiteEventStore
+  nameWithType: LiteEventStore
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: LiteEventStore
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 38
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public class LiteEventStore
+    content.vb: Public Class LiteEventStore
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans
+  id: BeginTrans
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: BeginTrans()
+  nameWithType: LiteEventStore.BeginTrans()
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: BeginTrans
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 71
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public bool BeginTrans()
+    return:
+      type: System.Boolean
+    content.vb: Public Function BeginTrans() As Boolean
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans*
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Commit
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.Commit
+  id: Commit
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: Commit()
+  nameWithType: LiteEventStore.Commit()
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Commit()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Commit
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 73
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public bool Commit()
+    return:
+      type: System.Boolean
+    content.vb: Public Function Commit() As Boolean
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.Commit*
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback
+  id: Rollback
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: Rollback()
+  nameWithType: LiteEventStore.Rollback()
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Rollback
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 75
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public bool Rollback()
+    return:
+      type: System.Boolean
+    content.vb: Public Function Rollback() As Boolean
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback*
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.#ctor(LiteDB.LiteDatabase)
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.#ctor(LiteDB.LiteDatabase)
+  id: '#ctor(LiteDB.LiteDatabase)'
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: LiteEventStore(LiteDatabase)
+  nameWithType: LiteEventStore.LiteEventStore(LiteDatabase)
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.LiteEventStore(LiteDB.LiteDatabase)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 77
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public LiteEventStore(LiteDatabase storage)
+    parameters:
+    - id: storage
+      type: LiteDB.LiteDatabase
+    content.vb: Public Sub New(storage As LiteDatabase)
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.#ctor*
+  nameWithType.vb: LiteEventStore.New(LiteDatabase)
+  fullName.vb: MicroPlumberd.Services.LiteDb.LiteEventStore.New(LiteDB.LiteDatabase)
+  name.vb: New(LiteDatabase)
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection(System.Type,System.String)
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection(System.Type,System.String)
+  id: GetCollection(System.Type,System.String)
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: GetCollection(Type, string)
+  nameWithType: LiteEventStore.GetCollection(Type, string)
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection(System.Type, string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetCollection
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 89
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public LiteEventStore.IPlayloadEvents GetCollection(Type t, string name)
+    parameters:
+    - id: t
+      type: System.Type
+    - id: name
+      type: System.String
+    return:
+      type: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+    content.vb: Public Function GetCollection(t As Type, name As String) As LiteEventStore.IPlayloadEvents
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection*
+  nameWithType.vb: LiteEventStore.GetCollection(Type, String)
+  fullName.vb: MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection(System.Type, String)
+  name.vb: GetCollection(Type, String)
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads``1(System.String)
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads``1(System.String)
+  id: Payloads``1(System.String)
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: Payloads<TPayload>(string)
+  nameWithType: LiteEventStore.Payloads<TPayload>(string)
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads<TPayload>(string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Payloads
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 95
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public ILiteCollection<PayloadData<TPayload>> Payloads<TPayload>(string name)
+    parameters:
+    - id: name
+      type: System.String
+    typeParameters:
+    - id: TPayload
+    return:
+      type: LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.PayloadData{{TPayload}}}
+    content.vb: Public Function Payloads(Of TPayload)(name As String) As ILiteCollection(Of PayloadData(Of TPayload))
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads*
+  nameWithType.vb: LiteEventStore.Payloads(Of TPayload)(String)
+  fullName.vb: MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads(Of TPayload)(String)
+  name.vb: Payloads(Of TPayload)(String)
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Events
+  commentId: P:MicroPlumberd.Services.LiteDb.LiteEventStore.Events
+  id: Events
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: Events
+  nameWithType: LiteEventStore.Events
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Events
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Events
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 96
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public ILiteCollection<Event> Events { get; }
+    parameters: []
+    return:
+      type: LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.Event}
+    content.vb: Public ReadOnly Property Events As ILiteCollection(Of [Event])
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.Events*
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Streams
+  commentId: P:MicroPlumberd.Services.LiteDb.LiteEventStore.Streams
+  id: Streams
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: Streams
+  nameWithType: LiteEventStore.Streams
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Streams
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Streams
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 97
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public ILiteCollection<Stream> Streams { get; }
+    parameters: []
+    return:
+      type: LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.Stream}
+    content.vb: Public ReadOnly Property Streams As ILiteCollection(Of Stream)
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.Streams*
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload(System.Object,System.String,EventStore.Client.Uuid)
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload(System.Object,System.String,EventStore.Client.Uuid)
+  id: InsertPayload(System.Object,System.String,EventStore.Client.Uuid)
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore
+  langs:
+  - csharp
+  - vb
+  name: InsertPayload(object, string, Uuid)
+  nameWithType: LiteEventStore.InsertPayload(object, string, Uuid)
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload(object, string, EventStore.Client.Uuid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: InsertPayload
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 99
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public Guid InsertPayload(object evt, string evtName, Uuid evId)
+    parameters:
+    - id: evt
+      type: System.Object
+    - id: evtName
+      type: System.String
+    - id: evId
+      type: EventStore.Client.Uuid
+    return:
+      type: System.Guid
+    content.vb: Public Function InsertPayload(evt As Object, evtName As String, evId As Uuid) As Guid
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload*
+  nameWithType.vb: LiteEventStore.InsertPayload(Object, String, Uuid)
+  fullName.vb: MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload(Object, String, EventStore.Client.Uuid)
+  name.vb: InsertPayload(Object, String, Uuid)
+references:
+- uid: MicroPlumberd.Services.LiteDb
+  commentId: N:MicroPlumberd.Services.LiteDb
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services.LiteDb
+  nameWithType: MicroPlumberd.Services.LiteDb
+  fullName: MicroPlumberd.Services.LiteDb
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb
+    name: LiteDb
+    href: MicroPlumberd.Services.LiteDb.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb
+    name: LiteDb
+    href: MicroPlumberd.Services.LiteDb.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_BeginTrans
+  name: BeginTrans
+  nameWithType: LiteEventStore.BeginTrans
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.BeginTrans
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Commit*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.Commit
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_Commit
+  name: Commit
+  nameWithType: LiteEventStore.Commit
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Commit
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_Rollback
+  name: Rollback
+  nameWithType: LiteEventStore.Rollback
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Rollback
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.#ctor*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.#ctor
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore__ctor_LiteDB_LiteDatabase_
+  name: LiteEventStore
+  nameWithType: LiteEventStore.LiteEventStore
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.LiteEventStore
+  nameWithType.vb: LiteEventStore.New
+  fullName.vb: MicroPlumberd.Services.LiteDb.LiteEventStore.New
+  name.vb: New
+- uid: LiteDB.LiteDatabase
+  commentId: T:LiteDB.LiteDatabase
+  parent: LiteDB
+  isExternal: true
+  name: LiteDatabase
+  nameWithType: LiteDatabase
+  fullName: LiteDB.LiteDatabase
+- uid: LiteDB
+  commentId: N:LiteDB
+  isExternal: true
+  name: LiteDB
+  nameWithType: LiteDB
+  fullName: LiteDB
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_GetCollection_System_Type_System_String_
+  name: GetCollection
+  nameWithType: LiteEventStore.GetCollection
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.GetCollection
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.type
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  commentId: T:MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  parent: MicroPlumberd.Services.LiteDb
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  name: LiteEventStore.IPlayloadEvents
+  nameWithType: LiteEventStore.IPlayloadEvents
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  spec.csharp:
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+    name: LiteEventStore
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+    name: IPlayloadEvents
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.html
+  spec.vb:
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+    name: LiteEventStore
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+    name: IPlayloadEvents
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.html
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_Payloads__1_System_String_
+  name: Payloads
+  nameWithType: LiteEventStore.Payloads
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Payloads
+- uid: LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.PayloadData{{TPayload}}}
+  commentId: T:LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.PayloadData{``0}}
+  parent: LiteDB
+  definition: LiteDB.ILiteCollection`1
+  href: MicroPlumberd.Services.LiteDb.PayloadData-1.html
+  name: ILiteCollection<PayloadData<TPayload>>
+  nameWithType: ILiteCollection<PayloadData<TPayload>>
+  fullName: LiteDB.ILiteCollection<MicroPlumberd.Services.LiteDb.PayloadData<TPayload>>
+  nameWithType.vb: ILiteCollection(Of PayloadData(Of TPayload))
+  fullName.vb: LiteDB.ILiteCollection(Of MicroPlumberd.Services.LiteDb.PayloadData(Of TPayload))
+  name.vb: ILiteCollection(Of PayloadData(Of TPayload))
+  spec.csharp:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: <
+  - uid: MicroPlumberd.Services.LiteDb.PayloadData`1
+    name: PayloadData
+    href: MicroPlumberd.Services.LiteDb.PayloadData-1.html
+  - name: <
+  - name: TPayload
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Services.LiteDb.PayloadData`1
+    name: PayloadData
+    href: MicroPlumberd.Services.LiteDb.PayloadData-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPayload
+  - name: )
+  - name: )
+- uid: LiteDB.ILiteCollection`1
+  commentId: T:LiteDB.ILiteCollection`1
+  isExternal: true
+  name: ILiteCollection<T>
+  nameWithType: ILiteCollection<T>
+  fullName: LiteDB.ILiteCollection<T>
+  nameWithType.vb: ILiteCollection(Of T)
+  fullName.vb: LiteDB.ILiteCollection(Of T)
+  name.vb: ILiteCollection(Of T)
+  spec.csharp:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Events*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.Events
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_Events
+  name: Events
+  nameWithType: LiteEventStore.Events
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Events
+- uid: LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.Event}
+  commentId: T:LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.Event}
+  parent: LiteDB
+  definition: LiteDB.ILiteCollection`1
+  href: MicroPlumberd.Services.LiteDb.Event.html
+  name: ILiteCollection<Event>
+  nameWithType: ILiteCollection<Event>
+  fullName: LiteDB.ILiteCollection<MicroPlumberd.Services.LiteDb.Event>
+  nameWithType.vb: ILiteCollection(Of Event)
+  fullName.vb: LiteDB.ILiteCollection(Of MicroPlumberd.Services.LiteDb.Event)
+  name.vb: ILiteCollection(Of Event)
+  spec.csharp:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: <
+  - uid: MicroPlumberd.Services.LiteDb.Event
+    name: Event
+    href: MicroPlumberd.Services.LiteDb.Event.html
+  - name: '>'
+  spec.vb:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Services.LiteDb.Event
+    name: Event
+    href: MicroPlumberd.Services.LiteDb.Event.html
+  - name: )
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.Streams*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.Streams
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_Streams
+  name: Streams
+  nameWithType: LiteEventStore.Streams
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.Streams
+- uid: LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.Stream}
+  commentId: T:LiteDB.ILiteCollection{MicroPlumberd.Services.LiteDb.Stream}
+  parent: LiteDB
+  definition: LiteDB.ILiteCollection`1
+  href: MicroPlumberd.Services.LiteDb.Stream.html
+  name: ILiteCollection<Stream>
+  nameWithType: ILiteCollection<Stream>
+  fullName: LiteDB.ILiteCollection<MicroPlumberd.Services.LiteDb.Stream>
+  nameWithType.vb: ILiteCollection(Of Stream)
+  fullName.vb: LiteDB.ILiteCollection(Of MicroPlumberd.Services.LiteDb.Stream)
+  name.vb: ILiteCollection(Of Stream)
+  spec.csharp:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: <
+  - uid: MicroPlumberd.Services.LiteDb.Stream
+    name: Stream
+    href: MicroPlumberd.Services.LiteDb.Stream.html
+  - name: '>'
+  spec.vb:
+  - uid: LiteDB.ILiteCollection`1
+    name: ILiteCollection
+    isExternal: true
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Services.LiteDb.Stream
+    name: Stream
+    href: MicroPlumberd.Services.LiteDb.Stream.html
+  - name: )
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html#MicroPlumberd_Services_LiteDb_LiteEventStore_InsertPayload_System_Object_System_String_EventStore_Client_Uuid_
+  name: InsertPayload
+  nameWithType: LiteEventStore.InsertPayload
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.InsertPayload
+- uid: EventStore.Client.Uuid
+  commentId: T:EventStore.Client.Uuid
+  parent: EventStore.Client
+  isExternal: true
+  name: Uuid
+  nameWithType: Uuid
+  fullName: EventStore.Client.Uuid
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: EventStore.Client
+  commentId: N:EventStore.Client
+  isExternal: true
+  name: EventStore.Client
+  nameWithType: EventStore.Client
+  fullName: EventStore.Client
+  spec.csharp:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true
+  spec.vb:
+  - uid: EventStore
+    name: EventStore
+    isExternal: true
+  - name: .
+  - uid: EventStore.Client
+    name: Client
+    isExternal: true

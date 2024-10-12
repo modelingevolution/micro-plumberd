@@ -1,0 +1,128 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  commentId: T:MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  id: LiteEventStore.IPlayloadEvents
+  parent: MicroPlumberd.Services.LiteDb
+  children:
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert(System.Object,System.Guid)
+  langs:
+  - csharp
+  - vb
+  name: LiteEventStore.IPlayloadEvents
+  nameWithType: LiteEventStore.IPlayloadEvents
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IPlayloadEvents
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 40
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: public interface LiteEventStore.IPlayloadEvents
+    content.vb: Public Interface LiteEventStore.IPlayloadEvents
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert(System.Object,System.Guid)
+  commentId: M:MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert(System.Object,System.Guid)
+  id: Insert(System.Object,System.Guid)
+  parent: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  langs:
+  - csharp
+  - vb
+  name: Insert(object, Guid)
+  nameWithType: LiteEventStore.IPlayloadEvents.Insert(object, Guid)
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert(object, System.Guid)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Insert
+    path: src/MicroPlumberd.Services.LiteDb/Class1.cs
+    startLine: 42
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+  namespace: MicroPlumberd.Services.LiteDb
+  syntax:
+    content: Guid Insert(object evt, Guid evtId)
+    parameters:
+    - id: evt
+      type: System.Object
+    - id: evtId
+      type: System.Guid
+    return:
+      type: System.Guid
+    content.vb: Function Insert(evt As Object, evtId As Guid) As Guid
+  overload: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert*
+  nameWithType.vb: LiteEventStore.IPlayloadEvents.Insert(Object, Guid)
+  fullName.vb: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert(Object, System.Guid)
+  name.vb: Insert(Object, Guid)
+references:
+- uid: MicroPlumberd.Services.LiteDb
+  commentId: N:MicroPlumberd.Services.LiteDb
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services.LiteDb
+  nameWithType: MicroPlumberd.Services.LiteDb
+  fullName: MicroPlumberd.Services.LiteDb
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb
+    name: LiteDb
+    href: MicroPlumberd.Services.LiteDb.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb
+    name: LiteDb
+    href: MicroPlumberd.Services.LiteDb.html
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert*
+  commentId: Overload:MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.html#MicroPlumberd_Services_LiteDb_LiteEventStore_IPlayloadEvents_Insert_System_Object_System_Guid_
+  name: Insert
+  nameWithType: LiteEventStore.IPlayloadEvents.Insert
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.Insert
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Guid
+  commentId: T:System.Guid
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.guid
+  name: Guid
+  nameWithType: Guid
+  fullName: System.Guid
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System

@@ -1,0 +1,2068 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class LiteDbPlumber | MicroPlumberd </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class LiteDbPlumber | MicroPlumberd ">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <link rel="stylesheet" href="../public/docfx.min.css">
+      <link rel="stylesheet" href="../public/main.css">
+      <meta name="docfx:navrel" content="../toc.html">
+      <meta name="docfx:tocrel" content="toc.html">
+      
+      <meta name="docfx:rel" content="../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/modelingevolution/micro-plumberd/new/master/apiSpec/new?filename=MicroPlumberd_Services_LiteDb_LiteDbPlumber.md&amp;value=---%0Auid%3A%20MicroPlumberd.Services.LiteDb.LiteDbPlumber%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+  </head>
+
+  <script type="module" src="./../public/docfx.min.js"></script>
+
+  <script>
+    const theme = localStorage.getItem('theme') || 'auto'
+    document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+  </script>
+
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../index.html">
+            <img id="logo" class="svg" src="../logo.svg" alt="MicroPlumberd">
+            MicroPlumberd
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled="" placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" style="margin-top: -.65em; margin-left: -.8em" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber">
+
+
+
+  <h1 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber" class="text-break">
+Class LiteDbPlumber  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="MicroPlumberd.html">MicroPlumberd</a>.<a class="xref" href="MicroPlumberd.Services.html">Services</a>.<a class="xref" href="MicroPlumberd.Services.LiteDb.html">LiteDb</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>MicroPlumberd.Services.LiteDb.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class LiteDbPlumber : IPlumber</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">LiteDbPlumber</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="MicroPlumberd.IPlumber.html">IPlumber</a></div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)">object.Equals(object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)">object.Equals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gethashcode">object.GetHashCode()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.gettype">object.GetType()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone">object.MemberwiseClone()</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.referenceequals">object.ReferenceEquals(object, object)</a>
+    </div>
+    <div>
+      <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring">object.ToString()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber__ctor_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.#ctor*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber__ctor_MicroPlumberd_Services_LiteDb_LiteEventStore_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.#ctor(MicroPlumberd.Services.LiteDb.LiteEventStore)">
+  LiteDbPlumber(LiteEventStore)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L108"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LiteDbPlumber(LiteEventStore storage)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>storage</code> <a class="xref" href="MicroPlumberd.Services.LiteDb.LiteEventStore.html">LiteEventStore</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Client_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Client*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Client" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Client">
+  Client
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>EventStore's client</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EventStoreClient Client { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">EventStoreClient</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Config_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Config*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Config" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Config">
+  Config
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L110"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Plubers configuration.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IPlumberReadOnlyConfig Config { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="MicroPlumberd.IPlumberReadOnlyConfig.html">IPlumberReadOnlyConfig</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_PersistentSubscriptionClient_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.PersistentSubscriptionClient*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_PersistentSubscriptionClient" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.PersistentSubscriptionClient">
+  PersistentSubscriptionClient
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L112"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>EventStore's persistent subsctiption client</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">EventStorePersistentSubscriptionsClient</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ProjectionManagementClient_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ProjectionManagementClient*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ProjectionManagementClient" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ProjectionManagementClient">
+  ProjectionManagementClient
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>EventStore's projection managemenet client</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public EventStoreProjectionManagementClient ProjectionManagementClient { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">EventStoreProjectionManagementClient</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ProjectionRegister_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ProjectionRegister*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ProjectionRegister" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ProjectionRegister">
+  ProjectionRegister
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Projection's register, responsible for caching information about projection from EventStore.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IProjectionRegister ProjectionRegister { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="MicroPlumberd.IProjectionRegister.html">IProjectionRegister</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_TypeHandlerRegisters_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.TypeHandlerRegisters*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_TypeHandlerRegisters" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.TypeHandlerRegisters">
+  TypeHandlerRegisters
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L115"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Metadata information about registered event-handlers.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ITypeHandlerRegisters TypeHandlerRegisters { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="MicroPlumberd.ITypeHandlerRegisters.html">ITypeHandlerRegisters</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEvent_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEvent*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEvent_System_Object_System_Object_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEvent(System.Object,System.Object,System.Object,System.Nullable{EventStore.Client.StreamState},System.String,System.Threading.CancellationToken)">
+  AppendEvent(object, object?, object?, StreamState?, string?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L116"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends the event. StreamId is determined using conventions.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendEvent(object evt, object? id = null, object? metadata = null, StreamState? state = null, string? evtName = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>evt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The evt.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier of stream.(second segment of typical streamId, So if streamId is 'foo-123', 123 would be the id.)</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Optional metadata.</p>
+</dd>
+    <dt><code>state</code> <span class="xref">StreamState</span>?</dt>
+    <dd><p>Expected state.</p>
+</dd>
+    <dt><code>evtName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Optional name of the event.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEventToStream_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEventToStream*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEventToStream_System_String_System_Object_System_Nullable_EventStore_Client_StreamState__System_String_System_Object_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEventToStream(System.String,System.Object,System.Nullable{EventStore.Client.StreamState},System.String,System.Object,System.Threading.CancellationToken)">
+  AppendEventToStream(string, object, StreamState?, string?, object?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L322"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends event to a stream, uses relevant convention to create metadata.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendEventToStream(string streamId, object evt, StreamState? state = null, string? evtName = null, object? metadata = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Full name of streamId for example: 'TicketBooked-b27f9322-7d73-4d98-a605-a731a2c373c6'</p>
+</dd>
+    <dt><code>evt</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Event object</p>
+</dd>
+    <dt><code>state</code> <span class="xref">StreamState</span>?</dt>
+    <dd><p>Expected state of the stream</p>
+</dd>
+    <dt><code>evtName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the event</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Additional metadata, can be null</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEvents_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEvents*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEvents_System_String_EventStore_Client_StreamRevision_System_Collections_Generic_IEnumerable_System_Object__System_Object_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEvents(System.String,EventStore.Client.StreamRevision,System.Collections.Generic.IEnumerable{System.Object},System.Object,System.Threading.CancellationToken)">
+  AppendEvents(string, StreamRevision, IEnumerable&lt;object&gt;, object?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L328"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends event to a stream, uses relevant convention to create metadata.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendEvents(string streamId, StreamRevision rev, IEnumerable&lt;object&gt; events, object? metadata = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Full stream id, typically in format {category}-{id}</p>
+</dd>
+    <dt><code>rev</code> <span class="xref">StreamRevision</span></dt>
+    <dd><p>Expected stream revision</p>
+</dd>
+    <dt><code>events</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd><p>Events that are going to be serialized and appended</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Metadata that will be merged with metadata created from conventions</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEvents_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEvents*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendEvents_System_String_EventStore_Client_StreamState_System_Collections_Generic_IEnumerable_System_Object__System_Object_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendEvents(System.String,EventStore.Client.StreamState,System.Collections.Generic.IEnumerable{System.Object},System.Object,System.Threading.CancellationToken)">
+  AppendEvents(string, StreamState, IEnumerable&lt;object&gt;, object?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L316"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends event to a stream, uses relevant convention to create metadata.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendEvents(string streamId, StreamState state, IEnumerable&lt;object&gt; events, object? metadata = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Full stream id, typically in format {category}-{id}</p>
+</dd>
+    <dt><code>state</code> <span class="xref">StreamState</span></dt>
+    <dd><p>State of the stream</p>
+</dd>
+    <dt><code>events</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd><p>Events that are going to be serialized and appended</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>Metadata that will be merged with metadata created from conventions</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendLink_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendLink*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendLink_System_String_MicroPlumberd_Metadata_System_Nullable_EventStore_Client_StreamState__System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendLink(System.String,MicroPlumberd.Metadata,System.Nullable{EventStore.Client.StreamState},System.Threading.CancellationToken)">
+  AppendLink(string, Metadata, StreamState?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L263"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends the link to a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendLink(string streamId, Metadata metadata, StreamState? state = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The stream identifier.</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a></dt>
+    <dd><p>The metadata.</p>
+</dd>
+    <dt><code>state</code> <span class="xref">StreamState</span>?</dt>
+    <dd><p>The expected state of the stream</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendLink_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendLink*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendLink_System_String_System_UInt64_System_String_System_Nullable_EventStore_Client_StreamState__System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendLink(System.String,System.UInt64,System.String,System.Nullable{EventStore.Client.StreamState},System.Threading.CancellationToken)">
+  AppendLink(string, ulong, string, StreamState?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L218"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends the link.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendLink(string streamId, ulong streamPosition, string streamSourceId, StreamState? state = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The stream identifier.</p>
+</dd>
+    <dt><code>streamPosition</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint64">ulong</a></dt>
+    <dd><p>Stream position in original stream</p>
+</dd>
+    <dt><code>streamSourceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The stream source identifier.</p>
+</dd>
+    <dt><code>state</code> <span class="xref">StreamState</span>?</dt>
+    <dd><p>Optional expected stream state.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendSnapshot_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendSnapshot*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendSnapshot_System_Object_System_Object_System_Int64_System_Nullable_EventStore_Client_StreamState__System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendSnapshot(System.Object,System.Object,System.Int64,System.Nullable{EventStore.Client.StreamState},System.Threading.CancellationToken)">
+  AppendSnapshot(object, object, long, StreamState?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L226"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Appends the snapshot to a stream determined by the type of the snapshot/state.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendSnapshot(object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>snapshot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The snapshot.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier of the snapshot/state.</p>
+</dd>
+    <dt><code>version</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The expected version.</p>
+</dd>
+    <dt><code>state</code> <span class="xref">StreamState</span>?</dt>
+    <dd><p>The expected state of the stream.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendState_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendState*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendState_System_Object_System_Object_System_Nullable_System_Int64__System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendState(System.Object,System.Object,System.Nullable{System.Int64},System.Threading.CancellationToken)">
+  AppendState(object, object, long?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L183"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendState(object state, object id, long? version = null, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>state</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The entity.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier.</p>
+</dd>
+    <dt><code>version</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a>?</dt>
+    <dd><p>The version.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendState_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendState*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_AppendState__1___0_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.AppendState``1(``0,System.Threading.CancellationToken)">
+  AppendState&lt;T&gt;(T, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L188"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates or adds simple entity/state. Be aware, that rdb constraints are not possible.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; AppendState&lt;T&gt;(T state, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>state</code> <span class="xref">T</span></dt>
+    <dd><p>The entity.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_FindEventInStream_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.FindEventInStream*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_FindEventInStream_System_String_System_Guid_MicroPlumberd_TypeEventConverter_EventStore_Client_Direction_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.FindEventInStream(System.String,System.Guid,MicroPlumberd.TypeEventConverter,EventStore.Client.Direction,System.Threading.CancellationToken)">
+  FindEventInStream(string, Guid, TypeEventConverter, Direction, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L304"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the event in the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEventRecord?&gt; FindEventInStream(string streamId, Guid id, TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The stream identifier.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The identifier of the event.</p>
+</dd>
+    <dt><code>eventMapping</code> <a class="xref" href="MicroPlumberd.TypeEventConverter.html">TypeEventConverter</a></dt>
+    <dd><p>The event mapping.</p>
+</dd>
+    <dt><code>scanDirection</code> <span class="xref">Direction</span></dt>
+    <dd><p>The scan direction.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.IEventRecord.html">IEventRecord</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_FindEventInStream_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.FindEventInStream*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_FindEventInStream__1_System_String_System_Guid_MicroPlumberd_TypeEventConverter_EventStore_Client_Direction_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.FindEventInStream``1(System.String,System.Guid,MicroPlumberd.TypeEventConverter,EventStore.Client.Direction,System.Threading.CancellationToken)">
+  FindEventInStream&lt;T&gt;(string, Guid, TypeEventConverter, Direction, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L310"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Finds the event in the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IEventRecord&lt;T&gt;?&gt; FindEventInStream&lt;T&gt;(string streamId, Guid id, TypeEventConverter eventMapping = null, Direction scanDirection = Direction.Backwards, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The stream identifier.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The identifier of the event.</p>
+</dd>
+    <dt><code>eventMapping</code> <a class="xref" href="MicroPlumberd.TypeEventConverter.html">TypeEventConverter</a></dt>
+    <dd><p>The event mapping.</p>
+</dd>
+    <dt><code>scanDirection</code> <span class="xref">Direction</span></dt>
+    <dd><p>The scan direction.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.IEventRecord-1.html">IEventRecord</a>&lt;T&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_GetSnapshot_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.GetSnapshot*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_GetSnapshot_System_Object_System_Type_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.GetSnapshot(System.Object,System.Type,System.Threading.CancellationToken)">
+  GetSnapshot(object, Type, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L178"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the snapshot - deserializes snapshot from the stream. Stream is identified by snaphostType. Deserialization is done from the latest event (snaphost) in the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;Snapshot?&gt; GetSnapshot(object id, Type snapshotType, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier.</p>
+</dd>
+    <dt><code>snapshotType</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></dt>
+    <dd><p>Type of the snapshot.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.Snapshot.html">Snapshot</a>&gt;</dt>
+    <dd><p>The snapshot information containing the snaphost and relevant metadata.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_GetSnapshot_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.GetSnapshot*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_GetSnapshot__1_System_Guid_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.GetSnapshot``1(System.Guid,System.Threading.CancellationToken)">
+  GetSnapshot&lt;T&gt;(Guid, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L173"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the snapshot - deserializes snapshot from the stream. Stream is identified by typeof(T). Deserialization is done from the latest event (snaphost) in the stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;Snapshot&lt;T&gt;?&gt; GetSnapshot&lt;T&gt;(Guid id, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The identifier.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.Snapshot-1.html">Snapshot</a>&lt;T&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_GetState_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.GetState*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_GetState__1_System_Object_System_String_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.GetState``1(System.Object,System.String,System.Threading.CancellationToken)">
+  GetState&lt;T&gt;(object, string?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L193"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;SubscriptionRunnerState&lt;T&gt;?&gt; GetState&lt;T&gt;(object id, string? streamId = null, CancellationToken token = default) where T : class</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd></dd>
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.SubscriptionRunnerState-1.html">SubscriptionRunnerState</a>&lt;T&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Get_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Get*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Get__1_System_Object_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Get``1(System.Object,System.Threading.CancellationToken)">
+  Get&lt;T&gt;(object, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns the aggregate identified by id.
+This usually mean that all the event will be loaded from the EventStoreDB and executed through 'Given' method on it's instance.
+If the aggregate supports snapshoting, it's state will be loaded from latest snapshot and relevant events from that time will be replied on it's instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;T&gt; Get&lt;T&gt;(object id, CancellationToken token = default) where T : IAggregate&lt;T&gt;, ITypeRegister, IId</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Read_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Read*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Read_System_String_MicroPlumberd_TypeEventConverter_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Read(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)">
+  Read(string, TypeEventConverter, StreamPosition?, Direction?, long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L238"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads stream and returns events.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAsyncEnumerable&lt;object&gt; Read(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The full stream name</p>
+</dd>
+    <dt><code>converter</code> <a class="xref" href="MicroPlumberd.TypeEventConverter.html">TypeEventConverter</a></dt>
+    <dd><p>The event-map converter.</p>
+</dd>
+    <dt><code>start</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd><p>The stream start position.</p>
+</dd>
+    <dt><code>direction</code> <span class="xref">Direction</span>?</dt>
+    <dd><p>The direction of the reading.</p>
+</dd>
+    <dt><code>maxCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The maximum number of read events.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ReadEventsOfType_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ReadEventsOfType*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ReadEventsOfType__1_System_String_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ReadEventsOfType``1(System.String,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)">
+  ReadEventsOfType&lt;T&gt;(string?, StreamPosition?, Direction?, long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L198"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAsyncEnumerable&lt;(T, Metadata)&gt; ReadEventsOfType&lt;T&gt;(string? streamId = null, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd></dd>
+    <dt><code>direction</code> <span class="xref">Direction</span>?</dt>
+    <dd></dd>
+    <dt><code>maxCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;(T, <a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a>)&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ReadFull_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ReadFull*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_ReadFull_System_String_MicroPlumberd_TypeEventConverter_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.ReadFull(System.String,MicroPlumberd.TypeEventConverter,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)">
+  ReadFull(string, TypeEventConverter, StreamPosition?, Direction?, long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L232"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads stream and returns event and metadata information.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAsyncEnumerable&lt;(object, Metadata)&gt; ReadFull(string streamId, TypeEventConverter converter, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The full stream name</p>
+</dd>
+    <dt><code>converter</code> <a class="xref" href="MicroPlumberd.TypeEventConverter.html">TypeEventConverter</a></dt>
+    <dd><p>The event-map converter.</p>
+</dd>
+    <dt><code>start</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd><p>The stream start position.</p>
+</dd>
+    <dt><code>direction</code> <span class="xref">Direction</span>?</dt>
+    <dd><p>The direction of the reading.</p>
+</dd>
+    <dt><code>maxCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The maximum number of read events.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;(<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>, <a class="xref" href="MicroPlumberd.Metadata.html">Metadata</a>)&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Read_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Read*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Read__1_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Read``1(System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)">
+  Read&lt;TOwner&gt;(StreamPosition?, Direction?, long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L244"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads stream and returns events.
+Conventions used:
+ProjectionCategoryStreamConvention - to construct streamId that shall be read.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAsyncEnumerable&lt;object&gt; Read&lt;TOwner&gt;(StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default) where TOwner : ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>start</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd><p>The stream start position.</p>
+</dd>
+    <dt><code>direction</code> <span class="xref">Direction</span>?</dt>
+    <dd><p>The direction of the reading.</p>
+</dd>
+    <dt><code>maxCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The maximum number of read events.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TOwner</code></dt>
+    <dd><p>The type of the owner(aggregate).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Read_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Read*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Read__1_System_Object_System_Nullable_EventStore_Client_StreamPosition__System_Nullable_EventStore_Client_Direction__System_Int64_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Read``1(System.Object,System.Nullable{EventStore.Client.StreamPosition},System.Nullable{EventStore.Client.Direction},System.Int64,System.Threading.CancellationToken)">
+  Read&lt;TOwner&gt;(object, StreamPosition?, Direction?, long, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L250"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Reads stream and returns events.
+Conventions used:
+ProjectionCategoryStreamConvention - to construct streamId that shall be read.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IAsyncEnumerable&lt;object&gt; Read&lt;TOwner&gt;(object id, StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807, CancellationToken token = default) where TOwner : ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The identifier (of the aggregate).</p>
+</dd>
+    <dt><code>start</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd><p>The stream start position.</p>
+</dd>
+    <dt><code>direction</code> <span class="xref">Direction</span>?</dt>
+    <dd><p>The direction of the reading.</p>
+</dd>
+    <dt><code>maxCount</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int64">long</a></dt>
+    <dd><p>The maximum number of read events.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TOwner</code></dt>
+    <dd><p>The type of the owner (aggregate).</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Rehydrate_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Rehydrate*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Rehydrate__1___0_System_Guid_System_Nullable_EventStore_Client_StreamPosition__System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Rehydrate``1(``0,System.Guid,System.Nullable{EventStore.Client.StreamPosition},System.Threading.CancellationToken)">
+  Rehydrate&lt;T&gt;(T, Guid, StreamPosition?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L268"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Rehydrates the specified model</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task Rehydrate&lt;T&gt;(T model, Guid id, StreamPosition? position = null, CancellationToken token = default) where T : IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>model</code> <span class="xref">T</span></dt>
+    <dd><p>The model.</p>
+</dd>
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The identifier.</p>
+</dd>
+    <dt><code>position</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd><p>The position from which reply events.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Rehydrate_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Rehydrate*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Rehydrate__1___0_System_String_System_Nullable_EventStore_Client_StreamPosition__System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Rehydrate``1(``0,System.String,System.Nullable{EventStore.Client.StreamPosition},System.Threading.CancellationToken)">
+  Rehydrate&lt;T&gt;(T, string, StreamPosition?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L273"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Rehydrates the specified model.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task Rehydrate&lt;T&gt;(T model, string stream, StreamPosition? position = null, CancellationToken token = default) where T : IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>model</code> <span class="xref">T</span></dt>
+    <dd><p>The model.</p>
+</dd>
+    <dt><code>stream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The stream.</p>
+</dd>
+    <dt><code>position</code> <span class="xref">StreamPosition</span>?</dt>
+    <dd><p>The position.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SaveChanges_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SaveChanges*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SaveChanges__1___0_System_Object_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SaveChanges``1(``0,System.Object,System.Threading.CancellationToken)">
+  SaveChanges&lt;T&gt;(T, object?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves all pending events from the aggregate. Uses optimistic concurrency.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; SaveChanges&lt;T&gt;(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate&lt;T&gt;, IId</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aggregate</code> <span class="xref">T</span></dt>
+    <dd><p>The aggregate.</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The optional metadata.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SaveNew_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SaveNew*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SaveNew__1___0_System_Object_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SaveNew``1(``0,System.Object,System.Threading.CancellationToken)">
+  SaveNew&lt;T&gt;(T, object?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L168"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Saves the aggregate. Expects that no aggregate exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IWriteResult&gt; SaveNew&lt;T&gt;(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate&lt;T&gt;, IId</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>aggregate</code> <span class="xref">T</span></dt>
+    <dd><p>The aggregate.</p>
+</dd>
+    <dt><code>metadata</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></dt>
+    <dd><p>The optional metadata.</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">IWriteResult</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Subscribe_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Subscribe*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_Subscribe_System_String_MicroPlumberd_FromRelativeStreamPosition_EventStore_Client_UserCredentials_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.Subscribe(System.String,MicroPlumberd.FromRelativeStreamPosition,EventStore.Client.UserCredentials,System.Threading.CancellationToken)">
+  Subscribe(string, FromRelativeStreamPosition, UserCredentials?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L298"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subscribes the specified stream name.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start, UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the stream.</p>
+</dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a></dt>
+    <dd><p>The start position</p>
+</dd>
+    <dt><code>userCredentials</code> <span class="xref">UserCredentials</span></dt>
+    <dd><p>The user credentials.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The cancellation token.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="MicroPlumberd.ISubscriptionRunner.html">ISubscriptionRunner</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandlerPersistently_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandlerPersistently*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandlerPersistently__1_MicroPlumberd_TypeEventConverter_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_String_EventStore_Client_IPosition_System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandlerPersistently``1(MicroPlumberd.TypeEventConverter,System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.String,EventStore.Client.IPosition,System.Boolean,System.Threading.CancellationToken)">
+  SubscribeEventHandlerPersistently&lt;TEventHandler&gt;(TypeEventConverter, IEnumerable&lt;string&gt;?, TEventHandler?, string?, string?, IPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L256"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subscribes the event handler persistently. This means that at least once an event is processed successfully, it wont be processed anymore.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IAsyncDisposable&gt; SubscribeEventHandlerPersistently&lt;TEventHandler&gt;(TypeEventConverter mapFunc, IEnumerable&lt;string&gt;? events, TEventHandler? model, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mapFunc</code> <a class="xref" href="MicroPlumberd.TypeEventConverter.html">TypeEventConverter</a></dt>
+    <dd><p>The map function.</p>
+</dd>
+    <dt><code>events</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>The events.</p>
+</dd>
+    <dt><code>model</code> <span class="xref">TEventHandler</span></dt>
+    <dd><p>The model.</p>
+</dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>groupName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the group.</p>
+</dd>
+    <dt><code>startFrom</code> <span class="xref">IPosition</span></dt>
+    <dd><p>The start from.</p>
+</dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [ensure output stream projection].</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd><p>The type of the event handler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandlerPersistently_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandlerPersistently*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandlerPersistently__1___0_System_String_System_String_EventStore_Client_IPosition_System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandlerPersistently``1(``0,System.String,System.String,EventStore.Client.IPosition,System.Boolean,System.Threading.CancellationToken)">
+  SubscribeEventHandlerPersistently&lt;TEventHandler&gt;(TEventHandler?, string?, string?, IPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L284"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subscribes the event handler persistently. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+Then EventHandler subscribe the the output stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IAsyncDisposable&gt; SubscribeEventHandlerPersistently&lt;TEventHandler&gt;(TEventHandler? model = null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>model</code> <span class="xref">TEventHandler</span></dt>
+    <dd><p>Optional event-handler/model.</p>
+</dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Optional output stream.</p>
+</dd>
+    <dt><code>groupName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Optional group name.</p>
+</dd>
+    <dt><code>startFrom</code> <span class="xref">IPosition</span></dt>
+    <dd><p>Optional start of the stream.</p>
+</dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>when true creates projection that creates output's stream</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd><p>The type of the event handler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandler_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandler__1_MicroPlumberd_TypeEventConverter_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_Nullable_EventStore_Client_FromStream__System_Boolean_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandler``1(MicroPlumberd.TypeEventConverter,System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{EventStore.Client.FromStream},System.Boolean)">
+  SubscribeEventHandler&lt;TEventHandler&gt;(TypeEventConverter, IEnumerable&lt;string&gt;?, TEventHandler?, string?, FromStream?, bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L291"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+Then EventHandler subscribe the the output stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IAsyncDisposable&gt; SubscribeEventHandler&lt;TEventHandler&gt;(TypeEventConverter mapFunc, IEnumerable&lt;string&gt;? eventTypes, TEventHandler? eh = null, string? outputStream = null, FromStream? start = null, bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>mapFunc</code> <a class="xref" href="MicroPlumberd.TypeEventConverter.html">TypeEventConverter</a></dt>
+    <dd><p>The map function.</p>
+</dd>
+    <dt><code>eventTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd><p>Supported event types.</p>
+</dd>
+    <dt><code>eh</code> <span class="xref">TEventHandler</span></dt>
+    <dd><p>The event-handler</p>
+</dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>start</code> <span class="xref">FromStream</span>?</dt>
+    <dd><p>The start of the stream</p>
+</dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [ensure output stream projection].</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd><p>The type of the event handler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandler_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeEventHandler__1___0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)">
+  SubscribeEventHandler&lt;TEventHandler&gt;(TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Subscribes the event handler. EventHandler is a class that contains many overloaded 'Given' methods. A projection will be created at EventStore that creates a joined stream from all supported event-types by EventHandler.
+Then EventHandler subscribe the output stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IAsyncDisposable&gt; SubscribeEventHandler&lt;TEventHandler&gt;(TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eh</code> <span class="xref">TEventHandler</span></dt>
+    <dd><p>The event-handler/model</p>
+</dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The output stream.</p>
+</dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a>?</dt>
+    <dd><p>The start.</p>
+</dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd><p>if set to <code>true</code> [ensure output stream projection].</p>
+</dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd><p>The type of the event handler.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribePersistently_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribePersistently*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribePersistently_System_String_System_String_System_Int32_EventStore_Client_UserCredentials_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribePersistently(System.String,System.String,System.Int32,EventStore.Client.UserCredentials,System.Threading.CancellationToken)">
+  SubscribePersistently(string, string, int, UserCredentials?, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L278"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a subscription builder that will subscribe model persistently.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>streamName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the stream.</p>
+</dd>
+    <dt><code>groupName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Name of the group.</p>
+</dd>
+    <dt><code>bufferSize</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd><p>Size of the buffer.</p>
+</dd>
+    <dt><code>userCredentials</code> <span class="xref">UserCredentials</span></dt>
+    <dd><p>The user credentials.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>The cancellation token.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="MicroPlumberd.ISubscriptionRunner.html">ISubscriptionRunner</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeSet_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeSet*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeSet" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeSet">
+  SubscribeSet()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a builder for creating composition of projections subscribed to a stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ISubscriptionSet SubscribeSet()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="MicroPlumberd.ISubscriptionSet.html">ISubscriptionSet</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeStateEventHandler_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeStateEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeStateEventHandler__1_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeStateEventHandler``1(System.Collections.Generic.IEnumerable{System.String},``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)">
+  SubscribeStateEventHandler&lt;TEventHandler&gt;(IEnumerable&lt;string&gt;?, TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L204"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IAsyncDisposable&gt; SubscribeStateEventHandler&lt;TEventHandler&gt;(IEnumerable&lt;string&gt;? eventTypes, TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eventTypes</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+    <dt><code>eh</code> <span class="xref">TEventHandler</span></dt>
+    <dd></dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a>?</dt>
+    <dd></dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeStateEventHandler_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeStateEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_Services_LiteDb_LiteDbPlumber_SubscribeStateEventHandler__1___0_System_String_System_Nullable_MicroPlumberd_FromRelativeStreamPosition__System_Boolean_System_Threading_CancellationToken_" data-uid="MicroPlumberd.Services.LiteDb.LiteDbPlumber.SubscribeStateEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)">
+  SubscribeStateEventHandler&lt;TEventHandler&gt;(TEventHandler?, string?, FromRelativeStreamPosition?, bool, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L211"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task&lt;IAsyncDisposable&gt; SubscribeStateEventHandler&lt;TEventHandler&gt;(TEventHandler? eh = null, string? outputStream = null, FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>eh</code> <span class="xref">TEventHandler</span></dt>
+    <dd></dd>
+    <dt><code>outputStream</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a>?</dt>
+    <dd></dd>
+    <dt><code>ensureOutputStreamProjection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+    <dt><code>token</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iasyncdisposable">IAsyncDisposable</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services.LiteDb/Class1.cs/#L108" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          <span>Made with <a href="https://dotnet.github.io/docfx">docfx</a></span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

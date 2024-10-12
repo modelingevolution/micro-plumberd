@@ -1,0 +1,117 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ICatchUpHandler
+  commentId: T:MicroPlumberd.ICatchUpHandler
+  id: ICatchUpHandler
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ICatchUpHandler.CatchtUp
+  langs:
+  - csharp
+  - vb
+  name: ICatchUpHandler
+  nameWithType: ICatchUpHandler
+  fullName: MicroPlumberd.ICatchUpHandler
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICatchUpHandler
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 31
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Interface for event-handlers to be invoke when a subscription has catchup.
+  example: []
+  syntax:
+    content: public interface ICatchUpHandler
+    content.vb: Public Interface ICatchUpHandler
+- uid: MicroPlumberd.ICatchUpHandler.CatchtUp
+  commentId: M:MicroPlumberd.ICatchUpHandler.CatchtUp
+  id: CatchtUp
+  parent: MicroPlumberd.ICatchUpHandler
+  langs:
+  - csharp
+  - vb
+  name: CatchtUp()
+  nameWithType: ICatchUpHandler.CatchtUp()
+  fullName: MicroPlumberd.ICatchUpHandler.CatchtUp()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IReadModel.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CatchtUp
+    path: src/MicroPlumberd/Abstractions/IReadModel.cs
+    startLine: 33
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Task CatchtUp()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CatchtUp() As Task
+  overload: MicroPlumberd.ICatchUpHandler.CatchtUp*
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ICatchUpHandler.CatchtUp*
+  commentId: Overload:MicroPlumberd.ICatchUpHandler.CatchtUp
+  href: MicroPlumberd.ICatchUpHandler.html#MicroPlumberd_ICatchUpHandler_CatchtUp
+  name: CatchtUp
+  nameWithType: ICatchUpHandler.CatchtUp
+  fullName: MicroPlumberd.ICatchUpHandler.CatchtUp
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

@@ -21,7 +21,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ThrowsFaultExceptionAttribute
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 137
+    startLine: 168
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -94,7 +94,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 137
+    startLine: 168
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -126,7 +126,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ThrownType
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 139
+    startLine: 170
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

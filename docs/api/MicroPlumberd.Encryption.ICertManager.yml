@@ -1,0 +1,286 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Encryption.ICertManager
+  commentId: T:MicroPlumberd.Encryption.ICertManager
+  id: ICertManager
+  parent: MicroPlumberd.Encryption
+  children:
+  - MicroPlumberd.Encryption.ICertManager.Get(System.String)
+  - MicroPlumberd.Encryption.ICertManager.GetPrivate(System.String)
+  - MicroPlumberd.Encryption.ICertManager.Init
+  langs:
+  - csharp
+  - vb
+  name: ICertManager
+  nameWithType: ICertManager
+  fullName: MicroPlumberd.Encryption.ICertManager
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/ICertManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ICertManager
+    path: src/MicroPlumberd.Encryption/ICertManager.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: public interface ICertManager
+    content.vb: Public Interface ICertManager
+- uid: MicroPlumberd.Encryption.ICertManager.GetPrivate(System.String)
+  commentId: M:MicroPlumberd.Encryption.ICertManager.GetPrivate(System.String)
+  id: GetPrivate(System.String)
+  parent: MicroPlumberd.Encryption.ICertManager
+  langs:
+  - csharp
+  - vb
+  name: GetPrivate(string)
+  nameWithType: ICertManager.GetPrivate(string)
+  fullName: MicroPlumberd.Encryption.ICertManager.GetPrivate(string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/ICertManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: GetPrivate
+    path: src/MicroPlumberd.Encryption/ICertManager.cs
+    startLine: 6
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: X509Certificate2 GetPrivate(string recipient)
+    parameters:
+    - id: recipient
+      type: System.String
+    return:
+      type: System.Security.Cryptography.X509Certificates.X509Certificate2
+    content.vb: Function GetPrivate(recipient As String) As X509Certificate2
+  overload: MicroPlumberd.Encryption.ICertManager.GetPrivate*
+  nameWithType.vb: ICertManager.GetPrivate(String)
+  fullName.vb: MicroPlumberd.Encryption.ICertManager.GetPrivate(String)
+  name.vb: GetPrivate(String)
+- uid: MicroPlumberd.Encryption.ICertManager.Get(System.String)
+  commentId: M:MicroPlumberd.Encryption.ICertManager.Get(System.String)
+  id: Get(System.String)
+  parent: MicroPlumberd.Encryption.ICertManager
+  langs:
+  - csharp
+  - vb
+  name: Get(string)
+  nameWithType: ICertManager.Get(string)
+  fullName: MicroPlumberd.Encryption.ICertManager.Get(string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/ICertManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Get
+    path: src/MicroPlumberd.Encryption/ICertManager.cs
+    startLine: 7
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: X509Certificate2 Get(string recipient)
+    parameters:
+    - id: recipient
+      type: System.String
+    return:
+      type: System.Security.Cryptography.X509Certificates.X509Certificate2
+    content.vb: Function [Get](recipient As String) As X509Certificate2
+  overload: MicroPlumberd.Encryption.ICertManager.Get*
+  nameWithType.vb: ICertManager.Get(String)
+  fullName.vb: MicroPlumberd.Encryption.ICertManager.Get(String)
+  name.vb: Get(String)
+- uid: MicroPlumberd.Encryption.ICertManager.Init
+  commentId: M:MicroPlumberd.Encryption.ICertManager.Init
+  id: Init
+  parent: MicroPlumberd.Encryption.ICertManager
+  langs:
+  - csharp
+  - vb
+  name: Init()
+  nameWithType: ICertManager.Init()
+  fullName: MicroPlumberd.Encryption.ICertManager.Init()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/ICertManager.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Init
+    path: src/MicroPlumberd.Encryption/ICertManager.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: Task Init()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function Init() As Task
+  overload: MicroPlumberd.Encryption.ICertManager.Init*
+references:
+- uid: MicroPlumberd.Encryption
+  commentId: N:MicroPlumberd.Encryption
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Encryption
+  nameWithType: MicroPlumberd.Encryption
+  fullName: MicroPlumberd.Encryption
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Encryption
+    name: Encryption
+    href: MicroPlumberd.Encryption.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Encryption
+    name: Encryption
+    href: MicroPlumberd.Encryption.html
+- uid: MicroPlumberd.Encryption.ICertManager.GetPrivate*
+  commentId: Overload:MicroPlumberd.Encryption.ICertManager.GetPrivate
+  href: MicroPlumberd.Encryption.ICertManager.html#MicroPlumberd_Encryption_ICertManager_GetPrivate_System_String_
+  name: GetPrivate
+  nameWithType: ICertManager.GetPrivate
+  fullName: MicroPlumberd.Encryption.ICertManager.GetPrivate
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Security.Cryptography.X509Certificates.X509Certificate2
+  commentId: T:System.Security.Cryptography.X509Certificates.X509Certificate2
+  parent: System.Security.Cryptography.X509Certificates
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.x509certificates.x509certificate2
+  name: X509Certificate2
+  nameWithType: X509Certificate2
+  fullName: System.Security.Cryptography.X509Certificates.X509Certificate2
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Security.Cryptography.X509Certificates
+  commentId: N:System.Security.Cryptography.X509Certificates
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Security.Cryptography.X509Certificates
+  nameWithType: System.Security.Cryptography.X509Certificates
+  fullName: System.Security.Cryptography.X509Certificates
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Security
+    name: Security
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security
+  - name: .
+  - uid: System.Security.Cryptography
+    name: Cryptography
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography
+  - name: .
+  - uid: System.Security.Cryptography.X509Certificates
+    name: X509Certificates
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.x509certificates
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Security
+    name: Security
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security
+  - name: .
+  - uid: System.Security.Cryptography
+    name: Cryptography
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography
+  - name: .
+  - uid: System.Security.Cryptography.X509Certificates
+    name: X509Certificates
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.security.cryptography.x509certificates
+- uid: MicroPlumberd.Encryption.ICertManager.Get*
+  commentId: Overload:MicroPlumberd.Encryption.ICertManager.Get
+  href: MicroPlumberd.Encryption.ICertManager.html#MicroPlumberd_Encryption_ICertManager_Get_System_String_
+  name: Get
+  nameWithType: ICertManager.Get
+  fullName: MicroPlumberd.Encryption.ICertManager.Get
+- uid: MicroPlumberd.Encryption.ICertManager.Init*
+  commentId: Overload:MicroPlumberd.Encryption.ICertManager.Init
+  href: MicroPlumberd.Encryption.ICertManager.html#MicroPlumberd_Encryption_ICertManager_Init
+  name: Init
+  nameWithType: ICertManager.Init
+  fullName: MicroPlumberd.Encryption.ICertManager.Init
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

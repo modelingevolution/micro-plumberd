@@ -6,9 +6,13 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1
+  - MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.ITypeHandlerRegisters)
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.TypeEventConverter)
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0)
+  - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.ITypeHandlerRegisters)
   - MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.TypeEventConverter)
+  - MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1
+  - MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1(``0)
   langs:
   - csharp
   - vb
@@ -175,6 +179,149 @@ items:
   nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)(TypeEventConverter)
   fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)(MicroPlumberd.TypeEventConverter)
   name.vb: WithHandler(Of T)(TypeEventConverter)
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.ITypeHandlerRegisters)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.ITypeHandlerRegisters)
+  id: WithHandler``1(MicroPlumberd.ITypeHandlerRegisters)
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithHandler<T>(ITypeHandlerRegisters)
+  nameWithType: ISubscriptionRunner.WithHandler<T>(ITypeHandlerRegisters)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler<T>(MicroPlumberd.ITypeHandlerRegisters)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 8
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IEventHandler> WithHandler<T>(ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister'
+    parameters:
+    - id: register
+      type: MicroPlumberd.ITypeHandlerRegisters
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+    content.vb: Function WithHandler(Of T As {IEventHandler, ITypeRegister})(register As ITypeHandlerRegisters) As Task(Of IEventHandler)
+  overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)(ITypeHandlerRegisters)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)(MicroPlumberd.ITypeHandlerRegisters)
+  name.vb: WithHandler(Of T)(ITypeHandlerRegisters)
+- uid: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1
+  id: WithSnapshotHandler``1
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithSnapshotHandler<T>()
+  nameWithType: ISubscriptionRunner.WithSnapshotHandler<T>()
+  fullName: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler<T>()
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithSnapshotHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 9
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IEventHandler> WithSnapshotHandler<T>() where T : IEventHandler, ITypeRegister'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+    content.vb: Function WithSnapshotHandler(Of T As {IEventHandler, ITypeRegister})() As Task(Of IEventHandler)
+  overload: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler*
+  nameWithType.vb: ISubscriptionRunner.WithSnapshotHandler(Of T)()
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler(Of T)()
+  name.vb: WithSnapshotHandler(Of T)()
+- uid: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1(``0)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1(``0)
+  id: WithSnapshotHandler``1(``0)
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithSnapshotHandler<T>(T)
+  nameWithType: ISubscriptionRunner.WithSnapshotHandler<T>(T)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler<T>(T)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithSnapshotHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 10
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IEventHandler> WithSnapshotHandler<T>(T model) where T : IEventHandler, ITypeRegister'
+    parameters:
+    - id: model
+      type: '{T}'
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+    content.vb: Function WithSnapshotHandler(Of T As {IEventHandler, ITypeRegister})(model As T) As Task(Of IEventHandler)
+  overload: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler*
+  nameWithType.vb: ISubscriptionRunner.WithSnapshotHandler(Of T)(T)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler(Of T)(T)
+  name.vb: WithSnapshotHandler(Of T)(T)
+- uid: MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.ITypeHandlerRegisters)
+  commentId: M:MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.ITypeHandlerRegisters)
+  id: WithHandler``1(``0,MicroPlumberd.ITypeHandlerRegisters)
+  parent: MicroPlumberd.ISubscriptionRunner
+  langs:
+  - csharp
+  - vb
+  name: WithHandler<T>(T, ITypeHandlerRegisters)
+  nameWithType: ISubscriptionRunner.WithHandler<T>(T, ITypeHandlerRegisters)
+  fullName: MicroPlumberd.ISubscriptionRunner.WithHandler<T>(T, MicroPlumberd.ITypeHandlerRegisters)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: WithHandler
+    path: src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'Task<IEventHandler> WithHandler<T>(T model, ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister'
+    parameters:
+    - id: model
+      type: '{T}'
+    - id: register
+      type: MicroPlumberd.ITypeHandlerRegisters
+    typeParameters:
+    - id: T
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.IEventHandler}
+    content.vb: Function WithHandler(Of T As {IEventHandler, ITypeRegister})(model As T, register As ITypeHandlerRegisters) As Task(Of IEventHandler)
+  overload: MicroPlumberd.ISubscriptionRunner.WithHandler*
+  nameWithType.vb: ISubscriptionRunner.WithHandler(Of T)(T, ITypeHandlerRegisters)
+  fullName.vb: MicroPlumberd.ISubscriptionRunner.WithHandler(Of T)(T, MicroPlumberd.ITypeHandlerRegisters)
+  name.vb: WithHandler(Of T)(T, ITypeHandlerRegisters)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -369,3 +516,16 @@ references:
     name: IEventHandler
     href: MicroPlumberd.IEventHandler.html
   - name: )
+- uid: MicroPlumberd.ITypeHandlerRegisters
+  commentId: T:MicroPlumberd.ITypeHandlerRegisters
+  parent: MicroPlumberd
+  href: MicroPlumberd.ITypeHandlerRegisters.html
+  name: ITypeHandlerRegisters
+  nameWithType: ITypeHandlerRegisters
+  fullName: MicroPlumberd.ITypeHandlerRegisters
+- uid: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler*
+  commentId: Overload:MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler
+  href: MicroPlumberd.ISubscriptionRunner.html#MicroPlumberd_ISubscriptionRunner_WithSnapshotHandler__1
+  name: WithSnapshotHandler
+  nameWithType: ISubscriptionRunner.WithSnapshotHandler
+  fullName: MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler

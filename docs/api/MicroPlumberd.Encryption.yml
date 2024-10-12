@@ -1,0 +1,120 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Encryption
+  commentId: N:MicroPlumberd.Encryption
+  id: MicroPlumberd.Encryption
+  children:
+  - MicroPlumberd.Encryption.CertificateNotFoundException
+  - MicroPlumberd.Encryption.ContainerExtensions
+  - MicroPlumberd.Encryption.ICertManager
+  - MicroPlumberd.Encryption.IEncryptor
+  - MicroPlumberd.Encryption.SecretObjectJsonConverter`1
+  - MicroPlumberd.Encryption.SecretObject`1
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Encryption
+  nameWithType: MicroPlumberd.Encryption
+  fullName: MicroPlumberd.Encryption
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Encryption
+references:
+- uid: MicroPlumberd.Encryption.CertificateNotFoundException
+  commentId: T:MicroPlumberd.Encryption.CertificateNotFoundException
+  href: MicroPlumberd.Encryption.CertificateNotFoundException.html
+  name: CertificateNotFoundException
+  nameWithType: CertificateNotFoundException
+  fullName: MicroPlumberd.Encryption.CertificateNotFoundException
+- uid: MicroPlumberd.Encryption.ContainerExtensions
+  commentId: T:MicroPlumberd.Encryption.ContainerExtensions
+  href: MicroPlumberd.Encryption.ContainerExtensions.html
+  name: ContainerExtensions
+  nameWithType: ContainerExtensions
+  fullName: MicroPlumberd.Encryption.ContainerExtensions
+- uid: MicroPlumberd.Encryption.ICertManager
+  commentId: T:MicroPlumberd.Encryption.ICertManager
+  href: MicroPlumberd.Encryption.ICertManager.html
+  name: ICertManager
+  nameWithType: ICertManager
+  fullName: MicroPlumberd.Encryption.ICertManager
+- uid: MicroPlumberd.Encryption.IEncryptor
+  commentId: T:MicroPlumberd.Encryption.IEncryptor
+  parent: MicroPlumberd.Encryption
+  href: MicroPlumberd.Encryption.IEncryptor.html
+  name: IEncryptor
+  nameWithType: IEncryptor
+  fullName: MicroPlumberd.Encryption.IEncryptor
+- uid: MicroPlumberd.Encryption.SecretObject`1
+  commentId: T:MicroPlumberd.Encryption.SecretObject`1
+  parent: MicroPlumberd.Encryption
+  href: MicroPlumberd.Encryption.SecretObject-1.html
+  name: SecretObject<T>
+  nameWithType: SecretObject<T>
+  fullName: MicroPlumberd.Encryption.SecretObject<T>
+  nameWithType.vb: SecretObject(Of T)
+  fullName.vb: MicroPlumberd.Encryption.SecretObject(Of T)
+  name.vb: SecretObject(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Encryption.SecretObject`1
+    name: SecretObject
+    href: MicroPlumberd.Encryption.SecretObject-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Encryption.SecretObject`1
+    name: SecretObject
+    href: MicroPlumberd.Encryption.SecretObject-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Encryption.SecretObjectJsonConverter`1
+  commentId: T:MicroPlumberd.Encryption.SecretObjectJsonConverter`1
+  href: MicroPlumberd.Encryption.SecretObjectJsonConverter-1.html
+  name: SecretObjectJsonConverter<T>
+  nameWithType: SecretObjectJsonConverter<T>
+  fullName: MicroPlumberd.Encryption.SecretObjectJsonConverter<T>
+  nameWithType.vb: SecretObjectJsonConverter(Of T)
+  fullName.vb: MicroPlumberd.Encryption.SecretObjectJsonConverter(Of T)
+  name.vb: SecretObjectJsonConverter(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Encryption.SecretObjectJsonConverter`1
+    name: SecretObjectJsonConverter
+    href: MicroPlumberd.Encryption.SecretObjectJsonConverter-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Encryption.SecretObjectJsonConverter`1
+    name: SecretObjectJsonConverter
+    href: MicroPlumberd.Encryption.SecretObjectJsonConverter-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Encryption
+  commentId: N:MicroPlumberd.Encryption
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Encryption
+  nameWithType: MicroPlumberd.Encryption
+  fullName: MicroPlumberd.Encryption
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Encryption
+    name: Encryption
+    href: MicroPlumberd.Encryption.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Encryption
+    name: Encryption
+    href: MicroPlumberd.Encryption.html

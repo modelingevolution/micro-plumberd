@@ -5,6 +5,7 @@ items:
   id: MicroPlumberd.Utils
   children:
   - MicroPlumberd.Utils.AsyncDisposableCollection
+  - MicroPlumberd.Utils.IdDuckTyping
   langs:
   - csharp
   - vb
@@ -22,6 +23,12 @@ references:
   name: AsyncDisposableCollection
   nameWithType: AsyncDisposableCollection
   fullName: MicroPlumberd.Utils.AsyncDisposableCollection
+- uid: MicroPlumberd.Utils.IdDuckTyping
+  commentId: T:MicroPlumberd.Utils.IdDuckTyping
+  href: MicroPlumberd.Utils.IdDuckTyping.html
+  name: IdDuckTyping
+  nameWithType: IdDuckTyping
+  fullName: MicroPlumberd.Utils.IdDuckTyping
 - uid: MicroPlumberd.Utils
   commentId: N:MicroPlumberd.Utils
   href: MicroPlumberd.html

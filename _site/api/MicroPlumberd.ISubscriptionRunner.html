@@ -165,6 +165,47 @@ Interface ISubscriptionRunner  <a class="header-action link-secondary" title="Vi
 
   <a id="MicroPlumberd_ISubscriptionRunner_WithHandler_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler*"></a>
 
+  <h3 id="MicroPlumberd_ISubscriptionRunner_WithHandler__1_MicroPlumberd_ITypeHandlerRegisters_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.ITypeHandlerRegisters)">
+  WithHandler&lt;T&gt;(ITypeHandlerRegisters)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs/#L9"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IEventHandler&gt; WithHandler&lt;T&gt;(ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>register</code> <a class="xref" href="MicroPlumberd.ITypeHandlerRegisters.html">ITypeHandlerRegisters</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.IEventHandler.html">IEventHandler</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_ISubscriptionRunner_WithHandler_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler*"></a>
+
   <h3 id="MicroPlumberd_ISubscriptionRunner_WithHandler__1_MicroPlumberd_TypeEventConverter_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler``1(MicroPlumberd.TypeEventConverter)">
   WithHandler&lt;T&gt;(TypeEventConverter)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs/#L8"><i class="bi bi-code-slash"></i></a>
@@ -247,6 +288,49 @@ Interface ISubscriptionRunner  <a class="header-action link-secondary" title="Vi
 
   <a id="MicroPlumberd_ISubscriptionRunner_WithHandler_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler*"></a>
 
+  <h3 id="MicroPlumberd_ISubscriptionRunner_WithHandler__1___0_MicroPlumberd_ITypeHandlerRegisters_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.ITypeHandlerRegisters)">
+  WithHandler&lt;T&gt;(T, ITypeHandlerRegisters)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IEventHandler&gt; WithHandler&lt;T&gt;(T model, ITypeHandlerRegisters register) where T : IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>model</code> <span class="xref">T</span></dt>
+    <dd></dd>
+    <dt><code>register</code> <a class="xref" href="MicroPlumberd.ITypeHandlerRegisters.html">ITypeHandlerRegisters</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.IEventHandler.html">IEventHandler</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_ISubscriptionRunner_WithHandler_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler*"></a>
+
   <h3 id="MicroPlumberd_ISubscriptionRunner_WithHandler__1___0_MicroPlumberd_TypeEventConverter_" data-uid="MicroPlumberd.ISubscriptionRunner.WithHandler``1(``0,MicroPlumberd.TypeEventConverter)">
   WithHandler&lt;T&gt;(T, TypeEventConverter)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs/#L6"><i class="bi bi-code-slash"></i></a>
@@ -270,6 +354,83 @@ Interface ISubscriptionRunner  <a class="header-action link-secondary" title="Vi
   <h4 class="section">Returns</h4>
   <dl class="parameters">
     <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_ISubscriptionRunner_WithSnapshotHandler_" data-uid="MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler*"></a>
+
+  <h3 id="MicroPlumberd_ISubscriptionRunner_WithSnapshotHandler__1" data-uid="MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1">
+  WithSnapshotHandler&lt;T&gt;()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs/#L10"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IEventHandler&gt; WithSnapshotHandler&lt;T&gt;() where T : IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.IEventHandler.html">IEventHandler</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>T</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_ISubscriptionRunner_WithSnapshotHandler_" data-uid="MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler*"></a>
+
+  <h3 id="MicroPlumberd_ISubscriptionRunner_WithSnapshotHandler__1___0_" data-uid="MicroPlumberd.ISubscriptionRunner.WithSnapshotHandler``1(``0)">
+  WithSnapshotHandler&lt;T&gt;(T)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/Abstractions/ISubscriptionRunner.cs/#L11"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Task&lt;IEventHandler&gt; WithSnapshotHandler&lt;T&gt;(T model) where T : IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>model</code> <span class="xref">T</span></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.IEventHandler.html">IEventHandler</a>&gt;</dt>
     <dd></dd>
   </dl>
 

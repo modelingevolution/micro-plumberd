@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Purchase
+  commentId: N:MicroPlumberd.Examples.Cinema.Purchase
+  id: MicroPlumberd.Examples.Cinema.Purchase
+  children:
+  - MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel
+  - MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+  - MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Examples.Cinema.Purchase
+  nameWithType: MicroPlumberd.Examples.Cinema.Purchase
+  fullName: MicroPlumberd.Examples.Cinema.Purchase
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+references:
+- uid: MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel
+  commentId: T:MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel
+  href: MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel.html
+  name: RepertuarModel
+  nameWithType: RepertuarModel
+  fullName: MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel
+- uid: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+  commentId: T:MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+  href: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage.html
+  name: RepertuarPage
+  nameWithType: RepertuarPage
+  fullName: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+- uid: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
+  commentId: T:MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
+  href: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage.html
+  name: ReservationPage
+  nameWithType: ReservationPage
+  fullName: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage

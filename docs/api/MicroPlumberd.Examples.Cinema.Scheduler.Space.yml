@@ -1,0 +1,128 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.Space
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.Space
+  id: Space
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  children:
+  - MicroPlumberd.Examples.Cinema.Scheduler.Space.Empty
+  - MicroPlumberd.Examples.Cinema.Scheduler.Space.Seat
+  langs:
+  - csharp
+  - vb
+  name: Space
+  nameWithType: Space
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.Space
+  type: Enum
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Space
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 79
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public enum Space
+    content.vb: Public Enum Space
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.Space.Seat
+  commentId: F:MicroPlumberd.Examples.Cinema.Scheduler.Space.Seat
+  id: Seat
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.Space
+  langs:
+  - csharp
+  - vb
+  name: Seat
+  nameWithType: Space.Seat
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.Space.Seat
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Seat
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 81
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: Seat = 0
+    return:
+      type: MicroPlumberd.Examples.Cinema.Scheduler.Space
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.Space.Empty
+  commentId: F:MicroPlumberd.Examples.Cinema.Scheduler.Space.Empty
+  id: Empty
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.Space
+  langs:
+  - csharp
+  - vb
+  name: Empty
+  nameWithType: Space.Empty
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.Space.Empty
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Empty
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 81
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: Empty = 1
+    return:
+      type: MicroPlumberd.Examples.Cinema.Scheduler.Space
+references:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler
+  commentId: N:MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Examples.Cinema.Scheduler
+  nameWithType: MicroPlumberd.Examples.Cinema.Scheduler
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.Space
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.Space
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.Examples.Cinema.Scheduler.Space.html
+  name: Space
+  nameWithType: Space
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.Space

@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Utils
+  commentId: N:MicroPlumberd.Examples.Cinema.Utils
+  id: MicroPlumberd.Examples.Cinema.Utils
+  children:
+  - MicroPlumberd.Examples.Cinema.Utils.OptionConverters
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Examples.Cinema.Utils
+  nameWithType: MicroPlumberd.Examples.Cinema.Utils
+  fullName: MicroPlumberd.Examples.Cinema.Utils
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+references:
+- uid: MicroPlumberd.Examples.Cinema.Utils.OptionConverters
+  commentId: T:MicroPlumberd.Examples.Cinema.Utils.OptionConverters
+  href: MicroPlumberd.Examples.Cinema.Utils.OptionConverters.html
+  name: OptionConverters
+  nameWithType: OptionConverters
+  fullName: MicroPlumberd.Examples.Cinema.Utils.OptionConverters

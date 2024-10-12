@@ -1,0 +1,125 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Services.LiteDb
+  commentId: N:MicroPlumberd.Services.LiteDb
+  id: MicroPlumberd.Services.LiteDb
+  children:
+  - MicroPlumberd.Services.LiteDb.Event
+  - MicroPlumberd.Services.LiteDb.LiteDbPlumber
+  - MicroPlumberd.Services.LiteDb.LiteEventStore
+  - MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  - MicroPlumberd.Services.LiteDb.PayloadData`1
+  - MicroPlumberd.Services.LiteDb.Stream
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Services.LiteDb
+  nameWithType: MicroPlumberd.Services.LiteDb
+  fullName: MicroPlumberd.Services.LiteDb
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Services.LiteDb
+references:
+- uid: MicroPlumberd.Services.LiteDb.PayloadData`1
+  commentId: T:MicroPlumberd.Services.LiteDb.PayloadData`1
+  href: MicroPlumberd.Services.LiteDb.PayloadData-1.html
+  name: PayloadData<TPayload>
+  nameWithType: PayloadData<TPayload>
+  fullName: MicroPlumberd.Services.LiteDb.PayloadData<TPayload>
+  nameWithType.vb: PayloadData(Of TPayload)
+  fullName.vb: MicroPlumberd.Services.LiteDb.PayloadData(Of TPayload)
+  name.vb: PayloadData(Of TPayload)
+  spec.csharp:
+  - uid: MicroPlumberd.Services.LiteDb.PayloadData`1
+    name: PayloadData
+    href: MicroPlumberd.Services.LiteDb.PayloadData-1.html
+  - name: <
+  - name: TPayload
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Services.LiteDb.PayloadData`1
+    name: PayloadData
+    href: MicroPlumberd.Services.LiteDb.PayloadData-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TPayload
+  - name: )
+- uid: MicroPlumberd.Services.LiteDb.Event
+  commentId: T:MicroPlumberd.Services.LiteDb.Event
+  href: MicroPlumberd.Services.LiteDb.Event.html
+  name: Event
+  nameWithType: Event
+  fullName: MicroPlumberd.Services.LiteDb.Event
+- uid: MicroPlumberd.Services.LiteDb.Stream
+  commentId: T:MicroPlumberd.Services.LiteDb.Stream
+  href: MicroPlumberd.Services.LiteDb.Stream.html
+  name: Stream
+  nameWithType: Stream
+  fullName: MicroPlumberd.Services.LiteDb.Stream
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+  commentId: T:MicroPlumberd.Services.LiteDb.LiteEventStore
+  parent: MicroPlumberd.Services.LiteDb
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  name: LiteEventStore
+  nameWithType: LiteEventStore
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore
+- uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  commentId: T:MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  parent: MicroPlumberd.Services.LiteDb
+  href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  name: LiteEventStore.IPlayloadEvents
+  nameWithType: LiteEventStore.IPlayloadEvents
+  fullName: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+  spec.csharp:
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+    name: LiteEventStore
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+    name: IPlayloadEvents
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.html
+  spec.vb:
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+    name: LiteEventStore
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+    name: IPlayloadEvents
+    href: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.html
+- uid: MicroPlumberd.Services.LiteDb.LiteDbPlumber
+  commentId: T:MicroPlumberd.Services.LiteDb.LiteDbPlumber
+  href: MicroPlumberd.Services.LiteDb.LiteDbPlumber.html
+  name: LiteDbPlumber
+  nameWithType: LiteDbPlumber
+  fullName: MicroPlumberd.Services.LiteDb.LiteDbPlumber
+- uid: MicroPlumberd.Services.LiteDb
+  commentId: N:MicroPlumberd.Services.LiteDb
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Services.LiteDb
+  nameWithType: MicroPlumberd.Services.LiteDb
+  fullName: MicroPlumberd.Services.LiteDb
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb
+    name: LiteDb
+    href: MicroPlumberd.Services.LiteDb.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Services
+    name: Services
+    href: MicroPlumberd.Services.html
+  - name: .
+  - uid: MicroPlumberd.Services.LiteDb
+    name: LiteDb
+    href: MicroPlumberd.Services.LiteDb.html

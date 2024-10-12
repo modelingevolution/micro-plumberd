@@ -47,6 +47,8 @@ items:
     name: IAggregate
   - uid: MicroPlumberd.IAggregate`1
     name: IAggregate<TSelf>
+  - uid: MicroPlumberd.ICatchUpHandler
+    name: ICatchUpHandler
   - uid: MicroPlumberd.ICommandBus
     name: ICommandBus
   - uid: MicroPlumberd.ICommandEnqueued
@@ -71,6 +73,8 @@ items:
     name: IId
   - uid: MicroPlumberd.IIdAware
     name: IIdAware
+  - uid: MicroPlumberd.IIdAware`1
+    name: IIdAware<T>
   - uid: MicroPlumberd.IId`1
     name: IId<T>
   - uid: MicroPlumberd.IObjectSerializer
@@ -117,12 +121,18 @@ items:
     name: InvocationContext
   - uid: MicroPlumberd.InvocationScope
     name: InvocationScope
+  - uid: MicroPlumberd.JsonObjectSerializer
+    name: JsonObjectSerializer
   - uid: MicroPlumberd.Metadata
     name: Metadata
   - uid: MicroPlumberd.MetadataConvention
     name: MetadataConvention
   - uid: MicroPlumberd.MetadataExtensions
     name: MetadataExtensions
+  - uid: MicroPlumberd.OptionConverterFactory
+    name: OptionConverterFactory
+  - uid: MicroPlumberd.Option`1
+    name: Option<T>
   - uid: MicroPlumberd.OutputStreamAttribute
     name: OutputStreamAttribute
   - uid: MicroPlumberd.OutputStreamModelConvention
@@ -151,14 +161,14 @@ items:
     name: StateChangeAction<TOwner>
   - uid: MicroPlumberd.StateInfo
     name: StateInfo
-  - uid: MicroPlumberd.State`1
-    name: State<T>
   - uid: MicroPlumberd.SteamNameConvention
     name: SteamNameConvention
   - uid: MicroPlumberd.StreamCategoryConvention
     name: StreamCategoryConvention
   - uid: MicroPlumberd.StreamNameFromEventConvention
     name: StreamNameFromEventConvention
+  - uid: MicroPlumberd.SubscriptionRunnerState`1
+    name: SubscriptionRunnerState<T>
   - uid: MicroPlumberd.TypeEventConverter
     name: TypeEventConverter
   - uid: MicroPlumberd.TypeExtensions
@@ -189,6 +199,84 @@ items:
     name: ReturnsAttribute
   - uid: MicroPlumberd.DirectConnect.ReturnsAttribute`1
     name: ReturnsAttribute<TResult>
+- uid: MicroPlumberd.Encryption
+  name: MicroPlumberd.Encryption
+  items:
+  - uid: MicroPlumberd.Encryption.CertificateNotFoundException
+    name: CertificateNotFoundException
+  - uid: MicroPlumberd.Encryption.ContainerExtensions
+    name: ContainerExtensions
+  - uid: MicroPlumberd.Encryption.ICertManager
+    name: ICertManager
+  - uid: MicroPlumberd.Encryption.IEncryptor
+    name: IEncryptor
+  - uid: MicroPlumberd.Encryption.SecretObjectJsonConverter`1
+    name: SecretObjectJsonConverter<T>
+  - uid: MicroPlumberd.Encryption.SecretObject`1
+    name: SecretObject<T>
+- uid: MicroPlumberd.Examples.Cinema
+  name: MicroPlumberd.Examples.Cinema
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Program
+    name: Program
+- uid: MicroPlumberd.Examples.Cinema.Components
+  name: MicroPlumberd.Examples.Cinema.Components
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Components.App
+    name: App
+  - uid: MicroPlumberd.Examples.Cinema.Components.Routes
+    name: Routes
+  - uid: MicroPlumberd.Examples.Cinema.Components._Imports
+    name: _Imports
+- uid: MicroPlumberd.Examples.Cinema.Components.Layout
+  name: MicroPlumberd.Examples.Cinema.Components.Layout
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout
+    name: MainLayout
+  - uid: MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu
+    name: NavMenu
+- uid: MicroPlumberd.Examples.Cinema.Components.Pages
+  name: MicroPlumberd.Examples.Cinema.Components.Pages
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Components.Pages.Error
+    name: Error
+- uid: MicroPlumberd.Examples.Cinema.Purchase
+  name: MicroPlumberd.Examples.Cinema.Purchase
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel
+    name: RepertuarModel
+  - uid: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+    name: RepertuarPage
+  - uid: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
+    name: ReservationPage
+- uid: MicroPlumberd.Examples.Cinema.Scheduler
+  name: MicroPlumberd.Examples.Cinema.Scheduler
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog
+    name: AddScreeningDialog
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+    name: CreateScreening
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.PathScreening
+    name: PathScreening
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler
+    name: ScheduleCommandHandler
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage
+    name: SchedulePage
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined
+    name: ScreeningStateDefined
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast
+    name: ScreeningTimeCannotBeInPast
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+    name: SeatLocation
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+    name: SeatRoomConfiguration
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.Space
+    name: Space
+- uid: MicroPlumberd.Examples.Cinema.Utils
+  name: MicroPlumberd.Examples.Cinema.Utils
+  items:
+  - uid: MicroPlumberd.Examples.Cinema.Utils.OptionConverters
+    name: OptionConverters
 - uid: MicroPlumberd.Protobuf
   name: MicroPlumberd.Protobuf
   items:
@@ -245,6 +333,21 @@ items:
     name: ThrowsFaultExceptionAttribute
   - uid: MicroPlumberd.Services.ThrowsFaultExceptionAttribute`1
     name: ThrowsFaultExceptionAttribute<TMessage>
+- uid: MicroPlumberd.Services.LiteDb
+  name: MicroPlumberd.Services.LiteDb
+  items:
+  - uid: MicroPlumberd.Services.LiteDb.Event
+    name: Event
+  - uid: MicroPlumberd.Services.LiteDb.LiteDbPlumber
+    name: LiteDbPlumber
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore
+    name: LiteEventStore
+  - uid: MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents
+    name: LiteEventStore.IPlayloadEvents
+  - uid: MicroPlumberd.Services.LiteDb.PayloadData`1
+    name: PayloadData<TPayload>
+  - uid: MicroPlumberd.Services.LiteDb.Stream
+    name: Stream
 - uid: MicroPlumberd.Services.ProcessManagers
   name: MicroPlumberd.Services.ProcessManagers
   items:
@@ -268,4 +371,6 @@ items:
   items:
   - uid: MicroPlumberd.Utils.AsyncDisposableCollection
     name: AsyncDisposableCollection
+  - uid: MicroPlumberd.Utils.IdDuckTyping
+    name: IdDuckTyping
 memberLayout: SamePage

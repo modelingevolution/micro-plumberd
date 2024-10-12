@@ -7,8 +7,11 @@ items:
   children:
   - MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   - MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
+  - MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,MicroPlumberd.FromRelativeStreamPosition)
   - MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})
-  - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+  - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  - MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings},System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  - MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   langs:
   - csharp
   - vb
@@ -40,17 +43,17 @@ items:
   - System.Object.MemberwiseClone
   - System.Object.ReferenceEquals(System.Object,System.Object)
   - System.Object.ToString
-- uid: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
-  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
-  id: AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})
+- uid: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  id: AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
   isExtensionMethod: true
   parent: MicroPlumberd.Services.ContainerExtensions
   langs:
   - csharp
   - vb
-  name: AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action<IPlumberConfig>?)
-  nameWithType: ContainerExtensions.AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action<IPlumberConfig>?)
-  fullName: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, EventStore.Client.EventStoreClientSettings?, System.Action<MicroPlumberd.IPlumberConfig>?)
+  name: AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action<IServiceProvider, IPlumberConfig>?)
+  nameWithType: ContainerExtensions.AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action<IServiceProvider, IPlumberConfig>?)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, EventStore.Client.EventStoreClientSettings?, System.Action<System.IServiceProvider, MicroPlumberd.IPlumberConfig>?)
   type: Method
   source:
     remote:
@@ -64,21 +67,60 @@ items:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
-    content: public static IServiceCollection AddPlumberd(this IServiceCollection collection, EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
+    content: public static IServiceCollection AddPlumberd(this IServiceCollection collection, EventStoreClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null)
     parameters:
     - id: collection
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
     - id: settings
       type: EventStore.Client.EventStoreClientSettings
     - id: configure
-      type: System.Action{MicroPlumberd.IPlumberConfig}
+      type: System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig}
     return:
       type: Microsoft.Extensions.DependencyInjection.IServiceCollection
-    content.vb: Public Shared Function AddPlumberd(collection As IServiceCollection, settings As EventStoreClientSettings = Nothing, configure As Action(Of IPlumberConfig) = Nothing) As IServiceCollection
+    content.vb: Public Shared Function AddPlumberd(collection As IServiceCollection, settings As EventStoreClientSettings = Nothing, configure As Action(Of IServiceProvider, IPlumberConfig) = Nothing) As IServiceCollection
   overload: MicroPlumberd.Services.ContainerExtensions.AddPlumberd*
-  nameWithType.vb: ContainerExtensions.AddPlumberd(IServiceCollection, EventStoreClientSettings, Action(Of IPlumberConfig))
-  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, EventStore.Client.EventStoreClientSettings, System.Action(Of MicroPlumberd.IPlumberConfig))
-  name.vb: AddPlumberd(IServiceCollection, EventStoreClientSettings, Action(Of IPlumberConfig))
+  nameWithType.vb: ContainerExtensions.AddPlumberd(IServiceCollection, EventStoreClientSettings, Action(Of IServiceProvider, IPlumberConfig))
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, EventStore.Client.EventStoreClientSettings, System.Action(Of System.IServiceProvider, MicroPlumberd.IPlumberConfig))
+  name.vb: AddPlumberd(IServiceCollection, EventStoreClientSettings, Action(Of IServiceProvider, IPlumberConfig))
+- uid: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings},System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings},System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  id: AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings},System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddPlumberd(IServiceCollection, Func<IServiceProvider, EventStoreClientSettings>, Action<IServiceProvider, IPlumberConfig>?)
+  nameWithType: ContainerExtensions.AddPlumberd(IServiceCollection, Func<IServiceProvider, EventStoreClientSettings>, Action<IServiceProvider, IPlumberConfig>?)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Func<System.IServiceProvider, EventStore.Client.EventStoreClientSettings>, System.Action<System.IServiceProvider, MicroPlumberd.IPlumberConfig>?)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddPlumberd
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 28
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: public static IServiceCollection AddPlumberd(this IServiceCollection collection, Func<IServiceProvider, EventStoreClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null)
+    parameters:
+    - id: collection
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    - id: settingsFactory
+      type: System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings}
+    - id: configure
+      type: System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig}
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddPlumberd(collection As IServiceCollection, settingsFactory As Func(Of IServiceProvider, EventStoreClientSettings), configure As Action(Of IServiceProvider, IPlumberConfig) = Nothing) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddPlumberd*
+  nameWithType.vb: ContainerExtensions.AddPlumberd(IServiceCollection, Func(Of IServiceProvider, EventStoreClientSettings), Action(Of IServiceProvider, IPlumberConfig))
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection, System.Func(Of System.IServiceProvider, EventStore.Client.EventStoreClientSettings), System.Action(Of System.IServiceProvider, MicroPlumberd.IPlumberConfig))
+  name.vb: AddPlumberd(IServiceCollection, Func(Of IServiceProvider, EventStoreClientSettings), Action(Of IServiceProvider, IPlumberConfig))
 - uid: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   commentId: M:MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
   id: AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
@@ -98,7 +140,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddBackgroundServiceIfMissing
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 41
+    startLine: 45
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -135,7 +177,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddEventHandler
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 57
+    startLine: 61
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -157,6 +199,82 @@ items:
   nameWithType.vb: ContainerExtensions.AddEventHandler(Of TEventHandler)(IServiceCollection, Boolean, FromStream?)
   fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection, Boolean, EventStore.Client.FromStream?)
   name.vb: AddEventHandler(Of TEventHandler)(IServiceCollection, Boolean, FromStream?)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  id: AddStateEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddStateEventHandler<TEventHandler>(IServiceCollection)
+  nameWithType: ContainerExtensions.AddStateEventHandler<TEventHandler>(IServiceCollection)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler<TEventHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddStateEventHandler
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 70
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: 'public static IServiceCollection AddStateEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister'
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    typeParameters:
+    - id: TEventHandler
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddStateEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(services As IServiceCollection) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler*
+  nameWithType.vb: ContainerExtensions.AddStateEventHandler(Of TEventHandler)(IServiceCollection)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection)
+  name.vb: AddStateEventHandler(Of TEventHandler)(IServiceCollection)
+- uid: MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,MicroPlumberd.FromRelativeStreamPosition)
+  commentId: M:MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,MicroPlumberd.FromRelativeStreamPosition)
+  id: AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,MicroPlumberd.FromRelativeStreamPosition)
+  isExtensionMethod: true
+  parent: MicroPlumberd.Services.ContainerExtensions
+  langs:
+  - csharp
+  - vb
+  name: AddEventHandler<TEventHandler>(IServiceCollection, FromRelativeStreamPosition)
+  nameWithType: ContainerExtensions.AddEventHandler<TEventHandler>(IServiceCollection, FromRelativeStreamPosition)
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddEventHandler<TEventHandler>(Microsoft.Extensions.DependencyInjection.IServiceCollection, MicroPlumberd.FromRelativeStreamPosition)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Services/ContainerExtensions.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: AddEventHandler
+    path: src/MicroPlumberd.Services/ContainerExtensions.cs
+    startLine: 79
+  assemblies:
+  - MicroPlumberd.Services
+  namespace: MicroPlumberd.Services
+  syntax:
+    content: 'public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister'
+    parameters:
+    - id: services
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    - id: start
+      type: MicroPlumberd.FromRelativeStreamPosition
+    typeParameters:
+    - id: TEventHandler
+    return:
+      type: Microsoft.Extensions.DependencyInjection.IServiceCollection
+    content.vb: Public Shared Function AddEventHandler(Of TEventHandler As {Class, IEventHandler, ITypeRegister})(services As IServiceCollection, start As FromRelativeStreamPosition) As IServiceCollection
+  overload: MicroPlumberd.Services.ContainerExtensions.AddEventHandler*
+  nameWithType.vb: ContainerExtensions.AddEventHandler(Of TEventHandler)(IServiceCollection, FromRelativeStreamPosition)
+  fullName.vb: MicroPlumberd.Services.ContainerExtensions.AddEventHandler(Of TEventHandler)(Microsoft.Extensions.DependencyInjection.IServiceCollection, MicroPlumberd.FromRelativeStreamPosition)
+  name.vb: AddEventHandler(Of TEventHandler)(IServiceCollection, FromRelativeStreamPosition)
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
   commentId: M:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
   id: AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})
@@ -176,7 +294,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AddCommandHandler
     path: src/MicroPlumberd.Services/ContainerExtensions.cs
-    startLine: 66
+    startLine: 88
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -460,7 +578,7 @@ references:
   fullName: System
 - uid: MicroPlumberd.Services.ContainerExtensions.AddPlumberd*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddPlumberd
-  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddPlumberd_Microsoft_Extensions_DependencyInjection_IServiceCollection_EventStore_Client_EventStoreClientSettings_System_Action_MicroPlumberd_IPlumberConfig__
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddPlumberd_Microsoft_Extensions_DependencyInjection_IServiceCollection_EventStore_Client_EventStoreClientSettings_System_Action_System_IServiceProvider_MicroPlumberd_IPlumberConfig__
   name: AddPlumberd
   nameWithType: ContainerExtensions.AddPlumberd
   fullName: MicroPlumberd.Services.ContainerExtensions.AddPlumberd
@@ -479,38 +597,48 @@ references:
   name: EventStoreClientSettings
   nameWithType: EventStoreClientSettings
   fullName: EventStore.Client.EventStoreClientSettings
-- uid: System.Action{MicroPlumberd.IPlumberConfig}
-  commentId: T:System.Action{MicroPlumberd.IPlumberConfig}
+- uid: System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig}
+  commentId: T:System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig}
   parent: System
-  definition: System.Action`1
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<IPlumberConfig>
-  nameWithType: Action<IPlumberConfig>
-  fullName: System.Action<MicroPlumberd.IPlumberConfig>
-  nameWithType.vb: Action(Of IPlumberConfig)
-  fullName.vb: System.Action(Of MicroPlumberd.IPlumberConfig)
-  name.vb: Action(Of IPlumberConfig)
+  definition: System.Action`2
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<IServiceProvider, IPlumberConfig>
+  nameWithType: Action<IServiceProvider, IPlumberConfig>
+  fullName: System.Action<System.IServiceProvider, MicroPlumberd.IPlumberConfig>
+  nameWithType.vb: Action(Of IServiceProvider, IPlumberConfig)
+  fullName.vb: System.Action(Of System.IServiceProvider, MicroPlumberd.IPlumberConfig)
+  name.vb: Action(Of IServiceProvider, IPlumberConfig)
   spec.csharp:
-  - uid: System.Action`1
+  - uid: System.Action`2
     name: Action
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
   - name: <
-  - uid: MicroPlumberd.IPlumberConfig
-    name: IPlumberConfig
-    href: MicroPlumberd.IPlumberConfig.html
-  - name: '>'
-  spec.vb:
-  - uid: System.Action`1
-    name: Action
+  - uid: System.IServiceProvider
+    name: IServiceProvider
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
-  - name: (
-  - name: Of
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
   - name: " "
   - uid: MicroPlumberd.IPlumberConfig
     name: IPlumberConfig
-    href: MicroPlumberd.IPlumberConfig.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Action`2
+    name: Action
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: MicroPlumberd.IPlumberConfig
+    name: IPlumberConfig
   - name: )
 - uid: Microsoft.Extensions.DependencyInjection
   commentId: N:Microsoft.Extensions.DependencyInjection
@@ -571,33 +699,118 @@ references:
   - uid: EventStore.Client
     name: Client
     isExternal: true
-- uid: System.Action`1
-  commentId: T:System.Action`1
+- uid: System.Action`2
+  commentId: T:System.Action`2
   isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.action-1
-  name: Action<T>
-  nameWithType: Action<T>
-  fullName: System.Action<T>
-  nameWithType.vb: Action(Of T)
-  fullName.vb: System.Action(Of T)
-  name.vb: Action(Of T)
+  href: https://learn.microsoft.com/dotnet/api/system.action-2
+  name: Action<T1, T2>
+  nameWithType: Action<T1, T2>
+  fullName: System.Action<T1, T2>
+  nameWithType.vb: Action(Of T1, T2)
+  fullName.vb: System.Action(Of T1, T2)
+  name.vb: Action(Of T1, T2)
   spec.csharp:
-  - uid: System.Action`1
+  - uid: System.Action`2
     name: Action
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
   - name: <
-  - name: T
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
   - name: '>'
   spec.vb:
-  - uid: System.Action`1
+  - uid: System.Action`2
     name: Action
     isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.action-1
+    href: https://learn.microsoft.com/dotnet/api/system.action-2
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: )
+- uid: System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings}
+  commentId: T:System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings}
+  parent: System
+  definition: System.Func`2
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<IServiceProvider, EventStoreClientSettings>
+  nameWithType: Func<IServiceProvider, EventStoreClientSettings>
+  fullName: System.Func<System.IServiceProvider, EventStore.Client.EventStoreClientSettings>
+  nameWithType.vb: Func(Of IServiceProvider, EventStoreClientSettings)
+  fullName.vb: System.Func(Of System.IServiceProvider, EventStore.Client.EventStoreClientSettings)
+  name.vb: Func(Of IServiceProvider, EventStoreClientSettings)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.EventStoreClientSettings
+    name: EventStoreClientSettings
+    isExternal: true
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.IServiceProvider
+    name: IServiceProvider
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iserviceprovider
+  - name: ','
+  - name: " "
+  - uid: EventStore.Client.EventStoreClientSettings
+    name: EventStoreClientSettings
+    isExternal: true
+  - name: )
+- uid: System.Func`2
+  commentId: T:System.Func`2
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-2
+  name: Func<T, TResult>
+  nameWithType: Func<T, TResult>
+  fullName: System.Func<T, TResult>
+  nameWithType.vb: Func(Of T, TResult)
+  fullName.vb: System.Func(Of T, TResult)
+  name.vb: Func(Of T, TResult)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
+  - name: <
+  - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-2
   - name: (
   - name: Of
   - name: " "
   - name: T
+  - name: ','
+  - name: " "
+  - name: TResult
   - name: )
 - uid: MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing
@@ -667,6 +880,25 @@ references:
   - name: " "
   - name: T
   - name: )
+- uid: MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler*
+  commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler
+  href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddStateEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_
+  name: AddStateEventHandler
+  nameWithType: ContainerExtensions.AddStateEventHandler
+  fullName: MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler
+- uid: MicroPlumberd.FromRelativeStreamPosition
+  commentId: T:MicroPlumberd.FromRelativeStreamPosition
+  parent: MicroPlumberd
+  href: MicroPlumberd.FromRelativeStreamPosition.html
+  name: FromRelativeStreamPosition
+  nameWithType: FromRelativeStreamPosition
+  fullName: MicroPlumberd.FromRelativeStreamPosition
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
 - uid: MicroPlumberd.Services.ContainerExtensions.AddCommandHandler*
   commentId: Overload:MicroPlumberd.Services.ContainerExtensions.AddCommandHandler
   href: MicroPlumberd.Services.ContainerExtensions.html#MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Boolean_System_Nullable_EventStore_Client_StreamPosition__

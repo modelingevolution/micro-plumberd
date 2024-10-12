@@ -46,8 +46,6 @@ items:
     content.vb: Public Interface IReadOnlyConventions Inherits IExtension
   inheritedMembers:
   - MicroPlumberd.IExtension.GetExtension``1
-  extensionMethods:
-  - MicroPlumberd.IReadOnlyConventions.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
 - uid: MicroPlumberd.IReadOnlyConventions.ProjectionCategoryStreamConvention
   commentId: P:MicroPlumberd.IReadOnlyConventions.ProjectionCategoryStreamConvention
   id: ProjectionCategoryStreamConvention
@@ -595,32 +593,6 @@ references:
   - name: )
   - name: (
   - name: )
-- uid: MicroPlumberd.IReadOnlyConventions.MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions
-  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-  parent: MicroPlumberd.Services.PlumberdConventionsExtensions
-  definition: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IReadOnlyConventions_
-  name: ServicesConventions(IReadOnlyConventions)
-  nameWithType: PlumberdConventionsExtensions.ServicesConventions(IReadOnlyConventions)
-  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-    name: ServicesConventions
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IReadOnlyConventions_
-  - name: (
-  - uid: MicroPlumberd.IReadOnlyConventions
-    name: IReadOnlyConventions
-    href: MicroPlumberd.IReadOnlyConventions.html
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-    name: ServicesConventions
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IReadOnlyConventions_
-  - name: (
-  - uid: MicroPlumberd.IReadOnlyConventions
-    name: IReadOnlyConventions
-    href: MicroPlumberd.IReadOnlyConventions.html
-  - name: )
 - uid: MicroPlumberd.IExtension
   commentId: T:MicroPlumberd.IExtension
   parent: MicroPlumberd
@@ -628,59 +600,6 @@ references:
   name: IExtension
   nameWithType: IExtension
   fullName: MicroPlumberd.IExtension
-- uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-  commentId: M:MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IReadOnlyConventions_
-  name: ServicesConventions(IReadOnlyConventions)
-  nameWithType: PlumberdConventionsExtensions.ServicesConventions(IReadOnlyConventions)
-  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-  spec.csharp:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-    name: ServicesConventions
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IReadOnlyConventions_
-  - name: (
-  - uid: MicroPlumberd.IReadOnlyConventions
-    name: IReadOnlyConventions
-    href: MicroPlumberd.IReadOnlyConventions.html
-  - name: )
-  spec.vb:
-  - uid: MicroPlumberd.Services.PlumberdConventionsExtensions.ServicesConventions(MicroPlumberd.IReadOnlyConventions)
-    name: ServicesConventions
-    href: MicroPlumberd.Services.PlumberdConventionsExtensions.html#MicroPlumberd_Services_PlumberdConventionsExtensions_ServicesConventions_MicroPlumberd_IReadOnlyConventions_
-  - name: (
-  - uid: MicroPlumberd.IReadOnlyConventions
-    name: IReadOnlyConventions
-    href: MicroPlumberd.IReadOnlyConventions.html
-  - name: )
-- uid: MicroPlumberd.Services.PlumberdConventionsExtensions
-  commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
-  parent: MicroPlumberd.Services
-  href: MicroPlumberd.Services.PlumberdConventionsExtensions.html
-  name: PlumberdConventionsExtensions
-  nameWithType: PlumberdConventionsExtensions
-  fullName: MicroPlumberd.Services.PlumberdConventionsExtensions
-- uid: MicroPlumberd.Services
-  commentId: N:MicroPlumberd.Services
-  href: MicroPlumberd.html
-  name: MicroPlumberd.Services
-  nameWithType: MicroPlumberd.Services
-  fullName: MicroPlumberd.Services
-  spec.csharp:
-  - uid: MicroPlumberd
-    name: MicroPlumberd
-    href: MicroPlumberd.html
-  - name: .
-  - uid: MicroPlumberd.Services
-    name: Services
-    href: MicroPlumberd.Services.html
-  spec.vb:
-  - uid: MicroPlumberd
-    name: MicroPlumberd
-    href: MicroPlumberd.html
-  - name: .
-  - uid: MicroPlumberd.Services
-    name: Services
-    href: MicroPlumberd.Services.html
 - uid: MicroPlumberd.IReadOnlyConventions.ProjectionCategoryStreamConvention*
   commentId: Overload:MicroPlumberd.IReadOnlyConventions.ProjectionCategoryStreamConvention
   href: MicroPlumberd.IReadOnlyConventions.html#MicroPlumberd_IReadOnlyConventions_ProjectionCategoryStreamConvention

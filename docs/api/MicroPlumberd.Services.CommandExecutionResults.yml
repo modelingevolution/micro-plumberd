@@ -25,7 +25,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandExecutionResults
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 143
+    startLine: 174
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -60,7 +60,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Handle
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 145
+    startLine: 176
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -96,7 +96,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ErrorCode
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 192
+    startLine: 223
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -125,7 +125,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ErrorMessage
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 195
+    startLine: 226
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -154,7 +154,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ErrorData
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 196
+    startLine: 227
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -183,7 +183,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsSuccess
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 197
+    startLine: 228
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
@@ -212,7 +212,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IsReady
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 198
+    startLine: 229
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

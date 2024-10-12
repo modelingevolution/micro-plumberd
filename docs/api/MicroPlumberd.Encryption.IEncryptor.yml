@@ -1,0 +1,192 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Encryption.IEncryptor
+  commentId: T:MicroPlumberd.Encryption.IEncryptor
+  id: IEncryptor
+  parent: MicroPlumberd.Encryption
+  children:
+  - MicroPlumberd.Encryption.IEncryptor.Decrypt``1(System.Byte[],System.String)
+  - MicroPlumberd.Encryption.IEncryptor.Encrypt``1(``0,System.String)
+  langs:
+  - csharp
+  - vb
+  name: IEncryptor
+  nameWithType: IEncryptor
+  fullName: MicroPlumberd.Encryption.IEncryptor
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/IEncryptor.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IEncryptor
+    path: src/MicroPlumberd.Encryption/IEncryptor.cs
+    startLine: 2
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: public interface IEncryptor
+    content.vb: Public Interface IEncryptor
+- uid: MicroPlumberd.Encryption.IEncryptor.Encrypt``1(``0,System.String)
+  commentId: M:MicroPlumberd.Encryption.IEncryptor.Encrypt``1(``0,System.String)
+  id: Encrypt``1(``0,System.String)
+  parent: MicroPlumberd.Encryption.IEncryptor
+  langs:
+  - csharp
+  - vb
+  name: Encrypt<T>(T, string)
+  nameWithType: IEncryptor.Encrypt<T>(T, string)
+  fullName: MicroPlumberd.Encryption.IEncryptor.Encrypt<T>(T, string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/IEncryptor.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Encrypt
+    path: src/MicroPlumberd.Encryption/IEncryptor.cs
+    startLine: 4
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: byte[] Encrypt<T>(T data, string recipient)
+    parameters:
+    - id: data
+      type: '{T}'
+    - id: recipient
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: System.Byte[]
+    content.vb: Function Encrypt(Of T)(data As T, recipient As String) As Byte()
+  overload: MicroPlumberd.Encryption.IEncryptor.Encrypt*
+  nameWithType.vb: IEncryptor.Encrypt(Of T)(T, String)
+  fullName.vb: MicroPlumberd.Encryption.IEncryptor.Encrypt(Of T)(T, String)
+  name.vb: Encrypt(Of T)(T, String)
+- uid: MicroPlumberd.Encryption.IEncryptor.Decrypt``1(System.Byte[],System.String)
+  commentId: M:MicroPlumberd.Encryption.IEncryptor.Decrypt``1(System.Byte[],System.String)
+  id: Decrypt``1(System.Byte[],System.String)
+  parent: MicroPlumberd.Encryption.IEncryptor
+  langs:
+  - csharp
+  - vb
+  name: Decrypt<T>(byte[], string)
+  nameWithType: IEncryptor.Decrypt<T>(byte[], string)
+  fullName: MicroPlumberd.Encryption.IEncryptor.Decrypt<T>(byte[], string)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd.Encryption/IEncryptor.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Decrypt
+    path: src/MicroPlumberd.Encryption/IEncryptor.cs
+    startLine: 5
+  assemblies:
+  - MicroPlumberd.Encryption
+  namespace: MicroPlumberd.Encryption
+  syntax:
+    content: T Decrypt<T>(byte[] data, string recipient)
+    parameters:
+    - id: data
+      type: System.Byte[]
+    - id: recipient
+      type: System.String
+    typeParameters:
+    - id: T
+    return:
+      type: '{T}'
+    content.vb: Function Decrypt(Of T)(data As Byte(), recipient As String) As T
+  overload: MicroPlumberd.Encryption.IEncryptor.Decrypt*
+  nameWithType.vb: IEncryptor.Decrypt(Of T)(Byte(), String)
+  fullName.vb: MicroPlumberd.Encryption.IEncryptor.Decrypt(Of T)(Byte(), String)
+  name.vb: Decrypt(Of T)(Byte(), String)
+references:
+- uid: MicroPlumberd.Encryption
+  commentId: N:MicroPlumberd.Encryption
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Encryption
+  nameWithType: MicroPlumberd.Encryption
+  fullName: MicroPlumberd.Encryption
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Encryption
+    name: Encryption
+    href: MicroPlumberd.Encryption.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Encryption
+    name: Encryption
+    href: MicroPlumberd.Encryption.html
+- uid: MicroPlumberd.Encryption.IEncryptor.Encrypt*
+  commentId: Overload:MicroPlumberd.Encryption.IEncryptor.Encrypt
+  href: MicroPlumberd.Encryption.IEncryptor.html#MicroPlumberd_Encryption_IEncryptor_Encrypt__1___0_System_String_
+  name: Encrypt
+  nameWithType: IEncryptor.Encrypt
+  fullName: MicroPlumberd.Encryption.IEncryptor.Encrypt
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Byte[]
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.byte
+  name: byte[]
+  nameWithType: byte[]
+  fullName: byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: '['
+  - name: ']'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.byte
+  - name: (
+  - name: )
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: MicroPlumberd.Encryption.IEncryptor.Decrypt*
+  commentId: Overload:MicroPlumberd.Encryption.IEncryptor.Decrypt
+  href: MicroPlumberd.Encryption.IEncryptor.html#MicroPlumberd_Encryption_IEncryptor_Decrypt__1_System_Byte___System_String_
+  name: Decrypt
+  nameWithType: IEncryptor.Decrypt
+  fullName: MicroPlumberd.Encryption.IEncryptor.Decrypt

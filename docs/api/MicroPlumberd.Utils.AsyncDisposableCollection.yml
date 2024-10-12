@@ -22,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AsyncDisposableCollection
     path: src/MicroPlumberd/Utils/AsyncDisposableCollection.cs
-    startLine: 2
+    startLine: 6
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd.Utils
@@ -59,7 +59,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: New
     path: src/MicroPlumberd/Utils/AsyncDisposableCollection.cs
-    startLine: 5
+    startLine: 9
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd.Utils
@@ -87,7 +87,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: op_Addition
     path: src/MicroPlumberd/Utils/AsyncDisposableCollection.cs
-    startLine: 6
+    startLine: 10
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd.Utils
@@ -123,7 +123,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: DisposeAsync
     path: src/MicroPlumberd/Utils/AsyncDisposableCollection.cs
-    startLine: 12
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd.Utils

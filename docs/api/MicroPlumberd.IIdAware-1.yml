@@ -1,0 +1,90 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.IIdAware`1
+  commentId: T:MicroPlumberd.IIdAware`1
+  id: IIdAware`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.IIdAware`1.Id
+  langs:
+  - csharp
+  - vb
+  name: IIdAware<T>
+  nameWithType: IIdAware<T>
+  fullName: MicroPlumberd.IIdAware<T>
+  type: Interface
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IIdAware
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 145
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: 'public interface IIdAware<T> : IIdAware where T : IParsable<T>'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IIdAware(Of T As IParsable(Of T)) Inherits IIdAware
+  nameWithType.vb: IIdAware(Of T)
+  fullName.vb: MicroPlumberd.IIdAware(Of T)
+  name.vb: IIdAware(Of T)
+- uid: MicroPlumberd.IIdAware`1.Id
+  commentId: P:MicroPlumberd.IIdAware`1.Id
+  id: Id
+  parent: MicroPlumberd.IIdAware`1
+  langs:
+  - csharp
+  - vb
+  name: Id
+  nameWithType: IIdAware<T>.Id
+  fullName: MicroPlumberd.IIdAware<T>.Id
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Abstractions/IAggregate.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Id
+    path: src/MicroPlumberd/Abstractions/IAggregate.cs
+    startLine: 148
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: T Id { get; set; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Property Id As T
+  overload: MicroPlumberd.IIdAware`1.Id*
+  nameWithType.vb: IIdAware(Of T).Id
+  fullName.vb: MicroPlumberd.IIdAware(Of T).Id
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.IIdAware`1.Id*
+  commentId: Overload:MicroPlumberd.IIdAware`1.Id
+  href: MicroPlumberd.IIdAware-1.html#MicroPlumberd_IIdAware_1_Id
+  name: Id
+  nameWithType: IIdAware<T>.Id
+  fullName: MicroPlumberd.IIdAware<T>.Id
+  nameWithType.vb: IIdAware(Of T).Id
+  fullName.vb: MicroPlumberd.IIdAware(Of T).Id
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

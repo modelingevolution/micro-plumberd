@@ -1,0 +1,591 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  id: CreateScreening
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  children:
+  - MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date
+  - MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie
+  - MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room
+  - MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration
+  - MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time
+  langs:
+  - csharp
+  - vb
+  name: CreateScreening
+  nameWithType: CreateScreening
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  type: Class
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: CreateScreening
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 69
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: 'public record CreateScreening : IEquatable<CreateScreening>'
+    content.vb: Public Class CreateScreening Implements IEquatable(Of CreateScreening)
+  inheritance:
+  - System.Object
+  implements:
+  - System.IEquatable{MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening}
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration
+  id: SeatConfiguration
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  langs:
+  - csharp
+  - vb
+  name: SeatConfiguration
+  nameWithType: CreateScreening.SeatConfiguration
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SeatConfiguration
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 71
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public SeatRoomConfiguration SeatConfiguration { get; set; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+    content.vb: Public Property SeatConfiguration As SeatRoomConfiguration
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration*
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie
+  id: Movie
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  langs:
+  - csharp
+  - vb
+  name: Movie
+  nameWithType: CreateScreening.Movie
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Movie
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 72
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public string Movie { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Movie As String
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie*
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room
+  id: Room
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  langs:
+  - csharp
+  - vb
+  name: Room
+  nameWithType: CreateScreening.Room
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Room
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 73
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public string Room { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Room As String
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room*
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time
+  id: Time
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  langs:
+  - csharp
+  - vb
+  name: Time
+  nameWithType: CreateScreening.Time
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Time
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 74
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public TimeOnly Time { get; set; }
+    parameters: []
+    return:
+      type: System.TimeOnly
+    content.vb: Public Property Time As TimeOnly
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time*
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date
+  id: Date
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  langs:
+  - csharp
+  - vb
+  name: Date
+  nameWithType: CreateScreening.Date
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Date
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 75
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public DateOnly Date { get; set; }
+    parameters: []
+    return:
+      type: System.DateOnly
+    content.vb: Public Property [Date] As DateOnly
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date*
+references:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler
+  commentId: N:MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Examples.Cinema.Scheduler
+  nameWithType: MicroPlumberd.Examples.Cinema.Scheduler
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.IEquatable{MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening}
+  commentId: T:System.IEquatable{MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<CreateScreening>
+  nameWithType: IEquatable<CreateScreening>
+  fullName: System.IEquatable<MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening>
+  nameWithType.vb: IEquatable(Of CreateScreening)
+  fullName.vb: System.IEquatable(Of MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening)
+  name.vb: IEquatable(Of CreateScreening)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+    name: CreateScreening
+    href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+    name: CreateScreening
+    href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration
+  href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html#MicroPlumberd_Examples_Cinema_Scheduler_CreateScreening_SeatConfiguration
+  name: SeatConfiguration
+  nameWithType: CreateScreening.SeatConfiguration
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.SeatConfiguration
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration.html
+  name: SeatRoomConfiguration
+  nameWithType: SeatRoomConfiguration
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie
+  href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html#MicroPlumberd_Examples_Cinema_Scheduler_CreateScreening_Movie
+  name: Movie
+  nameWithType: CreateScreening.Movie
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Movie
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room
+  href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html#MicroPlumberd_Examples_Cinema_Scheduler_CreateScreening_Room
+  name: Room
+  nameWithType: CreateScreening.Room
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Room
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time
+  href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html#MicroPlumberd_Examples_Cinema_Scheduler_CreateScreening_Time
+  name: Time
+  nameWithType: CreateScreening.Time
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Time
+- uid: System.TimeOnly
+  commentId: T:System.TimeOnly
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.timeonly
+  name: TimeOnly
+  nameWithType: TimeOnly
+  fullName: System.TimeOnly
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date
+  href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html#MicroPlumberd_Examples_Cinema_Scheduler_CreateScreening_Date
+  name: Date
+  nameWithType: CreateScreening.Date
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.Date
+- uid: System.DateOnly
+  commentId: T:System.DateOnly
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.dateonly
+  name: DateOnly
+  nameWithType: DateOnly
+  fullName: System.DateOnly

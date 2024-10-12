@@ -156,7 +156,7 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
 
   <h3 id="MicroPlumberd_Services_ContainerExtensions_AddBackgroundServiceIfMissing__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
   AddBackgroundServiceIfMissing&lt;TService&gt;(IServiceCollection)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L46"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -197,7 +197,7 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
 
   <h3 id="MicroPlumberd_Services_ContainerExtensions_AddCommandHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Boolean_System_Nullable_EventStore_Client_StreamPosition__" data-uid="MicroPlumberd.Services.ContainerExtensions.AddCommandHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.StreamPosition})">
   AddCommandHandler&lt;TCommandHandler&gt;(IServiceCollection, bool, StreamPosition?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L89"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -240,9 +240,52 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
 
   <a id="MicroPlumberd_Services_ContainerExtensions_AddEventHandler_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddEventHandler*"></a>
 
+  <h3 id="MicroPlumberd_Services_ContainerExtensions_AddEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_MicroPlumberd_FromRelativeStreamPosition_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,MicroPlumberd.FromRelativeStreamPosition)">
+  AddEventHandler&lt;TEventHandler&gt;(IServiceCollection, FromRelativeStreamPosition)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection AddEventHandler&lt;TEventHandler&gt;(this IServiceCollection services, FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd></dd>
+    <dt><code>start</code> <a class="xref" href="MicroPlumberd.FromRelativeStreamPosition.html">FromRelativeStreamPosition</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_ContainerExtensions_AddEventHandler_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddEventHandler*"></a>
+
   <h3 id="MicroPlumberd_Services_ContainerExtensions_AddEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Boolean_System_Nullable_EventStore_Client_FromStream__" data-uid="MicroPlumberd.Services.ContainerExtensions.AddEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Boolean,System.Nullable{EventStore.Client.FromStream})">
   AddEventHandler&lt;TEventHandler&gt;(IServiceCollection, bool, FromStream?)
-  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L62"><i class="bi bi-code-slash"></i></a>
   </h3>
 
   <div class="markdown level1 summary"></div>
@@ -285,8 +328,8 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
 
   <a id="MicroPlumberd_Services_ContainerExtensions_AddPlumberd_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddPlumberd*"></a>
 
-  <h3 id="MicroPlumberd_Services_ContainerExtensions_AddPlumberd_Microsoft_Extensions_DependencyInjection_IServiceCollection_EventStore_Client_EventStoreClientSettings_System_Action_MicroPlumberd_IPlumberConfig__" data-uid="MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{MicroPlumberd.IPlumberConfig})">
-  AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action&lt;IPlumberConfig&gt;?)
+  <h3 id="MicroPlumberd_Services_ContainerExtensions_AddPlumberd_Microsoft_Extensions_DependencyInjection_IServiceCollection_EventStore_Client_EventStoreClientSettings_System_Action_System_IServiceProvider_MicroPlumberd_IPlumberConfig__" data-uid="MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,EventStore.Client.EventStoreClientSettings,System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})">
+  AddPlumberd(IServiceCollection, EventStoreClientSettings?, Action&lt;IServiceProvider, IPlumberConfig&gt;?)
   <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L25"><i class="bi bi-code-slash"></i></a>
   </h3>
 
@@ -294,7 +337,7 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
   <div class="markdown level1 conceptual"></div>
 
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static IServiceCollection AddPlumberd(this IServiceCollection collection, EventStoreClientSettings? settings = null, Action&lt;IPlumberConfig&gt;? configure = null)</code></pre>
+    <pre><code class="lang-csharp hljs">public static IServiceCollection AddPlumberd(this IServiceCollection collection, EventStoreClientSettings? settings = null, Action&lt;IServiceProvider, IPlumberConfig&gt;? configure = null)</code></pre>
   </div>
 
   <h4 class="section">Parameters</h4>
@@ -303,7 +346,7 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
     <dd></dd>
     <dt><code>settings</code> <span class="xref">EventStoreClientSettings</span></dt>
     <dd></dd>
-    <dt><code>configure</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-1">Action</a>&lt;<a class="xref" href="MicroPlumberd.IPlumberConfig.html">IPlumberConfig</a>&gt;</dt>
+    <dt><code>configure</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a>, <a class="xref" href="MicroPlumberd.IPlumberConfig.html">IPlumberConfig</a>&gt;</dt>
     <dd></dd>
   </dl>
 
@@ -313,6 +356,87 @@ Class ContainerExtensions  <a class="header-action link-secondary" title="View s
     <dd></dd>
   </dl>
 
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_ContainerExtensions_AddPlumberd_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddPlumberd*"></a>
+
+  <h3 id="MicroPlumberd_Services_ContainerExtensions_AddPlumberd_Microsoft_Extensions_DependencyInjection_IServiceCollection_System_Func_System_IServiceProvider_EventStore_Client_EventStoreClientSettings__System_Action_System_IServiceProvider_MicroPlumberd_IPlumberConfig__" data-uid="MicroPlumberd.Services.ContainerExtensions.AddPlumberd(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Func{System.IServiceProvider,EventStore.Client.EventStoreClientSettings},System.Action{System.IServiceProvider,MicroPlumberd.IPlumberConfig})">
+  AddPlumberd(IServiceCollection, Func&lt;IServiceProvider, EventStoreClientSettings&gt;, Action&lt;IServiceProvider, IPlumberConfig&gt;?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection AddPlumberd(this IServiceCollection collection, Func&lt;IServiceProvider, EventStoreClientSettings&gt; settingsFactory, Action&lt;IServiceProvider, IPlumberConfig&gt;? configure = null)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>collection</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd></dd>
+    <dt><code>settingsFactory</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-2">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a>, <span class="xref">EventStoreClientSettings</span>&gt;</dt>
+    <dd></dd>
+    <dt><code>configure</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.action-2">Action</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iserviceprovider">IServiceProvider</a>, <a class="xref" href="MicroPlumberd.IPlumberConfig.html">IPlumberConfig</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="MicroPlumberd_Services_ContainerExtensions_AddStateEventHandler_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler*"></a>
+
+  <h3 id="MicroPlumberd_Services_ContainerExtensions_AddStateEventHandler__1_Microsoft_Extensions_DependencyInjection_IServiceCollection_" data-uid="MicroPlumberd.Services.ContainerExtensions.AddStateEventHandler``1(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+  AddStateEventHandler&lt;TEventHandler&gt;(IServiceCollection)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd.Services/ContainerExtensions.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IServiceCollection AddStateEventHandler&lt;TEventHandler&gt;(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>services</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.dependencyinjection.iservicecollection">IServiceCollection</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Type Parameters</h4>
+  <dl class="parameters">
+    <dt><code>TEventHandler</code></dt>
+    <dd></dd>
+  </dl>
 
 
 

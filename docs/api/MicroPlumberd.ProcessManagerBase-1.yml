@@ -102,7 +102,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Version
     path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
-    startLine: 21
+    startLine: 23
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd
@@ -137,7 +137,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: HandleError
     path: src/MicroPlumberd.ProcessManager.Abstractions/IProcessManager.cs
-    startLine: 24
+    startLine: 26
   assemblies:
   - MicroPlumberd.ProcessManager.Abstractions
   namespace: MicroPlumberd

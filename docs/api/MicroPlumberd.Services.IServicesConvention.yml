@@ -579,7 +579,6 @@ references:
   - name: <
   - uid: MicroPlumberd.Metadata
     name: Metadata
-    href: MicroPlumberd.Metadata.html
   - name: ','
   - name: " "
   - uid: System.Object
@@ -603,7 +602,6 @@ references:
   - name: " "
   - uid: MicroPlumberd.Metadata
     name: Metadata
-    href: MicroPlumberd.Metadata.html
   - name: ','
   - name: " "
   - uid: System.Object

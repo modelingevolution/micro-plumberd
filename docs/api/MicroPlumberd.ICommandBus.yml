@@ -5,7 +5,7 @@ items:
   id: ICommandBus
   parent: MicroPlumberd
   children:
-  - MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
+  - MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object,System.Threading.CancellationToken)
   langs:
   - csharp
   - vb
@@ -29,16 +29,16 @@ items:
   syntax:
     content: public interface ICommandBus
     content.vb: Public Interface ICommandBus
-- uid: MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
-  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object)
-  id: SendAsync(System.Object,System.Object)
+- uid: MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.ICommandBus.SendAsync(System.Object,System.Object,System.Threading.CancellationToken)
+  id: SendAsync(System.Object,System.Object,System.Threading.CancellationToken)
   parent: MicroPlumberd.ICommandBus
   langs:
   - csharp
   - vb
-  name: SendAsync(object, object)
-  nameWithType: ICommandBus.SendAsync(object, object)
-  fullName: MicroPlumberd.ICommandBus.SendAsync(object, object)
+  name: SendAsync(object, object, CancellationToken)
+  nameWithType: ICommandBus.SendAsync(object, object, CancellationToken)
+  fullName: MicroPlumberd.ICommandBus.SendAsync(object, object, System.Threading.CancellationToken)
   type: Method
   source:
     remote:
@@ -47,14 +47,14 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SendAsync
     path: src/MicroPlumberd.CommandBus.Abstractions/ICommandBus.cs
-    startLine: 13
+    startLine: 14
   assemblies:
   - MicroPlumberd.CommandBus.Abstractions
   namespace: MicroPlumberd
   summary: Sends a command asynchronously to the specified recipient - command handler.
   example: []
   syntax:
-    content: Task SendAsync(object recipientId, object command)
+    content: Task SendAsync(object recipientId, object command, CancellationToken token = default)
     parameters:
     - id: recipientId
       type: System.Object
@@ -62,14 +62,17 @@ items:
     - id: command
       type: System.Object
       description: The command to send.
+    - id: token
+      type: System.Threading.CancellationToken
+      description: ''
     return:
       type: System.Threading.Tasks.Task
       description: A task representing the asynchronous operation.
-    content.vb: Function SendAsync(recipientId As Object, command As Object) As Task
+    content.vb: Function SendAsync(recipientId As Object, command As Object, token As CancellationToken = Nothing) As Task
   overload: MicroPlumberd.ICommandBus.SendAsync*
-  nameWithType.vb: ICommandBus.SendAsync(Object, Object)
-  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(Object, Object)
-  name.vb: SendAsync(Object, Object)
+  nameWithType.vb: ICommandBus.SendAsync(Object, Object, CancellationToken)
+  fullName.vb: MicroPlumberd.ICommandBus.SendAsync(Object, Object, System.Threading.CancellationToken)
+  name.vb: SendAsync(Object, Object, CancellationToken)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -79,7 +82,7 @@ references:
   fullName: MicroPlumberd
 - uid: MicroPlumberd.ICommandBus.SendAsync*
   commentId: Overload:MicroPlumberd.ICommandBus.SendAsync
-  href: MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Object_System_Object_
+  href: MicroPlumberd.ICommandBus.html#MicroPlumberd_ICommandBus_SendAsync_System_Object_System_Object_System_Threading_CancellationToken_
   name: SendAsync
   nameWithType: ICommandBus.SendAsync
   fullName: MicroPlumberd.ICommandBus.SendAsync
@@ -94,6 +97,14 @@ references:
   nameWithType.vb: Object
   fullName.vb: Object
   name.vb: Object
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
 - uid: System.Threading.Tasks.Task
   commentId: T:System.Threading.Tasks.Task
   parent: System.Threading.Tasks
@@ -109,6 +120,33 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: System.Threading.Tasks
   commentId: N:System.Threading.Tasks
   isExternal: true

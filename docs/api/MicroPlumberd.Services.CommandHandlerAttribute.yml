@@ -19,10 +19,20 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: CommandHandlerAttribute
     path: src/MicroPlumberd.Services/CommandHandlerAttribute.cs
-    startLine: 2
+    startLine: 11
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
+  summary: >-
+    Attribute for marking a class suitable for command-handler code-generation.
+
+    The class should have methods with signature:
+
+    <pre><code class="lang-csharp">public async Task Handle(Guid id, YourFancyCommand cmd) { /* ... */ }</code></pre>
+
+
+    Where type of id can be any Parsable class/struct.
+  example: []
   syntax:
     content: >-
       [AttributeUsage(AttributeTargets.Class)]

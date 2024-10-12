@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Components.Layout
+  commentId: N:MicroPlumberd.Examples.Cinema.Components.Layout
+  id: MicroPlumberd.Examples.Cinema.Components.Layout
+  children:
+  - MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout
+  - MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Examples.Cinema.Components.Layout
+  nameWithType: MicroPlumberd.Examples.Cinema.Components.Layout
+  fullName: MicroPlumberd.Examples.Cinema.Components.Layout
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+references:
+- uid: MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu
+  commentId: T:MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu
+  href: MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu.html
+  name: NavMenu
+  nameWithType: NavMenu
+  fullName: MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu
+- uid: MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout
+  commentId: T:MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout
+  href: MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout.html
+  name: MainLayout
+  nameWithType: MainLayout
+  fullName: MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout

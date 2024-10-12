@@ -50,11 +50,11 @@ items:
   - MicroPlumberd
   namespace: MicroPlumberd
   syntax:
-    content: object Id { set; }
+    content: object Id { get; set; }
     parameters: []
     return:
       type: System.Object
-    content.vb: WriteOnly Property Id As Object
+    content.vb: Property Id As Object
   overload: MicroPlumberd.IIdAware.Id*
 references:
 - uid: MicroPlumberd

@@ -20,19 +20,19 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ThrowsFaultExceptionAttribute
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 134
+    startLine: 165
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services
   syntax:
     content: >-
-      [AttributeUsage(AttributeTargets.Class|AttributeTargets.Method)]
+      [AttributeUsage(AttributeTargets.Class|AttributeTargets.Method, AllowMultiple = true)]
 
       public class ThrowsFaultExceptionAttribute<TMessage> : ThrowsFaultExceptionAttribute
     typeParameters:
     - id: TMessage
     content.vb: >-
-      <AttributeUsage(AttributeTargets.ClassOrAttributeTargets.Method)>
+      <AttributeUsage(AttributeTargets.ClassOrAttributeTargets.Method, AllowMultiple:=True)>
 
       Public Class ThrowsFaultExceptionAttribute(Of TMessage) Inherits ThrowsFaultExceptionAttribute
   inheritance:
@@ -89,6 +89,10 @@ items:
     arguments:
     - type: System.AttributeTargets
       value: 68
+    namedArguments:
+    - name: AllowMultiple
+      type: System.Boolean
+      value: true
   nameWithType.vb: ThrowsFaultExceptionAttribute(Of TMessage)
   fullName.vb: MicroPlumberd.Services.ThrowsFaultExceptionAttribute(Of TMessage)
   name.vb: ThrowsFaultExceptionAttribute(Of TMessage)
@@ -110,7 +114,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: .ctor
     path: src/MicroPlumberd.Services/CommandBus.cs
-    startLine: 134
+    startLine: 165
   assemblies:
   - MicroPlumberd.Services
   namespace: MicroPlumberd.Services

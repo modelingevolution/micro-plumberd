@@ -1,0 +1,587 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Option`1
+  commentId: T:MicroPlumberd.Option`1
+  id: Option`1
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.Option`1.Empty
+  - MicroPlumberd.Option`1.IsDefined
+  - MicroPlumberd.Option`1.Value
+  - MicroPlumberd.Option`1.op_Implicit(MicroPlumberd.Option{`0})~`0
+  - MicroPlumberd.Option`1.op_Implicit(`0)~MicroPlumberd.Option{`0}
+  langs:
+  - csharp
+  - vb
+  name: Option<T>
+  nameWithType: Option<T>
+  fullName: MicroPlumberd.Option<T>
+  type: Struct
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Option
+    path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+    startLine: 82
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: For command/event properties usefull to get rid of property-sourcing.
+  example: []
+  syntax:
+    content: 'public readonly record struct Option<T> : IEquatable<Option<T>>'
+    typeParameters:
+    - id: T
+      description: ''
+    content.vb: Public Structure [Option](Of T) Implements IEquatable(Of Option(Of T))
+  implements:
+  - System.IEquatable{MicroPlumberd.Option`1}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  nameWithType.vb: Option(Of T)
+  fullName.vb: MicroPlumberd.Option(Of T)
+  name.vb: Option(Of T)
+- uid: MicroPlumberd.Option`1.Empty
+  commentId: P:MicroPlumberd.Option`1.Empty
+  id: Empty
+  parent: MicroPlumberd.Option`1
+  langs:
+  - csharp
+  - vb
+  name: Empty
+  nameWithType: Option<T>.Empty
+  fullName: MicroPlumberd.Option<T>.Empty
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Empty
+    path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+    startLine: 84
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static Option<T> Empty { get; }
+    parameters: []
+    return:
+      type: MicroPlumberd.Option`1
+    content.vb: Public Shared ReadOnly Property Empty As [Option](Of T)
+  overload: MicroPlumberd.Option`1.Empty*
+  nameWithType.vb: Option(Of T).Empty
+  fullName.vb: MicroPlumberd.Option(Of T).Empty
+- uid: MicroPlumberd.Option`1.Value
+  commentId: P:MicroPlumberd.Option`1.Value
+  id: Value
+  parent: MicroPlumberd.Option`1
+  langs:
+  - csharp
+  - vb
+  name: Value
+  nameWithType: Option<T>.Value
+  fullName: MicroPlumberd.Option<T>.Value
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Value
+    path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+    startLine: 85
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public T Value { get; init; }
+    parameters: []
+    return:
+      type: '{T}'
+    content.vb: Public Property Value As T
+  overload: MicroPlumberd.Option`1.Value*
+  nameWithType.vb: Option(Of T).Value
+  fullName.vb: MicroPlumberd.Option(Of T).Value
+- uid: MicroPlumberd.Option`1.op_Implicit(MicroPlumberd.Option{`0})~`0
+  commentId: M:MicroPlumberd.Option`1.op_Implicit(MicroPlumberd.Option{`0})~`0
+  id: op_Implicit(MicroPlumberd.Option{`0})~`0
+  parent: MicroPlumberd.Option`1
+  langs:
+  - csharp
+  - vb
+  name: implicit operator T(Option<T>)
+  nameWithType: Option<T>.implicit operator T(Option<T>)
+  fullName: MicroPlumberd.Option<T>.implicit operator T(MicroPlumberd.Option<T>)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Implicit
+    path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+    startLine: 86
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static implicit operator T(Option<T> v)
+    parameters:
+    - id: v
+      type: MicroPlumberd.Option`1
+    return:
+      type: '{T}'
+    content.vb: Public Shared Widening Operator CType(v As [Option](Of T)) As T
+  overload: MicroPlumberd.Option`1.op_Implicit*
+  nameWithType.vb: Option(Of T).CType(Option(Of T))
+  fullName.vb: MicroPlumberd.Option(Of T).CType(MicroPlumberd.Option(Of T))
+  name.vb: CType(Option(Of T))
+- uid: MicroPlumberd.Option`1.op_Implicit(`0)~MicroPlumberd.Option{`0}
+  commentId: M:MicroPlumberd.Option`1.op_Implicit(`0)~MicroPlumberd.Option{`0}
+  id: op_Implicit(`0)~MicroPlumberd.Option{`0}
+  parent: MicroPlumberd.Option`1
+  langs:
+  - csharp
+  - vb
+  name: implicit operator Option<T>(T)
+  nameWithType: Option<T>.implicit operator Option<T>(T)
+  fullName: MicroPlumberd.Option<T>.implicit operator MicroPlumberd.Option<T>(T)
+  type: Operator
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: op_Implicit
+    path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+    startLine: 92
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public static implicit operator Option<T>(T value)
+    parameters:
+    - id: value
+      type: '{T}'
+    return:
+      type: MicroPlumberd.Option`1
+    content.vb: Public Shared Widening Operator CType(value As T) As [Option](Of T)
+  overload: MicroPlumberd.Option`1.op_Implicit*
+  nameWithType.vb: Option(Of T).CType(T)
+  fullName.vb: MicroPlumberd.Option(Of T).CType(T)
+  name.vb: CType(T)
+- uid: MicroPlumberd.Option`1.IsDefined
+  commentId: P:MicroPlumberd.Option`1.IsDefined
+  id: IsDefined
+  parent: MicroPlumberd.Option`1
+  langs:
+  - csharp
+  - vb
+  name: IsDefined
+  nameWithType: Option<T>.IsDefined
+  fullName: MicroPlumberd.Option<T>.IsDefined
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: IsDefined
+    path: src/MicroPlumberd/Serialization/ObjectSerializer.cs
+    startLine: 94
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public bool IsDefined { get; init; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property IsDefined As Boolean
+  overload: MicroPlumberd.Option`1.IsDefined*
+  nameWithType.vb: Option(Of T).IsDefined
+  fullName.vb: MicroPlumberd.Option(Of T).IsDefined
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: System.IEquatable{MicroPlumberd.Option`1}
+  commentId: T:System.IEquatable{MicroPlumberd.Option`1}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<Option<T>>
+  nameWithType: IEquatable<Option<T>>
+  fullName: System.IEquatable<MicroPlumberd.Option<T>>
+  nameWithType.vb: IEquatable(Of Option(Of T))
+  fullName.vb: System.IEquatable(Of MicroPlumberd.Option(Of T))
+  name.vb: IEquatable(Of Option(Of T))
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.Option`1
+    name: Option
+    href: MicroPlumberd.Option-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Option`1
+    name: Option
+    href: MicroPlumberd.Option-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.Option`1.Empty*
+  commentId: Overload:MicroPlumberd.Option`1.Empty
+  href: MicroPlumberd.Option-1.html#MicroPlumberd_Option_1_Empty
+  name: Empty
+  nameWithType: Option<T>.Empty
+  fullName: MicroPlumberd.Option<T>.Empty
+  nameWithType.vb: Option(Of T).Empty
+  fullName.vb: MicroPlumberd.Option(Of T).Empty
+- uid: MicroPlumberd.Option`1
+  commentId: T:MicroPlumberd.Option`1
+  parent: MicroPlumberd
+  href: MicroPlumberd.Option-1.html
+  name: Option<T>
+  nameWithType: Option<T>
+  fullName: MicroPlumberd.Option<T>
+  nameWithType.vb: Option(Of T)
+  fullName.vb: MicroPlumberd.Option(Of T)
+  name.vb: Option(Of T)
+  spec.csharp:
+  - uid: MicroPlumberd.Option`1
+    name: Option
+    href: MicroPlumberd.Option-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: MicroPlumberd.Option`1
+    name: Option
+    href: MicroPlumberd.Option-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: MicroPlumberd.Option`1.Value*
+  commentId: Overload:MicroPlumberd.Option`1.Value
+  href: MicroPlumberd.Option-1.html#MicroPlumberd_Option_1_Value
+  name: Value
+  nameWithType: Option<T>.Value
+  fullName: MicroPlumberd.Option<T>.Value
+  nameWithType.vb: Option(Of T).Value
+  fullName.vb: MicroPlumberd.Option(Of T).Value
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: MicroPlumberd.Option`1.op_Implicit*
+  commentId: Overload:MicroPlumberd.Option`1.op_Implicit
+  name: implicit operator
+  nameWithType: Option<T>.implicit operator
+  fullName: MicroPlumberd.Option<T>.implicit operator
+  nameWithType.vb: Option(Of T).CType
+  fullName.vb: MicroPlumberd.Option(Of T).CType
+  name.vb: CType
+  spec.csharp:
+  - name: implicit
+  - name: " "
+  - name: operator
+- uid: MicroPlumberd.Option`1.IsDefined*
+  commentId: Overload:MicroPlumberd.Option`1.IsDefined
+  href: MicroPlumberd.Option-1.html#MicroPlumberd_Option_1_IsDefined
+  name: IsDefined
+  nameWithType: Option<T>.IsDefined
+  fullName: MicroPlumberd.Option<T>.IsDefined
+  nameWithType.vb: Option(Of T).IsDefined
+  fullName.vb: MicroPlumberd.Option(Of T).IsDefined
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.boolean
+  name: bool
+  nameWithType: bool
+  fullName: bool
+  nameWithType.vb: Boolean
+  fullName.vb: Boolean
+  name.vb: Boolean

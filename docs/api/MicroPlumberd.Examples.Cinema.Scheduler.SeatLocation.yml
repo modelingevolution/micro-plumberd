@@ -1,0 +1,481 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  id: SeatLocation
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  children:
+  - MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.#ctor(System.UInt16,System.UInt16)
+  - MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row
+  - MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat
+  langs:
+  - csharp
+  - vb
+  name: SeatLocation
+  nameWithType: SeatLocation
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  type: Struct
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SeatLocation
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 52
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: 'public readonly record struct SeatLocation : IEquatable<SeatLocation>'
+    content.vb: Public Structure SeatLocation Implements IEquatable(Of SeatLocation)
+  implements:
+  - System.IEquatable{MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation}
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.#ctor(System.UInt16,System.UInt16)
+  commentId: M:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.#ctor(System.UInt16,System.UInt16)
+  id: '#ctor(System.UInt16,System.UInt16)'
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  langs:
+  - csharp
+  - vb
+  name: SeatLocation(ushort, ushort)
+  nameWithType: SeatLocation.SeatLocation(ushort, ushort)
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.SeatLocation(ushort, ushort)
+  type: Constructor
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: .ctor
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 52
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public SeatLocation(ushort Row, ushort Seat)
+    parameters:
+    - id: Row
+      type: System.UInt16
+    - id: Seat
+      type: System.UInt16
+    content.vb: Public Sub New(Row As UShort, Seat As UShort)
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.#ctor*
+  nameWithType.vb: SeatLocation.New(UShort, UShort)
+  fullName.vb: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.New(UShort, UShort)
+  name.vb: New(UShort, UShort)
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row
+  id: Row
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  langs:
+  - csharp
+  - vb
+  name: Row
+  nameWithType: SeatLocation.Row
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Row
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 52
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public ushort Row { get; init; }
+    parameters: []
+    return:
+      type: System.UInt16
+    content.vb: Public Property Row As UShort
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row*
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat
+  commentId: P:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat
+  id: Seat
+  parent: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  langs:
+  - csharp
+  - vb
+  name: Seat
+  nameWithType: SeatLocation.Seat
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat
+  type: Property
+  source:
+    remote:
+      path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Seat
+    path: src/MicroPlumberd.Examples.Cinema/Scheduler/ScheduleCommandHandler.cs
+    startLine: 52
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+  namespace: MicroPlumberd.Examples.Cinema.Scheduler
+  syntax:
+    content: public ushort Seat { get; init; }
+    parameters: []
+    return:
+      type: System.UInt16
+    content.vb: Public Property Seat As UShort
+  overload: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat*
+references:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler
+  commentId: N:MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Examples.Cinema.Scheduler
+  nameWithType: MicroPlumberd.Examples.Cinema.Scheduler
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+- uid: System.IEquatable{MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation}
+  commentId: T:System.IEquatable{MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation}
+  parent: System
+  definition: System.IEquatable`1
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<SeatLocation>
+  nameWithType: IEquatable<SeatLocation>
+  fullName: System.IEquatable<MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation>
+  nameWithType.vb: IEquatable(Of SeatLocation)
+  fullName.vb: System.IEquatable(Of MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation)
+  name.vb: IEquatable(Of SeatLocation)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+    name: SeatLocation
+    href: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+    name: SeatLocation
+    href: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html
+  - name: )
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  name: Equals(object)
+  nameWithType: ValueType.Equals(object)
+  fullName: System.ValueType.Equals(object)
+  nameWithType.vb: ValueType.Equals(Object)
+  fullName.vb: System.ValueType.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.equals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.gethashcode
+  - name: (
+  - name: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.valuetype.tostring
+  - name: (
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.IEquatable`1
+  commentId: T:System.IEquatable`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  name: IEquatable<T>
+  nameWithType: IEquatable<T>
+  fullName: System.IEquatable<T>
+  nameWithType.vb: IEquatable(Of T)
+  fullName.vb: System.IEquatable(Of T)
+  name.vb: IEquatable(Of T)
+  spec.csharp:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: System.IEquatable`1
+    name: IEquatable
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.iequatable-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.valuetype
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.#ctor*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.#ctor
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html#MicroPlumberd_Examples_Cinema_Scheduler_SeatLocation__ctor_System_UInt16_System_UInt16_
+  name: SeatLocation
+  nameWithType: SeatLocation.SeatLocation
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.SeatLocation
+  nameWithType.vb: SeatLocation.New
+  fullName.vb: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.New
+  name.vb: New
+- uid: System.UInt16
+  commentId: T:System.UInt16
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.uint16
+  name: ushort
+  nameWithType: ushort
+  fullName: ushort
+  nameWithType.vb: UShort
+  fullName.vb: UShort
+  name.vb: UShort
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html#MicroPlumberd_Examples_Cinema_Scheduler_SeatLocation_Row
+  name: Row
+  nameWithType: SeatLocation.Row
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Row
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat*
+  commentId: Overload:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html#MicroPlumberd_Examples_Cinema_Scheduler_SeatLocation_Seat
+  name: Seat
+  nameWithType: SeatLocation.Seat
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.Seat

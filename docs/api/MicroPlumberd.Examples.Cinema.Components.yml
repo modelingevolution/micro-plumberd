@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Components
+  commentId: N:MicroPlumberd.Examples.Cinema.Components
+  id: MicroPlumberd.Examples.Cinema.Components
+  children:
+  - MicroPlumberd.Examples.Cinema.Components.App
+  - MicroPlumberd.Examples.Cinema.Components.Routes
+  - MicroPlumberd.Examples.Cinema.Components._Imports
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Examples.Cinema.Components
+  nameWithType: MicroPlumberd.Examples.Cinema.Components
+  fullName: MicroPlumberd.Examples.Cinema.Components
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+references:
+- uid: MicroPlumberd.Examples.Cinema.Components.App
+  commentId: T:MicroPlumberd.Examples.Cinema.Components.App
+  href: MicroPlumberd.Examples.Cinema.Components.App.html
+  name: App
+  nameWithType: App
+  fullName: MicroPlumberd.Examples.Cinema.Components.App
+- uid: MicroPlumberd.Examples.Cinema.Components._Imports
+  commentId: T:MicroPlumberd.Examples.Cinema.Components._Imports
+  href: MicroPlumberd.Examples.Cinema.Components._Imports.html
+  name: _Imports
+  nameWithType: _Imports
+  fullName: MicroPlumberd.Examples.Cinema.Components._Imports
+- uid: MicroPlumberd.Examples.Cinema.Components.Routes
+  commentId: T:MicroPlumberd.Examples.Cinema.Components.Routes
+  href: MicroPlumberd.Examples.Cinema.Components.Routes.html
+  name: Routes
+  nameWithType: Routes
+  fullName: MicroPlumberd.Examples.Cinema.Components.Routes

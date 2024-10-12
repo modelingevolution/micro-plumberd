@@ -84,14 +84,12 @@ references:
   fullName: MicroPlumberd.Services.CommandHandlerAttribute
 - uid: MicroPlumberd.Services.MetadataExtensions
   commentId: T:MicroPlumberd.Services.MetadataExtensions
-  parent: MicroPlumberd.Services
   href: MicroPlumberd.Services.MetadataExtensions.html
   name: MetadataExtensions
   nameWithType: MetadataExtensions
   fullName: MicroPlumberd.Services.MetadataExtensions
 - uid: MicroPlumberd.Services.CommandHandlerMetadataExtensions
   commentId: T:MicroPlumberd.Services.CommandHandlerMetadataExtensions
-  parent: MicroPlumberd.Services
   href: MicroPlumberd.Services.CommandHandlerMetadataExtensions.html
   name: CommandHandlerMetadataExtensions
   nameWithType: CommandHandlerMetadataExtensions
@@ -179,7 +177,6 @@ references:
   fullName: MicroPlumberd.Services.IServiceTypeRegister
 - uid: MicroPlumberd.Services.PlumberExtensions
   commentId: T:MicroPlumberd.Services.PlumberExtensions
-  parent: MicroPlumberd.Services
   href: MicroPlumberd.Services.PlumberExtensions.html
   name: PlumberExtensions
   nameWithType: PlumberExtensions
@@ -249,7 +246,6 @@ references:
   fullName: MicroPlumberd.Services.IsHandlerExecutionPersistent
 - uid: MicroPlumberd.Services.PlumberdConventionsExtensions
   commentId: T:MicroPlumberd.Services.PlumberdConventionsExtensions
-  parent: MicroPlumberd.Services
   href: MicroPlumberd.Services.PlumberdConventionsExtensions.html
   name: PlumberdConventionsExtensions
   nameWithType: PlumberdConventionsExtensions

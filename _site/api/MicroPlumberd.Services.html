@@ -100,7 +100,11 @@ Classes
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="MicroPlumberd.Services.CommandHandlerAttribute.html">CommandHandlerAttribute</a></dt>
-      <dd></dd>
+      <dd><p>Attribute for marking a class suitable for command-handler code-generation.
+The class should have methods with signature:</p>
+<pre><code class="lang-csharp">public async Task Handle(Guid id, YourFancyCommand cmd) { /* ... */ }</code></pre>
+<p>Where type of id can be any Parsable class/struct.</p>
+</dd>
     </dl>
     <dl class="jumplist">
       <dt><a class="xref" href="MicroPlumberd.Services.CommandHandlerAttributeValidator-1.html">CommandHandlerAttributeValidator&lt;T&gt;</a></dt>

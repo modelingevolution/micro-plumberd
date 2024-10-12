@@ -1,0 +1,127 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler
+  commentId: N:MicroPlumberd.Examples.Cinema.Scheduler
+  id: MicroPlumberd.Examples.Cinema.Scheduler
+  children:
+  - MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog
+  - MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  - MicroPlumberd.Examples.Cinema.Scheduler.PathScreening
+  - MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler
+  - MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage
+  - MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined
+  - MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast
+  - MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  - MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+  - MicroPlumberd.Examples.Cinema.Scheduler.Space
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Examples.Cinema.Scheduler
+  nameWithType: MicroPlumberd.Examples.Cinema.Scheduler
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+references:
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler
+  href: MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler.html
+  name: ScheduleCommandHandler
+  nameWithType: ScheduleCommandHandler
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast
+  href: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast.html
+  name: ScreeningTimeCannotBeInPast
+  nameWithType: ScreeningTimeCannotBeInPast
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html
+  name: SeatLocation
+  nameWithType: SeatLocation
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration.html
+  name: SeatRoomConfiguration
+  nameWithType: SeatRoomConfiguration
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.PathScreening
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.PathScreening
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.Examples.Cinema.Scheduler.PathScreening.html
+  name: PathScreening
+  nameWithType: PathScreening
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.PathScreening
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+  href: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html
+  name: CreateScreening
+  nameWithType: CreateScreening
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.Space
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.Space
+  parent: MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.Examples.Cinema.Scheduler.Space.html
+  name: Space
+  nameWithType: Space
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.Space
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined
+  href: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined.html
+  name: ScreeningStateDefined
+  nameWithType: ScreeningStateDefined
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage
+  href: MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage.html
+  name: SchedulePage
+  nameWithType: SchedulePage
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage
+- uid: MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog
+  commentId: T:MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog
+  href: MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog.html
+  name: AddScreeningDialog
+  nameWithType: AddScreeningDialog
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog
+- uid: MicroPlumberd.Examples.Cinema.Scheduler
+  commentId: N:MicroPlumberd.Examples.Cinema.Scheduler
+  href: MicroPlumberd.html
+  name: MicroPlumberd.Examples.Cinema.Scheduler
+  nameWithType: MicroPlumberd.Examples.Cinema.Scheduler
+  fullName: MicroPlumberd.Examples.Cinema.Scheduler
+  spec.csharp:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html
+  spec.vb:
+  - uid: MicroPlumberd
+    name: MicroPlumberd
+    href: MicroPlumberd.html
+  - name: .
+  - uid: MicroPlumberd.Examples
+    name: Examples
+    href: MicroPlumberd.Examples.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema
+    name: Cinema
+    href: MicroPlumberd.Examples.Cinema.html
+  - name: .
+  - uid: MicroPlumberd.Examples.Cinema.Scheduler
+    name: Scheduler
+    href: MicroPlumberd.Examples.Cinema.Scheduler.html

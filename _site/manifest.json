@@ -262,6 +262,76 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.CertificateNotFoundException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.CertificateNotFoundException.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.ContainerExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.ContainerExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.ICertManager.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.ICertManager.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.IEncryptor.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.IEncryptor.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.SecretObject-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.SecretObject-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.SecretObjectJsonConverter-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.SecretObjectJsonConverter-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Encryption.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Encryption.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.EventDispatcher.yml",
       "output": {
         ".html": {
@@ -306,6 +376,286 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.EventStoreProjectionManagementClientExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.App.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.App.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.Layout.MainLayout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.Layout.NavMenu.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.Layout.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.Layout.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.Pages.Error.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.Pages.Error.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.Pages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.Pages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.Routes.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.Routes.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components._Imports.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components._Imports.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Components.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Components.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Program.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Program.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Purchase.ReservationPage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Purchase.ReservationPage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Purchase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Purchase.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.AddScreeningDialog.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.CreateScreening.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.PathScreening.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.PathScreening.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.ScheduleCommandHandler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.SchedulePage.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.ScreeningStateDefined.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.ScreeningTimeCannotBeInPast.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.SeatLocation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.SeatRoomConfiguration.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.Space.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.Space.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Scheduler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Scheduler.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Utils.OptionConverters.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Utils.OptionConverters.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.Utils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Examples.Cinema.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Examples.Cinema.html"
         }
       },
       "version": ""
@@ -376,6 +726,16 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.IAggregate.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ICatchUpHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ICatchUpHandler.html"
         }
       },
       "version": ""
@@ -496,6 +856,16 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.IId.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.IIdAware-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.IIdAware-1.html"
         }
       },
       "version": ""
@@ -742,6 +1112,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.JsonObjectSerializer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.JsonObjectSerializer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.Metadata.yml",
       "output": {
         ".html": {
@@ -766,6 +1146,26 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.MetadataExtensions.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Option-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Option-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.OptionConverterFactory.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.OptionConverterFactory.html"
         }
       },
       "version": ""
@@ -1026,6 +1426,76 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.Services.IsHandlerExecutionPersistent.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.Event.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.Event.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.LiteDbPlumber.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.LiteDbPlumber.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.LiteEventStore.IPlayloadEvents.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.LiteEventStore.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.LiteEventStore.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.PayloadData-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.PayloadData-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.Stream.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.Stream.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Services.LiteDb.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Services.LiteDb.html"
         }
       },
       "version": ""
@@ -1312,6 +1782,16 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.SubscriptionRunnerState-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.SubscriptionRunnerState-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.TypeEventConverter.yml",
       "output": {
         ".html": {
@@ -1336,6 +1816,16 @@
       "output": {
         ".html": {
           "relative_path": "api/MicroPlumberd.Utils.AsyncDisposableCollection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.Utils.IdDuckTyping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.Utils.IdDuckTyping.html"
         }
       },
       "version": ""

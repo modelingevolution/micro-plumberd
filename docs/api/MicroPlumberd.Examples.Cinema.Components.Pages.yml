@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.Examples.Cinema.Components.Pages
+  commentId: N:MicroPlumberd.Examples.Cinema.Components.Pages
+  id: MicroPlumberd.Examples.Cinema.Components.Pages
+  children:
+  - MicroPlumberd.Examples.Cinema.Components.Pages.Error
+  langs:
+  - csharp
+  - vb
+  name: MicroPlumberd.Examples.Cinema.Components.Pages
+  nameWithType: MicroPlumberd.Examples.Cinema.Components.Pages
+  fullName: MicroPlumberd.Examples.Cinema.Components.Pages
+  type: Namespace
+  assemblies:
+  - MicroPlumberd.Examples.Cinema
+references:
+- uid: MicroPlumberd.Examples.Cinema.Components.Pages.Error
+  commentId: T:MicroPlumberd.Examples.Cinema.Components.Pages.Error
+  href: MicroPlumberd.Examples.Cinema.Components.Pages.Error.html
+  name: Error
+  nameWithType: Error
+  fullName: MicroPlumberd.Examples.Cinema.Components.Pages.Error
