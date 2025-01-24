@@ -1,0 +1,123 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ErrorHandleOperation
+  commentId: T:MicroPlumberd.ErrorHandleOperation
+  id: ErrorHandleOperation
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ErrorHandleOperation.Cancel
+  - MicroPlumberd.ErrorHandleOperation.Ignore
+  - MicroPlumberd.ErrorHandleOperation.Retry
+  langs:
+  - csharp
+  - vb
+  name: ErrorHandleOperation
+  nameWithType: ErrorHandleOperation
+  fullName: MicroPlumberd.ErrorHandleOperation
+  type: Enum
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ErrorHandleOperation
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 20
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public enum ErrorHandleOperation
+    content.vb: Public Enum ErrorHandleOperation
+- uid: MicroPlumberd.ErrorHandleOperation.Retry
+  commentId: F:MicroPlumberd.ErrorHandleOperation.Retry
+  id: Retry
+  parent: MicroPlumberd.ErrorHandleOperation
+  langs:
+  - csharp
+  - vb
+  name: Retry
+  nameWithType: ErrorHandleOperation.Retry
+  fullName: MicroPlumberd.ErrorHandleOperation.Retry
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Retry
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Retry = 0
+    return:
+      type: MicroPlumberd.ErrorHandleOperation
+- uid: MicroPlumberd.ErrorHandleOperation.Cancel
+  commentId: F:MicroPlumberd.ErrorHandleOperation.Cancel
+  id: Cancel
+  parent: MicroPlumberd.ErrorHandleOperation
+  langs:
+  - csharp
+  - vb
+  name: Cancel
+  nameWithType: ErrorHandleOperation.Cancel
+  fullName: MicroPlumberd.ErrorHandleOperation.Cancel
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Cancel
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 23
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Cancel = 1
+    return:
+      type: MicroPlumberd.ErrorHandleOperation
+- uid: MicroPlumberd.ErrorHandleOperation.Ignore
+  commentId: F:MicroPlumberd.ErrorHandleOperation.Ignore
+  id: Ignore
+  parent: MicroPlumberd.ErrorHandleOperation
+  langs:
+  - csharp
+  - vb
+  name: Ignore
+  nameWithType: ErrorHandleOperation.Ignore
+  fullName: MicroPlumberd.ErrorHandleOperation.Ignore
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Ignore
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 24
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Ignore = 2
+    return:
+      type: MicroPlumberd.ErrorHandleOperation
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ErrorHandleOperation
+  commentId: T:MicroPlumberd.ErrorHandleOperation
+  parent: MicroPlumberd
+  href: MicroPlumberd.ErrorHandleOperation.html
+  name: ErrorHandleOperation
+  nameWithType: ErrorHandleOperation
+  fullName: MicroPlumberd.ErrorHandleOperation

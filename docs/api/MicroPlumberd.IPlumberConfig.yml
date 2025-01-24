@@ -9,6 +9,7 @@ items:
   - MicroPlumberd.IPlumberConfig.Created
   - MicroPlumberd.IPlumberConfig.SerializerFactory
   - MicroPlumberd.IPlumberConfig.ServiceProvider
+  - MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})
   langs:
   - csharp
   - vb
@@ -146,6 +147,38 @@ items:
     return:
       type: System.Action{MicroPlumberd.IPlumber}
     content.vb: Event Created As Action(Of IPlumber)
+- uid: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})
+  commentId: M:MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})
+  id: SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})
+  parent: MicroPlumberd.IPlumberConfig
+  langs:
+  - csharp
+  - vb
+  name: SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>>)
+  nameWithType: IPlumberConfig.SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>>)
+  fullName: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func<System.Exception, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<MicroPlumberd.ErrorHandleDecision>>)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: SetErrorHandlePolicy
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 11
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: void SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> handler)
+    parameters:
+    - id: handler
+      type: System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}}
+    content.vb: Sub SetErrorHandlePolicy(handler As Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision)))
+  overload: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy*
+  nameWithType.vb: IPlumberConfig.SetErrorHandlePolicy(Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision)))
+  fullName.vb: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func(Of System.Exception, String, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of MicroPlumberd.ErrorHandleDecision)))
+  name.vb: SetErrorHandlePolicy(Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision)))
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -369,4 +402,139 @@ references:
   - name: Of
   - name: " "
   - name: T
+  - name: )
+- uid: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy*
+  commentId: Overload:MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy
+  href: MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_SetErrorHandlePolicy_System_Func_System_Exception_System_String_System_Threading_CancellationToken_System_Threading_Tasks_Task_MicroPlumberd_ErrorHandleDecision___
+  name: SetErrorHandlePolicy
+  nameWithType: IPlumberConfig.SetErrorHandlePolicy
+  fullName: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy
+- uid: System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}}
+  commentId: T:System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}}
+  parent: System
+  definition: System.Func`4
+  href: https://learn.microsoft.com/dotnet/api/system.func-4
+  name: Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>>
+  nameWithType: Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>>
+  fullName: System.Func<System.Exception, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<MicroPlumberd.ErrorHandleDecision>>
+  nameWithType.vb: Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision))
+  fullName.vb: System.Func(Of System.Exception, String, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of MicroPlumberd.ErrorHandleDecision))
+  name.vb: Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision))
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: <
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
+    href: MicroPlumberd.ErrorHandleDecision.html
+  - name: '>'
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: ','
+  - name: " "
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
+    href: MicroPlumberd.ErrorHandleDecision.html
+  - name: )
+  - name: )
+- uid: System.Func`4
+  commentId: T:System.Func`4
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.func-4
+  name: Func<T1, T2, T3, TResult>
+  nameWithType: Func<T1, T2, T3, TResult>
+  fullName: System.Func<T1, T2, T3, TResult>
+  nameWithType.vb: Func(Of T1, T2, T3, TResult)
+  fullName.vb: System.Func(Of T1, T2, T3, TResult)
+  name.vb: Func(Of T1, T2, T3, TResult)
+  spec.csharp:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: <
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Func`4
+    name: Func
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.func-4
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T1
+  - name: ','
+  - name: " "
+  - name: T2
+  - name: ','
+  - name: " "
+  - name: T3
+  - name: ','
+  - name: " "
+  - name: TResult
   - name: )

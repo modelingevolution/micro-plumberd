@@ -22,7 +22,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EventStoreProjectionManagementClientExtensions
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 5
+    startLine: 6
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -58,7 +58,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EnsureJoinProjection
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 7
+    startLine: 8
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -97,7 +97,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EnsureLookupProjection
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 27
+    startLine: 45
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -142,7 +142,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: EnsureJoinProjection
     path: src/MicroPlumberd/EventStoreProjectionManagementClientExtensions.cs
-    startLine: 41
+    startLine: 61
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd

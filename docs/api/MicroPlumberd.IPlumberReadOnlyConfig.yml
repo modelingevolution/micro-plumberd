@@ -6,6 +6,7 @@ items:
   parent: MicroPlumberd
   children:
   - MicroPlumberd.IPlumberReadOnlyConfig.Conventions
+  - MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
   - MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
   - MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
   langs:
@@ -22,7 +23,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: IPlumberReadOnlyConfig
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 12
+    startLine: 14
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -49,7 +50,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SerializerFactory
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 14
+    startLine: 16
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -78,7 +79,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Conventions
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 15
+    startLine: 17
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -107,7 +108,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServiceProvider
     path: src/MicroPlumberd/IPlumberConfig.cs
-    startLine: 16
+    startLine: 18
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -118,6 +119,44 @@ items:
       type: System.IServiceProvider
     content.vb: ReadOnly Property ServiceProvider As IServiceProvider
   overload: MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider*
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  id: HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  parent: MicroPlumberd.IPlumberReadOnlyConfig
+  langs:
+  - csharp
+  - vb
+  name: HandleError(Exception, string, CancellationToken)
+  nameWithType: IPlumberReadOnlyConfig.HandleError(Exception, string, CancellationToken)
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: HandleError
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 19
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: Task<ErrorHandleDecision> HandleError(Exception ex, string streamName, CancellationToken token)
+    parameters:
+    - id: ex
+      type: System.Exception
+    - id: streamName
+      type: System.String
+    - id: token
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}
+    content.vb: Function HandleError(ex As Exception, streamName As String, token As CancellationToken) As Task(Of ErrorHandleDecision)
+  overload: MicroPlumberd.IPlumberReadOnlyConfig.HandleError*
+  nameWithType.vb: IPlumberReadOnlyConfig.HandleError(Exception, String, CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception, String, System.Threading.CancellationToken)
+  name.vb: HandleError(Exception, String, CancellationToken)
 references:
 - uid: MicroPlumberd
   commentId: N:MicroPlumberd
@@ -281,3 +320,161 @@ references:
   name: IServiceProvider
   nameWithType: IServiceProvider
   fullName: System.IServiceProvider
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError*
+  commentId: Overload:MicroPlumberd.IPlumberReadOnlyConfig.HandleError
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  name: HandleError
+  nameWithType: IPlumberReadOnlyConfig.HandleError
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.HandleError
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ErrorHandleDecision>
+  nameWithType: Task<ErrorHandleDecision>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.ErrorHandleDecision>
+  nameWithType.vb: Task(Of ErrorHandleDecision)
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.ErrorHandleDecision)
+  name.vb: Task(Of ErrorHandleDecision)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
+    href: MicroPlumberd.ErrorHandleDecision.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
+    href: MicroPlumberd.ErrorHandleDecision.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

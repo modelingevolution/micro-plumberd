@@ -1,4 +1,5 @@
 ﻿@using MicroPlumberd.Examples.Cinema.Utils
+@inject ICommandBus _bus
 @using MudBlazor
 <MudDialog>
     <DialogContent>
@@ -17,8 +18,13 @@
 {
     private CreateScreening _cmd = new CreateScreening();
 
-    public void Close()
+    public async Task Close()
     {
-        
+        _cmd = new CreateScreening();
+        _cmd.Date = DateOnly.FromDateTime(DateTime.Now);
+        _cmd.Movie = "Foo";
+        _cmd.Time = TimeOnly.FromDateTime(DateTime.Now);
+        _cmd.SeatConfiguration = new SeatRoomConfiguration() { RowCount = 10, SeatCount = 10 };
+        await _bus.SendAsync(Guid.NewGuid(), _cmd);
     }
 }

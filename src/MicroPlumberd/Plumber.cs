@@ -19,6 +19,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     private readonly ConcurrentDictionary<Type, ISnapshotPolicy> _policies = new();
     private readonly TypeHandlerRegisters _typeHandlerRegisters;
     private readonly ConcurrentDictionary<Type, IObjectSerializer> _serializers = new();
+    private readonly IdDuckTyping _idTyping = new();
+    private readonly VersionDuckTyping _versionTyping = new();
+    private readonly Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> _errorHandle;
     private ProjectionRegister? _projectionRegister;
 
     internal Plumber(EventStoreClientSettings settings, PlumberConfig? config = null)
@@ -32,7 +35,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         ServiceProvider = config.ServiceProvider;
         _extension = config.Extension; // Shouldn't we make a copy?
         _typeHandlerRegisters = new TypeHandlerRegisters(Conventions.GetEventNameConvention);
-
+        this._errorHandle = config.ErrorHandlePolicy;
         config.OnCreated(this);
     }
     public IPlumberReadOnlyConfig Config => this;
@@ -49,6 +52,8 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     /// <summary>
     /// </summary>
     public IServiceProvider ServiceProvider { get; }
+
+    public Task<ErrorHandleDecision> HandleError(Exception ex, string streamName, CancellationToken t) => _errorHandle(ex,streamName,t);
     public Func<Type, IObjectSerializer> SerializerFactory { get; }
     public IReadOnlyConventions Conventions { get; }
 
@@ -465,8 +470,8 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
         return r;
     }
-    private readonly IdDuckTyping _idTyping = new();
-    private readonly VersionDuckTyping _versionTyping = new();
+    
+
     public async Task<SubscriptionRunnerState<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class
     {
         var streamType = typeof(T);

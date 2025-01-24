@@ -332,6 +332,26 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ErrorHandleDecision.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ErrorHandleDecision.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "docs/api/MicroPlumberd.ErrorHandleOperation.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/MicroPlumberd.ErrorHandleOperation.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "docs/api/MicroPlumberd.EventDispatcher.yml",
       "output": {
         ".html": {

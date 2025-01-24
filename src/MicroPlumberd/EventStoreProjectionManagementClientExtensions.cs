@@ -1,4 +1,5 @@
 ﻿using EventStore.Client;
+using Grpc.Core;
 using Microsoft.Win32;
 
 namespace MicroPlumberd;
@@ -16,13 +17,30 @@ public static class EventStoreProjectionManagementClientExtensions
             await client.CreateContinuousAsync(outputStream, query, true);
     }
 
-    private static async Task Update(EventStoreProjectionManagementClient client, string outputStream, string query, CancellationToken token = default)
+    private static async Task Update(EventStoreProjectionManagementClient client, string outputStream, string query,
+        CancellationToken token = default)
     {
-        var state = await client.GetStatusAsync(outputStream, cancellationToken: token);
-        if (state!.Status != "Stopped")
-            await client.DisableAsync(outputStream, cancellationToken: token);
-        await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
-        await client.EnableAsync(outputStream, cancellationToken: token);
+        for (int i = 0; i < PROJECTION_UPDATE_RETRY_COUNT; i++)
+        {
+            try
+            {
+                var state = await client.GetStatusAsync(outputStream, cancellationToken: token);
+                if (state!.Status != "Stopped")
+                    await client.DisableAsync(outputStream, cancellationToken: token);
+                await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
+                await client.EnableAsync(outputStream, cancellationToken: token);
+                return;
+            }
+            catch (RpcException ex)
+            {
+                if (ex.Status.StatusCode != StatusCode.DeadlineExceeded) throw;
+                if (i == PROJECTION_UPDATE_RETRY_COUNT - 1)
+                    throw;
+                
+                await Task.Delay(Random.Shared.Next(1000));
+            }
+        }
+        // We'll never reach this place, because of if in catch.
     }
 
     public static async Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)
@@ -39,20 +57,25 @@ public static class EventStoreProjectionManagementClientExtensions
             await client.EnableAsync(outputStreamCategory, cancellationToken: token);
         }
     }
+
+    private const int PROJECTION_UPDATE_RETRY_COUNT = 10;
     public static async Task EnsureJoinProjection(this EventStoreProjectionManagementClient client,
         string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
         var query = CreateQuery(outputStream, eventTypes);
 
-        if ((await register.Get(outputStream)) != null)
-            await Update(client, outputStream, query, token);
-        else
-        {
-            await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
-            await client.DisableAsync(outputStream, cancellationToken: token);
-            await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
-            await client.EnableAsync(outputStream, cancellationToken: token);
-        }
+        
+                if ((await register.Get(outputStream)) != null)
+                    await Update(client, outputStream, query, token);
+                else
+                {
+                    await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+                    await client.DisableAsync(outputStream, cancellationToken: token);
+                    await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
+                    await client.EnableAsync(outputStream, cancellationToken: token);
+                }
+           
+        
     }
 
     private static string CreateQuery(string outputStream, IEnumerable<string> eventTypes)

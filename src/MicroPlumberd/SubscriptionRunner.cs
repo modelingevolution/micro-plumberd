@@ -194,8 +194,21 @@ class SubscriptionRunner(Plumber plumber, SubscriptionRunnerState subscription) 
         catch (Exception ex)
         {
             var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
-            l?.LogError($"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
-            await Task.Delay(30000, subscription.CancellationToken);
+            
+            l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+            var decision = await
+                plumber.Config.HandleError(ex, subscription.StreamName, subscription.CancellationToken);
+            switch (decision)
+            {
+                case ErrorHandleDecision.Retry:
+                    continue;
+                case ErrorHandleDecision.Cancel:
+                    throw new OperationCanceledException("Operation canceled by user.");
+                case ErrorHandleDecision.Ignore:
+                    return;
+            }
+
+            
         }
     }
 

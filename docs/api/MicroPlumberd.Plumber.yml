@@ -25,6 +25,7 @@ items:
   - MicroPlumberd.Plumber.GetSnapshot``1(System.Guid,System.Threading.CancellationToken)
   - MicroPlumberd.Plumber.GetState``1(System.Object,System.String,System.Threading.CancellationToken)
   - MicroPlumberd.Plumber.Get``1(System.Object,System.Threading.CancellationToken)
+  - MicroPlumberd.Plumber.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
   - MicroPlumberd.Plumber.PersistentSubscriptionClient
   - MicroPlumberd.Plumber.ProjectionManagementClient
   - MicroPlumberd.Plumber.ProjectionRegister
@@ -105,7 +106,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Config
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 37
+    startLine: 40
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -138,7 +139,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: TypeHandlerRegisters
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 39
+    startLine: 42
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -171,7 +172,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Client
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 40
+    startLine: 43
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -204,7 +205,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionRegister
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 42
+    startLine: 45
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -237,7 +238,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: PersistentSubscriptionClient
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 45
+    startLine: 48
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -270,7 +271,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ProjectionManagementClient
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 46
+    startLine: 49
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -303,7 +304,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ServiceProvider
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 50
+    startLine: 53
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -318,6 +319,47 @@ items:
   overload: MicroPlumberd.Plumber.ServiceProvider*
   implements:
   - MicroPlumberd.IPlumberReadOnlyConfig.ServiceProvider
+- uid: MicroPlumberd.Plumber.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.Plumber.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  id: HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  parent: MicroPlumberd.Plumber
+  langs:
+  - csharp
+  - vb
+  name: HandleError(Exception, string, CancellationToken)
+  nameWithType: Plumber.HandleError(Exception, string, CancellationToken)
+  fullName: MicroPlumberd.Plumber.HandleError(System.Exception, string, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: src/MicroPlumberd/Plumber.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: HandleError
+    path: src/MicroPlumberd/Plumber.cs
+    startLine: 55
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  example: []
+  syntax:
+    content: public Task<ErrorHandleDecision> HandleError(Exception ex, string streamName, CancellationToken t)
+    parameters:
+    - id: ex
+      type: System.Exception
+    - id: streamName
+      type: System.String
+    - id: t
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}
+    content.vb: Public Function HandleError(ex As Exception, streamName As String, t As CancellationToken) As Task(Of ErrorHandleDecision)
+  overload: MicroPlumberd.Plumber.HandleError*
+  implements:
+  - MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  nameWithType.vb: Plumber.HandleError(Exception, String, CancellationToken)
+  fullName.vb: MicroPlumberd.Plumber.HandleError(System.Exception, String, System.Threading.CancellationToken)
+  name.vb: HandleError(Exception, String, CancellationToken)
 - uid: MicroPlumberd.Plumber.SerializerFactory
   commentId: P:MicroPlumberd.Plumber.SerializerFactory
   id: SerializerFactory
@@ -336,7 +378,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SerializerFactory
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 51
+    startLine: 56
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -368,7 +410,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Conventions
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 52
+    startLine: 57
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -400,7 +442,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Subscribe
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 54
+    startLine: 59
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -449,7 +491,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 63
+    startLine: 68
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -510,7 +552,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 72
+    startLine: 77
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -568,7 +610,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeStateEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 81
+    startLine: 86
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -615,7 +657,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeStateEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 89
+    startLine: 94
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -664,7 +706,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandler
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 110
+    startLine: 115
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -712,7 +754,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 128
+    startLine: 133
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -776,7 +818,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeEventHandlerPersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 161
+    startLine: 166
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -837,7 +879,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribePersistently
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 172
+    startLine: 177
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -889,7 +931,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 180
+    startLine: 185
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -941,7 +983,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Rehydrate
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 187
+    startLine: 192
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -992,7 +1034,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 207
+    startLine: 212
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1044,7 +1086,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: FindEventInStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 213
+    startLine: 218
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1098,7 +1140,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SubscribeSet
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 245
+    startLine: 250
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1131,7 +1173,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 250
+    startLine: 255
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1191,7 +1233,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 260
+    startLine: 265
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1248,7 +1290,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReadFull
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 268
+    startLine: 273
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1303,7 +1345,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: ReadEventsOfType
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 284
+    startLine: 289
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1350,7 +1392,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Read
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 316
+    startLine: 321
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1405,7 +1447,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Get
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 333
+    startLine: 338
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1455,7 +1497,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 354
+    startLine: 359
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1507,7 +1549,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvents
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 362
+    startLine: 367
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1559,7 +1601,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendState
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 371
+    startLine: 376
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1605,7 +1647,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendState
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 375
+    startLine: 380
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1654,7 +1696,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 388
+    startLine: 393
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1705,7 +1747,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEvent
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 400
+    startLine: 405
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1760,7 +1802,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendEventToStream
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 415
+    startLine: 420
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1814,7 +1856,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveChanges
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 433
+    startLine: 438
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1863,7 +1905,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: SaveNew
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 451
+    startLine: 456
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1912,7 +1954,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetState
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 469
+    startLine: 474
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -1955,7 +1997,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 486
+    startLine: 491
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -2001,7 +2043,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetSnapshot
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 503
+    startLine: 508
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -2047,7 +2089,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 517
+    startLine: 522
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -2096,7 +2138,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: AppendLink
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 535
+    startLine: 540
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -2147,7 +2189,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: GetExtension
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 554
+    startLine: 559
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -2183,7 +2225,7 @@ items:
       repo: https://github.com/modelingevolution/micro-plumberd.git
     id: Create
     path: src/MicroPlumberd/Plumber.cs
-    startLine: 570
+    startLine: 575
   assemblies:
   - MicroPlumberd
   namespace: MicroPlumberd
@@ -2627,6 +2669,219 @@ references:
   name: IServiceProvider
   nameWithType: IServiceProvider
   fullName: System.IServiceProvider
+- uid: MicroPlumberd.Plumber.HandleError*
+  commentId: Overload:MicroPlumberd.Plumber.HandleError
+  href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  name: HandleError
+  nameWithType: Plumber.HandleError
+  fullName: MicroPlumberd.Plumber.HandleError
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  commentId: M:MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  parent: MicroPlumberd.IPlumberReadOnlyConfig
+  isExternal: true
+  href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  name: HandleError(Exception, string, CancellationToken)
+  nameWithType: IPlumberReadOnlyConfig.HandleError(Exception, string, CancellationToken)
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception, string, System.Threading.CancellationToken)
+  nameWithType.vb: IPlumberReadOnlyConfig.HandleError(Exception, String, CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception, String, System.Threading.CancellationToken)
+  name.vb: HandleError(Exception, String, CancellationToken)
+  spec.csharp:
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+    name: HandleError
+    href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+    name: HandleError
+    href: MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Exception
+    name: Exception
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.exception
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.exception
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}
+  commentId: T:System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<ErrorHandleDecision>
+  nameWithType: Task<ErrorHandleDecision>
+  fullName: System.Threading.Tasks.Task<MicroPlumberd.ErrorHandleDecision>
+  nameWithType.vb: Task(Of ErrorHandleDecision)
+  fullName.vb: System.Threading.Tasks.Task(Of MicroPlumberd.ErrorHandleDecision)
+  name.vb: Task(Of ErrorHandleDecision)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
+    href: MicroPlumberd.ErrorHandleDecision.html
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
+    href: MicroPlumberd.ErrorHandleDecision.html
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
 - uid: MicroPlumberd.Plumber.SerializerFactory*
   commentId: Overload:MicroPlumberd.Plumber.SerializerFactory
   href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SerializerFactory
@@ -2808,17 +3063,6 @@ references:
     isExternal: true
     href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
   - name: )
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.string
-  name: string
-  nameWithType: string
-  fullName: string
-  nameWithType.vb: String
-  fullName.vb: String
-  name.vb: String
 - uid: MicroPlumberd.FromRelativeStreamPosition
   commentId: T:MicroPlumberd.FromRelativeStreamPosition
   parent: MicroPlumberd
@@ -2833,14 +3077,6 @@ references:
   name: UserCredentials
   nameWithType: UserCredentials
   fullName: EventStore.Client.UserCredentials
-- uid: System.Threading.CancellationToken
-  commentId: T:System.Threading.CancellationToken
-  parent: System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
-  name: CancellationToken
-  nameWithType: CancellationToken
-  fullName: System.Threading.CancellationToken
 - uid: MicroPlumberd.ISubscriptionRunner
   commentId: T:MicroPlumberd.ISubscriptionRunner
   parent: MicroPlumberd
@@ -2848,33 +3084,6 @@ references:
   name: ISubscriptionRunner
   nameWithType: ISubscriptionRunner
   fullName: MicroPlumberd.ISubscriptionRunner
-- uid: System.Threading
-  commentId: N:System.Threading
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading
-  nameWithType: System.Threading
-  fullName: System.Threading
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
 - uid: MicroPlumberd.Plumber.SubscribeEventHandler*
   commentId: Overload:MicroPlumberd.Plumber.SubscribeEventHandler
   href: MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_SubscribeEventHandler__1_MicroPlumberd_TypeEventConverter_System_Collections_Generic_IEnumerable_System_String____0_System_String_System_Nullable_EventStore_Client_FromStream__System_Boolean_
@@ -3298,71 +3507,6 @@ references:
   - name: " "
   - name: T
   - name: )
-- uid: System.Threading.Tasks.Task`1
-  commentId: T:System.Threading.Tasks.Task`1
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  name: Task<TResult>
-  nameWithType: Task<TResult>
-  fullName: System.Threading.Tasks.Task<TResult>
-  nameWithType.vb: Task(Of TResult)
-  fullName.vb: System.Threading.Tasks.Task(Of TResult)
-  name.vb: Task(Of TResult)
-  spec.csharp:
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: <
-  - name: TResult
-  - name: '>'
-  spec.vb:
-  - uid: System.Threading.Tasks.Task`1
-    name: Task
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
-  - name: (
-  - name: Of
-  - name: " "
-  - name: TResult
-  - name: )
-- uid: System.Threading.Tasks
-  commentId: N:System.Threading.Tasks
-  isExternal: true
-  href: https://learn.microsoft.com/dotnet/api/system
-  name: System.Threading.Tasks
-  nameWithType: System.Threading.Tasks
-  fullName: System.Threading.Tasks
-  spec.csharp:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  - name: .
-  - uid: System.Threading.Tasks
-    name: Tasks
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
-  spec.vb:
-  - uid: System
-    name: System
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system
-  - name: .
-  - uid: System.Threading
-    name: Threading
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading
-  - name: .
-  - uid: System.Threading.Tasks
-    name: Tasks
-    isExternal: true
-    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
 - uid: MicroPlumberd.IPlumber.SubscribeEventHandler``1({TEventHandler},System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
   commentId: M:MicroPlumberd.IPlumber.SubscribeEventHandler``1(``0,System.String,System.Nullable{MicroPlumberd.FromRelativeStreamPosition},System.Boolean,System.Threading.CancellationToken)
   parent: MicroPlumberd.IPlumber

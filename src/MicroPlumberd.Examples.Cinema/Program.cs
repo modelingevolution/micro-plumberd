@@ -1,4 +1,5 @@
 using MicroPlumberd.Examples.Cinema.Components;
+using MicroPlumberd.Examples.Cinema.Scheduler;
 using MicroPlumberd.Services;
 using MudBlazor.Services;
 
@@ -15,6 +16,7 @@ namespace MicroPlumberd.Examples.Cinema
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
             builder.Services.AddPlumberd();
+            builder.Services.AddCommandHandler<ScheduleCommandHandler>();
             builder.Services.AddMudServices();
 
             var app = builder.Build();

@@ -1863,6 +1863,54 @@ references:
   fullName.vb: MicroPlumberd.Encryption.SecretObject(Of T).CType
   nameWithType: SecretObject<T>.implicit operator
   nameWithType.vb: SecretObject(Of T).CType
+- uid: MicroPlumberd.ErrorHandleDecision
+  name: ErrorHandleDecision
+  href: api/MicroPlumberd.ErrorHandleDecision.html
+  commentId: T:MicroPlumberd.ErrorHandleDecision
+  fullName: MicroPlumberd.ErrorHandleDecision
+  nameWithType: ErrorHandleDecision
+- uid: MicroPlumberd.ErrorHandleDecision.Cancel
+  name: Cancel
+  href: api/MicroPlumberd.ErrorHandleDecision.html#MicroPlumberd_ErrorHandleDecision_Cancel
+  commentId: F:MicroPlumberd.ErrorHandleDecision.Cancel
+  fullName: MicroPlumberd.ErrorHandleDecision.Cancel
+  nameWithType: ErrorHandleDecision.Cancel
+- uid: MicroPlumberd.ErrorHandleDecision.Ignore
+  name: Ignore
+  href: api/MicroPlumberd.ErrorHandleDecision.html#MicroPlumberd_ErrorHandleDecision_Ignore
+  commentId: F:MicroPlumberd.ErrorHandleDecision.Ignore
+  fullName: MicroPlumberd.ErrorHandleDecision.Ignore
+  nameWithType: ErrorHandleDecision.Ignore
+- uid: MicroPlumberd.ErrorHandleDecision.Retry
+  name: Retry
+  href: api/MicroPlumberd.ErrorHandleDecision.html#MicroPlumberd_ErrorHandleDecision_Retry
+  commentId: F:MicroPlumberd.ErrorHandleDecision.Retry
+  fullName: MicroPlumberd.ErrorHandleDecision.Retry
+  nameWithType: ErrorHandleDecision.Retry
+- uid: MicroPlumberd.ErrorHandleOperation
+  name: ErrorHandleOperation
+  href: api/MicroPlumberd.ErrorHandleOperation.html
+  commentId: T:MicroPlumberd.ErrorHandleOperation
+  fullName: MicroPlumberd.ErrorHandleOperation
+  nameWithType: ErrorHandleOperation
+- uid: MicroPlumberd.ErrorHandleOperation.Cancel
+  name: Cancel
+  href: api/MicroPlumberd.ErrorHandleOperation.html#MicroPlumberd_ErrorHandleOperation_Cancel
+  commentId: F:MicroPlumberd.ErrorHandleOperation.Cancel
+  fullName: MicroPlumberd.ErrorHandleOperation.Cancel
+  nameWithType: ErrorHandleOperation.Cancel
+- uid: MicroPlumberd.ErrorHandleOperation.Ignore
+  name: Ignore
+  href: api/MicroPlumberd.ErrorHandleOperation.html#MicroPlumberd_ErrorHandleOperation_Ignore
+  commentId: F:MicroPlumberd.ErrorHandleOperation.Ignore
+  fullName: MicroPlumberd.ErrorHandleOperation.Ignore
+  nameWithType: ErrorHandleOperation.Ignore
+- uid: MicroPlumberd.ErrorHandleOperation.Retry
+  name: Retry
+  href: api/MicroPlumberd.ErrorHandleOperation.html#MicroPlumberd_ErrorHandleOperation_Retry
+  commentId: F:MicroPlumberd.ErrorHandleOperation.Retry
+  fullName: MicroPlumberd.ErrorHandleOperation.Retry
+  nameWithType: ErrorHandleOperation.Retry
 - uid: MicroPlumberd.EventDispatcher
   name: EventDispatcher
   href: api/MicroPlumberd.EventDispatcher.html
@@ -4336,6 +4384,22 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IPlumberConfig.ServiceProvider
   nameWithType: IPlumberConfig.ServiceProvider
+- uid: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})
+  name: SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>>)
+  href: api/MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_SetErrorHandlePolicy_System_Func_System_Exception_System_String_System_Threading_CancellationToken_System_Threading_Tasks_Task_MicroPlumberd_ErrorHandleDecision___
+  commentId: M:MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})
+  name.vb: SetErrorHandlePolicy(Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision)))
+  fullName: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func<System.Exception, string, System.Threading.CancellationToken, System.Threading.Tasks.Task<MicroPlumberd.ErrorHandleDecision>>)
+  fullName.vb: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func(Of System.Exception, String, System.Threading.CancellationToken, System.Threading.Tasks.Task(Of MicroPlumberd.ErrorHandleDecision)))
+  nameWithType: IPlumberConfig.SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>>)
+  nameWithType.vb: IPlumberConfig.SetErrorHandlePolicy(Func(Of Exception, String, CancellationToken, Task(Of ErrorHandleDecision)))
+- uid: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy*
+  name: SetErrorHandlePolicy
+  href: api/MicroPlumberd.IPlumberConfig.html#MicroPlumberd_IPlumberConfig_SetErrorHandlePolicy_
+  commentId: Overload:MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy
+  nameWithType: IPlumberConfig.SetErrorHandlePolicy
 - uid: MicroPlumberd.IPlumberReadOnlyConfig
   name: IPlumberReadOnlyConfig
   href: api/MicroPlumberd.IPlumberReadOnlyConfig.html
@@ -4355,6 +4419,22 @@ references:
   isSpec: "True"
   fullName: MicroPlumberd.IPlumberReadOnlyConfig.Conventions
   nameWithType: IPlumberReadOnlyConfig.Conventions
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  name: HandleError(Exception, string, CancellationToken)
+  href: api/MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  name.vb: HandleError(Exception, String, CancellationToken)
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception, string, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.IPlumberReadOnlyConfig.HandleError(System.Exception, String, System.Threading.CancellationToken)
+  nameWithType: IPlumberReadOnlyConfig.HandleError(Exception, string, CancellationToken)
+  nameWithType.vb: IPlumberReadOnlyConfig.HandleError(Exception, String, CancellationToken)
+- uid: MicroPlumberd.IPlumberReadOnlyConfig.HandleError*
+  name: HandleError
+  href: api/MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_HandleError_
+  commentId: Overload:MicroPlumberd.IPlumberReadOnlyConfig.HandleError
+  isSpec: "True"
+  fullName: MicroPlumberd.IPlumberReadOnlyConfig.HandleError
+  nameWithType: IPlumberReadOnlyConfig.HandleError
 - uid: MicroPlumberd.IPlumberReadOnlyConfig.SerializerFactory
   name: SerializerFactory
   href: api/MicroPlumberd.IPlumberReadOnlyConfig.html#MicroPlumberd_IPlumberReadOnlyConfig_SerializerFactory
@@ -6263,6 +6343,22 @@ references:
   fullName.vb: MicroPlumberd.Plumber.Get(Of TOwner)(Object, System.Threading.CancellationToken)
   nameWithType: Plumber.Get<TOwner>(object, CancellationToken)
   nameWithType.vb: Plumber.Get(Of TOwner)(Object, CancellationToken)
+- uid: MicroPlumberd.Plumber.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  name: HandleError(Exception, string, CancellationToken)
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_HandleError_System_Exception_System_String_System_Threading_CancellationToken_
+  commentId: M:MicroPlumberd.Plumber.HandleError(System.Exception,System.String,System.Threading.CancellationToken)
+  name.vb: HandleError(Exception, String, CancellationToken)
+  fullName: MicroPlumberd.Plumber.HandleError(System.Exception, string, System.Threading.CancellationToken)
+  fullName.vb: MicroPlumberd.Plumber.HandleError(System.Exception, String, System.Threading.CancellationToken)
+  nameWithType: Plumber.HandleError(Exception, string, CancellationToken)
+  nameWithType.vb: Plumber.HandleError(Exception, String, CancellationToken)
+- uid: MicroPlumberd.Plumber.HandleError*
+  name: HandleError
+  href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_HandleError_
+  commentId: Overload:MicroPlumberd.Plumber.HandleError
+  isSpec: "True"
+  fullName: MicroPlumberd.Plumber.HandleError
+  nameWithType: Plumber.HandleError
 - uid: MicroPlumberd.Plumber.PersistentSubscriptionClient
   name: PersistentSubscriptionClient
   href: api/MicroPlumberd.Plumber.html#MicroPlumberd_Plumber_PersistentSubscriptionClient

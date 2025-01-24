@@ -1,17 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using MicroPlumberd.Services;
 
 namespace MicroPlumberd.Examples.Cinema.Scheduler
 {
     [CommandHandler]
-    public partial class ScheduleCommandHandler(IPlumber plumber)
+    public partial class ScheduleCommandHandler(IPlumber plumber) 
     {
         [ThrowsFaultException<ScreeningTimeCannotBeInPast>]
-        public async Task Handle(Guid id, PathScreening cmd)
+        public async Task Handle(Guid id, PatchScreening cmd)
         {
             if (cmd.Date.IsDefined && cmd.Time.IsDefined)
                 if (cmd.Date.Value.ToDateTime(cmd.Time.Value) < DateTime.Now)
@@ -25,7 +24,7 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
                 SeatRoomConfiguration conf = cmd.SeatConfiguration;
                 state.SeatsInRows = new Space[conf.RowCount, conf.SeatCount];
                 foreach (var i in conf.EmptySpaces)
-                    state.SeatsInRows[i.Row, i.Seat] = Space.Empty;
+                    state.SeatsInRows[i.Row, i.Seat] = Space.Open;
             }
 
             if (cmd.Movie.IsDefined)
@@ -42,6 +41,32 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
 
             await plumber.AppendState(state);
         }
+
+        public async Task Handle(Guid id, CreateScreening cmd)
+        {
+            var state = Map(cmd);
+            
+            await plumber.AppendState(state, id);
+        }
+        private static ScreeningStateDefined Map(CreateScreening createScreening)
+        {
+            var seatConfiguration = createScreening.SeatConfiguration;
+            var seatsInRows = new Space[seatConfiguration.RowCount, seatConfiguration.SeatCount];
+            // Mark empty spaces
+            foreach (var emptySpace in seatConfiguration.EmptySpaces)
+            {
+                seatsInRows[emptySpace.Row, emptySpace.Seat] = Space.Empty;
+            }
+            return new ScreeningStateDefined
+            {
+                SeatsInRows = seatsInRows,
+                Movie = createScreening.Movie,
+                Room = createScreening.Room,
+                When = new DateTime(createScreening.Date.Year, createScreening.Date.Month, createScreening.Date.Day, createScreening.Time.Hour, createScreening.Time.Minute, createScreening.Time.Second),
+                Version = 1, 
+                Id = Guid.NewGuid() 
+            };
+        }
     }
 
     
@@ -52,14 +77,9 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
 
     public readonly record struct SeatLocation(ushort Row, ushort Seat);
     
-    public record SeatRoomConfiguration
-    {
-        public int SeatCount { get; init; }
-        public int RowCount { get; init; }
-        public SeatLocation[] EmptySpaces { get; init; }
-    }
+   
 
-    public record PathScreening
+    public record PatchScreening
     {
         public Option<SeatRoomConfiguration> SeatConfiguration { get; set; }
         public Option<string> Movie { get; set; }
@@ -67,8 +87,15 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
         public Option<TimeOnly> Time { get; set; }
         public Option<DateOnly> Date { get; set; }
     }
+    public record SeatRoomConfiguration
+    {
+        public int SeatCount { get; init; } = 0;
+        public int RowCount { get; init; } = 0;
+        public SeatLocation[] EmptySpaces { get; init; } = Array.Empty<SeatLocation>();
+    }
     public record CreateScreening
     {
+        public Guid Id { get; init; } = Guid.NewGuid();
         public SeatRoomConfiguration SeatConfiguration { get; set; }
         public string Movie { get; set; }
         public string Room { get; set; }
@@ -79,11 +106,12 @@ namespace MicroPlumberd.Examples.Cinema.Scheduler
 
     public enum Space
     {
-        Seat, Empty
+        Open,Used,Empty
     }
     [OutputStream("Screening")]
     public record ScreeningStateDefined 
     {
+        [JsonConverter(typeof(SpaceArrayJsonConverter))]
         public Space[,] SeatsInRows { get; set; }
         public string Movie { get; set; }
         public string Room { get; set; }

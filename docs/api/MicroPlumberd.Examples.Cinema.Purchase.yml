@@ -23,15 +23,15 @@ references:
   name: RepertuarModel
   nameWithType: RepertuarModel
   fullName: MicroPlumberd.Examples.Cinema.Purchase.RepertuarModel
-- uid: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
-  commentId: T:MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
-  href: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage.html
-  name: RepertuarPage
-  nameWithType: RepertuarPage
-  fullName: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
 - uid: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
   commentId: T:MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
   href: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage.html
   name: ReservationPage
   nameWithType: ReservationPage
   fullName: MicroPlumberd.Examples.Cinema.Purchase.ReservationPage
+- uid: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+  commentId: T:MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage
+  href: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage.html
+  name: RepertuarPage
+  nameWithType: RepertuarPage
+  fullName: MicroPlumberd.Examples.Cinema.Purchase.RepertuarPage

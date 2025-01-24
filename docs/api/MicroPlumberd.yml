@@ -15,6 +15,7 @@ items:
   - MicroPlumberd.CommandRequest
   - MicroPlumberd.CommandRequest`1
   - MicroPlumberd.ContainerExtensions
+  - MicroPlumberd.ErrorHandleDecision
   - MicroPlumberd.EventHandlerAttribute
   - MicroPlumberd.EventIdConvention
   - MicroPlumberd.EventNameConvention
@@ -704,6 +705,13 @@ references:
   name: IPlumberReadOnlyConfig
   nameWithType: IPlumberReadOnlyConfig
   fullName: MicroPlumberd.IPlumberReadOnlyConfig
+- uid: MicroPlumberd.ErrorHandleDecision
+  commentId: T:MicroPlumberd.ErrorHandleDecision
+  parent: MicroPlumberd
+  href: MicroPlumberd.ErrorHandleDecision.html
+  name: ErrorHandleDecision
+  nameWithType: ErrorHandleDecision
+  fullName: MicroPlumberd.ErrorHandleDecision
 - uid: MicroPlumberd.ITypeHandlerRegisters
   commentId: T:MicroPlumberd.ITypeHandlerRegisters
   parent: MicroPlumberd

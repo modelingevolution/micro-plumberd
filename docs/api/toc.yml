@@ -25,6 +25,8 @@ items:
     name: CommandRequest<TCommand>
   - uid: MicroPlumberd.ContainerExtensions
     name: ContainerExtensions
+  - uid: MicroPlumberd.ErrorHandleDecision
+    name: ErrorHandleDecision
   - uid: MicroPlumberd.EventHandlerAttribute
     name: EventHandlerAttribute
   - uid: MicroPlumberd.EventIdConvention

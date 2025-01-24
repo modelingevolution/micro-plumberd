@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Reflection;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
@@ -12,6 +13,7 @@ class PlumberConfig : IPlumberConfig
     private IServiceProvider _serviceProvider = new ActivatorServiceProvider();
     private static readonly JsonObjectSerializer serializer = new JsonObjectSerializer();
     private Func<Type,IObjectSerializer> _serializerFactory = x => serializer;
+    private Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> _errorHandlePolicy = OnError;
 
     public Func<Type,IObjectSerializer> SerializerFactory
     {
@@ -52,9 +54,26 @@ class PlumberConfig : IPlumberConfig
         }
     }
 
+    internal Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> ErrorHandlePolicy
+    {
+        get => _errorHandlePolicy;
+    }
+
     public event Action<IPlumber>? Created;
+    public void SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> value)
+    {
+        if (value == null!) throw new ArgumentNullException();
+        _errorHandlePolicy = value;
+    }
+
     public event Action<IServiceCollection>? Configured;
 
+    private static async Task<ErrorHandleDecision> OnError(Exception ex, string stream, CancellationToken token)
+    {
+        await Task.Delay(30000, token);
+        return ErrorHandleDecision.Retry;
+    }
+    
     internal void OnConfigured(IServiceCollection collection)
     {
         Configured?.Invoke(collection);
@@ -63,4 +82,6 @@ class PlumberConfig : IPlumberConfig
     {
         Created?.Invoke(plumber);
     }
+
+    
 }

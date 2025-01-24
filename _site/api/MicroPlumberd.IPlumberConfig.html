@@ -220,6 +220,41 @@ Interface IPlumberConfig  <a class="header-action link-secondary" title="View so
 
 
 
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="MicroPlumberd_IPlumberConfig_SetErrorHandlePolicy_" data-uid="MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy*"></a>
+
+  <h3 id="MicroPlumberd_IPlumberConfig_SetErrorHandlePolicy_System_Func_System_Exception_System_String_System_Threading_CancellationToken_System_Threading_Tasks_Task_MicroPlumberd_ErrorHandleDecision___" data-uid="MicroPlumberd.IPlumberConfig.SetErrorHandlePolicy(System.Func{System.Exception,System.String,System.Threading.CancellationToken,System.Threading.Tasks.Task{MicroPlumberd.ErrorHandleDecision}})">
+  SetErrorHandlePolicy(Func&lt;Exception, string, CancellationToken, Task&lt;ErrorHandleDecision&gt;&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/modelingevolution/micro-plumberd/blob/master/src/MicroPlumberd/IPlumberConfig.cs/#L12"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">void SetErrorHandlePolicy(Func&lt;Exception, string, CancellationToken, Task&lt;ErrorHandleDecision&gt;&gt; handler)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>handler</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.func-4">Func</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.exception">Exception</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a>, <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="MicroPlumberd.ErrorHandleDecision.html">ErrorHandleDecision</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
   <h2 class="section" id="events">Events
 </h2>
 

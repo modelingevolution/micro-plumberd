@@ -1,0 +1,129 @@
+### YamlMime:ManagedReference
+items:
+- uid: MicroPlumberd.ErrorHandleDecision
+  commentId: T:MicroPlumberd.ErrorHandleDecision
+  id: ErrorHandleDecision
+  parent: MicroPlumberd
+  children:
+  - MicroPlumberd.ErrorHandleDecision.Cancel
+  - MicroPlumberd.ErrorHandleDecision.Ignore
+  - MicroPlumberd.ErrorHandleDecision.Retry
+  langs:
+  - csharp
+  - vb
+  name: ErrorHandleDecision
+  nameWithType: ErrorHandleDecision
+  fullName: MicroPlumberd.ErrorHandleDecision
+  type: Enum
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: ErrorHandleDecision
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 22
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  syntax:
+    content: public enum ErrorHandleDecision
+    content.vb: Public Enum ErrorHandleDecision
+- uid: MicroPlumberd.ErrorHandleDecision.Retry
+  commentId: F:MicroPlumberd.ErrorHandleDecision.Retry
+  id: Retry
+  parent: MicroPlumberd.ErrorHandleDecision
+  langs:
+  - csharp
+  - vb
+  name: Retry
+  nameWithType: ErrorHandleDecision.Retry
+  fullName: MicroPlumberd.ErrorHandleDecision.Retry
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Retry
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 27
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Will retry
+  example: []
+  syntax:
+    content: Retry = 0
+    return:
+      type: MicroPlumberd.ErrorHandleDecision
+- uid: MicroPlumberd.ErrorHandleDecision.Cancel
+  commentId: F:MicroPlumberd.ErrorHandleDecision.Cancel
+  id: Cancel
+  parent: MicroPlumberd.ErrorHandleDecision
+  langs:
+  - csharp
+  - vb
+  name: Cancel
+  nameWithType: ErrorHandleDecision.Cancel
+  fullName: MicroPlumberd.ErrorHandleDecision.Cancel
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Cancel
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 31
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Will cancel subscription
+  example: []
+  syntax:
+    content: Cancel = 1
+    return:
+      type: MicroPlumberd.ErrorHandleDecision
+- uid: MicroPlumberd.ErrorHandleDecision.Ignore
+  commentId: F:MicroPlumberd.ErrorHandleDecision.Ignore
+  id: Ignore
+  parent: MicroPlumberd.ErrorHandleDecision
+  langs:
+  - csharp
+  - vb
+  name: Ignore
+  nameWithType: ErrorHandleDecision.Ignore
+  fullName: MicroPlumberd.ErrorHandleDecision.Ignore
+  type: Field
+  source:
+    remote:
+      path: src/MicroPlumberd/IPlumberConfig.cs
+      branch: master
+      repo: https://github.com/modelingevolution/micro-plumberd.git
+    id: Ignore
+    path: src/MicroPlumberd/IPlumberConfig.cs
+    startLine: 35
+  assemblies:
+  - MicroPlumberd
+  namespace: MicroPlumberd
+  summary: Will ignore current error.
+  example: []
+  syntax:
+    content: Ignore = 2
+    return:
+      type: MicroPlumberd.ErrorHandleDecision
+references:
+- uid: MicroPlumberd
+  commentId: N:MicroPlumberd
+  href: MicroPlumberd.html
+  name: MicroPlumberd
+  nameWithType: MicroPlumberd
+  fullName: MicroPlumberd
+- uid: MicroPlumberd.ErrorHandleDecision
+  commentId: T:MicroPlumberd.ErrorHandleDecision
+  parent: MicroPlumberd
+  href: MicroPlumberd.ErrorHandleDecision.html
+  name: ErrorHandleDecision
+  nameWithType: ErrorHandleDecision
+  fullName: MicroPlumberd.ErrorHandleDecision
