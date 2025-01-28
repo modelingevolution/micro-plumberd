@@ -155,6 +155,13 @@ namespace MicroPlumberd.Services.LiteDb
             throw new NotImplementedException();
         }
 
+        public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model = default(TEventHandler?),
+            string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
+            bool ensureOutputStreamProjection = true, int minCheckPointCount = 1, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> Get<T>(object id, CancellationToken token = default) where T : IAggregate<T>, ITypeRegister, IId
         {
             throw new NotImplementedException();
@@ -243,6 +250,13 @@ namespace MicroPlumberd.Services.LiteDb
 
         public IAsyncEnumerable<object> Read<TOwner>(StreamPosition? start = null, Direction? direction = null,
             long maxCount = 9223372036854775807, CancellationToken token = default) where TOwner : ITypeRegister
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc, IEnumerable<string>? events,
+            TEventHandler? model, string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
+            bool ensureOutputStreamProjection = true, int minCheckPointCount = 1, CancellationToken token = default) where TEventHandler : class, IEventHandler
         {
             throw new NotImplementedException();
         }

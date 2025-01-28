@@ -135,7 +135,9 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         IEnumerable<string>? events,
         TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
-        bool ensureOutputStreamProjection = true, CancellationToken token = default)
+        bool ensureOutputStreamProjection = true, 
+        int minCheckpointCount = 1,
+        CancellationToken token = default)
         where TEventHandler : class, IEventHandler
     {
         var handlerType = typeof(TEventHandler);
@@ -152,7 +154,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         catch (PersistentSubscriptionNotFoundException)
         {
             await PersistentSubscriptionClient.CreateToStreamAsync(outputStream, groupName,
-                new PersistentSubscriptionSettings(true, startFrom), cancellationToken: token);
+                new PersistentSubscriptionSettings(true, startFrom, checkPointLowerBound: minCheckpointCount), cancellationToken: token);
         }
 
         var sub = SubscribePersistently(outputStream, groupName, cancellationToken:token);
@@ -166,20 +168,20 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
 
     public Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
-        bool ensureOutputStreamProjection = true, CancellationToken token = default)
+        bool ensureOutputStreamProjection = true, int minCheckPointCount = 1, CancellationToken token = default)
         where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return SubscribeEventHandlerPersistently(_typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>(),
             _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
-            model, outputStream, groupName, startFrom, ensureOutputStreamProjection, token);
+            model, outputStream, groupName, startFrom, ensureOutputStreamProjection, minCheckPointCount, token);
     }
 
 
-    public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10,
+    public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, 
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     {
         return new PersistentSubscriptionRunner(this,
-            PersistentSubscriptionClient.SubscribeToStream(streamName, groupName, bufferSize, userCredentials,
+            PersistentSubscriptionClient.SubscribeToStream(streamName, groupName, bufferSize,  userCredentials,
                 cancellationToken));
     }
 

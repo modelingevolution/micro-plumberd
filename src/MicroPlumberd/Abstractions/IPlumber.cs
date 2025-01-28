@@ -229,7 +229,8 @@ public interface IPlumber
     /// <param name="ensureOutputStreamProjection">when true creates projection that creates output's stream</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true, CancellationToken token = default) where TEventHandler : class,IEventHandler, ITypeRegister;
+    Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null, string? outputStream = null, string? groupName = null, IPosition? startFrom = null, bool ensureOutputStreamProjection = true, int minCheckPointCount=1, CancellationToken token = default) 
+        where TEventHandler : class,IEventHandler, ITypeRegister;
 
     /// <summary>
     /// Returns a subscription builder that will subscribe model persistently.
@@ -240,7 +241,7 @@ public interface IPlumber
     /// <param name="userCredentials">The user credentials.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns></returns>
-    ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null, CancellationToken cancellationToken = new CancellationToken());
+    ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, UserCredentials? userCredentials = null,CancellationToken cancellationToken = new CancellationToken());
 
     /// <summary>
     /// Rehydrates the specified model.
@@ -341,7 +342,7 @@ public interface IPlumber
         IEnumerable<string>? events,
         TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
-        bool ensureOutputStreamProjection = true, CancellationToken token = default)
+        bool ensureOutputStreamProjection = true,int minCheckPointCount=1, CancellationToken token = default)
         where TEventHandler : class, IEventHandler;
 
     /// <summary>
