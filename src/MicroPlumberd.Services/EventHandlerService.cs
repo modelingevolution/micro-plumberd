@@ -10,8 +10,15 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        foreach (var i in starters) 
-            await i.Start(stoppingToken);
+        try
+        {
+            foreach (var i in starters)
+                await i.Start(stoppingToken);
+        }
+        catch (OperationCanceledException ex)
+        {
+            // we dont do enything. operation was canceled.
+        }
     }
 
 }
