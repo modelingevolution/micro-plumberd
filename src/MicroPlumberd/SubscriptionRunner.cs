@@ -151,7 +151,7 @@ class SubscriptionRunner(Plumber plumber, SubscriptionRunnerState subscription) 
                                 subscription.Position = FromStream.After(e.OriginalEventNumber);
                                 break;
                             case StreamMessage.CaughtUp:
-                                if (model is ICatchUpHandler cuh) await cuh.CatchtUp();
+                                if (model is ICaughtUpHandler cuh) await cuh.CaughtUp();
                                 break;
                             default: break;
 
