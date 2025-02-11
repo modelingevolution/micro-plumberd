@@ -474,4 +474,39 @@ public interface IPlumber
         string? outputStream = null,
         FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,
         CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister;
+
+    /// <summary>
+    /// Ensures that a join projection is created or updated for the specified output stream and event types.
+    /// </summary>
+    /// <param name="outputStream">
+    /// The name of the output stream where the projection results will be written.
+    /// </param>
+    /// <param name="eventTypes">
+    /// A collection of event type names to be included in the join projection.
+    /// </param>
+    /// <param name="token">
+    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> representing the asynchronous operation.
+    /// </returns>
+    Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default);
+
+    /// <summary>
+    /// Ensures that a join projection is created for the specified event handler type.
+    /// </summary>
+    /// <typeparam name="TEventHandler">
+    /// The type of the event handler, which must implement both <see cref="IEventHandler"/> and <see cref="ITypeRegister"/>.
+    /// </typeparam>
+    /// <param name="outputStream">
+    /// The name of the output stream for the join projection. If <c>null</c>, the output stream name is determined
+    /// using the <see cref="IReadOnlyConventions.OutputStreamModelConvention"/> for the specified event handler type.
+    /// </param>
+    /// <param name="token">
+    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task"/> representing the asynchronous operation.
+    /// </returns>
+    Task TryCreateJoinProjection<TEventHandler>(string? outputStream=null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister;
 }
