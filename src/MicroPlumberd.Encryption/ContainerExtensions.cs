@@ -15,7 +15,11 @@ public static class ContainerExtensions
     }
     public static IPlumberConfig EnableEncryption(this IPlumberConfig services)
     {
-        services.Created += (p) => { JsonObjectSerializer.Options.Converters.Add(new SecretConverterJsonConverterFactory(services.ServiceProvider)); };
+        services.Created += (p) =>
+        {
+            if(!JsonObjectSerializer.Options.Converters.OfType<SecretConverterJsonConverterFactory>().Any())
+                JsonObjectSerializer.Options.Converters.Add(new SecretConverterJsonConverterFactory(services.ServiceProvider));
+        };
         return services;
     }
 }
