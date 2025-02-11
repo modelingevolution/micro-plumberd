@@ -95,6 +95,7 @@ public readonly record struct Option<T>
     public bool IsDefined { get; init; }
 
 }
+
 public sealed class JsonObjectSerializer : IObjectSerializer
 {
     public static readonly JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };

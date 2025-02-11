@@ -29,9 +29,9 @@ public interface IEventHandler
 /// <summary>
 /// Interface for event-handlers to be invoke when a subscription has catchup.
 /// </summary>
-public interface ICatchUpHandler
+public interface ICaughtUpHandler
 {
-    Task CatchtUp();
+    Task CaughtUp();
 }
 
 /// <summary>
