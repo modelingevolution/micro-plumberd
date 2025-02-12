@@ -232,6 +232,30 @@ namespace MicroPlumberd.Services.LiteDb
             throw new NotImplementedException();
         }
 
+        public Task<IWriteResult> AppendStreamMetadataFromEvent<TEvent>(object id, StreamState? state = null, TimeSpan? maxAge = null,
+            StreamPosition? truncateBefore = null, TimeSpan? cacheControl = null, StreamAcl? acl = null, int? maxCount = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IWriteResult> AppendStreamMetadataFromHandler<THandler>(StreamState? state = null, TimeSpan? maxAge = null,
+            StreamPosition? truncateBefore = null, TimeSpan? cacheControl = null, StreamAcl? acl = null, int? maxCount = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IWriteResult> AppendStreamMetadataFromAggregate<TAggregate>(object id, StreamState? state = null, TimeSpan? maxAge = null,
+            StreamPosition? truncateBefore = null, TimeSpan? cacheControl = null, StreamAcl? acl = null, int? maxCount = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IWriteResult> AppendStreamMetadata(string streamId, StreamState? state, TimeSpan? maxAge, StreamPosition? truncateBefore,
+            TimeSpan? cacheControl, StreamAcl? acl, int? maxCount)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IWriteResult> AppendLink(string streamId, ulong streamPosition, string streamSourceId, StreamState? state = null,
             CancellationToken token = default)
         {

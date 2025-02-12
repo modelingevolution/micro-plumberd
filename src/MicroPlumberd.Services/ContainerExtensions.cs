@@ -23,11 +23,11 @@ class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TO
 public static class ContainerExtensions
 {
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
-        EventStoreClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null) =>
-        collection.AddPlumberd(sp => settings, configure);
+        EventStoreClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false) =>
+        collection.AddPlumberd(sp => settings, configure, scopedCommandBus);
 
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
-        Func<IServiceProvider, EventStoreClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null)
+        Func<IServiceProvider, EventStoreClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false)
     {
         collection.AddSingleton(sp => Plumber.Create(settingsFactory(sp), x =>
         {
@@ -40,8 +40,12 @@ public static class ContainerExtensions
         collection.AddBackgroundServiceIfMissing<EventHandlerService>();
         
         collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));
-        collection.TryAddSingleton<ICommandBus, CommandBus>();
+        if(scopedCommandBus)
+            collection.TryAddScoped<ICommandBus, CommandBus>();
+        else
+            collection.TryAddSingleton<ICommandBus, CommandBus>();
         collection.TryAddSingleton(typeof(IEventHandler<>), typeof(EventHandlerExecutor<>));
+        
         
         collection.TryDecorate<ICommandBus, CommandBusAttributeValidator>();
 

@@ -73,12 +73,12 @@ class CommandBus : ICommandBus, IEventHandler
 
     private readonly IdDuckTyping _idTyping = new();
 
-    public async Task QueueAsync(object recipientId, object command, CancellationToken token = default)
+    public async Task QueueAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = true, CancellationToken token = default)
     {
         await using CommandBus bus = new CommandBus(this._plumber, this._log);
-        await bus.SendAsync(recipientId, command, token);
+        await bus.SendAsync(recipientId, command, timeout ?? TimeSpan.MaxValue, fireAndForget, token);
     }
-    public async Task SendAsync(object recipientId, object command, CancellationToken token = default)
+    public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false, CancellationToken token = default)
     {
         var commandId = GetCommandId(command);
         var causationId = InvocationContext.Current.CausactionId() ?? commandId;
@@ -102,8 +102,10 @@ class CommandBus : ICommandBus, IEventHandler
 
         await _plumber.AppendEvents(_streamIn, StreamState.Any, [command], metadata, token);
 
-        bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(_plumber.Config.ServicesConfig().DefaultTimeout, token);
+        if (fireAndForget)
+            return;
         
+        bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(timeout ?? _plumber.Config.ServicesConfig().DefaultTimeout, token);
         if (!executionResults.IsSuccess)
         {
             if (!receivedReturn)

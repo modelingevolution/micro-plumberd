@@ -15,18 +15,18 @@ public class CommandHandlerAttributeValidator<T>(ICommandHandler<T> nx, IService
 
 class CommandBusAttributeValidator(ICommandBus cb, IServiceProvider sp) : ICommandBus
 {
-    public async Task SendAsync(object recipientId, object command, CancellationToken token = default)
+    public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false,  CancellationToken token = default)
     {
         var validationContext = new ValidationContext(command, sp, null);
         Validator.ValidateObject(command, validationContext, true);
-        await cb.SendAsync(recipientId, command, token);
+        await cb.SendAsync(recipientId, command, timeout,fireAndForget, token);
     }
 
-    public Task QueueAsync(object recipientId, object command, CancellationToken token = default)
+    public Task QueueAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = true, CancellationToken token = default)
     {
         var validationContext = new ValidationContext(command, sp, null);
         Validator.ValidateObject(command, validationContext, true);
-        return cb.QueueAsync(recipientId, command, token);
+        return cb.QueueAsync(recipientId, command, timeout, fireAndForget, token);
     }
 
     public ValueTask DisposeAsync()

@@ -3,6 +3,7 @@ using System.Collections.Frozen;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using System.Text;
 using EventStore.Client;
 using Grpc.Core;
@@ -444,6 +445,179 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         
     }
 
+    /// <summary>
+    /// Appends metadata to a stream derived from the specified event type and identifier.
+    /// </summary>
+    /// <typeparam name="TEvent">The type of the event associated with the stream.</typeparam>
+    /// <param name="id">The identifier of the event, used to derive the stream name.</param>
+    /// <param name="state">The optional state of the stream (e.g., existing or new).</param>
+    /// <param name="maxAge">The optional maximum age for events in the stream.</param>
+    /// <param name="truncateBefore">The optional position before which events should be truncated.</param>
+    /// <param name="cacheControl">The optional cache control duration for the stream.</param>
+    /// <param name="acl">The optional access control list for the stream.</param>
+    /// <param name="maxCount">The optional maximum number of events allowed in the stream.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the result of the write operation.</returns>
+    /// <remarks>
+    /// The stream name is derived using the <see cref="IReadOnlyConventions.StreamNameFromEventConvention"/> convention.
+    /// </remarks>
+    public async Task<IWriteResult> AppendStreamMetadataFromEvent<TEvent>(
+        object id,
+        StreamState? state = null,
+        TimeSpan? maxAge = null,
+        StreamPosition? truncateBefore = null,
+        TimeSpan? cacheControl = null,
+        StreamAcl? acl = null,
+        int? maxCount = null)
+    {
+        var streamId = Conventions.StreamNameFromEventConvention(typeof(TEvent), id);
+        // Create StreamMetadata with the provided arguments
+        return await AppendStreamMetadata(streamId, state, maxAge, truncateBefore, cacheControl, acl, maxCount);
+    }
+    /// <summary>
+    /// Appends metadata to a stream based on the specified handler type.
+    /// </summary>
+    /// <typeparam name="THandler">
+    /// The type of the handler that determines the stream for which metadata will be appended.
+    /// </typeparam>
+    /// <param name="state">
+    /// The <see cref="StreamState"/> indicating the expected state of the stream. 
+    /// If <c>null</c>, the operation will not check the stream's state.
+    /// </param>
+    /// <param name="maxAge">
+    /// The maximum age of events in the stream. Events older than this value will be removed.
+    /// </param>
+    /// <param name="truncateBefore">
+    /// The <see cref="StreamPosition"/> before which events will be truncated.
+    /// </param>
+    /// <param name="cacheControl">
+    /// The duration for which the stream metadata can be cached.
+    /// </param>
+    /// <param name="acl">
+    /// The access control list (<see cref="StreamAcl"/>) specifying permissions for the stream.
+    /// </param>
+    /// <param name="maxCount">
+    /// The maximum number of events allowed in the stream. Events exceeding this count will be removed.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains an <see cref="IWriteResult"/> 
+    /// indicating the outcome of the operation.
+    /// </returns>
+    public async Task<IWriteResult> AppendStreamMetadataFromHandler<THandler>(
+        StreamState? state = null,
+        TimeSpan? maxAge = null,
+        StreamPosition? truncateBefore = null,
+        TimeSpan? cacheControl = null,
+        StreamAcl? acl = null,
+        int? maxCount = null)
+    {
+        var streamId = Conventions.OutputStreamModelConvention(typeof(THandler));
+        // Create StreamMetadata with the provided arguments
+        return await AppendStreamMetadata(streamId, state, maxAge, truncateBefore, cacheControl, acl, maxCount);
+    }
+    /// <summary>
+    /// Appends metadata to a stream associated with a specified aggregate type and identifier.
+    /// </summary>
+    /// <typeparam name="TAggregate">
+    /// The type of the aggregate associated with the stream.
+    /// </typeparam>
+    /// <param name="id">
+    /// The identifier of the aggregate.
+    /// </param>
+    /// <param name="state">
+    /// The optional state of the stream, such as <see cref="StreamState"/>.
+    /// </param>
+    /// <param name="maxAge">
+    /// The optional maximum age for events in the stream.
+    /// </param>
+    /// <param name="truncateBefore">
+    /// The optional position before which events in the stream should be truncated.
+    /// </param>
+    /// <param name="cacheControl">
+    /// The optional cache control duration for the stream.
+    /// </param>
+    /// <param name="acl">
+    /// The optional access control list (ACL) for the stream.
+    /// </param>
+    /// <param name="maxCount">
+    /// The optional maximum number of events allowed in the stream.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains an <see cref="IWriteResult"/> 
+    /// indicating the outcome of the operation.
+    /// </returns>
+    /// <remarks>
+    /// This method uses the conventions defined in <see cref="IReadOnlyConventions"/> to determine the stream ID 
+    /// based on the aggregate type and identifier.
+    /// </remarks>
+    public async Task<IWriteResult> AppendStreamMetadataFromAggregate<TAggregate>(
+        object id,
+        StreamState? state = null,
+        TimeSpan? maxAge = null,
+        StreamPosition? truncateBefore = null,
+        TimeSpan? cacheControl = null,
+        StreamAcl? acl = null,
+        int? maxCount = null)
+    {
+        var streamId = Conventions.GetStreamIdConvention(typeof(TAggregate), id);
+        // Create StreamMetadata with the provided arguments
+        return await AppendStreamMetadata(streamId, state, maxAge, truncateBefore, cacheControl, acl, maxCount);
+    }
+    /// <summary>
+    /// Appends metadata to a specified stream in the EventStore.
+    /// </summary>
+    /// <param name="streamId">The identifier of the stream to which metadata will be appended.</param>
+    /// <param name="state">
+    /// The expected state of the stream. If <c>null</c>, defaults to <see cref="StreamState.Any"/>.
+    /// </param>
+    /// <param name="maxAge">
+    /// The maximum age of events in the stream. Events older than this value will be removed.
+    /// </param>
+    /// <param name="truncateBefore">
+    /// The position in the stream before which events will be truncated.
+    /// </param>
+    /// <param name="cacheControl">
+    /// The duration for which the stream metadata can be cached.
+    /// </param>
+    /// <param name="acl">
+    /// The access control list (ACL) defining permissions for the stream.
+    /// </param>
+    /// <param name="maxCount">
+    /// The maximum number of events allowed in the stream. Events exceeding this count will be removed.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains the write result of the operation.
+    /// </returns>
+    public async Task<IWriteResult> AppendStreamMetadata(string streamId, StreamState? state, TimeSpan? maxAge, StreamPosition? truncateBefore,
+        TimeSpan? cacheControl, StreamAcl? acl, int? maxCount)
+    {
+        var metadata = new StreamMetadata(
+            maxAge: maxAge,
+            truncateBefore: truncateBefore,
+            cacheControl: cacheControl,
+            acl: acl,
+            maxCount: maxCount
+        );
+        // Set the stream metadata
+        return await Client.SetStreamMetadataAsync(streamId, state ?? StreamState.Any, metadata);
+    }
+    /// <summary>
+    /// Appends an event to a stream in the Event Store.
+    /// </summary>
+    /// <param name="evt">The event to append. Cannot be <c>null</c>.</param>
+    /// <param name="id">The optional identifier for the stream. If not provided, conventions will be used to determine the stream name.</param>
+    /// <param name="metadata">Optional metadata associated with the event.</param>
+    /// <param name="state">
+    /// The expected state of the stream. Defaults to <see cref="StreamState.Any"/> if not specified.
+    /// </param>
+    /// <param name="evtName">
+    /// The name of the event. If not provided, conventions will be used to determine the event name.
+    /// </param>
+    /// <param name="token">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result contains an <see cref="IWriteResult"/> 
+    /// indicating the result of the append operation.
+    /// </returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="evt"/> is <c>null</c>.</exception>
     public async Task<IWriteResult> AppendEvent(object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null, CancellationToken token = default)
     {
         if (evt == null) throw new ArgumentException("evt cannot be null.");
