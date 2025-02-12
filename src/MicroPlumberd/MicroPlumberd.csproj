@@ -36,5 +36,6 @@
     <PackageReference Include="EventStore.Client.Grpc.PersistentSubscriptions" Version="23.3.8" />
     <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.8" />
     <PackageReference Include="EventStore.Client.Grpc.ProjectionManagement" Version="23.3.8" />
+    <PackageReference Include="EventStore.Client.Grpc.UserManagement" Version="23.3.8" />
   </ItemGroup>
 </Project>

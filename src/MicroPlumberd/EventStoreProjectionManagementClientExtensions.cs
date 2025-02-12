@@ -100,6 +100,10 @@ public static class EventStoreProjectionManagementClientExtensions
     public static async Task TryCreateJoinProjection(this EventStoreProjectionManagementClient client,
         string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
+        if (!eventTypes.Any())
+            throw new ArgumentOutOfRangeException(
+                $"There are not event type to create the output stream: {outputStream}");
+        
         var query = CreateQuery(outputStream, eventTypes);
 
 

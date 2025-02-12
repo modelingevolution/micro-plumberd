@@ -11,10 +11,12 @@ using EventStore.Client;
 using MicroPlumberd;
 using MicroPlumberd.Collections;
 using MicroPlumberd.Services;
+
 using MicroPlumberd.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
+
 
 class CommandBus : ICommandBus, IEventHandler
 {
@@ -25,9 +27,9 @@ class CommandBus : ICommandBus, IEventHandler
     private readonly ConcurrentDictionary<Guid, CommandExecutionResults> _handlers = new();
     private readonly ConcurrentDictionary<string, Type> _commandMapping = new();
     private readonly ConcurrentHashSet<Type> _supportedCommands = new();
-    private bool _initialized;
+    private AsyncLazy<bool> _initialized;
     private readonly object _sync = new object();
-
+    private IAsyncDisposable? _subscription;
     public Guid SessionId { get; } = Guid.NewGuid();
     public CommandBus(IPlumber plumber, ILogger<CommandBus> log)
     {
@@ -36,27 +38,19 @@ class CommandBus : ICommandBus, IEventHandler
         var servicesConventions = plumber.Config.Conventions.ServicesConventions();
         _streamIn = servicesConventions.SessionInStreamFromSessionIdConvention(SessionId);
         _streamOut = servicesConventions.SessionOutStreamFromSessionIdConvention(SessionId);
+        _initialized = new AsyncLazy<bool>(OnInitialize);
     }
-    
-    
 
-    private async ValueTask CheckInitialized()
+    private async Task<bool> OnInitialize()
     {
-        bool shouldSubscribe = false;
-        if (!_initialized)
-            lock (_sync)
-                if (!_initialized)
-                {
-                    shouldSubscribe = true;
-                    _initialized = true;
-                }
-
-        if (shouldSubscribe)
-        {
-            await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.End, false);
-            _log.LogDebug("Session {steamId} subscribed.", _streamOut);
-        }
+        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.NoStream, new StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        _subscription = await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.End, false);
+        _log.LogDebug("Session {steamId} subscribed.", _streamOut);
+       
+        return true;
     }
+
 
     private bool TryMapEventResponse(string type, out Type t)
     {
@@ -78,6 +72,12 @@ class CommandBus : ICommandBus, IEventHandler
     }
 
     private readonly IdDuckTyping _idTyping = new();
+
+    public async Task QueueAsync(object recipientId, object command, CancellationToken token = default)
+    {
+        await using CommandBus bus = new CommandBus(this._plumber, this._log);
+        await bus.SendAsync(recipientId, command, token);
+    }
     public async Task SendAsync(object recipientId, object command, CancellationToken token = default)
     {
         var commandId = GetCommandId(command);
@@ -98,8 +98,8 @@ class CommandBus : ICommandBus, IEventHandler
             throw new InvalidOperationException("This command is being executed.");
 
         CheckMapping(command);
-        await CheckInitialized();
-        
+        await _initialized.Value;
+
         await _plumber.AppendEvents(_streamIn, StreamState.Any, [command], metadata, token);
 
         bool receivedReturn = await executionResults.IsReady.Task.WaitAsync(_plumber.Config.ServicesConfig().DefaultTimeout, token);
@@ -160,6 +160,8 @@ class CommandBus : ICommandBus, IEventHandler
             }
         } else _log.LogDebug("Session event unhandled. CausationId: {CausationId}", causationId);
     }
+
+    public ValueTask DisposeAsync() => _subscription?.DisposeAsync() ?? ValueTask.CompletedTask;
 }
 
 

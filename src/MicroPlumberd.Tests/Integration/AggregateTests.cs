@@ -4,7 +4,7 @@ using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;
 
 using MicroPlumberd.Tests.Utils;
-using TechTalk.SpecFlow.Generator.Plugins;
+
 using TechTalk.SpecFlow.UnitTestProvider;
 
 namespace MicroPlumberd.Tests.Integration

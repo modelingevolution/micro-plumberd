@@ -5,6 +5,7 @@ using MicroPlumberd.Tests.App.Domain;
 using MicroPlumberd.Tests.App.Infrastructure;
 using MicroPlumberd.Tests.App.Srv;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using TechTalk.SpecFlow;
@@ -76,7 +77,15 @@ public partial class TestAppHost : IDisposable
     public async Task<IServiceProvider> StartAsync()
     {
         await Host.StartAsync();
-        await Task.Delay(1000);
+
+        var hc = Host.Services.GetRequiredService<StartupHealthCheck>();
+        while (true)
+        {
+            var ret = await hc.CheckHealthAsync(null, default);
+            if (ret.Status == HealthStatus.Healthy) break;
+            await Task.Delay(1000);
+        }
+        
         return Host.Services;
     }
 }

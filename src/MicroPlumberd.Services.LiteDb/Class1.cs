@@ -222,6 +222,16 @@ namespace MicroPlumberd.Services.LiteDb
             throw new NotImplementedException();
         }
 
+        public Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task TryCreateJoinProjection<TEventHandler>(string? outputStream = null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IWriteResult> AppendLink(string streamId, ulong streamPosition, string streamSourceId, StreamState? state = null,
             CancellationToken token = default)
         {

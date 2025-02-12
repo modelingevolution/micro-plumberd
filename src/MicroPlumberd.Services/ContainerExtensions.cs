@@ -34,6 +34,11 @@ public static class ContainerExtensions
             configure?.Invoke(sp, x);
             x.ServiceProvider = sp;
         }));
+        collection.AddSingleton<StartupHealthCheck>();
+
+        collection.AddBackgroundServiceIfMissing<CommandHandlerService>();
+        collection.AddBackgroundServiceIfMissing<EventHandlerService>();
+        
         collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));
         collection.TryAddSingleton<ICommandBus, CommandBus>();
         collection.TryAddSingleton(typeof(IEventHandler<>), typeof(EventHandlerExecutor<>));
@@ -52,16 +57,15 @@ public static class ContainerExtensions
             descriptor.ImplementationType == typeof(TService));
 
         // Add the service if it's missing
-        if (serviceDescriptor == null)
-        {
-            services.AddHostedService<TService>();
-        }
+        if (serviceDescriptor != null) return services;
+        
+        services.TryAddSingleton<TService>();
+        services.AddHostedService(sp => sp.GetRequiredService<TService>());
 
         return services;
     }
     public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
-        services.AddBackgroundServiceIfMissing<EventHandlerService>();
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
         services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start));
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
@@ -69,8 +73,7 @@ public static class ContainerExtensions
         return services;
     }
     public static IServiceCollection AddStateEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister
-    {
-        services.AddBackgroundServiceIfMissing<EventHandlerService>();
+    {   
         services.AddSingleton<EventStateHandlerStarter<TEventHandler>>();
         services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventStateHandlerStarter<TEventHandler>>().Configure(FromRelativeStreamPosition.End-1));
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
@@ -79,7 +82,6 @@ public static class ContainerExtensions
     }
     public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister
     {
-        services.AddBackgroundServiceIfMissing<EventHandlerService>();
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
         services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(start));
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
@@ -88,7 +90,6 @@ public static class ContainerExtensions
     }
     public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, bool persistently = false, StreamPosition? start = null) where TCommandHandler:ICommandHandler, IServiceTypeRegister
     {
-        services.AddBackgroundServiceIfMissing<CommandHandlerService>();
         services.AddSingleton<CommandHandlerStarter<TCommandHandler>>();
         services.AddSingleton<ICommandHandlerStarter>(sp => sp.GetRequiredService<CommandHandlerStarter<TCommandHandler>>().Configure(persistently, start));
         services.TryAddSingleton(typeof(CommandHandlerExecutor<>));
