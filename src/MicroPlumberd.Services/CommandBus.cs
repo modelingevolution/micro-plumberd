@@ -83,7 +83,7 @@ class CommandBus : ICommandBus, IEventHandler
         var commandId = GetCommandId(command);
         var causationId = InvocationContext.Current.CausactionId() ?? commandId;
         var correlationId = InvocationContext.Current.CorrelationId() ?? commandId;
-
+        var retById = IdDuckTyping.Instance.TryGetGuidId(command, out var id) ? id : correlationId;
 
         var metadata = new
         {
@@ -94,9 +94,11 @@ class CommandBus : ICommandBus, IEventHandler
         };
 
         var executionResults = new CommandExecutionResults();
-        if (!_handlers.TryAdd(metadata.CausationId, executionResults))
+        if (!_handlers.TryAdd(retById, executionResults))
             throw new InvalidOperationException("This command is being executed.");
 
+        //Debug.WriteLine($"===> {SessionId} expects results from command id: {retById}, Context causation is: {InvocationContext.Current.CausactionId()}");
+        
         CheckMapping(command);
         await _initialized.Value;
 
@@ -152,7 +154,7 @@ class CommandBus : ICommandBus, IEventHandler
 
     async Task IEventHandler.Handle(Metadata m, object ev)
     {
-        var causationId = m.CausationId() ?? Guid.Empty;
+        var causationId = ev is ICommandSource cs ? cs.CommandId : (m.CausationId() ?? Guid.Empty);
         if (_handlers.TryGetValue(causationId, out var results))
         {
             if (await results.Handle(m, ev))
@@ -160,7 +162,9 @@ class CommandBus : ICommandBus, IEventHandler
                 _handlers.TryRemove(causationId, out var x);
                 _log.LogDebug("Command execution confirmed: {CommandType}", ev.GetType().GetFriendlyName());
             }
-        } else _log.LogDebug("Session event unhandled. CausationId: {CausationId}", causationId);
+        } 
+        else 
+            _log.LogDebug("Session event unhandled. CausationId: {CausationId}, SessionId: {SessionId}, Stream: {StreamId}", causationId, SessionId, _streamOut);
     }
 
     public ValueTask DisposeAsync() => _subscription?.DisposeAsync() ?? ValueTask.CompletedTask;
@@ -184,41 +188,26 @@ public class CommandExecutionResults
         {
             case CommandExecuted ce:
             {
-                if (ce.CommandId == m.CausationId())
-                {
-                    IsSuccess = true;
-                    IsReady.SetResult(true);
-                    return true;
-                }
-
-                break;
+                IsSuccess = true;
+                IsReady.SetResult(true);
+                return true;
             }
             case ICommandFailedEx ef:
             {
-                if (ef.CommandId == m.CausationId())
-                {
-                    IsSuccess = false;
-                    ErrorMessage = ef.Message;
-                    ErrorData = ef.Fault;
-                    ErrorCode = ef.Code;
-                        IsReady.SetResult(true);
-                        return true;
-                }
-
-                break;
+                IsSuccess = false;
+                ErrorMessage = ef.Message;
+                ErrorData = ef.Fault;
+                ErrorCode = ef.Code;
+                IsReady.SetResult(true);
+                return true;
             }
             case ICommandFailed cf:
             {
-                if (cf.CommandId == m.CausationId())
-                {
-                    IsSuccess = false;
-                    ErrorMessage = cf.Message;
-                    ErrorCode = cf.Code;
-                    IsReady.SetResult(true);
-                    return true;
-                }
-
-                break;
+                IsSuccess = false;
+                ErrorMessage = cf.Message;
+                ErrorCode = cf.Code;
+                IsReady.SetResult(true);
+                return true;
             }
         }
 

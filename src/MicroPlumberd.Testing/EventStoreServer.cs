@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MicroPlumberd.Testing;
 
-public class EventStoreServer :  IDisposable
+public class EventStoreServer :  IDisposable, IAsyncDisposable
 {
     public EventStoreClientSettings GetEventStoreSettings() => EventStoreClientSettings.Create(HttpUrl.ToString());
 
@@ -171,6 +171,11 @@ public class EventStoreServer :  IDisposable
     public void Dispose()
     {
         Task.Run(Cleanup).Wait();
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        return Cleanup();
     }
 }
 

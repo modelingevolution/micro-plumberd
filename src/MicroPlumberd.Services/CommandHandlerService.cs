@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using EventStore.Client;
+using MicroPlumberd.Utils;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -75,14 +76,17 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log, IPlumber 
         return false;
     }
 
+    
     public async Task Handle(Metadata m, object ev)
     {
         if (_handlersByCommand.TryGetValue(ev.GetType(), out var executor))
         {
             var tmp = InvocationContext.Current.Clone();
-            await Task.Run(async () =>
+            _ = Task.Run(async () =>
             {
                 using var scope = new InvocationScope(tmp);
+                if(IdDuckTyping.Instance.TryGetGuidId(ev, out var id))
+                    scope.SetCausation(id);
                 await executor.Handle(m, ev);
             });
         } 

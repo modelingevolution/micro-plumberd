@@ -1,6 +1,8 @@
 ﻿using System.Collections.Concurrent;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using Guid = System.Guid;
 
 namespace MicroPlumberd.Utils;
 
@@ -52,8 +54,19 @@ public class IdDuckTyping
 {
     private readonly ConcurrentDictionary<Type, Action<object, object>> _setters = new();
     private readonly ConcurrentDictionary<Type, Func<object, object>> _getters = new();
-
-    public object GetId(object instance)
+    public static readonly IdDuckTyping Instance = new IdDuckTyping();
+    public bool TryGetGuidId(object instance, out Guid id)
+    {
+        var tmp = GetId(instance);
+        if (tmp == null)
+        {
+            id = Guid.Empty;
+            return false;
+        }
+        id = (tmp is Guid guid ? guid : Guid.Parse(tmp.ToString()));
+        return true;
+    }
+    public object? GetId(object instance)
     {
         return _getters.GetOrAdd(instance.GetType(), x =>
         {

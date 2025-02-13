@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Net;
 using EventStore.Client;
+using MicroPlumberd.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -45,7 +46,8 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
     where THandler:ICommandHandler, IServiceTypeRegister
 {
     private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
-    class Invoker<TCommand>(CommandHandlerExecutor<THandler> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => await parent.Handle<TCommand>(m, (TCommand)ev); }
+    class Invoker<TCommand>(CommandHandlerExecutor<THandler> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => 
+        await parent.Handle<TCommand>(m, (TCommand)ev); }
     interface IInvoker { Task Handle(Metadata m, object ev); }
 
     private readonly ConcurrentDictionary<Type, IInvoker> _cached = new();
@@ -57,6 +59,7 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
         await invoker.Handle(m, ev);
     }
 
+    private static IdDuckTyping _duckId = new IdDuckTyping();
     private async Task Handle<TCommand>(Metadata m, TCommand command)
     {
         
@@ -68,7 +71,9 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
 
         var cmdStream = _serviceConventions.SessionOutStreamFromSessionIdConvention(sessionId);
         var cmdName = _serviceConventions.CommandNameConvention(command.GetType());
-        var cmdId = m.CausationId() ?? m.EventId;//(command is IId id) ? id.Uuid : m.EventId;
+        //var cmdId = m.CausationId() ?? m.EventId;//(command is IId id) ? id.Uuid : m.EventId;
+        var id = _duckId.GetId(command);
+        var cmdId = id is Guid g ? g : Guid.Parse(id.ToString());
 
         Stopwatch sw = new Stopwatch();
         try
@@ -78,9 +83,11 @@ class CommandHandlerExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerE
             log.LogDebug("Command {CommandType} executed.", command.GetType().Name);
             var evt = new CommandExecuted() { CommandId = cmdId, Duration = sw.Elapsed };
             var evtName = $"{cmdName}Executed";
+
             await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
+
         }
         catch (ValidationException ex)
         {

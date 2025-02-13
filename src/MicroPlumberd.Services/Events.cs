@@ -5,9 +5,13 @@ using System.Text.Json;
 
 namespace MicroPlumberd.Services;
 
+interface ICommandSource
+{
+    public Guid CommandId { get; }
+}
 
 [DataContract]
-internal record CommandExecuted
+internal record CommandExecuted : ICommandSource
 {
     [DataMember(Order=1)]
     public Guid CommandId { get; set; }
@@ -33,9 +37,9 @@ internal record CommandFailed : ICommandFailed
     }
 }
 
-interface ICommandFailed
+interface ICommandFailed : ICommandSource
 {
-    Guid CommandId { get; }
+    
     TimeSpan Duration { get; }
     string Message { get; }
     public HttpStatusCode Code { get; }

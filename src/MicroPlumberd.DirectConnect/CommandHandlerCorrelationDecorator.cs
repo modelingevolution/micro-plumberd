@@ -1,4 +1,5 @@
-﻿using ModelingEvolution.DirectConnect;
+﻿using System.Diagnostics;
+using ModelingEvolution.DirectConnect;
 
 namespace MicroPlumberd.DirectConnect;
 
@@ -10,6 +11,7 @@ internal class CommandHandlerCorrelationDecorator<TCommand>(IRequestHandler<Comm
     {
         InvocationContext.Current.SetCorrelation(request.CorrelationId ?? request.CommandId);
         InvocationContext.Current.SetCausation(request.CommandId);
+        //Debug.WriteLine($"===> Setting scope of causation id to: {request.CommandId}");
         return await next.Handle(request);
     }
 }

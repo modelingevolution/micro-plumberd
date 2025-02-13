@@ -2,10 +2,12 @@
 using System.Dynamic;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using EventStore.Client;
 using Grpc.Core;
+using MicroPlumberd.Utils;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace MicroPlumberd;
@@ -281,7 +283,17 @@ class Conventions : IConventions, IReadOnlyConventions
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
     public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
-    public EventIdConvention GetEventIdConvention { get; set; } = (aggregate, evt) => Uuid.NewUuid();
+    public EventIdConvention GetEventIdConvention { get; set; } = EventIdConvention;
+
+    private static IdDuckTyping _duck = new();
+    private static Uuid EventIdConvention(IAggregate? aggregate, object evt)
+    {
+        var id= _duck.GetId(evt);
+        if (id == null) return Uuid.NewUuid();
+        var ret = id is Guid g ? g : Guid.Parse(id.ToString());
+        return Uuid.FromGuid(ret);
+    }
+
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamOrFriendlyTypeName;
     public GroupNameModelConvention GroupNameModelConvention { get; set; } = (t) => t.GetFriendlyName();
     public SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
@@ -520,6 +532,8 @@ public class InvocationContext
         value = default;
         return false;
     }
+
+    
     public void Clear()
     {
         IDictionary<string, object> obj = _data!;
