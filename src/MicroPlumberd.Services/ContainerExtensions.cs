@@ -3,6 +3,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
@@ -63,8 +64,15 @@ public static class ContainerExtensions
         collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));
         if (scopedCommandBus)
         {
-            collection.TryAddScoped<ICommandBus, CommandBus>();
-            collection.TryAddSingleton<ICommandBusPool>(sp => new CommandBusPoolScoped(sp, commandBusPoolSize).Init());
+            collection.TryAddScoped<ICommandBus>(sp =>
+            {
+                var pool = (CommandBusPoolScoped)sp.GetRequiredService<ICommandBusPool>();
+                var sb = new CommandBus(sp.GetRequiredService<IPlumber>(), pool,
+                    sp.GetRequiredService<ILogger<CommandBus>>());
+                pool.Init();
+                return sb;
+            });
+            collection.TryAddSingleton<ICommandBusPool>(sp => new CommandBusPoolScoped(sp, commandBusPoolSize));
         }
         else
         {

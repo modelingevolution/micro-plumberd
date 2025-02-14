@@ -76,7 +76,7 @@ class CommandBus : ICommandBus, IEventHandler
     public async Task QueueAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = true, CancellationToken token = default)
     {
         using var scope = await _pool.RentScope(token);
-        await scope.SendAsync(recipientId, command, timeout ?? TimeSpan.MaxValue, fireAndForget, token);
+        await scope.SendAsync(recipientId, command, timeout ?? TimeSpan.FromDays(7), fireAndForget, token);
     }
     public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false, CancellationToken token = default)
     {
@@ -168,6 +168,7 @@ class CommandBus : ICommandBus, IEventHandler
     }
 
     public ValueTask DisposeAsync() => _subscription?.DisposeAsync() ?? ValueTask.CompletedTask;
+    public void Dispose() => _ = DisposeAsync();
 }
 
 public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute

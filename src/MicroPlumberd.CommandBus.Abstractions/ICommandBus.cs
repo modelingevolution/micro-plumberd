@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents a command bus for sending commands.
 /// </summary>
-public interface ICommandBus : IAsyncDisposable
+public interface ICommandBus : IAsyncDisposable, IDisposable
 {
     /// <summary>
     /// Sends a command synchronously to the specified recipient - command handler. It waits for the response.

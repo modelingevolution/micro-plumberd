@@ -3,6 +3,7 @@ using System.Dynamic;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using EventStore.Client;
@@ -82,6 +83,8 @@ public delegate void BuildInvocationContext(InvocationContext context, Metadata 
 /// Represents delegate that creates Uuid from an event and optinally aggregate instance.
 /// </summary>
 public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
+
+public delegate Uuid EventIdStateConvention(object state, object id, long? version);
 
 /// <summary>
 /// Represents a delegate that defines the convention for generating the output stream name based on the model type.
@@ -178,7 +181,7 @@ public interface IReadOnlyConventions : IExtension
     BuildInvocationContext BuildInvocationContext { get;  }
     MetadataConvention? MetadataEnrichers { get;  }
 
-
+    EventIdStateConvention GetEventIdStateConvention { get; }
     EventIdConvention GetEventIdConvention { get; }
     OutputStreamModelConvention OutputStreamModelConvention { get;  }
     GroupNameModelConvention GroupNameModelConvention { get;  }
@@ -270,6 +273,25 @@ public interface IExtension
 {
     T GetExtension<T>() where T : new();
 }
+public static class GuidExtensions
+{
+    [StructLayout(LayoutKind.Explicit)]
+    private struct GuidLongOverlay
+    {
+        [FieldOffset(0)]
+        public Guid Guid;
+
+        [FieldOffset(0)]
+        public long Long;
+    }
+
+    public static Guid Xor(this in Guid guid, long value)
+    {
+        var overlay = new GuidLongOverlay { Guid = guid };
+        overlay.Long ^= value;
+        return overlay.Guid;
+    }
+}
 class Conventions : IConventions, IReadOnlyConventions
 {
     private readonly ConcurrentDictionary<Type,object> _extension = new();
@@ -284,14 +306,33 @@ class Conventions : IConventions, IReadOnlyConventions
     public MetadataConvention? MetadataEnrichers { get; set; }
     public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
     public EventIdConvention GetEventIdConvention { get; set; } = EventIdConvention;
+    public EventIdStateConvention GetEventIdStateConvention { get; set; } = EventIdStateConvention;
 
-    private static IdDuckTyping _duck = new();
+    private static Uuid EventIdStateConvention(object state, object? id, long? version)
+    {
+        Guid g = Guid.Empty;
+        if (id == null) return Uuid.NewUuid();
+        
+        if(id is Guid guid)
+            g = guid;
+        else if (!Guid.TryParse(id.ToString(), out g))
+            g = id.ToString().ToGuid();
+            
+        if(version != null)
+            g = g.Xor(version.Value);
+
+        if (g == Guid.Empty) throw new InvalidOperationException("Guid cannot be empty");
+        
+        return g == Guid.Empty ? Uuid.NewUuid() : Uuid.FromGuid(g);
+    }
+
     private static Uuid EventIdConvention(IAggregate? aggregate, object evt)
     {
-        var id= _duck.GetId(evt);
-        if (id == null) return Uuid.NewUuid();
-        var ret = id is Guid g ? g : Guid.Parse(id.ToString());
-        return Uuid.FromGuid(ret);
+        if (!IdDuckTyping.Instance.TryGetGuidId(evt, out var g)) return Uuid.NewUuid();
+        
+        if (g == Guid.Empty) throw new InvalidOperationException("Guid cannot be empty");
+        return Uuid.FromGuid(g);
+
     }
 
     public OutputStreamModelConvention OutputStreamModelConvention { get; set; } = OutputStreamOrFriendlyTypeName;

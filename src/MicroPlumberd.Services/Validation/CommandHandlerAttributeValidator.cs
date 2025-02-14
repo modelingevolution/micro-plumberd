@@ -28,7 +28,7 @@ class CommandBusAttributeValidator(ICommandBus cb, IServiceProvider sp) : IComma
         Validator.ValidateObject(command, validationContext, true);
         return cb.QueueAsync(recipientId, command, timeout, fireAndForget, token);
     }
-
+    public void Dispose(){}
     public ValueTask DisposeAsync()
     {
         return ValueTask.CompletedTask;

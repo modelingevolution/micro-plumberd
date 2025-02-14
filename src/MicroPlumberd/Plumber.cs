@@ -20,7 +20,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     private readonly ConcurrentDictionary<Type, ISnapshotPolicy> _policies = new();
     private readonly TypeHandlerRegisters _typeHandlerRegisters;
     private readonly ConcurrentDictionary<Type, IObjectSerializer> _serializers = new();
-    private readonly IdDuckTyping _idTyping = new();
+    
     private readonly VersionDuckTyping _versionTyping = new();
     private readonly Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> _errorHandle;
     private ProjectionRegister? _projectionRegister;
@@ -417,7 +417,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     }
 
     public Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default) => 
-        AppendState(state, _idTyping.GetId(state), _versionTyping.GetVersion(state), token);
+        AppendState(state, IdDuckTyping.Instance.GetId(state), _versionTyping.GetVersion(state), token);
 
     
     public async Task<IWriteResult> AppendState(object state, object id, long? version, CancellationToken token = default) 
@@ -425,7 +425,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var m = Conventions.GetMetadata(null, state, null);
         var stateType = state.GetType();
         var streamId = Conventions.GetStreamIdStateConvention(stateType, id);
-        var evId = Conventions.GetEventIdConvention(null, state);
+        var evId = Conventions.GetEventIdStateConvention(state, id, version);
         var evData = MakeEvent(evId, Conventions.SnapshotEventNameConvention(stateType), state, m);
         var ret = (version == null || version < 0) ? 
             await Client.AppendToStreamAsync(streamId, version == -1 ? StreamState.NoStream : StreamState.Any, [evData], cancellationToken: token) : 
@@ -698,7 +698,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         //TODO: DuckTyping
         var (evt, m) = e[0];
         _versionTyping.SetVersion(evt, m.SourceStreamPosition);
-        _idTyping.SetId(evt, id);
+        IdDuckTyping.Instance.SetId(evt, id);
         return new SubscriptionRunnerState<T>((T)evt, m);
     }
 

@@ -58,8 +58,9 @@ class CommandBusPool : IAsyncDisposable, ICommandBusPool
     }
     public ICommandBusPool Init()
     {
-        _pool = new ConcurrentStack<CommandBusOwner>(Create(number: _maxCount).Select(x=>new CommandBusOwner(this,x)));
+        if (_semaphore != null!) return this;
         _semaphore = new SemaphoreSlim(_maxCount);
+        _pool = new ConcurrentStack<CommandBusOwner>(Create(number: _maxCount).Select(x=>new CommandBusOwner(this,x)));
         return this;
     }
 

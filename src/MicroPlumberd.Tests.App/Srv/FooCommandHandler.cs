@@ -16,6 +16,9 @@ public partial class FooCommandHandler(IPlumber plumber)
 
         var agg = FooAggregate.Open(cmd.Name, id);
 
+        if (cmd.TimeoutMs > 0)
+            await Task.Delay(cmd.TimeoutMs);
+        
         await plumber.SaveNew(agg);
     }
 
