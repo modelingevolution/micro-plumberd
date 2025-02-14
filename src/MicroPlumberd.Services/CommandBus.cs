@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
@@ -17,10 +16,10 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
-
 class CommandBus : ICommandBus, IEventHandler
 {
     private readonly IPlumber _plumber;
+    private readonly ICommandBusPool _pool;
     private readonly ILogger<CommandBus> _log;
     private readonly string _streamIn;
     private readonly string _streamOut;
@@ -31,9 +30,10 @@ class CommandBus : ICommandBus, IEventHandler
     private readonly object _sync = new object();
     private IAsyncDisposable? _subscription;
     public Guid SessionId { get; } = Guid.NewGuid();
-    public CommandBus(IPlumber plumber, ILogger<CommandBus> log)
+    public CommandBus(IPlumber plumber, ICommandBusPool pool, ILogger<CommandBus> log)
     {
         _plumber = plumber;
+        _pool = pool;
         _log = log;
         var servicesConventions = plumber.Config.Conventions.ServicesConventions();
         _streamIn = servicesConventions.SessionInStreamFromSessionIdConvention(SessionId);
@@ -75,8 +75,8 @@ class CommandBus : ICommandBus, IEventHandler
 
     public async Task QueueAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = true, CancellationToken token = default)
     {
-        await using CommandBus bus = new CommandBus(this._plumber, this._log);
-        await bus.SendAsync(recipientId, command, timeout ?? TimeSpan.MaxValue, fireAndForget, token);
+        using var scope = await _pool.RentScope(token);
+        await scope.SendAsync(recipientId, command, timeout ?? TimeSpan.MaxValue, fireAndForget, token);
     }
     public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false, CancellationToken token = default)
     {
@@ -170,56 +170,7 @@ class CommandBus : ICommandBus, IEventHandler
     public ValueTask DisposeAsync() => _subscription?.DisposeAsync() ?? ValueTask.CompletedTask;
 }
 
-
-[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple=true)]
-public class ThrowsFaultExceptionAttribute<TMessage>() : ThrowsFaultExceptionAttribute(typeof(TMessage));
-
 public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute
 {
     public Type ThrownType { get; init; } = thrownType;
-}
-
-
-public class CommandExecutionResults 
-{
-    public async ValueTask<bool> Handle(Metadata m, object ev)
-    {
-        switch (ev)
-        {
-            case CommandExecuted ce:
-            {
-                IsSuccess = true;
-                IsReady.SetResult(true);
-                return true;
-            }
-            case ICommandFailedEx ef:
-            {
-                IsSuccess = false;
-                ErrorMessage = ef.Message;
-                ErrorData = ef.Fault;
-                ErrorCode = ef.Code;
-                IsReady.SetResult(true);
-                return true;
-            }
-            case ICommandFailed cf:
-            {
-                IsSuccess = false;
-                ErrorMessage = cf.Message;
-                ErrorCode = cf.Code;
-                IsReady.SetResult(true);
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public HttpStatusCode ErrorCode { get; private set; }
-
-
-    public string ErrorMessage { get; private set; }
-    public object? ErrorData { get; private set; }
-    public bool IsSuccess { get; private set; }
-    public TaskCompletionSource<bool> IsReady { get; private set; } = new TaskCompletionSource<bool>();
-    
 }
