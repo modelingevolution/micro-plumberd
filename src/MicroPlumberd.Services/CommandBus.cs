@@ -1,4 +1,8 @@
-﻿using System.Collections.Concurrent;
+﻿using System.Runtime.CompilerServices;
+
+
+
+using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +20,7 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
-class CommandBus : ICommandBus, IEventHandler
+internal class CommandBus : ICommandBus, IEventHandler
 {
     private readonly IPlumber _plumber;
     private readonly ICommandBusPool _pool;

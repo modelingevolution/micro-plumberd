@@ -5,43 +5,61 @@ namespace MicroPlumberd;
 /// <summary>
 /// Metadata structure.
 /// </summary>
-public readonly struct Metadata(Guid id,Guid eventId, long sourceStreamPosition, string sourceStreamId, JsonElement data)
+public readonly struct Metadata
 {
+    private readonly Guid _id;
+    private readonly Guid _eventId;
+    private readonly JsonElement _data;
+
+    /// <summary>
+    /// Metadata structure.
+    /// </summary>
+    public Metadata(Guid id,Guid eventId, long sourceStreamPosition, long? linkStreamPosition, string sourceStreamId, JsonElement data)
+    {
+        _id = id;
+        _eventId = eventId;
+        _data = data;
+        SourceStreamPosition = sourceStreamPosition;
+        SourceStreamId = sourceStreamId;
+        LinkStreamPosition = linkStreamPosition;
+    }
+
     /// <summary>
     /// Gets the identifier or the stream. This is the second segment of the streamId (category-id).
     /// </summary>
     /// <value>
     /// The identifier.
     /// </value>
-    public Guid Id => id;
+    public Guid Id => _id;
     /// <summary>
     /// Data from metadata is deserialized in JsonElement.
     /// </summary>
     /// <value>
     /// The data.
     /// </value>
-    public JsonElement Data => data;
+    public JsonElement Data => _data;
     /// <summary>
     /// Gets the source stream position.
     /// </summary>
     /// <value>
     /// The source stream position.
     /// </value>
-    public long SourceStreamPosition { get; } = sourceStreamPosition;
+    public long SourceStreamPosition { get; }
+    public long? LinkStreamPosition { get; }
     /// <summary>
     /// Gets the full source stream-id
     /// </summary>
     /// <value>
     /// The source stream identifier.
     /// </value>
-    public string SourceStreamId { get; } = sourceStreamId;
+    public string SourceStreamId { get; }
     /// <summary>
     /// Gets the event identifier.
     /// </summary>
     /// <value>
     /// The event identifier.
     /// </value>
-    public Guid EventId => eventId;
+    public Guid EventId => _eventId;
 
 
     /// <summary>

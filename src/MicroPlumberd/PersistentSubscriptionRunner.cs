@@ -24,7 +24,7 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
             {
                 if (!func(e.Event.EventType, out var t)) continue;
 
-                var (ev, metadata) = plumber.ReadEventData(e.Event, t);
+                var (ev, metadata) = plumber.ReadEventData(e.Event,e.Link, t);
 
                 using var scope = new InvocationScope();
                 plumber.Conventions.BuildInvocationContext(scope.Context, metadata);

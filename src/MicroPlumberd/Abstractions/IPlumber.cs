@@ -65,6 +65,7 @@ public sealed record Snapshot<T> : Snapshot, ISnapshot
     }
 }
 
+
 /// <summary>
 /// Root interface for plumberd
 /// </summary>
@@ -263,7 +264,11 @@ public interface IPlumber
     /// <param name="position">The position from which reply events.</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null, CancellationToken token = default) where T : IEventHandler, ITypeRegister;
+    Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null,  CancellationToken token = default) where T : IEventHandler, ITypeRegister;
+
+    Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter, StreamPosition? position = null,
+        CancellationToken token = default)
+        where T : IEventHandler;
 
     /// <summary>
     /// Returns the aggregate identified by id.
@@ -274,7 +279,7 @@ public interface IPlumber
     /// <param name="id">The identifier.</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<T> Get<T>(object id, CancellationToken token = default) where T : IAggregate<T>, ITypeRegister,IId;
+   Task<T> Get<T>(object id, CancellationToken token = default) where T : IAggregate<T>, ITypeRegister,IId;
 
     /// <summary>
     /// Saves all pending events from the aggregate. Uses optimistic concurrency.

@@ -185,7 +185,7 @@ class SubscriptionRunner(Plumber plumber, SubscriptionRunnerState subscription) 
         {
             if (!func(e.Event.EventType, out var t)) return;
 
-            var (ev, metadata) = plumber.ReadEventData(e.Event, t);
+            var (ev, metadata) = plumber.ReadEventData(e.Event, e.Link,t);
             using var scope = new InvocationScope();
             plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
             await model.Handle(metadata, ev);

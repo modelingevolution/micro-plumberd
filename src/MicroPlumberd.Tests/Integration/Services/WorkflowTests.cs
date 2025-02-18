@@ -49,7 +49,17 @@ namespace MicroPlumberd.Tests.Integration.Services
             var bus = client.GetRequiredService<ICommandBus>();
 
             var recipientId = Guid.NewGuid();
-            await bus.SendAsync(recipientId, new StartWorkflow { Name = "Test" });
+            var startWorkflow = new StartWorkflow { Name = "Test" };
+            var correlationId = startWorkflow.Id;
+            
+            await bus.SendAsync(recipientId, startWorkflow);
+            await Task.Delay(1000);
+            var pl = srv.GetRequiredService<IPlumber>();
+            var model = await pl.CorrelationModel()
+                .WithCommandHandler<StartWorkflowHandler>()
+                .WithCommandHandler<CompleteWorkflowHandler>()
+                .WithEvent<WorkflowCompleted>()
+                .Read(correlationId);
         }
     }
 }

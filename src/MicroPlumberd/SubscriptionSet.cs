@@ -38,7 +38,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 if (!builder._dispatcher.TryGetValue(er.EventType, out var models)) continue;
                 var t = builder._register[er.EventType];
 
-                var (ev, metadata) = plumber.ReadEventData(er, t);
+                var (ev, metadata) = plumber.ReadEventData(er,e.Link, t);
                
 
                 foreach (var i in models)
@@ -67,7 +67,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 if (!builder._dispatcher.TryGetValue(er.EventType, out var models)) continue;
                 var t = builder._register[er.EventType];
 
-                var (ev, metadata) = plumber.ReadEventData(er, t);
+                var (ev, metadata) = plumber.ReadEventData(er,e.Link, t);
                 foreach (var i in models) 
                     await i.Handle(metadata, ev);
             }

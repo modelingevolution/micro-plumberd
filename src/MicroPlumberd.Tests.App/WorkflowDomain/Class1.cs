@@ -26,3 +26,13 @@ public class CompleteWorkflow : IId<Guid>
     [ProtoMember(1)]
     public Guid Id { get; set; } = Guid.NewGuid();
 }
+
+[ProtoContract]
+[OutputStream("Workflow")]
+public class WorkflowCompleted : IId<Guid>
+{
+    [ProtoMember(2)]
+    public string? Name { get; set; }
+    [ProtoMember(1)]
+    public Guid Id { get; set; } = Guid.NewGuid();
+}

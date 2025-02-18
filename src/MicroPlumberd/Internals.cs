@@ -6,21 +6,22 @@ using System.Runtime.CompilerServices;
 
 public static class EventStoreClientSettingsExtensions
 {
-    public static async Task WaitUntilReady(this EventStoreClientSettings settings, TimeSpan timeout)
+    static readonly HttpClient client = new HttpClient();
+    public static async Task WaitUntilReady(this EventStoreClientSettings settings, TimeSpan timeout, TimeSpan? delay = null)
     {
-        using var c = new HttpClient();
+
         DateTime until = DateTime.Now.Add(timeout);
-        c.BaseAddress = settings.ConnectivitySettings.Address;
-        c.Timeout = TimeSpan.FromMilliseconds(100);
+        client.BaseAddress = settings.ConnectivitySettings.Address;
+        client.Timeout = TimeSpan.FromMilliseconds(100);
         while (DateTime.Now < until)
         {
             try
             {
-                var ret = await c.GetAsync("health/live");
+                var ret = await client.GetAsync("health/live");
                 if (ret.IsSuccessStatusCode)
                     return;
             }
-            catch { await Task.Delay(100); }
+            catch { await Task.Delay(delay ?? TimeSpan.FromMilliseconds(100)); }
         }
 
         throw new TimeoutException("EventStore is not ready, check docker-containers.");

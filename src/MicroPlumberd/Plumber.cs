@@ -235,18 +235,24 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     public async Task Rehydrate<T>(T model, string streamId, StreamPosition? position = null, CancellationToken token = default)
         where T : IEventHandler, ITypeRegister
     {
+        TypeEventConverter registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
+        await Rehydrate(model, streamId, registry, position, token);
+    }
+    public async Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter, StreamPosition? position = null, CancellationToken token = default)
+        where T : IEventHandler
+    {
         var pos = position ?? StreamPosition.Start;
         var items = Client.ReadStreamAsync(Direction.Forwards, streamId, pos, resolveLinkTos: true, cancellationToken: token);
-        var registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
+
         var vAware = model as IVersionAware;
 
         if (await items.ReadState == ReadState.StreamNotFound) return;
 
         await foreach (var i in items)
         {
-            if (!registry(i.Event.EventType, out var t))
+            if (!converter(i.Event.EventType, out var t))
                 continue;
-            var (evt, metadata) = ReadEventData(i.Event, t);
+            var (evt, metadata) = ReadEventData(i.Event, i.Link, t);
             await model.Handle(metadata, evt);
             vAware?.Increase();
         }
@@ -283,7 +289,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
             if (eventMapping(i.Event.EventType, out var t))
                 throw new ArgumentException($"We don't know how to deserialize this event: {i.Event.EventType}.");
 
-            var (evt, metadata) = ReadEventData(i.Event, t);
+            var (evt, metadata) = ReadEventData(i.Event,i.Link, t);
             return new EventRecord<TEvent> { Event = (TEvent)evt, Metadata = metadata };
         }
 
@@ -325,7 +331,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var events = items.Select(x => new
                 { ResolvedEvent = x, EventType = converter(x.Event.EventType, out var t) ? t : null })
             .Where(x => x.EventType != null)
-            .Select(ev => ReadEventData(ev.ResolvedEvent.Event, ev.EventType));
+            .Select(ev => ReadEventData(ev.ResolvedEvent.Event, ev.ResolvedEvent.Link, ev.EventType));
         await foreach (var i in events)
             yield return i;
     }
@@ -357,7 +363,7 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var events = items.Select(x => new
                 { ResolvedEvent = x, EventType = converter(x.Event.EventType, out var t) ? t : null })
             .Where(x => x.EventType != null)
-            .Select(ev => ReadEventData(ev.ResolvedEvent.Event, ev.EventType));
+            .Select(ev => ReadEventData(ev.ResolvedEvent.Event, ev.ResolvedEvent.Link, ev.EventType));
         await foreach (var i in events)
             yield return ((T)i.Item1, i.Item2);
     }
@@ -802,9 +808,10 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
     ///     This method is called only from subscriptions.
     /// </summary>
     /// <param name="er"></param>
+    /// <param name="eLink"></param>
     /// <param name="t"></param>
     /// <returns></returns>
-    internal (object, Metadata) ReadEventData(EventRecord er, Type t)
+    internal (object, Metadata) ReadEventData(EventRecord er, EventRecord? eLink, Type t)
     {
         var streamIdSuffix = er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1);
         if (!Guid.TryParse(streamIdSuffix, out var aggregateId)) 
@@ -814,7 +821,10 @@ public class Plumber : IPlumber, IPlumberReadOnlyConfig
         var ev = s.Deserialize(er.Data.Span, t)!;
         var m = s.ParseMetadata(er.Metadata.Span);
 
-        var metadata = new Metadata(aggregateId, er.EventId.ToGuid(), er.EventNumber.ToInt64(), er.EventStreamId, m);
+        long? linkStreamPosition = eLink?.EventNumber.ToInt64();
+        long sourceStreamPosition = er.EventNumber.ToInt64();
+        
+        var metadata = new Metadata(aggregateId, er.EventId.ToGuid(), sourceStreamPosition, linkStreamPosition, er.EventStreamId, m);
         return (ev, metadata);
     }
 
