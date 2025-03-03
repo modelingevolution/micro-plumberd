@@ -4,13 +4,13 @@ using System.Security.Claims;
 namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
+[OutputStream("Authorization")]
 public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, AuthorizationUserAggregate.AuthorizationUserState>
 {
     public AuthorizationUserAggregate(UserIdentifier id) : base(id) { }
 
     public record AuthorizationUserState
     {
-        public UserIdentifier Id { get; init; }
         public ImmutableList<RoleIdentifier> Roles { get; init; } = ImmutableList<RoleIdentifier>.Empty;
         public ImmutableList<ClaimRecord> Claims { get; init; } = ImmutableList<ClaimRecord>.Empty;
         
@@ -28,7 +28,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
     {
         return new AuthorizationUserState
         {
-            Id = ev.UserId,
             IsDeleted = false
         };
     }
@@ -124,11 +123,7 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
     {
         var aggregate = Empty(id);
 
-        aggregate.AppendPendingChange(new AuthorizationUserCreated
-        {
-            Id = Guid.NewGuid(),
-            UserId = id,
-        });
+        aggregate.AppendPendingChange(new AuthorizationUserCreated());
 
         return aggregate;
     }
@@ -142,7 +137,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
 
         AppendPendingChange(new RoleAdded
         {
-            Id = Guid.NewGuid(),
             RoleId = roleId,
             
         });
@@ -157,7 +151,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
 
         AppendPendingChange(new RoleRemoved
         {
-            Id = Guid.NewGuid(),
             RoleId = roleId,
             
         });
@@ -177,7 +170,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
 
         AppendPendingChange(new ClaimAdded
         {
-            Id = Guid.NewGuid(),
             ClaimType = claimType,
             ClaimValue = claimValue,
             
@@ -199,7 +191,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
 
         AppendPendingChange(new ClaimRemoved
         {
-            Id = Guid.NewGuid(),
             ClaimType = claimType,
             ClaimValue = claimValue,
             
@@ -213,7 +204,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
 
         AppendPendingChange(new ClaimsReplaced
         {
-            Id = Guid.NewGuid(),
             Claims = claims.ToList(),
             
         });
@@ -227,7 +217,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
 
         AppendPendingChange(new AuthorizationUserDeleted
         {
-            Id = Guid.NewGuid()
         });
     }
 

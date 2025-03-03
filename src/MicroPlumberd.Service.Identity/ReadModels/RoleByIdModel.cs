@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using MicroPlumberd;
@@ -27,15 +28,17 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         private async Task Given(Metadata m, RoleCreated ev)
         {
             // Create a new role object
+            var roleId = m.StreamId<RoleIdentifier>();
+            
             var role = new Role
             {
-                Id = ev.RoleId.ToString(),
+                Id = roleId.ToString(),
                 Name = ev.Name,
                 NormalizedName = ev.NormalizedName
             };
 
             // Add to primary collection
-            if (_rolesById.TryAdd(ev.RoleId, role))
+            if (_rolesById.TryAdd(roleId, role))
             {
                 // Add to lookup - same reference
                 if (!string.IsNullOrEmpty(ev.NormalizedName))
@@ -49,7 +52,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleNameChanged ev)
         {
-            var roleId = new RoleIdentifier(m.Id);
+            var roleId = m.StreamId<RoleIdentifier>();
 
             if (_rolesById.TryGetValue(roleId, out var role))
             {
@@ -75,7 +78,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleDeleted ev)
         {
-            var roleId = new RoleIdentifier(m.Id);
+            var roleId = m.StreamId<RoleIdentifier>();
 
             // Remove from primary collection
             if (_rolesById.TryRemove(roleId, out var role))

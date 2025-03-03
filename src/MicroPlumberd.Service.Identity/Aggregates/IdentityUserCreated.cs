@@ -9,9 +9,9 @@ namespace MicroPlumberd.Services.Identity.Aggregates
     public record IdentityUserCreated
     {
         public Guid Id { get; init; } = Guid.NewGuid();
-        public UserIdentifier UserId { get; init; }
+        
         public string PasswordHash { get; init; }
-        public string SecurityStamp { get; init; }
+        
         public bool LockoutEnabled { get; init; }
         
     }

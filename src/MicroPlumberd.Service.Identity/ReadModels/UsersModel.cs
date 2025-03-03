@@ -28,10 +28,11 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, UserProfileCreated ev)
         {
+            var userId = m.StreamId<UserIdentifier>();
             // Create a new user object
             var user = new User
             {
-                Id = ev.UserId.ToString(),
+                Id = userId.ToString(),
                 UserName = ev.UserName,
                 NormalizedUserName = ev.NormalizedUserName,
                 Email = ev.Email,
@@ -42,7 +43,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             };
 
             // Add to primary collection
-            if (_usersById.TryAdd(ev.UserId, user))
+            if (_usersById.TryAdd(userId, user))
             {
                 // Add to lookups - same reference
                 if (!string.IsNullOrEmpty(ev.NormalizedUserName))
@@ -61,10 +62,11 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, IdentityUserCreated ev)
         {
-            if (_usersById.TryGetValue(ev.UserId, out var user))
+            var userId = m.StreamId<UserIdentifier>();
+            if (_usersById.TryGetValue(userId, out var user))
             {
                 user.PasswordHash = ev.PasswordHash;
-                user.SecurityStamp = ev.SecurityStamp;
+                //user.SecurityStamp = null;
                 user.LockoutEnabled = ev.LockoutEnabled;
             }
 
@@ -73,7 +75,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, UserNameChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -99,7 +101,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, EmailChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -126,7 +128,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, EmailConfirmed ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -138,7 +140,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, PhoneNumberChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -151,7 +153,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, PhoneNumberConfirmed ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -163,32 +165,21 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, PasswordChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
                 user.PasswordHash = ev.PasswordHash;
-                user.SecurityStamp = ev.SecurityStamp;
+                //user.SecurityStamp = ev.SecurityStamp;
             }
 
             await Task.CompletedTask;
         }
 
-        private async Task Given(Metadata m, SecurityStampChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.SecurityStamp = ev.SecurityStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
+      
         private async Task Given(Metadata m, TwoFactorChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -200,7 +191,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, LockoutEnabledChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -212,7 +203,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, LockoutEndChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -224,7 +215,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, AccessFailedCountChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -236,7 +227,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ExternalLoginAdded ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_usersById.TryGetValue(userId, out var user))
             {
@@ -263,7 +254,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, UserProfileDeleted ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             // Remove from primary collection
             if (_usersById.TryRemove(userId, out var user))

@@ -17,7 +17,6 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         public record ProfileData
         {
-            public UserIdentifier Id { get; init; }
             public string UserName { get; init; }
             public string NormalizedUserName { get; init; }
             public string Email { get; init; }
@@ -30,9 +29,9 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, UserProfileCreated ev)
         {
+            var userId = m.StreamId<UserIdentifier>();
             var profile = new ProfileData
             {
-                Id = ev.UserId,
                 UserName = ev.UserName,
                 NormalizedUserName = ev.NormalizedUserName,
                 Email = ev.Email,
@@ -42,13 +41,13 @@ namespace MicroPlumberd.Services.Identity.ReadModels
                 PhoneNumberConfirmed = false,
                 
             };
-
-            _profilesById[ev.UserId] = profile;
-            _userIdsByNormalizedName[ev.NormalizedUserName] = ev.UserId;
+            
+            _profilesById[userId] = profile;
+            _userIdsByNormalizedName[ev.NormalizedUserName] = userId;
 
             if (!string.IsNullOrEmpty(ev.NormalizedEmail))
             {
-                _userIdsByNormalizedEmail[ev.NormalizedEmail] = ev.UserId;
+                _userIdsByNormalizedEmail[ev.NormalizedEmail] = userId;
             }
 
             await Task.CompletedTask;
@@ -56,7 +55,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, UserNameChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_profilesById.TryGetValue(userId, out var profile))
             {
@@ -80,7 +79,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, EmailChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_profilesById.TryGetValue(userId, out var profile))
             {
@@ -113,7 +112,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, EmailConfirmed ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_profilesById.TryGetValue(userId, out var profile))
             {
@@ -129,7 +128,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, PhoneNumberChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_profilesById.TryGetValue(userId, out var profile))
             {
@@ -146,7 +145,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, PhoneNumberConfirmed ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_profilesById.TryGetValue(userId, out var profile))
             {
@@ -163,7 +162,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, UserProfileDeleted ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_profilesById.TryRemove(userId, out var profile))
             {

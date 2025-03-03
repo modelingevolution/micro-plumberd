@@ -24,13 +24,14 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ExternalLoginAggregateCreated ev)
         {
-            _loginsByUserId[ev.UserId] = ImmutableList<ExternalLoginInfo>.Empty;
+            var userId = m.StreamId<UserIdentifier>();
+            _loginsByUserId[userId] = ImmutableList<ExternalLoginInfo>.Empty;
             await Task.CompletedTask;
         }
 
         private async Task Given(Metadata m, ExternalLoginAdded ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             // Add to user's logins
             if (_loginsByUserId.TryGetValue(userId, out var logins))
@@ -54,7 +55,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ExternalLoginRemoved ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             // Remove from user's logins
             if (_loginsByUserId.TryGetValue(userId, out var logins))
@@ -78,7 +79,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ExternalLoginAggregateDeleted ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_loginsByUserId.TryRemove(userId, out var logins))
             {

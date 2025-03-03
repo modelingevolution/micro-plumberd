@@ -15,13 +15,14 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, TokenAggregateCreated ev)
         {
-            _tokensByUserId[ev.UserId] = new ConcurrentDictionary<string, string>();
+            var userId = m.StreamId<UserIdentifier>();
+            _tokensByUserId[userId] = new ConcurrentDictionary<string, string>();
             await Task.CompletedTask;
         }
 
         private async Task Given(Metadata m, TokenSet ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_tokensByUserId.TryGetValue(userId, out var userTokens))
             {
@@ -34,7 +35,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, TokenRemoved ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_tokensByUserId.TryGetValue(userId, out var userTokens))
             {
@@ -47,7 +48,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, TokenAggregateDeleted ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
             _tokensByUserId.TryRemove(userId, out _);
 
             await Task.CompletedTask;

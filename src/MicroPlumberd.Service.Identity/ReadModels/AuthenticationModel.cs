@@ -16,7 +16,6 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         public record AuthenticationData
         {
             public string PasswordHash { get; init; }
-            public string SecurityStamp { get; init; }
             public bool TwoFactorEnabled { get; init; }
             public string AuthenticatorKey { get; init; }
             public int AccessFailedCount { get; init; }
@@ -26,10 +25,11 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, IdentityUserCreated ev)
         {
-            _authDataByUserId[ev.UserId] = new AuthenticationData
+            var userId = m.StreamId<UserIdentifier>();
+            _authDataByUserId[userId] = new AuthenticationData
             {
                 PasswordHash = ev.PasswordHash,
-                SecurityStamp = ev.SecurityStamp,
+                //SecurityStamp = ev.SecurityStamp,
                 TwoFactorEnabled = false,
                 AuthenticatorKey = null,
                 AccessFailedCount = 0,
@@ -42,38 +42,25 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, PasswordChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var data))
             {
                 _authDataByUserId[userId] = data with
                 {
                     PasswordHash = ev.PasswordHash,
-                    SecurityStamp = ev.SecurityStamp
+                    //SecurityStamp = ev.SecurityStamp
                 };
             }
 
             await Task.CompletedTask;
         }
 
-        private async Task Given(Metadata m, SecurityStampChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_authDataByUserId.TryGetValue(userId, out var data))
-            {
-                _authDataByUserId[userId] = data with
-                {
-                    SecurityStamp = ev.SecurityStamp
-                };
-            }
-
-            await Task.CompletedTask;
-        }
+      
 
         private async Task Given(Metadata m, TwoFactorChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var data))
             {
@@ -96,7 +83,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, AuthenticatorKeyChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var data))
             {
@@ -111,7 +98,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, AccessFailedCountChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var data))
             {
@@ -126,7 +113,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, LockoutEnabledChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var data))
             {
@@ -141,7 +128,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, LockoutEndChanged ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var data))
             {
@@ -156,7 +143,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, IdentityUserDeleted ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
             _authDataByUserId.TryRemove(userId, out _);
 
             await Task.CompletedTask;

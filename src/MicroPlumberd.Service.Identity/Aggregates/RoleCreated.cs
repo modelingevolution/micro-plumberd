@@ -6,11 +6,10 @@ using MicroPlumberd;
 namespace MicroPlumberd.Services.Identity.Aggregates
 {
     // Events
-    [OutputStream("Authorization")]
+    [OutputStream("Role")]
     public record RoleCreated
     {
-        public Guid Id { get; init; }
-        public RoleIdentifier RoleId { get; init; }
+        public Guid Id { get; init; } = Guid.NewGuid();
         public string Name { get; init; }
         public string NormalizedName { get; init; }
         

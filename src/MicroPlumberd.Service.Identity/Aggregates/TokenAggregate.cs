@@ -10,7 +10,6 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
 
     public record TokenState
     {
-        public UserIdentifier Id { get; init; }
         public ImmutableList<TokenRecord> Tokens { get; init; } = ImmutableList<TokenRecord>.Empty;
         
         public bool IsDeleted { get; init; }
@@ -29,8 +28,6 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         
         return new TokenState
         {
-            Id = ev.UserId,
-            
             IsDeleted = false
         };
     }
@@ -93,11 +90,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
     {
         var aggregate = Empty(id);
 
-        aggregate.AppendPendingChange(new TokenAggregateCreated
-        {
-            UserId = id,
-            
-        });
+        aggregate.AppendPendingChange(new TokenAggregateCreated());
 
         return aggregate;
     }

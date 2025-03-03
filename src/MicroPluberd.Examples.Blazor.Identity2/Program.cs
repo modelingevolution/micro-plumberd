@@ -7,12 +7,14 @@ using MicroPluberd.Examples.Blazor.Identity2.Components.Account;
 
 using MicroPlumberd.Services;
 using MicroPlumberd.Services.Identity;
+using EventStore.Client;
+using MicroPlumberd;
 
 namespace MicroPluberd.Examples.Blazor.Identity2;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
 
@@ -28,16 +30,18 @@ public class Program
         builder.Services.AddScoped<IdentityRedirectManager>();
         builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
-        builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultScheme = IdentityConstants.ApplicationScheme;
-                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-            })
-            .AddIdentityCookies();
+        //builder.Services.AddAuthentication(options =>
+        //    {
+        //        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        //        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+        //    })
+        //    .AddIdentityCookies();
 
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         builder.Services.AddPlumberdIdentity();
-        builder.Services.AddPlumberd();
+        
+        var connection = await GetEventStoreSettings(builder.Configuration);
+        builder.Services.AddPlumberd(connection, ConfigurePlumberd);
+        
         builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 
         var app = builder.Build();
@@ -62,5 +66,18 @@ public class Program
         app.MapAdditionalIdentityEndpoints();
 
         app.Run();
+    }
+    private static void ConfigurePlumberd(IServiceProvider sp, IPlumberConfig x)
+    {
+
+    }
+
+    private static async Task<EventStoreClientSettings> GetEventStoreSettings(IConfiguration config)
+    {
+        
+        var connectionString = config.GetValue<string>("EventStore");
+        var conn = EventStoreClientSettings.Create(connectionString!);
+        await conn.WaitUntilReady(TimeSpan.FromSeconds(120));
+        return conn;
     }
 }

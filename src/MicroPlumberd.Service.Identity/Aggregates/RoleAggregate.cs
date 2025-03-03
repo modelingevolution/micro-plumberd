@@ -1,13 +1,13 @@
 ﻿namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
+[OutputStream("Role")]
 public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate.RoleState>
 {
     public RoleAggregate(RoleIdentifier id) : base(id) { }
 
     public record RoleState
     {
-        public RoleIdentifier Id { get; init; }
         public string Name { get; init; }
         public string NormalizedName { get; init; }
         
@@ -19,7 +19,6 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
     {
         return new RoleState
         {
-            Id = ev.RoleId,
             Name = ev.Name,
             NormalizedName = ev.NormalizedName,
             
@@ -56,8 +55,6 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
         var aggregate = Empty(id);
         aggregate.AppendPendingChange(new RoleCreated
         {
-            Id = Guid.NewGuid(),
-            RoleId = id,
             Name = name,
             NormalizedName = normalizedName,
             
@@ -82,7 +79,7 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
 
             AppendPendingChange(new RoleNameChanged
             {
-                Id = Guid.NewGuid(),
+                
                 Name = name,
                 NormalizedName = normalizedName
             });
@@ -96,11 +93,7 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
         if (State.IsDeleted)
             return;
 
-        
-        AppendPendingChange(new RoleDeleted
-        {
-            Id = Guid.NewGuid()
-        });
+        AppendPendingChange(new RoleDeleted { });
     }
 
 }

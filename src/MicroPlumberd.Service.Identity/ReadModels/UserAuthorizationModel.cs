@@ -40,9 +40,10 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, AuthorizationUserCreated ev)
         {
-            _authDataByUserId[ev.UserId] = new UserAuthData
+            var userId = m.StreamId<UserIdentifier>();
+            _authDataByUserId[userId] = new UserAuthData
             {
-                Id = ev.UserId
+                Id = userId
             };
 
             await Task.CompletedTask;
@@ -50,7 +51,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleAdded ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
@@ -86,7 +87,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleRemoved ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
@@ -114,7 +115,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ClaimAdded ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
@@ -139,7 +140,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ClaimRemoved ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
@@ -170,7 +171,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ClaimsReplaced ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
@@ -185,7 +186,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, AuthorizationUserDeleted ev)
         {
-            var userId = new UserIdentifier(m.Id);
+            var userId = m.StreamId<UserIdentifier>();
 
             if (_authDataByUserId.TryRemove(userId, out var authData))
             {
@@ -205,10 +206,11 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleCreated ev)
         {
+            var roleId = m.StreamId<RoleIdentifier>();
             // Add or update role data
             _roleData.AddOrUpdate(
-                ev.RoleId,
-                new RoleData { Id = ev.RoleId, Name = ev.Name },
+                roleId,
+                new RoleData { Id = roleId, Name = ev.Name },
                 (_, existing) => existing with { Name = ev.Name }
             );
 
@@ -217,7 +219,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleNameChanged ev)
         {
-            var roleId = new RoleIdentifier(m.Id);
+            var roleId = m.StreamId<RoleIdentifier>();
 
             // Update role data
             if (_roleData.TryGetValue(roleId, out var roleData))
@@ -259,7 +261,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, RoleDeleted ev)
         {
-            var roleId = new RoleIdentifier(m.Id);
+            var roleId = m.StreamId<RoleIdentifier>();
 
             // Remove role from all users
             if (_roleData.TryRemove(roleId, out var roleData))

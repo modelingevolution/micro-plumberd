@@ -9,7 +9,6 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
 
     public record ExternalLoginState
     {
-        public UserIdentifier Id { get; init; }
         public ImmutableList<ExternalLoginRecord> Logins { get; init; } = ImmutableList<ExternalLoginRecord>.Empty;
         
         public bool IsDeleted { get; init; }
@@ -27,7 +26,6 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
     {
         return new ExternalLoginState
         {
-            Id = ev.UserId,
             
             IsDeleted = false
         };
@@ -85,12 +83,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
     {
         var aggregate = Empty(id);
 
-        aggregate.AppendPendingChange(new ExternalLoginAggregateCreated
-        {
-            Id = Guid.NewGuid(),
-            UserId = id,
-            
-        });
+        aggregate.AppendPendingChange(new ExternalLoginAggregateCreated());
 
         return aggregate;
     }
@@ -121,7 +114,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
 
         AppendPendingChange(new ExternalLoginAdded
         {
-            Id = Guid.NewGuid(),
+            
             Provider = provider,
             ProviderKey = providerKey,
             DisplayName = displayName ?? string.Empty,
@@ -129,10 +122,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         });
     }
 
-    public void RemoveLogin(
-        ExternalLoginProvider provider,
-        ExternalLoginKey providerKey
-        )
+    public void RemoveLogin(ExternalLoginProvider provider, ExternalLoginKey providerKey)
     {
         EnsureNotDeleted();
         
@@ -147,7 +137,6 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
 
         AppendPendingChange(new ExternalLoginRemoved
         {
-            Id = Guid.NewGuid(),
             Provider = provider,
             ProviderKey = providerKey,
             
@@ -162,11 +151,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             return;
 
         
-
-        AppendPendingChange(new ExternalLoginAggregateDeleted
-        {
-            Id = Guid.NewGuid()
-        });
+        AppendPendingChange(new ExternalLoginAggregateDeleted());
     }
 
     // Helper methods
