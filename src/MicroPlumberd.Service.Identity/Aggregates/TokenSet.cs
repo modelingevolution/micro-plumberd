@@ -7,5 +7,5 @@ public record TokenSet
     public TokenName Name { get; init; }
     public TokenValue Value { get; init; }
     public string LoginProvider { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }

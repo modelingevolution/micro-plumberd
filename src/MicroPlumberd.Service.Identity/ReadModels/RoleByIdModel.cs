@@ -1,27 +1,48 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using MicroPlumberd;
 using MicroPlumberd.Service.Identity.Aggregates;
 
 namespace MicroPlumberd.Service.Identity.ReadModels
 {
+    /// <summary>
+    /// Consolidated read model for roles with direct references in lookups
+    /// </summary>
     [EventHandler]
-    [OutputStream("RoleByIdModel_v1")]
-    public partial class RoleByIdModel
+    [OutputStream("RolesModel_v1")]
+    public partial class RolesModel
     {
+        // Primary collection - clustered index
         private readonly ConcurrentDictionary<RoleIdentifier, Role> _rolesById = new();
+
+        // Lookup dictionary - direct references to the same Role objects
+        private readonly ConcurrentDictionary<string, Role> _rolesByNormalizedName = new();
+
+        // Returns all roles (for IQueryable interface)
+        public ImmutableList<Role> GetAllRoles() => _rolesById.Values.ToImmutableList();
+
+        #region Event Handlers
 
         private async Task Given(Metadata m, RoleCreated ev)
         {
+            // Create a new role object
             var role = new Role
             {
                 Id = ev.RoleId.ToString(),
                 Name = ev.Name,
-                NormalizedName = ev.NormalizedName,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                NormalizedName = ev.NormalizedName
             };
 
-            _rolesById[ev.RoleId] = role;
+            // Add to primary collection
+            if (_rolesById.TryAdd(ev.RoleId, role))
+            {
+                // Add to lookup - same reference
+                if (!string.IsNullOrEmpty(ev.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryAdd(ev.NormalizedName, role);
+                }
+            }
 
             await Task.CompletedTask;
         }
@@ -32,21 +53,21 @@ namespace MicroPlumberd.Service.Identity.ReadModels
 
             if (_rolesById.TryGetValue(roleId, out var role))
             {
+                // Remove from old lookup
+                if (!string.IsNullOrEmpty(role.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryRemove(role.NormalizedName, out _);
+                }
+
+                // Update the role
                 role.Name = ev.Name;
                 role.NormalizedName = ev.NormalizedName;
-                role.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
 
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, RoleConcurrencyStampChanged ev)
-        {
-            var roleId = new RoleIdentifier(m.Id);
-
-            if (_rolesById.TryGetValue(roleId, out var role))
-            {
-                role.ConcurrencyStamp = ev.ConcurrencyStamp;
+                // Add to lookup with updated normalized name - same reference
+                if (!string.IsNullOrEmpty(ev.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryAdd(ev.NormalizedName, role);
+                }
             }
 
             await Task.CompletedTask;
@@ -55,20 +76,63 @@ namespace MicroPlumberd.Service.Identity.ReadModels
         private async Task Given(Metadata m, RoleDeleted ev)
         {
             var roleId = new RoleIdentifier(m.Id);
-            _rolesById.TryRemove(roleId, out _);
+
+            // Remove from primary collection
+            if (_rolesById.TryRemove(roleId, out var role))
+            {
+                // Remove from lookup
+                if (!string.IsNullOrEmpty(role.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryRemove(role.NormalizedName, out _);
+                }
+            }
 
             await Task.CompletedTask;
         }
 
-        // Query methods
+        #endregion
+
+        #region Query Methods
+
+        /// <summary>
+        /// Gets a role by ID
+        /// </summary>
         public Role GetById(RoleIdentifier id)
         {
-            if (_rolesById.TryGetValue(id, out var role))
-            {
-                return role;
-            }
-
-            return null;
+            _rolesById.TryGetValue(id, out var role);
+            return role;
         }
+
+        /// <summary>
+        /// Gets a role by normalized name
+        /// </summary>
+        public Role GetByNormalizedName(string normalizedName)
+        {
+            if (string.IsNullOrEmpty(normalizedName))
+                return null;
+
+            _rolesByNormalizedName.TryGetValue(normalizedName, out var role);
+            return role;
+        }
+
+        /// <summary>
+        /// Gets a role ID by normalized name
+        /// </summary>
+        public RoleIdentifier GetIdByNormalizedName(string normalizedName)
+        {
+            var role = GetByNormalizedName(normalizedName);
+            return role != null ? GetRoleIdentifier(role.Id) : default;
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private RoleIdentifier GetRoleIdentifier(string roleId)
+        {
+            return RoleIdentifier.Parse(roleId, null);
+        }
+
+        #endregion
     }
 }

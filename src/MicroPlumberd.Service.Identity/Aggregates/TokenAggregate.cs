@@ -12,7 +12,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
     {
         public UserIdentifier Id { get; init; }
         public ImmutableList<TokenRecord> Tokens { get; init; } = ImmutableList<TokenRecord>.Empty;
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -30,7 +30,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return new TokenState
         {
             Id = ev.UserId,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -60,7 +60,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return state with
         {
             Tokens = tokens.Add(tokenRecord),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -77,14 +77,11 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return state with
         {
             Tokens = state.Tokens.Remove(tokenToRemove),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static TokenState Given(TokenState state, TokenConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+
 
     private static TokenState Given(TokenState state, TokenAggregateDeleted ev)
     {
@@ -99,7 +96,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         aggregate.AppendPendingChange(new TokenAggregateCreated
         {
             UserId = id,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
@@ -108,11 +105,11 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
     public void SetToken(
         TokenName name,
         TokenValue value,
-        string loginProvider,
-        string expectedConcurrencyStamp)
+        string loginProvider
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Validation
         if (string.IsNullOrEmpty(name.Value))
@@ -126,17 +123,17 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
             Name = name,
             Value = value,
             LoginProvider = loginProvider ?? string.Empty,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
     public void RemoveToken(
         TokenName name,
-        string loginProvider,
-        string expectedConcurrencyStamp)
+        string loginProvider
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Check if the token exists
         var tokenExists = State.Tokens.Any(t =>
@@ -150,26 +147,17 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         {
             Name = name,
             LoginProvider = loginProvider ?? string.Empty,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
 
-        AppendPendingChange(new TokenConcurrencyStampChanged
-        {
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new TokenAggregateDeleted());
     }
@@ -181,12 +169,4 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
             throw new InvalidOperationException("Cannot modify tokens of a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User tokens were modified by another process");
-        }
-    }
 }

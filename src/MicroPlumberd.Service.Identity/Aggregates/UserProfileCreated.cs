@@ -9,5 +9,5 @@ public record UserProfileCreated
     public string Email { get; init; }
     public string NormalizedEmail { get; init; }
     public string PhoneNumber { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }

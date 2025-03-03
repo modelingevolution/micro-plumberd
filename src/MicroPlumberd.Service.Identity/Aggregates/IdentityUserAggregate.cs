@@ -15,7 +15,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         public int AccessFailedCount { get; init; }
         public bool LockoutEnabled { get; init; }
         public DateTimeOffset? LockoutEnd { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -32,7 +32,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             AccessFailedCount = 0,
             LockoutEnabled = ev.LockoutEnabled,
             LockoutEnd = null,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -43,7 +43,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         {
             PasswordHash = ev.PasswordHash,
             SecurityStamp = ev.SecurityStamp,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -52,7 +52,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             SecurityStamp = ev.SecurityStamp,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -61,7 +61,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         var newState = state with
         {
             TwoFactorEnabled = ev.TwoFactorEnabled,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
 
         // If disabling 2FA, clear the authenticator key
@@ -78,7 +78,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             AuthenticatorKey = ev.AuthenticatorKey,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -87,7 +87,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             AccessFailedCount = ev.AccessFailedCount,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -96,7 +96,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             LockoutEnabled = ev.LockoutEnabled,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -105,14 +105,11 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             LockoutEnd = ev.LockoutEnd,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static IdentityUserState Given(IdentityUserState state, IdentityConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+
 
     private static IdentityUserState Given(IdentityUserState state, IdentityUserDeleted ev)
     {
@@ -134,65 +131,75 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             PasswordHash = passwordHash,
             SecurityStamp = securityStamp,
             LockoutEnabled = lockoutEnabled,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
     }
 
-    public void ChangePassword(string passwordHash, string expectedConcurrencyStamp)
+    /// <summary>
+    /// Updates the password hash if it has changed
+    /// </summary>
+    public void ChangePasswordHash(string passwordHash)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
-        // Generate a new security stamp whenever the password changes
-        var securityStamp = Guid.NewGuid().ToString();
-
-        AppendPendingChange(new PasswordChanged
+        // Only emit an event if the password hash has actually changed
+        if (State.PasswordHash != passwordHash && !string.IsNullOrEmpty(passwordHash))
         {
-            Id = Guid.NewGuid(),
-            PasswordHash = passwordHash,
-            SecurityStamp = securityStamp,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+            // Generate a new security stamp whenever the password changes
+            var securityStamp = Guid.NewGuid().ToString();
+
+            AppendPendingChange(new PasswordChanged
+            {
+                Id = Guid.NewGuid(),
+                PasswordHash = passwordHash,
+                SecurityStamp = securityStamp
+            });
+        }
     }
 
-    public void ChangeSecurityStamp(string expectedConcurrencyStamp)
+    public void ChangeSecurityStamp()
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new SecurityStampChanged
         {
             Id = Guid.NewGuid(),
             SecurityStamp = Guid.NewGuid().ToString(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void ChangeTwoFactorEnabled(bool enabled, string expectedConcurrencyStamp)
+    /// <summary>
+    /// Updates the two-factor enabled setting if it has changed
+    /// </summary>
+    public void ChangeTwoFactorEnabled(bool enabled)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
-        // If enabling 2FA, ensure we have an authenticator key
-        if (enabled && string.IsNullOrEmpty(State.AuthenticatorKey))
+        // Only emit an event if the two-factor enabled setting has actually changed
+        if (State.TwoFactorEnabled != enabled)
         {
-            throw new InvalidOperationException("Cannot enable two-factor authentication without an authenticator key");
+            // If enabling 2FA, ensure we have an authenticator key
+            if (enabled && string.IsNullOrEmpty(State.AuthenticatorKey))
+            {
+                throw new InvalidOperationException("Cannot enable two-factor authentication without an authenticator key");
+            }
+
+            AppendPendingChange(new TwoFactorChanged
+            {
+                Id = Guid.NewGuid(),
+                TwoFactorEnabled = enabled
+            });
         }
-
-        AppendPendingChange(new TwoFactorChanged
-        {
-            Id = Guid.NewGuid(),
-            TwoFactorEnabled = enabled,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
     }
 
-    public void ChangeAuthenticatorKey(string authenticatorKey, string expectedConcurrencyStamp)
+    public void ChangeAuthenticatorKey(string authenticatorKey )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         if (string.IsNullOrEmpty(authenticatorKey))
         {
@@ -203,20 +210,18 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         {
             Id = Guid.NewGuid(),
             AuthenticatorKey = authenticatorKey,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void IncrementAccessFailedCount(string expectedConcurrencyStamp)
+    public int IncrementAccessFailedCount()
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // If the user is locked out, don't increment the count
         if (IsLockedOut())
-        {
-            return;
-        }
+            return State.AccessFailedCount;
 
         var newCount = State.AccessFailedCount + 1;
 
@@ -224,7 +229,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         {
             Id = Guid.NewGuid(),
             AccessFailedCount = newCount,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         // If lockout is enabled and we've reached the threshold, lock the user out
@@ -234,15 +239,17 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             {
                 Id = Guid.NewGuid(),
                 LockoutEnd = DateTimeOffset.UtcNow.AddMinutes(15), // 15 minutes is a common default
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                
             });
         }
+
+        return newCount;
     }
 
-    public void ResetAccessFailedCount(string expectedConcurrencyStamp)
+    public void ResetAccessFailedCount()
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         if (State.AccessFailedCount > 0)
         {
@@ -250,62 +257,58 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             {
                 Id = Guid.NewGuid(),
                 AccessFailedCount = 0,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                
             });
         }
     }
 
-    public void ChangeLockoutEnabled(bool enabled, string expectedConcurrencyStamp)
+    /// <summary>
+    /// Updates the lockout enabled setting if it has changed
+    /// </summary>
+    public void ChangeLockoutEnabled(bool enabled)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
-        AppendPendingChange(new LockoutEnabledChanged
+        // Only emit an event if the lockout enabled setting has actually changed
+        if (State.LockoutEnabled != enabled)
         {
-            Id = Guid.NewGuid(),
-            LockoutEnabled = enabled,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+            AppendPendingChange(new LockoutEnabledChanged
+            {
+                Id = Guid.NewGuid(),
+                LockoutEnabled = enabled
+            });
+        }
     }
 
-    public void ChangeLockoutEnd(DateTimeOffset? lockoutEnd, string expectedConcurrencyStamp)
+    public void ChangeLockoutEnd(DateTimeOffset? lockoutEnd )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+
 
         // If setting a lockout end, ensure it's in the future
-        if (lockoutEnd.HasValue && lockoutEnd.Value <= DateTimeOffset.UtcNow)
+        if (State.LockoutEnd != lockoutEnd)
         {
-            throw new ArgumentException("Lockout end date must be in the future", nameof(lockoutEnd));
+            // If setting a lockout end, ensure it's in the future
+            if (lockoutEnd.HasValue && lockoutEnd.Value <= DateTimeOffset.UtcNow)
+            {
+                throw new ArgumentException("Lockout end date must be in the future", nameof(lockoutEnd));
+            }
+
+            AppendPendingChange(new LockoutEndChanged
+            {
+                Id = Guid.NewGuid(),
+                LockoutEnd = lockoutEnd
+            });
         }
-
-        AppendPendingChange(new LockoutEndChanged
-        {
-            Id = Guid.NewGuid(),
-            LockoutEnd = lockoutEnd,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
     }
 
-    public string UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
 
-        var concurrencyStamp = Guid.NewGuid().ToString();
-        AppendPendingChange(new IdentityConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = concurrencyStamp
-        });
-        return concurrencyStamp;
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new IdentityUserDeleted
         {
@@ -327,12 +330,5 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             throw new InvalidOperationException("Cannot modify a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User was modified by another process");
-        }
-    }
+
 }

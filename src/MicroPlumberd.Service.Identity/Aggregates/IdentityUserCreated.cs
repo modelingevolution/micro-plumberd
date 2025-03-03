@@ -13,7 +13,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
         public string PasswordHash { get; init; }
         public string SecurityStamp { get; init; }
         public bool LockoutEnabled { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
     }
 
     // Exception for concurrency conflicts

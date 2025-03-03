@@ -7,5 +7,5 @@ public record ClaimsReplaced
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public List<Claim> Claims { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }

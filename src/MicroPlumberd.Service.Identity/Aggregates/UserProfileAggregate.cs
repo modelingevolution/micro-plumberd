@@ -19,7 +19,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             public bool EmailConfirmed { get; init; }
             public string PhoneNumber { get; init; }
             public bool PhoneNumberConfirmed { get; init; }
-            public string ConcurrencyStamp { get; init; }
+            
             public bool IsDeleted { get; init; }
         }
 
@@ -36,7 +36,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 EmailConfirmed = false,
                 PhoneNumber = ev.PhoneNumber,
                 PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp,
+                
                 IsDeleted = false
             };
         }
@@ -47,7 +47,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             {
                 UserName = ev.UserName,
                 NormalizedUserName = ev.NormalizedUserName,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -59,7 +59,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 NormalizedEmail = ev.NormalizedEmail,
                 // Changing email resets confirmation
                 EmailConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -68,7 +68,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             return state with
             {
                 EmailConfirmed = true,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -79,7 +79,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 PhoneNumber = ev.PhoneNumber,
                 // Changing phone resets confirmation
                 PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -88,14 +88,11 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             return state with
             {
                 PhoneNumberConfirmed = true,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
-        private static UserProfileState Given(UserProfileState state, ConcurrencyStampChanged ev)
-        {
-            return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-        }
+
 
         private static UserProfileState Given(UserProfileState state, UserProfileDeleted ev)
         {
@@ -134,123 +131,123 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 Email = email,
                 NormalizedEmail = normalizedEmail,
                 PhoneNumber = phoneNumber,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                
             });
 
             return aggregate;
         }
 
-        public void ChangeUserName(string userName, string normalizedUserName, string expectedConcurrencyStamp)
+        public void ChangeUserName(string userName, string normalizedUserName )
         {
             EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
+
 
             // Validation
-            if (string.IsNullOrWhiteSpace(userName))
-                throw new ArgumentException("Username cannot be empty", nameof(userName));
-
-            if (string.IsNullOrWhiteSpace(normalizedUserName))
-                throw new ArgumentException("Normalized username cannot be empty", nameof(normalizedUserName));
-
-            AppendPendingChange(new UserNameChanged
+            if (State.UserName != userName || State.NormalizedUserName != normalizedUserName)
             {
-                Id = Guid.NewGuid(),
-                UserName = userName,
-                NormalizedUserName = normalizedUserName,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
+                // Validation
+                if (string.IsNullOrWhiteSpace(userName))
+                    throw new ArgumentException("Username cannot be empty", nameof(userName));
+
+                if (string.IsNullOrWhiteSpace(normalizedUserName))
+                    throw new ArgumentException("Normalized username cannot be empty", nameof(normalizedUserName));
+
+                AppendPendingChange(new UserNameChanged
+                {
+                    Id = Guid.NewGuid(),
+                    UserName = userName,
+                    NormalizedUserName = normalizedUserName
+                });
+            }
         }
 
-        public void ChangeEmail(string email, string normalizedEmail, string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Validation
-            if (!string.IsNullOrEmpty(email) && string.IsNullOrEmpty(normalizedEmail))
-                throw new ArgumentException("Normalized email must be provided if email is provided", nameof(normalizedEmail));
-
-            // Email format validation could be added here
-
-            AppendPendingChange(new EmailChanged
-            {
-                Id = Guid.NewGuid(),
-                Email = email,
-                NormalizedEmail = normalizedEmail,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void ConfirmEmail(string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Validation
-            if (string.IsNullOrEmpty(State.Email))
-                throw new InvalidOperationException("Cannot confirm email when no email is set");
-
-            if (State.EmailConfirmed)
-                return; // Already confirmed
-
-            AppendPendingChange(new EmailConfirmed
-            {
-                Id = Guid.NewGuid(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void ChangePhoneNumber(string phoneNumber, string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Phone number format validation could be added here
-
-            AppendPendingChange(new PhoneNumberChanged
-            {
-                Id = Guid.NewGuid(),
-                PhoneNumber = phoneNumber,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void ConfirmPhoneNumber(string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Validation
-            if (string.IsNullOrEmpty(State.PhoneNumber))
-                throw new InvalidOperationException("Cannot confirm phone number when no phone number is set");
-
-            if (State.PhoneNumberConfirmed)
-                return; // Already confirmed
-
-            AppendPendingChange(new PhoneNumberConfirmed
-            {
-                Id = Guid.NewGuid(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void UpdateConcurrencyStamp()
+        public void ChangeEmail(string email, string normalizedEmail )
         {
             EnsureNotDeleted();
 
-            AppendPendingChange(new ConcurrencyStampChanged
+
+            // Only emit an event if the email has actually changed
+            if (State.Email != email || State.NormalizedEmail != normalizedEmail)
             {
-                Id = Guid.NewGuid(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
+                // Validation
+                if (!string.IsNullOrEmpty(email) && string.IsNullOrEmpty(normalizedEmail))
+                    throw new ArgumentException("Normalized email must be provided if email is provided", nameof(normalizedEmail));
+
+                // Email format validation could be added here
+
+                AppendPendingChange(new EmailChanged
+                {
+                    Id = Guid.NewGuid(),
+                    Email = email,
+                    NormalizedEmail = normalizedEmail
+                });
+                
+            }
         }
 
-        public void Delete(string expectedConcurrencyStamp)
+        public void ConfirmEmail()
+        {
+            EnsureNotDeleted();
+
+
+            // Only emit an event if the email is not already confirmed
+            if (!State.EmailConfirmed)
+            {
+                // Validation
+                if (string.IsNullOrEmpty(State.Email))
+                    throw new InvalidOperationException("Cannot confirm email when no email is set");
+
+                AppendPendingChange(new EmailConfirmed
+                {
+                    Id = Guid.NewGuid()
+                });
+            }
+        }
+
+        public void ChangePhoneNumber(string phoneNumber )
+        {
+            EnsureNotDeleted();
+
+
+            // Only emit an event if the phone number has actually changed
+            if (State.PhoneNumber != phoneNumber)
+            {
+                // Phone number format validation could be added here
+
+                AppendPendingChange(new PhoneNumberChanged
+                {
+                    Id = Guid.NewGuid(),
+                    PhoneNumber = phoneNumber
+                });
+            }
+        }
+
+        public void ConfirmPhoneNumber()
+        {
+            EnsureNotDeleted();
+
+
+            // Only emit an event if the phone number is not already confirmed
+            if (!State.PhoneNumberConfirmed)
+            {
+                // Validation
+                if (string.IsNullOrEmpty(State.PhoneNumber))
+                    throw new InvalidOperationException("Cannot confirm phone number when no phone number is set");
+
+                AppendPendingChange(new PhoneNumberConfirmed
+                {
+                    Id = Guid.NewGuid()
+                });
+            }
+        }
+
+
+        public void Delete()
         {
             if (State.IsDeleted)
                 return;
 
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
+            
 
             AppendPendingChange(new UserProfileDeleted
             {
@@ -265,21 +262,8 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 throw new InvalidOperationException("Cannot modify a deleted user profile");
         }
 
-        private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-        {
-            if (expectedConcurrencyStamp != null &&
-                State.ConcurrencyStamp != expectedConcurrencyStamp)
-            {
-                throw new ConcurrencyException("User profile was modified by another process");
-            }
-        }
+
     }
 
-    // Events
 
-    public record ConcurrencyStampChanged
-    {
-        public Guid Id { get; init; }
-        public string ConcurrencyStamp { get; init; }
-    }
 }

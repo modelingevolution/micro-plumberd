@@ -7,5 +7,5 @@ public record ExternalLoginAdded
     public ExternalLoginProvider Provider { get; init; }
     public ExternalLoginKey ProviderKey { get; init; }
     public string DisplayName { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }

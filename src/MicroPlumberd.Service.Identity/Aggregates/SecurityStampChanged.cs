@@ -5,5 +5,5 @@ public record SecurityStampChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string SecurityStamp { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }

@@ -25,7 +25,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
             public bool EmailConfirmed { get; init; }
             public string PhoneNumber { get; init; }
             public bool PhoneNumberConfirmed { get; init; }
-            public string ConcurrencyStamp { get; init; }
+            
         }
 
         private async Task Given(Metadata m, UserProfileCreated ev)
@@ -40,7 +40,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 EmailConfirmed = false,
                 PhoneNumber = ev.PhoneNumber,
                 PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
 
             _profilesById[ev.UserId] = profile;
@@ -68,7 +68,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 {
                     UserName = ev.UserName,
                     NormalizedUserName = ev.NormalizedUserName,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
 
                 _profilesById[userId] = updatedProfile;
@@ -96,7 +96,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                     Email = ev.Email,
                     NormalizedEmail = ev.NormalizedEmail,
                     EmailConfirmed = false,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
 
                 _profilesById[userId] = updatedProfile;
@@ -120,7 +120,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 _profilesById[userId] = profile with
                 {
                     EmailConfirmed = true,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
             }
 
@@ -137,7 +137,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 {
                     PhoneNumber = ev.PhoneNumber,
                     PhoneNumberConfirmed = false,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
             }
 
@@ -153,27 +153,13 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 _profilesById[userId] = profile with
                 {
                     PhoneNumberConfirmed = true,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
             }
 
             await Task.CompletedTask;
         }
 
-        private async Task Given(Metadata m, ConcurrencyStampChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_profilesById.TryGetValue(userId, out var profile))
-            {
-                _profilesById[userId] = profile with
-                {
-                    ConcurrencyStamp = ev.ConcurrencyStamp
-                };
-            }
-
-            await Task.CompletedTask;
-        }
 
         private async Task Given(Metadata m, UserProfileDeleted ev)
         {

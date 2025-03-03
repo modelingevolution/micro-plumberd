@@ -5,5 +5,5 @@ public record LockoutEnabledChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public bool LockoutEnabled { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }

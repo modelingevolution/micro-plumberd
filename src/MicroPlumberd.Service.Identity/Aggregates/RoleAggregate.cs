@@ -10,7 +10,7 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
         public RoleIdentifier Id { get; init; }
         public string Name { get; init; }
         public string NormalizedName { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -22,7 +22,7 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
             Id = ev.RoleId,
             Name = ev.Name,
             NormalizedName = ev.NormalizedName,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -33,14 +33,11 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
         {
             Name = ev.Name,
             NormalizedName = ev.NormalizedName,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static RoleState Given(RoleState state, RoleConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+   
 
     private static RoleState Given(RoleState state, RoleDeleted ev)
     {
@@ -63,66 +60,47 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
             RoleId = id,
             Name = name,
             NormalizedName = normalizedName,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
     }
 
-    public void ChangeName(string name, string normalizedName, string expectedConcurrencyStamp)
+    public void ChangeName(string name, string normalizedName)
     {
         if (State.IsDeleted)
             throw new InvalidOperationException("Cannot modify a deleted role");
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Role name cannot be empty", nameof(name));
-
-        if (string.IsNullOrWhiteSpace(normalizedName))
-            throw new ArgumentException("Normalized role name cannot be empty", nameof(normalizedName));
-
-        AppendPendingChange(new RoleNameChanged
+        // Only emit an event if the name has actually changed
+        if (State.Name != name || State.NormalizedName != normalizedName)
         {
-            Id = Guid.NewGuid(),
-            Name = name,
-            NormalizedName = normalizedName,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Role name cannot be empty", nameof(name));
+
+            if (string.IsNullOrWhiteSpace(normalizedName))
+                throw new ArgumentException("Normalized role name cannot be empty", nameof(normalizedName));
+
+            AppendPendingChange(new RoleNameChanged
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                NormalizedName = normalizedName
+            });
+        }
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        if (State.IsDeleted)
-            throw new InvalidOperationException("Cannot modify a deleted role");
 
-        AppendPendingChange(new RoleConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
 
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
+        
         AppendPendingChange(new RoleDeleted
         {
             Id = Guid.NewGuid()
         });
-    }
-
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("Role was modified by another process");
-        }
     }
 
 }

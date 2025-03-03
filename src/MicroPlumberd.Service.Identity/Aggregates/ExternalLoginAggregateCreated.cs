@@ -12,6 +12,6 @@ namespace MicroPlumberd.Service.Identity.Aggregates
     {
         public Guid Id { get; init; } = Guid.NewGuid();
         public UserIdentifier UserId { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
     }
 }

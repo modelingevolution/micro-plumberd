@@ -13,7 +13,7 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         public UserIdentifier Id { get; init; }
         public ImmutableList<RoleIdentifier> Roles { get; init; } = ImmutableList<RoleIdentifier>.Empty;
         public ImmutableList<ClaimRecord> Claims { get; init; } = ImmutableList<ClaimRecord>.Empty;
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -29,7 +29,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return new AuthorizationUserState
         {
             Id = ev.UserId,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
             IsDeleted = false
         };
     }
@@ -42,7 +41,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Roles = state.Roles.Add(ev.RoleId),
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -51,7 +49,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Roles = state.Roles.Remove(ev.RoleId),
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -74,7 +71,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Claims = state.Claims.Add(claimRecord),
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -99,7 +95,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Claims = newClaims,
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -115,14 +110,9 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Claims = newClaims,
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
-    private static AuthorizationUserState Given(AuthorizationUserState state, ConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
 
     private static AuthorizationUserState Given(AuthorizationUserState state, AuthorizationUserDeleted ev)
     {
@@ -138,16 +128,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         {
             Id = Guid.NewGuid(),
             UserId = id,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
         });
 
         return aggregate;
     }
 
-    public void AddRole(RoleIdentifier roleId, string expectedConcurrencyStamp)
+    public void AddRole(RoleIdentifier roleId)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
         if (State.Roles.Contains(roleId))
             return; // Role already added
@@ -156,15 +144,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         {
             Id = Guid.NewGuid(),
             RoleId = roleId,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void RemoveRole(RoleIdentifier roleId, string expectedConcurrencyStamp)
+    public void RemoveRole(RoleIdentifier roleId)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
+        
         if (!State.Roles.Contains(roleId))
             return; // Role not present
 
@@ -172,15 +159,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         {
             Id = Guid.NewGuid(),
             RoleId = roleId,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void AddClaim(ClaimType claimType, ClaimValue claimValue, string expectedConcurrencyStamp)
+    public void AddClaim(ClaimType claimType, ClaimValue claimValue)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
+        
         // Check if claim already exists
         bool claimExists = State.Claims.Any(c =>
             c.Type.Value == claimType.Value &&
@@ -194,14 +180,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
             Id = Guid.NewGuid(),
             ClaimType = claimType,
             ClaimValue = claimValue,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void RemoveClaim(ClaimType claimType, ClaimValue claimValue, string expectedConcurrencyStamp)
+    public void RemoveClaim(ClaimType claimType, ClaimValue claimValue)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Check if any claim matches
         bool claimExists = State.Claims.Any(c =>
@@ -216,40 +202,28 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
             Id = Guid.NewGuid(),
             ClaimType = claimType,
             ClaimValue = claimValue,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void ReplaceClaims(IEnumerable<Claim> claims, string expectedConcurrencyStamp)
+    public void ReplaceClaims(IEnumerable<Claim> claims)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new ClaimsReplaced
         {
             Id = Guid.NewGuid(),
             Claims = claims.ToList(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
 
-        AppendPendingChange(new ConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
-
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
         AppendPendingChange(new AuthorizationUserDeleted
         {
@@ -264,12 +238,5 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
             throw new InvalidOperationException("Cannot modify authorization data of a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User authorization data was modified by another process");
-        }
-    }
+   
 }

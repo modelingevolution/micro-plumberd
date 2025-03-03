@@ -11,7 +11,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
     {
         public UserIdentifier Id { get; init; }
         public ImmutableList<ExternalLoginRecord> Logins { get; init; } = ImmutableList<ExternalLoginRecord>.Empty;
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -28,7 +28,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return new ExternalLoginState
         {
             Id = ev.UserId,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -53,7 +53,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return state with
         {
             Logins = state.Logins.Add(loginRecord),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -69,14 +69,11 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return state with
         {
             Logins = state.Logins.Remove(loginToRemove),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static ExternalLoginState Given(ExternalLoginState state, ExtenralConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+    
 
     private static ExternalLoginState Given(ExternalLoginState state, ExternalLoginAggregateDeleted ev)
     {
@@ -92,7 +89,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         {
             Id = Guid.NewGuid(),
             UserId = id,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
@@ -101,11 +98,11 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
     public void AddLogin(
         ExternalLoginProvider provider,
         ExternalLoginKey providerKey,
-        string displayName,
-        string expectedConcurrencyStamp)
+        string displayName
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Validation
         if (string.IsNullOrEmpty(provider.Name))
@@ -128,17 +125,17 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             Provider = provider,
             ProviderKey = providerKey,
             DisplayName = displayName ?? string.Empty,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
     public void RemoveLogin(
         ExternalLoginProvider provider,
-        ExternalLoginKey providerKey,
-        string expectedConcurrencyStamp)
+        ExternalLoginKey providerKey
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Check if login exists
         bool loginExists = State.Logins.Any(l =>
@@ -153,27 +150,18 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             Id = Guid.NewGuid(),
             Provider = provider,
             ProviderKey = providerKey,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
+   
 
-        AppendPendingChange(new ExtenralConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new ExternalLoginAggregateDeleted
         {
@@ -188,12 +176,5 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             throw new InvalidOperationException("Cannot modify external logins of a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User external logins were modified by another process");
-        }
-    }
+    
 }
