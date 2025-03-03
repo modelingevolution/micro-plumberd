@@ -35,7 +35,12 @@ namespace MicroPlumberd.Services.Identity
             container.AddEventHandler<ExternalLoginModel>();
             container.AddEventHandler<TokenModel>();
             
-
+            container.AddIdentity<User, Role>()
+                .AddDefaultTokenProviders()
+                .AddSignInManager();
+            container.AddSingleton<IUserStore<User>, UserStore>();
+            container.AddSingleton<IRoleStore<Role>, RoleStore>();
+            
             // Register stores
             return container;
 
