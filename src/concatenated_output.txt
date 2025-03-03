@@ -6838,8 +6838,8 @@ public abstract class AggregateBase<TId, TState>(TId id) : IVersioned, IId<TId>,
     /// Gets or sets the list of pending events for the aggregate.
     /// </summary>
     public IReadOnlyList<object> PendingEvents => _pendingEvents;
+    public bool HasPendingChanges => _pendingEvents.Count > 0;
 
-    
 
     /// <summary>
     /// Appends a pending change to the list of pending events and applies the change.
@@ -8916,6 +8916,218 @@ class ProjectionRegister : IProjectionRegister
     {
         return (await _lazyLoader.Value).TryGetValue(name, out var v) ? v : null;
     }
+}
+
+
+// --- File: MicroPlumberd\StreamPosition.cs ---
+
+
+using EventStore.Client;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
+
+namespace MicroPlumberd;
+
+/// <summary>
+/// Represents a position in a specific event stream
+/// </summary>
+[JsonConverter(typeof(JsonParsableConverter<StreamVersion>))]
+public readonly record struct StreamVersion : IParsable<StreamVersion>, IComparable<StreamVersion>
+{
+    public string StreamName { get; }
+    public long Version { get; }
+
+    public StreamVersion(string streamName, long version)
+    {
+        if (string.IsNullOrWhiteSpace(streamName))
+            throw new ArgumentException("Stream name cannot be empty", nameof(streamName));
+
+        if (version < -1)
+            throw new ArgumentException("Version cannot be less than -1", nameof(version));
+
+        StreamName = streamName;
+        Version = version;
+    }
+
+    public StreamVersion With(Metadata metadata)
+    {
+        
+        return new StreamVersion(
+            StreamName,
+            metadata.SourceStreamPosition);
+    }
+
+    public override string ToString() => $"{StreamName}:{Version}";
+
+    public static StreamVersion Parse(string s, IFormatProvider? provider = null)
+    {
+        if (string.IsNullOrWhiteSpace(s))
+            throw new ArgumentException("Input string cannot be empty", nameof(s));
+
+        var parts = s.Split(':');
+        if (parts.Length != 2)
+            throw new FormatException("Stream position must be in format 'streamName:version'");
+
+        if (!long.TryParse(parts[1], out var version))
+            throw new FormatException("Version must be a valid long integer");
+
+        return new StreamVersion(parts[0], version);
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out StreamVersion result)
+    {
+        result = default;
+
+        if (string.IsNullOrWhiteSpace(s))
+            return false;
+
+        var parts = s.Split(':');
+        if (parts.Length != 2)
+            return false;
+
+        if (!long.TryParse(parts[1], out var version))
+            return false;
+
+        result = new StreamVersion(parts[0], version);
+        return true;
+    }
+
+    public int CompareTo(StreamVersion other)
+    {
+        var streamNameComparison = string.Compare(StreamName, other.StreamName, StringComparison.Ordinal);
+        if (streamNameComparison != 0)
+            return streamNameComparison;
+
+        return Version.CompareTo(other.Version);
+    }
+}
+/// <summary>
+/// Represents a composite version of multiple event streams
+/// </summary>
+[JsonConverter(typeof(JsonParsableConverter<CompositeStreamVersion>))]
+public readonly record struct CompositeStreamVersion : IParsable<CompositeStreamVersion>, IEquatable<CompositeStreamVersion>
+{
+    public ImmutableSortedDictionary<string, long> Positions { get; private init; }
+    
+    public CompositeStreamVersion(IEnumerable<StreamVersion> positions)
+    {
+        Positions = positions?.ToImmutableSortedDictionary(x=>x.StreamName, x=>x.Version) ?? ImmutableSortedDictionary<string,long>.Empty;
+    }
+
+    public bool Equals(CompositeStreamVersion? other)
+    {
+        if (other == null) return false;
+        return Positions.SequenceEqual(other.Value.Positions);
+    }
+
+    /// <summary>
+    /// Creates an empty composite version
+    /// </summary>
+    public static CompositeStreamVersion Empty => new(ImmutableSortedSet<StreamVersion>.Empty);
+
+    /// <summary>
+    /// Gets the version for a specific stream
+    /// </summary>
+    public long GetVersionFor(string streamName) => Positions[streamName];
+
+    /// <summary>
+    /// Creates a new composite version with the specified stream position updated
+    /// </summary>
+    public CompositeStreamVersion WithPosition(StreamVersion position)
+    {
+        if (Positions.ContainsKey(position.StreamName))
+        {
+            var updatedPositions = Positions.SetItem(position.StreamName, position.Version);
+            return new CompositeStreamVersion() { Positions = updatedPositions };
+        }
+        else
+            return new CompositeStreamVersion() { Positions = Positions.Add(position.StreamName, position.Version) };
+
+    }
+
+    public override string ToString() => Positions.IsEmpty ? string.Empty : string.Join('.', this.Positions.Select(x=> new StreamVersion(x.Key, x.Value)));
+
+    public static CompositeStreamVersion Parse(string s, IFormatProvider? provider = null)
+    {
+        if (string.IsNullOrWhiteSpace(s))
+            return Empty;
+
+        var parts = s.Split('.');
+        var positions = new List<StreamVersion>();
+
+        foreach (var part in parts)
+        {
+            if (string.IsNullOrWhiteSpace(part))
+                continue;
+
+            positions.Add(StreamVersion.Parse(part, provider));
+        }
+
+        return new CompositeStreamVersion(positions);
+    }
+
+    public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out CompositeStreamVersion result)
+    {
+        result = Empty;
+
+        if (string.IsNullOrWhiteSpace(s))
+            return true; // Empty string is a valid empty composite version
+
+        var parts = s.Split('.');
+        var positions = new List<StreamVersion>();
+
+        foreach (var part in parts)
+        {
+            if (string.IsNullOrWhiteSpace(part))
+                continue;
+
+            if (!StreamVersion.TryParse(part, provider, out var position))
+                return false;
+
+            positions.Add(position);
+        }
+
+        result = new CompositeStreamVersion(positions);
+        return true;
+    }
+}
+/// <summary>
+/// Extension methods for working with CompositeStreamVersion
+/// </summary>
+public static class CompositeStreamVersionExtensions
+{
+    /// <summary>
+    /// Updates a composite version with the metadata from an event
+    /// </summary>
+    /// <typeparam name="TEvent">The type of event</typeparam>
+    /// <param name="CompositeStreamVersion">The current composite version</param>
+    /// <param name="metadata">The metadata from the event</param>
+    /// <param name="plumber">The plumber instance to access conventions</param>
+    /// <returns>An updated composite version</returns>
+    public static CompositeStreamVersion With<TEvent>(
+        this CompositeStreamVersion CompositeStreamVersion,
+        Metadata metadata,
+        IPlumber plumber)
+    {
+        
+        if (plumber == null)
+            throw new ArgumentNullException(nameof(plumber));
+
+        // Get stream name from metadata or determine from event type if not present
+        string streamName = plumber.Config.Conventions.GetEventNameConvention(null, typeof(TEvent));
+
+        // Create stream position with the stream name and version from metadata
+        var position = new StreamVersion(streamName, metadata.SourceStreamPosition);
+
+        // Update the composite version with the new position
+        return CompositeStreamVersion.WithPosition(position);
+    }
+
+    
 }
 
 
@@ -11053,7 +11265,7 @@ public record AccessFailedCountChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public int AccessFailedCount { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11067,7 +11279,7 @@ public record AuthenticatorKeyChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string AuthenticatorKey { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11089,7 +11301,7 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         public UserIdentifier Id { get; init; }
         public ImmutableList<RoleIdentifier> Roles { get; init; } = ImmutableList<RoleIdentifier>.Empty;
         public ImmutableList<ClaimRecord> Claims { get; init; } = ImmutableList<ClaimRecord>.Empty;
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -11105,7 +11317,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return new AuthorizationUserState
         {
             Id = ev.UserId,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
             IsDeleted = false
         };
     }
@@ -11118,7 +11329,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Roles = state.Roles.Add(ev.RoleId),
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -11127,7 +11337,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Roles = state.Roles.Remove(ev.RoleId),
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -11150,7 +11359,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Claims = state.Claims.Add(claimRecord),
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -11175,7 +11383,6 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Claims = newClaims,
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
@@ -11191,14 +11398,9 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with
         {
             Claims = newClaims,
-            ConcurrencyStamp = ev.ConcurrencyStamp
         };
     }
 
-    private static AuthorizationUserState Given(AuthorizationUserState state, ConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
 
     private static AuthorizationUserState Given(AuthorizationUserState state, AuthorizationUserDeleted ev)
     {
@@ -11214,16 +11416,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         {
             Id = Guid.NewGuid(),
             UserId = id,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
         });
 
         return aggregate;
     }
 
-    public void AddRole(RoleIdentifier roleId, string expectedConcurrencyStamp)
+    public void AddRole(RoleIdentifier roleId)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
         if (State.Roles.Contains(roleId))
             return; // Role already added
@@ -11232,15 +11432,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         {
             Id = Guid.NewGuid(),
             RoleId = roleId,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void RemoveRole(RoleIdentifier roleId, string expectedConcurrencyStamp)
+    public void RemoveRole(RoleIdentifier roleId)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
+        
         if (!State.Roles.Contains(roleId))
             return; // Role not present
 
@@ -11248,15 +11447,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         {
             Id = Guid.NewGuid(),
             RoleId = roleId,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void AddClaim(ClaimType claimType, ClaimValue claimValue, string expectedConcurrencyStamp)
+    public void AddClaim(ClaimType claimType, ClaimValue claimValue)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
+        
         // Check if claim already exists
         bool claimExists = State.Claims.Any(c =>
             c.Type.Value == claimType.Value &&
@@ -11270,14 +11468,14 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
             Id = Guid.NewGuid(),
             ClaimType = claimType,
             ClaimValue = claimValue,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void RemoveClaim(ClaimType claimType, ClaimValue claimValue, string expectedConcurrencyStamp)
+    public void RemoveClaim(ClaimType claimType, ClaimValue claimValue)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Check if any claim matches
         bool claimExists = State.Claims.Any(c =>
@@ -11292,40 +11490,28 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
             Id = Guid.NewGuid(),
             ClaimType = claimType,
             ClaimValue = claimValue,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void ReplaceClaims(IEnumerable<Claim> claims, string expectedConcurrencyStamp)
+    public void ReplaceClaims(IEnumerable<Claim> claims)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new ClaimsReplaced
         {
             Id = Guid.NewGuid(),
             Claims = claims.ToList(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
 
-        AppendPendingChange(new ConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
-
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
         AppendPendingChange(new AuthorizationUserDeleted
         {
@@ -11340,14 +11526,7 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
             throw new InvalidOperationException("Cannot modify authorization data of a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User authorization data was modified by another process");
-        }
-    }
+   
 }
 
 
@@ -11369,7 +11548,6 @@ namespace MicroPlumberd.Service.Identity.Aggregates
     {
         public Guid Id { get; init; } = Guid.NewGuid();
         public UserIdentifier UserId { get; init; }
-        public string ConcurrencyStamp { get; init; }
     }
 }
 
@@ -11397,7 +11575,7 @@ public record ClaimAdded
     public Guid Id { get; init; } = Guid.NewGuid();
     public ClaimType ClaimType { get; init; }
     public ClaimValue ClaimValue { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11412,7 +11590,7 @@ public record ClaimRemoved
     public Guid Id { get; init; } = Guid.NewGuid();
     public ClaimType ClaimType { get; init; }
     public ClaimValue ClaimValue { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11428,7 +11606,7 @@ public record ClaimsReplaced
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public List<Claim> Claims { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11455,7 +11633,7 @@ public record EmailChanged
     public Guid Id { get; init; }
     public string Email { get; init; }
     public string NormalizedEmail { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11467,20 +11645,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates;
 public record EmailConfirmed
 {
     public Guid Id { get; init; }
-    public string ConcurrencyStamp { get; init; }
-}
-
-
-// --- File: MicroPlumberd.Service.Identity\Aggregates\ExtenralConcurrencyStampChanged.cs ---
-
-
-namespace MicroPlumberd.Service.Identity.Aggregates;
-
-[OutputStream("ExternalLogin")]
-public record ExtenralConcurrencyStampChanged
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11496,7 +11661,7 @@ public record ExternalLoginAdded
     public ExternalLoginProvider Provider { get; init; }
     public ExternalLoginKey ProviderKey { get; init; }
     public string DisplayName { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11516,7 +11681,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
     {
         public UserIdentifier Id { get; init; }
         public ImmutableList<ExternalLoginRecord> Logins { get; init; } = ImmutableList<ExternalLoginRecord>.Empty;
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -11533,7 +11698,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return new ExternalLoginState
         {
             Id = ev.UserId,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -11558,7 +11723,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return state with
         {
             Logins = state.Logins.Add(loginRecord),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -11574,14 +11739,11 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return state with
         {
             Logins = state.Logins.Remove(loginToRemove),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static ExternalLoginState Given(ExternalLoginState state, ExtenralConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+    
 
     private static ExternalLoginState Given(ExternalLoginState state, ExternalLoginAggregateDeleted ev)
     {
@@ -11597,7 +11759,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         {
             Id = Guid.NewGuid(),
             UserId = id,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
@@ -11606,11 +11768,11 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
     public void AddLogin(
         ExternalLoginProvider provider,
         ExternalLoginKey providerKey,
-        string displayName,
-        string expectedConcurrencyStamp)
+        string displayName
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Validation
         if (string.IsNullOrEmpty(provider.Name))
@@ -11633,17 +11795,17 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             Provider = provider,
             ProviderKey = providerKey,
             DisplayName = displayName ?? string.Empty,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
     public void RemoveLogin(
         ExternalLoginProvider provider,
-        ExternalLoginKey providerKey,
-        string expectedConcurrencyStamp)
+        ExternalLoginKey providerKey
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Check if login exists
         bool loginExists = State.Logins.Any(l =>
@@ -11658,27 +11820,18 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             Id = Guid.NewGuid(),
             Provider = provider,
             ProviderKey = providerKey,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
+   
 
-        AppendPendingChange(new ExtenralConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new ExternalLoginAggregateDeleted
         {
@@ -11693,14 +11846,7 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
             throw new InvalidOperationException("Cannot modify external logins of a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User external logins were modified by another process");
-        }
-    }
+    
 }
 
 
@@ -11721,7 +11867,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
     {
         public Guid Id { get; init; } = Guid.NewGuid();
         public UserIdentifier UserId { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
     }
 }
 
@@ -11749,20 +11895,7 @@ public record ExternalLoginRemoved
     public Guid Id { get; init; } = Guid.NewGuid();
     public ExternalLoginProvider Provider { get; init; }
     public ExternalLoginKey ProviderKey { get; init; }
-    public string ConcurrencyStamp { get; init; }
-}
-
-
-// --- File: MicroPlumberd.Service.Identity\Aggregates\IdentityConcurrencyStampChanged.cs ---
-
-
-namespace MicroPlumberd.Service.Identity.Aggregates;
-
-[OutputStream("Identity")]
-public record IdentityConcurrencyStampChanged
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -11786,7 +11919,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         public int AccessFailedCount { get; init; }
         public bool LockoutEnabled { get; init; }
         public DateTimeOffset? LockoutEnd { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -11803,7 +11936,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             AccessFailedCount = 0,
             LockoutEnabled = ev.LockoutEnabled,
             LockoutEnd = null,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -11814,7 +11947,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         {
             PasswordHash = ev.PasswordHash,
             SecurityStamp = ev.SecurityStamp,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -11823,7 +11956,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             SecurityStamp = ev.SecurityStamp,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -11832,7 +11965,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         var newState = state with
         {
             TwoFactorEnabled = ev.TwoFactorEnabled,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
 
         // If disabling 2FA, clear the authenticator key
@@ -11849,7 +11982,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             AuthenticatorKey = ev.AuthenticatorKey,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -11858,7 +11991,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             AccessFailedCount = ev.AccessFailedCount,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -11867,7 +12000,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             LockoutEnabled = ev.LockoutEnabled,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -11876,14 +12009,11 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with
         {
             LockoutEnd = ev.LockoutEnd,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static IdentityUserState Given(IdentityUserState state, IdentityConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+
 
     private static IdentityUserState Given(IdentityUserState state, IdentityUserDeleted ev)
     {
@@ -11905,65 +12035,75 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             PasswordHash = passwordHash,
             SecurityStamp = securityStamp,
             LockoutEnabled = lockoutEnabled,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
     }
 
-    public void ChangePassword(string passwordHash, string expectedConcurrencyStamp)
+    /// <summary>
+    /// Updates the password hash if it has changed
+    /// </summary>
+    public void ChangePasswordHash(string passwordHash)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
-        // Generate a new security stamp whenever the password changes
-        var securityStamp = Guid.NewGuid().ToString();
-
-        AppendPendingChange(new PasswordChanged
+        // Only emit an event if the password hash has actually changed
+        if (State.PasswordHash != passwordHash && !string.IsNullOrEmpty(passwordHash))
         {
-            Id = Guid.NewGuid(),
-            PasswordHash = passwordHash,
-            SecurityStamp = securityStamp,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+            // Generate a new security stamp whenever the password changes
+            var securityStamp = Guid.NewGuid().ToString();
+
+            AppendPendingChange(new PasswordChanged
+            {
+                Id = Guid.NewGuid(),
+                PasswordHash = passwordHash,
+                SecurityStamp = securityStamp
+            });
+        }
     }
 
-    public void ChangeSecurityStamp(string expectedConcurrencyStamp)
+    public void ChangeSecurityStamp()
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new SecurityStampChanged
         {
             Id = Guid.NewGuid(),
             SecurityStamp = Guid.NewGuid().ToString(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void ChangeTwoFactorEnabled(bool enabled, string expectedConcurrencyStamp)
+    /// <summary>
+    /// Updates the two-factor enabled setting if it has changed
+    /// </summary>
+    public void ChangeTwoFactorEnabled(bool enabled)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
-        // If enabling 2FA, ensure we have an authenticator key
-        if (enabled && string.IsNullOrEmpty(State.AuthenticatorKey))
+        // Only emit an event if the two-factor enabled setting has actually changed
+        if (State.TwoFactorEnabled != enabled)
         {
-            throw new InvalidOperationException("Cannot enable two-factor authentication without an authenticator key");
+            // If enabling 2FA, ensure we have an authenticator key
+            if (enabled && string.IsNullOrEmpty(State.AuthenticatorKey))
+            {
+                throw new InvalidOperationException("Cannot enable two-factor authentication without an authenticator key");
+            }
+
+            AppendPendingChange(new TwoFactorChanged
+            {
+                Id = Guid.NewGuid(),
+                TwoFactorEnabled = enabled
+            });
         }
-
-        AppendPendingChange(new TwoFactorChanged
-        {
-            Id = Guid.NewGuid(),
-            TwoFactorEnabled = enabled,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
     }
 
-    public void ChangeAuthenticatorKey(string authenticatorKey, string expectedConcurrencyStamp)
+    public void ChangeAuthenticatorKey(string authenticatorKey )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         if (string.IsNullOrEmpty(authenticatorKey))
         {
@@ -11974,20 +12114,18 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         {
             Id = Guid.NewGuid(),
             AuthenticatorKey = authenticatorKey,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void IncrementAccessFailedCount(string expectedConcurrencyStamp)
+    public int IncrementAccessFailedCount()
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // If the user is locked out, don't increment the count
         if (IsLockedOut())
-        {
-            return;
-        }
+            return State.AccessFailedCount;
 
         var newCount = State.AccessFailedCount + 1;
 
@@ -11995,7 +12133,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         {
             Id = Guid.NewGuid(),
             AccessFailedCount = newCount,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         // If lockout is enabled and we've reached the threshold, lock the user out
@@ -12005,15 +12143,17 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             {
                 Id = Guid.NewGuid(),
                 LockoutEnd = DateTimeOffset.UtcNow.AddMinutes(15), // 15 minutes is a common default
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                
             });
         }
+
+        return newCount;
     }
 
-    public void ResetAccessFailedCount(string expectedConcurrencyStamp)
+    public void ResetAccessFailedCount()
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         if (State.AccessFailedCount > 0)
         {
@@ -12021,62 +12161,58 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             {
                 Id = Guid.NewGuid(),
                 AccessFailedCount = 0,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                
             });
         }
     }
 
-    public void ChangeLockoutEnabled(bool enabled, string expectedConcurrencyStamp)
+    /// <summary>
+    /// Updates the lockout enabled setting if it has changed
+    /// </summary>
+    public void ChangeLockoutEnabled(bool enabled)
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
 
-        AppendPendingChange(new LockoutEnabledChanged
+        // Only emit an event if the lockout enabled setting has actually changed
+        if (State.LockoutEnabled != enabled)
         {
-            Id = Guid.NewGuid(),
-            LockoutEnabled = enabled,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+            AppendPendingChange(new LockoutEnabledChanged
+            {
+                Id = Guid.NewGuid(),
+                LockoutEnabled = enabled
+            });
+        }
     }
 
-    public void ChangeLockoutEnd(DateTimeOffset? lockoutEnd, string expectedConcurrencyStamp)
+    public void ChangeLockoutEnd(DateTimeOffset? lockoutEnd )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+
 
         // If setting a lockout end, ensure it's in the future
-        if (lockoutEnd.HasValue && lockoutEnd.Value <= DateTimeOffset.UtcNow)
+        if (State.LockoutEnd != lockoutEnd)
         {
-            throw new ArgumentException("Lockout end date must be in the future", nameof(lockoutEnd));
+            // If setting a lockout end, ensure it's in the future
+            if (lockoutEnd.HasValue && lockoutEnd.Value <= DateTimeOffset.UtcNow)
+            {
+                throw new ArgumentException("Lockout end date must be in the future", nameof(lockoutEnd));
+            }
+
+            AppendPendingChange(new LockoutEndChanged
+            {
+                Id = Guid.NewGuid(),
+                LockoutEnd = lockoutEnd
+            });
         }
-
-        AppendPendingChange(new LockoutEndChanged
-        {
-            Id = Guid.NewGuid(),
-            LockoutEnd = lockoutEnd,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
     }
 
-    public string UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
 
-        var concurrencyStamp = Guid.NewGuid().ToString();
-        AppendPendingChange(new IdentityConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = concurrencyStamp
-        });
-        return concurrencyStamp;
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new IdentityUserDeleted
         {
@@ -12098,14 +12234,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
             throw new InvalidOperationException("Cannot modify a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User was modified by another process");
-        }
-    }
+
 }
 
 
@@ -12127,7 +12256,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
         public string PasswordHash { get; init; }
         public string SecurityStamp { get; init; }
         public bool LockoutEnabled { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
     }
 
     // Exception for concurrency conflicts
@@ -12156,7 +12285,7 @@ public record LockoutEnabledChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public bool LockoutEnabled { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12170,7 +12299,7 @@ public record LockoutEndChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public DateTimeOffset? LockoutEnd { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12185,7 +12314,7 @@ public record PasswordChanged
     public Guid Id { get; init; } = Guid.NewGuid();
     public string PasswordHash { get; init; }
     public string SecurityStamp { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12198,7 +12327,7 @@ public record PhoneNumberChanged
 {
     public Guid Id { get; init; }
     public string PhoneNumber { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12210,7 +12339,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates;
 public record PhoneNumberConfirmed
 {
     public Guid Id { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12224,7 +12353,7 @@ public record RoleAdded
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public RoleIdentifier RoleId { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12243,7 +12372,7 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
         public RoleIdentifier Id { get; init; }
         public string Name { get; init; }
         public string NormalizedName { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -12255,7 +12384,7 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
             Id = ev.RoleId,
             Name = ev.Name,
             NormalizedName = ev.NormalizedName,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -12266,14 +12395,11 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
         {
             Name = ev.Name,
             NormalizedName = ev.NormalizedName,
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static RoleState Given(RoleState state, RoleConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+   
 
     private static RoleState Given(RoleState state, RoleDeleted ev)
     {
@@ -12296,83 +12422,52 @@ public partial class RoleAggregate : AggregateBase<RoleIdentifier, RoleAggregate
             RoleId = id,
             Name = name,
             NormalizedName = normalizedName,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
     }
 
-    public void ChangeName(string name, string normalizedName, string expectedConcurrencyStamp)
+    public void ChangeName(string name, string normalizedName)
     {
         if (State.IsDeleted)
             throw new InvalidOperationException("Cannot modify a deleted role");
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-        if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentException("Role name cannot be empty", nameof(name));
-
-        if (string.IsNullOrWhiteSpace(normalizedName))
-            throw new ArgumentException("Normalized role name cannot be empty", nameof(normalizedName));
-
-        AppendPendingChange(new RoleNameChanged
+        // Only emit an event if the name has actually changed
+        if (State.Name != name || State.NormalizedName != normalizedName)
         {
-            Id = Guid.NewGuid(),
-            Name = name,
-            NormalizedName = normalizedName,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Role name cannot be empty", nameof(name));
+
+            if (string.IsNullOrWhiteSpace(normalizedName))
+                throw new ArgumentException("Normalized role name cannot be empty", nameof(normalizedName));
+
+            AppendPendingChange(new RoleNameChanged
+            {
+                Id = Guid.NewGuid(),
+                Name = name,
+                NormalizedName = normalizedName
+            });
+        }
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        if (State.IsDeleted)
-            throw new InvalidOperationException("Cannot modify a deleted role");
 
-        AppendPendingChange(new RoleConcurrencyStampChanged
-        {
-            Id = Guid.NewGuid(),
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
 
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
+        
         AppendPendingChange(new RoleDeleted
         {
             Id = Guid.NewGuid()
         });
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("Role was modified by another process");
-        }
-    }
-
 }
 
 
-
-
-// --- File: MicroPlumberd.Service.Identity\Aggregates\RoleConcurrencyStampChanged.cs ---
-
-
-namespace MicroPlumberd.Service.Identity.Aggregates;
-
-public record RoleConcurrencyStampChanged
-{
-    public Guid Id { get; init; }
-    public string ConcurrencyStamp { get; init; }
-}
 
 
 // --- File: MicroPlumberd.Service.Identity\Aggregates\RoleCreated.cs ---
@@ -12386,13 +12481,14 @@ using MicroPlumberd;
 namespace MicroPlumberd.Service.Identity.Aggregates
 {
     // Events
+    [OutputStream("Authorization")]
     public record RoleCreated
     {
         public Guid Id { get; init; }
         public RoleIdentifier RoleId { get; init; }
         public string Name { get; init; }
         public string NormalizedName { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
     }
 }
 
@@ -12402,6 +12498,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
 
 namespace MicroPlumberd.Service.Identity.Aggregates;
 
+[OutputStream("Authorization")]
 public record RoleDeleted
 {
     public Guid Id { get; init; }
@@ -12413,12 +12510,13 @@ public record RoleDeleted
 
 namespace MicroPlumberd.Service.Identity.Aggregates;
 
+[OutputStream("Authorization")]
 public record RoleNameChanged
 {
     public Guid Id { get; init; }
     public string Name { get; init; }
     public string NormalizedName { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12432,7 +12530,7 @@ public record RoleRemoved
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public RoleIdentifier RoleId { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12446,7 +12544,7 @@ public record SecurityStampChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public string SecurityStamp { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12467,7 +12565,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
     {
         public UserIdentifier Id { get; init; }
         public ImmutableList<TokenRecord> Tokens { get; init; } = ImmutableList<TokenRecord>.Empty;
-        public string ConcurrencyStamp { get; init; }
+        
         public bool IsDeleted { get; init; }
     }
 
@@ -12485,7 +12583,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return new TokenState
         {
             Id = ev.UserId,
-            ConcurrencyStamp = ev.ConcurrencyStamp,
+            
             IsDeleted = false
         };
     }
@@ -12515,7 +12613,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return state with
         {
             Tokens = tokens.Add(tokenRecord),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
@@ -12532,14 +12630,11 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return state with
         {
             Tokens = state.Tokens.Remove(tokenToRemove),
-            ConcurrencyStamp = ev.ConcurrencyStamp
+            
         };
     }
 
-    private static TokenState Given(TokenState state, TokenConcurrencyStampChanged ev)
-    {
-        return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-    }
+
 
     private static TokenState Given(TokenState state, TokenAggregateDeleted ev)
     {
@@ -12554,7 +12649,7 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         aggregate.AppendPendingChange(new TokenAggregateCreated
         {
             UserId = id,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
 
         return aggregate;
@@ -12563,11 +12658,11 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
     public void SetToken(
         TokenName name,
         TokenValue value,
-        string loginProvider,
-        string expectedConcurrencyStamp)
+        string loginProvider
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Validation
         if (string.IsNullOrEmpty(name.Value))
@@ -12581,17 +12676,17 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
             Name = name,
             Value = value,
             LoginProvider = loginProvider ?? string.Empty,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
     public void RemoveToken(
         TokenName name,
-        string loginProvider,
-        string expectedConcurrencyStamp)
+        string loginProvider
+        )
     {
         EnsureNotDeleted();
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         // Check if the token exists
         var tokenExists = State.Tokens.Any(t =>
@@ -12605,26 +12700,17 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         {
             Name = name,
             LoginProvider = loginProvider ?? string.Empty,
-            ConcurrencyStamp = Guid.NewGuid().ToString()
+            
         });
     }
 
-    public void UpdateConcurrencyStamp()
-    {
-        EnsureNotDeleted();
 
-        AppendPendingChange(new TokenConcurrencyStampChanged
-        {
-            ConcurrencyStamp = Guid.NewGuid().ToString()
-        });
-    }
-
-    public void Delete(string expectedConcurrencyStamp)
+    public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        ValidateConcurrencyStamp(expectedConcurrencyStamp);
+        
 
         AppendPendingChange(new TokenAggregateDeleted());
     }
@@ -12636,14 +12722,6 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
             throw new InvalidOperationException("Cannot modify tokens of a deleted user");
     }
 
-    private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-    {
-        if (expectedConcurrencyStamp != null &&
-            State.ConcurrencyStamp != expectedConcurrencyStamp)
-        {
-            throw new ConcurrencyException("User tokens were modified by another process");
-        }
-    }
 }
 
 
@@ -12664,7 +12742,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
     {
         public Guid Id { get; init; } = Guid.NewGuid();
         public UserIdentifier UserId { get; init; }
-        public string ConcurrencyStamp { get; init; }
+        
     }
 }
 
@@ -12681,19 +12759,6 @@ public record TokenAggregateDeleted
 }
 
 
-// --- File: MicroPlumberd.Service.Identity\Aggregates\TokenConcurrencyStampChanged.cs ---
-
-
-namespace MicroPlumberd.Service.Identity.Aggregates;
-
-[OutputStream("Token")]
-public record TokenConcurrencyStampChanged
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public string ConcurrencyStamp { get; init; }
-}
-
-
 // --- File: MicroPlumberd.Service.Identity\Aggregates\TokenRemoved.cs ---
 
 
@@ -12705,7 +12770,7 @@ public record TokenRemoved
     public Guid Id { get; init; } = Guid.NewGuid();
     public TokenName Name { get; init; }
     public string LoginProvider { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12721,7 +12786,7 @@ public record TokenSet
     public TokenName Name { get; init; }
     public TokenValue Value { get; init; }
     public string LoginProvider { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12735,7 +12800,7 @@ public record TwoFactorChanged
 {
     public Guid Id { get; init; } = Guid.NewGuid();
     public bool TwoFactorEnabled { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12749,7 +12814,7 @@ public record UserNameChanged
     public Guid Id { get; init; }
     public string UserName { get; init; }
     public string NormalizedUserName { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -12777,7 +12842,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             public bool EmailConfirmed { get; init; }
             public string PhoneNumber { get; init; }
             public bool PhoneNumberConfirmed { get; init; }
-            public string ConcurrencyStamp { get; init; }
+            
             public bool IsDeleted { get; init; }
         }
 
@@ -12794,7 +12859,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 EmailConfirmed = false,
                 PhoneNumber = ev.PhoneNumber,
                 PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp,
+                
                 IsDeleted = false
             };
         }
@@ -12805,7 +12870,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             {
                 UserName = ev.UserName,
                 NormalizedUserName = ev.NormalizedUserName,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -12817,7 +12882,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 NormalizedEmail = ev.NormalizedEmail,
                 // Changing email resets confirmation
                 EmailConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -12826,7 +12891,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             return state with
             {
                 EmailConfirmed = true,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -12837,7 +12902,7 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 PhoneNumber = ev.PhoneNumber,
                 // Changing phone resets confirmation
                 PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
@@ -12846,14 +12911,11 @@ namespace MicroPlumberd.Service.Identity.Aggregates
             return state with
             {
                 PhoneNumberConfirmed = true,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
         }
 
-        private static UserProfileState Given(UserProfileState state, ConcurrencyStampChanged ev)
-        {
-            return state with { ConcurrencyStamp = ev.ConcurrencyStamp };
-        }
+
 
         private static UserProfileState Given(UserProfileState state, UserProfileDeleted ev)
         {
@@ -12892,123 +12954,123 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 Email = email,
                 NormalizedEmail = normalizedEmail,
                 PhoneNumber = phoneNumber,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                
             });
 
             return aggregate;
         }
 
-        public void ChangeUserName(string userName, string normalizedUserName, string expectedConcurrencyStamp)
+        public void ChangeUserName(string userName, string normalizedUserName )
         {
             EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
+
 
             // Validation
-            if (string.IsNullOrWhiteSpace(userName))
-                throw new ArgumentException("Username cannot be empty", nameof(userName));
-
-            if (string.IsNullOrWhiteSpace(normalizedUserName))
-                throw new ArgumentException("Normalized username cannot be empty", nameof(normalizedUserName));
-
-            AppendPendingChange(new UserNameChanged
+            if (State.UserName != userName || State.NormalizedUserName != normalizedUserName)
             {
-                Id = Guid.NewGuid(),
-                UserName = userName,
-                NormalizedUserName = normalizedUserName,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
+                // Validation
+                if (string.IsNullOrWhiteSpace(userName))
+                    throw new ArgumentException("Username cannot be empty", nameof(userName));
+
+                if (string.IsNullOrWhiteSpace(normalizedUserName))
+                    throw new ArgumentException("Normalized username cannot be empty", nameof(normalizedUserName));
+
+                AppendPendingChange(new UserNameChanged
+                {
+                    Id = Guid.NewGuid(),
+                    UserName = userName,
+                    NormalizedUserName = normalizedUserName
+                });
+            }
         }
 
-        public void ChangeEmail(string email, string normalizedEmail, string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Validation
-            if (!string.IsNullOrEmpty(email) && string.IsNullOrEmpty(normalizedEmail))
-                throw new ArgumentException("Normalized email must be provided if email is provided", nameof(normalizedEmail));
-
-            // Email format validation could be added here
-
-            AppendPendingChange(new EmailChanged
-            {
-                Id = Guid.NewGuid(),
-                Email = email,
-                NormalizedEmail = normalizedEmail,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void ConfirmEmail(string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Validation
-            if (string.IsNullOrEmpty(State.Email))
-                throw new InvalidOperationException("Cannot confirm email when no email is set");
-
-            if (State.EmailConfirmed)
-                return; // Already confirmed
-
-            AppendPendingChange(new EmailConfirmed
-            {
-                Id = Guid.NewGuid(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void ChangePhoneNumber(string phoneNumber, string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Phone number format validation could be added here
-
-            AppendPendingChange(new PhoneNumberChanged
-            {
-                Id = Guid.NewGuid(),
-                PhoneNumber = phoneNumber,
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void ConfirmPhoneNumber(string expectedConcurrencyStamp)
-        {
-            EnsureNotDeleted();
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
-
-            // Validation
-            if (string.IsNullOrEmpty(State.PhoneNumber))
-                throw new InvalidOperationException("Cannot confirm phone number when no phone number is set");
-
-            if (State.PhoneNumberConfirmed)
-                return; // Already confirmed
-
-            AppendPendingChange(new PhoneNumberConfirmed
-            {
-                Id = Guid.NewGuid(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
-        }
-
-        public void UpdateConcurrencyStamp()
+        public void ChangeEmail(string email, string normalizedEmail )
         {
             EnsureNotDeleted();
 
-            AppendPendingChange(new ConcurrencyStampChanged
+
+            // Only emit an event if the email has actually changed
+            if (State.Email != email || State.NormalizedEmail != normalizedEmail)
             {
-                Id = Guid.NewGuid(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
-            });
+                // Validation
+                if (!string.IsNullOrEmpty(email) && string.IsNullOrEmpty(normalizedEmail))
+                    throw new ArgumentException("Normalized email must be provided if email is provided", nameof(normalizedEmail));
+
+                // Email format validation could be added here
+
+                AppendPendingChange(new EmailChanged
+                {
+                    Id = Guid.NewGuid(),
+                    Email = email,
+                    NormalizedEmail = normalizedEmail
+                });
+                
+            }
         }
 
-        public void Delete(string expectedConcurrencyStamp)
+        public void ConfirmEmail()
+        {
+            EnsureNotDeleted();
+
+
+            // Only emit an event if the email is not already confirmed
+            if (!State.EmailConfirmed)
+            {
+                // Validation
+                if (string.IsNullOrEmpty(State.Email))
+                    throw new InvalidOperationException("Cannot confirm email when no email is set");
+
+                AppendPendingChange(new EmailConfirmed
+                {
+                    Id = Guid.NewGuid()
+                });
+            }
+        }
+
+        public void ChangePhoneNumber(string phoneNumber )
+        {
+            EnsureNotDeleted();
+
+
+            // Only emit an event if the phone number has actually changed
+            if (State.PhoneNumber != phoneNumber)
+            {
+                // Phone number format validation could be added here
+
+                AppendPendingChange(new PhoneNumberChanged
+                {
+                    Id = Guid.NewGuid(),
+                    PhoneNumber = phoneNumber
+                });
+            }
+        }
+
+        public void ConfirmPhoneNumber()
+        {
+            EnsureNotDeleted();
+
+
+            // Only emit an event if the phone number is not already confirmed
+            if (!State.PhoneNumberConfirmed)
+            {
+                // Validation
+                if (string.IsNullOrEmpty(State.PhoneNumber))
+                    throw new InvalidOperationException("Cannot confirm phone number when no phone number is set");
+
+                AppendPendingChange(new PhoneNumberConfirmed
+                {
+                    Id = Guid.NewGuid()
+                });
+            }
+        }
+
+
+        public void Delete()
         {
             if (State.IsDeleted)
                 return;
 
-            ValidateConcurrencyStamp(expectedConcurrencyStamp);
+            
 
             AppendPendingChange(new UserProfileDeleted
             {
@@ -13023,23 +13085,10 @@ namespace MicroPlumberd.Service.Identity.Aggregates
                 throw new InvalidOperationException("Cannot modify a deleted user profile");
         }
 
-        private void ValidateConcurrencyStamp(string expectedConcurrencyStamp)
-        {
-            if (expectedConcurrencyStamp != null &&
-                State.ConcurrencyStamp != expectedConcurrencyStamp)
-            {
-                throw new ConcurrencyException("User profile was modified by another process");
-            }
-        }
+
     }
 
-    // Events
 
-    public record ConcurrencyStampChanged
-    {
-        public Guid Id { get; init; }
-        public string ConcurrencyStamp { get; init; }
-    }
 }
 
 
@@ -13057,7 +13106,7 @@ public record UserProfileCreated
     public string Email { get; init; }
     public string NormalizedEmail { get; init; }
     public string PhoneNumber { get; init; }
-    public string ConcurrencyStamp { get; init; }
+    
 }
 
 
@@ -13379,29 +13428,50 @@ namespace MicroPlumberd.Service.Identity.ReadModels
 
 
 using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 using MicroPlumberd;
 using MicroPlumberd.Service.Identity.Aggregates;
 
 namespace MicroPlumberd.Service.Identity.ReadModels
 {
+    /// <summary>
+    /// Consolidated read model for roles with direct references in lookups
+    /// </summary>
     [EventHandler]
-    [OutputStream("RoleByIdModel_v1")]
-    public partial class RoleByIdModel
+    [OutputStream("RolesModel_v1")]
+    public partial class RolesModel
     {
+        // Primary collection - clustered index
         private readonly ConcurrentDictionary<RoleIdentifier, Role> _rolesById = new();
+
+        // Lookup dictionary - direct references to the same Role objects
+        private readonly ConcurrentDictionary<string, Role> _rolesByNormalizedName = new();
+
+        // Returns all roles (for IQueryable interface)
+        public ImmutableList<Role> GetAllRoles() => _rolesById.Values.ToImmutableList();
+
+        #region Event Handlers
 
         private async Task Given(Metadata m, RoleCreated ev)
         {
+            // Create a new role object
             var role = new Role
             {
                 Id = ev.RoleId.ToString(),
                 Name = ev.Name,
-                NormalizedName = ev.NormalizedName,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                NormalizedName = ev.NormalizedName
             };
 
-            _rolesById[ev.RoleId] = role;
+            // Add to primary collection
+            if (_rolesById.TryAdd(ev.RoleId, role))
+            {
+                // Add to lookup - same reference
+                if (!string.IsNullOrEmpty(ev.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryAdd(ev.NormalizedName, role);
+                }
+            }
 
             await Task.CompletedTask;
         }
@@ -13412,21 +13482,21 @@ namespace MicroPlumberd.Service.Identity.ReadModels
 
             if (_rolesById.TryGetValue(roleId, out var role))
             {
+                // Remove from old lookup
+                if (!string.IsNullOrEmpty(role.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryRemove(role.NormalizedName, out _);
+                }
+
+                // Update the role
                 role.Name = ev.Name;
                 role.NormalizedName = ev.NormalizedName;
-                role.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
 
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, RoleConcurrencyStampChanged ev)
-        {
-            var roleId = new RoleIdentifier(m.Id);
-
-            if (_rolesById.TryGetValue(roleId, out var role))
-            {
-                role.ConcurrencyStamp = ev.ConcurrencyStamp;
+                // Add to lookup with updated normalized name - same reference
+                if (!string.IsNullOrEmpty(ev.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryAdd(ev.NormalizedName, role);
+                }
             }
 
             await Task.CompletedTask;
@@ -13435,102 +13505,64 @@ namespace MicroPlumberd.Service.Identity.ReadModels
         private async Task Given(Metadata m, RoleDeleted ev)
         {
             var roleId = new RoleIdentifier(m.Id);
-            _rolesById.TryRemove(roleId, out _);
+
+            // Remove from primary collection
+            if (_rolesById.TryRemove(roleId, out var role))
+            {
+                // Remove from lookup
+                if (!string.IsNullOrEmpty(role.NormalizedName))
+                {
+                    _rolesByNormalizedName.TryRemove(role.NormalizedName, out _);
+                }
+            }
 
             await Task.CompletedTask;
         }
 
-        // Query methods
+        #endregion
+
+        #region Query Methods
+
+        /// <summary>
+        /// Gets a role by ID
+        /// </summary>
         public Role GetById(RoleIdentifier id)
         {
-            if (_rolesById.TryGetValue(id, out var role))
-            {
-                return role;
-            }
-
-            return null;
+            _rolesById.TryGetValue(id, out var role);
+            return role;
         }
-    }
-}
 
-
-// --- File: MicroPlumberd.Service.Identity\ReadModels\RoleByNameModel.cs ---
-
-
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
-
-namespace MicroPlumberd.Service.Identity.ReadModels
-{
-    [EventHandler]
-    [OutputStream("RoleByNameModel_v1")]
-    public partial class RoleByNameModel
-    {
-        private readonly ConcurrentDictionary<string, RoleIdentifier> _roleIdsByNormalizedName = new();
-
-        private async Task Given(Metadata m, RoleCreated ev)
+        /// <summary>
+        /// Gets a role by normalized name
+        /// </summary>
+        public Role GetByNormalizedName(string normalizedName)
         {
-            if (!string.IsNullOrEmpty(ev.NormalizedName))
-            {
-                _roleIdsByNormalizedName[ev.NormalizedName] = ev.RoleId;
-            }
+            if (string.IsNullOrEmpty(normalizedName))
+                return null;
 
-            await Task.CompletedTask;
+            _rolesByNormalizedName.TryGetValue(normalizedName, out var role);
+            return role;
         }
 
-        private async Task Given(Metadata m, RoleNameChanged ev)
-        {
-            var roleId = new RoleIdentifier(m.Id);
-
-            // Find and remove old role name mapping if it exists
-            foreach (var entry in _roleIdsByNormalizedName)
-            {
-                if (entry.Value.Id == roleId.Id)
-                {
-                    _roleIdsByNormalizedName.TryRemove(entry.Key, out _);
-                    break;
-                }
-            }
-
-            // Add new mapping
-            if (!string.IsNullOrEmpty(ev.NormalizedName))
-            {
-                _roleIdsByNormalizedName[ev.NormalizedName] = roleId;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, RoleDeleted ev)
-        {
-            var roleId = new RoleIdentifier(m.Id);
-
-            // Remove role name mapping for this role
-            foreach (var entry in _roleIdsByNormalizedName)
-            {
-                if (entry.Value.Id == roleId.Id)
-                {
-                    _roleIdsByNormalizedName.TryRemove(entry.Key, out _);
-                    break;
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        // Query methods
+        /// <summary>
+        /// Gets a role ID by normalized name
+        /// </summary>
         public RoleIdentifier GetIdByNormalizedName(string normalizedName)
         {
-            if (!string.IsNullOrEmpty(normalizedName) &&
-                _roleIdsByNormalizedName.TryGetValue(normalizedName, out var roleId))
-            {
-                return roleId;
-            }
-
-            return default;
+            var role = GetByNormalizedName(normalizedName);
+            return role != null ? GetRoleIdentifier(role.Id) : default;
         }
+
+        #endregion
+
+        #region Helper Methods
+
+        private RoleIdentifier GetRoleIdentifier(string roleId)
+        {
+            return RoleIdentifier.Parse(roleId, null);
+        }
+
+        #endregion
     }
 }
 
@@ -13627,7 +13659,6 @@ using MicroPlumberd;
 using MicroPlumberd.Collections;
 using MicroPlumberd.Service.Identity.Aggregates;
 
-
 namespace MicroPlumberd.Service.Identity.ReadModels
 {
     [EventHandler]
@@ -13635,14 +13666,29 @@ namespace MicroPlumberd.Service.Identity.ReadModels
     public partial class UserAuthorizationModel
     {
         private readonly ConcurrentDictionary<UserIdentifier, UserAuthData> _authDataByUserId = new();
-        private readonly ConcurrentDictionary<RoleIdentifier, ConcurrentHashSet<UserIdentifier>> _usersByRole = new();
+        private readonly ConcurrentDictionary<RoleIdentifier, RoleData> _roleData = new();
+        private readonly RolesModel _rolesModel;
+
+        public UserAuthorizationModel(RolesModel rolesModel)
+        {
+            _rolesModel = rolesModel ?? throw new ArgumentNullException(nameof(rolesModel));
+        }
+
+        public record RoleData
+        {
+            public RoleIdentifier Id { get; init; }
+            public string Name { get; init; }
+            public ConcurrentHashSet<UserIdentifier> Users { get; } = new();
+        }
 
         public record UserAuthData
         {
             public UserIdentifier Id { get; init; }
-            public ImmutableList<RoleIdentifier> Roles { get; init; } = ImmutableList<RoleIdentifier>.Empty;
+            public ImmutableList<RoleData> Roles { get; init; } = ImmutableList<RoleData>.Empty;
             public ImmutableList<Claim> Claims { get; init; } = ImmutableList<Claim>.Empty;
         }
+
+        #region Authorization User Events
 
         private async Task Given(Metadata m, AuthorizationUserCreated ev)
         {
@@ -13660,15 +13706,31 @@ namespace MicroPlumberd.Service.Identity.ReadModels
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
-                // Update roles for user
-                _authDataByUserId[userId] = authData with
+                // Get or create role data
+                var roleData = _roleData.GetOrAdd(ev.RoleId, id =>
                 {
-                    Roles = authData.Roles.Add(ev.RoleId)
-                };
+                    var role = _rolesModel.GetById(id);
+                    return new RoleData
+                    {
+                        Id = id,
+                        Name = role?.Name ?? string.Empty
+                    };
+                });
 
-                // Update users in role
-                _usersByRole.GetOrAdd(ev.RoleId, _ => new ConcurrentHashSet<UserIdentifier>())
-                    .Add(userId);
+                // Only add if not already present
+                bool roleExists = authData.Roles.Any(r => r.Id.Equals(ev.RoleId));
+
+                if (!roleExists)
+                {
+                    // Update roles for user
+                    _authDataByUserId[userId] = authData with
+                    {
+                        Roles = authData.Roles.Add(roleData)
+                    };
+
+                    // Add user to role's user collection
+                    roleData.Users.Add(userId);
+                }
             }
 
             await Task.CompletedTask;
@@ -13680,21 +13742,21 @@ namespace MicroPlumberd.Service.Identity.ReadModels
 
             if (_authDataByUserId.TryGetValue(userId, out var authData))
             {
-                // Update roles for user
-                _authDataByUserId[userId] = authData with
-                {
-                    Roles = authData.Roles.Remove(ev.RoleId)
-                };
+                // Find the role
+                var roleToRemove = authData.Roles.FirstOrDefault(r => r.Id.Equals(ev.RoleId));
 
-                // Update users in role
-                if (_usersByRole.TryGetValue(ev.RoleId, out var usersInRole))
+                if (roleToRemove != null)
                 {
-                    usersInRole.TryRemove(userId);
-
-                    // If no more users in this role, remove the role entry
-                    if (usersInRole.IsEmpty)
+                    // Update roles for user
+                    _authDataByUserId[userId] = authData with
                     {
-                        _usersByRole.TryRemove(ev.RoleId, out _);
+                        Roles = authData.Roles.Remove(roleToRemove)
+                    };
+
+                    // Remove user from role's user collection
+                    if (_roleData.TryGetValue(ev.RoleId, out var roleData))
+                    {
+                        roleData.Users.TryRemove(userId);
                     }
                 }
             }
@@ -13779,17 +13841,66 @@ namespace MicroPlumberd.Service.Identity.ReadModels
 
             if (_authDataByUserId.TryRemove(userId, out var authData))
             {
-                // Remove user from role mappings
-                foreach (var roleId in authData.Roles)
+                // Remove user from all roles
+                foreach (var roleData in authData.Roles)
                 {
-                    if (_usersByRole.TryGetValue(roleId, out var usersInRole))
-                    {
-                        usersInRole.TryRemove(userId);
+                    roleData.Users.TryRemove(userId);
+                }
+            }
 
-                        // If no more users in this role, remove the role entry
-                        if (usersInRole.IsEmpty)
+            await Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Role Events
+
+        private async Task Given(Metadata m, RoleCreated ev)
+        {
+            // Add or update role data
+            _roleData.AddOrUpdate(
+                ev.RoleId,
+                new RoleData { Id = ev.RoleId, Name = ev.Name },
+                (_, existing) => existing with { Name = ev.Name }
+            );
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, RoleNameChanged ev)
+        {
+            var roleId = new RoleIdentifier(m.Id);
+
+            // Update role data
+            if (_roleData.TryGetValue(roleId, out var roleData))
+            {
+                // Create new role data with updated name
+                var updatedRoleData = new RoleData
+                {
+                    Id = roleId,
+                    Name = ev.Name
+                };
+
+                // Copy users from old role data
+                foreach (var userId in roleData.Users)
+                {
+                    updatedRoleData.Users.Add(userId);
+                }
+
+                // Replace role data
+                _roleData[roleId] = updatedRoleData;
+
+                // Update role name in all user auth data that contains this role
+                foreach (var userId in roleData.Users)
+                {
+                    if (_authDataByUserId.TryGetValue(userId, out var userData))
+                    {
+                        // Find and replace the role
+                        var roleIndex = userData.Roles.FindIndex(r => r.Id.Equals(roleId));
+                        if (roleIndex >= 0)
                         {
-                            _usersByRole.TryRemove(roleId, out _);
+                            var newRoles = userData.Roles.RemoveAt(roleIndex).Add(updatedRoleData);
+                            _authDataByUserId[userId] = userData with { Roles = newRoles };
                         }
                     }
                 }
@@ -13798,23 +13909,92 @@ namespace MicroPlumberd.Service.Identity.ReadModels
             await Task.CompletedTask;
         }
 
-        // Query methods
+        private async Task Given(Metadata m, RoleDeleted ev)
+        {
+            var roleId = new RoleIdentifier(m.Id);
+
+            // Remove role from all users
+            if (_roleData.TryRemove(roleId, out var roleData))
+            {
+                foreach (var userId in roleData.Users)
+                {
+                    if (_authDataByUserId.TryGetValue(userId, out var userData))
+                    {
+                        // Find the role
+                        var roleToRemove = userData.Roles.FirstOrDefault(r => r.Id.Equals(roleId));
+                        if (roleToRemove != null)
+                        {
+                            // Update roles for user
+                            _authDataByUserId[userId] = userData with
+                            {
+                                Roles = userData.Roles.Remove(roleToRemove)
+                            };
+                        }
+                    }
+                }
+            }
+
+            await Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Query Methods
+        /// <summary>
+        /// Checks if a user is in a role by role name
+        /// </summary>
+        public bool IsInRole(UserIdentifier userId, string normalizedRoleName)
+        {
+            if (_authDataByUserId.TryGetValue(userId, out var authData))
+            {
+                return authData.Roles.Any(r =>
+                    string.Equals(r.Name, normalizedRoleName, StringComparison.OrdinalIgnoreCase) ||
+                    (r.Name != null && string.Equals(r.Name.ToUpperInvariant(), normalizedRoleName, StringComparison.Ordinal)));
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Gets authorization data for a user
+        /// </summary>
         public UserAuthData GetById(UserIdentifier id)
         {
             _authDataByUserId.TryGetValue(id, out var authData);
             return authData;
         }
 
+        /// <summary>
+        /// Gets all users in a role
+        /// </summary>
         public ImmutableList<UserIdentifier> GetUsersInRole(RoleIdentifier roleId)
         {
-            if (_usersByRole.TryGetValue(roleId, out var usersInRole))
+            if (_roleData.TryGetValue(roleId, out var roleData))
             {
-                return usersInRole.ToImmutableList();
+                return roleData.Users.ToImmutableList();
             }
 
             return ImmutableList<UserIdentifier>.Empty;
         }
 
+        /// <summary>
+        /// Gets all users with a specific role name
+        /// </summary>
+        public ImmutableList<UserIdentifier> GetUsersInRole(string normalizedRoleName)
+        {
+            var role = _rolesModel.GetByNormalizedName(normalizedRoleName);
+            if (role != null)
+            {
+                var roleId = RoleIdentifier.Parse(role.Id, null);
+                return GetUsersInRole(roleId);
+            }
+
+            return ImmutableList<UserIdentifier>.Empty;
+        }
+
+        /// <summary>
+        /// Gets all claims for a user
+        /// </summary>
         public ImmutableList<Claim> GetClaims(UserIdentifier id)
         {
             if (_authDataByUserId.TryGetValue(id, out var authData))
@@ -13825,406 +14005,33 @@ namespace MicroPlumberd.Service.Identity.ReadModels
             return ImmutableList<Claim>.Empty;
         }
 
+        /// <summary>
+        /// Gets all role names for a user
+        /// </summary>
+        public ImmutableList<string> GetRoleNames(UserIdentifier id)
+        {
+            if (_authDataByUserId.TryGetValue(id, out var authData))
+            {
+                return authData.Roles.Select(r => r.Name).ToImmutableList();
+            }
+
+            return ImmutableList<string>.Empty;
+        }
+
+        /// <summary>
+        /// Checks if a user is in a role
+        /// </summary>
         public bool IsInRole(UserIdentifier id, RoleIdentifier roleId)
         {
             if (_authDataByUserId.TryGetValue(id, out var authData))
             {
-                return authData.Roles.Contains(roleId);
+                return authData.Roles.Any(r => r.Id.Equals(roleId));
             }
 
             return false;
         }
-    }
-}
 
-
-// --- File: MicroPlumberd.Service.Identity\ReadModels\UserByEmailModel.cs ---
-
-
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
-
-namespace MicroPlumberd.Service.Identity.ReadModels
-{
-    [EventHandler]
-    [OutputStream("UserByEmailModel_v1")]
-    public partial class UserByEmailModel
-    {
-        private readonly ConcurrentDictionary<string, UserIdentifier> _userIdsByNormalizedEmail = new();
-
-        private async Task Given(Metadata m, UserProfileCreated ev)
-        {
-            if (!string.IsNullOrEmpty(ev.NormalizedEmail))
-            {
-                _userIdsByNormalizedEmail[ev.NormalizedEmail] = ev.UserId;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, EmailChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            // Find and remove old email mapping if it exists
-            foreach (var entry in _userIdsByNormalizedEmail)
-            {
-                if (entry.Value.Id == userId.Id)
-                {
-                    _userIdsByNormalizedEmail.TryRemove(entry.Key, out _);
-                    break;
-                }
-            }
-
-            // Add new mapping
-            if (!string.IsNullOrEmpty(ev.NormalizedEmail))
-            {
-                _userIdsByNormalizedEmail[ev.NormalizedEmail] = userId;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, UserProfileDeleted ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            // Remove email mapping for this user
-            foreach (var entry in _userIdsByNormalizedEmail)
-            {
-                if (entry.Value.Id == userId.Id)
-                {
-                    _userIdsByNormalizedEmail.TryRemove(entry.Key, out _);
-                    break;
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        // Query methods
-        public UserIdentifier GetIdByNormalizedEmail(string normalizedEmail)
-        {
-            if (!string.IsNullOrEmpty(normalizedEmail) &&
-                _userIdsByNormalizedEmail.TryGetValue(normalizedEmail, out var userId))
-            {
-                return userId;
-            }
-
-            return default;
-        }
-    }
-}
-
-
-// --- File: MicroPlumberd.Service.Identity\ReadModels\UserByIdModel.cs ---
-
-
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
-
-namespace MicroPlumberd.Service.Identity.ReadModels
-{
-    [EventHandler]
-    [OutputStream("UserByIdModel_v1")]
-    public partial class UserByIdModel
-    {
-        private readonly ConcurrentDictionary<UserIdentifier, User> _usersById = new();
-
-        private async Task Given(Metadata m, UserProfileCreated ev)
-        {
-            // Create a new user object when a profile is created
-            var user = new User
-            {
-                Id = ev.UserId.ToString(),
-                UserName = ev.UserName,
-                NormalizedUserName = ev.NormalizedUserName,
-                Email = ev.Email,
-                NormalizedEmail = ev.NormalizedEmail,
-                EmailConfirmed = false,
-                PhoneNumber = ev.PhoneNumber,
-                PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
-            };
-
-            _usersById[ev.UserId] = user;
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, IdentityUserCreated ev)
-        {
-            // Update user with identity-specific data when available
-            if (_usersById.TryGetValue(ev.UserId, out var user))
-            {
-                user.PasswordHash = ev.PasswordHash;
-                user.SecurityStamp = ev.SecurityStamp;
-                user.LockoutEnabled = ev.LockoutEnabled;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, UserNameChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.UserName = ev.UserName;
-                user.NormalizedUserName = ev.NormalizedUserName;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, EmailChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.Email = ev.Email;
-                user.NormalizedEmail = ev.NormalizedEmail;
-                user.EmailConfirmed = false; // Reset confirmation on email change
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, EmailConfirmed ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.EmailConfirmed = true;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, PhoneNumberChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.PhoneNumber = ev.PhoneNumber;
-                user.PhoneNumberConfirmed = false; // Reset confirmation on phone change
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, PhoneNumberConfirmed ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.PhoneNumberConfirmed = true;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, PasswordChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.PasswordHash = ev.PasswordHash;
-                user.SecurityStamp = ev.SecurityStamp;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, SecurityStampChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.SecurityStamp = ev.SecurityStamp;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, TwoFactorChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.TwoFactorEnabled = ev.TwoFactorEnabled;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, LockoutEnabledChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.LockoutEnabled = ev.LockoutEnabled;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, LockoutEndChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.LockoutEnd = ev.LockoutEnd;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, AccessFailedCountChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_usersById.TryGetValue(userId, out var user))
-            {
-                user.AccessFailedCount = ev.AccessFailedCount;
-                user.ConcurrencyStamp = ev.ConcurrencyStamp;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, UserProfileDeleted ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-            _usersById.TryRemove(userId, out _);
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, IdentityUserDeleted ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-            _usersById.TryRemove(userId, out _);
-
-            await Task.CompletedTask;
-        }
-
-        // Query methods
-        public User GetById(UserIdentifier id)
-        {
-            if (_usersById.TryGetValue(id, out var user))
-            {
-                return user;
-            }
-
-            return null;
-        }
-    }
-}
-
-
-// --- File: MicroPlumberd.Service.Identity\ReadModels\UserByNameModel.cs ---
-
-
-using System.Collections.Concurrent;
-using System.Threading.Tasks;
-using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
-
-namespace MicroPlumberd.Service.Identity.ReadModels
-{
-    [EventHandler]
-    [OutputStream("UserByNameModel_v1")]
-    public partial class UserByNameModel
-    {
-        private readonly ConcurrentDictionary<string, UserIdentifier> _userIdsByNormalizedUsername = new();
-
-        private async Task Given(Metadata m, UserProfileCreated ev)
-        {
-            if (!string.IsNullOrEmpty(ev.NormalizedUserName))
-            {
-                _userIdsByNormalizedUsername[ev.NormalizedUserName] = ev.UserId;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, UserNameChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            // Find and remove old username mapping if it exists
-            foreach (var entry in _userIdsByNormalizedUsername)
-            {
-                if (entry.Value.Id == userId.Id)
-                {
-                    _userIdsByNormalizedUsername.TryRemove(entry.Key, out _);
-                    break;
-                }
-            }
-
-            // Add new mapping
-            if (!string.IsNullOrEmpty(ev.NormalizedUserName))
-            {
-                _userIdsByNormalizedUsername[ev.NormalizedUserName] = userId;
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, UserProfileDeleted ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            // Remove username mapping for this user
-            foreach (var entry in _userIdsByNormalizedUsername)
-            {
-                if (entry.Value.Id == userId.Id)
-                {
-                    _userIdsByNormalizedUsername.TryRemove(entry.Key, out _);
-                    break;
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        // Query methods
-        public UserIdentifier GetIdByNormalizedUsername(string normalizedUsername)
-        {
-            if (!string.IsNullOrEmpty(normalizedUsername) &&
-                _userIdsByNormalizedUsername.TryGetValue(normalizedUsername, out var userId))
-            {
-                return userId;
-            }
-
-            return default;
-        }
+        #endregion
     }
 }
 
@@ -14259,7 +14066,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
             public bool EmailConfirmed { get; init; }
             public string PhoneNumber { get; init; }
             public bool PhoneNumberConfirmed { get; init; }
-            public string ConcurrencyStamp { get; init; }
+            
         }
 
         private async Task Given(Metadata m, UserProfileCreated ev)
@@ -14274,7 +14081,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 EmailConfirmed = false,
                 PhoneNumber = ev.PhoneNumber,
                 PhoneNumberConfirmed = false,
-                ConcurrencyStamp = ev.ConcurrencyStamp
+                
             };
 
             _profilesById[ev.UserId] = profile;
@@ -14302,7 +14109,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 {
                     UserName = ev.UserName,
                     NormalizedUserName = ev.NormalizedUserName,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
 
                 _profilesById[userId] = updatedProfile;
@@ -14330,7 +14137,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                     Email = ev.Email,
                     NormalizedEmail = ev.NormalizedEmail,
                     EmailConfirmed = false,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
 
                 _profilesById[userId] = updatedProfile;
@@ -14354,7 +14161,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 _profilesById[userId] = profile with
                 {
                     EmailConfirmed = true,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
             }
 
@@ -14371,7 +14178,7 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 {
                     PhoneNumber = ev.PhoneNumber,
                     PhoneNumberConfirmed = false,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
             }
 
@@ -14387,27 +14194,13 @@ namespace MicroPlumberd.Service.Identity.ReadModels
                 _profilesById[userId] = profile with
                 {
                     PhoneNumberConfirmed = true,
-                    ConcurrencyStamp = ev.ConcurrencyStamp
+                    
                 };
             }
 
             await Task.CompletedTask;
         }
 
-        private async Task Given(Metadata m, ConcurrencyStampChanged ev)
-        {
-            var userId = new UserIdentifier(m.Id);
-
-            if (_profilesById.TryGetValue(userId, out var profile))
-            {
-                _profilesById[userId] = profile with
-                {
-                    ConcurrencyStamp = ev.ConcurrencyStamp
-                };
-            }
-
-            await Task.CompletedTask;
-        }
 
         private async Task Given(Metadata m, UserProfileDeleted ev)
         {
@@ -14449,6 +14242,404 @@ namespace MicroPlumberd.Service.Identity.ReadModels
         {
             return _profilesById.Values.ToImmutableList();
         }
+    }
+}
+
+
+// --- File: MicroPlumberd.Service.Identity\ReadModels\UsersModel.cs ---
+
+
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
+using System.Threading.Tasks;
+using MicroPlumberd;
+using MicroPlumberd.Service.Identity.Aggregates;
+
+namespace MicroPlumberd.Service.Identity.ReadModels
+{
+    /// <summary>
+    /// Consolidated read model for users with multiple lookup dictionaries
+    /// </summary>
+    [EventHandler]
+    [OutputStream("UsersModel_v1")]
+    public partial class UsersModel
+    {
+        // Primary collection - clustered index
+        private readonly ConcurrentDictionary<UserIdentifier, User> _usersById = new();
+
+        // Lookup dictionaries - direct references to the same User objects
+        private readonly ConcurrentDictionary<string, User> _usersByNormalizedName = new();
+        private readonly ConcurrentDictionary<string, User> _usersByNormalizedEmail = new();
+        private readonly ConcurrentDictionary<string, User> _usersByExternalLogin = new();
+
+        // Returns all users (for IQueryable interface)
+        public ImmutableList<User> GetAllUsers() => _usersById.Values.ToImmutableList();
+
+        #region Event Handlers
+
+        private async Task Given(Metadata m, UserProfileCreated ev)
+        {
+            // Create a new user object
+            var user = new User
+            {
+                Id = ev.UserId.ToString(),
+                UserName = ev.UserName,
+                NormalizedUserName = ev.NormalizedUserName,
+                Email = ev.Email,
+                NormalizedEmail = ev.NormalizedEmail,
+                EmailConfirmed = false,
+                PhoneNumber = ev.PhoneNumber,
+                PhoneNumberConfirmed = false
+            };
+
+            // Add to primary collection
+            if (_usersById.TryAdd(ev.UserId, user))
+            {
+                // Add to lookups - same reference
+                if (!string.IsNullOrEmpty(ev.NormalizedUserName))
+                {
+                    _usersByNormalizedName.TryAdd(ev.NormalizedUserName, user);
+                }
+
+                if (!string.IsNullOrEmpty(ev.NormalizedEmail))
+                {
+                    _usersByNormalizedEmail.TryAdd(ev.NormalizedEmail, user);
+                }
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, IdentityUserCreated ev)
+        {
+            if (_usersById.TryGetValue(ev.UserId, out var user))
+            {
+                user.PasswordHash = ev.PasswordHash;
+                user.SecurityStamp = ev.SecurityStamp;
+                user.LockoutEnabled = ev.LockoutEnabled;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, UserNameChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                // Remove from old lookup
+                if (!string.IsNullOrEmpty(user.NormalizedUserName))
+                {
+                    _usersByNormalizedName.TryRemove(user.NormalizedUserName, out _);
+                }
+
+                // Update the user
+                user.UserName = ev.UserName;
+                user.NormalizedUserName = ev.NormalizedUserName;
+
+                // Add to lookup with updated normalized name
+                if (!string.IsNullOrEmpty(ev.NormalizedUserName))
+                {
+                    _usersByNormalizedName.TryAdd(ev.NormalizedUserName, user);
+                }
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, EmailChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                // Remove from old lookup
+                if (!string.IsNullOrEmpty(user.NormalizedEmail))
+                {
+                    _usersByNormalizedEmail.TryRemove(user.NormalizedEmail, out _);
+                }
+
+                // Update the user
+                user.Email = ev.Email;
+                user.NormalizedEmail = ev.NormalizedEmail;
+                user.EmailConfirmed = false; // Reset confirmation on email change
+
+                // Add to lookup with updated normalized email
+                if (!string.IsNullOrEmpty(ev.NormalizedEmail))
+                {
+                    _usersByNormalizedEmail.TryAdd(ev.NormalizedEmail, user);
+                }
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, EmailConfirmed ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.EmailConfirmed = true;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, PhoneNumberChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.PhoneNumber = ev.PhoneNumber;
+                user.PhoneNumberConfirmed = false; // Reset confirmation on phone change
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, PhoneNumberConfirmed ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.PhoneNumberConfirmed = true;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, PasswordChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.PasswordHash = ev.PasswordHash;
+                user.SecurityStamp = ev.SecurityStamp;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, SecurityStampChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.SecurityStamp = ev.SecurityStamp;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, TwoFactorChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.TwoFactorEnabled = ev.TwoFactorEnabled;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, LockoutEnabledChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.LockoutEnabled = ev.LockoutEnabled;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, LockoutEndChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.LockoutEnd = ev.LockoutEnd;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, AccessFailedCountChanged ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                user.AccessFailedCount = ev.AccessFailedCount;
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, ExternalLoginAdded ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            if (_usersById.TryGetValue(userId, out var user))
+            {
+                // Create a composite key for the external login
+                string loginKey = GetExternalLoginKey(ev.Provider.Name, ev.ProviderKey.Value);
+
+                // Add to lookup - same reference to the user
+                _usersByExternalLogin.TryAdd(loginKey, user);
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, ExternalLoginRemoved ev)
+        {
+            // Create a composite key for the external login
+            string loginKey = GetExternalLoginKey(ev.Provider.Name, ev.ProviderKey.Value);
+
+            // Remove from lookup
+            _usersByExternalLogin.TryRemove(loginKey, out _);
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, UserProfileDeleted ev)
+        {
+            var userId = new UserIdentifier(m.Id);
+
+            // Remove from primary collection
+            if (_usersById.TryRemove(userId, out var user))
+            {
+                // Remove from lookups
+                if (!string.IsNullOrEmpty(user.NormalizedUserName))
+                {
+                    _usersByNormalizedName.TryRemove(user.NormalizedUserName, out _);
+                }
+
+                if (!string.IsNullOrEmpty(user.NormalizedEmail))
+                {
+                    _usersByNormalizedEmail.TryRemove(user.NormalizedEmail, out _);
+                }
+
+                // Remove all external login entries - need to scan
+                foreach (var loginKey in _usersByExternalLogin.Where(kvp => ReferenceEquals(kvp.Value, user))
+                    .Select(kvp => kvp.Key).ToList())
+                {
+                    _usersByExternalLogin.TryRemove(loginKey, out _);
+                }
+            }
+
+            await Task.CompletedTask;
+        }
+
+        private async Task Given(Metadata m, IdentityUserDeleted ev)
+        {
+            // User is already handled in UserProfileDeleted
+            await Task.CompletedTask;
+        }
+
+        #endregion
+
+        #region Query Methods
+
+        /// <summary>
+        /// Gets a user by ID
+        /// </summary>
+        public User GetById(UserIdentifier id)
+        {
+            _usersById.TryGetValue(id, out var user);
+            return user;
+        }
+
+        /// <summary>
+        /// Gets a user by normalized username
+        /// </summary>
+        public User GetByNormalizedUserName(string normalizedUserName)
+        {
+            if (string.IsNullOrEmpty(normalizedUserName))
+                return null;
+
+            _usersByNormalizedName.TryGetValue(normalizedUserName, out var user);
+            return user;
+        }
+
+        /// <summary>
+        /// Gets a user by normalized email
+        /// </summary>
+        public User GetByNormalizedEmail(string normalizedEmail)
+        {
+            if (string.IsNullOrEmpty(normalizedEmail))
+                return null;
+
+            _usersByNormalizedEmail.TryGetValue(normalizedEmail, out var user);
+            return user;
+        }
+
+        /// <summary>
+        /// Gets a user by external login provider and key
+        /// </summary>
+        public User GetByExternalLogin(string loginProvider, string providerKey)
+        {
+            if (string.IsNullOrEmpty(loginProvider) || string.IsNullOrEmpty(providerKey))
+                return null;
+
+            string loginKey = GetExternalLoginKey(loginProvider, providerKey);
+
+            _usersByExternalLogin.TryGetValue(loginKey, out var user);
+            return user;
+        }
+
+        /// <summary>
+        /// Gets a user ID by normalized username
+        /// </summary>
+        public UserIdentifier GetIdByNormalizedUserName(string normalizedUserName)
+        {
+            var user = GetByNormalizedUserName(normalizedUserName);
+            return user != null ? GetUserIdentifier(user.Id) : default;
+        }
+
+        /// <summary>
+        /// Gets a user ID by normalized email
+        /// </summary>
+        public UserIdentifier GetIdByNormalizedEmail(string normalizedEmail)
+        {
+            var user = GetByNormalizedEmail(normalizedEmail);
+            return user != null ? GetUserIdentifier(user.Id) : default;
+        }
+
+        /// <summary>
+        /// Gets a user ID by external login provider and key
+        /// </summary>
+        public UserIdentifier GetIdByExternalLogin(string loginProvider, string providerKey)
+        {
+            var user = GetByExternalLogin(loginProvider, providerKey);
+            return user != null ? GetUserIdentifier(user.Id) : default;
+        }
+
+        #endregion
+
+        #region Helper Methods
+
+        private string GetExternalLoginKey(string providerName, string providerKey)
+        {
+            return $"{providerName}|{providerKey}";
+        }
+
+        private UserIdentifier GetUserIdentifier(string userId)
+        {
+            return UserIdentifier.Parse(userId, null);
+        }
+
+        #endregion
     }
 }
 
@@ -14583,28 +14774,25 @@ namespace MicroPlumberd.Service.Identity
     {
         public static IServiceCollection AddPlumberdIdentity(this IServiceCollection container)
         {
-            container.AddSingleton<UserByIdModel>();
-            container.AddSingleton<UserByNameModel>();
-            container.AddSingleton<UserByEmailModel>();
+            container.AddSingleton<UsersModel>();
+            container.AddSingleton<RolesModel>();
+            
             container.AddSingleton<AuthenticationModel>();
             container.AddSingleton<UserProfileModel>();
             container.AddSingleton<UserAuthorizationModel>();
             container.AddSingleton<ExternalLoginModel>();
             container.AddSingleton<TokenModel>();
-            container.AddSingleton<RoleByIdModel>();
-            container.AddSingleton<RoleByNameModel>();
+            
 
             // Register event handlers for read models
-            container.AddEventHandler<UserByIdModel>();
-            container.AddEventHandler<UserByNameModel>();
-            container.AddEventHandler<UserByEmailModel>();
+            container.AddEventHandler<UsersModel>();
+            container.AddEventHandler<RolesModel>();
             container.AddEventHandler<AuthenticationModel>();
             container.AddEventHandler<UserProfileModel>();
             container.AddEventHandler<UserAuthorizationModel>();
             container.AddEventHandler<ExternalLoginModel>();
             container.AddEventHandler<TokenModel>();
-            container.AddEventHandler<RoleByIdModel>();
-            container.AddEventHandler<RoleByNameModel>();
+            
 
             // Register stores
             return container;
@@ -14757,6 +14945,248 @@ public readonly record struct RoleIdentifier : IParsable<RoleIdentifier> , IComp
 }
 
 
+// --- File: MicroPlumberd.Service.Identity\RoleStore.cs ---
+
+
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using MicroPlumberd.Service.Identity.Aggregates;
+using MicroPlumberd.Service.Identity.ReadModels;
+
+namespace MicroPlumberd.Service.Identity;
+
+/// <summary>
+/// Implementation of ASP.NET Core Identity store for roles using event sourcing with MicroPlumberd
+/// </summary>
+public class RoleStore :
+    IRoleStore<Role>,
+    IQueryableRoleStore<Role>
+{
+    private readonly IPlumber _plumber;
+    private readonly RolesModel _rolesModel;
+
+    public RoleStore(
+        IPlumber plumber,
+        RolesModel rolesModel)
+    {
+        _plumber = plumber ?? throw new ArgumentNullException(nameof(plumber));
+        _rolesModel = rolesModel ?? throw new ArgumentNullException(nameof(rolesModel));
+    }
+
+    public IQueryable<Role> Roles => _rolesModel.GetAllRoles().AsQueryable();
+
+    // Helper method to convert string ID to RoleIdentifier
+    private RoleIdentifier GetRoleIdentifier(string roleId)
+    {
+        if (string.IsNullOrEmpty(roleId))
+            throw new ArgumentException("Role ID cannot be null or empty", nameof(roleId));
+
+        if (!RoleIdentifier.TryParse(roleId, null, out var roleIdentifier))
+            throw new ArgumentException("Invalid role ID format", nameof(roleId));
+
+        return roleIdentifier;
+    }
+
+    // Helper method to extract expected version from concurrency stamp
+    private CompositeStreamVersion GetExpectedVersion(string concurrencyStamp)
+    {
+        if (string.IsNullOrEmpty(concurrencyStamp))
+            return CompositeStreamVersion.Empty;
+
+        if (!CompositeStreamVersion.TryParse(concurrencyStamp, null, out var version))
+            return CompositeStreamVersion.Empty;
+
+        return version;
+    }
+
+    public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
+
+            // Check if a role with this normalized name already exists
+            if (!string.IsNullOrEmpty(role.NormalizedName))
+            {
+                var existingRoleId = _rolesModel.GetIdByNormalizedName(role.NormalizedName);
+                if (!existingRoleId.Equals(default(RoleIdentifier)))
+                {
+                    return IdentityResult.Failed(new IdentityError
+                    {
+                        Description = $"Role with name '{role.Name}' already exists"
+                    });
+                }
+            }
+
+            // If the role doesn't have an ID, generate one
+            if (string.IsNullOrEmpty(role.Id))
+            {
+                role.Id = RoleIdentifier.New().ToString();
+            }
+
+            var roleId = GetRoleIdentifier(role.Id);
+            var normalizedName = role.NormalizedName ?? role.Name?.ToUpperInvariant();
+
+            var roleAggregate = RoleAggregate.Create(roleId, role.Name, normalizedName);
+            await _plumber.SaveNew(roleAggregate);
+
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+    public async Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
+
+            var roleId = GetRoleIdentifier(role.Id);
+            var expectedVersion = GetExpectedVersion(role.ConcurrencyStamp);
+
+            var roleAggregate = await _plumber.Get<RoleAggregate>(roleId);
+            roleAggregate.Delete(); // Not using concurrency stamp
+            await _plumber.SaveChanges(roleAggregate);
+
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+    public async Task<Role> FindByIdAsync(string roleId, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var id = GetRoleIdentifier(roleId);
+        return _rolesModel.GetById(id);
+    }
+
+    public async Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return _rolesModel.GetByNormalizedName(normalizedRoleName);
+    }
+
+    public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
+            throw new ArgumentNullException(nameof(role));
+
+        return Task.FromResult(role.NormalizedName);
+    }
+
+    public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
+            throw new ArgumentNullException(nameof(role));
+
+        return Task.FromResult(role.Id);
+    }
+
+    public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
+            throw new ArgumentNullException(nameof(role));
+
+        return Task.FromResult(role.Name);
+    }
+
+    public Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
+            throw new ArgumentNullException(nameof(role));
+
+        role.NormalizedName = normalizedName;
+        return Task.CompletedTask;
+    }
+
+    public Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (role == null)
+            throw new ArgumentNullException(nameof(role));
+
+        role.Name = roleName;
+        return Task.CompletedTask;
+    }
+
+    public async Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            if (role == null)
+                throw new ArgumentNullException(nameof(role));
+
+            var roleId = GetRoleIdentifier(role.Id);
+
+            // Check if another role with this normalized name already exists
+            if (!string.IsNullOrEmpty(role.NormalizedName))
+            {
+                var existingRole = _rolesModel.GetByNormalizedName(role.NormalizedName);
+                if (existingRole != null && existingRole.Id != role.Id)
+                {
+                    return IdentityResult.Failed(new IdentityError
+                    {
+                        Description = $"Role with name '{role.Name}' already exists"
+                    });
+                }
+            }
+
+            var roleAggregate = await _plumber.Get<RoleAggregate>(roleId);
+
+            // Let the aggregate decide if a change is needed
+            roleAggregate.ChangeName(role.Name, role.NormalizedName);
+
+            // Only save if there are pending changes
+            if (roleAggregate.HasPendingChanges)
+            {
+                await _plumber.SaveChanges(roleAggregate);
+            }
+
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+    public void Dispose()
+    {
+        // Nothing to dispose
+    }
+}
+
+
 // --- File: MicroPlumberd.Service.Identity\TokenName.cs ---
 
 
@@ -14895,6 +15325,1034 @@ namespace MicroPlumberd.Service.Identity
         {
             return Id.CompareTo(other.Id);
         }
+    }
+}
+
+
+// --- File: MicroPlumberd.Service.Identity\UserService.cs ---
+
+
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
+using MicroPlumberd.Service.Identity.Aggregates;
+using MicroPlumberd.Service.Identity.ReadModels;
+
+namespace MicroPlumberd.Service.Identity;
+
+/// <summary>
+/// Implementation of ASP.NET Core Identity stores for users using event sourcing with MicroPlumberd
+/// </summary>
+public class UserStore :
+    IUserStore<User>,
+    IUserEmailStore<User>,
+    IUserPasswordStore<User>,
+    IUserSecurityStampStore<User>,
+    IUserLockoutStore<User>,
+    IUserTwoFactorStore<User>,
+    IUserPhoneNumberStore<User>,
+    IUserLoginStore<User>,
+    IUserClaimStore<User>,
+    IUserRoleStore<User>,
+    IUserAuthenticationTokenStore<User>,
+    IUserAuthenticatorKeyStore<User>,
+    IUserTwoFactorRecoveryCodeStore<User>,
+    IQueryableUserStore<User>
+{
+    private readonly IPlumber _plumber;
+    private readonly UsersModel _usersModel;
+    private readonly RolesModel _rolesModel;
+    private readonly AuthenticationModel _authenticationModel;
+    private readonly UserAuthorizationModel _userAuthorizationModel;
+    private readonly TokenModel _tokenModel;
+    private readonly ExternalLoginModel _externalLoginModel;
+
+    public UserStore(
+        IPlumber plumber,
+        UsersModel usersModel,
+        RolesModel rolesModel,
+        AuthenticationModel authenticationModel,
+        UserAuthorizationModel userAuthorizationModel,
+        TokenModel tokenModel, ExternalLoginModel externalLoginModel)
+    {
+        _plumber = plumber ?? throw new ArgumentNullException(nameof(plumber));
+        _usersModel = usersModel ?? throw new ArgumentNullException(nameof(usersModel));
+        _rolesModel = rolesModel ?? throw new ArgumentNullException(nameof(rolesModel));
+        _authenticationModel = authenticationModel ?? throw new ArgumentNullException(nameof(authenticationModel));
+        _userAuthorizationModel = userAuthorizationModel ?? throw new ArgumentNullException(nameof(userAuthorizationModel));
+        _tokenModel = tokenModel ?? throw new ArgumentNullException(nameof(tokenModel));
+        _externalLoginModel = externalLoginModel;
+    }
+
+    // Helper method to convert string ID to UserIdentifier
+    private UserIdentifier GetUserIdentifier(string userId)
+    {
+        if (string.IsNullOrEmpty(userId))
+            throw new ArgumentException("User ID cannot be null or empty", nameof(userId));
+
+        if (!UserIdentifier.TryParse(userId, null, out var userIdentifier))
+            throw new ArgumentException("Invalid user ID format", nameof(userId));
+
+        return userIdentifier;
+    }
+
+    // Helper method to extract expected version from concurrency stamp
+    private CompositeStreamVersion GetExpectedVersion(string concurrencyStamp)
+    {
+        if (string.IsNullOrEmpty(concurrencyStamp))
+            return CompositeStreamVersion.Empty;
+
+        if (!CompositeStreamVersion.TryParse(concurrencyStamp, null, out var version))
+            return CompositeStreamVersion.Empty;
+
+        return version;
+    }
+
+    #region IUserStore<User> Implementation
+
+    public IQueryable<User> Users => _usersModel.GetAllUsers().AsQueryable();
+
+    public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var userId = GetUserIdentifier(user.Id);
+
+            // Create profile aggregate
+            var userProfile = UserProfileAggregate.Create(
+                userId,
+                user.UserName,
+                user.NormalizedUserName,
+                user.Email,
+                user.NormalizedEmail,
+                user.PhoneNumber);
+
+            await _plumber.SaveNew(userProfile);
+
+            // Create identity aggregate
+            var identityUser = IdentityUserAggregate.Create(
+                userId,
+                user.PasswordHash,
+                user.LockoutEnabled);
+
+            await _plumber.SaveNew(identityUser);
+
+            // Create authorization aggregate
+            var authorizationUser = AuthorizationUserAggregate.Create(userId);
+            await _plumber.SaveNew(authorizationUser);
+
+            // Create external login aggregate
+            var externalLoginAggregate = ExternalLoginAggregate.Create(userId);
+            await _plumber.SaveNew(externalLoginAggregate);
+
+            // Create token aggregate
+            var tokenAggregate = TokenAggregate.Create(userId);
+            await _plumber.SaveNew(tokenAggregate);
+
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+    public async Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var userId = GetUserIdentifier(user.Id);
+            var expectedVersion = GetExpectedVersion(user.ConcurrencyStamp);
+
+            // Delete profile
+            var userProfile = await _plumber.Get<UserProfileAggregate>(userId);
+            userProfile.Delete(); // We're not using concurrency stamp anymore
+            await _plumber.SaveChanges(userProfile);
+
+            // Delete identity
+            var identityUser = await _plumber.Get<IdentityUserAggregate>(userId);
+            identityUser.Delete();
+            await _plumber.SaveChanges(identityUser);
+
+            // Delete authorization
+            var authorizationUser = await _plumber.Get<AuthorizationUserAggregate>(userId);
+            authorizationUser.Delete();
+            await _plumber.SaveChanges(authorizationUser);
+
+            // Delete external logins
+            var externalLoginAggregate = await _plumber.Get<ExternalLoginAggregate>(userId);
+            externalLoginAggregate.Delete();
+            await _plumber.SaveChanges(externalLoginAggregate);
+
+            // Delete tokens
+            var tokenAggregate = await _plumber.Get<TokenAggregate>(userId);
+            tokenAggregate.Delete();
+            await _plumber.SaveChanges(tokenAggregate);
+
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+    public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var userIdentifier = GetUserIdentifier(userId);
+        return _usersModel.GetById(userIdentifier);
+    }
+
+    public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return _usersModel.GetByNormalizedUserName(normalizedUserName);
+    }
+
+    public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.NormalizedUserName);
+    }
+
+    public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.Id);
+    }
+
+    public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.UserName);
+    }
+
+    public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.NormalizedUserName = normalizedName;
+        return Task.CompletedTask;
+    }
+
+    public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.UserName = userName;
+        return Task.CompletedTask;
+    }
+
+    public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        try
+        {
+            if (user == null)
+                throw new ArgumentNullException(nameof(user));
+
+            var userId = GetUserIdentifier(user.Id);
+          
+
+            // Update profile
+            var userProfile = await _plumber.Get<UserProfileAggregate>(userId);
+
+            // Let the aggregate decide if a change is needed
+            userProfile.ChangeUserName(user.UserName, user.NormalizedUserName);
+            userProfile.ChangeEmail(user.Email, user.NormalizedEmail);
+
+           
+
+            userProfile.ChangePhoneNumber(user.PhoneNumber);
+
+           
+
+            // Only save if there are pending changes
+            if (userProfile.HasPendingChanges) await _plumber.SaveChanges(userProfile);
+
+            // Change identity
+            var identityUser = await _plumber.Get<IdentityUserAggregate>(userId);
+
+            identityUser.ChangePasswordHash(user.PasswordHash);
+            identityUser.ChangeTwoFactorEnabled(user.TwoFactorEnabled);
+            identityUser.ChangeLockoutEnabled(user.LockoutEnabled);
+            identityUser.ChangeLockoutEnd(user.LockoutEnd);
+
+            // Only save if there are pending changes
+            if (identityUser.HasPendingChanges) await _plumber.SaveChanges(identityUser);
+
+            return IdentityResult.Success;
+        }
+        catch (Exception ex)
+        {
+            return IdentityResult.Failed(new IdentityError { Description = ex.Message });
+        }
+    }
+
+    #endregion
+
+    #region IUserEmailStore<User> Implementation
+
+    public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return _usersModel.GetByNormalizedEmail(normalizedEmail);
+    }
+
+    public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.Email);
+    }
+
+    public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.EmailConfirmed);
+    }
+
+    public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.NormalizedEmail);
+    }
+
+    public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.Email = email;
+        return Task.CompletedTask;
+    }
+
+    public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.EmailConfirmed = confirmed;
+        return Task.CompletedTask;
+    }
+
+    public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.NormalizedEmail = normalizedEmail;
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region IUserPasswordStore<User> Implementation
+
+    public Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.PasswordHash);
+    }
+
+    public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
+    }
+
+    public Task SetPasswordHashAsync(User user, string passwordHash, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.PasswordHash = passwordHash;
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region IUserSecurityStampStore<User> Implementation
+
+    public Task<string> GetSecurityStampAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.SecurityStamp);
+    }
+
+    public Task SetSecurityStampAsync(User user, string stamp, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.SecurityStamp = stamp;
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region IUserLockoutStore<User> Implementation
+
+    public Task<int> GetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.AccessFailedCount);
+    }
+
+    public Task<bool> GetLockoutEnabledAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.LockoutEnabled);
+    }
+
+    public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.LockoutEnd);
+    }
+
+    public async Task<int> IncrementAccessFailedCountAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var identityUser = await _plumber.Get<IdentityUserAggregate>(userId);
+
+        var ret = identityUser.IncrementAccessFailedCount();
+        await _plumber.SaveChanges(identityUser);
+
+        // Return the updated count from the aggregate
+        return ret;
+    }
+
+    public async Task ResetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var identityUser = await _plumber.Get<IdentityUserAggregate>(userId);
+
+        identityUser.ResetAccessFailedCount();
+        await _plumber.SaveChanges(identityUser);
+    }
+
+    public Task SetLockoutEnabledAsync(User user, bool enabled, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.LockoutEnabled = enabled;
+        return Task.CompletedTask;
+    }
+
+    public Task SetLockoutEndDateAsync(User user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.LockoutEnd = lockoutEnd;
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region IUserTwoFactorStore<User> Implementation
+
+    public Task<bool> GetTwoFactorEnabledAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.TwoFactorEnabled);
+    }
+
+    public Task SetTwoFactorEnabledAsync(User user, bool enabled, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.TwoFactorEnabled = enabled;
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region IUserPhoneNumberStore<User> Implementation
+
+    public Task<string> GetPhoneNumberAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.PhoneNumber);
+    }
+
+    public Task<bool> GetPhoneNumberConfirmedAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        return Task.FromResult(user.PhoneNumberConfirmed);
+    }
+
+    public Task SetPhoneNumberAsync(User user, string phoneNumber, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.PhoneNumber = phoneNumber;
+        return Task.CompletedTask;
+    }
+
+    public Task SetPhoneNumberConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        user.PhoneNumberConfirmed = confirmed;
+        return Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region IUserLoginStore<User> Implementation
+
+    public async Task AddLoginAsync(User user, UserLoginInfo login, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (login == null)
+            throw new ArgumentNullException(nameof(login));
+
+        var userId = GetUserIdentifier(user.Id);
+        var externalLoginAggregate = await _plumber.Get<ExternalLoginAggregate>(userId);
+
+        var provider = new ExternalLoginProvider(login.LoginProvider);
+        var key = new ExternalLoginKey(login.ProviderKey);
+
+        externalLoginAggregate.AddLogin(provider, key, login.ProviderDisplayName);
+        await _plumber.SaveChanges(externalLoginAggregate);
+    }
+
+    public async Task<User> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return _usersModel.GetByExternalLogin(loginProvider, providerKey);
+    }
+
+    public async Task<IList<UserLoginInfo>> GetLoginsAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var logins = _externalLoginModel.GetLoginsForUser(userId);
+
+        return logins.Select(l => new UserLoginInfo(
+            l.ProviderName,
+            l.ProviderKey,
+            l.DisplayName
+        )).ToList();
+    }
+
+    public async Task RemoveLoginAsync(User user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var externalLoginAggregate = await _plumber.Get<ExternalLoginAggregate>(userId);
+
+        var provider = new ExternalLoginProvider(loginProvider);
+        var key = new ExternalLoginKey(providerKey);
+
+        externalLoginAggregate.RemoveLogin(provider, key);
+        await _plumber.SaveChanges(externalLoginAggregate);
+    }
+
+    #endregion
+
+    #region IUserClaimStore<User> Implementation
+
+    public async Task<IList<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        return _userAuthorizationModel.GetClaims(userId).ToList();
+    }
+
+    public async Task AddClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (claims == null)
+            throw new ArgumentNullException(nameof(claims));
+
+        var userId = GetUserIdentifier(user.Id);
+        var authorizationAggregate = await _plumber.Get<AuthorizationUserAggregate>(userId);
+
+        foreach (var claim in claims)
+        {
+            var claimType = new ClaimType(claim.Type);
+            var claimValue = new ClaimValue(claim.Value);
+
+            authorizationAggregate.AddClaim(claimType, claimValue);
+        }
+
+        await _plumber.SaveChanges(authorizationAggregate);
+    }
+
+    public async Task ReplaceClaimAsync(User user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (claim == null)
+            throw new ArgumentNullException(nameof(claim));
+        if (newClaim == null)
+            throw new ArgumentNullException(nameof(newClaim));
+
+        var userId = GetUserIdentifier(user.Id);
+        var authorizationAggregate = await _plumber.Get<AuthorizationUserAggregate>(userId);
+
+        // Remove the old claim
+        var oldClaimType = new ClaimType(claim.Type);
+        var oldClaimValue = new ClaimValue(claim.Value);
+        authorizationAggregate.RemoveClaim(oldClaimType, oldClaimValue);
+
+        // Add the new claim
+        var newClaimType = new ClaimType(newClaim.Type);
+        var newClaimValue = new ClaimValue(newClaim.Value);
+        authorizationAggregate.AddClaim(newClaimType, newClaimValue);
+
+        await _plumber.SaveChanges(authorizationAggregate);
+    }
+
+    public async Task RemoveClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (claims == null)
+            throw new ArgumentNullException(nameof(claims));
+
+        var userId = GetUserIdentifier(user.Id);
+        var authorizationAggregate = await _plumber.Get<AuthorizationUserAggregate>(userId);
+
+        foreach (var claim in claims)
+        {
+            var claimType = new ClaimType(claim.Type);
+            var claimValue = new ClaimValue(claim.Value);
+
+            authorizationAggregate.RemoveClaim(claimType, claimValue);
+        }
+
+        await _plumber.SaveChanges(authorizationAggregate);
+    }
+
+    public async Task<IList<User>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (claim == null)
+            throw new ArgumentNullException(nameof(claim));
+
+        // This requires a query across all users with this claim
+        // Since we don't have a direct index for this, we'll need to search through all users
+        // This is potentially inefficient and might need optimization in a real system
+
+        // For now, we'll just return an empty list as a placeholder
+        // In a real implementation, you would need to create a specialized read model for this query
+        return new List<User>();
+    }
+
+    #endregion
+
+    #region IUserRoleStore<User> Implementation
+
+    public async Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (string.IsNullOrWhiteSpace(roleName))
+            throw new ArgumentException("Role name cannot be empty", nameof(roleName));
+
+        // Get the role ID from the normalized name
+        string normalizedRoleName = roleName.ToUpperInvariant();
+        var roleId = _rolesModel.GetIdByNormalizedName(normalizedRoleName);
+
+        if (roleId.Equals(default(RoleIdentifier)))
+            throw new InvalidOperationException($"Role '{roleName}' does not exist");
+
+        var userId = GetUserIdentifier(user.Id);
+        var authorizationAggregate = await _plumber.Get<AuthorizationUserAggregate>(userId);
+
+        authorizationAggregate.AddRole(roleId);
+        await _plumber.SaveChanges(authorizationAggregate);
+    }
+
+    public async Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (string.IsNullOrWhiteSpace(roleName))
+            throw new ArgumentException("Role name cannot be empty", nameof(roleName));
+
+        // Get the role ID from the normalized name
+        string normalizedRoleName = roleName.ToUpperInvariant();
+        var roleId = _rolesModel.GetIdByNormalizedName(normalizedRoleName);
+
+        if (roleId.Equals(default(RoleIdentifier)))
+            return; // Role doesn't exist, nothing to remove
+
+        var userId = GetUserIdentifier(user.Id);
+        var authorizationAggregate = await _plumber.Get<AuthorizationUserAggregate>(userId);
+
+        authorizationAggregate.RemoveRole(roleId);
+        await _plumber.SaveChanges(authorizationAggregate);
+    }
+
+    public async Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        return _userAuthorizationModel.GetRoleNames(userId);
+        
+    }
+
+    public async Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var userId = GetUserIdentifier(user.Id);
+        return _userAuthorizationModel.IsInRole(userId, roleName);
+    }
+
+    public async Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (string.IsNullOrWhiteSpace(roleName))
+            throw new ArgumentException("Role name cannot be empty", nameof(roleName));
+
+        // Get the role ID from the normalized name
+        string normalizedRoleName = roleName.ToUpperInvariant();
+        var roleId = _rolesModel.GetIdByNormalizedName(normalizedRoleName);
+
+        if (roleId.Equals(default(RoleIdentifier)))
+            return new List<User>(); // Role doesn't exist
+
+        var userIds = _userAuthorizationModel.GetUsersInRole(roleId);
+
+        // Convert user IDs to User objects
+        var users = new List<User>();
+        foreach (var userId in userIds)
+        {
+            var user = _usersModel.GetById(userId);
+            if (user != null)
+                users.Add(user);
+        }
+
+        return users;
+    }
+
+    #endregion
+
+    #region IUserAuthenticationTokenStore<User> Implementation
+
+    public async Task<string> GetTokenAsync(User user, string loginProvider, string name, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException("Token name cannot be empty", nameof(name));
+
+        var userId = GetUserIdentifier(user.Id);
+        return _tokenModel.GetToken(userId, name, loginProvider);
+    }
+
+    public async Task SetTokenAsync(User user, string loginProvider, string name, string value, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException("Token name cannot be empty", nameof(name));
+
+        var userId = GetUserIdentifier(user.Id);
+        var tokenAggregate = await _plumber.Get<TokenAggregate>(userId);
+
+        var tokenName = new TokenName(name);
+        var tokenValue = new TokenValue(value);
+
+        tokenAggregate.SetToken(tokenName, tokenValue, loginProvider);
+        await _plumber.SaveChanges(tokenAggregate);
+    }
+
+    public async Task RemoveTokenAsync(User user, string loginProvider, string name, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (string.IsNullOrEmpty(name))
+            throw new ArgumentException("Token name cannot be empty", nameof(name));
+
+        var userId = GetUserIdentifier(user.Id);
+        var tokenAggregate = await _plumber.Get<TokenAggregate>(userId);
+
+        var tokenName = new TokenName(name);
+
+        tokenAggregate.RemoveToken(tokenName, loginProvider);
+        await _plumber.SaveChanges(tokenAggregate);
+    }
+
+    #endregion
+
+    #region IUserAuthenticatorKeyStore<User> Implementation
+
+    public async Task<string> GetAuthenticatorKeyAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var authData = _authenticationModel.GetAuthenticationData(userId);
+
+        return authData?.AuthenticatorKey;
+    }
+
+    public async Task SetAuthenticatorKeyAsync(User user, string key, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var identityUser = await _plumber.Get<IdentityUserAggregate>(userId);
+
+        identityUser.ChangeAuthenticatorKey(key);
+        await _plumber.SaveChanges(identityUser);
+    }
+
+    #endregion
+
+    #region IUserTwoFactorRecoveryCodeStore<User> Implementation
+
+    public async Task<int> CountCodesAsync(User user, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+
+        var userId = GetUserIdentifier(user.Id);
+        var codes = await GetRecoveryCodesAsync(userId);
+
+        return codes.Count;
+    }
+
+    public async Task<bool> RedeemCodeAsync(User user, string code, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (string.IsNullOrEmpty(code))
+            throw new ArgumentException("Recovery code cannot be empty", nameof(code));
+
+        var userId = GetUserIdentifier(user.Id);
+        var tokenAggregate = await _plumber.Get<TokenAggregate>(userId);
+
+        var codes = await GetRecoveryCodesAsync(userId);
+        var normalizedCode = code.Trim();
+
+        if (!codes.Contains(normalizedCode))
+            return false;
+
+        // Remove the used code
+        codes.Remove(normalizedCode);
+
+        // Save the updated codes
+        await SetRecoveryCodesAsync(tokenAggregate, codes);
+
+        return true;
+    }
+
+    public async Task ReplaceCodesAsync(User user, IEnumerable<string> recoveryCodes, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        if (user == null)
+            throw new ArgumentNullException(nameof(user));
+        if (recoveryCodes == null)
+            throw new ArgumentNullException(nameof(recoveryCodes));
+
+        var userId = GetUserIdentifier(user.Id);
+        var tokenAggregate = await _plumber.Get<TokenAggregate>(userId);
+
+        // Save the new codes
+        await SetRecoveryCodesAsync(tokenAggregate, recoveryCodes.ToList());
+    }
+
+    // Helper methods for recovery codes
+    private async Task<List<string>> GetRecoveryCodesAsync(UserIdentifier userId)
+    {
+        var tokenValue = _tokenModel.GetToken(userId, "RecoveryCodes", null);
+
+        if (string.IsNullOrEmpty(tokenValue))
+            return new List<string>();
+
+        return tokenValue.Split(';', StringSplitOptions.RemoveEmptyEntries).ToList();
+    }
+
+    private async Task SetRecoveryCodesAsync(TokenAggregate tokenAggregate, List<string> codes)
+    {
+        var tokenValue = string.Join(";", codes);
+        var tokenName = new TokenName("RecoveryCodes");
+
+        tokenAggregate.SetToken(tokenName, new TokenValue(tokenValue), null);
+        await _plumber.SaveChanges(tokenAggregate);
+    }
+
+    #endregion
+
+    public void Dispose()
+    {
+        // Nothing to dispose
     }
 }
 
@@ -16763,6 +18221,12 @@ namespace MicroPlumberd.Services.LiteDb
         public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model = default(TEventHandler?),
             string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
             bool ensureOutputStreamProjection = true, int minCheckPointCount = 1, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter, StreamPosition? position = null,
+            CancellationToken token = default) where T : IEventHandler
         {
             throw new NotImplementedException();
         }
@@ -47821,4 +49285,4 @@ public partial class FooModelSteps(AppStepsContext context)
 }
 
 
-// Processed 534 files on 03/02/2025 22:06:48
+// Processed 530 files on 03/03/2025 13:06:59

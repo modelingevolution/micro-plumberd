@@ -162,6 +162,12 @@ namespace MicroPlumberd.Services.LiteDb
             throw new NotImplementedException();
         }
 
+        public Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter, StreamPosition? position = null,
+            CancellationToken token = default) where T : IEventHandler
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<T> Get<T>(object id, CancellationToken token = default) where T : IAggregate<T>, ITypeRegister, IId
         {
             throw new NotImplementedException();

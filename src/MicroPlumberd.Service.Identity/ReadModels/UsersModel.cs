@@ -2,9 +2,9 @@
 using System.Collections.Immutable;
 using System.Threading.Tasks;
 using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
+using MicroPlumberd.Services.Identity.Aggregates;
 
-namespace MicroPlumberd.Service.Identity.ReadModels
+namespace MicroPlumberd.Services.Identity.ReadModels
 {
     /// <summary>
     /// Consolidated read model for users with multiple lookup dictionaries

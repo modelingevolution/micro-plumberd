@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Security.Claims;
 
-namespace MicroPlumberd.Service.Identity.Aggregates;
+namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
 public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, AuthorizationUserAggregate.AuthorizationUserState>

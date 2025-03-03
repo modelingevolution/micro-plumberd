@@ -3,10 +3,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
+using MicroPlumberd.Services.Identity.Aggregates;
 
 
-namespace MicroPlumberd.Service.Identity.ReadModels
+namespace MicroPlumberd.Services.Identity.ReadModels
 {
     [EventHandler]
     [OutputStream("ExternalLoginModel_v1")]

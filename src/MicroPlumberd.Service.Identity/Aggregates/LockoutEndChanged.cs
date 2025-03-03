@@ -1,4 +1,4 @@
-﻿namespace MicroPlumberd.Service.Identity.Aggregates;
+﻿namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [OutputStream("Identity")]
 public record LockoutEndChanged

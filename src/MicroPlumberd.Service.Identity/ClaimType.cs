@@ -2,7 +2,7 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Identity;
 
-namespace MicroPlumberd.Service.Identity;
+namespace MicroPlumberd.Services.Identity;
 
 /// <summary>
 /// Represents a user in the identity system

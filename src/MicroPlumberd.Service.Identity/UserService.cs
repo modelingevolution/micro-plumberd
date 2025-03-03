@@ -5,10 +5,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
-using MicroPlumberd.Service.Identity.Aggregates;
-using MicroPlumberd.Service.Identity.ReadModels;
+using MicroPlumberd.Services.Identity.Aggregates;
+using MicroPlumberd.Services.Identity.ReadModels;
 
-namespace MicroPlumberd.Service.Identity;
+namespace MicroPlumberd.Services.Identity;
 
 /// <summary>
 /// Implementation of ASP.NET Core Identity stores for users using event sourcing with MicroPlumberd

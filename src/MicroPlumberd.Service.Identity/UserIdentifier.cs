@@ -2,7 +2,7 @@
 
 using System.Text.Json.Serialization;
 
-namespace MicroPlumberd.Service.Identity
+namespace MicroPlumberd.Services.Identity
 {
     /// <summary>
     /// Uniquely identifies a user

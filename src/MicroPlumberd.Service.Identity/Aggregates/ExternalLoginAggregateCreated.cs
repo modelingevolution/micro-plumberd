@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MicroPlumberd;
 
 
-namespace MicroPlumberd.Service.Identity.Aggregates
+namespace MicroPlumberd.Services.Identity.Aggregates
 {
     // Events
     [OutputStream("ExternalLogin")]

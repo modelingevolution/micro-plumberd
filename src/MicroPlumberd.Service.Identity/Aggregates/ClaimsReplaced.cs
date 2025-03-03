@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace MicroPlumberd.Service.Identity.Aggregates;
+namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [OutputStream("Authorization")]
 public record ClaimsReplaced

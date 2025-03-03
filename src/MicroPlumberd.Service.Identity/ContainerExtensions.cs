@@ -4,13 +4,13 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MicroPlumberd.Service.Identity.ReadModels;
+using MicroPlumberd.Services.Identity.ReadModels;
 using MicroPlumberd.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using static MicroPlumberd.Service.Identity.Aggregates.RoleAggregate;
+using static MicroPlumberd.Services.Identity.Aggregates.RoleAggregate;
 
-namespace MicroPlumberd.Service.Identity
+namespace MicroPlumberd.Services.Identity
 {
     public static class ContainerExtensions
     {

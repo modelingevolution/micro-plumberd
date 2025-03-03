@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-namespace MicroPlumberd.Service.Identity;
+namespace MicroPlumberd.Services.Identity;
 
 /// <summary>
 /// Represents a claim value

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Immutable;
 
-namespace MicroPlumberd.Service.Identity.Aggregates;
+namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
 public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggregate.TokenState>

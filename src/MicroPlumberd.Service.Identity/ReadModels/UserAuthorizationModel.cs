@@ -5,9 +5,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using MicroPlumberd;
 using MicroPlumberd.Collections;
-using MicroPlumberd.Service.Identity.Aggregates;
+using MicroPlumberd.Services.Identity.Aggregates;
 
-namespace MicroPlumberd.Service.Identity.ReadModels
+namespace MicroPlumberd.Services.Identity.ReadModels
 {
     [EventHandler]
     [OutputStream("UserAuthorizationModel_v1")]

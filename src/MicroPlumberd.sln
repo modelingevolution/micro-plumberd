@@ -51,7 +51,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Lite
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPluberd.Examples.Blazor.Identity", "MicroPluberd.Examples.Blazor.Identity\MicroPluberd.Examples.Blazor.Identity.csproj", "{D76F227B-96E6-F8F9-3B3E-B5D731931E5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Service.Identity", "MicroPlumberd.Service.Identity\MicroPlumberd.Service.Identity.csproj", "{D7348503-B01D-4CF1-8D65-701C371D60B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Identity", "MicroPlumberd.Service.Identity\MicroPlumberd.Services.Identity.csproj", "{D7348503-B01D-4CF1-8D65-701C371D60B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

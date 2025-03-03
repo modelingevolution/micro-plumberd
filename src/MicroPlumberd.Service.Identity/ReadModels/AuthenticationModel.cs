@@ -2,10 +2,10 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using MicroPlumberd;
-using MicroPlumberd.Service.Identity.Aggregates;
+using MicroPlumberd.Services.Identity.Aggregates;
 
 
-namespace MicroPlumberd.Service.Identity.ReadModels
+namespace MicroPlumberd.Services.Identity.ReadModels
 {
     [EventHandler]
     [OutputStream("AuthenticationModel_v1")]

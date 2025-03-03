@@ -1,4 +1,4 @@
-﻿namespace MicroPlumberd.Service.Identity.Aggregates;
+﻿namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
 public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, IdentityUserAggregate.IdentityUserState>

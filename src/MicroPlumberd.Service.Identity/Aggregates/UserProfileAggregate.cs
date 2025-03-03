@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using MicroPlumberd;
 
-namespace MicroPlumberd.Service.Identity.Aggregates
+namespace MicroPlumberd.Services.Identity.Aggregates
 {
     [Aggregate]
     public partial class UserProfileAggregate : AggregateBase<UserIdentifier, UserProfileAggregate.UserProfileState>
