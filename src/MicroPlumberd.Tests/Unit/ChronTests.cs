@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using MicroPlumberd.Cron;
+
+using MicroPlumberd.Services.Cron;
 
 namespace MicroPlumberd.Tests.Unit
 {

@@ -53,7 +53,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Iden
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPluberd.Examples.Blazor.Identity2", "MicroPluberd.Examples.Blazor.Identity2\MicroPluberd.Examples.Blazor.Identity2.csproj", "{9A7D0AC3-7A71-5B60-9277-7A8AD14BEE3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Cron", "MicroPlumberd.Cron\MicroPlumberd.Cron.csproj", "{D18CACFE-97DC-49A2-9BE7-02A825BB35A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Cron", "MicroPlumberd.Cron\MicroPlumberd.Services.Cron.csproj", "{D18CACFE-97DC-49A2-9BE7-02A825BB35A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

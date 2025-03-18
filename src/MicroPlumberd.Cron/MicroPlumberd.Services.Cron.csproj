@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.1" />
   </ItemGroup>
 
@@ -15,5 +16,7 @@
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
     <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
+
+  
 
 </Project>

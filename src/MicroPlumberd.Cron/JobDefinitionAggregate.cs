@@ -1,11 +1,14 @@
-﻿namespace MicroPlumberd.Cron;
+﻿using System.Text.Json;
+using System.Text.Json.Nodes;
+
+namespace MicroPlumberd.Services.Cron;
 
 [OutputStream("JobDefinition")]
 [Aggregate]
 public partial class JobDefinitionAggregate(Guid id) : AggregateBase<Guid, JobDefinitionAggregate.JobDefinitionState>(id)
 {
 
-    public readonly record struct JobDefinitionState(bool Enabled);
+    public readonly record struct JobDefinitionState(bool Enabled, bool ContainsSchedule, bool ContainsCommand);
 
     private static JobDefinitionState Given(JobDefinitionState state, JobScheduleDefined ev)
     {
@@ -27,44 +30,54 @@ public partial class JobDefinitionAggregate(Guid id) : AggregateBase<Guid, JobDe
     {
         AppendPendingChange(new JobNamed(){Name=name});
     }
+    public void DefineSchedule(Schedule s)
+    {
+        if (s == null) throw new ArgumentNullException("Schedule cannot be null");
+        AppendPendingChange(new JobScheduleDefined() { Schedule = s});
+    }
+    private static JsonElement CopyWithoutProperty(in JsonElement original, string propertyToRemove)
+    {
+        // Enumerate the properties, filter out the one to remove, and create a dictionary
+        var dict = original.EnumerateObject()
+            .Where(p => p.Name != propertyToRemove)
+            .ToDictionary(p => p.Name, p => p.Value);
+
+        // Serialize the dictionary to a JSON string
+        var newJson = JsonSerializer.Serialize(dict);
+
+        // Parse the JSON string into a new JsonDocument
+        using var newDoc = JsonDocument.Parse(newJson);
+
+        // Return a clone of the RootElement to detach it from the document
+        return newDoc.RootElement.Clone();
+    }
+
+    public void DefineCommand(object command, string recipient)
+    {
+        if(command == null || recipient == null)
+            throw new ArgumentNullException("Command or recipient cannot be null.");
+
+        var node = JsonSerializer.SerializeToElement(command);
+        var dstNode = CopyWithoutProperty(node, "Id");
+        
+        AppendPendingChange(new JobProcessDefined()
+        {
+            CommandPayload = dstNode,
+            CommandType = command.GetType().AssemblyQualifiedName!,
+            Recipient = recipient
+        });
+    }
     public void Disable(string reason = null)
     {
         if(this.State.Enabled)
             AppendPendingChange(new JobDisabled(){Reason = reason});
     }
-}
-[OutputStream("JobDefinition")]
-public record JobScheduleDefined
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-}
+    public void Enable()
+    {
+        if (!this.State.ContainsSchedule || !this.State.ContainsCommand)
+            throw new ArgumentException("Cannot enable job without schedule or process.");
 
-
-[OutputStream("JobDefinition")]
-public record JobProcessDefined
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public string CommandType { get; init; }
-    public string CommandPayload { get; init; }
-    public string Recipient { get; init; }
-}
-
-
-
-[OutputStream("JobDefinition")]
-public record JobNamed
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public string Name { get; init; }
-}
-[OutputStream("JobDefinition")]
-public record JobEnabled
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-}
-[OutputStream("JobDefinition")]
-public record JobDisabled
-{
-    public Guid Id { get; init; } = Guid.NewGuid();
-    public string Reason { get; init; }
+        if (!this.State.Enabled) 
+            AppendPendingChange(new JobEnabled());
+    }
 }

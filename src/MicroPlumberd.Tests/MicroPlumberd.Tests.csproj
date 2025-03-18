@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroPlumberd.Cron\MicroPlumberd.Cron.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Cron\MicroPlumberd.Services.Cron.csproj" />
     <ProjectReference Include="..\MicroPlumberd.DirectConnect\MicroPlumberd.Services.Grpc.DirectConnect.csproj" />
     <ProjectReference Include="..\MicroPlumberd.ProcessManager.Abstractions\MicroPlumberd.ProcessManager.Abstractions.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Protobuf\MicroPlumberd.Protobuf.csproj" />
