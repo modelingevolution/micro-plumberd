@@ -1,386 +1,344 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using MicroPlumberd;
-using MicroPlumberd.Collections;
+﻿using MicroPlumberd.Collections;
 using MicroPlumberd.Services.Identity.Aggregates;
+using MicroPlumberd.Services.Identity;
+using MicroPlumberd;
+using System.Collections.Concurrent;
+using System.Collections.Immutable;
+using System.Security.Claims;
 
-namespace MicroPlumberd.Services.Identity.ReadModels
+[EventHandler]
+[OutputStream("UserAuthorizationModel_v1")]
+public partial class UserAuthorizationModel
 {
-    [EventHandler]
-    [OutputStream("UserAuthorizationModel_v1")]
-    public partial class UserAuthorizationModel
+    // Primary user authorization data store
+    private readonly ConcurrentDictionary<UserIdentifier, UserAuthData> _userAuthData = new();
+
+    // Role information store (maintained from role events)
+    private readonly ConcurrentDictionary<RoleIdentifier, RoleInfo> _roleInfo = new();
+
+    // Lookup indices
+    private readonly ConcurrentDictionary<string, RoleIdentifier> _roleIdsByNormalizedName = new();
+    private readonly ConcurrentDictionary<RoleIdentifier, ConcurrentHashSet<UserIdentifier>> _usersByRole = new();
+
+    // User authorization data record
+    record UserAuthData
     {
-        private readonly ConcurrentDictionary<UserIdentifier, UserAuthData> _authDataByUserId = new();
-        private readonly ConcurrentDictionary<RoleIdentifier, RoleData> _roleData = new();
-        private readonly RolesModel _rolesModel;
+        public UserIdentifier Id { get; init; }
+        public ImmutableHashSet<RoleIdentifier> RoleIds { get; init; } = ImmutableHashSet<RoleIdentifier>.Empty;
+        public ImmutableDictionary<string, ImmutableHashSet<string>> ClaimsByType { get; init; } =
+            ImmutableDictionary<string, ImmutableHashSet<string>>.Empty;
+    }
 
-        public UserAuthorizationModel(RolesModel rolesModel)
+    // Role information record
+    record RoleInfo
+    {
+        public string Name { get; init; }
+        public string NormalizedName { get; init; }
+    }
+
+    #region Authorization User Events
+
+    private async Task Given(Metadata m, AuthorizationUserCreated ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+        _userAuthData[userId] = new UserAuthData { Id = userId };
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, RoleAdded ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+        var roleId = ev.RoleId;
+
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return;
+
+        // Only add if not already present
+        if (!userData.RoleIds.Contains(roleId))
         {
-            _rolesModel = rolesModel ?? throw new ArgumentNullException(nameof(rolesModel));
-        }
-
-        public record RoleData
-        {
-            public RoleIdentifier Id { get; init; }
-            public string Name { get; init; }
-            public ConcurrentHashSet<UserIdentifier> Users { get; } = new();
-        }
-
-        public record UserAuthData
-        {
-            public UserIdentifier Id { get; init; }
-            public ImmutableList<RoleData> Roles { get; init; } = ImmutableList<RoleData>.Empty;
-            public ImmutableList<Claim> Claims { get; init; } = ImmutableList<Claim>.Empty;
-        }
-
-        #region Authorization User Events
-
-        private async Task Given(Metadata m, AuthorizationUserCreated ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-            _authDataByUserId[userId] = new UserAuthData
+            // Update user's roles
+            _userAuthData[userId] = userData with
             {
-                Id = userId
+                RoleIds = userData.RoleIds.Add(roleId)
             };
 
-            await Task.CompletedTask;
+            // Update users-by-role index
+            var usersInRole = _usersByRole.GetOrAdd(roleId, _ => new ConcurrentHashSet<UserIdentifier>());
+            usersInRole.Add(userId);
         }
 
-        private async Task Given(Metadata m, RoleAdded ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-
-            if (_authDataByUserId.TryGetValue(userId, out var authData))
-            {
-                // Get or create role data
-                var roleData = _roleData.GetOrAdd(ev.RoleId, id =>
-                {
-                    var role = _rolesModel.GetById(id);
-                    return new RoleData
-                    {
-                        Id = id,
-                        Name = role?.Name ?? string.Empty
-                    };
-                });
-
-                // Only add if not already present
-                bool roleExists = authData.Roles.Any(r => r.Id.Equals(ev.RoleId));
-
-                if (!roleExists)
-                {
-                    // Update roles for user
-                    _authDataByUserId[userId] = authData with
-                    {
-                        Roles = authData.Roles.Add(roleData)
-                    };
-
-                    // Add user to role's user collection
-                    roleData.Users.Add(userId);
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, RoleRemoved ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-
-            if (_authDataByUserId.TryGetValue(userId, out var authData))
-            {
-                // Find the role
-                var roleToRemove = authData.Roles.FirstOrDefault(r => r.Id.Equals(ev.RoleId));
-
-                if (roleToRemove != null)
-                {
-                    // Update roles for user
-                    _authDataByUserId[userId] = authData with
-                    {
-                        Roles = authData.Roles.Remove(roleToRemove)
-                    };
-
-                    // Remove user from role's user collection
-                    if (_roleData.TryGetValue(ev.RoleId, out var roleData))
-                    {
-                        roleData.Users.TryRemove(userId);
-                    }
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, ClaimAdded ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-
-            if (_authDataByUserId.TryGetValue(userId, out var authData))
-            {
-                var newClaim = new Claim(ev.ClaimType.Value, ev.ClaimValue.Value);
-
-                // Check if claim already exists
-                bool claimExists = authData.Claims.Any(c =>
-                    c.Type == ev.ClaimType.Value &&
-                    c.Value == ev.ClaimValue.Value);
-
-                if (!claimExists)
-                {
-                    _authDataByUserId[userId] = authData with
-                    {
-                        Claims = authData.Claims.Add(newClaim)
-                    };
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, ClaimRemoved ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-
-            if (_authDataByUserId.TryGetValue(userId, out var authData))
-            {
-                // Find claims to remove
-                var claimsToRemove = authData.Claims
-                    .Where(c =>
-                        c.Type == ev.ClaimType.Value &&
-                        c.Value == ev.ClaimValue.Value)
-                    .ToList();
-
-                if (claimsToRemove.Any())
-                {
-                    var newClaims = authData.Claims;
-                    foreach (var claim in claimsToRemove)
-                    {
-                        newClaims = newClaims.Remove(claim);
-                    }
-
-                    _authDataByUserId[userId] = authData with
-                    {
-                        Claims = newClaims
-                    };
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, ClaimsReplaced ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-
-            if (_authDataByUserId.TryGetValue(userId, out var authData))
-            {
-                _authDataByUserId[userId] = authData with
-                {
-                    Claims = ev.Claims.ToImmutableList()
-                };
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, AuthorizationUserDeleted ev)
-        {
-            var userId = m.StreamId<UserIdentifier>();
-
-            if (_authDataByUserId.TryRemove(userId, out var authData))
-            {
-                // Remove user from all roles
-                foreach (var roleData in authData.Roles)
-                {
-                    roleData.Users.TryRemove(userId);
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        #endregion
-
-        #region Role Events
-
-        private async Task Given(Metadata m, RoleCreated ev)
-        {
-            var roleId = m.StreamId<RoleIdentifier>();
-            // Add or update role data
-            _roleData.AddOrUpdate(
-                roleId,
-                new RoleData { Id = roleId, Name = ev.Name },
-                (_, existing) => existing with { Name = ev.Name }
-            );
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, RoleNameChanged ev)
-        {
-            var roleId = m.StreamId<RoleIdentifier>();
-
-            // Update role data
-            if (_roleData.TryGetValue(roleId, out var roleData))
-            {
-                // Create new role data with updated name
-                var updatedRoleData = new RoleData
-                {
-                    Id = roleId,
-                    Name = ev.Name
-                };
-
-                // Copy users from old role data
-                foreach (var userId in roleData.Users)
-                {
-                    updatedRoleData.Users.Add(userId);
-                }
-
-                // Replace role data
-                _roleData[roleId] = updatedRoleData;
-
-                // Update role name in all user auth data that contains this role
-                foreach (var userId in roleData.Users)
-                {
-                    if (_authDataByUserId.TryGetValue(userId, out var userData))
-                    {
-                        // Find and replace the role
-                        var roleIndex = userData.Roles.FindIndex(r => r.Id.Equals(roleId));
-                        if (roleIndex >= 0)
-                        {
-                            var newRoles = userData.Roles.RemoveAt(roleIndex).Add(updatedRoleData);
-                            _authDataByUserId[userId] = userData with { Roles = newRoles };
-                        }
-                    }
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        private async Task Given(Metadata m, RoleDeleted ev)
-        {
-            var roleId = m.StreamId<RoleIdentifier>();
-
-            // Remove role from all users
-            if (_roleData.TryRemove(roleId, out var roleData))
-            {
-                foreach (var userId in roleData.Users)
-                {
-                    if (_authDataByUserId.TryGetValue(userId, out var userData))
-                    {
-                        // Find the role
-                        var roleToRemove = userData.Roles.FirstOrDefault(r => r.Id.Equals(roleId));
-                        if (roleToRemove != null)
-                        {
-                            // Update roles for user
-                            _authDataByUserId[userId] = userData with
-                            {
-                                Roles = userData.Roles.Remove(roleToRemove)
-                            };
-                        }
-                    }
-                }
-            }
-
-            await Task.CompletedTask;
-        }
-
-        #endregion
-
-        #region Query Methods
-        /// <summary>
-        /// Checks if a user is in a role by role name
-        /// </summary>
-        public bool IsInRole(UserIdentifier userId, string normalizedRoleName)
-        {
-            if (_authDataByUserId.TryGetValue(userId, out var authData))
-            {
-                return authData.Roles.Any(r =>
-                    string.Equals(r.Name, normalizedRoleName, StringComparison.OrdinalIgnoreCase) ||
-                    (r.Name != null && string.Equals(r.Name.ToUpperInvariant(), normalizedRoleName, StringComparison.Ordinal)));
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets authorization data for a user
-        /// </summary>
-        public UserAuthData GetById(UserIdentifier id)
-        {
-            _authDataByUserId.TryGetValue(id, out var authData);
-            return authData;
-        }
-
-        /// <summary>
-        /// Gets all users in a role
-        /// </summary>
-        public ImmutableList<UserIdentifier> GetUsersInRole(RoleIdentifier roleId)
-        {
-            if (_roleData.TryGetValue(roleId, out var roleData))
-            {
-                return roleData.Users.ToImmutableList();
-            }
-
-            return ImmutableList<UserIdentifier>.Empty;
-        }
-
-        /// <summary>
-        /// Gets all users with a specific role name
-        /// </summary>
-        public ImmutableList<UserIdentifier> GetUsersInRole(string normalizedRoleName)
-        {
-            var role = _rolesModel.GetByNormalizedName(normalizedRoleName);
-            if (role != null)
-            {
-                var roleId = RoleIdentifier.Parse(role.Id, null);
-                return GetUsersInRole(roleId);
-            }
-
-            return ImmutableList<UserIdentifier>.Empty;
-        }
-
-        /// <summary>
-        /// Gets all claims for a user
-        /// </summary>
-        public ImmutableList<Claim> GetClaims(UserIdentifier id)
-        {
-            if (_authDataByUserId.TryGetValue(id, out var authData))
-            {
-                return authData.Claims;
-            }
-
-            return ImmutableList<Claim>.Empty;
-        }
-
-        /// <summary>
-        /// Gets all role names for a user
-        /// </summary>
-        public ImmutableList<string> GetRoleNames(UserIdentifier id)
-        {
-            if (_authDataByUserId.TryGetValue(id, out var authData))
-            {
-                return authData.Roles.Select(r => r.Name).ToImmutableList();
-            }
-
-            return ImmutableList<string>.Empty;
-        }
-
-        /// <summary>
-        /// Checks if a user is in a role
-        /// </summary>
-        public bool IsInRole(UserIdentifier id, RoleIdentifier roleId)
-        {
-            if (_authDataByUserId.TryGetValue(id, out var authData))
-            {
-                return authData.Roles.Any(r => r.Id.Equals(roleId));
-            }
-
-            return false;
-        }
-
-        #endregion
+        await Task.CompletedTask;
     }
+
+    private async Task Given(Metadata m, RoleRemoved ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+        var roleId = ev.RoleId;
+
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return;
+
+        // Only remove if actually present
+        if (userData.RoleIds.Contains(roleId))
+        {
+            // Update user's roles
+            _userAuthData[userId] = userData with
+            {
+                RoleIds = userData.RoleIds.Remove(roleId)
+            };
+
+            // Update users-by-role index
+            if (_usersByRole.TryGetValue(roleId, out var usersInRole))
+            {
+                usersInRole.TryRemove(userId);
+            }
+        }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, ClaimAdded ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+        var claimType = ev.ClaimType.Value;
+        var claimValue = ev.ClaimValue.Value;
+
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return;
+
+        // Get existing claims for this type
+        userData.ClaimsByType.TryGetValue(claimType, out var existingValues);
+        var values = existingValues ?? ImmutableHashSet<string>.Empty;
+
+        // Add the new claim value if not already present
+        if (!values.Contains(claimValue))
+        {
+            var newValues = values.Add(claimValue);
+            var newClaimsByType = userData.ClaimsByType.SetItem(claimType, newValues);
+
+            _userAuthData[userId] = userData with
+            {
+                ClaimsByType = newClaimsByType
+            };
+        }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, ClaimRemoved ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+        var claimType = ev.ClaimType.Value;
+        var claimValue = ev.ClaimValue.Value;
+
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return;
+
+        // Get existing claims for this type
+        if (userData.ClaimsByType.TryGetValue(claimType, out var values))
+        {
+            // Remove the claim value
+            var newValues = values.Remove(claimValue);
+
+            var newClaimsByType = userData.ClaimsByType;
+            if (newValues.IsEmpty)
+            {
+                // If no more values of this type, remove the type entry
+                newClaimsByType = newClaimsByType.Remove(claimType);
+            }
+            else
+            {
+                // Otherwise update with new values
+                newClaimsByType = newClaimsByType.SetItem(claimType, newValues);
+            }
+
+            _userAuthData[userId] = userData with
+            {
+                ClaimsByType = newClaimsByType
+            };
+        }
+
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, ClaimsReplaced ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return;
+
+        // Group claims by type for efficient storage
+        var claimsByType = ev.Claims
+            .GroupBy(c => c.Type)
+            .ToImmutableDictionary(
+                g => g.Key,
+                g => g.Select(c => c.Value).ToImmutableHashSet());
+
+        _userAuthData[userId] = userData with
+        {
+            ClaimsByType = claimsByType
+        };
+
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, AuthorizationUserDeleted ev)
+    {
+        var userId = m.StreamId<UserIdentifier>();
+
+        if (_userAuthData.TryRemove(userId, out var userData))
+        {
+            // Remove user from all role indices
+            foreach (var roleId in userData.RoleIds)
+            {
+                if (_usersByRole.TryGetValue(roleId, out var usersInRole))
+                {
+                    usersInRole.TryRemove(userId);
+                }
+            }
+        }
+
+        await Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region Role Events
+
+    // Subscribe directly to role events to maintain role information
+    private async Task Given(Metadata m, RoleCreated ev)
+    {
+        var roleId = m.StreamId<RoleIdentifier>(); // Using the event payload directly since this is not from role's stream
+
+        _roleInfo[roleId] = new RoleInfo
+        {
+            Name = ev.Name,
+            NormalizedName = ev.NormalizedName
+        };
+
+        if (!string.IsNullOrEmpty(ev.NormalizedName))
+            _roleIdsByNormalizedName[ev.NormalizedName] = roleId;
+
+        // Initialize empty users set for this role
+        _usersByRole.TryAdd(roleId, new ConcurrentHashSet<UserIdentifier>());
+
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, RoleNameChanged ev)
+    {
+        var roleId = m.StreamId<RoleIdentifier>();
+
+        if (_roleInfo.TryGetValue(roleId, out var oldRoleInfo))
+        {
+            // Remove old normalized name entry if it exists
+            if (!string.IsNullOrEmpty(oldRoleInfo.NormalizedName))
+                _roleIdsByNormalizedName.TryRemove(oldRoleInfo.NormalizedName, out _);
+        }
+
+        // Add new role info
+        _roleInfo[roleId] = new RoleInfo
+        {
+            Name = ev.Name,
+            NormalizedName = ev.NormalizedName
+        };
+
+        // Update normalized name index
+        if (!string.IsNullOrEmpty(ev.NormalizedName))
+            _roleIdsByNormalizedName[ev.NormalizedName] = roleId;
+
+        await Task.CompletedTask;
+    }
+
+    private async Task Given(Metadata m, RoleDeleted ev)
+    {
+        var roleId = m.StreamId<RoleIdentifier>();
+
+        // Remove role information
+        if (_roleInfo.TryRemove(roleId, out var roleInfo))
+        {
+            // Remove from normalized name index
+            if (!string.IsNullOrEmpty(roleInfo.NormalizedName))
+                _roleIdsByNormalizedName.TryRemove(roleInfo.NormalizedName, out _);
+        }
+
+        // Get users in this role before removing the index
+        if (_usersByRole.TryRemove(roleId, out var usersInRole))
+        {
+            // Remove role from all users who had it
+            foreach (var userId in usersInRole)
+            {
+                if (_userAuthData.TryGetValue(userId, out var userData))
+                {
+                    _userAuthData[userId] = userData with
+                    {
+                        RoleIds = userData.RoleIds.Remove(roleId)
+                    };
+                }
+            }
+        }
+
+        await Task.CompletedTask;
+    }
+
+    #endregion
+
+    #region Query Methods
+
+    public bool IsInRole(UserIdentifier userId, string normalizedRoleName)
+    {
+        // First, get the role ID from the normalized name
+        if (!_roleIdsByNormalizedName.TryGetValue(normalizedRoleName, out var roleId))
+            return false;
+
+        // Then check if the user has this role ID
+        return IsInRole(userId, roleId);
+    }
+
+    public bool IsInRole(UserIdentifier userId, RoleIdentifier roleId)
+    {
+        return _userAuthData.TryGetValue(userId, out var userData) &&
+               userData.RoleIds.Contains(roleId);
+    }
+
+    public ImmutableList<string> GetRoleNames(UserIdentifier userId)
+    {
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return ImmutableList<string>.Empty;
+
+        return userData.RoleIds
+            .Select(roleId => _roleInfo.TryGetValue(roleId, out var info) ? info.Name : null)
+            .Where(name => name != null)
+            .ToImmutableList();
+    }
+
+    public ImmutableList<UserIdentifier> GetUsersInRole(RoleIdentifier roleId)
+    {
+        if (_usersByRole.TryGetValue(roleId, out var users))
+            return users.ToImmutableList();
+
+        return ImmutableList<UserIdentifier>.Empty;
+    }
+
+    public ImmutableList<UserIdentifier> GetUsersInRole(string normalizedRoleName)
+    {
+        if (_roleIdsByNormalizedName.TryGetValue(normalizedRoleName, out var roleId))
+            return GetUsersInRole(roleId);
+
+        return ImmutableList<UserIdentifier>.Empty;
+    }
+
+    public ImmutableList<Claim> GetClaims(UserIdentifier userId)
+    {
+        if (!_userAuthData.TryGetValue(userId, out var userData))
+            return ImmutableList<Claim>.Empty;
+
+        return userData.ClaimsByType
+            .SelectMany(kvp =>
+                kvp.Value.Select(value => new Claim(kvp.Key, value)))
+            .ToImmutableList();
+    }
+
+    #endregion
 }

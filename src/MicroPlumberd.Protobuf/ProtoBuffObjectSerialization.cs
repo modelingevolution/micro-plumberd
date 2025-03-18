@@ -50,18 +50,18 @@ namespace MicroPlumberd.Protobuf
             //type2.AddField(1, "CommandId");
             //type2.AddField(2, "Duration");
         }
-        public object? Deserialize(ReadOnlySpan<byte> span, Type t)
+        public object? Deserialize(OperationContext context, ReadOnlySpan<byte> span, Type t)
         {
             return Serializer.NonGeneric.Deserialize(t, span);
         }
 
-        public JsonElement ParseMetadata(ReadOnlySpan<byte> span)
+        public JsonElement ParseMetadata(OperationContext context, ReadOnlySpan<byte> span)
         {
             if (span.Length == 0) return Empty;
             return JsonSerializer.Deserialize<JsonElement>(span, Options);
         }
 
-        public byte[] Serialize(object? t)
+        public byte[] Serialize(OperationContext context, object? t)
         {
             
             return _serializes.GetOrAdd(t.GetType(),

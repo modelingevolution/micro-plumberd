@@ -2,7 +2,7 @@
 
 namespace MicroPlumberd.Services;
 
-class CommandHandlerStarter<THandler>(IPlumber plumber) : ICommandHandlerStarter
+class CommandHandlerStarter<THandler>(PlumberEngine plumber) : ICommandHandlerStarter
     where THandler : ICommandHandler, IServiceTypeRegister
 {
     public async Task Start()
@@ -41,35 +41,7 @@ public static class StreamPositionExtensions
         return sp;
     }
 }
-class EventHandlerStarter<THandler>(IPlumber plumber) : IEventHandlerStarter
-    where THandler : class, IEventHandler, ITypeRegister
-{
-    private FromStream _startPosition;
-    private FromRelativeStreamPosition _relativeStartPosition;
-    private bool _persistently;
-    public async Task Start(CancellationToken stoppingToken)
-    {
-        if (!_persistently)
-            await plumber.SubscribeEventHandler<THandler>(start: _relativeStartPosition, token: stoppingToken);
-        else
-            await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: _startPosition.ToStreamPosition(), token: stoppingToken);
-    }
 
-    public EventHandlerStarter<THandler> Configure(bool persistently = false, FromStream? start = null)
-    {
-        this._persistently = persistently;
-        this._startPosition = start ?? FromStream.Start;
-        this._relativeStartPosition = _startPosition;
-        return this;
-    }
-    public EventHandlerStarter<THandler> Configure(FromRelativeStreamPosition? start = null)
-    {
-        this._persistently = false;
-        this._relativeStartPosition = start ?? FromRelativeStreamPosition.Start;
-        return this;
-    }
-
-}
 class EventStateHandlerStarter<THandler>(IPlumber plumber) : IEventHandlerStarter
     where THandler : class, IEventHandler, ITypeRegister
 {

@@ -342,9 +342,10 @@ namespace MicroPlumberd.Services.LiteDb
             throw new NotImplementedException();
         }
 
-        public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc, IEnumerable<string>? eventTypes,
-            TEventHandler? eh = default, string? outputStream = null, FromStream? start = null,
-            bool ensureOutputStreamProjection = true) where TEventHandler : class, IEventHandler
+        public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
+            IEnumerable<string>? eventTypes,
+            TEventHandler? eh = null, string? outputStream = null, FromStream? start = null,
+            bool ensureOutputStreamProjection = true, CancellationToken ct = TODO) where TEventHandler : class, IEventHandler
         {
             throw new NotImplementedException();
         }

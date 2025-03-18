@@ -7,9 +7,9 @@ public interface IPlumberConfig : IExtension
     Func<Type, IObjectSerializer> SerializerFactory { get; set; }
     IConventions Conventions { get; }
     IServiceProvider ServiceProvider { get; set; }
-    event Action<IPlumber> Created;
+    event Action<PlumberEngine> Created;
 
-    void SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> handler);
+    void SetErrorHandlePolicy(Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> handler);
 }
 
 public interface IPlumberReadOnlyConfig : IExtension
@@ -17,7 +17,7 @@ public interface IPlumberReadOnlyConfig : IExtension
     Func<Type, IObjectSerializer> SerializerFactory { get; }
     IReadOnlyConventions Conventions { get; }
     IServiceProvider ServiceProvider { get; }
-    Task<ErrorHandleDecision> HandleError(Exception ex, string streamName, CancellationToken token);
+    Task<ErrorHandleDecision> HandleError(Exception ex, OperationContext context, CancellationToken token);
 }
 
 public enum ErrorHandleDecision

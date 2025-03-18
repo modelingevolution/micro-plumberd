@@ -13,7 +13,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
     {
         private readonly ConcurrentDictionary<UserIdentifier, AuthenticationData> _authDataByUserId = new();
 
-        public record AuthenticationData
+        record AuthenticationData
         {
             public string PasswordHash { get; init; }
             public bool TwoFactorEnabled { get; init; }
@@ -150,10 +150,10 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         }
 
         // Query method
-        public AuthenticationData GetAuthenticationData(UserIdentifier userId)
+        public string GetAuthenticationDataKey(UserIdentifier userId)
         {
             _authDataByUserId.TryGetValue(userId, out var data);
-            return data;
+            return data?.AuthenticatorKey;
         }
     }
 }

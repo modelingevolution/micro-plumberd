@@ -13,7 +13,7 @@ class PlumberConfig : IPlumberConfig
     private IServiceProvider _serviceProvider = new ActivatorServiceProvider();
     private static readonly JsonObjectSerializer serializer = new JsonObjectSerializer();
     private Func<Type,IObjectSerializer> _serializerFactory = x => serializer;
-    private Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> _errorHandlePolicy = OnError;
+    private Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> _errorHandlePolicy = OnError;
 
     public Func<Type,IObjectSerializer> SerializerFactory
     {
@@ -54,13 +54,13 @@ class PlumberConfig : IPlumberConfig
         }
     }
 
-    internal Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> ErrorHandlePolicy
+    internal Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> ErrorHandlePolicy
     {
         get => _errorHandlePolicy;
     }
 
-    public event Action<IPlumber>? Created;
-    public void SetErrorHandlePolicy(Func<Exception, string, CancellationToken, Task<ErrorHandleDecision>> value)
+    public event Action<PlumberEngine>? Created;
+    public void SetErrorHandlePolicy(Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> value)
     {
         if (value == null!) throw new ArgumentNullException();
         _errorHandlePolicy = value;
@@ -68,7 +68,7 @@ class PlumberConfig : IPlumberConfig
 
     public event Action<IServiceCollection>? Configured;
 
-    private static async Task<ErrorHandleDecision> OnError(Exception ex, string stream, CancellationToken token)
+    private static async Task<ErrorHandleDecision> OnError(Exception ex, OperationContext stream, CancellationToken token)
     {
         await Task.Delay(30000, token);
         return ErrorHandleDecision.Retry;
@@ -78,7 +78,7 @@ class PlumberConfig : IPlumberConfig
     {
         Configured?.Invoke(collection);
     }
-    internal void OnCreated(Plumber plumber)
+    internal void OnCreated(PlumberEngine plumber)
     {
         Created?.Invoke(plumber);
     }

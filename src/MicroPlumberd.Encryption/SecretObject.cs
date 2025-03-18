@@ -29,7 +29,9 @@ public record SecretObject<T>
             if (_decrypted) return _value;
             if (_encryptor == null)
                 throw new InvalidOperationException("Missing encryptor");
-            _value = _encryptor.Decrypt<T>(_data,_recipient);
+
+            using var scope = OperationContext.GetOrCreate(Flow.Request);
+            _value = _encryptor.Decrypt<T>(scope.Context,_data,_recipient);
             _decrypted = true;
             return _value;
         }

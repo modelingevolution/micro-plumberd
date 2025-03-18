@@ -915,9 +915,9 @@ public class UserStore :
             throw new ArgumentNullException(nameof(user));
 
         var userId = GetUserIdentifier(user.Id);
-        var authData = _authenticationModel.GetAuthenticationData(userId);
+        var key= _authenticationModel.GetAuthenticationDataKey(userId);
 
-        return authData?.AuthenticatorKey;
+        return key;
     }
 
     public async Task SetAuthenticatorKeyAsync(User user, string key, CancellationToken cancellationToken)

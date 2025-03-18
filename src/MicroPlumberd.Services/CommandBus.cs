@@ -85,8 +85,11 @@ internal class CommandBus : ICommandBus, IEventHandler
     public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false, CancellationToken token = default)
     {
         var commandId = GetCommandId(command);
-        var causationId = InvocationContext.Current.CausactionId() ?? commandId;
-        var correlationId = InvocationContext.Current.CorrelationId() ?? commandId;
+        using var context = OperationContext.GetOrCreate(Flow.Component);
+
+        var causationId = context.Context.GetCausationId() ?? commandId;
+        var userId = context.Context.GetUserId();
+        var correlationId = context.Context.GetCorrelationId() ?? commandId;
         var retById = IdDuckTyping.Instance.TryGetGuidId(command, out var id) ? id : correlationId;
 
         var metadata = new
@@ -95,6 +98,7 @@ internal class CommandBus : ICommandBus, IEventHandler
             CausationId = (Guid)causationId!,
             RecipientId = recipientId.ToString(),
             SessionId = SessionId,
+            UserId = userId
         };
 
         var executionResults = new CommandExecutionResults();

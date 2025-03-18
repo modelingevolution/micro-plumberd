@@ -35,14 +35,14 @@ public delegate string StreamCategoryConvention(Type aggregateType);
 /// <param name="aggregateType">The type of the aggregate.</param>
 /// <param name="aggregateId">The ID of the aggregate.</param>
 /// <returns>A string representing the steam name.</returns>
-public delegate string SteamNameConvention(Type aggregateType, object aggregateId);
+public delegate string SteamNameConvention(OperationContext context, Type aggregateType, object aggregateId);
 
 /// <summary>
 /// Represents a delegate that defines a convention for determining the stream category named based on event-type.
 /// </summary>
 /// <param name="eventType">Type of the event.</param>
 /// <returns></returns>
-public delegate string StreamNameFromEventConvention(Type eventType, object? id);
+public delegate string StreamNameFromEventConvention(OperationContext context, Type eventType, object? id);
 
 /// <summary>
 /// Represents a delegate that defines the convention for determining the projection category stream for a given model type.
@@ -76,13 +76,13 @@ public delegate ISnapshotPolicy SnapshotPolicyFactory(Type owner);
 /// <param name="metadata">The dynamic metadata associated with the event.</param>
 /// <param name="aggregate">The optional aggregate associated with the event.</param>
 /// <param name="evt">The event object.</param>
-public delegate void MetadataConvention(dynamic metadata, IAggregate? aggregate, object evt);
+public delegate void MetadataConvention(OperationContext context, dynamic metadata, IAggregate? aggregate, object evt);
 
-public delegate void BuildInvocationContext(InvocationContext context, Metadata m);
+
 /// <summary>
 /// Represents delegate that creates Uuid from an event and optinally aggregate instance.
 /// </summary>
-public delegate Uuid EventIdConvention(IAggregate? aggregator, object evt);
+public delegate Uuid EventIdConvention(OperationContext context, IAggregate? aggregator, object evt);
 
 public delegate Uuid EventIdStateConvention(object state, object id, long? version);
 
@@ -178,7 +178,7 @@ public interface IReadOnlyConventions : IExtension
     /// The get event name convention.
     /// </value>
     EventNameConvention GetEventNameConvention { get; }
-    BuildInvocationContext BuildInvocationContext { get;  }
+    //BuildInvocationContext BuildInvocationContext { get;  }
     MetadataConvention? MetadataEnrichers { get;  }
 
     EventIdStateConvention GetEventIdStateConvention { get; }
@@ -187,7 +187,7 @@ public interface IReadOnlyConventions : IExtension
     GroupNameModelConvention GroupNameModelConvention { get;  }
     SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get;  }
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get;  }
-    object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
+    object GetMetadata(OperationContext context, IAggregate? aggregate, object evt, object? metadata);
 
 }
 /// <summary>
@@ -251,14 +251,14 @@ public interface IConventions : IExtension
     /// </value>
     EventNameConvention GetEventNameConvention { get; set; }
 
-    BuildInvocationContext BuildInvocationContext { get; set; }
+    //BuildInvocationContext BuildInvocationContext { get; set; }
     MetadataConvention? MetadataEnrichers { get; set; }
     EventIdConvention GetEventIdConvention { get; set; }
     OutputStreamModelConvention OutputStreamModelConvention { get; set; }
     GroupNameModelConvention GroupNameModelConvention { get; set; }
     SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
-    object GetMetadata(IAggregate? aggregate, object evt, object? metadata);
+    object GetMetadata(OperationContext context, IAggregate? aggregate, object evt, object? metadata);
     /// <summary>
     /// Gets or sets the stream name from event convention. This is used only in AppendEvent. The default searches for [OutputStreamAttribute]. If not found than the last segment of the namespace is used as category, that is not named "Events". 
     /// </summary>
@@ -304,7 +304,7 @@ class Conventions : IConventions, IReadOnlyConventions
     public StreamCategoryConvention GetStreamCategoryConvention { get; set; } = OutputStreamOrFriendlyTypeName;
     public EventNameConvention GetEventNameConvention { get; set; } = (aggregate, evt) => evt.GetFriendlyName();
     public MetadataConvention? MetadataEnrichers { get; set; }
-    public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
+    //public BuildInvocationContext BuildInvocationContext { get; set; } = InvocationContext.Build;
     public EventIdConvention GetEventIdConvention { get; set; } = EventIdConvention;
     public EventIdStateConvention GetEventIdStateConvention { get; set; } = EventIdStateConvention;
 
@@ -326,7 +326,7 @@ class Conventions : IConventions, IReadOnlyConventions
         return g == Guid.Empty ? Uuid.NewUuid() : Uuid.FromGuid(g);
     }
 
-    private static Uuid EventIdConvention(IAggregate? aggregate, object evt)
+    private static Uuid EventIdConvention(OperationContext context, IAggregate? aggregate, object evt)
     {
         if (!IdDuckTyping.Instance.TryGetGuidId(evt, out var g)) return Uuid.NewUuid();
         
@@ -368,14 +368,14 @@ class Conventions : IConventions, IReadOnlyConventions
     {
         MetadataEnrichers += StandardMetadataEnrichers.CreatedTimeMetadata;
         MetadataEnrichers += StandardMetadataEnrichers.InvocationContextMetadata;
-        GetStreamIdConvention = (aggregateType,id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
-        GetStreamIdSnapshotConvention = (aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}Snapshot-{id}";
-        GetStreamIdStateConvention = (aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
+        GetStreamIdConvention = (context,aggregateType,id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
+        GetStreamIdSnapshotConvention = (context, aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}Snapshot-{id}";
+        GetStreamIdStateConvention = (context, aggregateType, id) => $"{GetStreamCategoryConvention(aggregateType)}-{id}";
         ProjectionCategoryStreamConvention =(t) => $"$ce-{GetStreamCategoryConvention(t)}";
         StreamNameFromEventConvention = ComputeStreamName;
     }
 
-    private static string ComputeStreamName(Type eventType, object? id)
+    private static string ComputeStreamName(OperationContext context, Type eventType, object? id)
     {
         var o = eventType.GetCustomAttribute<OutputStreamAttribute>();
         var category = o != null
@@ -387,10 +387,10 @@ class Conventions : IConventions, IReadOnlyConventions
 
     private static string OutputStreamOrFriendlyTypeName(Type model) => model.GetCustomAttribute<OutputStreamAttribute>()?.OutputStreamName ?? model.GetFriendlyName();
 
-    public object GetMetadata(IAggregate? aggregate, object evt, object? metadata)
+    public object GetMetadata(OperationContext context, IAggregate? aggregate, object evt, object? metadata)
     {
         ExpandoObject obj = new ExpandoObject();
-        MetadataEnrichers?.Invoke(obj, aggregate, evt);
+        MetadataEnrichers?.Invoke(context,obj, aggregate, evt);
         if (metadata == null) return obj;
 
         IDictionary<string, object> kv = obj!;
@@ -417,34 +417,31 @@ public enum StandardMetadataEnricherTypes
 }
 static class StandardMetadataEnrichers
 {
-    public static void CreatedTimeMetadata(dynamic metadata, IAggregate? aggregate, object evt)
+    
+
+   
+    public static void CreatedTimeMetadata(OperationContext cx, dynamic metadata, IAggregate? aggregate, object evt)
     {
         metadata.Created = DateTimeOffset.Now;
 
     }
 
-    public static void InvocationContextMetadata(dynamic metadata, IAggregate? aggregate, object evt)
-    {
-        var src = (IDictionary<string, object>)InvocationContext.Current.Value;
-        var dst = (IDictionary<string, object>)metadata;
-        foreach(var i in src)
-            dst.Add(i.Key, i.Value);
-    }
+    public static void InvocationContextMetadata(OperationContext cx, dynamic metadata, IAggregate? aggregate, object evt) => cx.CopyTo(metadata);
 }
 
-public class InvocationScope : IDisposable
-{
-    public InvocationScope() { }
+//public class InvocationScope : IDisposable
+//{
+//    public InvocationScope() { }
 
-    public InvocationScope(InvocationContext copy) => InvocationContext.Current = copy;
-    public InvocationContext Context => InvocationContext.Current;
-    public InvocationContext SetCorrelation(Guid correlationId) => Context.SetCorrelation(correlationId);
-    public InvocationContext SetCausation(Guid causationId) => Context.SetCausation(causationId);
-    public InvocationContext SetUserId(Guid userId) => Context.SetUserId(userId);
-    public InvocationContext Set(string key, object value) => Context.Set(key, value);
-    public bool ContainsProperty(string propertyName) => Context.ContainsProperty(propertyName);
-    public void Dispose() => InvocationContext.Current.Clear();
-}
+//    public InvocationScope(InvocationContext copy) => InvocationContext.Current = copy;
+//    public InvocationContext Context => InvocationContext.Current;
+//    public InvocationContext SetCorrelation(Guid correlationId) => Context.SetCorrelation(correlationId);
+//    public InvocationContext SetCausation(Guid causationId) => Context.SetCausation(causationId);
+//    public InvocationContext SetUserId(string? userId) => Context.SetUserId(userId);
+//    public InvocationContext Set(string key, object value) => Context.Set(key, value);
+//    public bool ContainsProperty(string propertyName) => Context.ContainsProperty(propertyName);
+//    public void Dispose() => InvocationContext.Current.Clear();
+//}
 
 public static class TypeExtensions
 {
@@ -503,6 +500,12 @@ public static class MetadataExtensions
             return Guid.Parse(v.GetString()!);
         return null;
     }
+    public static string? UserId(this Metadata m)
+    {
+        if (m.Data.TryGetProperty("UserId", out var v))
+            return v.GetString();
+        return null;
+    }
     public static Guid? CausationId(this Metadata m)
     {
         if (m.Data.TryGetProperty("$causationId", out var v))
@@ -519,93 +522,5 @@ public static class MetadataExtensions
 
         value = default;
         return false;
-    }
-}
-public class InvocationContext
-{
-    public InvocationContext SetCorrelation(Guid correlationId) => Set("$correlationId", correlationId);
-
-    public InvocationContext SetCausation(Guid causationId) => Set("$causationId", causationId);
-    public InvocationContext SetUserId(Guid userId)
-    {
-        Value.UserId = userId;
-        return this;
-    }
-
-    public Guid? CausactionId() => TryGetValue<Guid>("$causationId", out var v) ? v : null;
-    
-    private static AsyncLocal<InvocationContext> _current = new AsyncLocal<InvocationContext>();
-    public static InvocationContext Current
-    {
-        get => _current.Value ?? (_current.Value = new InvocationContext());
-        set => _current.Value = value;
-    }
-
-    private readonly ExpandoObject _data;
-    private InvocationContext()
-    {
-        _data = new ExpandoObject();
-    }
-    private InvocationContext(ExpandoObject data)
-    {
-        _data = data;
-    }
-
-    public dynamic Value => _data;
-    
-    public InvocationContext Set(string key, object value)
-    {
-        var dict  = (IDictionary<string, object>)_data!;
-        dict[key] = value;
-        return this;
-    }
-    public bool ContainsProperty(string propertyName) => ((IDictionary<string, object>)_data!).ContainsKey(propertyName);
-
-    public bool TryGetValue<TValue>(string propertyName, out TValue value)
-    {
-        var dict = (IDictionary<string, object>)_data!;
-        if (dict.TryGetValue(propertyName, out var v))
-        {
-            value = (TValue)v;
-            return true;
-        }
-
-        value = default;
-        return false;
-    }
-
-    
-    public void Clear()
-    {
-        IDictionary<string, object> obj = _data!;
-        obj.Clear();
-    }
-
-    public void ClearCorrelation()
-    {
-        var dict = (IDictionary<string, object>)_data!;
-        dict.Remove("$correlationId");
-    }
-
-    public Guid? CorrelationId() => TryGetValue<Guid>("$correlationId", out var v) ? v : null;
-
-    public static void Build(InvocationContext context, Metadata metadata)
-    {
-        if (metadata.CorrelationId() != null)
-            context.SetCorrelation(metadata.CorrelationId()!.Value);
-        else context.ClearCorrelation();
-        context.SetCausation(metadata.CausationId() != null ? metadata.CausationId()!.Value : metadata.EventId);
-    }
-
-    public InvocationContext Clone()
-    {
-        var dictOriginal = _data as IDictionary<string, object>; // ExpandoObject supports IDictionary
-        var dst = new ExpandoObject();
-        var dictClone = dst as IDictionary<string, object>;
-
-        // Shallow copy, for deep copy you need a different approach
-        foreach (var kvp in dictOriginal) dictClone[kvp.Key] = kvp.Value; 
-
-        return new InvocationContext(dst);
     }
 }

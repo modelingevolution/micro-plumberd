@@ -64,3 +64,30 @@ public interface ISubscriptionSet
     /// <returns></returns>
     Task SubscribeAsync(string name, FromStream start);
 }
+public interface IEngineSubscriptionSet
+{
+    /// <summary>
+    /// Withes the specified model.
+    /// </summary>
+    /// <typeparam name="TModel">The type of the model.</typeparam>
+    /// <param name="model">The model.</param>
+    /// <returns></returns>
+    IEngineSubscriptionSet With<TModel>(TModel model)
+        where TModel : IEventHandler, ITypeRegister;
+
+    /// <summary>
+    /// Subscribes persistently.
+    /// </summary>
+    /// <param name="outputStream">The output stream.</param>
+    /// <param name="groupName">Name of the group.</param>
+    /// <returns></returns>
+    Task SubscribePersistentlyAsync(OperationContext context, string outputStream, string? groupName = null);
+
+    /// <summary>
+    /// Subscribes to stream.
+    /// </summary>
+    /// <param name="name">The name of the stream.</param>
+    /// <param name="start">The start.</param>
+    /// <returns></returns>
+    Task SubscribeAsync(OperationContext context, string name, FromStream start);
+}

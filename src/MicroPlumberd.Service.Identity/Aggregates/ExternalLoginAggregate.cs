@@ -3,6 +3,7 @@
 namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
+[OutputStream("ExternalLogin")]
 public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, ExternalLoginAggregate.ExternalLoginState>
 {
     public ExternalLoginAggregate(UserIdentifier id) : base(id) { }

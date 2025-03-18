@@ -2,13 +2,13 @@
 
 namespace MicroPlumberd;
 
-class SubscriptionSet(Plumber plumber) : ISubscriptionSet
+class SubscriptionSet(PlumberEngine plumber) : IEngineSubscriptionSet
 {
-    private readonly Plumber plumber = plumber;
+    private readonly PlumberEngine plumber = plumber;
     private readonly Dictionary<string, Type> _register = new();
     private readonly Dictionary<string, List<IEventHandler>> _dispatcher = new();
     
-    public ISubscriptionSet With<TModel>(TModel model)
+    public IEngineSubscriptionSet With<TModel>(TModel model)
         where TModel : IEventHandler, ITypeRegister
     {
         foreach(var i in plumber.TypeHandlerRegisters.GetEventNameMappingsFor<TModel>())
@@ -21,16 +21,16 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
         }
         return this;
     }
-    public async Task SubscribePersistentlyAsync(string outputStream, string? groupName = null)
+    public async Task SubscribePersistentlyAsync(OperationContext context, string outputStream, string? groupName = null)
     {
         groupName ??= outputStream;
         await plumber.ProjectionManagementClient.TryCreateJoinProjection(outputStream, _register.Keys);
         var subscription = plumber.PersistentSubscriptionClient.SubscribeToStream(outputStream, groupName);
-        var state = Tuple.Create(this, subscription);
+        var state = Tuple.Create(this,context, subscription);
 
         await Task.Factory.StartNew(static async (x) =>
         {
-            var (builder, sub) = (Tuple<SubscriptionSet, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult>)x!;
+            var (builder, context,sub) = (Tuple<SubscriptionSet, OperationContext, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult>)x!;
             var plumber = builder.plumber;
             await foreach (var e in sub)
             {
@@ -38,7 +38,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 if (!builder._dispatcher.TryGetValue(er.EventType, out var models)) continue;
                 var t = builder._register[er.EventType];
 
-                var (ev, metadata) = plumber.ReadEventData(er,e.Link, t);
+                var (ev, metadata) = plumber.ReadEventData(context,er,e.Link, t);
                
 
                 foreach (var i in models)
@@ -50,16 +50,16 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
 
    
 
-    public async Task SubscribeAsync(string name, FromStream start)
+    public async Task SubscribeAsync(OperationContext context, string name, FromStream start)
     {
         await plumber.ProjectionManagementClient.TryCreateJoinProjection(name, _register.Keys);
         
         EventStoreClient.StreamSubscriptionResult subscription = plumber.Client.SubscribeToStream(name, start, true);
-        var state = Tuple.Create(this, subscription);
+        var state = Tuple.Create(this, context,subscription);
         
         await Task.Factory.StartNew(static async (x) =>
         {
-            var (builder, sub) = (Tuple<SubscriptionSet, EventStoreClient.StreamSubscriptionResult>)x!;
+            var (builder, context,sub) = (Tuple<SubscriptionSet, OperationContext, EventStoreClient.StreamSubscriptionResult>)x!;
             var plumber = builder.plumber;
             await foreach (var e in sub)
             {
@@ -67,7 +67,7 @@ class SubscriptionSet(Plumber plumber) : ISubscriptionSet
                 if (!builder._dispatcher.TryGetValue(er.EventType, out var models)) continue;
                 var t = builder._register[er.EventType];
 
-                var (ev, metadata) = plumber.ReadEventData(er,e.Link, t);
+                var (ev, metadata) = plumber.ReadEventData(context,er,e.Link, t);
                 foreach (var i in models) 
                     await i.Handle(metadata, ev);
             }

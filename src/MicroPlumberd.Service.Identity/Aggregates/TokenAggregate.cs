@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 namespace MicroPlumberd.Services.Identity.Aggregates;
 
 [Aggregate]
+[OutputStream("Token")]
 public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggregate.TokenState>
 {
     public TokenAggregate(UserIdentifier id) : base(id) { }

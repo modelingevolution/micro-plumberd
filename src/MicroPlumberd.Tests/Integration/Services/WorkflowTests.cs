@@ -13,7 +13,7 @@ using Xunit.Abstractions;
 namespace MicroPlumberd.Tests.Integration.Services
 {
     [TestCategory("Integration")]
-    public class WorkflowTests : IClassFixture<EventStoreServer>
+    public class WorkflowTests : IDisposable
     {
         private readonly EventStoreServer _eventStore;
         private readonly ITestOutputHelper _testOutputHelper;
@@ -21,9 +21,9 @@ namespace MicroPlumberd.Tests.Integration.Services
         private readonly TestAppHost _clientTestApp;
 
 
-        public WorkflowTests(EventStoreServer eventStore, ITestOutputHelper testOutputHelper)
+        public WorkflowTests(ITestOutputHelper testOutputHelper)
         {
-            _eventStore = eventStore;
+            _eventStore = new EventStoreServer();
             _testOutputHelper = testOutputHelper;
             _serverTestApp = new TestAppHost(testOutputHelper);
             _clientTestApp = new TestAppHost(testOutputHelper);
@@ -36,17 +36,18 @@ namespace MicroPlumberd.Tests.Integration.Services
 
             _serverTestApp.Configure(x => x
                 .AddPlumberd(_eventStore.GetEventStoreSettings(),scopedCommandBus:true)
-                .AddCommandHandler<StartWorkflowHandler>()
-                .AddCommandHandler<CompleteWorkflowHandler>());
+                .AddScopedCommandHandler<StartWorkflowHandler>()
+                .AddSingletonCommandHandler<CompleteWorkflowHandler>());
 
             var srv = await _serverTestApp.StartAsync();
 
             var client = await _clientTestApp.Configure(x => x
                     .AddPlumberd(_eventStore.GetEventStoreSettings(),
-                        (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(90)))
+                        (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(90), true))
                 .StartAsync();
 
-            var bus = client.GetRequiredService<ICommandBus>();
+            using var clientScope = client.CreateScope();
+            var bus = clientScope.ServiceProvider.GetRequiredService<ICommandBus>();
 
             var recipientId = Guid.NewGuid();
             var startWorkflow = new StartWorkflow { Name = "Test" };
@@ -54,12 +55,22 @@ namespace MicroPlumberd.Tests.Integration.Services
             
             await bus.SendAsync(recipientId, startWorkflow);
             await Task.Delay(1000);
-            var pl = srv.GetRequiredService<IPlumber>();
+
+            using var serverScope = srv.CreateScope();
+            var pl = serverScope.ServiceProvider.GetRequiredService<IPlumber>();
             var model = await pl.CorrelationModel()
                 .WithCommandHandler<StartWorkflowHandler>()
                 .WithCommandHandler<CompleteWorkflowHandler>()
                 .WithEvent<WorkflowCompleted>()
                 .Read(correlationId);
+        }
+
+        public void Dispose()
+        {
+            _clientTestApp?.Dispose();
+            _serverTestApp?.Dispose();
+            _eventStore?.Dispose();
+            
         }
     }
 }

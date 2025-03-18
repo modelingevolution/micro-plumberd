@@ -1,4 +1,5 @@
-﻿using EventStore.Client;
+﻿using System.Collections.Concurrent;
+using EventStore.Client;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("MicroPlumberd.Tests")]
@@ -7,17 +8,19 @@ using System.Runtime.CompilerServices;
 public static class EventStoreClientSettingsExtensions
 {
     static readonly HttpClient client = new HttpClient();
+    
     public static async Task WaitUntilReady(this EventStoreClientSettings settings, TimeSpan timeout, TimeSpan? delay = null)
     {
 
         DateTime until = DateTime.Now.Add(timeout);
-        client.BaseAddress = settings.ConnectivitySettings.Address;
-        client.Timeout = TimeSpan.FromMilliseconds(100);
+        Uri? add = settings.ConnectivitySettings.Address;
+        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(100));
         while (DateTime.Now < until)
         {
             try
             {
-                var ret = await client.GetAsync("health/live");
+                var url = new Uri(add, "health/live");
+                var ret = await client.GetAsync(url, cts.Token);
                 if (ret.IsSuccessStatusCode)
                     return;
             }

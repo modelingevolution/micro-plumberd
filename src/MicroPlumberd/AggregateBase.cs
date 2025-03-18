@@ -60,12 +60,13 @@ public interface IStatefull<out T>
     T State { get; }
 }
 
+
 /// <summary>
 /// Represents the base class for aggregate roots in the application.
 /// </summary>
 /// <typeparam name="TState">The type of the aggregate state.</typeparam>
 /// <typeparam name="TId"></typeparam>
-public abstract class AggregateBase<TId, TState>(TId id) : IVersioned, IId<TId>, IStatefull<TState>, IStatefull
+public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>, IStatefull<TState>, IStatefull
     where TState : new() 
     where TId : IParsable<TId>
 
@@ -131,7 +132,7 @@ public abstract class AggregateBase<TId, TState>(TId id) : IVersioned, IId<TId>,
     /// <summary>
     /// Acknowledges the committed events and clears the pending events.
     /// </summary>
-    public void AckCommitted()
+    void IAggregate.AckCommitted()
     {
         Version += _pendingEvents.Count;
         _pendingEvents.Clear();

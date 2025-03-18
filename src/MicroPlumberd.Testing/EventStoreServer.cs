@@ -24,7 +24,7 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
         if (containerName != null)
             _containerName = containerName;
         httpPort = _searcher.FindNextAvailablePort();
-        const string eventStoreHostName = "localhost";
+        const string eventStoreHostName = "127.0.0.1";
         //await CheckDns(eventStoreHostName);
         _isDebuggerAttached = Debugger.IsAttached;
         HttpUrl = new Uri($"esdb://admin:changeit@{eventStoreHostName}:{httpPort}?tls=false&tlsVerifyCert=false");

@@ -42,7 +42,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
 
                 CommandInvocationFailed evt = new CommandInvocationFailed() { Command = CommandRequest.Create(c.RecipientId, c.Command), Message = ex.Message, RecipientId = c.RecipientId };
                 var plm = pmClient.Plumber;
-                var streamId = plm.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager), manager.Id);
+                var streamId = plm.Config.Conventions.GetStreamIdConvention(null, typeof(TProcessManager), manager.Id);
                 await plm.AppendEvents(streamId, StreamState.Any, evt);
 
                 Guid causationId = m.CausationId() ?? throw new InvalidOperationException("Causation id is not provided.");
@@ -72,13 +72,13 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
         {
             Guid aggId = Guid.Parse(m.SourceStreamId.Substring(m.SourceStreamId.IndexOf('-')+1));
             var manager = await pmClient.GetManager<TProcessManager>(aggId);
-            streamId = plb.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager), manager.Id);
+            streamId = plb.Config.Conventions.GetStreamIdConvention(null,typeof(TProcessManager), manager.Id);
             action = await manager.StartWhen(m, evt);
         }
         else
         {
             var manager = await pmClient.GetManager<TProcessManager>(m.Id);
-            streamId = plb.Config.Conventions.GetStreamIdConvention(typeof(TProcessManager), manager.Id);
+            streamId = plb.Config.Conventions.GetStreamIdConvention(null, typeof(TProcessManager), manager.Id);
             if (manager.Version < 0)
             {
                 log.LogDebug("We've received event to process-manager that was not created.");

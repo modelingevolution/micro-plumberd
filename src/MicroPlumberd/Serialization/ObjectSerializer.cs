@@ -100,18 +100,18 @@ public sealed class JsonObjectSerializer : IObjectSerializer
 {
     public static readonly JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };
     private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
-    public object? Deserialize(ReadOnlySpan<byte> span, Type t)
+    public object? Deserialize(OperationContext context, ReadOnlySpan<byte> span, Type t)
     {
         return JsonSerializer.Deserialize(span, t, Options);
     }
 
-    public JsonElement ParseMetadata(ReadOnlySpan<byte> span)
+    public JsonElement ParseMetadata(OperationContext context, ReadOnlySpan<byte> span)
     {
         if(span.Length == 0) return Empty;
         return JsonSerializer.Deserialize<JsonElement>(span, Options);
     }
 
-    public byte[] Serialize(object? t)
+    public byte[] Serialize(OperationContext context, object? t)
     {
         return t == null ? Array.Empty<byte>() : JsonSerializer.SerializeToUtf8Bytes(t, t.GetType(), Options);
     }

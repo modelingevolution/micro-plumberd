@@ -41,8 +41,8 @@ namespace MicroPlumberd.Tests.Integration
         public async Task New()
         {
             await es.StartInDocker();
-            using var scope = new InvocationScope();
-            scope.SetCausation(Guid.NewGuid()).SetCorrelation(Guid.NewGuid()).SetUserId(Guid.NewGuid());
+            using var scope = OperationContext.GetOrCreate(Flow.Component);
+            scope.Context.SetCausationId(Guid.NewGuid()).SetCorrelationId(Guid.NewGuid()).SetUserId(Guid.NewGuid().ToString());
 
             FooAggregate aggregate = FooAggregate.Open("Hello");
 

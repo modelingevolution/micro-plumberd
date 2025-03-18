@@ -17,7 +17,7 @@ public class ModelSetsTests : IClassFixture<EventStoreServer>
     public ModelSetsTests(EventStoreServer eventStore)
     {
         _eventStore = eventStore;
-        plumber = new Plumber(_eventStore.GetEventStoreSettings());
+        plumber = Plumber.Create(eventStore.GetEventStoreSettings());
     }
 
 

@@ -14,7 +14,7 @@ namespace MicroPlumberd.Services.Identity
 {
     public static class ContainerExtensions
     {
-        public static IServiceCollection AddPlumberdIdentity(this IServiceCollection container)
+        public static IServiceCollection AddPlumberdIdentity(this IServiceCollection container, Func<IServiceProvider, Task<string>>? GetCurrentUser = null)
         {
             container.AddSingleton<UsersModel>();
             container.AddSingleton<RolesModel>();
@@ -38,9 +38,14 @@ namespace MicroPlumberd.Services.Identity
             container.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders()
                 .AddSignInManager();
-            container.AddSingleton<IUserStore<User>, UserStore>();
-            container.AddSingleton<IRoleStore<Role>, RoleStore>();
+            container.AddScoped<IUserStore<User>, UserStore>();
+            container.AddScoped<IRoleStore<Role>, RoleStore>();
             
+            if (GetCurrentUser != null)
+            {
+                container.AddScoped<IUserAuthContext>(sp => new UserAuthContextFunc(GetCurrentUser,sp));
+                container.Decorate<ICommandBus, CommandBusDecorator>();
+            }
             // Register stores
             return container;
 

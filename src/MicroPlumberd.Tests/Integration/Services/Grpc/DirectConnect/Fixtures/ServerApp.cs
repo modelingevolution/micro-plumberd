@@ -29,7 +29,10 @@ class ServerApp : IDisposable, IAsyncDisposable
 
         configure?.Invoke(builder.Services);
         builder.Services.AddSingleton<IPlumber>(sp => sp.GetRequiredService<Plumber>());
-        builder.Services.AddSingleton(new Plumber(GetEventStoreSettings()));
+        builder.Services.AddSingleton(new PlumberEngine(GetEventStoreSettings()));
+        builder.Services.AddScoped<IPlumber, Plumber>();
+        builder.Services.AddScoped<OperationContext>(sp => new OperationContext(Flow.Component));
+
         // Adding a decorator for logging.
         builder.Services.TryDecorate(typeof(IRequestHandler<>), typeof(LoggerRequestAspect<>));
         builder.Services.TryDecorate(typeof(IRequestHandler<,>), typeof(LoggerRequestResponseAspect<,>));

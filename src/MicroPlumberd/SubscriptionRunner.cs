@@ -41,7 +41,7 @@ record SubscriptionRunnerState : IDisposable
 
    
 };
-class SubscriptionSeeker(Plumber plumber, string streamName, FromRelativeStreamPosition start,
+class SubscriptionSeeker(PlumberEngine plumber, string streamName, FromRelativeStreamPosition start,
     UserCredentials? userCredentials = null, CancellationToken cancellationToken = default) : ISubscriptionRunner
 {
     private SubscriptionRunner? _runner;
@@ -117,7 +117,7 @@ class SubscriptionSeeker(Plumber plumber, string streamName, FromRelativeStreamP
 
     public async ValueTask DisposeAsync() => await _runner.DisposeAsync();
 }
-class SubscriptionRunner(Plumber plumber, SubscriptionRunnerState subscription) : ISubscriptionRunner
+class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
@@ -177,40 +177,81 @@ class SubscriptionRunner(Plumber plumber, SubscriptionRunnerState subscription) 
         }, subscription, TaskCreationOptions.LongRunning);
         return model;
     }
-
-    private async Task OnEvent(TypeEventConverter func, ResolvedEvent e, IEventHandler model)
+    private async Task OnEvent( TypeEventConverter func, ResolvedEvent e, IEventHandler model)
     {
-        while(!subscription.CancellationToken.IsCancellationRequested)
-        try
-        {
-            if (!func(e.Event.EventType, out var t)) return;
+        OperationContext.ClearContext();
+        var context = OperationContext.Create(Flow.EventHandler);
+        using var scope = context.CreateScope();
 
-            var (ev, metadata) = plumber.ReadEventData(e.Event, e.Link,t);
-            using var scope = new InvocationScope();
-            plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
-            await model.Handle(metadata, ev);
-            return;
-        }
-        catch (Exception ex)
-        {
-            var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
-            
-            l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
-            var decision = await
-                plumber.Config.HandleError(ex, subscription.StreamName, subscription.CancellationToken);
-            switch (decision)
+        context.SetStreamName(subscription.StreamName);
+
+        while (!subscription.CancellationToken.IsCancellationRequested)
+            try
             {
-                case ErrorHandleDecision.Retry:
-                    continue;
-                case ErrorHandleDecision.Cancel:
-                    throw new OperationCanceledException("Operation canceled by user.");
-                case ErrorHandleDecision.Ignore:
-                    return;
-            }
+                if (!func(e.Event.EventType, out var t)) return;
 
-            
-        }
+                var (ev, metadata) = plumber.ReadEventData(context, e.Event, e.Link, t);
+                
+                context.SetCausationId(metadata.CausationId());
+                context.SetCorrelationId(metadata.CorrelationId());
+                context.SetUserId(metadata.UserId());
+                
+                await model.Handle(metadata, ev);
+                return;
+            }
+            catch (Exception ex)
+            {
+                var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
+
+                l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+                var decision = await
+                    plumber.Config.HandleError(ex, context, subscription.CancellationToken);
+                switch (decision)
+                {
+                    case ErrorHandleDecision.Retry:
+                        continue;
+                    case ErrorHandleDecision.Cancel:
+                        throw new OperationCanceledException("Operation canceled by user.");
+                    case ErrorHandleDecision.Ignore:
+                        return;
+                }
+
+
+            }
     }
+    //private async Task OnEvent(TypeEventConverter func, ResolvedEvent e, IEventHandler model)
+    //{
+    //    while(!subscription.CancellationToken.IsCancellationRequested)
+    //    try
+    //    {
+    //        if (!func(e.Event.EventType, out var t)) return;
+
+    //        var (ev, metadata) = plumber.ReadEventData(e.Event, e.Link,t);
+    //        using var scope = new InvocationScope();
+    //        plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
+    //        await model.Handle(metadata, ev);
+    //        return;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
+
+    //        l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+    //        var decision = await
+    //            plumber.Config.HandleError(ex, subscription.StreamName, subscription.CancellationToken);
+    //        switch (decision)
+    //        {
+    //            case ErrorHandleDecision.Retry:
+    //                continue;
+    //            case ErrorHandleDecision.Cancel:
+    //                throw new OperationCanceledException("Operation canceled by user.");
+    //            case ErrorHandleDecision.Ignore:
+    //                return;
+    //        }
+
+
+    //    }
+    //}
 
     public async Task<IEventHandler> WithHandler<T>(TypeEventConverter func) where T : IEventHandler
     {

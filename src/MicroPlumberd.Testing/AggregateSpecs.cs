@@ -44,7 +44,7 @@ public class AggregateSpecs<T>(SpecsRoot root) where T : IAggregate<T>, ITypeReg
         var subject = root.Conventions.AggregateTypeSubjectConvention(typeof(T));
         root.SubjectPool.Store(subject, id);
         var eventHandler = typeof(T);
-        var streamId = root.Plumber.Config.Conventions.GetStreamIdConvention(eventHandler, id);
+        var streamId = root.Plumber.Config.Conventions.GetStreamIdConvention(null,eventHandler, id);
         var eventName = root.Plumber.Config.Conventions.GetEventNameConvention(eventHandler, typeof(TEvent));
         await root.Plumber.AppendEventToStream(streamId, ev, StreamState.Any, eventName);
         root.RegisterStepExecution<T>(StepType.Given, ev);

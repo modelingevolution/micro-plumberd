@@ -9,6 +9,7 @@ using MicroPlumberd.Services;
 using MicroPlumberd.Services.Identity;
 using EventStore.Client;
 using MicroPlumberd;
+using System.Security.Claims;
 
 namespace MicroPluberd.Examples.Blazor.Identity2;
 
@@ -37,7 +38,11 @@ public class Program
         //    })
         //    .AddIdentityCookies();
 
-        builder.Services.AddPlumberdIdentity();
+        builder.Services.AddPlumberdIdentity(async sp =>
+        {
+            var p = await sp.GetRequiredService<AuthenticationStateProvider>().GetAuthenticationStateAsync();
+            return p?.User?.FindFirstValue(ClaimTypes.NameIdentifier)!;
+        });
         
         var connection = await GetEventStoreSettings(builder.Configuration);
         builder.Services.AddPlumberd(connection, ConfigurePlumberd);

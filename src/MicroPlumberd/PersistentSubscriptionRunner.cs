@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
-class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult subscription) : ISubscriptionRunner
+class PersistentSubscriptionRunner(PlumberEngine plumber, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
@@ -24,10 +24,21 @@ class PersistentSubscriptionRunner(Plumber plumber, EventStorePersistentSubscrip
             {
                 if (!func(e.Event.EventType, out var t)) continue;
 
-                var (ev, metadata) = plumber.ReadEventData(e.Event,e.Link, t);
+                OperationContext.ClearContext();
+                var context = OperationContext.Create(Flow.EventHandler);
+                using var scope = context.CreateScope();
 
-                using var scope = new InvocationScope();
-                plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
+               context.SetStreamName(subscription.StreamName);
+
+                var (ev, metadata) = plumber.ReadEventData(context,e.Event,e.Link, t);
+
+                //using var scope = new InvocationScope();
+                //plumber.Conventions.BuildInvocationContext(scope.Context, metadata);
+                
+               context.SetCausationId(metadata.CausationId());
+               context.SetCorrelationId(metadata.CorrelationId());
+               context.SetUserId(metadata.UserId());
+
                 await model.Handle(metadata, ev);
                 await sub.Ack(e);
             }

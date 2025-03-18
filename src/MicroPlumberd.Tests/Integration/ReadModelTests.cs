@@ -10,16 +10,16 @@ using Microsoft.Extensions.DependencyInjection;
 namespace MicroPlumberd.Tests.Integration;
 
 [TestCategory("Integration")]
-public class ReadModelTests : IClassFixture<EventStoreServer>
+public class ReadModelTests : IAsyncDisposable, IDisposable
 {
     private readonly EventStoreServer _eventStore;
 
     private IPlumber plumber;
 
-    public ReadModelTests(EventStoreServer eventStore)
+    public ReadModelTests()
     {
-        _eventStore = eventStore;
-        plumber = new Plumber(_eventStore.GetEventStoreSettings());
+        _eventStore = new EventStoreServer();
+        plumber = Plumber.Create(_eventStore.GetEventStoreSettings());
     }
 
     [Fact]
@@ -100,8 +100,9 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
             .AddPlumberd(_eventStore.GetEventStoreSettings())
             .AddEventHandler<FooModel>()
             .BuildServiceProvider();
+        using var scope = sp.CreateScope();
 
-        plumber = sp.GetRequiredService<IPlumber>();
+        plumber = scope.ServiceProvider.GetRequiredService<IPlumber>();
 
         var sub = await plumber.SubscribeEventHandler<FooModel>();
 
@@ -113,5 +114,15 @@ public class ReadModelTests : IClassFixture<EventStoreServer>
     {
         FooAggregate aggregate = FooAggregate.Open("Hello");
         await plumber.SaveNew(aggregate);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await _eventStore.DisposeAsync();
+    }
+
+    public void Dispose()
+    {
+        _eventStore.Dispose();
     }
 }

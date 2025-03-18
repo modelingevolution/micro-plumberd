@@ -13,8 +13,10 @@ public class SecretObjectJsonConverter<T>(IEncryptor encryptor) : JsonConverter<
 
     public override void Write(Utf8JsonWriter writer, SecretObject<T> value, JsonSerializerOptions options)
     {
-        byte[] data = encryptor.Encrypt(value.Value, value.Recipient);
+        using var scope = OperationContext.GetOrCreate(Flow.Request);
+        byte[] data = encryptor.Encrypt(scope.Context,value.Value, value.Recipient);
         SecretObjectData dto = new SecretObjectData(value.Recipient,  data);
         JsonSerializer.Serialize(writer, dto, options);
+        
     }
 }

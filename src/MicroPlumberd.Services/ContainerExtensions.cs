@@ -18,6 +18,7 @@ class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TO
     public async Task Handle(Metadata m, object ev)
     {
         await using var scope = sp.CreateAsyncScope(); 
+        
         await scope.ServiceProvider.GetRequiredService<TOwner>().Handle(m, ev);
     }
 }
@@ -51,11 +52,15 @@ public static class ContainerExtensions
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
         Func<IServiceProvider, EventStoreClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false, int commandBusPoolSize=64)
     {
-        collection.AddSingleton(sp => Plumber.Create(settingsFactory(sp), x =>
+        collection.AddSingleton(sp => PlumberEngine.Create(settingsFactory(sp), x =>
         {
             configure?.Invoke(sp, x);
             x.ServiceProvider = sp;
         }));
+        collection.AddScoped<IPlumber, Plumber>();
+        collection.AddSingleton<IPlumberInstance, PlumberInstance>();
+        collection.AddScoped<OperationContext>(sp => OperationContext.Create(Flow.Component));
+
         collection.AddSingleton<StartupHealthCheck>();
         
         collection.AddBackgroundServiceIfMissing<CommandHandlerService>();
@@ -127,11 +132,35 @@ public static class ContainerExtensions
         services.TryAddScoped<TEventHandler>();
         return services;
     }
+
+    public static IServiceCollection AddScopedEventHandler<TEventHandler>(this IServiceCollection services,
+        FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        return services.AddScoped<TEventHandler>().AddEventHandler<TEventHandler>(start);
+    }
+    public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
+        FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        return services.AddSingleton<TEventHandler>().AddEventHandler<TEventHandler>(start);
+    }
+    public static IServiceCollection AddScopedCommandHandler<TCommandHandler>(this IServiceCollection services,
+        bool persistently = false, StreamPosition? start = null)
+        where TCommandHandler : class, ICommandHandler, IServiceTypeRegister
+    {
+        return services.AddScoped<TCommandHandler>().AddCommandHandler<TCommandHandler>(persistently, start);
+    }
+    public static IServiceCollection AddSingletonCommandHandler<TCommandHandler>(this IServiceCollection services,
+        bool persistently = false, StreamPosition? start = null)
+        where TCommandHandler : class, ICommandHandler, IServiceTypeRegister
+    {
+        return services.AddSingleton<TCommandHandler>().AddCommandHandler<TCommandHandler>(persistently, start);
+    }
+
     public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, bool persistently = false, StreamPosition? start = null) where TCommandHandler:ICommandHandler, IServiceTypeRegister
     {
         services.AddSingleton<CommandHandlerStarter<TCommandHandler>>();
         services.AddSingleton<ICommandHandlerStarter>(sp => sp.GetRequiredService<CommandHandlerStarter<TCommandHandler>>().Configure(persistently, start));
-        services.TryAddSingleton(typeof(CommandHandlerExecutor<>));
+        services.TryAddSingleton(typeof(CommandHandlerScopedExecutor<>));
         TCommandHandler.RegisterHandlers(services);
         return services;
     }
