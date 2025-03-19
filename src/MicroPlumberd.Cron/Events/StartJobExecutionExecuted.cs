@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace MicroPlumberd.Services.Cron
 {
+
     public record StartJobExecutionExecuted
     {
         public Guid Id { get; init; } = Guid.NewGuid();

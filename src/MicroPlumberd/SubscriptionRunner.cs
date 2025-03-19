@@ -117,6 +117,19 @@ class SubscriptionSeeker(PlumberEngine plumber, string streamName, FromRelativeS
 
     public async ValueTask DisposeAsync() => await _runner.DisposeAsync();
 }
+
+public class FailFastException : Exception
+{
+    public FailFastException()
+    {
+        
+    }
+
+    public FailFastException(string msg, Exception inner) : base(msg,inner)
+    {
+        
+    }
+}
 class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
@@ -168,6 +181,11 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
                     l?.LogDebug($"Subscription '{subscription.StreamName}' was canceled.");
                     return;
                 }
+                catch (FailFastException ex)
+                {
+                    l?.LogCritical(ex, $"Subscription '{subscription.StreamName}' cased app to shutdown.");
+                    throw;
+                }
                 catch (Exception ex)
                 {
                     l?.LogWarning($"Subscription '{subscription.StreamName}' was dropped. Will retry in 5sec.");
@@ -199,11 +217,17 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
                 await model.Handle(metadata, ev);
                 return;
             }
+            catch(FailFastException ex)
+            {
+                var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
+                l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+                throw;
+            }
             catch (Exception ex)
             {
                 var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
 
-                l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered unhandled exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+                l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
                 var decision = await
                     plumber.Config.HandleError(ex, context, subscription.CancellationToken);
                 switch (decision)
@@ -214,6 +238,10 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
                         throw new OperationCanceledException("Operation canceled by user.");
                     case ErrorHandleDecision.Ignore:
                         return;
+                    case ErrorHandleDecision.FailFast:
+                    {
+                        throw new FailFastException("Fail-fast encountered. Canceling subscription and throwing unhandled exception.",ex);
+                    }
                 }
 
 

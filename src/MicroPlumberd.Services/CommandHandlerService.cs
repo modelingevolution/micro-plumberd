@@ -3,6 +3,7 @@ using System.Text;
 using EventStore.Client;
 using JetBrains.Annotations;
 using MicroPlumberd.Utils;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -13,6 +14,7 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
     IEnumerable<ICommandHandlerStarter> starters) : BackgroundService, IEventHandler
 {
     private readonly Dictionary<Type, IEventHandler> _handlersByCommand = new();
+    private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
     private IAsyncDisposable? _subscription;
     private Dictionary<string, Type> _eventMapper;
     public bool IsReady { get; private set; }
@@ -32,7 +34,7 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
             _handlersByCommand.Clear();
             foreach (var i in starters)
             {
-                var executor = CommandHandlerExecutor.CreateScoped(plumber, i.HandlerType);
+                var executor = CommandHandlerExecutor.Create(plumber, i.HandlerType);
                 foreach (var c in i.CommandTypes) _handlersByCommand.Add(c, executor);
             }
 
@@ -82,6 +84,9 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
     }
     public async Task Handle(Metadata m, object ev)
     {
+        if (_serviceConventions.CommandHandlerSkipFilter(m, ev))
+            return;
+
         if (_handlersByCommand.TryGetValue(ev.GetType(), out var executor))
         {
             var tmp =  OperationContext.Current;
@@ -117,6 +122,11 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
                                 throw new OperationCanceledException("Operation canceled by user.");
                             case ErrorHandleDecision.Ignore:
                                 return;
+                            case ErrorHandleDecision.FailFast:
+                                var l = plumber.Config.ServiceProvider.GetService<ILogger<CommandHandlerService>>();
+                                l?.LogCritical(ex, $"CommandHandler '{executor.GetType()}' encountered unhandled exception. Most likely because of Handle methods throwing exceptions.");
+
+                                throw new FailFastException("Fail-fast encountered. Canceling subscription and throwing unhandled exception.", ex);
                         }
                     }
             });

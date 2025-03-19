@@ -126,12 +126,13 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine($"        _ => null");
                         sb.AppendLine("    };");
 
-                        sb.AppendLine("    static IServiceCollection IServiceTypeRegister.RegisterHandlers(IServiceCollection services)");
+                        sb.AppendLine("    static IServiceCollection IServiceTypeRegister.RegisterHandlers(IServiceCollection services, bool scoped=true)");
                         sb.AppendLine("    {");
                         foreach (var command in commands)
                         {
                             //.Decorate<ICommandHandler<CreateFoo>, CommandHandlerAttributeValidator<CreateFoo>>()
-                            sb.AppendLine($"        services.AddScoped<ICommandHandler<{command}>, {className}>();");
+                            sb.AppendLine($"        if(scoped) services.AddScoped<ICommandHandler<{command}>, {className}>();");
+                            sb.AppendLine($"        else services.AddSingleton<ICommandHandler<{command}>, {className}>();");
                             sb.AppendLine($"        services.Decorate<ICommandHandler<{command}>, CommandHandlerAttributeValidator<{command}>>();");
                         }
                         sb.AppendLine("    return services;");

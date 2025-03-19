@@ -11,3 +11,10 @@ public record JobExecutionStarted
     public JsonElement Command { get; init; }
     public string CommandType { get; init; }
 }
+
+[OutputStream("JobManual")]
+public record JobRunOnceEnqued
+{
+    public Guid Id { get; init; } = Guid.NewGuid();
+    public Guid JobDefinitionId { get; init; }
+}

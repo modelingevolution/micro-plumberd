@@ -8,7 +8,7 @@ namespace MicroPlumberd.Services.Cron;
 public partial class JobDefinitionAggregate(Guid id) : AggregateBase<Guid, JobDefinitionAggregate.JobDefinitionState>(id)
 {
 
-    public readonly record struct JobDefinitionState(bool Enabled, bool ContainsSchedule, bool ContainsCommand);
+    public readonly record struct JobDefinitionState(bool Enabled, bool ContainsSchedule, bool ContainsCommand, bool IsDeleted);
 
     private static JobDefinitionState Given(JobDefinitionState state, JobScheduleDefined ev)
     {
@@ -23,12 +23,24 @@ public partial class JobDefinitionAggregate(Guid id) : AggregateBase<Guid, JobDe
         return state;
     }
 
+    private static JobDefinitionState Given(JobDefinitionState state, JobDeleted ev)
+    {
+        return state with { IsDeleted = true};
+    }
     private static JobDefinitionState Given(JobDefinitionState state, JobEnabled ev) => state with { Enabled = true };
     private static JobDefinitionState Given(JobDefinitionState state, JobDisabled ev) => state with { Enabled = false };
     
     public void Rename(string name)
     {
         AppendPendingChange(new JobNamed(){Name=name});
+    }
+    public void Delete()
+    {
+        if (State.IsDeleted) return;
+
+        if(State.Enabled)
+            AppendPendingChange(new JobDisabled());
+        AppendPendingChange(new JobDeleted());
     }
     public void DefineSchedule(Schedule s)
     {

@@ -33,5 +33,9 @@ public enum ErrorHandleDecision
     /// <summary>
     /// Will ignore current error.
     /// </summary>
-    Ignore
+    Ignore,
+    /// <summary>
+    /// Logs error and shutdown the app
+    /// </summary>
+    FailFast
 }

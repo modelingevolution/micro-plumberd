@@ -8,4 +8,5 @@ interface ICommandHandlerStarter
 {
     IEnumerable<Type> CommandTypes { get; }
     Type HandlerType { get; }
+    bool Scoped { get; }
 }

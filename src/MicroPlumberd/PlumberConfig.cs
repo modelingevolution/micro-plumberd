@@ -70,6 +70,9 @@ class PlumberConfig : IPlumberConfig
 
     private static async Task<ErrorHandleDecision> OnError(Exception ex, OperationContext stream, CancellationToken token)
     {
+        if(ex is InvalidOperationException ioe && ioe.Message.Contains("Cannot resolve", StringComparison.InvariantCultureIgnoreCase))
+            return ErrorHandleDecision.FailFast;
+
         await Task.Delay(30000, token);
         return ErrorHandleDecision.Retry;
     }

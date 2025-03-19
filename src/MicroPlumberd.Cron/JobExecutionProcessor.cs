@@ -1,73 +1,44 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Immutable;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Channels;
 using MicroPlumberd.Utils;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace MicroPlumberd.Services.Cron;
 
-[EventHandler]
-public partial class JobExecutionProcessor(IPlumberInstance plumber, IServiceProvider sp, JobDefinitionModel model)
-    : BackgroundService
+public static class Utils
 {
-    public readonly record struct RunningJob(Guid JobDefinitionId, JobId JobId, DateTimeOffset Created, string CommandType, JsonElement Command);
-    public readonly struct ScheduledJob : IComparable<ScheduledJob>, IEquatable<ScheduledJob>
+    public static readonly Guid Max = Guid.AllBitsSet;
+
+    public static IEnumerable<ScheduledJob> GetPending(this SortedSet<ScheduledJob> items, DateTime when)
     {
-        public ScheduledJob(Guid jobDefinitionId, DateTime startAt)
-        {
-            this.JobDefinitionId = jobDefinitionId;
-            this.StartAt = startAt;
-        }
-
-        public Guid JobDefinitionId { get; }
-        public DateTime StartAt { get; }
-        
-
-
-        public override int GetHashCode()
-        {
-            return JobDefinitionId.GetHashCode();
-        }
-
-        public void Deconstruct(out Guid jobDefinitionId, out DateTime startAt)
-        {
-            jobDefinitionId = this.JobDefinitionId;
-            startAt = this.StartAt;
-        }
-
-        public int CompareTo(ScheduledJob other)
-        {
-            return JobDefinitionId.CompareTo(other.JobDefinitionId);
-        }
-
-        public bool Equals(ScheduledJob other)
-        {
-            return JobDefinitionId.Equals(other.JobDefinitionId);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return obj is ScheduledJob other && Equals(other);
-        }
-
-        public static bool operator ==(ScheduledJob left, ScheduledJob right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(ScheduledJob left, ScheduledJob right)
-        {
-            return !left.Equals(right);
-        }
+        ScheduledJob start = new ScheduledJob(Guid.Empty, DateTime.MinValue);
+        ScheduledJob end = new ScheduledJob(Max, when);
+        return items.GetViewBetween(start, end);
     }
 
-    private readonly ConcurrentDictionary<Guid, RunningJob> _runningJobsByCommandId = new();
-    private readonly SortedSet<ScheduledJob> _scheduledJobs = new();
+    public static bool TryGetFollowing(this SortedSet<ScheduledJob> items, ScheduledJob start, out ScheduledJob result)
+    {
+        ScheduledJob end = new ScheduledJob(Max, DateTime.MaxValue);
+        result = items.GetViewBetween(start, end).Skip(1).FirstOrDefault();
+        return result != ScheduledJob.Empty;
+    }
+}
+
+[EventHandler]
+public partial class JobExecutionProcessor(IPlumberInstance plumber, IServiceProvider sp, JobDefinitionModel model) : IJobItemsMonitor
+{
+    private readonly ConcurrentDictionary<Guid, RunningJob> _runningJobsByCommandIdLookup = new();
+    private readonly ConcurrentDictionary<Guid, RunningJob> _runningJobsByDefId = new();
+
+    private readonly SortedSet<ScheduledJob> _scheduledJobs = new(ScheduledJob.TimeComparer);
+    private readonly SortedSet<ScheduledJob> _manualQueue = new(ScheduledJob.TimeComparer);
+
     private readonly Channel<Func<Task>> _channel = Channel.CreateUnbounded<Func<Task>>();
 
-    public record JobItem<T>(JobDefinitionModel.JobDefinition Definition, T? Info);
+    public event EventHandler Changed;
 
     public async Task<JobItem<ScheduledJob>[]> ScheduledItems(CancellationToken token = default)
     {
@@ -84,7 +55,7 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         JobItem<RunningJob>[] items = null;
         await Execute(() =>
         {
-            items = _runningJobsByCommandId.Values.Select(x => new JobItem<RunningJob>(model[x.JobDefinitionId], x)).ToArray();
+            items = _runningJobsByDefId.Values.Select(x => new JobItem<RunningJob>(model[x.JobDefinitionId], x)).ToArray();
             return Task.CompletedTask;
         }, token);
         return items;
@@ -100,7 +71,7 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         await m.WaitAsync(token);
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    public Task StartAsync(CancellationToken stoppingToken)
     {
         _channel.Writer.TryWrite(async () => await OnStartup());
         _ = Task.Factory.StartNew(OnRun, stoppingToken, stoppingToken, TaskCreationOptions.LongRunning, TaskScheduler.Default);
@@ -108,7 +79,8 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
     }
     private async Task OnJobExecutionStarted(JobId evJobId, Guid commandId, DateTimeOffset? created, string commandType, JsonElement command)
     {
-        _runningJobsByCommandId.TryAdd(commandId, new RunningJob(evJobId.JobDefinitionId, evJobId, created ?? DateTimeOffset.Now, commandType, command));
+        if(_runningJobsByDefId.TryGetValue(evJobId.JobDefinitionId, out var r))
+            _runningJobsByCommandIdLookup.TryAdd(commandId, r);
     }
     private async Task OnRun(object? token)
     {
@@ -122,12 +94,22 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
             {
                 var action = await _channel.Reader.ReadAsync(stoppingToken);
                 await action();
+                var ch = Changed;
+                if (ch != null!)
+                    _ = Task.Run(() => ch?.Invoke(this, EventArgs.Empty), stoppingToken);
             }
         }
         catch (OperationCanceledException ex)
         {
             // do nothing.
         }
+    }
+
+    private async Task CancelWakeUp()
+    {
+        if(_cts != null)
+            await _cts.CancelAsync();
+        _cts = null;
     }
 
     private async Task OnStartup()
@@ -140,25 +122,36 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
             var nx = item.Schedule.GetNextRunTime(DateTime.Now);
             _scheduledJobs.Add(new ScheduledJob(item.JobDefinitionId, nx));
         }
-        await OnDispatchPendingItems();
+        await OnProcessScheduledJobs();
     }
-    private void OnJobScheduleChanged(object? sender, JobDefinitionModel.JobDefinition e)
+    private void OnJobScheduleChanged(object? sender, JobDefinition e)
     {
         _channel.Writer.TryWrite(async () =>
         {
             _scheduledJobs.Remove(new ScheduledJob(e.JobDefinitionId, DateTime.Today));
-            await OnDispatchJob(e.JobDefinitionId);
+            await OnScheduleAndDispatch(e.JobDefinitionId, ScheduleTrigger.Engine);
+            await CancelWakeUp();
+            await OnProcessScheduledJobs();
         });
     }
 
-    private void OnJobAvailabilityChanged(object? sender, JobDefinitionModel.JobDefinition e)
+    private void OnJobAvailabilityChanged(object? sender, JobDefinition e)
     {
         if (e.IsEnabled)
-            _channel.Writer.TryWrite(async () => await OnDispatchJob(e.JobDefinitionId));
+            _channel.Writer.TryWrite(async () =>
+            {
+                await CancelWakeUp();
+                await OnScheduleAndDispatch(e.JobDefinitionId, ScheduleTrigger.Engine);
+                await OnProcessScheduledJobs();
+            });
         else
         {
             _channel.Writer.TryWrite(async () =>
-                _scheduledJobs.Remove(new ScheduledJob(e.JobDefinitionId, DateTime.Today)));
+            {
+                _scheduledJobs.Remove(new ScheduledJob(e.JobDefinitionId, DateTime.Today));
+                await CancelWakeUp();
+                await OnProcessScheduledJobs();
+            });
         }
     }
 
@@ -166,7 +159,13 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         await OnJobExecutionStarted(ev.JobId, ev.CommandId, m.Created()!, ev.CommandType, ev.Command));
 
 
-
+    private async Task Given(Metadata m, JobRunOnceEnqued ev)
+    {
+        _channel.Writer.TryWrite(async () =>
+        {
+            _manualQueue.Add(new ScheduledJob(ev.JobDefinitionId, DateTime.Now));
+        });
+    }
     private async Task Given(Metadata m, StartJobExecutionExecuted ev)
     {
         var cmdId = ev.CommandId;
@@ -175,7 +174,7 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
 
     private async Task OnStartJobExecutionExecuted(Guid cmdId)
     {
-        if (_runningJobsByCommandId.TryRemove(cmdId, out var job))
+        if (_runningJobsByCommandIdLookup.TryRemove(cmdId, out var job))
         {
             if (model.TryGetValue(job.JobDefinitionId, out var jobDef) && jobDef.IsEnabled)
             {
@@ -185,45 +184,86 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         }
 
 
-        await OnDispatchPendingItems();
+        await OnProcessScheduledJobs();
     }
 
-    private async Task OnDispatchPendingItems()
+    private CancellationTokenSource? _cts;
+    private async Task OnProcessScheduledJobs(int h = 0)
     {
-        while (_scheduledJobs.Count > 0 && _scheduledJobs.Min!.StartAt < DateTime.Now)
+        
+        var manuallyScheduled = _manualQueue.GetPending(DateTime.Now).ToImmutableArray();
+        foreach(var item in manuallyScheduled)
         {
+            if (this._runningJobsByDefId.ContainsKey(item.JobDefinitionId)) continue;
+            if (!_runningJobsByDefId.ContainsKey(item.JobDefinitionId))
+            {
+                await OnDispatchJob(item.JobDefinitionId, item.StartAt, ScheduleTrigger.Manual);
+                manuallyScheduled.Remove(item);
+            }
+        }
+        var scheduled = _scheduledJobs.GetPending(DateTime.Now).ToImmutableArray();
+        foreach (var item in scheduled)
+        {
+            if(this._runningJobsByDefId.ContainsKey(item.JobDefinitionId)) continue;
             try
             {
-                var j = _scheduledJobs.Min;
-                await OnDispatchJob(j.JobDefinitionId, j.StartAt);
-                _scheduledJobs.Remove(j);
+                await OnDispatchJob(item.JobDefinitionId, item.StartAt, ScheduleTrigger.Engine);
+                _scheduledJobs.Remove(item);
             }
             catch (Exception ex)
             {
+                _scheduledJobs.Remove(_scheduledJobs.Min);
                 var app = await plumber.Get<JobDefinitionAggregate>(_scheduledJobs.Min.JobDefinitionId);
                 app.Disable(ex.Message);
 
                 await plumber.SaveChanges(app);
             }
+        }
 
+        if (_scheduledJobs.Any() && _scheduledJobs.TryGetFollowing(scheduled.Last(), out var f))
+        {
+            TimeSpan d = DateTimeOffset.Now - f.StartAt;
+            d = d.Add(TimeSpan.FromSeconds(1));
+            if (d > TimeSpan.Zero)
+                ConfigureNextIterationWakeup(d);
+            else if (h < 10)
+                this._channel.Writer.TryWrite(async () => await OnProcessScheduledJobs(h + 1));
+            else throw new InvalidOperationException("Cannot configure next iteration wakeup.");
         }
     }
 
-    private async Task<Guid> OnDispatchJob(Guid jobDefinitionId)
+    private void ConfigureNextIterationWakeup(TimeSpan d)
+    {
+        _cts = new CancellationTokenSource(d);
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await Task.Delay(d, _cts.Token);
+                _channel.Writer.TryWrite(async () => await OnProcessScheduledJobs());
+            }
+            catch (OperationCanceledException)
+            {
+                // do nothing.
+            }
+        });
+    }
+
+    private async Task<Guid?> OnScheduleAndDispatch(Guid jobDefinitionId, ScheduleTrigger trigger)
     {
         var job = model[jobDefinitionId];
         var at = job.Schedule.GetNextRunTime(DateTime.Now);
-        return await OnDispatchJob(job, at);
+        return await OnDispatchJob(job, at, trigger);
     }
-    private async Task<Guid> OnDispatchJob(Guid jobDefinitionId, DateTime at)
+    private async Task<Guid?> OnDispatchJob(Guid jobDefinitionId, DateTime at, ScheduleTrigger trigger)
     {
         if (!model.TryGetValue(jobDefinitionId, out var job))
             throw new InvalidOperationException($"Job definition not found: {jobDefinitionId}");
 
-        return await OnDispatchJob(job, at);
+        return await OnDispatchJob(job, at, trigger);
     }
 
-    private async Task<Guid> OnDispatchJob(JobDefinitionModel.JobDefinition job, DateTime at)
+    private async Task<Guid?> OnDispatchJob(JobDefinition job, DateTime at, ScheduleTrigger trigger)
     {
         var obj = JsonSerializer.Deserialize(job.Command, job.CommandType) ?? throw new InvalidOperationException($"Cannot deserialize command {job.CommandType.FullName}.");
         var cmdId = IdDuckTyping.Instance.TryGetGuidId(obj, out var commandId) ? commandId : throw new InvalidOperationException("No id on command");
@@ -233,11 +273,18 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
 
         using var scope = sp.CreateScope();
         var bus = scope.ServiceProvider.GetRequiredService<ICommandBus>();
-        await bus.QueueAsync(job.Recipient, obj, fireAndForget: true);
-        agg.Start(id, cmdId, obj.GetType().AssemblyQualifiedName!, obj);
-        //TODO: Should be chained.
 
+        if (!_runningJobsByDefId.TryAdd(job.JobDefinitionId,
+                new RunningJob(job.JobDefinitionId, id, DateTimeOffset.Now, obj.GetType().AssemblyQualifiedName!,
+                    job.Command, trigger)))
+            return Guid.Empty;
+
+        agg.Start(id, cmdId, obj.GetType().AssemblyQualifiedName!, obj);
         await plumber.SaveNew(agg);
+
+        await bus.QueueAsync(job.Recipient, obj, fireAndForget: true);
+        
+        
         return cmdId;
     }
 }

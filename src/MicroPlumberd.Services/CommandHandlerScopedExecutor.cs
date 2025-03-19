@@ -9,30 +9,58 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
+/// <summary>
+/// TODO: Should switch to decorator pattern @CommandHandler Service-&gt;Executor
+/// 
+/// Than we would have separate decorators for:
+/// - retry policy
+/// - validation
+/// - athorization
+/// - authentication
+/// 
+/// </summary>
+/// <typeparam name="THandle"></typeparam>
+internal interface ICommandHandleExecutor<THandle>
+{
+    Task Handle<TCommand>(Metadata m, TCommand command);
+}
+
+internal class EventHandlerRootExecutor<THandler>(ICommandHandleExecutor<THandler> next) : IEventHandler, ITypeRegister
+    where THandler : ICommandHandler, IServiceTypeRegister
+{
+    class Invoker<TCommand>(ICommandHandleExecutor<THandler> parent) : IInvoker
+    {
+        public async Task Handle(Metadata m, object ev) =>
+            await parent.Handle<TCommand>(m, (TCommand)ev);
+    }
+    interface IInvoker { Task Handle(Metadata m, object ev); }
+
+    private readonly ConcurrentDictionary<Type, IInvoker> _cached = new();
+    public async Task Handle(Metadata m, object ev)
+    {
+        var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(THandler), ev.GetType()), next)!);
+        
+        await invoker.Handle(m, ev);
+    }
+
+    public static IEnumerable<Type> Types => THandler.CommandTypes;
+}
+
 static class CommandHandlerExecutor
 {
+   
     /// <summary>
-    /// Creates a new concrete instance of the CommandHandlerScopedExecutor.
+    /// Creates chain for command handler executors.
     /// </summary>
     /// <param name="plumber">plumber instance</param>
     /// <param name="t">Type fo the handler</param>
     /// <returns></returns> <summary>
-    public static IEventHandler CreateScoped(PlumberEngine plumber, Type t)
+    public static IEventHandler Create(PlumberEngine plumber, Type t)
     {
-        var executorType = typeof(CommandHandlerScopedExecutor<>).MakeGenericType(t);
+        var executorType = typeof(EventHandlerRootExecutor<>).MakeGenericType(t);
         return (IEventHandler)plumber.Config.ServiceProvider.GetRequiredService(executorType);
     }
-    /// <summary>
-    /// Creates a new concrete instance of the CommandHandlerScopedExecutor.
-    /// </summary>
-    /// <param name="plumber">plumber instance</param>
-    /// <param name="t">Type fo the handler</param>
-    /// <returns></returns> <summary>
-    public static IEventHandler CreateSingleton(IPlumber plumber, Type t)
-    {
-        var executorType = typeof(CommandHandlerSingletonExecutor<>).MakeGenericType(t);
-        return (IEventHandler)plumber.Config.ServiceProvider.GetRequiredService(executorType);
-    }
+  
 }
 public static class OperationServiceContextProperties
 {
@@ -117,137 +145,16 @@ public static class MetadataExtensions
     }
 }
 
-class CommandHandlerScopedExecutor<THandler>(PlumberEngine plumber, 
-    ILogger<CommandHandlerScopedExecutor<THandler>> log) : IEventHandler, ITypeRegister
-    where THandler:ICommandHandler, IServiceTypeRegister
-{
-    private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
-    class Invoker<TCommand>(CommandHandlerScopedExecutor<THandler> parent) : IInvoker { public async Task Handle(Metadata m, object ev) => 
-        await parent.Handle<TCommand>(m, (TCommand)ev); }
-    interface IInvoker { Task Handle(Metadata m, object ev); }
-
-    private readonly ConcurrentDictionary<Type, IInvoker> _cached = new();
-    public async Task Handle(Metadata m, object ev)
-    {
-        var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(THandler), ev.GetType()), this)!);
-        if (_serviceConventions.CommandHandlerSkipFilter(m, ev))
-            return;
-        await invoker.Handle(m, ev);
-    }
-
-    
-    private async Task Handle<TCommand>(Metadata m, TCommand command)
-    {
-        
-        await using var scope = plumber.Config.ServiceProvider.CreateAsyncScope();
-        var ch = (ICommandHandler<TCommand>)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<TCommand>));
-        var recipientId = m.RecipientId();
-        var sessionId = m.SessionId() ?? Guid.Empty;
-        if (sessionId == Guid.Empty) return;
-
-        var cmdStream = _serviceConventions.SessionOutStreamFromSessionIdConvention(sessionId);
-        var cmdName = _serviceConventions.CommandNameConvention(command.GetType());
-        //var cmdId = m.CausationId() ?? m.EventId;//(command is IId id) ? id.Uuid : m.EventId;
-        var id = IdDuckTyping.Instance.GetId(command);
-        var cmdId = id is Guid g ? g : Guid.Parse(id.ToString());
-
-        var operationContext = OperationContext.Current ?? throw new InvalidOperationException("Operation context not set!");
-        operationContext.SetRecipientId(recipientId);
-        operationContext.SetSessionId(sessionId);
-        operationContext.SetCommandHandler(ch);
-        operationContext.SetCommandName(cmdName);
-        operationContext.SetCommandId(cmdId);
-        
-        Stopwatch sw = new Stopwatch();
-        try
-        {
-            sw.Start();
-            await ch.Execute(recipientId, command);
-            log.LogDebug("Command {CommandType} executed.", command.GetType().Name);
-            var evt = new CommandExecuted() { CommandId = cmdId, Duration = sw.Elapsed };
-            var evtName = $"{cmdName}Executed";
-
-            await plumber.AppendEventToStream(operationContext,cmdStream, evt, StreamState.Any, evtName);
-            log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name,
-                cmdStream);
-
-        }
-        catch (ValidationException ex)
-        {
-            var evt = new CommandFailed()
-            {
-                CommandId = cmdId,
-                Duration = sw.Elapsed,
-                Message = ex.Message,
-                Code = HttpStatusCode.BadRequest
-            };
-            var evtName = $"{cmdName}Failed";
-            await plumber.AppendEventToStream(operationContext,cmdStream, evt, StreamState.Any, evtName);
-        }
-        catch (FaultException ex)
-        {
-            var faultData = ex.GetFaultData();
-            var evt = CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData);
-            var evtName = $"{cmdName}Failed<{faultData.GetType().Name}>";
-            await plumber.AppendEventToStream(operationContext,cmdStream, evt, StreamState.Any, evtName);
-            log.LogDebug(ex,"Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.", 
-                command.GetType().Name,
-                faultData.GetType().Name,
-                cmdStream);
-        }
-        catch(Exception ex)
-        {
-            var evt = new CommandFailed()
-            {
-                CommandId = cmdId,
-                Duration = sw.Elapsed,
-                Message = ex.Message,
-                Code = HttpStatusCode.InternalServerError
-            };
-            var evtName = $"{cmdName}Failed";
-            await plumber.AppendEventToStream(operationContext,cmdStream, evt, StreamState.Any, evtName);
-            log.LogDebug(ex,"Command {CommandType}Failed appended to session steam {CommandStream}.", command.GetType().Name,
-                cmdStream);
-        }
-    }
-    
-    public static IServiceCollection RegisterHandlers(IServiceCollection services)
-    {
-        return THandler.RegisterHandlers(services);
-    }
-    
-    static IEnumerable<Type> ITypeRegister.Types => THandler.CommandTypes;
-}
-
-class CommandHandlerSingletonExecutor<THandler>(IPlumber plumber, ILogger<CommandHandlerSingletonExecutor<THandler>> log) : IEventHandler, ITypeRegister
+abstract class CommandHandlerExecutorBase<THandler>(PlumberEngine plumber, ILogger log)
+    : ICommandHandleExecutor<THandler>
     where THandler : ICommandHandler, IServiceTypeRegister
 {
     private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
-    class Invoker<TCommand>(CommandHandlerSingletonExecutor<THandler> parent) : IInvoker
+
+    public abstract Task Handle<TCommand>(Metadata m, TCommand command);
+    
+    protected async Task OnHandle<TCommand>(ICommandHandler<TCommand> ch, Metadata m, TCommand command)
     {
-        public async Task Handle(Metadata m, object ev) =>
-        await parent.Handle<TCommand>(m, (TCommand)ev);
-    }
-    interface IInvoker { Task Handle(Metadata m, object ev); }
-
-    private readonly ConcurrentDictionary<Type, IInvoker> _cached = new();
-    private readonly ConcurrentDictionary<Type, ICommandHandler> _invokers = new();
-    public async Task Handle(Metadata m, object ev)
-    {
-        var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(THandler), ev.GetType()), this)!);
-        if (_serviceConventions.CommandHandlerSkipFilter(m, ev))
-            return;
-        await invoker.Handle(m, ev);
-    }
-
-
-    private async Task Handle<TCommand>(Metadata m, TCommand command)
-    {
-        var ch = (ICommandHandler<TCommand>)_invokers.GetOrAdd(typeof(TCommand),
-            x => plumber.Config.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>());
-
-       
-
         var recipientId = m.RecipientId();
         var sessionId = m.SessionId() ?? Guid.Empty;
         if (sessionId == Guid.Empty) return;
@@ -274,7 +181,7 @@ class CommandHandlerSingletonExecutor<THandler>(IPlumber plumber, ILogger<Comman
             var evt = new CommandExecuted() { CommandId = cmdId, Duration = sw.Elapsed };
             var evtName = $"{cmdName}Executed";
 
-            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
+            await plumber.AppendEventToStream(operationContext, cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug("Command {CommandType} appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
 
@@ -289,14 +196,14 @@ class CommandHandlerSingletonExecutor<THandler>(IPlumber plumber, ILogger<Comman
                 Code = HttpStatusCode.BadRequest
             };
             var evtName = $"{cmdName}Failed";
-            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
+            await plumber.AppendEventToStream(operationContext, cmdStream, evt, StreamState.Any, evtName);
         }
         catch (FaultException ex)
         {
             var faultData = ex.GetFaultData();
             var evt = CommandFailed.Create(cmdId, ex.Message, sw.Elapsed, (HttpStatusCode)ex.Code, faultData);
             var evtName = $"{cmdName}Failed<{faultData.GetType().Name}>";
-            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
+            await plumber.AppendEventToStream(operationContext, cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug(ex, "Command {CommandType}Failed<{FaultType}> appended to session steam {CommandStream}.",
                 command.GetType().Name,
                 faultData.GetType().Name,
@@ -312,16 +219,49 @@ class CommandHandlerSingletonExecutor<THandler>(IPlumber plumber, ILogger<Comman
                 Code = HttpStatusCode.InternalServerError
             };
             var evtName = $"{cmdName}Failed";
-            await plumber.AppendEventToStream(cmdStream, evt, StreamState.Any, evtName);
+            await plumber.AppendEventToStream(operationContext, cmdStream, evt, StreamState.Any, evtName);
             log.LogDebug(ex, "Command {CommandType}Failed appended to session steam {CommandStream}.", command.GetType().Name,
                 cmdStream);
         }
     }
 
-    public static IServiceCollection RegisterHandlers(IServiceCollection services)
+}
+
+class CommandHandlerScopedExecutor<THandler>(
+    PlumberEngine plumber,
+    ILogger<CommandHandlerScopedExecutor<THandler>> log) : CommandHandlerExecutorBase<THandler>(plumber, log)
+    where THandler : ICommandHandler, IServiceTypeRegister
+{
+    public override async Task Handle<TCommand>(Metadata m, TCommand command)
     {
-        return THandler.RegisterHandlers(services);
+
+        await using var scope = plumber.Config.ServiceProvider.CreateAsyncScope();
+        var ch = (ICommandHandler<TCommand>)scope.ServiceProvider.GetRequiredService(typeof(ICommandHandler<TCommand>));
+
+        await OnHandle(ch, m, command);
     }
 
-    static IEnumerable<Type> ITypeRegister.Types => THandler.CommandTypes;
+}
+
+class CommandHandlerSingletonExecutor<THandler>(
+        PlumberEngine plumber,
+        ILogger<CommandHandlerSingletonExecutor<THandler>> log)
+        : CommandHandlerExecutorBase<THandler>(plumber, log)
+        where THandler : ICommandHandler, IServiceTypeRegister
+    {
+        private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
+        private readonly ConcurrentDictionary<Type, ICommandHandler> _invokers = new();
+
+
+        public override async Task Handle<TCommand>(Metadata m, TCommand command)
+        {
+            var ch = (ICommandHandler<TCommand>)_invokers.GetOrAdd(typeof(TCommand),
+                x => plumber.Config.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>());
+
+            await base.OnHandle(ch, m, command);
+
+        }
+
+
+    
 }

@@ -12,11 +12,13 @@ class CommandHandlerStarter<THandler>(PlumberEngine plumber) : ICommandHandlerSt
 
     public IEnumerable<Type> CommandTypes => THandler.CommandTypes;
     public Type HandlerType => typeof(THandler);
+    public bool Scoped { get; private set; }
 
-    public ICommandHandlerStarter Configure(bool? persistently, StreamPosition? start)
+    public ICommandHandlerStarter Configure(bool? persistently, StreamPosition? start, bool scoped)
     {
         this.Persistently = persistently;
         this.StreamStartPosition = start;
+        this.Scoped = scoped;
         return this;
     }
 

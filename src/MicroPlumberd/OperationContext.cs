@@ -123,6 +123,17 @@ public class OperationContext
 
     public Flow Flow => _flow;
 
+    public static async Task<ContextScope> GetOrCreate(Func<ValueTask<Flow>> OnFlow, Func<OperationContext,Task> OnCreate)
+    {
+        if (Current != null)
+            return new ContextScope(Current, false);
+
+        OperationContext c = new OperationContext(await OnFlow());
+        await OnCreate(c);
+        _asyncLocalContext.Value = c;
+        return new ContextScope(c, true);
+    }
+
     public static ContextScope GetOrCreate(Flow flow)
     {
         if (Current != null)

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace MicroPlumberd.Services.Identity
 {
-    class UserAuthContextFunc(Func<IServiceProvider, Task<string>> Func, IServiceProvider sp) : IUserAuthContext
+    class UserAuthContextFunc(Func<IServiceProvider, Task<string>> Func, Func<IServiceProvider, ValueTask<Flow>> Flow, IServiceProvider sp) : IUserAuthContext
     {
         public Task<string> GetCurrentUserId() => Func(sp);
+        public ValueTask<Flow> GetCurrentFlow() => Flow(sp);
     }
     /// <summary>
     /// Represents a context for user authentication, providing methods to interact with 
@@ -25,13 +26,16 @@ namespace MicroPlumberd.Services.Identity
         /// with the result being the unique identifier of the current user as a <see cref="string"/>.
         /// </returns>
         Task<string> GetCurrentUserId();
+
+        ValueTask<Flow> GetCurrentFlow();
     }
-    class CommandBusDecorator(ICommandBus commandBus, IUserAuthContext auth) : ICommandBus
+    class CommandBusIdentityDecorator(ICommandBus commandBus, IUserAuthContext auth) : ICommandBus
     {
         public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false,
             CancellationToken token = default)
         {
-            using var context = OperationContext.GetOrCreate(Flow.Component);
+            // So if we are top level, then we set userId. 
+            using var context = await OperationContext.GetOrCreate(auth.GetCurrentFlow, async (x) => x.SetUserId(await auth.GetCurrentUserId()));
             await commandBus.SendAsync(recipientId, command, timeout, fireAndForget, token);
         }
 
@@ -39,7 +43,7 @@ namespace MicroPlumberd.Services.Identity
             bool fireAndForget = true,
             CancellationToken token = default)
         {
-            using var context = OperationContext.GetOrCreate(Flow.Component);
+            using var context = await OperationContext.GetOrCreate(auth.GetCurrentFlow, async (x) => x.SetUserId(await auth.GetCurrentUserId()));
             await commandBus.QueueAsync(recipientId, command, timeout, fireAndForget, token);
         }
 

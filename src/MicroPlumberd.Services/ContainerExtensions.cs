@@ -147,21 +147,34 @@ public static class ContainerExtensions
         bool persistently = false, StreamPosition? start = null)
         where TCommandHandler : class, ICommandHandler, IServiceTypeRegister
     {
-        return services.AddScoped<TCommandHandler>().AddCommandHandler<TCommandHandler>(persistently, start);
+        return services
+            .AddScoped<TCommandHandler>()
+            .AddCommandHandler<TCommandHandler>(persistently, start);
     }
     public static IServiceCollection AddSingletonCommandHandler<TCommandHandler>(this IServiceCollection services,
         bool persistently = false, StreamPosition? start = null)
         where TCommandHandler : class, ICommandHandler, IServiceTypeRegister
     {
-        return services.AddSingleton<TCommandHandler>().AddCommandHandler<TCommandHandler>(persistently, start);
+        return services
+            .AddSingleton<TCommandHandler>()
+            .AddCommandHandler<TCommandHandler>(persistently, start,false);
     }
 
-    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, bool persistently = false, StreamPosition? start = null) where TCommandHandler:ICommandHandler, IServiceTypeRegister
+    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, 
+        bool persistently = false, StreamPosition? start = null, bool scopedExecutor = true) where TCommandHandler:ICommandHandler, IServiceTypeRegister
     {
+        Type t = typeof(TCommandHandler);
         services.AddSingleton<CommandHandlerStarter<TCommandHandler>>();
-        services.AddSingleton<ICommandHandlerStarter>(sp => sp.GetRequiredService<CommandHandlerStarter<TCommandHandler>>().Configure(persistently, start));
-        services.TryAddSingleton(typeof(CommandHandlerScopedExecutor<>));
-        TCommandHandler.RegisterHandlers(services);
+        services.AddSingleton<ICommandHandlerStarter>(sp => sp.GetRequiredService<CommandHandlerStarter<TCommandHandler>>().Configure(persistently, start, scopedExecutor));
+        
+        services.AddSingleton(typeof(EventHandlerRootExecutor<>).MakeGenericType(t));
+        
+        services.TryAddSingleton(typeof(ICommandHandleExecutor<>).MakeGenericType(t),
+            scopedExecutor
+            ? typeof(CommandHandlerScopedExecutor<>).MakeGenericType(t)
+            : typeof(CommandHandlerSingletonExecutor<>).MakeGenericType(t));
+
+        TCommandHandler.RegisterHandlers(services, scopedExecutor);
         return services;
     }
 }
