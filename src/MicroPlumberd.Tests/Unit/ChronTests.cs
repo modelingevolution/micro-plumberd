@@ -71,7 +71,7 @@ namespace MicroPlumberd.Tests.Unit
             {
                 StartTime = new DateTime(2023, 10, 25, 0, 0, 0, DateTimeKind.Utc),
                 EndTime = new DateTime(2023, 11, 1, 0, 0, 0, DateTimeKind.Utc),
-                Item = new WeeklyScheduleItem[]
+                Items = new WeeklyScheduleItem[]
                 {
                     new WeeklyScheduleItem(DayOfWeek.Monday, new TimeOnly(9, 0)),
                     new WeeklyScheduleItem(DayOfWeek.Wednesday, new TimeOnly(12, 0))
@@ -89,7 +89,7 @@ namespace MicroPlumberd.Tests.Unit
             var weeklySchedule = (WeeklySchedule)deserialized;
             Assert.Equal(original.StartTime, weeklySchedule.StartTime);
             Assert.Equal(original.EndTime, weeklySchedule.EndTime);
-            Assert.Equal(original.Item, weeklySchedule.Item); // Compares array of records
+            Assert.Equal(original.Items, weeklySchedule.Items); // Compares array of records
         }
     }
 }

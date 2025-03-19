@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
     <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>

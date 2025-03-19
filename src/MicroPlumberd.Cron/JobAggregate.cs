@@ -15,20 +15,30 @@ public partial class JobAggregate(JobId id) : AggregateBase<JobId, JobAggregate.
 
         this.AppendPendingChange(new JobExecutionStarted()
         {
-            JobId = id, 
-            CommandId = commandId, 
+            JobId = id,
+            CommandId = commandId,
             Command = JsonSerializer.SerializeToElement(commandPayload),
             CommandType = commandType
         });
-        
+
+    }
+
+    public void Completed()
+    {
+        AppendPendingChange(new JobExecutionCompleted());
+    }
+
+    public void Failed(string error)
+    {
+        AppendPendingChange(new JobExecutionFailed() { Error = error});
     }
     public readonly record struct JobState(bool Started, bool Finished)
     {
-        
+
     }
 
     private static JobState Given(JobState state, JobExecutionStarted ev) => state with { Started = true };
     private static JobState Given(JobState state, JobExecutionCompleted ev) => state with { Finished = true };
-    
+
     private static JobState Given(JobState state, JobExecutionFailed ev) => state with { Finished = true };
 }

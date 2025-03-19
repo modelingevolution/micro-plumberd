@@ -2,7 +2,7 @@
 
 public class WeeklySchedule : Schedule
 {
-    public WeeklyScheduleItem[] Item
+    public WeeklyScheduleItem[] Items
     {
         get => _items.ToArray();
         set => _items = new(value);

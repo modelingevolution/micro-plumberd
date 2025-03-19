@@ -4,17 +4,17 @@ class JobDefinitionBuilder(IPlumber plumberd, JobDefinitionModel model, string n
 {
     private object? _command;
     private string _recipient;
-    private Schedule? _schedule;
+    private Schedule? _schedule = new EmptySchedule();
     private bool _isEnabled;
-    public IJobDefinitionBuilder WithCommand<T>(T command, string recipient)
+    public IJobDefinitionBuilder WithCommand<T,TD>(T command, TD recipient) where TD:IParsable<TD>
     {
-        _command = command;
-        _recipient = recipient;
+        _command = command ?? throw new ArgumentNullException(nameof(command));
+        _recipient = recipient?.ToString() ?? throw new ArgumentNullException(nameof(recipient));
         return this;
     }
     public IJobDefinitionBuilder WithSchedule(Schedule schedule)
     {
-        _schedule = schedule;
+        _schedule = schedule ?? throw new ArgumentNullException(nameof(schedule));
         return this;
     }
 

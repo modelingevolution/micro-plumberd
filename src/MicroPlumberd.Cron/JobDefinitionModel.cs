@@ -16,7 +16,7 @@ public record JobDefinition : INotifyPropertyChanged
     private string _recipient;
     private JsonElement _command;
     private Schedule _schedule;
-    public Guid JobDefinitionId { get; init; }
+    public required Guid JobDefinitionId { get; init; }
 
     public Schedule Schedule
     {
@@ -48,7 +48,7 @@ public record JobDefinition : INotifyPropertyChanged
         set => SetField(ref _isEnabled, value);
     }
 
-    public string Name
+    public required string Name
     {
         get => _name;
         set => SetField(ref _name, value);
@@ -105,10 +105,27 @@ public partial class JobDefinitionModel
     }
     private async Task Given(Metadata m, JobNamed ev)
     {
-        if (!_jobDefinitions.TryAdd(m.StreamId<Guid>(), new JobDefinition() { Name = ev.Name }))
+        var jobDefinitionId = m.StreamId<Guid>();
+
+        if (!_jobDefinitions.TryAdd(jobDefinitionId, new JobDefinition() { 
+                JobDefinitionId = jobDefinitionId,
+                Name = ev.Name }))
             throw new InvalidOperationException("Cannot add job definition");
     }
 
+    public async ValueTask<JobDefinition> GetAsync(Guid id)
+    {
+        int c = 0;
+        JobDefinition job;
+        while (!TryGetValue(id, out job))
+        {
+            await Task.Delay(200);
+            c += 1;
+            if(c > 10) throw new InvalidOperationException("Job not found");
+        }
+
+        return job;
+    }
     public JobDefinition this[Guid id]
     {
         get => TryGetValue(id, out var job) ? job : throw new ArgumentOutOfRangeException("Job not found");
@@ -123,4 +140,6 @@ public partial class JobDefinitionModel
         jobDef.Command = ev.CommandPayload;
         JobSchduleChanged?.Invoke(this, jobDef);
     }
+
+    
 }

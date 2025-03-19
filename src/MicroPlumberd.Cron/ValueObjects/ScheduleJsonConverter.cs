@@ -28,6 +28,7 @@ public class ScheduleJsonConverter : JsonConverter<Schedule>
                        ?? throw new JsonException("Failed to deserialize DailySchedule."),
             "Weekly" => JsonSerializer.Deserialize<WeeklySchedule>(root.GetRawText(), options)
                         ?? throw new JsonException("Failed to deserialize WeeklySchedule."),
+            "Empty" => new EmptySchedule(),
             _ => throw new JsonException($"Unknown schedule type: {typeStr}")
         };
     }
@@ -42,6 +43,7 @@ public class ScheduleJsonConverter : JsonConverter<Schedule>
             IntervalSchedule _ => "Interval",
             DailySchedule _ => "Daily",
             WeeklySchedule _ => "Weekly",
+            EmptySchedule _ => "Empty",
             _ => throw new JsonException($"Unknown schedule type: {value.GetType().Name}")
         };
         writer.WriteString("type", typeStr);
@@ -64,7 +66,9 @@ public class ScheduleJsonConverter : JsonConverter<Schedule>
 
             case WeeklySchedule weekly:
                 writer.WritePropertyName("Items");
-                JsonSerializer.Serialize(writer, weekly.Item, options); // Note: 'Item' property
+                JsonSerializer.Serialize(writer, weekly.Items, options); // Note: 'Item' property
+                break;
+            case EmptySchedule e:
                 break;
         }
 

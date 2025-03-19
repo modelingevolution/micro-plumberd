@@ -12,11 +12,11 @@ public partial class JobDefinitionAggregate(Guid id) : AggregateBase<Guid, JobDe
 
     private static JobDefinitionState Given(JobDefinitionState state, JobScheduleDefined ev)
     {
-        return state;
+        return state with { ContainsSchedule = true };
     }
     private static JobDefinitionState Given(JobDefinitionState state, JobProcessDefined ev)
     {
-        return state;
+        return state with { ContainsCommand = true };
     }
     private static JobDefinitionState Given(JobDefinitionState state, JobNamed ev)
     {
@@ -88,6 +88,9 @@ public partial class JobDefinitionAggregate(Guid id) : AggregateBase<Guid, JobDe
     {
         if (!this.State.ContainsSchedule || !this.State.ContainsCommand)
             throw new ArgumentException("Cannot enable job without schedule or process.");
+
+        if(this.State.IsDeleted)
+            throw new InvalidOperationException("Cannot enable a deleted job.");
 
         if (!this.State.Enabled) 
             AppendPendingChange(new JobEnabled());

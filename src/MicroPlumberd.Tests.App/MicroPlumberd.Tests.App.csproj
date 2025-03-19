@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="LiteDB" Version="5.0.21" />
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
     <PackageReference Include="System.Collections.Immutable" Version="9.0.1" />
   </ItemGroup>
 

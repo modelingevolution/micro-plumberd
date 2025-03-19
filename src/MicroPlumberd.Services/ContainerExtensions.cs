@@ -108,6 +108,16 @@ public static class ContainerExtensions
 
         return services;
     }
+    public static IServiceCollection AddScopedEventHandler<TEventHandler>(this IServiceCollection services,
+        bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        return services.AddScoped<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start);
+    }
+    public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
+        bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        return services.AddSingleton<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start);
+    }
     public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();

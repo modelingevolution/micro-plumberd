@@ -113,7 +113,7 @@ public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>,
     protected void AppendPendingChange(object ev)
     {
         _pendingEvents.Add(ev);
-        Apply(ev);
+        State = Apply(ev);
     }
 
     /// <summary>
