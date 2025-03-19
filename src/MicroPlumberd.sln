@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPluberd.Examples.Blazo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Cron", "MicroPlumberd.Cron\MicroPlumberd.Services.Cron.csproj", "{D18CACFE-97DC-49A2-9BE7-02A825BB35A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Cron.Ui", "MicroPlumberd.Cron.Ui\MicroPlumberd.Services.Cron.Ui.csproj", "{FDB7B1FA-014F-414C-BA06-663A2568A689}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{D18CACFE-97DC-49A2-9BE7-02A825BB35A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D18CACFE-97DC-49A2-9BE7-02A825BB35A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D18CACFE-97DC-49A2-9BE7-02A825BB35A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDB7B1FA-014F-414C-BA06-663A2568A689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDB7B1FA-014F-414C-BA06-663A2568A689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDB7B1FA-014F-414C-BA06-663A2568A689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDB7B1FA-014F-414C-BA06-663A2568A689}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

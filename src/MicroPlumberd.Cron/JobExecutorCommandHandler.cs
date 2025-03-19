@@ -10,15 +10,15 @@ public partial class JobExecutorCommandHandler(IPlumber plumber, ICommandBus bus
     {
         var agg = await plumber.Get<JobAggregate>(id);
         
-        await plumber.SaveNew(agg);
+        await plumber.SaveNew(agg, streamMetadata: new StreamMetadata(){ MaxAge = TimeSpan.FromDays(7)});
         try
         {
             var obj = JsonSerializer.Deserialize(ev.Command, Type.GetType(ev.CommandType)) ?? throw new InvalidOperationException($"Cannot deserialize command {ev.CommandType}.");
             agg.Start(id, ev.Id, ev.CommandType, obj );
 
-            log.LogInformation($"Executing command: {obj.GetType().Name} in job: {id}");
+            log.LogDebug($"Executing command: {obj.GetType().Name} in job: {id}");
             await bus.QueueAsync(ev.Recipient, obj, fireAndForget: false, timeout: TimeSpan.FromHours(16));
-            log.LogInformation($"Command executed: {obj.GetType().Name} in job: {id}");
+            log.LogDebug($"Command executed: {obj.GetType().Name} in job: {id}");
 
             agg.Completed();
         }

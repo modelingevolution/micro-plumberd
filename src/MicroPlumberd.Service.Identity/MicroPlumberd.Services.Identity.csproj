@@ -8,6 +8,9 @@
 	  <AssemblyVersion>1.0.1</AssemblyVersion>
 	  <FileVersion>1.0.1</FileVersion>
 	  <PackageTags>Identity;EventStore;CQRS;EventSourcing</PackageTags>
+	  <PackageIcon>logo-squere.png</PackageIcon>
+	  <Title>MicroPlumberd.Services.Identity</Title>
+	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <Copyright>Rafal Maciag</Copyright>
@@ -15,6 +18,16 @@
 	  <Description>AspnetCode.Identity with CQRS/EventSourcing made eXtreamly simple. Domain-Layer abstractions: Read-Model, Event-Handler, Aggregate, Subscriptions</Description>
   </PropertyGroup>
 
+	<ItemGroup>
+		<None Include="..\..\logo-squere.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.0" />
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.2" />

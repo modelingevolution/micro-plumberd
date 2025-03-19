@@ -79,6 +79,8 @@ public partial class JobDefinitionModel
 
    
     private readonly ConcurrentDictionary<Guid, JobDefinition> _jobDefinitions = new();
+    public event EventHandler<JobDefinition> Added;
+    public event EventHandler<JobDefinition> Removed;
     public bool TryGetValue(Guid id, out JobDefinition job) => _jobDefinitions.TryGetValue(id, out job);
     private async Task Given(Metadata m, JobEnabled ev)
     {
@@ -96,21 +98,26 @@ public partial class JobDefinitionModel
     }
     private async Task Given(Metadata m, JobDeleted ev)
     {
-        bool removePermanently = JobSchduleChanged == null! && JobAvailabilityChanged == null!;
+        bool removePermanently = JobSchduleChanged == null! && JobAvailabilityChanged == null! && Removed == null!;
         if(removePermanently)
             _jobDefinitions.TryRemove(m.StreamId<Guid>(), out _);
-        else if (!_jobDefinitions.TryGetValue(m.StreamId<Guid>(), out var x))
+        else if (_jobDefinitions.TryGetValue(m.StreamId<Guid>(), out var x))
+        {
             x.IsDeleted = true;
-
+            Removed?.Invoke(this,x);
+        }
     }
     private async Task Given(Metadata m, JobNamed ev)
     {
         var jobDefinitionId = m.StreamId<Guid>();
-
-        if (!_jobDefinitions.TryAdd(jobDefinitionId, new JobDefinition() { 
-                JobDefinitionId = jobDefinitionId,
-                Name = ev.Name }))
+        var jobDefinition = new JobDefinition() 
+        { 
+            JobDefinitionId = jobDefinitionId,
+            Schedule = new EmptySchedule(),
+            Name = ev.Name };
+        if (!_jobDefinitions.TryAdd(jobDefinitionId, jobDefinition))
             throw new InvalidOperationException("Cannot add job definition");
+        Added?.Invoke(this, jobDefinition);
     }
 
     public async ValueTask<JobDefinition> GetAsync(Guid id)

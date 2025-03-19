@@ -225,9 +225,10 @@ public interface IPlumberApi
     /// <typeparam name="T"></typeparam>
     /// <param name="aggregate">The aggregate.</param>
     /// <param name="metadata">The optional metadata.</param>
+    /// <param name="streamMetadata"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId;
+    Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null, CancellationToken token = default) where T : IAggregate<T>, IId;
 
     /// <summary>
     /// Saves the aggregate. Expects that no aggregate exists. 
@@ -235,9 +236,10 @@ public interface IPlumberApi
     /// <typeparam name="T"></typeparam>
     /// <param name="aggregate">The aggregate.</param>
     /// <param name="metadata">The optional metadata.</param>
+    /// <param name="streamMetadata"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId;
+    Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null, CancellationToken token = default) where T : IAggregate<T>, IId;
 
     /// <summary>
     /// Gets the snapshot - deserializes snapshot from the stream. Stream is identified by typeof(T). Deserialization is done from the latest event (snaphost) in the stream.

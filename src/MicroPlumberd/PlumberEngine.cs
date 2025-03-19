@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using EventStore.Client;
 using MicroPlumberd.Utils;
 
@@ -594,7 +595,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     public async Task<IWriteResult> AppendStreamMetadata(OperationContext context, string streamId, StreamState? state, TimeSpan? maxAge, StreamPosition? truncateBefore,
         TimeSpan? cacheControl, StreamAcl? acl, int? maxCount)
     {
-        var metadata = new StreamMetadata(
+        var metadata = new EventStore.Client.StreamMetadata(
             maxAge: maxAge,
             truncateBefore: truncateBefore,
             cacheControl: cacheControl,
@@ -655,7 +656,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
     
     
-    public async Task<IWriteResult> SaveChanges<T>(OperationContext context, T aggregate, object? metadata = null, CancellationToken token = default)
+    public async Task<IWriteResult> SaveChanges<T>(OperationContext context, T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
         if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
@@ -665,6 +666,9 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var r = await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData, cancellationToken: token);
         aggregate.AckCommitted();
 
+        if (streamMetadata != null) 
+            await Client.SetStreamMetadataAsync(streamId, StreamState.Any, streamMetadata.Value,null,null,null,token);
+
         var policy = GetPolicy<T>();
         if (policy != null && aggregate is IStatefull i && policy.ShouldMakeSnapshot(aggregate, i.InitializedWith))
             await AppendSnapshot(context,i.State, aggregate.Id, aggregate.Version, StreamState.Any, token);
@@ -673,7 +677,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     }
 
 
-    public async Task<IWriteResult> SaveNew<T>(OperationContext context, T aggregate, object? metadata = null, CancellationToken token = default)
+    public async Task<IWriteResult> SaveNew<T>(OperationContext context, T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
         if (aggregate == null) throw new ArgumentNullException("aggregate cannot be null.");
@@ -682,6 +686,9 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var evData = MakeEvents(context,aggregate.PendingEvents, metadata, aggregate);
         var r = await Client.AppendToStreamAsync(streamId, StreamState.NoStream, evData, cancellationToken: token);
         aggregate.AckCommitted();
+
+        if (streamMetadata != null)
+            await Client.SetStreamMetadataAsync(streamId, StreamState.Any, streamMetadata.Value, null, null, null, token);
 
         var policy = GetPolicy<T>();
         if (policy != null && aggregate is IStatefull i && policy.ShouldMakeSnapshot(aggregate, i.InitializedWith))
@@ -842,5 +849,19 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     {
         var s = Serializer(data.GetType());
         return new EventData(evId, evName, s.Serialize(context,data), s.Serialize(context,m), s.ContentType);
+    }
+}
+
+public readonly record struct StreamMetadata
+{
+    public TimeSpan? MaxAge { get; init; }
+    public StreamPosition? TruncateBefore { get; init; }
+    public TimeSpan? CacheControl { get; init; } 
+    public StreamAcl? Acl { get; init; }
+    public int? MaxCount { get; init; }
+    public JsonDocument? Custom { get; init; }
+    public static implicit operator EventStore.Client.StreamMetadata(StreamMetadata m)
+    {
+        return new EventStore.Client.StreamMetadata(m.MaxCount, m.MaxAge, m.TruncateBefore, m.CacheControl, m.Acl, m.Custom);
     }
 }

@@ -85,8 +85,11 @@ public readonly struct ScheduledJob : IComparable<ScheduledJob>, IEquatable<Sche
             StartAt = startAt;
     }
 
-    public ScheduledJob(Guid jobDefinitionId, DateTime startAt) : this(
-        Unsafe.As<Guid, Vector128<byte>>(ref jobDefinitionId), startAt) { }
+    public ScheduledJob(Guid jobDefinitionId, DateTime startAt, ScheduleTrigger trigger = ScheduleTrigger.Engine) : this(
+        Unsafe.As<Guid, Vector128<byte>>(ref jobDefinitionId), startAt)
+    {
+        Trigger = trigger;
+    }
     public Guid JobDefinitionId
     {
         get
@@ -98,10 +101,7 @@ public readonly struct ScheduledJob : IComparable<ScheduledJob>, IEquatable<Sche
 
     public DateTime StartAt { get; }
 
-
-
- 
-
+    public ScheduleTrigger Trigger { get; }
     public void Deconstruct(out Guid jobDefinitionId, out DateTime startAt)
     {
         jobDefinitionId = this.JobDefinitionId;

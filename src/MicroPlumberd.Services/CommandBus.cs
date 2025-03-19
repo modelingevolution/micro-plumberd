@@ -47,8 +47,8 @@ internal class CommandBus : ICommandBus, IEventHandler
 
     private async Task<bool> OnInitialize()
     {
-        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new StreamMetadata(maxAge: TimeSpan.FromDays(30)));
-        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.NoStream, new StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new EventStore.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.NoStream, new EventStore.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
         _subscription = await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.End, false);
         _log.LogDebug("Session {steamId} subscribed.", _streamOut);
        

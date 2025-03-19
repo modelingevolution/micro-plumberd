@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
-	  <Title>MicroPlumberd.Services.Cron</Title>
+	  <Title>MicroPlumberd.Services.Cron.Ui</Title>
 	  <PackageIcon>logo-squere.png</PackageIcon>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
@@ -14,8 +14,12 @@
 	  <Copyright>Rafal Maciag</Copyright>
 	  <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
 	  <Description>CQRS/EventSourcing made eXtreamly simple. Application-Layer: Command-Handlers, Command-Bus</Description>
-
   </PropertyGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\..\logo-squere.png">
@@ -28,19 +32,18 @@
 		</None>
 	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Humanizer.Core" Version="2.14.1" />
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.1" />
+
+	<ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.1" />
+    <PackageReference Include="MudBlazor" Version="8.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MicroPlumberd.CommandBus.Abstractions\MicroPlumberd.CommandBus.Abstractions.csproj" />
-    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
-    <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
-    <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\MicroPlumberd.Cron\MicroPlumberd.Services.Cron.csproj" />
   </ItemGroup>
 
-  
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
 
 </Project>

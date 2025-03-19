@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace MicroPlumberd.Services.Identity
 {
-    class UserAuthContextFunc(Func<IServiceProvider, Task<string>> Func, Func<IServiceProvider, ValueTask<Flow>> Flow, IServiceProvider sp) : IUserAuthContext
+    class UserAuthContextFunc(Func<IServiceProvider, Flow, Task<string>> Func, Func<IServiceProvider, ValueTask<Flow>> Flow, IServiceProvider sp) : IUserAuthContext
     {
-        public Task<string> GetCurrentUserId() => Func(sp);
+        public async Task<string> GetCurrentUserId() => await Func(sp, await GetCurrentFlow());
         public ValueTask<Flow> GetCurrentFlow() => Flow(sp);
     }
     /// <summary>

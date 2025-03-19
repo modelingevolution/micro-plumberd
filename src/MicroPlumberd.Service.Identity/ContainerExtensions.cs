@@ -15,7 +15,7 @@ namespace MicroPlumberd.Services.Identity
     public static class ContainerExtensions
     {
         public static IServiceCollection AddPlumberdIdentity(this IServiceCollection container, 
-            Func<IServiceProvider, Task<string>>? GetCurrentUser = null,
+            Func<IServiceProvider, Flow, Task<string>>? GetCurrentUser = null,
             Func<IServiceProvider, ValueTask<Flow>>? GetFlow = null)
         {
             container.AddSingleton<UsersModel>();

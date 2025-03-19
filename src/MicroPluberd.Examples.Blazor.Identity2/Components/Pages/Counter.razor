@@ -1,18 +1,24 @@
-﻿@page "/counter"
+﻿@page "/jobs"
+@using MicroPluberd.Examples.Blazor.Identity2.Components.SampleLogic
+@using MicroPlumberd.Services.Cron
+@using MicroPlumberd.Services.Cron.Ui
+@inject IJobService srv
+@inject IJobsMonitor monitor
+<PageTitle>Jobs</PageTitle>
 
-<PageTitle>Counter</PageTitle>
+<JobsTable/>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Counter</MudText>
-
-<MudText Typo="Typo.body1" Class="mb-4">Current count: @currentCount</MudText>
-
-<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="AddTestJob">Add test job</MudButton>
 
 @code {
     private int currentCount = 0;
 
-    private void IncrementCount()
+    private async Task AddTestJob()
     {
-        currentCount++;
+        await srv.CreateBuilder("test-job-name " + DateTime.Now)
+            .WithCommand(new StartWorkflow() { Name = "Fun"}, Guid.NewGuid())
+            .WithIntervalSchedule(TimeSpan.FromSeconds(1))
+            .Enable()
+            .Create();
     }
 }

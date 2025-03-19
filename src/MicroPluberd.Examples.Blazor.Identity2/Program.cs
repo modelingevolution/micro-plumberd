@@ -10,6 +10,8 @@ using MicroPlumberd.Services.Identity;
 using EventStore.Client;
 using MicroPlumberd;
 using System.Security.Claims;
+using MicroPluberd.Examples.Blazor.Identity2.Components.SampleLogic;
+using MicroPlumberd.Services.Cron;
 
 namespace MicroPluberd.Examples.Blazor.Identity2;
 
@@ -38,15 +40,25 @@ public class Program
         //    })
         //    .AddIdentityCookies();
 
-        builder.Services.AddPlumberdIdentity(async sp =>
-        {
-            var p = await sp.GetRequiredService<AuthenticationStateProvider>().GetAuthenticationStateAsync();
-            return p?.User?.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        });
+       
         
         var connection = await GetEventStoreSettings(builder.Configuration);
-        builder.Services.AddPlumberd(connection, ConfigurePlumberd);
-        
+        builder.Services.AddPlumberd(connection, ConfigurePlumberd, true)
+            .AddCron()
+            .AddScopedCommandHandler<StartWorkflowHandler>()
+            .AddSingletonCommandHandler<CompleteWorkflowHandler>();
+
+        builder.Services.AddPlumberdIdentity(async (sp,flow) =>
+        {
+            if (flow == Flow.Component)
+            {
+                var p = await sp.GetRequiredService<AuthenticationStateProvider>().GetAuthenticationStateAsync();
+                return p?.User?.FindFirstValue(ClaimTypes.NameIdentifier)!;
+            }
+
+            return null;
+        });
+
         builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 
         var app = builder.Build();

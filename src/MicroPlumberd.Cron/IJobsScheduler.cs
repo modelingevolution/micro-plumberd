@@ -1,11 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Humanizer;
 
 namespace MicroPlumberd.Services.Cron;
 
 public interface IJobsScheduler
 {
+    event EventHandler Started;
+    event EventHandler Stopped;
     event EventHandler<ScheduledJob>? JobScheduled;
     event EventHandler<ScheduledJob>? JobRemovedFromSchedule;
     event EventHandler<RunningJob>? RunningJobStarted;
@@ -17,20 +21,67 @@ public interface IJobsScheduler
 
 public interface IJobsMonitor : IJobsScheduler
 {
+    event EventHandler Changed;
+    IReadOnlyList<JobsMonitor.Item> Items { get; }
     ulong Scheduled { get; }
     ulong ScheduledTotal { get; }
     ulong Running { get; }
     ulong Executed { get; }
+    ulong Enqueued { get;  }
 }
 
 public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
 {
+    private readonly List<Item> _items = new();
+    private readonly ConcurrentDictionary<Guid, Item> _index = new();
+    private bool _initialized = false;
+    public event EventHandler? Changed;
+    public IReadOnlyList<Item> Items => _items;
+    public record Item 
+    {
+        public required JobDefinition Definition { get; init; }
+        public string Name => Definition.Name;
+        public string CommandType => Definition.CommandType.Name.Humanize();
+        public string CommandPayload => Definition.Command.ToString();
+        public DateTime? NextRunAt { get; set; }
+        public DateTimeOffset? Started { get; set; }
+        public TimeSpan? NextRunIn => (NextRunAt.HasValue && !IsRunning) ? (NextRunAt - DateTime.Now) : null;
+
+        public string Status
+        {
+            get
+            {
+                if (IsRunning)
+                {
+                    if (Started.HasValue)
+                        return $"Running ({(DateTime.Now - Started.Value).Humanize()})";
+                    else return "Running, unknown.";
+                } 
+                else if (IsEnabled)
+                {
+                    return NextRunIn.HasValue ? $"Next run in {NextRunIn.Value.Humanize()}" : "Calculating...";
+                }
+                else return "Disabled";
+            }
+        }
+        public bool IsRunning { get; set; }
+        public bool IsEnabled => Definition.IsEnabled;
+
+    }
     private readonly IJobsScheduler _scheduler;
     private readonly ILogger<JobsMonitor> _log;
+    private readonly JobDefinitionModel _model;
     private ulong _scheduled;
     private ulong _executed;
     private ulong _scheduledTotal;
     private ulong _running;
+    private ulong _enqueued;
+
+    public ulong Enqueued
+    {
+        get => _enqueued;
+        private set => SetField(ref _enqueued, value);
+    }
 
     public ulong Scheduled
     {
@@ -56,40 +107,115 @@ public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
         private set => SetField(ref _executed, value);
     }
 
-    public JobsMonitor(IJobsScheduler scheduler, ILogger<JobsMonitor> log)
+    public JobsMonitor(IJobsScheduler scheduler, ILogger<JobsMonitor> log, JobDefinitionModel model)
     {
         _scheduler = scheduler;
         _log = log;
+        _model = model;
+        _model.Added += OnJobAdded;
+        _model.Removed += OnJobRemoved;
         scheduler.JobScheduled += OnSchedulerOnJobScheduled;
         scheduler.JobRemovedFromSchedule += OnSchedulerOnJobRemovedFromSchedule;
         scheduler.RunningJobStarted += OnSchedulerOnRunningJobStarted;
         scheduler.RunningJobCompleted += OnSchedulerOnRunningJobCompleted;
     }
 
+    private void OnJobRemoved(object? sender, JobDefinition item)
+    {
+        if (_index.TryRemove(item.JobDefinitionId, out var record))
+            _items.Remove(record);
+    }
+
+    private void OnJobAdded(object? sender, JobDefinition item)
+    {
+        var record = new Item
+        {
+            Definition = item
+        };
+        if (_index.TryAdd(item.JobDefinitionId, record))
+            _items.Add(record);
+       
+    }
+
+    private void EnsureInitialized()
+    {
+        if (_initialized) return;
+        _initialized = true;
+        foreach (var item in _model.JobDefinitions)
+        {
+            var record = new Item
+            {
+                Definition = item
+            };
+
+            if(_index.TryAdd(item.JobDefinitionId, record))
+                _items.Add(record);
+            
+        }
+    }
     private void OnSchedulerOnRunningJobCompleted(object? s, RunningJob e)
     {
+        EnsureInitialized();
         _log.LogInformation($"Job completed: {e.CommandType}");
         Running--;
         Executed++;
+        if (_index.TryGetValue(e.JobDefinitionId, out var r)) r.IsRunning = false;
+        Changed?.Invoke(this, EventArgs.Empty);
+
     }
 
     private void OnSchedulerOnRunningJobStarted(object? s, RunningJob e)
     {
+        EnsureInitialized();
         _log.LogInformation($"Job started: {e.CommandType}");
         Running++;
+        if (_index.TryGetValue(e.JobDefinitionId, out var r))
+        {
+            r.Started = e.Created;
+            r.IsRunning = true;
+        }
+        Changed?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnSchedulerOnJobRemovedFromSchedule(object? s, ScheduledJob e)
     {
+        EnsureInitialized();
         _log.LogInformation($"Job remove from schedule: {e.JobDefinitionId}");
-        Scheduled--;
+        if (e.Trigger == ScheduleTrigger.Engine)
+        {
+            Scheduled--;
+        }
+        Enqueued--;
+
+        if (_index.TryGetValue(e.JobDefinitionId, out var r)) r.NextRunAt = null;
+        Changed?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnSchedulerOnJobScheduled(object? s, ScheduledJob e)
     {
+        EnsureInitialized();
         _log.LogInformation($"Job scheduled: {e.JobDefinitionId} in {e.StartAt - DateTime.Now}");
-        Scheduled++;
-        ScheduledTotal++;
+        if (e.Trigger == ScheduleTrigger.Engine)
+        {
+            Scheduled++;
+            ScheduledTotal++;
+        }
+        Enqueued++;
+        
+        if (_index.TryGetValue(e.JobDefinitionId, out var r)) r.NextRunAt = e.StartAt;
+        Changed?.Invoke(this, EventArgs.Empty);
+    }
+
+    public event EventHandler? Started
+    {
+        add => _scheduler.Started += value;
+        remove => _scheduler.Started -= value;
+    }
+
+    public event EventHandler? Stopped
+    {
+        add => _scheduler.Stopped += value;
+        remove => _scheduler.Stopped -= value;
     }
 
     public event EventHandler<ScheduledJob>? JobScheduled
@@ -147,5 +273,7 @@ public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
         _scheduler.JobRemovedFromSchedule -= OnSchedulerOnJobRemovedFromSchedule;
         _scheduler.RunningJobStarted -= OnSchedulerOnRunningJobStarted;
         _scheduler.RunningJobCompleted -= OnSchedulerOnRunningJobCompleted;
+        _model.Added -= OnJobAdded;
+        _model.Removed -= OnJobRemoved;
     }
 }

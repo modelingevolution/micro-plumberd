@@ -125,14 +125,16 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
         return engine.Get<T>(context, id, token);
     }
 
-    public Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId
+    public Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null,
+        StreamMetadata? streamMetadata = null, CancellationToken token = default) where T : IAggregate<T>, IId
     {
-        return engine.SaveChanges(context, aggregate, metadata, token);
+        return engine.SaveChanges(context, aggregate, metadata, streamMetadata, token);
     }
 
-    public Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId
+    public Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null,
+        CancellationToken token = default) where T : IAggregate<T>, IId
     {
-        return engine.SaveNew(context, aggregate, metadata, token);
+        return engine.SaveNew(context, aggregate, metadata, streamMetadata, token);
     }
 
     public Task<Snapshot<T>?> GetSnapshot<T>(Guid id, CancellationToken token = default)
@@ -419,18 +421,20 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
         return engine.Get<T>(context, id, token);
     }
 
-    public Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId
+    public Task<IWriteResult> SaveChanges<T>(T aggregate, object? metadata = null,
+        StreamMetadata? streamMetadata = null, CancellationToken token = default) where T : IAggregate<T>, IId
     {
         using var scope = OperationContext.GetOrCreate(Flow.Request);
         var context = scope.Context;
-        return engine.SaveChanges(context, aggregate, metadata, token);
+        return engine.SaveChanges(context, aggregate, metadata, streamMetadata, token);
     }
 
-    public Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, CancellationToken token = default) where T : IAggregate<T>, IId
+    public Task<IWriteResult> SaveNew<T>(T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null,
+        CancellationToken token = default) where T : IAggregate<T>, IId
     {
         using var scope = OperationContext.GetOrCreate(Flow.Request);
         var context = scope.Context;
-        return engine.SaveNew(context, aggregate, metadata, token);
+        return engine.SaveNew(context, aggregate, metadata, streamMetadata, token);
     }
 
     public Task<Snapshot<T>?> GetSnapshot<T>(Guid id, CancellationToken token = default)
