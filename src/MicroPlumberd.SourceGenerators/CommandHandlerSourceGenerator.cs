@@ -139,24 +139,24 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine("    }");
 
                         if(commands.Any())
-                            sb.AppendLine($"   private static readonly Type[] _commandTypes = new[] {{ {string.Join(",", commands.Select(x=>$"typeof({x})")) } }};");
+                            sb.AppendLine($"   private static readonly System.Type[] _commandTypes = new[] {{ {string.Join(",", commands.Select(x=>$"typeof({x})")) } }};");
                         else
-                            sb.AppendLine($"   private static readonly Type[] _commandTypes = Array.Empty<Type>();");
+                            sb.AppendLine($"   private static readonly System.Type[] _commandTypes = Array.Empty<System.Type>();");
 
 
                         if (returnTypes.Any())
-                            sb.AppendLine($"   private static readonly Type[] _returnTypes = new[] {{ {string.Join(",", returnTypes.Select(x => $"typeof({x})"))} }};");
+                            sb.AppendLine($"   private static readonly System.Type[] _returnTypes = new[] {{ {string.Join(",", returnTypes.Select(x => $"typeof({x})"))} }};");
                         else
-                            sb.AppendLine($"   private static readonly Type[] _returnTypes = Array.Empty<Type>();");
+                            sb.AppendLine($"   private static readonly System.Type[] _returnTypes = Array.Empty<System.Type>();");
                         
                         if(errorMsg.Any())
-                            sb.AppendLine($"   private static readonly Type[] _faultTypes = new[] {{ {string.Join(",", errorMsg.Select(x => $"typeof({x})"))} }};");
+                            sb.AppendLine($"   private static readonly System.Type[] _faultTypes = new[] {{ {string.Join(",", errorMsg.Select(x => $"typeof({x})"))} }};");
                         else
-                            sb.AppendLine($"   private static readonly Type[] _faultTypes = Array.Empty<Type>();");
+                            sb.AppendLine($"   private static readonly System.Type[] _faultTypes = Array.Empty<System.Type>();");
 
-                        sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.CommandTypes => _commandTypes;");
-                        sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.ReturnTypes => _returnTypes;");
-                        sb.AppendLine("    static IEnumerable<Type> IServiceTypeRegister.FaultTypes => _faultTypes;");
+                        sb.AppendLine("    static IEnumerable<System.Type> IServiceTypeRegister.CommandTypes => _commandTypes;");
+                        sb.AppendLine("    static IEnumerable<System.Type> IServiceTypeRegister.ReturnTypes => _returnTypes;");
+                        sb.AppendLine("    static IEnumerable<System.Type> IServiceTypeRegister.FaultTypes => _faultTypes;");
 
                         sb.AppendLine("}");
                         context.AddSource($"{className}_CommandHandler.cs", SourceText.From(sb.ToString(), Encoding.UTF8));

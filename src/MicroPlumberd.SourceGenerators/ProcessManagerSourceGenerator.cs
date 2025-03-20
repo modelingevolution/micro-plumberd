@@ -101,7 +101,7 @@ namespace MicroPlumberd.SourceGenerators
                         sb.AppendLine($"partial class {className} : ProcessManagerBase<Guid>, IProcessManager, ITypeRegister");
                         sb.AppendLine("{");
 
-                        sb.AppendLine("static IEnumerable<Type> IProcessManager.CommandTypes");
+                        sb.AppendLine("static IEnumerable<System.Type> IProcessManager.CommandTypes");
                         sb.AppendLine("{");
                         sb.AppendLine("    get");
                         sb.AppendLine("    {");
@@ -119,7 +119,7 @@ namespace MicroPlumberd.SourceGenerators
                             sb.AppendLine($"async Task<ICommandRequest> IProcessManager.StartWhen(Metadata m, object evt) => await StartWhen(m, ({startEvt})evt);");
                         }
 
-                        sb.AppendLine($"    static IEnumerable<Type> ITypeRegister.Types => [{string.Join(",", events.Select(x=> $"typeof({x})"))}];");
+                        sb.AppendLine($"    static IEnumerable<System.Type> ITypeRegister.Types => [{string.Join(",", events.Select(x=> $"typeof({x})"))}];");
 
                         sb.AppendLine("async Task IEventHandler.Handle(Metadata m, object evt)");
                         sb.AppendLine("{");
