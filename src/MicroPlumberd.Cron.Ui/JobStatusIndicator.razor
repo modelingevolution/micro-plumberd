@@ -1,0 +1,59 @@
+@inject IJobsMonitor monitor
+
+
+@if (Parent != null)
+{
+    @if (context != null)
+    {
+        @if (context.IsRunning)
+        {
+            <MudProgressCircular Class="pa-0 my-0" 
+                                 Style="margin-right:8px; height:18px;width:18px"
+                                 Indeterminate="true" 
+                                 Size="Size.Small" 
+                                 Color="Color.Success"/>
+        }
+
+        @if (StatusEnabled)
+        { 
+            @context.Status
+        }
+    }
+}
+else
+{
+    <JobMonitorObservable>
+        @if (context != null)
+        {
+            @if (context.IsRunning)
+            {
+                <MudProgressCircular Class="pa-0 mx-2"
+                                     Indeterminate="true" Size="Size.Small" Color="Color.Success"/>
+            }
+            @if (StatusEnabled)
+            {
+                @context.Status
+            }
+
+        }
+    </JobMonitorObservable>
+}
+
+
+@code {
+    private IItem? context;
+
+    [Parameter]
+    public Guid JobDefinitionId { get; set; }
+
+    [Parameter] public bool StatusEnabled { get; set; } = true;
+
+    [CascadingParameter]
+    public JobMonitorObservable? Parent { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        this.context = monitor.GetById(JobDefinitionId);
+    }
+
+}

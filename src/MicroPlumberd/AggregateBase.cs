@@ -95,7 +95,7 @@ public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>,
     public TId Id { get; } = id;
 
     /// <summary>
-    /// Gets the version of the aggregate.
+    /// Gets the version of the aggregate. -1 indicates this is a new Aggregate.
     /// </summary>
     public long Version { get; private set; } = -1;
 

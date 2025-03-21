@@ -85,7 +85,7 @@ namespace MicroPlumberd.SourceGenerators
                         var typeOfs = methods.Select(x => x.ParameterList.Parameters[1].Type)
                             .Select(x => $"typeof({x})");
                         var events = string.Join(",", typeOfs);
-                        sb.AppendLine($"    static IEnumerable<Type> ITypeRegister.Types => [{events}];");
+                        sb.AppendLine($"    static IEnumerable<System.Type> ITypeRegister.Types => [{events}];");
 
                         sb.AppendLine("}");
                         context.AddSource($"{className}_EventHandler.cs", SourceText.From(sb.ToString(), Encoding.UTF8));

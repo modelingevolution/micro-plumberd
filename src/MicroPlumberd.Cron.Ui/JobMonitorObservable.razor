@@ -1,0 +1,33 @@
+@implements IDisposable
+@inject IJobsMonitor monitor
+
+<CascadingValue Value="this">
+@ChildContent
+</CascadingValue>
+
+@code
+{
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter] 
+    public int RefreshPeriod { get; set; } = 1000;
+
+    private Timer _timer; // bacause we have seconds.
+
+    protected override void OnInitialized()
+    {
+        _timer = new Timer(OnRefresh, null, 5000, RefreshPeriod);
+        this.monitor.Changed += OnMonitorChanged;
+    }
+
+    private void OnMonitorChanged(object sender, EventArgs e) => InvokeAsync(StateHasChanged);
+
+    private void OnRefresh(object? state) => InvokeAsync(StateHasChanged);
+
+    public void Dispose()
+    {
+        _timer.Dispose();
+        this.monitor.Changed -= OnMonitorChanged;
+    }
+}

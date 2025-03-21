@@ -21,30 +21,69 @@ public interface IJobsScheduler
 
 public interface IJobsMonitor : IJobsScheduler
 {
+
     event EventHandler Changed;
-    IReadOnlyList<JobsMonitor.Item> Items { get; }
+    IItem? GetById(Guid id);
+    IReadOnlyList<IItem> Items { get; }
     ulong Scheduled { get; }
     ulong ScheduledTotal { get; }
     ulong Running { get; }
     ulong Executed { get; }
     ulong Enqueued { get;  }
 }
-
+public interface IItem : INotifyPropertyChanged
+{
+    JobDefinition Definition { get; init; }
+    string Name { get; }
+    string CommandType { get; }
+    string CommandPayload { get; }
+    DateTime? NextRunAt { get; }
+    DateTimeOffset? Started { get; }
+    TimeSpan? NextRunIn { get; }
+    string Status { get; }
+    bool IsRunning { get; set; }
+    bool IsEnabled { get; }
+}
 public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
 {
     private readonly List<Item> _items = new();
     private readonly ConcurrentDictionary<Guid, Item> _index = new();
     private bool _initialized = false;
     public event EventHandler? Changed;
-    public IReadOnlyList<Item> Items => _items;
-    public record Item 
+    public IReadOnlyList<IItem> Items => _items;
+    public IItem? GetById(Guid id) => _index.TryGetValue(id, out var r) ? r : null;
+
+    
+
+    public record Item : IItem, IEquatable<Item>
     {
+        private DateTime? _nextRunAt;
+        private DateTimeOffset? _started;
         public required JobDefinition Definition { get; init; }
         public string Name => Definition.Name;
         public string CommandType => Definition.CommandType.Name.Humanize();
         public string CommandPayload => Definition.Command.ToString();
-        public DateTime? NextRunAt { get; set; }
-        public DateTimeOffset? Started { get; set; }
+
+        public DateTime? NextRunAt
+        {
+            get => _nextRunAt;
+            internal set
+            {
+                if (SetField(ref _nextRunAt, value)) 
+                    OnPropertyChanged(nameof(NextRunIn));
+            }
+        }
+
+        public DateTimeOffset? Started
+        {
+            get => _started;
+            internal set
+            {
+                if (SetField(ref _started, value)) 
+                    OnPropertyChanged(nameof(Status));
+            }
+        }
+
         public TimeSpan? NextRunIn => (NextRunAt.HasValue && !IsRunning) ? (NextRunAt - DateTime.Now) : null;
 
         public string Status
@@ -54,7 +93,7 @@ public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
                 if (IsRunning)
                 {
                     if (Started.HasValue)
-                        return $"Running ({(DateTime.Now - Started.Value).Humanize()})";
+                        return $"Running for {(DateTime.Now - Started.Value).Humanize()}";
                     else return "Running, unknown.";
                 } 
                 else if (IsEnabled)
@@ -67,6 +106,20 @@ public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
         public bool IsRunning { get; set; }
         public bool IsEnabled => Definition.IsEnabled;
 
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
     }
     private readonly IJobsScheduler _scheduler;
     private readonly ILogger<JobsMonitor> _log;

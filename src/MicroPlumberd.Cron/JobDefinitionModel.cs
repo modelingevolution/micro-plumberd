@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -110,14 +111,29 @@ public partial class JobDefinitionModel
     private async Task Given(Metadata m, JobNamed ev)
     {
         var jobDefinitionId = m.StreamId<Guid>();
-        var jobDefinition = new JobDefinition() 
-        { 
-            JobDefinitionId = jobDefinitionId,
-            Schedule = new EmptySchedule(),
-            Name = ev.Name };
-        if (!_jobDefinitions.TryAdd(jobDefinitionId, jobDefinition))
-            throw new InvalidOperationException("Cannot add job definition");
-        Added?.Invoke(this, jobDefinition);
+        bool added = false;
+
+
+        var job = _jobDefinitions.GetOrAdd(jobDefinitionId, x =>
+            {
+                var jobDefinition = new JobDefinition()
+                {
+                    JobDefinitionId = jobDefinitionId,
+                    Schedule = new EmptySchedule(),
+                    Name = ev.Name
+                };
+                added = true;
+                return jobDefinition;
+            });
+        job.Name = ev.Name;
+
+        if (added)
+        {
+            Trace.Assert(m.SourceStreamPosition == 0);
+            Added?.Invoke(this, job);
+        }
+        else
+            Trace.Assert(m.SourceStreamPosition > 0);
     }
 
     public async ValueTask<JobDefinition> GetAsync(Guid id)

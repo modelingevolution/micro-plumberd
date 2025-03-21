@@ -2,74 +2,56 @@
 @using MicroPlumberd.Services.Cron
 @inject IJobsMonitor monitor
 @inject IJobService srv
-@implements IDisposable
 
-<MudToolBar>
-    <MudText Typo="Typo.body1">Running: @monitor.Running</MudText>
-    <MudText Style="margin-left:16px" Typo="Typo.body1">Scheduled: @monitor.Scheduled</MudText>
-    <MudText Style="margin-left:16px" Typo="Typo.body1">Enqueued: @monitor.Enqueued</MudText>
-</MudToolBar>
-<MudTable Items="@monitor.Items" Filter="x=>!x.Definition.IsDeleted" Dense="true">
-    <HeaderContent>
-        <MudTh></MudTh>
-        <MudTh>Name</MudTh>
-        <MudTh>Command</MudTh>
-        <MudTh Style="width: 300px">State</MudTh>
-        <MudTh>Actions</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd Style="width: 68px">
-            @if (context.IsRunning)
-            {
-                <MudProgressCircular Class="pa-0 ma-0"
-                    Indeterminate="true" Size="Size.Small" Color="Color.Success" />
-            }
-        </MudTd>
-        <MudTd>@context.Name</MudTd>
-        <MudTd>
-            <MudTooltip Text="@context.CommandPayload">
-                @context.CommandType
-            </MudTooltip>
+<JobMonitorObservable>
+    <MudToolBar>
+        <MudText Typo="Typo.body1">Running: @monitor.Running</MudText>
+        <MudText Style="margin-left:16px" Typo="Typo.body1">Scheduled: @monitor.Scheduled</MudText>
+        <MudText Style="margin-left:16px" Typo="Typo.body1">Enqueued: @monitor.Enqueued</MudText>
+    </MudToolBar>
+    <MudTable Items="@monitor.Items" 
+              Filter="x=>!x.Definition.IsDeleted" 
+              Dense="true">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Command</MudTh>
+            <MudTh Style="width: 300px">State</MudTh>
+            <MudTh>Actions</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            
+            <MudTd>@context.Name</MudTd>
+            <MudTd>
+                <MudTooltip Text="@context.CommandPayload">
+                    @context.CommandType
+                </MudTooltip>
 
-        </MudTd>
-        <MudTd>@context.Status</MudTd>
-        <MudTd>
-            <MudButtonGroup Variant="Variant.Filled">
-                <MudButton OnClick="@(() => srv.RunOnce(context.Definition.JobDefinitionId))">Run</MudButton>
-                <MudButton OnClick="@(() => srv.Delete(context.Definition.JobDefinitionId))">Delete</MudButton>
-                @if (context.IsEnabled)
-                {
-                    <MudButton OnClick="@(() => srv.Disable(context.Definition.JobDefinitionId))">Disable</MudButton>
-                }
-                else
-                {
-                    <MudButton OnClick="@(() => srv.Enable(context.Definition.JobDefinitionId))">Enable</MudButton>
-                }
-            </MudButtonGroup>
-        </MudTd>
-    </RowTemplate>
-</MudTable>
+            </MudTd>
+            <MudTd >
+                <JobStatusIndicator JobDefinitionId="@context.Definition.JobDefinitionId"/>
+            </MudTd>
+            <MudTd>
+                <MudButtonGroup Variant="Variant.Filled">
+                    <MudButton OnClick="@(() => srv.RunOnce(context.Definition.JobDefinitionId))">Run</MudButton>
+                    <MudButton OnClick="@(() => srv.Delete(context.Definition.JobDefinitionId))">Delete</MudButton>
+                    @if (context.IsEnabled)
+                    {
+                        <MudButton OnClick="@(() => srv.Disable(context.Definition.JobDefinitionId))">Disable</MudButton>
+                    }
+                    else
+                    {
+                        <MudButton OnClick="@(() => srv.Enable(context.Definition.JobDefinitionId))">Enable</MudButton>
+                    }
+                </MudButtonGroup>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
 
+</JobMonitorObservable>
 
 @code {
     // we need to refresh the page every 5 seconds.
-    private Timer _timer; // bacause we have seconds.
-
-    protected override void OnInitialized()
-    {
-        _timer = new Timer(OnRefresh, null, 5000, 1000);
-        this.monitor.Changed += OnMonitorChanged;
-    }
-
-    private void OnMonitorChanged(object sender, EventArgs e) => InvokeAsync(StateHasChanged);
-
-    private void OnRefresh(object? state) => InvokeAsync(StateHasChanged);
-
-    public void Dispose()
-    {
-        _timer.Dispose();
-        this.monitor.Changed -= OnMonitorChanged;
-    }
+    
 
 
 
