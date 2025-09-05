@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using EventStore.Client;
 using MicroPlumberd;
+using MicroPlumberd.Api;
 using MicroPlumberd.Collections;
 using MicroPlumberd.Services;
 
@@ -22,7 +23,7 @@ namespace MicroPlumberd.Services;
 
 internal class CommandBus : ICommandBus, IEventHandler
 {
-    private readonly IPlumber _plumber;
+    private readonly IPlumberApi _plumber;
     private readonly ICommandBusPool _pool;
     private readonly ILogger<CommandBus> _log;
     private readonly string _streamIn;
@@ -34,7 +35,7 @@ internal class CommandBus : ICommandBus, IEventHandler
     private readonly object _sync = new object();
     private IAsyncDisposable? _subscription;
     public Guid SessionId { get; } = Guid.NewGuid();
-    public CommandBus(IPlumber plumber, ICommandBusPool pool, ILogger<CommandBus> log)
+    public CommandBus(IPlumberApi plumber, ICommandBusPool pool, ILogger<CommandBus> log)
     {
         _plumber = plumber;
         _pool = pool;

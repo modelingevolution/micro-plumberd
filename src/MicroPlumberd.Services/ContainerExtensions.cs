@@ -81,7 +81,13 @@ public static class ContainerExtensions
         }
         else
         {
-            collection.TryAddSingleton<ICommandBus, CommandBus>();
+            collection.TryAddSingleton<ICommandBus>(sp =>
+            {
+                var pool = (CommandBusPoolScoped)sp.GetRequiredService<ICommandBusPool>();
+                var sb = new CommandBus(sp.GetRequiredService<IPlumberInstance>(), pool,
+                    sp.GetRequiredService<ILogger<CommandBus>>());
+                return sb;
+            });
             collection.TryAddSingleton<ICommandBusPool>(sp => new CommandBusPool(sp, commandBusPoolSize).Init());
         }
         collection.TryAddSingleton(typeof(IEventHandler<>), typeof(EventHandlerExecutor<>));

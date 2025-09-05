@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using MicroPlumberd.Api;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -33,6 +34,7 @@ class CommandBusPool : IAsyncDisposable, ICommandBusPool
     }
     private readonly IServiceProvider _sp;
     protected readonly int _maxCount;
+    
     private ConcurrentStack<CommandBusOwner> _pool;
     private SemaphoreSlim _semaphore;
     private bool _disposed;
@@ -74,7 +76,7 @@ class CommandBusPool : IAsyncDisposable, ICommandBusPool
     public virtual IEnumerable<ICommandBus> Create(int number)
     {
         // Command is configured to be singleton in the container.
-        var pl = _sp.GetRequiredService<IPlumber>();
+        IPlumberApi pl = _sp.GetRequiredService<IPlumberInstance>();
         var logger = _sp.GetRequiredService<ILogger<CommandBus>>();
         for (int i = 0; i < number; ++i) 
             yield return new CommandBus(pl,this, logger);
