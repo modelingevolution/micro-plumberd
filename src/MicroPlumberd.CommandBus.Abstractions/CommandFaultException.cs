@@ -7,6 +7,11 @@ public class FaultException<TData> : FaultException
         Data = data;
         Code = code;
     }
+    public FaultException(TData data, int code) : base(data.ToString())
+    {
+        Data = data;
+        Code = code;
+    }
 
     public TData Data { get; init; }
 
