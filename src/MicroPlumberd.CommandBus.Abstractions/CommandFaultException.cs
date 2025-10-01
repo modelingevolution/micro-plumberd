@@ -19,6 +19,10 @@ public class FaultException<TData> : FaultException
 
     public FaultException(TData data) => this.Data = data;
 }
+public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute
+{
+    public Type ThrownType { get; init; } = thrownType;
+}
 public class FaultException : Exception
 {
     public int Code { get; init; }

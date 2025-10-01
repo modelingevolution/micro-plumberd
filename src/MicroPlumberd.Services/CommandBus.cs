@@ -180,7 +180,3 @@ internal class CommandBus : ICommandBus, IEventHandler
     public void Dispose() => _ = DisposeAsync();
 }
 
-public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute
-{
-    public Type ThrownType { get; init; } = thrownType;
-}
