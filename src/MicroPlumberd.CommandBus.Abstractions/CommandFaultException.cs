@@ -19,6 +19,9 @@ public class FaultException<TData> : FaultException
 
     public FaultException(TData data) => this.Data = data;
 }
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
+public class ThrowsFaultExceptionAttribute<TMessage>() : ThrowsFaultExceptionAttribute(typeof(TMessage));
+
 public abstract class ThrowsFaultExceptionAttribute(Type thrownType) : Attribute
 {
     public Type ThrownType { get; init; } = thrownType;
