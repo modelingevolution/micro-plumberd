@@ -13,8 +13,18 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace MicroPlumberd;
 
+/// <summary>
+/// A simple type converter that always converts to a single specified type.
+/// </summary>
+/// <param name="snapshot">The type to convert to.</param>
 readonly struct SingleTypeConverter(Type snapshot)
 {
+    /// <summary>
+    /// Converts the specified event name to the configured type.
+    /// </summary>
+    /// <param name="evName">The event name (ignored).</param>
+    /// <param name="t">The resulting type.</param>
+    /// <returns>Always returns true.</returns>
     public bool Convert(string evName, out Type t)
     {
         t = snapshot;
@@ -80,10 +90,17 @@ public delegate void MetadataConvention(OperationContext context, dynamic metada
 
 
 /// <summary>
-/// Represents delegate that creates Uuid from an event and optinally aggregate instance.
+/// Represents delegate that creates Uuid from an event and optionally aggregate instance.
 /// </summary>
 public delegate Uuid EventIdConvention(OperationContext context, IAggregate? aggregator, object evt);
 
+/// <summary>
+/// Represents a delegate that creates a Uuid for a state event based on state, id, and version.
+/// </summary>
+/// <param name="state">The state object.</param>
+/// <param name="id">The identifier.</param>
+/// <param name="version">The optional version number.</param>
+/// <returns>A Uuid for the state event.</returns>
 public delegate Uuid EventIdStateConvention(object state, object id, long? version);
 
 /// <summary>
@@ -179,14 +196,49 @@ public interface IReadOnlyConventions : IExtension
     /// </value>
     EventNameConvention GetEventNameConvention { get; }
     //BuildInvocationContext BuildInvocationContext { get;  }
+    /// <summary>
+    /// Gets the metadata enrichers convention used to populate event metadata.
+    /// </summary>
     MetadataConvention? MetadataEnrichers { get;  }
 
+    /// <summary>
+    /// Gets the convention for generating event IDs for state events.
+    /// </summary>
     EventIdStateConvention GetEventIdStateConvention { get; }
+
+    /// <summary>
+    /// Gets the convention for generating event IDs.
+    /// </summary>
     EventIdConvention GetEventIdConvention { get; }
+
+    /// <summary>
+    /// Gets the convention for determining output stream names from model types.
+    /// </summary>
     OutputStreamModelConvention OutputStreamModelConvention { get;  }
+
+    /// <summary>
+    /// Gets the convention for determining group names from model types.
+    /// </summary>
     GroupNameModelConvention GroupNameModelConvention { get;  }
+
+    /// <summary>
+    /// Gets the snapshot policy factory convention used to create snapshot policies.
+    /// </summary>
     SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get;  }
+
+    /// <summary>
+    /// Gets the flags indicating which standard metadata enrichers are enabled.
+    /// </summary>
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get;  }
+
+    /// <summary>
+    /// Gets the metadata for an event, combining convention-based enrichment with custom metadata.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="aggregate">The optional aggregate associated with the event.</param>
+    /// <param name="evt">The event object.</param>
+    /// <param name="metadata">Optional custom metadata to merge.</param>
+    /// <returns>The combined metadata object.</returns>
     object GetMetadata(OperationContext context, IAggregate? aggregate, object evt, object? metadata);
 
 }
@@ -252,12 +304,44 @@ public interface IConventions : IExtension
     EventNameConvention GetEventNameConvention { get; set; }
 
     //BuildInvocationContext BuildInvocationContext { get; set; }
+    /// <summary>
+    /// Gets or sets the metadata enrichers convention used to populate event metadata.
+    /// </summary>
     MetadataConvention? MetadataEnrichers { get; set; }
+
+    /// <summary>
+    /// Gets or sets the convention for generating event IDs.
+    /// </summary>
     EventIdConvention GetEventIdConvention { get; set; }
+
+    /// <summary>
+    /// Gets or sets the convention for determining output stream names from model types.
+    /// </summary>
     OutputStreamModelConvention OutputStreamModelConvention { get; set; }
+
+    /// <summary>
+    /// Gets or sets the convention for determining group names from model types.
+    /// </summary>
     GroupNameModelConvention GroupNameModelConvention { get; set; }
+
+    /// <summary>
+    /// Gets or sets the snapshot policy factory convention used to create snapshot policies.
+    /// </summary>
     SnapshotPolicyFactory SnapshotPolicyFactoryConvention { get; set; }
+
+    /// <summary>
+    /// Gets or sets the flags indicating which standard metadata enrichers are enabled.
+    /// </summary>
     StandardMetadataEnricherTypes StandardMetadataEnricherTypes { get; set; }
+
+    /// <summary>
+    /// Gets the metadata for an event, combining convention-based enrichment with custom metadata.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="aggregate">The optional aggregate associated with the event.</param>
+    /// <param name="evt">The event object.</param>
+    /// <param name="metadata">Optional custom metadata to merge.</param>
+    /// <returns>The combined metadata object.</returns>
     object GetMetadata(OperationContext context, IAggregate? aggregate, object evt, object? metadata);
     /// <summary>
     /// Gets or sets the stream name from event convention. This is used only in AppendEvent. The default searches for [OutputStreamAttribute]. If not found than the last segment of the namespace is used as category, that is not named "Events". 
@@ -269,10 +353,22 @@ public interface IConventions : IExtension
 
 }
 
+/// <summary>
+/// Provides extension point for adding custom configuration extensions.
+/// </summary>
 public interface IExtension
 {
+    /// <summary>
+    /// Gets or creates an extension of the specified type.
+    /// </summary>
+    /// <typeparam name="T">The type of extension to retrieve or create.</typeparam>
+    /// <returns>The extension instance.</returns>
     T GetExtension<T>() where T : new();
 }
+
+/// <summary>
+/// Provides extension methods for Guid operations.
+/// </summary>
 public static class GuidExtensions
 {
     [StructLayout(LayoutKind.Explicit)]
@@ -285,6 +381,12 @@ public static class GuidExtensions
         public long Long;
     }
 
+    /// <summary>
+    /// Performs an XOR operation between a GUID and a long value.
+    /// </summary>
+    /// <param name="guid">The GUID to XOR.</param>
+    /// <param name="value">The long value to XOR with.</param>
+    /// <returns>A new GUID resulting from the XOR operation.</returns>
     public static Guid Xor(this in Guid guid, long value)
     {
         var overlay = new GuidLongOverlay { Guid = guid };
@@ -407,12 +509,31 @@ class Conventions : IConventions, IReadOnlyConventions
 
     
 }
+
+/// <summary>
+/// Defines flags for standard metadata enricher types.
+/// </summary>
 [Flags]
 public enum StandardMetadataEnricherTypes
 {
+    /// <summary>
+    /// No metadata enrichers enabled.
+    /// </summary>
     None = 0x0,
+
+    /// <summary>
+    /// Created timestamp metadata enricher.
+    /// </summary>
     Created = 0x1,
+
+    /// <summary>
+    /// Invocation context metadata enricher (correlation ID, causation ID, user ID).
+    /// </summary>
     InvocationContext = 0x2,
+
+    /// <summary>
+    /// All metadata enrichers enabled.
+    /// </summary>
     All = 0x3
 }
 static class StandardMetadataEnrichers
@@ -478,8 +599,17 @@ public static class TypeExtensions
         return builder.ToString();
     }
 }
+
+/// <summary>
+/// Provides extension methods for reading metadata from EventStore metadata.
+/// </summary>
 public static class MetadataExtensions
 {
+    /// <summary>
+    /// Extracts the Created timestamp from metadata.
+    /// </summary>
+    /// <param name="m">The metadata to read from.</param>
+    /// <returns>The Created timestamp if present; otherwise, null.</returns>
     public static DateTimeOffset? Created(this Metadata m)
     {
 
@@ -488,30 +618,62 @@ public static class MetadataExtensions
         return null;
     }
 
+    /// <summary>
+    /// Extracts the snapshot version from metadata.
+    /// </summary>
+    /// <param name="m">The metadata to read from.</param>
+    /// <returns>The snapshot version if present; otherwise, null.</returns>
     public static long? SnapshotVersion(this Metadata m)
     {
         if (m.Data.TryGetProperty("SnapshotVersion", out var v))
             return v.GetInt64();
         return null;
     }
+
+    /// <summary>
+    /// Extracts the correlation ID from metadata.
+    /// </summary>
+    /// <param name="m">The metadata to read from.</param>
+    /// <returns>The correlation ID if present; otherwise, null.</returns>
     public static Guid? CorrelationId(this Metadata m)
     {
         if (m.Data.TryGetProperty("$correlationId", out var v))
             return Guid.Parse(v.GetString()!);
         return null;
     }
+
+    /// <summary>
+    /// Extracts the user ID from metadata.
+    /// </summary>
+    /// <param name="m">The metadata to read from.</param>
+    /// <returns>The user ID if present; otherwise, null.</returns>
     public static string? UserId(this Metadata m)
     {
         if (m.Data.TryGetProperty("UserId", out var v))
             return v.GetString();
         return null;
     }
+
+    /// <summary>
+    /// Extracts the causation ID from metadata.
+    /// </summary>
+    /// <param name="m">The metadata to read from.</param>
+    /// <returns>The causation ID if present; otherwise, null.</returns>
     public static Guid? CausationId(this Metadata m)
     {
         if (m.Data.TryGetProperty("$causationId", out var v))
             return Guid.Parse(v.GetString()!);
         return null;
     }
+
+    /// <summary>
+    /// Attempts to extract a typed value from metadata.
+    /// </summary>
+    /// <typeparam name="TValue">The type of value to extract.</typeparam>
+    /// <param name="m">The metadata to read from.</param>
+    /// <param name="propertyName">The name of the property to extract.</param>
+    /// <param name="value">The extracted value if successful.</param>
+    /// <returns>True if the value was extracted successfully; otherwise, false.</returns>
     public static bool TryGetValue<TValue>(this Metadata m, string propertyName, out TValue value)
     {
         if (m.Data.TryGetProperty(propertyName, out var v))

@@ -14,9 +14,22 @@ namespace MicroPlumberd;
 [JsonConverter(typeof(JsonParsableConverter<StreamVersion>))]
 public readonly record struct StreamVersion : IParsable<StreamVersion>, IComparable<StreamVersion>
 {
+    /// <summary>
+    /// Gets the name of the stream.
+    /// </summary>
     public string StreamName { get; }
+
+    /// <summary>
+    /// Gets the version number (position) in the stream.
+    /// </summary>
     public long Version { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StreamVersion"/> struct.
+    /// </summary>
+    /// <param name="streamName">The name of the stream.</param>
+    /// <param name="version">The version number in the stream (must be >= -1).</param>
+    /// <exception cref="ArgumentException">Thrown when streamName is empty or version is less than -1.</exception>
     public StreamVersion(string streamName, long version)
     {
         if (string.IsNullOrWhiteSpace(streamName))
@@ -29,16 +42,33 @@ public readonly record struct StreamVersion : IParsable<StreamVersion>, ICompara
         Version = version;
     }
 
+    /// <summary>
+    /// Creates a new stream version with the version updated from the provided metadata.
+    /// </summary>
+    /// <param name="metadata">The metadata containing the new stream position.</param>
+    /// <returns>A new <see cref="StreamVersion"/> with the updated version.</returns>
     public StreamVersion With(Metadata metadata)
     {
-        
+
         return new StreamVersion(
             StreamName,
             metadata.SourceStreamPosition);
     }
 
+    /// <summary>
+    /// Returns a string representation of the stream version in the format "streamName:version".
+    /// </summary>
+    /// <returns>A string in the format "streamName:version".</returns>
     public override string ToString() => $"{StreamName}:{Version}";
 
+    /// <summary>
+    /// Parses a string representation of a stream version.
+    /// </summary>
+    /// <param name="s">The string to parse in the format "streamName:version".</param>
+    /// <param name="provider">An optional format provider (not used).</param>
+    /// <returns>The parsed <see cref="StreamVersion"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown when the input string is empty.</exception>
+    /// <exception cref="FormatException">Thrown when the format is invalid.</exception>
     public static StreamVersion Parse(string s, IFormatProvider? provider = null)
     {
         if (string.IsNullOrWhiteSpace(s))
@@ -54,6 +84,13 @@ public readonly record struct StreamVersion : IParsable<StreamVersion>, ICompara
         return new StreamVersion(parts[0], version);
     }
 
+    /// <summary>
+    /// Tries to parse a string representation of a stream version.
+    /// </summary>
+    /// <param name="s">The string to parse in the format "streamName:version".</param>
+    /// <param name="provider">An optional format provider (not used).</param>
+    /// <param name="result">The parsed result if successful, otherwise default.</param>
+    /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out StreamVersion result)
     {
         result = default;
@@ -72,6 +109,11 @@ public readonly record struct StreamVersion : IParsable<StreamVersion>, ICompara
         return true;
     }
 
+    /// <summary>
+    /// Compares this stream version to another, first by stream name then by version number.
+    /// </summary>
+    /// <param name="other">The other stream version to compare to.</param>
+    /// <returns>A value indicating the relative order of the objects being compared.</returns>
     public int CompareTo(StreamVersion other)
     {
         var streamNameComparison = string.Compare(StreamName, other.StreamName, StringComparison.Ordinal);
@@ -87,13 +129,25 @@ public readonly record struct StreamVersion : IParsable<StreamVersion>, ICompara
 [JsonConverter(typeof(JsonParsableConverter<CompositeStreamVersion>))]
 public readonly record struct CompositeStreamVersion : IParsable<CompositeStreamVersion>, IEquatable<CompositeStreamVersion>
 {
+    /// <summary>
+    /// Gets the immutable sorted dictionary of stream positions keyed by stream name.
+    /// </summary>
     public ImmutableSortedDictionary<string, long> Positions { get; private init; }
-    
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CompositeStreamVersion"/> struct from a collection of stream versions.
+    /// </summary>
+    /// <param name="positions">The collection of stream versions to include.</param>
     public CompositeStreamVersion(IEnumerable<StreamVersion> positions)
     {
         Positions = positions?.ToImmutableSortedDictionary(x=>x.StreamName, x=>x.Version) ?? ImmutableSortedDictionary<string,long>.Empty;
     }
 
+    /// <summary>
+    /// Determines whether the current composite version equals another composite version.
+    /// </summary>
+    /// <param name="other">The other composite version to compare.</param>
+    /// <returns><c>true</c> if the versions are equal; otherwise, <c>false</c>.</returns>
     public bool Equals(CompositeStreamVersion? other)
     {
         if (other == null) return false;
@@ -125,8 +179,18 @@ public readonly record struct CompositeStreamVersion : IParsable<CompositeStream
 
     }
 
+    /// <summary>
+    /// Returns a string representation of the composite version, with individual stream versions separated by dots.
+    /// </summary>
+    /// <returns>A string representation of all stream versions, or an empty string if there are no positions.</returns>
     public override string ToString() => Positions.IsEmpty ? string.Empty : string.Join('.', this.Positions.Select(x=> new StreamVersion(x.Key, x.Value)));
 
+    /// <summary>
+    /// Parses a string representation of a composite stream version.
+    /// </summary>
+    /// <param name="s">The string to parse, with stream versions separated by dots.</param>
+    /// <param name="provider">An optional format provider (not used).</param>
+    /// <returns>The parsed <see cref="CompositeStreamVersion"/>, or <see cref="Empty"/> if the string is empty.</returns>
     public static CompositeStreamVersion Parse(string s, IFormatProvider? provider = null)
     {
         if (string.IsNullOrWhiteSpace(s))
@@ -146,6 +210,13 @@ public readonly record struct CompositeStreamVersion : IParsable<CompositeStream
         return new CompositeStreamVersion(positions);
     }
 
+    /// <summary>
+    /// Tries to parse a string representation of a composite stream version.
+    /// </summary>
+    /// <param name="s">The string to parse, with stream versions separated by dots.</param>
+    /// <param name="provider">An optional format provider (not used).</param>
+    /// <param name="result">The parsed result if successful, otherwise <see cref="Empty"/>.</param>
+    /// <returns><c>true</c> if parsing succeeded; otherwise, <c>false</c>.</returns>
     public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, out CompositeStreamVersion result)
     {
         result = Empty;

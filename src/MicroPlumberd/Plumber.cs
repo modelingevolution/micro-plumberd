@@ -7,9 +7,17 @@ using Grpc.Core;
 
 namespace MicroPlumberd;
 
-
+/// <summary>
+/// Main entry point for MicroPlumberd event sourcing operations with explicit operation context.
+/// </summary>
 public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber, IPlumberReadOnlyConfig
 {
+    /// <summary>
+    /// Creates a new Plumber instance with the specified EventStore settings.
+    /// </summary>
+    /// <param name="settings">EventStore client settings.</param>
+    /// <param name="flow">The flow type for the operation context.</param>
+    /// <returns>A new Plumber instance.</returns>
     public static IPlumber Create(EventStoreClientSettings settings, Flow flow = Flow.Component)
     {
         return new Plumber(new PlumberEngine(settings), new OperationContext(flow));
@@ -284,8 +292,17 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     }
 }
 
+/// <summary>
+/// Main entry point for MicroPlumberd event sourcing operations with automatic operation context management.
+/// </summary>
 public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberReadOnlyConfig
 {
+    /// <summary>
+    /// Creates a new Plumber instance with the specified EventStore settings.
+    /// </summary>
+    /// <param name="settings">EventStore client settings.</param>
+    /// <param name="flow">The flow type for the operation context.</param>
+    /// <returns>A new Plumber instance.</returns>
     public static IPlumber Create(EventStoreClientSettings settings, Flow flow = Flow.Component)
     {
         return new Plumber(new PlumberEngine(settings), new OperationContext(flow));

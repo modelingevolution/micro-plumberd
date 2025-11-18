@@ -27,8 +27,16 @@ class CommandHandlerStarter<THandler>(PlumberEngine plumber) : ICommandHandlerSt
     public bool? Persistently { get; private set; }
 }
 
+/// <summary>
+/// Provides extension methods for converting stream positions.
+/// </summary>
 public static class StreamPositionExtensions
 {
+    /// <summary>
+    /// Converts a FromStream position to a StreamPosition.
+    /// </summary>
+    /// <param name="fs">The FromStream position to convert.</param>
+    /// <returns>The equivalent StreamPosition.</returns>
     public static StreamPosition ToStreamPosition(this FromStream fs)
     {
         StreamPosition sp = StreamPosition.Start;

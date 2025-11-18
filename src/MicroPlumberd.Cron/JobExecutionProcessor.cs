@@ -10,10 +10,19 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services.Cron;
 
+/// <summary>
+/// Provides utility methods for job scheduling operations.
+/// </summary>
 public static class Utils
 {
-    
-    
+
+
+    /// <summary>
+    /// Gets all scheduled jobs that are pending execution up to a specified time.
+    /// </summary>
+    /// <param name="items">The sorted set of scheduled jobs.</param>
+    /// <param name="when">The time boundary for pending jobs.</param>
+    /// <returns>An enumerable of jobs scheduled to run before or at the specified time.</returns>
     public static IEnumerable<ScheduledJob> GetPending(this SortedSet<ScheduledJob> items, DateTime when)
     {
         ScheduledJob start = ScheduledJob.Min(DateTime.MinValue);
@@ -24,14 +33,28 @@ public static class Utils
 
 }
 
+/// <summary>
+/// Processes job executions by managing job scheduling, dispatching, and lifecycle events.
+/// </summary>
 [EventHandler]
 public partial class JobExecutionProcessor(IPlumberInstance plumber, IServiceProvider sp, JobDefinitionModel model, ILogger<JobExecutionProcessor> log) : IJobsScheduler
 {
+    /// <inheritdoc/>
     public event EventHandler? Started;
+
+    /// <inheritdoc/>
     public event EventHandler? Stopped;
+
+    /// <inheritdoc/>
     public event EventHandler<ScheduledJob>? JobScheduled;
+
+    /// <inheritdoc/>
     public event EventHandler<ScheduledJob>? JobRemovedFromSchedule;
+
+    /// <inheritdoc/>
     public event EventHandler<RunningJob>? RunningJobStarted;
+
+    /// <inheritdoc/>
     public event EventHandler<RunningJob>? RunningJobCompleted;
 
     private readonly ConcurrentDictionary<Guid, RunningJob> _runningJobsByCommandIdLookup = new();
@@ -89,6 +112,7 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
 
     }
 
+    /// <inheritdoc/>
     public async Task<JobItem<ScheduledJob>[]> ScheduledItems(CancellationToken token = default)
     {
         JobItem<ScheduledJob>[] items = null;
@@ -99,6 +123,8 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         }, token);
         return items;
     }
+
+    /// <inheritdoc/>
     public async Task<JobItem<RunningJob>[]> RunningItems(CancellationToken token = default)
     {
         JobItem<RunningJob>[] items = null;
@@ -109,6 +135,13 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         }, token);
         return items;
     }
+
+    /// <summary>
+    /// Executes an action on the job processor's internal queue.
+    /// </summary>
+    /// <param name="action">The asynchronous action to execute.</param>
+    /// <param name="token">A cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task Execute(Func<Task> action, CancellationToken token)
     {
         using var m = new SemaphoreSlim(0);
@@ -120,6 +153,11 @@ public partial class JobExecutionProcessor(IPlumberInstance plumber, IServicePro
         await m.WaitAsync(token);
     }
 
+    /// <summary>
+    /// Starts the job execution processor.
+    /// </summary>
+    /// <param name="stoppingToken">A cancellation token to stop the processor.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task StartAsync(CancellationToken stoppingToken)
     {
         _chIn.Writer.TryWrite(async () => await OnStartup());

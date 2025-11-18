@@ -44,8 +44,16 @@ internal sealed class StartupHealthCheck(EventHandlerService eventHandlers, Comm
         return HealthCheckResult.Healthy();
     }
 }
+/// <summary>
+/// Provides extension methods for adding Plumberd health checks.
+/// </summary>
 public static class HealthCheckExtensions
 {
+    /// <summary>
+    /// Adds MicroPlumberd startup health checks to the health checks builder.
+    /// </summary>
+    /// <param name="builder">The health checks builder.</param>
+    /// <returns>The health checks builder for method chaining.</returns>
     public static IHealthChecksBuilder AddPlumberdHealthChecks(this IHealthChecksBuilder builder)
     {
         builder.AddTypeActivatedCheck<StartupHealthCheck>("Plumberd Startup Health Check");

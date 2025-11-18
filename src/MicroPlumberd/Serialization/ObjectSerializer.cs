@@ -31,7 +31,7 @@ class OptionJsonConverter<T> : JsonConverter<Option<T>>
     }
 }
 /// <summary>
-/// Json Option factory used to support Option<T> struct deserialization/serialization.
+/// Json Option factory used to support Option&lt;T&gt; struct deserialization/serialization.
 /// </summary>
 /// <seealso cref="System.Text.Json.Serialization.JsonConverterFactory" />
 public class OptionConverterFactory : JsonConverterFactory
@@ -77,45 +77,79 @@ class OptionTypeConverter<T> : TypeConverter
 
 
 /// <summary>
-/// For command/event properties usefull to get rid of property-sourcing.
+/// For command/event properties useful to get rid of property-sourcing.
+/// Represents an optional value that can be defined or undefined.
 /// </summary>
-/// <typeparam name="T"></typeparam>
+/// <typeparam name="T">The type of the optional value.</typeparam>
 public readonly record struct Option<T> 
 {
+    /// <summary>
+    /// Gets an empty (undefined) option.
+    /// </summary>
     public static Option<T> Empty { get; } = new Option<T>();
+
+    /// <summary>
+    /// Gets the value of the option.
+    /// </summary>
     public T Value { get; init; }
+
+    /// <summary>
+    /// Implicitly converts an option to its underlying value.
+    /// </summary>
+    /// <param name="v">The option to convert.</param>
+    /// <exception cref="InvalidOperationException">Thrown when the option is not defined.</exception>
     public static implicit operator T(Option<T> v)
     {
         if (!v.IsDefined) throw new InvalidOperationException("Option was not defined.");
 
         return v.Value;
     }
+
+    /// <summary>
+    /// Implicitly converts a value to an option.
+    /// </summary>
+    /// <param name="value">The value to wrap in an option.</param>
     public static implicit operator Option<T>(T value) => new Option<T>() { Value = value, IsDefined = true };
 
+    /// <summary>
+    /// Gets a value indicating whether the option is defined (has a value).
+    /// </summary>
     public bool IsDefined { get; init; }
 
 }
 
+/// <summary>
+/// JSON-based implementation of IObjectSerializer using System.Text.Json.
+/// </summary>
 public sealed class JsonObjectSerializer : IObjectSerializer
 {
+    /// <summary>
+    /// Gets the default JSON serializer options used by this serializer.
+    /// </summary>
     public static readonly JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };
+
     private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
+
+    /// <inheritdoc/>
     public object? Deserialize(OperationContext context, ReadOnlySpan<byte> span, Type t)
     {
         return JsonSerializer.Deserialize(span, t, Options);
     }
 
+    /// <inheritdoc/>
     public JsonElement ParseMetadata(OperationContext context, ReadOnlySpan<byte> span)
     {
         if(span.Length == 0) return Empty;
         return JsonSerializer.Deserialize<JsonElement>(span, Options);
     }
 
+    /// <inheritdoc/>
     public byte[] Serialize(OperationContext context, object? t)
     {
         return t == null ? Array.Empty<byte>() : JsonSerializer.SerializeToUtf8Bytes(t, t.GetType(), Options);
     }
 
+    /// <inheritdoc/>
     public string ContentType => "application/json";
 }
 class ExpandoObjectConverter : JsonConverter<ExpandoObject>

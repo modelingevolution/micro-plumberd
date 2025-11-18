@@ -45,7 +45,13 @@ public readonly struct Metadata
     /// The source stream position.
     /// </value>
     public long SourceStreamPosition { get; }
+
+    /// <summary>
+    /// Gets the position in the link stream, if this event was read from a projected or linked stream.
+    /// </summary>
+    /// <value>The link stream position, or <c>null</c> if the event was read directly from the source stream.</value>
     public long? LinkStreamPosition { get; }
+
     /// <summary>
     /// Gets the full source stream-id
     /// </summary>

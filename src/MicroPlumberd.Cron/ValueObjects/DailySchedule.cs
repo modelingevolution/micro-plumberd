@@ -2,16 +2,24 @@
 
 namespace MicroPlumberd.Services.Cron;
 
+/// <summary>
+/// Represents a schedule that runs at specific times each day.
+/// </summary>
 [JsonConverter(typeof(ScheduleJsonConverter<DailySchedule>))]
 public class DailySchedule() : Schedule
 {
     private SortedSet<TimeOnly> _items;
+
+    /// <summary>
+    /// Gets or sets the times of day when the job should run.
+    /// </summary>
     public TimeOnly[] Items
     {
         get => _items.ToArray();
         init => _items = new(value);
-    } // e.g., 09:00:00
+    }
 
+    /// <inheritdoc/>
     public override DateTime GetNextRunTime(DateTime currentTime)
     {
         // If no items, return "never"

@@ -1,21 +1,56 @@
 ﻿namespace MicroPlumberd.Services.Identity.Aggregates;
 
+/// <summary>
+/// Aggregate root managing the identity and authentication aspects of a user including password, lockout, and two-factor authentication.
+/// </summary>
 [Aggregate]
 [OutputStream("Identity")]
 public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, IdentityUserAggregate.IdentityUserState>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="IdentityUserAggregate"/> class.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
     public IdentityUserAggregate(UserIdentifier id) : base(id) { }
 
+    /// <summary>
+    /// Represents the state of an identity user including authentication and security settings.
+    /// </summary>
     public readonly record struct IdentityUserState
     {
-        
+        /// <summary>
+        /// Gets the hashed password for the user.
+        /// </summary>
         public string PasswordHash { get; init; }
+
+        /// <summary>
+        /// Gets a value indicating whether two-factor authentication is enabled for this user.
+        /// </summary>
         public bool TwoFactorEnabled { get; init; }
+
+        /// <summary>
+        /// Gets the authenticator key used for two-factor authentication.
+        /// </summary>
         public string AuthenticatorKey { get; init; }
+
+        /// <summary>
+        /// Gets the number of failed access attempts for this user.
+        /// </summary>
         public int AccessFailedCount { get; init; }
+
+        /// <summary>
+        /// Gets a value indicating whether lockout is enabled for this user.
+        /// </summary>
         public bool LockoutEnabled { get; init; }
+
+        /// <summary>
+        /// Gets the date and time when the user's lockout ends. Null if not locked out.
+        /// </summary>
         public DateTimeOffset? LockoutEnd { get; init; }
-        
+
+        /// <summary>
+        /// Gets a value indicating whether this user has been deleted.
+        /// </summary>
         public bool IsDeleted { get; init; }
     }
 
@@ -105,25 +140,32 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return state with { IsDeleted = true };
     }
 
-    // Command methods
+    /// <summary>
+    /// Creates a new identity user aggregate with the specified settings.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
+    /// <param name="passwordHash">The hashed password for the user.</param>
+    /// <param name="lockoutEnabled">Indicates whether lockout should be enabled for this user.</param>
+    /// <returns>A new <see cref="IdentityUserAggregate"/> instance.</returns>
     public static IdentityUserAggregate Create(UserIdentifier id, string passwordHash, bool lockoutEnabled)
     {
         var aggregate = Empty(id);
 
-        
+
         aggregate.AppendPendingChange(new IdentityUserCreated
         {
             PasswordHash = passwordHash,
             LockoutEnabled = lockoutEnabled,
-            
+
         });
 
         return aggregate;
     }
 
     /// <summary>
-    /// Updates the password hash if it has changed
+    /// Changes the password hash for the user if it has actually changed.
     /// </summary>
+    /// <param name="passwordHash">The new hashed password.</param>
     public void ChangePasswordHash(string passwordHash)
     {
         EnsureNotDeleted();
@@ -139,11 +181,11 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         }
     }
 
-    
-
     /// <summary>
-    /// Updates the two-factor enabled setting if it has changed
+    /// Changes the two-factor authentication enabled setting for the user.
     /// </summary>
+    /// <param name="enabled">True to enable two-factor authentication; false to disable it.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to enable 2FA without an authenticator key.</exception>
     public void ChangeTwoFactorEnabled(bool enabled)
     {
         EnsureNotDeleted();
@@ -164,6 +206,11 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         }
     }
 
+    /// <summary>
+    /// Changes the authenticator key for two-factor authentication.
+    /// </summary>
+    /// <param name="authenticatorKey">The new authenticator key. Cannot be null or empty.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="authenticatorKey"/> is null or empty.</exception>
     public void ChangeAuthenticatorKey(string authenticatorKey )
     {
         EnsureNotDeleted();
@@ -182,6 +229,10 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         });
     }
 
+    /// <summary>
+    /// Increments the count of failed access attempts. If lockout is enabled and the threshold is reached, the user will be locked out.
+    /// </summary>
+    /// <returns>The new count of failed access attempts.</returns>
     public int IncrementAccessFailedCount()
     {
         EnsureNotDeleted();
@@ -214,6 +265,9 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         return newCount;
     }
 
+    /// <summary>
+    /// Resets the count of failed access attempts to zero.
+    /// </summary>
     public void ResetAccessFailedCount()
     {
         EnsureNotDeleted();
@@ -229,8 +283,9 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
     }
 
     /// <summary>
-    /// Updates the lockout enabled setting if it has changed
+    /// Changes whether lockout is enabled for the user.
     /// </summary>
+    /// <param name="enabled">True to enable lockout; false to disable it.</param>
     public void ChangeLockoutEnabled(bool enabled)
     {
         EnsureNotDeleted();
@@ -245,6 +300,11 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
         }
     }
 
+    /// <summary>
+    /// Changes the date and time when the user's lockout ends.
+    /// </summary>
+    /// <param name="lockoutEnd">The lockout end date and time. Must be in the future if not null.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="lockoutEnd"/> is not in the future.</exception>
     public void ChangeLockoutEnd(DateTimeOffset? lockoutEnd )
     {
         EnsureNotDeleted();
@@ -267,18 +327,24 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
     }
 
 
+    /// <summary>
+    /// Marks the identity user as deleted.
+    /// </summary>
     public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        
+
 
         AppendPendingChange(new IdentityUserDeleted { });
-        
+
     }
 
-    // Helper methods
+    /// <summary>
+    /// Determines whether the user is currently locked out.
+    /// </summary>
+    /// <returns>True if the user is locked out; otherwise, false.</returns>
     public bool IsLockedOut()
     {
         return State.LockoutEnabled &&

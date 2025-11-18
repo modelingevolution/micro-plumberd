@@ -22,8 +22,17 @@ namespace MicroPlumberd
                 await i.Start();
         }
     }
+    /// <summary>
+    /// Extension methods for configuring process manager services in the dependency injection container.
+    /// </summary>
     public static class ContainerExtensions
     {
+        /// <summary>
+        /// Registers a process manager and its required infrastructure in the service collection.
+        /// </summary>
+        /// <typeparam name="TProcessManager">The type of the process manager to register.</typeparam>
+        /// <param name="services">The service collection.</param>
+        /// <returns>The service collection for method chaining.</returns>
         public static IServiceCollection AddProcessManager<TProcessManager>(this IServiceCollection services) where TProcessManager : IProcessManager, ITypeRegister
         {
             services.TryAddSingleton<IProcessManagerClient, ProcessManagerClient>();
@@ -55,23 +64,36 @@ namespace MicroPlumberd
 
 namespace MicroPlumberd.Services.ProcessManagers
 {
+    /// <summary>
+    /// Implements the process manager client that manages process manager lifecycle, subscriptions, and retrieval.
+    /// </summary>
     public class ProcessManagerClient : IProcessManagerClient
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IPlumber _plumber;
-        
 
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ProcessManagerClient"/> class.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider for resolving dependencies.</param>
+        /// <param name="plumber">The plumber instance for event store operations.</param>
+        /// <param name="bus">The command bus for sending commands.</param>
         public ProcessManagerClient(IServiceProvider serviceProvider, IPlumber plumber, ICommandBus bus)
         {
             _serviceProvider = serviceProvider;
             _plumber = plumber;
-            
+
             Bus = bus;
         }
 
+        /// <inheritdoc />
         public ICommandBus Bus { get; }
+
+        /// <inheritdoc />
         public IPlumber Plumber { get => _plumber; }
 
+        /// <inheritdoc />
         public async Task<IAsyncDisposable> SubscribeProcessManager<TProcessManager>() where TProcessManager : IProcessManager, ITypeRegister
         {
             ProcessManagerExecutor<TProcessManager> executor = new ProcessManagerExecutor<TProcessManager>(this, _serviceProvider.GetRequiredService<ILogger<ProcessManagerExecutor<TProcessManager>>>());
@@ -92,6 +114,7 @@ namespace MicroPlumberd.Services.ProcessManagers
             return Activator.CreateInstance<T>();
         }
 
+        /// <inheritdoc />
         public async Task<TProcessManager> GetManager<TProcessManager>(Guid commandRecipientId) where TProcessManager : IProcessManager, ITypeRegister
         {
             var lookup = new ProcessManagerExecutor<TProcessManager>.Lookup();

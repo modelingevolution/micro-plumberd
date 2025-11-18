@@ -7,15 +7,40 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd.Services.Cron
 {
+    /// <summary>
+    /// Specifies the running mode for the job service.
+    /// </summary>
+    [Flags]
     public enum JobServiceRunningMode
     {
+        /// <summary>
+        /// Client mode only - allows creating and managing job definitions.
+        /// </summary>
         Client = 1,
+
+        /// <summary>
+        /// Server mode only - processes and executes scheduled jobs.
+        /// </summary>
         Server = 2,
+
+        /// <summary>
+        /// Both client and server mode - full job service functionality.
+        /// </summary>
         Both = 3
     }
+
+    /// <summary>
+    /// Provides extension methods for configuring job scheduling services.
+    /// </summary>
     public static class ContainerExtensions
     {
-        public static IServiceCollection AddCron(this IServiceCollection services, 
+        /// <summary>
+        /// Registers job scheduling services with the dependency injection container.
+        /// </summary>
+        /// <param name="services">The service collection to configure.</param>
+        /// <param name="mode">The running mode for the job service. Default is <see cref="JobServiceRunningMode.Both"/>.</param>
+        /// <returns>The service collection for method chaining.</returns>
+        public static IServiceCollection AddCron(this IServiceCollection services,
             JobServiceRunningMode mode = JobServiceRunningMode.Both)
         {
             if (mode.HasFlag(JobServiceRunningMode.Client))
@@ -29,7 +54,7 @@ namespace MicroPlumberd.Services.Cron
                 services.AddHostedService<JobExecutionBackgroundService>();
                 services.AddSingletonEventHandler<JobExecutionProcessor>(start: FromRelativeStreamPosition.End);
                 services.AddSingletonEventHandler<JobDefinitionModel>();
-                
+
                 services.AddSingleton<IJobsScheduler>(sp => sp.GetRequiredService<JobExecutionProcessor>());
                 services.AddSingleton<IJobsMonitor, JobsMonitor>();
             }

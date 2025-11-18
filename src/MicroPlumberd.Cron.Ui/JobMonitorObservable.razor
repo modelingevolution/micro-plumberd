@@ -7,10 +7,18 @@
 
 @code
 {
+    /// <summary>
+    /// Gets or sets the child content to be rendered within this component's cascading value context.
+    /// This allows child components to access the JobMonitorObservable instance as a cascading parameter.
+    /// </summary>
     [Parameter]
     public RenderFragment ChildContent { get; set; }
 
-    [Parameter] 
+    /// <summary>
+    /// Gets or sets the refresh period in milliseconds for automatic UI updates.
+    /// Default value is 1000 milliseconds (1 second).
+    /// </summary>
+    [Parameter]
     public int RefreshPeriod { get; set; } = 1000;
 
     private Timer _timer; // bacause we have seconds.
@@ -25,6 +33,9 @@
 
     private void OnRefresh(object? state) => InvokeAsync(StateHasChanged);
 
+    /// <summary>
+    /// Disposes resources used by this component, including the refresh timer and monitor event subscriptions.
+    /// </summary>
     public void Dispose()
     {
         _timer.Dispose();

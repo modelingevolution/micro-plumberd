@@ -2,11 +2,18 @@
 
 namespace MicroPlumberd.Services.Cron;
 
+/// <summary>
+/// Represents a schedule that runs at regular time intervals.
+/// </summary>
 [JsonConverter(typeof(ScheduleJsonConverter<IntervalSchedule>))]
 public class IntervalSchedule : Schedule
 {
-    public TimeSpan Interval { get; init; } // e.g., Minutes
+    /// <summary>
+    /// Gets or sets the time interval between job executions.
+    /// </summary>
+    public TimeSpan Interval { get; init; }
 
+    /// <inheritdoc/>
     public override DateTime GetNextRunTime(DateTime currentTime)
     {
         // If no start time, assume schedule starts at current time

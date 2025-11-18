@@ -43,11 +43,23 @@ else
 @code {
     private IItem? context;
 
+    /// <summary>
+    /// Gets or sets the unique identifier of the job definition to display status for.
+    /// </summary>
     [Parameter]
     public Guid JobDefinitionId { get; set; }
 
-    [Parameter] public bool StatusEnabled { get; set; } = true;
+    /// <summary>
+    /// Gets or sets whether to display the textual status alongside the visual indicator.
+    /// Default value is true.
+    /// </summary>
+    [Parameter]
+    public bool StatusEnabled { get; set; } = true;
 
+    /// <summary>
+    /// Gets or sets the parent JobMonitorObservable component when this component is nested within one.
+    /// When null, the component creates its own JobMonitorObservable wrapper.
+    /// </summary>
     [CascadingParameter]
     public JobMonitorObservable? Parent { get; set; }
 

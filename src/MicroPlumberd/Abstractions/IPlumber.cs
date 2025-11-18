@@ -23,8 +23,18 @@ public interface ISnapshot
     long Version { get; }
 }
 
+/// <summary>
+/// Represents the state of a subscription runner containing a value and its associated metadata.
+/// </summary>
+/// <typeparam name="T">The type of the value.</typeparam>
+/// <param name="Value">The current value.</param>
+/// <param name="Metadata">The metadata associated with this value.</param>
 public record SubscriptionRunnerState<T>(T Value, Metadata Metadata)
 {
+    /// <summary>
+    /// Implicitly converts a <see cref="SubscriptionRunnerState{T}"/> to its underlying value.
+    /// </summary>
+    /// <param name="st">The subscription runner state to convert.</param>
     public static implicit operator T?(SubscriptionRunnerState<T>? st) => st != null ? st.Value : default;
 }
 /// <summary>
@@ -66,13 +76,21 @@ public sealed record Snapshot<T> : Snapshot, ISnapshot
     }
 }
 
+/// <summary>
+/// Represents the main interface for interacting with the Plumber event sourcing engine.
+/// Provides methods for managing aggregates, events, and subscriptions.
+/// </summary>
 public interface IPlumber : IPlumberApi
 {
-    
+
 }
 
+/// <summary>
+/// Represents an instance-specific interface for interacting with the Plumber event sourcing engine.
+/// Used for scoped operations within a specific context or session.
+/// </summary>
 public interface IPlumberInstance : IPlumberApi
 {
-    
+
 }
 

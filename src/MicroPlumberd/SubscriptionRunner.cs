@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd;
 
-
+/// <summary>
+/// Represents the state of a subscription runner.
+/// </summary>
 record SubscriptionRunnerState : IDisposable
 {
     private IDisposable? _subscription;
@@ -118,13 +120,24 @@ class SubscriptionSeeker(PlumberEngine plumber, string streamName, FromRelativeS
     public async ValueTask DisposeAsync() => await _runner.DisposeAsync();
 }
 
+/// <summary>
+/// Exception thrown when an error requires immediate application shutdown.
+/// </summary>
 public class FailFastException : Exception
 {
+    /// <summary>
+    /// Initializes a new instance of the FailFastException class.
+    /// </summary>
     public FailFastException()
     {
-        
+
     }
 
+    /// <summary>
+    /// Initializes a new instance of the FailFastException class with a specified error message and inner exception.
+    /// </summary>
+    /// <param name="msg">The error message.</param>
+    /// <param name="inner">The inner exception.</param>
     public FailFastException(string msg, Exception inner) : base(msg,inner)
     {
         

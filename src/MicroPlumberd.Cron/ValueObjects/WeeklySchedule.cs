@@ -2,9 +2,15 @@
 
 namespace MicroPlumberd.Services.Cron;
 
+/// <summary>
+/// Represents a schedule that runs at specific days and times each week.
+/// </summary>
 [JsonConverter(typeof(ScheduleJsonConverter<WeeklySchedule>))]
 public class WeeklySchedule : Schedule
 {
+    /// <summary>
+    /// Gets or sets the weekly schedule items defining days and times.
+    /// </summary>
     public WeeklyScheduleItem[] Items
     {
         get => _items.ToArray();
@@ -12,6 +18,7 @@ public class WeeklySchedule : Schedule
     }
     private SortedSet<WeeklyScheduleItem> _items;
 
+    /// <inheritdoc/>
     public override DateTime GetNextRunTime(DateTime currentTime)
     {
         if (_items.Count == 0)

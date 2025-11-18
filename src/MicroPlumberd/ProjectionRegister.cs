@@ -3,8 +3,16 @@ using Grpc.Core;
 
 namespace MicroPlumberd;
 
+/// <summary>
+/// Provides caching and retrieval of EventStore projection details.
+/// </summary>
 public interface IProjectionRegister
 {
+    /// <summary>
+    /// Gets the projection details for the specified projection name.
+    /// </summary>
+    /// <param name="name">The name of the projection.</param>
+    /// <returns>The projection details if found; otherwise, null.</returns>
     Task<ProjectionDetails?> Get(string name);
 }
 

@@ -4,8 +4,18 @@ using Microsoft.Win32;
 
 namespace MicroPlumberd;
 
+/// <summary>
+/// Provides extension methods for EventStoreProjectionManagementClient to simplify projection management.
+/// </summary>
 public static class EventStoreProjectionManagementClientExtensions
 {
+    /// <summary>
+    /// Attempts to create or update a join projection in the EventStore.
+    /// </summary>
+    /// <param name="client">The projection management client.</param>
+    /// <param name="outputStream">The name of the output stream.</param>
+    /// <param name="eventTypes">The event types to include in the projection.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public static async Task TryCreateJoinProjection(this EventStoreProjectionManagementClient client,
         string outputStream, IEnumerable<string> eventTypes)
     {

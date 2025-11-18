@@ -9,6 +9,10 @@ using ProtoBuf.Serializers;
 
 namespace MicroPlumberd.Protobuf
 {
+    /// <summary>
+    /// Provides Protocol Buffers (protobuf) based serialization for event data and metadata.
+    /// Uses protobuf-net for efficient binary serialization with fallback to JSON for dynamic objects.
+    /// </summary>
     public class ProtoBuffObjectSerialization : IObjectSerializer
     {
 
@@ -35,7 +39,12 @@ namespace MicroPlumberd.Protobuf
         }
         private static readonly ConcurrentDictionary<Type, ISerializer> _serializes =
             new ConcurrentDictionary<Type, ISerializer>();
+
+        /// <summary>
+        /// Gets the JSON serializer options with support for ExpandoObject serialization.
+        /// </summary>
         public static JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter() } };
+
         private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
 
         static ProtoBuffObjectSerialization()
@@ -50,20 +59,41 @@ namespace MicroPlumberd.Protobuf
             //type2.AddField(1, "CommandId");
             //type2.AddField(2, "Duration");
         }
+
+        /// <summary>
+        /// Deserializes the specified byte span into an object of the given type using protobuf-net.
+        /// </summary>
+        /// <param name="context">The operation context containing request-scoped information.</param>
+        /// <param name="span">The byte span containing the serialized event data.</param>
+        /// <param name="t">The target type to deserialize into.</param>
+        /// <returns>The deserialized object, or <c>null</c> if the span is empty.</returns>
         public object? Deserialize(OperationContext context, ReadOnlySpan<byte> span, Type t)
         {
             return Serializer.NonGeneric.Deserialize(t, span);
         }
 
+        /// <summary>
+        /// Parses the metadata byte span into a <see cref="JsonElement"/> using JSON deserialization.
+        /// </summary>
+        /// <param name="context">The operation context containing request-scoped information.</param>
+        /// <param name="span">The byte span containing the serialized metadata.</param>
+        /// <returns>A <see cref="JsonElement"/> representing the parsed metadata, or an empty JSON object if the span is empty.</returns>
         public JsonElement ParseMetadata(OperationContext context, ReadOnlySpan<byte> span)
         {
             if (span.Length == 0) return Empty;
             return JsonSerializer.Deserialize<JsonElement>(span, Options);
         }
 
+        /// <summary>
+        /// Serializes the specified object into a byte array using protobuf-net.
+        /// Uses JSON serialization for <see cref="ExpandoObject"/> instances.
+        /// </summary>
+        /// <param name="context">The operation context containing request-scoped information.</param>
+        /// <param name="t">The object to serialize.</param>
+        /// <returns>A byte array containing the serialized object data.</returns>
         public byte[] Serialize(OperationContext context, object? t)
         {
-            
+
             return _serializes.GetOrAdd(t.GetType(),
                 x =>
                 {
@@ -72,6 +102,12 @@ namespace MicroPlumberd.Protobuf
                 }).Serialize(t);
         }
 
+        /// <summary>
+        /// Gets the content type for protobuf serialization.
+        /// </summary>
+        /// <value>
+        /// Returns "application/octet-stream" for binary protobuf data.
+        /// </value>
         public string ContentType => "application/octet-stream";
     }
 }

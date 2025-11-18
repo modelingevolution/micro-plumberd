@@ -47,13 +47,27 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     public EventStoreProjectionManagementClient ProjectionManagementClient { get; }
 
     /// <summary>
+    /// Gets the service provider for dependency injection.
     /// </summary>
     public IServiceProvider ServiceProvider { get; }
 
+    /// <inheritdoc/>
     public Task<ErrorHandleDecision> HandleError(Exception ex,OperationContext context, CancellationToken t) => _errorHandle(ex, context, t);
+
+    /// <inheritdoc/>
     public Func<Type, IObjectSerializer> SerializerFactory { get; }
+
+    /// <inheritdoc/>
     public IReadOnlyConventions Conventions { get; }
 
+    /// <summary>
+    /// Creates a subscription to a stream starting from the specified position.
+    /// </summary>
+    /// <param name="streamName">The name of the stream to subscribe to.</param>
+    /// <param name="start">The starting position for the subscription.</param>
+    /// <param name="userCredentials">Optional user credentials.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A subscription runner for handling events.</returns>
     public ISubscriptionRunner Subscribe(string streamName, FromRelativeStreamPosition start,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     {
@@ -63,6 +77,18 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return new SubscriptionSeeker(this, streamName, start, userCredentials, cancellationToken);
     }
 
+    /// <summary>
+    /// Subscribes an event handler to a stream with custom event type mapping.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler.</typeparam>
+    /// <param name="mapFunc">Function to map event names to types.</param>
+    /// <param name="eventTypes">Collection of event type names to subscribe to.</param>
+    /// <param name="eh">Optional event handler instance.</param>
+    /// <param name="outputStream">Optional output stream name.</param>
+    /// <param name="start">Optional starting position.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>A disposable subscription.</returns>
     public Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes,
         TEventHandler? eh = null, string? outputStream = null, FromStream? start = null,
@@ -121,6 +147,17 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(),
             eh, outputStream, start, ensureOutputStreamProjection, token);
     }
+
+    /// <summary>
+    /// Subscribes an event handler to state snapshot events.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler.</typeparam>
+    /// <param name="eh">Optional event handler instance.</param>
+    /// <param name="outputStream">Optional output stream name.</param>
+    /// <param name="start">Optional starting position.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription.</returns>
     public async Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(TEventHandler? eh = null,
         string? outputStream = null,
         FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,
@@ -150,6 +187,19 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             await sub.WithSnapshotHandler(eh);
         return sub;
     }
+
+    /// <summary>
+    /// Subscribes an event handler to a stream with custom event type mapping.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler.</typeparam>
+    /// <param name="mapFunc">Function to map event names to types.</param>
+    /// <param name="eventTypes">Collection of event type names to subscribe to.</param>
+    /// <param name="eh">Optional event handler instance.</param>
+    /// <param name="outputStream">Optional output stream name.</param>
+    /// <param name="start">Optional starting position.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription.</returns>
     public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? eventTypes, TEventHandler? eh = default, string? outputStream = null,
         FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true, CancellationToken token = default)
@@ -168,11 +218,25 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return sub;
     }
 
+    /// <summary>
+    /// Subscribes an event handler persistently with at-least-once delivery semantics.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler.</typeparam>
+    /// <param name="mapFunc">Function to map event names to types.</param>
+    /// <param name="events">Collection of event type names to subscribe to.</param>
+    /// <param name="model">Optional event handler instance.</param>
+    /// <param name="outputStream">Optional output stream name.</param>
+    /// <param name="groupName">Optional persistent subscription group name.</param>
+    /// <param name="startFrom">Optional starting position.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists.</param>
+    /// <param name="minCheckpointCount">Minimum checkpoint count for the persistent subscription.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription.</returns>
     public async Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TypeEventConverter mapFunc,
         IEnumerable<string>? events,
         TEventHandler? model,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
-        bool ensureOutputStreamProjection = true, 
+        bool ensureOutputStreamProjection = true,
         int minCheckpointCount = 1,
         CancellationToken token = default)
         where TEventHandler : class, IEventHandler
@@ -203,6 +267,18 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return sub;
     }
 
+    /// <summary>
+    /// Subscribes an event handler persistently with at-least-once delivery semantics.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler.</typeparam>
+    /// <param name="model">Optional event handler instance.</param>
+    /// <param name="outputStream">Optional output stream name.</param>
+    /// <param name="groupName">Optional persistent subscription group name.</param>
+    /// <param name="startFrom">Optional starting position.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists.</param>
+    /// <param name="minCheckPointCount">Minimum checkpoint count for the persistent subscription.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription.</returns>
     public Task<IAsyncDisposable> SubscribeEventHandlerPersistently<TEventHandler>(TEventHandler? model=null,
         string? outputStream = null, string? groupName = null, IPosition? startFrom = null,
         bool ensureOutputStreamProjection = true, int minCheckPointCount = 1, CancellationToken token = default)
@@ -213,8 +289,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             model, outputStream, groupName, startFrom, ensureOutputStreamProjection, minCheckPointCount, token);
     }
 
-
-    public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10, 
+    /// <summary>
+    /// Creates a persistent subscription to a stream with at-least-once delivery semantics.
+    /// </summary>
+    /// <param name="streamName">The name of the stream to subscribe to.</param>
+    /// <param name="groupName">The persistent subscription group name.</param>
+    /// <param name="bufferSize">The buffer size for the subscription.</param>
+    /// <param name="userCredentials">Optional user credentials.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A subscription runner for handling events.</returns>
+    public ISubscriptionRunner SubscribePersistently(string streamName, string groupName, int bufferSize = 10,
         UserCredentials? userCredentials = null, CancellationToken cancellationToken = default)
     {
         return new PersistentSubscriptionRunner(this,
@@ -222,6 +306,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
                 cancellationToken));
     }
 
+    /// <summary>
+    /// Rehydrates a model by replaying events from a stream identified by an aggregate ID.
+    /// </summary>
+    /// <typeparam name="T">The type of model to rehydrate.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <param name="model">The model instance to rehydrate.</param>
+    /// <param name="id">The aggregate ID.</param>
+    /// <param name="position">Optional starting position in the stream.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task Rehydrate<T>(OperationContext context, T model,  Guid id, StreamPosition? position = null, CancellationToken token = default)
         where T : IEventHandler, ITypeRegister
     {
@@ -229,12 +323,34 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         await Rehydrate(context,model, streamId, position, token);
     }
 
+    /// <summary>
+    /// Rehydrates a model by replaying events from the specified stream.
+    /// </summary>
+    /// <typeparam name="T">The type of model to rehydrate.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <param name="model">The model instance to rehydrate.</param>
+    /// <param name="streamId">The stream ID.</param>
+    /// <param name="position">Optional starting position in the stream.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task Rehydrate<T>(OperationContext context, T model, string streamId, StreamPosition? position = null, CancellationToken token = default)
         where T : IEventHandler, ITypeRegister
     {
         TypeEventConverter registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
         await Rehydrate(context,model, streamId, registry, position, token);
     }
+
+    /// <summary>
+    /// Rehydrates a model by replaying events from the specified stream using a custom type converter.
+    /// </summary>
+    /// <typeparam name="T">The type of model to rehydrate.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <param name="model">The model instance to rehydrate.</param>
+    /// <param name="streamId">The stream ID.</param>
+    /// <param name="converter">Function to convert event names to types.</param>
+    /// <param name="position">Optional starting position in the stream.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task Rehydrate<T>(OperationContext context, T model, string streamId, TypeEventConverter converter, StreamPosition? position = null, CancellationToken token = default)
         where T : IEventHandler
     {
@@ -255,12 +371,33 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         }
     }
 
+    /// <summary>
+    /// Finds an event in a stream by its event ID.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="streamId">The stream ID to search.</param>
+    /// <param name="id">The event ID to find.</param>
+    /// <param name="eventMapping">Function to map event names to types.</param>
+    /// <param name="scanDirection">The direction to scan the stream.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>The event record if found; otherwise, null.</returns>
     public async Task<IEventRecord?> FindEventInStream(OperationContext context, string streamId, Guid id,
         TypeEventConverter eventMapping, Direction scanDirection = Direction.Backwards, CancellationToken token = default)
     {
         return await FindEventInStream<object>(context,streamId, id, eventMapping, scanDirection, token);
     }
 
+    /// <summary>
+    /// Finds a typed event in a stream by its event ID.
+    /// </summary>
+    /// <typeparam name="TEvent">The type of event to find.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <param name="streamId">The stream ID to search.</param>
+    /// <param name="id">The event ID to find.</param>
+    /// <param name="eventMapping">Optional function to map event names to types.</param>
+    /// <param name="scanDirection">The direction to scan the stream.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>The typed event record if found; otherwise, null.</returns>
     public async Task<IEventRecord<TEvent>?> FindEventInStream<TEvent>(OperationContext context, string streamId, Guid id,
         TypeEventConverter? eventMapping = null, Direction scanDirection = Direction.Backwards, CancellationToken token = default)
     {
@@ -293,6 +430,10 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return null;
     }
 
+    /// <summary>
+    /// Creates a subscription set for composing multiple event handlers.
+    /// </summary>
+    /// <returns>A subscription set builder.</returns>
     public IEngineSubscriptionSet SubscribeSet()
     {
         return new SubscriptionSet(this);
@@ -788,6 +929,11 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return (T)_extension.GetOrAdd(typeof(T), x => new T());
     }
 
+    /// <summary>
+    /// Gets a serializer for the specified type.
+    /// </summary>
+    /// <param name="t">The type to serialize.</param>
+    /// <returns>An object serializer instance.</returns>
     private IObjectSerializer Serializer(Type t)
     {
         return _serializers.GetOrAdd(t, SerializerFactory);
@@ -852,14 +998,45 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     }
 }
 
+/// <summary>
+/// Represents stream metadata configuration for EventStore streams.
+/// </summary>
 public readonly record struct StreamMetadata
 {
+    /// <summary>
+    /// Gets the maximum age for events in the stream.
+    /// </summary>
     public TimeSpan? MaxAge { get; init; }
+
+    /// <summary>
+    /// Gets the position before which events will be truncated.
+    /// </summary>
     public StreamPosition? TruncateBefore { get; init; }
-    public TimeSpan? CacheControl { get; init; } 
+
+    /// <summary>
+    /// Gets the cache control duration for the stream metadata.
+    /// </summary>
+    public TimeSpan? CacheControl { get; init; }
+
+    /// <summary>
+    /// Gets the access control list for the stream.
+    /// </summary>
     public StreamAcl? Acl { get; init; }
+
+    /// <summary>
+    /// Gets the maximum number of events allowed in the stream.
+    /// </summary>
     public int? MaxCount { get; init; }
+
+    /// <summary>
+    /// Gets custom metadata as a JSON document.
+    /// </summary>
     public JsonDocument? Custom { get; init; }
+
+    /// <summary>
+    /// Implicitly converts MicroPlumberd StreamMetadata to EventStore StreamMetadata.
+    /// </summary>
+    /// <param name="m">The MicroPlumberd stream metadata.</param>
     public static implicit operator EventStore.Client.StreamMetadata(StreamMetadata m)
     {
         return new EventStore.Client.StreamMetadata(m.MaxCount, m.MaxAge, m.TruncateBefore, m.CacheControl, m.Acl, m.Custom);

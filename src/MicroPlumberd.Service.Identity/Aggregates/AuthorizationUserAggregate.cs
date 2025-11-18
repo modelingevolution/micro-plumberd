@@ -3,23 +3,53 @@ using System.Security.Claims;
 
 namespace MicroPlumberd.Services.Identity.Aggregates;
 
+/// <summary>
+/// Aggregate root managing user authorization including roles and claims.
+/// </summary>
 [Aggregate]
 [OutputStream("Authorization")]
 public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, AuthorizationUserAggregate.AuthorizationUserState>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthorizationUserAggregate"/> class.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
     public AuthorizationUserAggregate(UserIdentifier id) : base(id) { }
 
+    /// <summary>
+    /// Represents the authorization state of a user including their roles and claims.
+    /// </summary>
     public record AuthorizationUserState
     {
+        /// <summary>
+        /// Gets the list of role identifiers assigned to the user.
+        /// </summary>
         public ImmutableList<RoleIdentifier> Roles { get; init; } = ImmutableList<RoleIdentifier>.Empty;
+
+        /// <summary>
+        /// Gets the list of claims assigned to the user.
+        /// </summary>
         public ImmutableList<ClaimRecord> Claims { get; init; } = ImmutableList<ClaimRecord>.Empty;
-        
+
+        /// <summary>
+        /// Gets a value indicating whether this user's authorization profile has been deleted.
+        /// </summary>
         public bool IsDeleted { get; init; }
     }
 
+    /// <summary>
+    /// Represents a claim record with type and value.
+    /// </summary>
     public record ClaimRecord
     {
+        /// <summary>
+        /// Gets the type of the claim.
+        /// </summary>
         public ClaimType Type { get; init; }
+
+        /// <summary>
+        /// Gets the value of the claim.
+        /// </summary>
         public ClaimValue Value { get; init; }
     }
 

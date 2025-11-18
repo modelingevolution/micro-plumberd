@@ -103,6 +103,10 @@ public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>,
     /// Gets or sets the list of pending events for the aggregate.
     /// </summary>
     public IReadOnlyList<object> PendingEvents => _pendingEvents;
+
+    /// <summary>
+    /// Gets a value indicating whether the aggregate has uncommitted pending changes.
+    /// </summary>
     public bool HasPendingChanges => _pendingEvents.Count > 0;
 
 

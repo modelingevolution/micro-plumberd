@@ -72,7 +72,8 @@ public interface IServicesConvention
     /// </summary>
     SessionStreamFromSessionId SessionOutStreamFromSessionIdConvention { get; set; }
     /// <summary>
-    /// Used only for manual subscribing: plumberd.SubscribeCommandHandler<THandler>()
+    /// Gets or sets a delegate that determines whether handler execution is persistent for manual subscriptions.
+    /// Used only for manual subscribing operations like plumberd.SubscribeCommandHandler.
     /// </summary>
     IsHandlerExecutionPersistent IsHandlerExecutionPersistent { get; set; }
     /// <summary>

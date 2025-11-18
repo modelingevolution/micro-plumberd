@@ -10,6 +10,11 @@ public class AggregateAttribute : Attribute
 {
     private int _snapshotEvery = -1;
     private long _snapshotAfter = -1;
+
+    /// <summary>
+    /// Gets or sets the snapshot policy type used to determine when snapshots should be created.
+    /// </summary>
+    /// <value>The type implementing <see cref="ISnapshotPolicy"/> that controls snapshot creation.</value>
     public Type? SnaphotPolicy { get; set; }
 
     /// <summary>
@@ -45,5 +50,11 @@ public class AggregateAttribute : Attribute
 /// <typeparam name="T"></typeparam>
 public interface ISnapshotPolicy<in T> : ISnapshotPolicy
 {
+    /// <summary>
+    /// Determines whether a snapshot should be created for the specified aggregate.
+    /// </summary>
+    /// <param name="aggregate">The aggregate to evaluate.</param>
+    /// <param name="info">Optional state information about the aggregate.</param>
+    /// <returns><c>true</c> if a snapshot should be created; otherwise, <c>false</c>.</returns>
     bool ShouldMakeSnapshot(T aggregate, StateInfo? info);
 }

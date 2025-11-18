@@ -22,8 +22,20 @@ class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TO
         await scope.ServiceProvider.GetRequiredService<TOwner>().Handle(m, ev);
     }
 }
+/// <summary>
+/// Provides extension methods for registering MicroPlumberd services with the dependency injection container.
+/// </summary>
 public static class ContainerExtensions
 {
+    /// <summary>
+    /// Adds MicroPlumberd services to the specified service collection.
+    /// </summary>
+    /// <param name="collection">The service collection to add services to.</param>
+    /// <param name="settings">The EventStore client settings. If null, default settings will be used.</param>
+    /// <param name="configure">An optional action to configure the plumber configuration.</param>
+    /// <param name="scopedCommandBus">If true, registers the command bus as scoped; otherwise, as singleton.</param>
+    /// <param name="commandBusPoolSize">The size of the command bus pool for QueueAsync operations. Defaults to 64.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
         EventStoreClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false, int commandBusPoolSize = 64) =>
         collection.AddPlumberd(sp => settings, configure, scopedCommandBus, commandBusPoolSize);
@@ -98,6 +110,12 @@ public static class ContainerExtensions
         return collection;
     }
 
+    /// <summary>
+    /// Adds a background service to the service collection if it hasn't been added already.
+    /// </summary>
+    /// <typeparam name="TService">The type of background service to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddBackgroundServiceIfMissing<TService>(this IServiceCollection services)
         where TService : BackgroundService
     {
@@ -108,22 +126,49 @@ public static class ContainerExtensions
 
         // Add the service if it's missing
         if (serviceDescriptor != null) return services;
-        
+
         services.TryAddSingleton<TService>();
         services.AddHostedService(sp => sp.GetRequiredService<TService>());
 
         return services;
     }
+
+    /// <summary>
+    /// Adds a scoped event handler to the service collection.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from. If null, defaults to the start of the stream.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddScopedEventHandler<TEventHandler>(this IServiceCollection services,
         bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return services.AddScoped<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start);
     }
+
+    /// <summary>
+    /// Adds a singleton event handler to the service collection.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from. If null, defaults to the start of the stream.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
         bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return services.AddSingleton<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start);
     }
+
+    /// <summary>
+    /// Adds an event handler to the service collection with automatic subscription configuration.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from. If null, defaults to the start of the stream.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
@@ -132,14 +177,29 @@ public static class ContainerExtensions
         services.TryAddScoped<TEventHandler>();
         return services;
     }
+
+    /// <summary>
+    /// Adds a state event handler that reads from the end of the stream minus one event.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddStateEventHandler<TEventHandler>(this IServiceCollection services) where TEventHandler : class, IEventHandler, ITypeRegister
-    {   
+    {
         services.AddSingleton<EventStateHandlerStarter<TEventHandler>>();
         services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventStateHandlerStarter<TEventHandler>>().Configure(FromRelativeStreamPosition.End-1));
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
         services.TryAddScoped<TEventHandler>();
         return services;
     }
+
+    /// <summary>
+    /// Adds an event handler to the service collection with a specific relative stream position.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="start">The relative stream position to start reading from.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
@@ -149,16 +209,40 @@ public static class ContainerExtensions
         return services;
     }
 
+    /// <summary>
+    /// Adds a scoped event handler to the service collection with a specific relative stream position.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="start">The relative stream position to start reading from.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddScopedEventHandler<TEventHandler>(this IServiceCollection services,
         FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return services.AddScoped<TEventHandler>().AddEventHandler<TEventHandler>(start);
     }
+
+    /// <summary>
+    /// Adds a singleton event handler to the service collection with a specific relative stream position.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="start">The relative stream position to start reading from.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
         FromRelativeStreamPosition start) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return services.AddSingleton<TEventHandler>().AddEventHandler<TEventHandler>(start);
     }
+
+    /// <summary>
+    /// Adds a scoped command handler to the service collection.
+    /// </summary>
+    /// <typeparam name="TCommandHandler">The type of command handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from. If null, defaults to the end of the stream.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddScopedCommandHandler<TCommandHandler>(this IServiceCollection services,
         bool persistently = false, StreamPosition? start = null)
         where TCommandHandler : class, ICommandHandler, IServiceTypeRegister
@@ -167,6 +251,15 @@ public static class ContainerExtensions
             .AddScoped<TCommandHandler>()
             .AddCommandHandler<TCommandHandler>(persistently, start);
     }
+
+    /// <summary>
+    /// Adds a singleton command handler to the service collection.
+    /// </summary>
+    /// <typeparam name="TCommandHandler">The type of command handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from. If null, defaults to the end of the stream.</param>
+    /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddSingletonCommandHandler<TCommandHandler>(this IServiceCollection services,
         bool persistently = false, StreamPosition? start = null)
         where TCommandHandler : class, ICommandHandler, IServiceTypeRegister
@@ -176,15 +269,24 @@ public static class ContainerExtensions
             .AddCommandHandler<TCommandHandler>(persistently, start,false);
     }
 
-    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services, 
+    /// <summary>
+    /// Adds a command handler to the service collection with automatic subscription configuration.
+    /// </summary>
+    /// <typeparam name="TCommandHandler">The type of command handler to add.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from. If null, defaults to the end of the stream.</param>
+    /// <param name="scopedExecutor">If true, creates a scoped executor; otherwise, uses a singleton executor.</param>
+    /// <returns>The service collection for method chaining.</returns>
+    public static IServiceCollection AddCommandHandler<TCommandHandler>(this IServiceCollection services,
         bool persistently = false, StreamPosition? start = null, bool scopedExecutor = true) where TCommandHandler:ICommandHandler, IServiceTypeRegister
     {
         Type t = typeof(TCommandHandler);
         services.AddSingleton<CommandHandlerStarter<TCommandHandler>>();
         services.AddSingleton<ICommandHandlerStarter>(sp => sp.GetRequiredService<CommandHandlerStarter<TCommandHandler>>().Configure(persistently, start, scopedExecutor));
-        
+
         services.AddSingleton(typeof(EventHandlerRootExecutor<>).MakeGenericType(t));
-        
+
         services.TryAddSingleton(typeof(ICommandHandleExecutor<>).MakeGenericType(t),
             scopedExecutor
             ? typeof(CommandHandlerScopedExecutor<>).MakeGenericType(t)

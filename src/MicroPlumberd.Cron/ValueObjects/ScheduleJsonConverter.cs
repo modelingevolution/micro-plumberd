@@ -4,9 +4,13 @@ using System.Text.Json.Serialization;
 
 namespace MicroPlumberd.Services.Cron;
 
-
+/// <summary>
+/// JSON converter for polymorphic schedule types using a type discriminator.
+/// </summary>
+/// <typeparam name="T">The schedule type to convert.</typeparam>
 public class ScheduleJsonConverter<T> : JsonConverter<T> where T:Schedule
 {
+    /// <inheritdoc/>
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // Parse the JSON into a JsonDocument to inspect the "type" property
@@ -102,6 +106,7 @@ public class ScheduleJsonConverter<T> : JsonConverter<T> where T:Schedule
         };
     }
 
+    /// <inheritdoc/>
     public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();

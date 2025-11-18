@@ -13,8 +13,14 @@ class PublicCertificate
     public byte[] Data { get; set; }
 }
 
+/// <summary>
+/// Exception thrown when a certificate for a specified recipient cannot be found.
+/// </summary>
 public class CertificateNotFoundException : Exception
 {
+    /// <summary>
+    /// Gets or initializes the name of the recipient whose certificate was not found.
+    /// </summary>
     public string Recipient { get; init; }
 }
 

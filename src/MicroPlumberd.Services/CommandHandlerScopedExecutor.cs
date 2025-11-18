@@ -53,8 +53,8 @@ static class CommandHandlerExecutor
     /// Creates chain for command handler executors.
     /// </summary>
     /// <param name="plumber">plumber instance</param>
-    /// <param name="t">Type fo the handler</param>
-    /// <returns></returns> <summary>
+    /// <param name="t">Type of the handler</param>
+    /// <returns>An event handler that wraps the command handler execution logic.</returns>
     public static IEventHandler Create(PlumberEngine plumber, Type t)
     {
         var executorType = typeof(EventHandlerRootExecutor<>).MakeGenericType(t);
@@ -62,65 +62,161 @@ static class CommandHandlerExecutor
     }
   
 }
+/// <summary>
+/// Provides operation context properties specific to command and event handling in the services layer.
+/// </summary>
 public static class OperationServiceContextProperties
 {
+    /// <summary>
+    /// Gets the operation context property key for the session ID.
+    /// </summary>
     public static readonly OperationContextProperty SessionId = "SessionId";
+
+    /// <summary>
+    /// Gets the operation context property key for the recipient ID.
+    /// </summary>
     public static readonly OperationContextProperty RecipientId = "RecipientId";
 
+    /// <summary>
+    /// Gets the operation context property key for the command handler instance.
+    /// </summary>
     public static readonly OperationContextProperty CommandHandler =
         new OperationContextProperty("CommandHandler", false);
 
+    /// <summary>
+    /// Gets the operation context property key for the command ID.
+    /// </summary>
     public static readonly OperationContextProperty CommandId = new OperationContextProperty("CommandId", false);
+
+    /// <summary>
+    /// Gets the operation context property key for the command object.
+    /// </summary>
     public static readonly OperationContextProperty Command = new OperationContextProperty("Command", false);
+
+    /// <summary>
+    /// Gets the operation context property key for the command name.
+    /// </summary>
     public static readonly OperationContextProperty CommandName = new OperationContextProperty("CommandName", false);
 
 }
+
+/// <summary>
+/// Provides extension methods for working with operation context in command and event handling scenarios.
+/// </summary>
 public static class StandardOperationContextExtensions
 {
-   
-    
+
+
     internal static void OnCommandHandlerBegin(OperationContext context) { }
     internal static void OnCommandHandlerEnd(OperationContext context) { }
 
     internal static void OnEventHandlerBegin(OperationContext context) { }
     internal static void OnEventHandlerEnd(OperationContext context) { }
 
+    /// <summary>
+    /// Retrieves the session ID from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The session ID if present; otherwise, null.</returns>
     public static Guid? GetSessionId(this OperationContext context) => context.TryGetValue<Guid>(OperationServiceContextProperties.SessionId, out var id) ? id : null;
 
-       public static void SetSessionId(this OperationContext context, Guid? id)
+    /// <summary>
+    /// Sets the session ID in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="id">The session ID to set.</param>
+    public static void SetSessionId(this OperationContext context, Guid? id)
     {
         if (id.HasValue)
             context.SetValue(OperationServiceContextProperties.SessionId, id.Value);
     }
+
+    /// <summary>
+    /// Retrieves the recipient ID from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The recipient ID if present; otherwise, null.</returns>
     public static string? GetRecipientId(this OperationContext context) => context.TryGetValue<string>(OperationServiceContextProperties.RecipientId, out var id) ? id : null;
 
+    /// <summary>
+    /// Sets the recipient ID in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="id">The recipient ID to set.</param>
     public static void SetRecipientId(this OperationContext context, string? id)
     {
         if (!string.IsNullOrEmpty(id))
             context.SetValue(OperationServiceContextProperties.RecipientId, id);
     }
+
+    /// <summary>
+    /// Retrieves the command handler instance from the operation context.
+    /// </summary>
+    /// <typeparam name="T">The type of command handler to retrieve.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The command handler instance if present; otherwise, null.</returns>
     public static T? GetCommandHandler<T>(this OperationContext context) => context.TryGetValue<T>(OperationServiceContextProperties.CommandHandler, out var handler) ? handler : default(T);
 
+    /// <summary>
+    /// Sets the command handler instance in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="handler">The command handler instance to set.</param>
     public static void SetCommandHandler(this OperationContext context, object? handler)
     {
         if (handler != null)
             context.SetValue(OperationServiceContextProperties.CommandHandler, handler);
     }
+
+    /// <summary>
+    /// Retrieves the command ID from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The command ID if present; otherwise, null.</returns>
     public static Guid? GetCommandId(this OperationContext context) => context.TryGetValue<Guid>(OperationServiceContextProperties.CommandId, out var id) ? id : null;
 
+    /// <summary>
+    /// Sets the command object in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="cmd">The command object to set.</param>
     public static void SetCommand(this OperationContext context, object cmd)
     {
         if (cmd != null)
             context.SetValue(OperationServiceContextProperties.Command, cmd);
     }
+
+    /// <summary>
+    /// Sets the command ID in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="id">The command ID to set.</param>
     public static void SetCommandId(this OperationContext context, Guid? id)
     {
         if (id.HasValue)
             context.SetValue(OperationServiceContextProperties.CommandId, id.Value);
     }
+
+    /// <summary>
+    /// Retrieves the command name from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The command name if present; otherwise, null.</returns>
     public static string? GetCommandName(this OperationContext context) => context.TryGetValue<string>(OperationServiceContextProperties.CommandName, out var name) ? name : null;
+
+    /// <summary>
+    /// Retrieves the command object from the operation context.
+    /// </summary>
+    /// <typeparam name="T">The type of command to retrieve.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The command object if present; otherwise, null.</returns>
     public static T? GetCommand<T>(this OperationContext context) => context.TryGetValue<T>(OperationServiceContextProperties.Command, out var obj) ? obj : default;
 
+    /// <summary>
+    /// Sets the command name in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="name">The command name to set.</param>
     public static void SetCommandName(this OperationContext context, string? name)
     {
         if (!string.IsNullOrEmpty(name))

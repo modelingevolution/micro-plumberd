@@ -81,7 +81,15 @@ public interface IVersioned
 /// <seealso cref="MicroPlumberd.IVersioned" />
 public interface IVersionAware : IVersioned
 {
+    /// <summary>
+    /// Gets or sets the current version number.
+    /// </summary>
+    /// <value>The version number.</value>
     long Version { get; set; }
+
+    /// <summary>
+    /// Increases the version number by one.
+    /// </summary>
     void Increase() => this.Version += 1;
 }
 static class Extensions
@@ -115,10 +123,24 @@ static class Extensions
 
     public static Guid NameId(this Type t) => new Guid(t.NameHash());
 }
+/// <summary>
+/// Represents an object that has an identifier.
+/// </summary>
 public interface IId
 {
+    /// <summary>
+    /// Gets the identifier of this object.
+    /// </summary>
+    /// <value>The identifier, which can be of any type.</value>
     object Id { get; }
 
+    /// <summary>
+    /// Gets the identifier as a <see cref="Guid"/>.
+    /// </summary>
+    /// <value>
+    /// The identifier converted to a <see cref="Guid"/>. Returns <see cref="Guid.Empty"/> if the identifier is null,
+    /// or the identifier itself if it's already a <see cref="Guid"/>, otherwise converts the string representation to a deterministic <see cref="Guid"/>.
+    /// </value>
     Guid Uuid
     {
         get
@@ -131,23 +153,53 @@ public interface IId
 }
 
 
+/// <summary>
+/// Represents an object that has a strongly-typed identifier.
+/// </summary>
+/// <typeparam name="T">The type of the identifier, which must implement <see cref="IParsable{T}"/>.</typeparam>
 public interface IId<out T>  : IId
     where T:IParsable<T>
 {
+    /// <summary>
+    /// Gets the strongly-typed identifier of this object.
+    /// </summary>
+    /// <value>The identifier of type <typeparamref name="T"/>.</value>
     new T Id { get; }
+
+    /// <summary>
+    /// Gets the identifier as an object.
+    /// </summary>
     object IId.Id => Id;
 }
 
-public interface IIdAware 
+/// <summary>
+/// Represents an object that has a mutable identifier.
+/// </summary>
+public interface IIdAware
 {
+    /// <summary>
+    /// Gets or sets the identifier of this object.
+    /// </summary>
+    /// <value>The identifier, which can be of any type.</value>
     object Id { get; set; }
 }
 
+/// <summary>
+/// Represents an object that has a strongly-typed mutable identifier.
+/// </summary>
+/// <typeparam name="T">The type of the identifier, which must implement <see cref="IParsable{T}"/>.</typeparam>
 public interface IIdAware<T> : IIdAware
     where T : IParsable<T>
 {
+    /// <summary>
+    /// Gets or sets the strongly-typed identifier of this object.
+    /// </summary>
+    /// <value>The identifier of type <typeparamref name="T"/>.</value>
     new T Id { get; set; }
-    
+
+    /// <summary>
+    /// Gets or sets the identifier as an object.
+    /// </summary>
     object IIdAware.Id
     {
         get => Id;

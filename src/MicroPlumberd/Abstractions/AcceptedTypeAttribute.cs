@@ -7,6 +7,10 @@
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
 public class AcceptedTypeAttribute : Attribute
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AcceptedTypeAttribute"/> class.
+    /// </summary>
+    /// <param name="acceptedType">The concrete type that the decorated method can accept.</param>
     public AcceptedTypeAttribute(Type acceptedType)
     {
         AcceptedType = acceptedType;

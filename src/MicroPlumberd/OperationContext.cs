@@ -3,21 +3,35 @@ using System.Dynamic;
 using Grpc.Core;
 using MicroPlumberd;
 
+/// <summary>
+/// Defines the execution flow context types for operations in the system.
+/// </summary>
 public enum Flow
 {
-    // Flow from a component, for instance BlazorUI Server-Side.
-    Component, 
-    
-    // Flow in command-handler (scope/singleton)
+    /// <summary>
+    /// Flow from a component, for instance BlazorUI Server-Side.
+    /// </summary>
+    Component,
+
+    /// <summary>
+    /// Flow in command-handler (scope/singleton).
+    /// </summary>
     CommandHandler,
 
-    // Flow in evnet-handler (scope/singleton)
+    /// <summary>
+    /// Flow in event-handler (scope/singleton).
+    /// </summary>
     EventHandler,
-    
-    // Flow in API, for instance REST/GRPC/etc
+
+    /// <summary>
+    /// Flow in API, for instance REST/GRPC/etc.
+    /// </summary>
     Request
 }
 
+/// <summary>
+/// Provides extension methods for managing standard operation context properties.
+/// </summary>
 public static class StandardOperationContextExtensions
 {
     internal static void OnCommandHandlerBegin(OperationContext context) {}
@@ -25,18 +39,36 @@ public static class StandardOperationContextExtensions
 
     internal static void OnEventHandlerBegin(OperationContext context) { }
     internal static void OnEventHandlerEnd(OperationContext context) { }
+
+    /// <summary>
+    /// Sets the correlation ID in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="id">The correlation ID to set.</param>
+    /// <returns>The operation context for method chaining.</returns>
     public static OperationContext SetCorrelationId(this OperationContext context, Guid? id)
     {
         if (id.HasValue)
             context.SetValue(OperationContextProperty.CorrelationId, id.Value);
         return context;
     }
+    /// <summary>
+    /// Sets the stream name in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="streamName">The stream name to set.</param>
     public static void SetStreamName(this OperationContext context, string? streamName)
     {
         if (!string.IsNullOrWhiteSpace(streamName))
             context.SetValue(OperationContextProperty.StreamName, streamName);
 
     }
+    /// <summary>
+    /// Sets the causation ID in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="id">The causation ID to set.</param>
+    /// <returns>The operation context for method chaining.</returns>
     public static OperationContext SetCausationId(this OperationContext context, Guid? id)
     {
         if (id.HasValue)
@@ -44,19 +76,40 @@ public static class StandardOperationContextExtensions
         return context;
 
     }
+    /// <summary>
+    /// Gets the causation ID from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The causation ID if set; otherwise, <c>null</c>.</returns>
     public static Guid? GetCausationId(this OperationContext context)
     {
         return context.TryGetValue<Guid>(OperationContextProperty.CausactionId, out var id) ? id : null;
     }
+    /// <summary>
+    /// Sets the user ID in the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <param name="user">The user ID to set.</param>
+    /// <returns>The operation context for method chaining.</returns>
     public static OperationContext SetUserId(this OperationContext context, string? user)
     {
         if (!string.IsNullOrEmpty(user)) context.SetValue(OperationContextProperty.UserId, user);
         return context;
     }
+    /// <summary>
+    /// Gets the user ID from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The user ID if set; otherwise, <c>null</c>.</returns>
     public static string? GetUserId(this OperationContext context)
     {
         return context.TryGetValue<string>(OperationContextProperty.UserId, out var user) ? user : null;
     }
+    /// <summary>
+    /// Gets the correlation ID from the operation context.
+    /// </summary>
+    /// <param name="context">The operation context.</param>
+    /// <returns>The correlation ID if set; otherwise, <c>null</c>.</returns>
     public static Guid? GetCorrelationId(this OperationContext context)
     {
         return context.TryGetValue<Guid>(OperationContextProperty.CorrelationId, out var id) ? id : null;
@@ -70,21 +123,60 @@ public static class StandardOperationContextExtensions
 /// <param name="context"></param>
 public delegate void OperationContextHandler(OperationContext context);
 
+/// <summary>
+/// Represents a property key in the operation context with metadata tracking.
+/// </summary>
+/// <param name="Name">The name of the property.</param>
+/// <param name="IsMetadata">Indicates whether this property should be included in event metadata.</param>
 [DebuggerDisplay("{Name}")]
 public readonly record struct OperationContextProperty(string Name, bool IsMetadata=true) : IComparable<OperationContextProperty>
 {
     private static ulong _counter = 0;
+
+    /// <summary>
+    /// Gets the unique identifier for this property instance.
+    /// </summary>
     public ulong Id { get; } = Interlocked.Increment(ref _counter);
 
+    /// <summary>
+    /// Implicitly converts a string to an <see cref="OperationContextProperty"/>.
+    /// </summary>
+    /// <param name="key">The property name.</param>
     public static implicit operator OperationContextProperty(string key) => new OperationContextProperty(key);
 
+    /// <summary>
+    /// Standard property for correlation ID.
+    /// </summary>
     public readonly static OperationContextProperty CorrelationId = "$correlationId";
+
+    /// <summary>
+    /// Standard property for causation ID.
+    /// </summary>
     public readonly static OperationContextProperty CausactionId = "$causationId";
+
+    /// <summary>
+    /// Standard property for user ID.
+    /// </summary>
     public readonly static OperationContextProperty UserId = "UserId";
+
+    /// <summary>
+    /// Standard property for stream name (not included in metadata).
+    /// </summary>
     public readonly static OperationContextProperty StreamName = new OperationContextProperty("StreamName", false);
+
+    /// <summary>
+    /// Standard property for aggregate type (not included in metadata).
+    /// </summary>
     public readonly static OperationContextProperty AggregateType = new OperationContextProperty("AggregateType",false);
+
+    /// <summary>
+    /// Standard property for aggregate ID (not included in metadata).
+    /// </summary>
     public readonly static OperationContextProperty AggregateId = new OperationContextProperty("AggregateId",false);
 
+    /// <summary>
+    /// Gets the maximum property ID assigned so far.
+    /// </summary>
     public static ulong Max => _counter;
 
 

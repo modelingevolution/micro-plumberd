@@ -8,27 +8,28 @@ namespace MicroPlumberd;
 public interface IObjectSerializer
 {
     /// <summary>
-    /// Deserializes the specified span for event's data.
+    /// Deserializes the specified byte span into an object of the given type.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="span">The span.</param>
-    /// <param name="t">The t.</param>
-    /// <returns></returns>
+    /// <param name="context">The operation context containing request-scoped information.</param>
+    /// <param name="span">The byte span containing the serialized event data.</param>
+    /// <param name="t">The target type to deserialize into.</param>
+    /// <returns>The deserialized object, or <c>null</c> if the span is empty.</returns>
     object? Deserialize(OperationContext context, ReadOnlySpan<byte> span, Type t);
 
     /// <summary>
-    /// Parses span a JsonElement of the metadata.
+    /// Parses the metadata byte span into a <see cref="JsonElement"/>.
     /// </summary>
-    /// <param name="context"></param>
-    /// <param name="span">The span.</param>
-    /// <returns></returns>
+    /// <param name="context">The operation context containing request-scoped information.</param>
+    /// <param name="span">The byte span containing the serialized metadata.</param>
+    /// <returns>A <see cref="JsonElement"/> representing the parsed metadata.</returns>
     JsonElement ParseMetadata(OperationContext context, ReadOnlySpan<byte> span);
 
     /// <summary>
-    /// Serializes the specified object.
+    /// Serializes the specified object into a byte array.
     /// </summary>
-    /// <param name="t">The t.</param>
-    /// <returns></returns>
+    /// <param name="context">The operation context containing request-scoped information.</param>
+    /// <param name="t">The object to serialize.</param>
+    /// <returns>A byte array containing the serialized object data.</returns>
     byte[] Serialize(OperationContext context, object? t);
     /// <summary>
     /// Gets the type of the content. (application/json or application/octet-stream)

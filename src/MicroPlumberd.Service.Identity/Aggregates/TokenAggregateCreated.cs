@@ -6,12 +6,17 @@ using MicroPlumberd;
 
 namespace MicroPlumberd.Services.Identity.Aggregates
 {
-    // Events with Id initialized directly in the record
+    /// <summary>
+    /// Event raised when a new token aggregate is created.
+    /// </summary>
     [OutputStream("Token")]
     public record TokenAggregateCreated
     {
+        /// <summary>
+        /// Gets the unique identifier for the token aggregate.
+        /// </summary>
         public Guid Id { get; init; } = Guid.NewGuid();
-        
-        
+
+
     }
 }

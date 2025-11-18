@@ -6,12 +6,25 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services.ProcessManagers;
 
+/// <summary>
+/// Executes process manager operations including event handling, command dispatching, and error compensation.
+/// </summary>
+/// <typeparam name="TProcessManager">The type of the process manager.</typeparam>
 public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClient, ILogger<ProcessManagerExecutor<TProcessManager>> log)  : IEventHandler, ITypeRegister
     where TProcessManager : IProcessManager, ITypeRegister
 {
+    /// <summary>
+    /// Maintains a lookup table mapping command recipient IDs to process manager IDs.
+    /// </summary>
     public class Lookup : IEventHandler, ITypeRegister
     {
         private readonly Dictionary<Guid, Guid> _managerByReceiverId = new Dictionary<Guid, Guid>();
+
+        /// <summary>
+        /// Gets the process manager ID associated with the specified command recipient ID.
+        /// </summary>
+        /// <param name="receiverId">The command recipient identifier.</param>
+        /// <returns>The process manager ID if found; otherwise, null.</returns>
         public Guid? GetProcessManagerIdByReceiverId(Guid receiverId) => _managerByReceiverId.TryGetValue(receiverId, out var v) ? v : null;
 
         private void Given(Metadata m, ICommandEnqueued ev)
@@ -19,14 +32,20 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
             _managerByReceiverId[ev.RecipientId] = m.Id;
         }
 
+        /// <inheritdoc />
         public async Task Handle(Metadata m, object ev)
         {
             if (ev is ICommandEnqueued sf)
                 Given(m, sf);
         }
-        
+
+        /// <inheritdoc />
         public static IEnumerable<Type> Types=> TProcessManager.CommandTypes;
     }
+
+    /// <summary>
+    /// Handles sending enqueued commands from process managers to their recipients.
+    /// </summary>
     internal class Sender(IProcessManagerClient pmClient) : IEventHandler, ITypeRegister
     {
         public async Task Handle(Metadata m, object cmd)
@@ -62,7 +81,8 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
         public static IEnumerable<Type> Types => TProcessManager.CommandTypes;
     }
 
-    
+
+    /// <inheritdoc />
     public async Task Handle(Metadata m, object evt)
     {
         var plb = pmClient.Plumber;
@@ -88,12 +108,13 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
         }
 
         await plb.AppendLink(streamId,m);
-        if (action is ICommandRequest cmd) 
+        if (action is ICommandRequest cmd)
             await plb.AppendEvents(streamId, StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
-        else if (action is IStateChangeAction s) 
+        else if (action is IStateChangeAction s)
             await plb.AppendEvents(streamId, StreamRevision.FromInt64(s.Version), s.Events);
     }
-    
-   
+
+
+    /// <inheritdoc />
     public static IEnumerable<Type> Types => TProcessManager.Types;
 }

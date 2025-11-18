@@ -3,9 +3,18 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services.Cron;
 
+/// <summary>
+/// Handles job execution commands by managing the job lifecycle and dispatching commands to their recipients.
+/// </summary>
 [CommandHandler]
 public partial class JobExecutorCommandHandler(IPlumber plumber, ICommandBus bus, ILogger<JobExecutorCommandHandler> log)
 {
+    /// <summary>
+    /// Handles a job execution command by creating a job aggregate, executing the target command, and recording the result.
+    /// </summary>
+    /// <param name="id">The job identifier.</param>
+    /// <param name="ev">The job execution command.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public async Task Handle(JobId id, StartJobExecution ev)
     {
         var agg = await plumber.Get<JobAggregate>(id);

@@ -7,8 +7,14 @@ using EventStore.Client;
 
 namespace MicroPlumberd.Services.Cron;
 
+/// <summary>
+/// Provides SIMD-optimized comparison operations for Vector128 byte arrays.
+/// </summary>
 public static class Vector128Comparer
 {
+    /// <summary>
+    /// Gets the comparison delegate optimized for the current CPU architecture.
+    /// </summary>
     public static readonly Comparison<Vector128<byte>> Compare;
 
     static Vector128Comparer()
@@ -16,6 +22,12 @@ public static class Vector128Comparer
         Compare = Sse2.IsSupported ? CompareSse2 : (AdvSimd.IsSupported ? CompareArm : CompareDumb);
     }
 
+    /// <summary>
+    /// Compares two Vector128 byte arrays using SSE2 SIMD instructions.
+    /// </summary>
+    /// <param name="a">The first vector to compare.</param>
+    /// <param name="b">The second vector to compare.</param>
+    /// <returns>A negative value if a is less than b, zero if equal, or a positive value if a is greater than b.</returns>
     public static int CompareSse2(Vector128<byte> a, Vector128<byte> b)
     {
 
@@ -28,6 +40,12 @@ public static class Vector128Comparer
         return Sse2.MoveMask(Sse2.CompareEqual(a, min)) == 0xFFFF ? -1 : 1;
     }
 
+    /// <summary>
+    /// Compares two Vector128 byte arrays using ARM AdvSimd SIMD instructions.
+    /// </summary>
+    /// <param name="a">The first vector to compare.</param>
+    /// <param name="b">The second vector to compare.</param>
+    /// <returns>A negative value if a is less than b, zero if equal, or a positive value if a is greater than b.</returns>
     public static int CompareArm(Vector128<byte> a, Vector128<byte> b)
     {
 
@@ -44,6 +62,12 @@ public static class Vector128Comparer
             : 1;
     }
 
+    /// <summary>
+    /// Compares two Vector128 byte arrays using a non-SIMD fallback implementation.
+    /// </summary>
+    /// <param name="a">The first vector to compare.</param>
+    /// <param name="b">The second vector to compare.</param>
+    /// <returns>A negative value if a is less than b, zero if equal, or a positive value if a is greater than b.</returns>
     public static int CompareDumb(Vector128<byte> a, Vector128<byte> b)
     {
 
@@ -62,21 +86,49 @@ public static class Vector128Comparer
     }
 }
 
+/// <summary>
+/// Represents a job that has been scheduled for execution, using SIMD-optimized storage and comparison.
+/// </summary>
 public readonly struct ScheduledJob : IComparable<ScheduledJob>, IEquatable<ScheduledJob>
 {
+    /// <summary>
+    /// Gets an empty scheduled job.
+    /// </summary>
     public readonly static ScheduledJob Empty = new ();
     private readonly Vector128<byte> _jobDefinitionId;
 
+    /// <summary>
+    /// Gets the minimum possible scheduled job value.
+    /// </summary>
     public static readonly ScheduledJob MinValue = new(Vector128<byte>.Zero, DateTime.MinValue);
+
+    /// <summary>
+    /// Gets the maximum possible scheduled job value.
+    /// </summary>
     public static readonly ScheduledJob MaxValue = new(Vector128<byte>.AllBitsSet, DateTime.MaxValue);
 
+    /// <summary>
+    /// Creates a minimum scheduled job with the specified time.
+    /// </summary>
+    /// <param name="when">The time for the minimum bound.</param>
+    /// <returns>A scheduled job with minimum job ID and the specified time.</returns>
     public static ScheduledJob Min(DateTime when) => new ScheduledJob(Vector128<byte>.Zero, when);
+
+    /// <summary>
+    /// Creates a maximum scheduled job with the specified time.
+    /// </summary>
+    /// <param name="when">The time for the maximum bound.</param>
+    /// <returns>A scheduled job with maximum job ID and the specified time.</returns>
     public static ScheduledJob Max(DateTime when) => new ScheduledJob(Vector128<byte>.AllBitsSet, when);
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScheduledJob"/> struct with default values.
+    /// </summary>
     public ScheduledJob()
     {
         this._jobDefinitionId = Vector128<byte>.Zero;
         this.StartAt = DateTime.MinValue;
-        
+
     }
 
     private ScheduledJob(Vector128<byte> jobDefinitionId, DateTime startAt)
@@ -85,11 +137,21 @@ public readonly struct ScheduledJob : IComparable<ScheduledJob>, IEquatable<Sche
             StartAt = startAt;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScheduledJob"/> struct.
+    /// </summary>
+    /// <param name="jobDefinitionId">The unique identifier of the job definition.</param>
+    /// <param name="startAt">The scheduled start time.</param>
+    /// <param name="trigger">The trigger that scheduled this job.</param>
     public ScheduledJob(Guid jobDefinitionId, DateTime startAt, ScheduleTrigger trigger = ScheduleTrigger.Engine) : this(
         Unsafe.As<Guid, Vector128<byte>>(ref jobDefinitionId), startAt)
     {
         Trigger = trigger;
     }
+
+    /// <summary>
+    /// Gets the unique identifier of the job definition.
+    /// </summary>
     public Guid JobDefinitionId
     {
         get
@@ -99,36 +161,63 @@ public readonly struct ScheduledJob : IComparable<ScheduledJob>, IEquatable<Sche
         }
     }
 
+    /// <summary>
+    /// Gets the scheduled start time.
+    /// </summary>
     public DateTime StartAt { get; }
 
+    /// <summary>
+    /// Gets the trigger that scheduled this job.
+    /// </summary>
     public ScheduleTrigger Trigger { get; }
+
+    /// <summary>
+    /// Deconstructs the scheduled job into its components.
+    /// </summary>
+    /// <param name="jobDefinitionId">The job definition identifier.</param>
+    /// <param name="startAt">The scheduled start time.</param>
     public void Deconstruct(out Guid jobDefinitionId, out DateTime startAt)
     {
         jobDefinitionId = this.JobDefinitionId;
         startAt = this.StartAt;
     }
-  
+
+    /// <inheritdoc/>
     public int CompareTo(ScheduledJob other)
     {
         var tmp = StartAt.CompareTo(other.StartAt);
         return tmp == 0 ? Vector128Comparer.Compare(this._jobDefinitionId, other._jobDefinitionId): tmp;
     }
 
+    /// <inheritdoc/>
     public bool Equals(ScheduledJob other)
     {
         return JobDefinitionId.Equals(other.JobDefinitionId) && Vector128.EqualsAll(this._jobDefinitionId, other._jobDefinitionId);
     }
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj)
     {
         return obj is ScheduledJob other && Equals(other);
     }
 
+    /// <summary>
+    /// Determines whether two scheduled jobs are equal.
+    /// </summary>
+    /// <param name="left">The first scheduled job to compare.</param>
+    /// <param name="right">The second scheduled job to compare.</param>
+    /// <returns>True if the scheduled jobs are equal; otherwise, false.</returns>
     public static bool operator ==(ScheduledJob left, ScheduledJob right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Determines whether two scheduled jobs are not equal.
+    /// </summary>
+    /// <param name="left">The first scheduled job to compare.</param>
+    /// <param name="right">The second scheduled job to compare.</param>
+    /// <returns>True if the scheduled jobs are not equal; otherwise, false.</returns>
     public static bool operator !=(ScheduledJob left, ScheduledJob right)
     {
         return !left.Equals(right);
