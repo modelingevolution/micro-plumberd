@@ -6,6 +6,9 @@ using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Security.Claims;
 
+/// <summary>
+/// Read model maintaining user authorization data including roles and claims with efficient lookups.
+/// </summary>
 [EventHandler]
 [OutputStream("UserAuthorizationModel_v1")]
 public partial class UserAuthorizationModel
@@ -20,19 +23,41 @@ public partial class UserAuthorizationModel
     private readonly ConcurrentDictionary<string, RoleIdentifier> _roleIdsByNormalizedName = new();
     private readonly ConcurrentDictionary<RoleIdentifier, ConcurrentHashSet<UserIdentifier>> _usersByRole = new();
 
-    // User authorization data record
+    /// <summary>
+    /// Represents user authorization data including roles and claims.
+    /// </summary>
     record UserAuthData
     {
+        /// <summary>
+        /// Gets the user identifier.
+        /// </summary>
         public UserIdentifier Id { get; init; }
+
+        /// <summary>
+        /// Gets the set of role identifiers assigned to the user.
+        /// </summary>
         public ImmutableHashSet<RoleIdentifier> RoleIds { get; init; } = ImmutableHashSet<RoleIdentifier>.Empty;
+
+        /// <summary>
+        /// Gets the claims organized by type, with each type containing a set of values.
+        /// </summary>
         public ImmutableDictionary<string, ImmutableHashSet<string>> ClaimsByType { get; init; } =
             ImmutableDictionary<string, ImmutableHashSet<string>>.Empty;
     }
 
-    // Role information record
+    /// <summary>
+    /// Represents role information maintained in the read model.
+    /// </summary>
     record RoleInfo
     {
+        /// <summary>
+        /// Gets the role name.
+        /// </summary>
         public string Name { get; init; }
+
+        /// <summary>
+        /// Gets the normalized role name for case-insensitive lookups.
+        /// </summary>
         public string NormalizedName { get; init; }
     }
 
@@ -286,6 +311,12 @@ public partial class UserAuthorizationModel
 
     #region Query Methods
 
+    /// <summary>
+    /// Determines whether a user is in a specific role by normalized role name.
+    /// </summary>
+    /// <param name="userId">The user identifier.</param>
+    /// <param name="normalizedRoleName">The normalized role name to check.</param>
+    /// <returns>True if the user is in the role; otherwise, false.</returns>
     public bool IsInRole(UserIdentifier userId, string normalizedRoleName)
     {
         // First, get the role ID from the normalized name
@@ -296,12 +327,23 @@ public partial class UserAuthorizationModel
         return IsInRole(userId, roleId);
     }
 
+    /// <summary>
+    /// Determines whether a user is in a specific role by role identifier.
+    /// </summary>
+    /// <param name="userId">The user identifier.</param>
+    /// <param name="roleId">The role identifier to check.</param>
+    /// <returns>True if the user is in the role; otherwise, false.</returns>
     public bool IsInRole(UserIdentifier userId, RoleIdentifier roleId)
     {
         return _userAuthData.TryGetValue(userId, out var userData) &&
                userData.RoleIds.Contains(roleId);
     }
 
+    /// <summary>
+    /// Gets the names of all roles assigned to a user.
+    /// </summary>
+    /// <param name="userId">The user identifier.</param>
+    /// <returns>An immutable list of role names.</returns>
     public ImmutableList<string> GetRoleNames(UserIdentifier userId)
     {
         if (!_userAuthData.TryGetValue(userId, out var userData))
@@ -313,6 +355,11 @@ public partial class UserAuthorizationModel
             .ToImmutableList();
     }
 
+    /// <summary>
+    /// Gets all users assigned to a specific role by role identifier.
+    /// </summary>
+    /// <param name="roleId">The role identifier.</param>
+    /// <returns>An immutable list of user identifiers.</returns>
     public ImmutableList<UserIdentifier> GetUsersInRole(RoleIdentifier roleId)
     {
         if (_usersByRole.TryGetValue(roleId, out var users))
@@ -321,6 +368,11 @@ public partial class UserAuthorizationModel
         return ImmutableList<UserIdentifier>.Empty;
     }
 
+    /// <summary>
+    /// Gets all users assigned to a specific role by normalized role name.
+    /// </summary>
+    /// <param name="normalizedRoleName">The normalized role name.</param>
+    /// <returns>An immutable list of user identifiers.</returns>
     public ImmutableList<UserIdentifier> GetUsersInRole(string normalizedRoleName)
     {
         if (_roleIdsByNormalizedName.TryGetValue(normalizedRoleName, out var roleId))
@@ -329,6 +381,11 @@ public partial class UserAuthorizationModel
         return ImmutableList<UserIdentifier>.Empty;
     }
 
+    /// <summary>
+    /// Gets all claims for a user.
+    /// </summary>
+    /// <param name="userId">The user identifier.</param>
+    /// <returns>An immutable list of claims.</returns>
     public ImmutableList<Claim> GetClaims(UserIdentifier userId)
     {
         if (!_userAuthData.TryGetValue(userId, out var userData))

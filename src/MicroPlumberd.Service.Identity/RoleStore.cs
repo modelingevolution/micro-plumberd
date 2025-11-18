@@ -20,6 +20,12 @@ public class RoleStore :
     private readonly IPlumber _plumber;
     private readonly RolesModel _rolesModel;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RoleStore"/> class.
+    /// </summary>
+    /// <param name="plumber">The plumber instance for event sourcing operations.</param>
+    /// <param name="rolesModel">The read model for role queries.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="plumber"/> or <paramref name="rolesModel"/> is null.</exception>
     public RoleStore(
         IPlumber plumber,
         RolesModel rolesModel)
@@ -28,6 +34,9 @@ public class RoleStore :
         _rolesModel = rolesModel ?? throw new ArgumentNullException(nameof(rolesModel));
     }
 
+    /// <summary>
+    /// Gets a queryable collection of all roles in the store.
+    /// </summary>
     public IQueryable<Role> Roles => _rolesModel.GetAllRoles().AsQueryable();
 
     // Helper method to convert string ID to RoleIdentifier
@@ -54,6 +63,12 @@ public class RoleStore :
         return version;
     }
 
+    /// <summary>
+    /// Creates a new role in the store.
+    /// </summary>
+    /// <param name="role">The role to create.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>An <see cref="IdentityResult"/> indicating the result of the operation.</returns>
     public async Task<IdentityResult> CreateAsync(Role role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -96,6 +111,12 @@ public class RoleStore :
         }
     }
 
+    /// <summary>
+    /// Deletes a role from the store.
+    /// </summary>
+    /// <param name="role">The role to delete.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>An <see cref="IdentityResult"/> indicating the result of the operation.</returns>
     public async Task<IdentityResult> DeleteAsync(Role role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -120,6 +141,12 @@ public class RoleStore :
         }
     }
 
+    /// <summary>
+    /// Finds a role by its identifier.
+    /// </summary>
+    /// <param name="roleId">The role identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The role if found; otherwise, null.</returns>
     public async Task<Role> FindByIdAsync(string roleId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -128,6 +155,12 @@ public class RoleStore :
         return _rolesModel.GetById(id);
     }
 
+    /// <summary>
+    /// Finds a role by its normalized name.
+    /// </summary>
+    /// <param name="normalizedRoleName">The normalized role name.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The role if found; otherwise, null.</returns>
     public async Task<Role> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -135,6 +168,12 @@ public class RoleStore :
         return _rolesModel.GetByNormalizedName(normalizedRoleName);
     }
 
+    /// <summary>
+    /// Gets the normalized name of a role.
+    /// </summary>
+    /// <param name="role">The role.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The normalized role name.</returns>
     public Task<string> GetNormalizedRoleNameAsync(Role role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -145,6 +184,12 @@ public class RoleStore :
         return Task.FromResult(role.NormalizedName);
     }
 
+    /// <summary>
+    /// Gets the identifier of a role.
+    /// </summary>
+    /// <param name="role">The role.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The role identifier.</returns>
     public Task<string> GetRoleIdAsync(Role role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -155,6 +200,12 @@ public class RoleStore :
         return Task.FromResult(role.Id);
     }
 
+    /// <summary>
+    /// Gets the name of a role.
+    /// </summary>
+    /// <param name="role">The role.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The role name.</returns>
     public Task<string> GetRoleNameAsync(Role role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -165,6 +216,13 @@ public class RoleStore :
         return Task.FromResult(role.Name);
     }
 
+    /// <summary>
+    /// Sets the normalized name of a role.
+    /// </summary>
+    /// <param name="role">The role.</param>
+    /// <param name="normalizedName">The normalized name to set.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task SetNormalizedRoleNameAsync(Role role, string normalizedName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -176,6 +234,13 @@ public class RoleStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Sets the name of a role.
+    /// </summary>
+    /// <param name="role">The role.</param>
+    /// <param name="roleName">The role name to set.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     public Task SetRoleNameAsync(Role role, string roleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -187,6 +252,12 @@ public class RoleStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Updates a role in the store.
+    /// </summary>
+    /// <param name="role">The role to update.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>An <see cref="IdentityResult"/> indicating the result of the operation.</returns>
     public async Task<IdentityResult> UpdateAsync(Role role, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -230,6 +301,9 @@ public class RoleStore :
         }
     }
 
+    /// <summary>
+    /// Disposes of resources used by the role store.
+    /// </summary>
     public void Dispose()
     {
         // Nothing to dispose

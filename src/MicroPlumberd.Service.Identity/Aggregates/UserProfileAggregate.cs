@@ -4,22 +4,62 @@ using MicroPlumberd;
 
 namespace MicroPlumberd.Services.Identity.Aggregates
 {
+    /// <summary>
+    /// Aggregate root managing user profile information including username, email, and phone number.
+    /// </summary>
     [Aggregate]
     [OutputStream("UserProfile")]
     public partial class UserProfileAggregate : AggregateBase<UserIdentifier, UserProfileAggregate.UserProfileState>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserProfileAggregate"/> class.
+        /// </summary>
+        /// <param name="id">The unique identifier for the user.</param>
         public UserProfileAggregate(UserIdentifier id) : base(id) { }
 
+        /// <summary>
+        /// Represents the state of a user profile including contact information and confirmation status.
+        /// </summary>
         public readonly record struct UserProfileState
         {
+            /// <summary>
+            /// Gets the username.
+            /// </summary>
             public string UserName { get; init; }
+
+            /// <summary>
+            /// Gets the normalized username for case-insensitive comparisons.
+            /// </summary>
             public string NormalizedUserName { get; init; }
+
+            /// <summary>
+            /// Gets the email address.
+            /// </summary>
             public string Email { get; init; }
+
+            /// <summary>
+            /// Gets the normalized email address for case-insensitive comparisons.
+            /// </summary>
             public string NormalizedEmail { get; init; }
+
+            /// <summary>
+            /// Gets a value indicating whether the email address has been confirmed.
+            /// </summary>
             public bool EmailConfirmed { get; init; }
+
+            /// <summary>
+            /// Gets the phone number.
+            /// </summary>
             public string PhoneNumber { get; init; }
+
+            /// <summary>
+            /// Gets a value indicating whether the phone number has been confirmed.
+            /// </summary>
             public bool PhoneNumberConfirmed { get; init; }
-            
+
+            /// <summary>
+            /// Gets a value indicating whether this user profile has been deleted.
+            /// </summary>
             public bool IsDeleted { get; init; }
         }
 
@@ -98,7 +138,17 @@ namespace MicroPlumberd.Services.Identity.Aggregates
             return state with { IsDeleted = true };
         }
 
-        // Command methods
+        /// <summary>
+        /// Creates a new user profile aggregate with the specified information.
+        /// </summary>
+        /// <param name="id">The unique identifier for the user.</param>
+        /// <param name="userName">The username. Cannot be null or whitespace.</param>
+        /// <param name="normalizedUserName">The normalized username. Cannot be null or whitespace.</param>
+        /// <param name="email">The email address.</param>
+        /// <param name="normalizedEmail">The normalized email address.</param>
+        /// <param name="phoneNumber">The phone number.</param>
+        /// <returns>A new <see cref="UserProfileAggregate"/> instance.</returns>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="userName"/> or <paramref name="normalizedUserName"/> is null or whitespace, or when <paramref name="email"/> is provided without <paramref name="normalizedEmail"/>.</exception>
         public static UserProfileAggregate Create(
             UserIdentifier id,
             string userName,
@@ -133,6 +183,13 @@ namespace MicroPlumberd.Services.Identity.Aggregates
             return aggregate;
         }
 
+        /// <summary>
+        /// Changes the username for the user profile.
+        /// </summary>
+        /// <param name="userName">The new username. Cannot be null or whitespace.</param>
+        /// <param name="normalizedUserName">The new normalized username. Cannot be null or whitespace.</param>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to modify a deleted user profile.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="userName"/> or <paramref name="normalizedUserName"/> is null or whitespace.</exception>
         public void ChangeUserName(string userName, string normalizedUserName )
         {
             EnsureNotDeleted();
@@ -153,6 +210,13 @@ namespace MicroPlumberd.Services.Identity.Aggregates
             });
         }
 
+        /// <summary>
+        /// Changes the email address for the user profile. This resets email confirmation status.
+        /// </summary>
+        /// <param name="email">The new email address.</param>
+        /// <param name="normalizedEmail">The new normalized email address.</param>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to modify a deleted user profile.</exception>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="email"/> is provided without <paramref name="normalizedEmail"/>.</exception>
         public void ChangeEmail(string email, string normalizedEmail )
         {
             EnsureNotDeleted();
@@ -173,6 +237,10 @@ namespace MicroPlumberd.Services.Identity.Aggregates
             });
         }
 
+        /// <summary>
+        /// Confirms the user's email address.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to confirm an email when no email is set or when attempting to modify a deleted user profile.</exception>
         public void ConfirmEmail()
         {
             EnsureNotDeleted();
@@ -187,6 +255,11 @@ namespace MicroPlumberd.Services.Identity.Aggregates
             AppendPendingChange(new EmailConfirmed());
         }
 
+        /// <summary>
+        /// Changes the phone number for the user profile. This resets phone number confirmation status.
+        /// </summary>
+        /// <param name="phoneNumber">The new phone number.</param>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to modify a deleted user profile.</exception>
         public void ChangePhoneNumber(string phoneNumber )
         {
             EnsureNotDeleted();
@@ -202,6 +275,10 @@ namespace MicroPlumberd.Services.Identity.Aggregates
             });
         }
 
+        /// <summary>
+        /// Confirms the user's phone number.
+        /// </summary>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to confirm a phone number when no phone number is set or when attempting to modify a deleted user profile.</exception>
         public void ConfirmPhoneNumber()
         {
             EnsureNotDeleted();
@@ -217,11 +294,14 @@ namespace MicroPlumberd.Services.Identity.Aggregates
         }
 
 
+        /// <summary>
+        /// Marks the user profile as deleted.
+        /// </summary>
         public void Delete()
         {
             if (State.IsDeleted)
                 return;
-            
+
             AppendPendingChange(new UserProfileDeleted());
         }
 

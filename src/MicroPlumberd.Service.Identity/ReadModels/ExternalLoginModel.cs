@@ -8,6 +8,9 @@ using MicroPlumberd.Services.Identity.Aggregates;
 
 namespace MicroPlumberd.Services.Identity.ReadModels
 {
+    /// <summary>
+    /// Read model maintaining external login provider associations for users.
+    /// </summary>
     [EventHandler]
     [OutputStream("ExternalLoginModel_v1")]
     public partial class ExternalLoginModel
@@ -15,10 +18,24 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         private readonly ConcurrentDictionary<UserIdentifier, ImmutableList<ExternalLoginInfo>> _loginsByUserId = new();
         private readonly ConcurrentDictionary<string, UserIdentifier> _userIdsByLogin = new();
 
+        /// <summary>
+        /// Represents external login information for a user.
+        /// </summary>
         public record ExternalLoginInfo
         {
+            /// <summary>
+            /// Gets the name of the external login provider.
+            /// </summary>
             public string ProviderName { get; init; }
+
+            /// <summary>
+            /// Gets the provider-specific key for the user.
+            /// </summary>
             public string ProviderKey { get; init; }
+
+            /// <summary>
+            /// Gets the display name for the external login.
+            /// </summary>
             public string DisplayName { get; init; }
         }
 
@@ -94,7 +111,11 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             await Task.CompletedTask;
         }
 
-        // Query methods
+        /// <summary>
+        /// Gets all external logins configured for a user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>An immutable list of external login information.</returns>
         public ImmutableList<ExternalLoginInfo> GetLoginsForUser(UserIdentifier userId)
         {
             if (_loginsByUserId.TryGetValue(userId, out var logins))
@@ -105,6 +126,12 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             return ImmutableList<ExternalLoginInfo>.Empty;
         }
 
+        /// <summary>
+        /// Finds a user ID by external login provider and key.
+        /// </summary>
+        /// <param name="providerName">The name of the external login provider.</param>
+        /// <param name="providerKey">The provider-specific key.</param>
+        /// <returns>The user identifier, or default if not found.</returns>
         public UserIdentifier FindUserIdByLogin(string providerName, string providerKey)
         {
             var lookupKey = GetLookupKey(providerName, providerKey);

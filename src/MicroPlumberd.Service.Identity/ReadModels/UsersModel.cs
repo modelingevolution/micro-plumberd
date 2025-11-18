@@ -21,7 +21,10 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         private readonly ConcurrentDictionary<string, User> _usersByNormalizedEmail = new();
         private readonly ConcurrentDictionary<string, User> _usersByExternalLogin = new();
 
-        // Returns all users (for IQueryable interface)
+        /// <summary>
+        /// Gets all users in the read model.
+        /// </summary>
+        /// <returns>An immutable list of all users.</returns>
         public ImmutableList<User> GetAllUsers() => _usersById.Values.ToImmutableList();
 
         #region Event Handlers

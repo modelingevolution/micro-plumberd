@@ -36,6 +36,11 @@ class OptionJsonConverter<T> : JsonConverter<Option<T>>
 /// <seealso cref="System.Text.Json.Serialization.JsonConverterFactory" />
 public class OptionConverterFactory : JsonConverterFactory
 {
+    /// <summary>
+    /// Determines whether the converter factory can convert the specified type.
+    /// </summary>
+    /// <param name="typeToConvert">The type to check for conversion capability.</param>
+    /// <returns><c>true</c> if the type is an <see cref="Option{T}"/> generic type; otherwise, <c>false</c>.</returns>
     public override bool CanConvert(Type typeToConvert)
     {
         if (!typeToConvert.IsGenericType) return false;
@@ -43,6 +48,12 @@ public class OptionConverterFactory : JsonConverterFactory
         return typeToConvert.GetGenericTypeDefinition() == typeof(Option<>);
     }
 
+    /// <summary>
+    /// Creates a <see cref="JsonConverter"/> for the specified <see cref="Option{T}"/> type.
+    /// </summary>
+    /// <param name="typeToConvert">The type to create a converter for.</param>
+    /// <param name="options">The JSON serializer options.</param>
+    /// <returns>A <see cref="JsonConverter"/> that can serialize and deserialize the specified <see cref="Option{T}"/> type.</returns>
     public override JsonConverter CreateConverter(Type typeToConvert, JsonSerializerOptions options)
     {
         Type valueType = typeToConvert.GetGenericArguments()[0];

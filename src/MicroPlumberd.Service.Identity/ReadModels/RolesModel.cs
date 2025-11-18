@@ -20,7 +20,10 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         // Lookup dictionary - direct references to the same Role objects
         private readonly ConcurrentDictionary<string, Role> _rolesByNormalizedName = new();
 
-        // Returns all roles (for IQueryable interface)
+        /// <summary>
+        /// Gets all roles in the read model.
+        /// </summary>
+        /// <returns>An immutable list of all roles.</returns>
         public ImmutableList<Role> GetAllRoles() => _rolesById.Values.ToImmutableList();
 
         #region Event Handlers

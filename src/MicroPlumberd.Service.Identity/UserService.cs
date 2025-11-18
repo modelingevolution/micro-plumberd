@@ -37,6 +37,17 @@ public class UserStore :
     private readonly TokenModel _tokenModel;
     private readonly ExternalLoginModel _externalLoginModel;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserStore"/> class.
+    /// </summary>
+    /// <param name="plumber">The plumber instance for event sourcing operations.</param>
+    /// <param name="usersModel">The read model for user queries.</param>
+    /// <param name="rolesModel">The read model for role queries.</param>
+    /// <param name="authenticationModel">The read model for authentication data.</param>
+    /// <param name="userAuthorizationModel">The read model for user authorization data.</param>
+    /// <param name="tokenModel">The read model for token data.</param>
+    /// <param name="externalLoginModel">The read model for external login data.</param>
+    /// <exception cref="ArgumentNullException">Thrown when any of the required parameters is null.</exception>
     public UserStore(
         IPlumber plumber,
         UsersModel usersModel,
@@ -80,8 +91,18 @@ public class UserStore :
 
     #region IUserStore<User> Implementation
 
+    /// <summary>
+    /// Gets a queryable collection of all users in the store.
+    /// </summary>
     public IQueryable<User> Users => _usersModel.GetAllUsers().AsQueryable();
 
+    /// <summary>
+    /// Creates a new user in the store.
+    /// </summary>
+    /// <param name="user">The user to create.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing an <see cref="IdentityResult"/> indicating the result of the operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -132,6 +153,13 @@ public class UserStore :
         }
     }
 
+    /// <summary>
+    /// Deletes a user from the store.
+    /// </summary>
+    /// <param name="user">The user to delete.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing an <see cref="IdentityResult"/> indicating the result of the operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -177,6 +205,13 @@ public class UserStore :
         }
     }
 
+    /// <summary>
+    /// Finds a user by their unique identifier.
+    /// </summary>
+    /// <param name="userId">The user ID to search for.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the user if found, or null if not found.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="userId"/> is invalid.</exception>
     public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -185,6 +220,12 @@ public class UserStore :
         return _usersModel.GetById(userIdentifier);
     }
 
+    /// <summary>
+    /// Finds a user by their normalized user name.
+    /// </summary>
+    /// <param name="normalizedUserName">The normalized user name to search for.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the user if found, or null if not found.</returns>
     public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -192,6 +233,13 @@ public class UserStore :
         return _usersModel.GetByNormalizedUserName(normalizedUserName);
     }
 
+    /// <summary>
+    /// Gets the normalized user name for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose normalized user name should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the normalized user name for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -202,6 +250,13 @@ public class UserStore :
         return Task.FromResult(user.NormalizedUserName);
     }
 
+    /// <summary>
+    /// Gets the user identifier for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose identifier should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the user identifier for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -212,6 +267,13 @@ public class UserStore :
         return Task.FromResult(user.Id);
     }
 
+    /// <summary>
+    /// Gets the user name for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose user name should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the user name for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetUserNameAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -222,6 +284,14 @@ public class UserStore :
         return Task.FromResult(user.UserName);
     }
 
+    /// <summary>
+    /// Sets the normalized user name for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose normalized user name should be set.</param>
+    /// <param name="normalizedName">The normalized user name to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetNormalizedUserNameAsync(User user, string normalizedName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -233,6 +303,14 @@ public class UserStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Sets the user name for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose user name should be set.</param>
+    /// <param name="userName">The user name to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetUserNameAsync(User user, string userName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -244,6 +322,13 @@ public class UserStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Updates the specified user in the store.
+    /// </summary>
+    /// <param name="user">The user to update.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing an <see cref="IdentityResult"/> indicating the result of the operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -295,6 +380,12 @@ public class UserStore :
 
     #region IUserEmailStore<User> Implementation
 
+    /// <summary>
+    /// Finds a user by their normalized email address.
+    /// </summary>
+    /// <param name="normalizedEmail">The normalized email address to search for.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the user if found, or null if not found.</returns>
     public async Task<User> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -302,6 +393,13 @@ public class UserStore :
         return _usersModel.GetByNormalizedEmail(normalizedEmail);
     }
 
+    /// <summary>
+    /// Gets the email address for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose email address should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the email address for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetEmailAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -312,6 +410,13 @@ public class UserStore :
         return Task.FromResult(user.Email);
     }
 
+    /// <summary>
+    /// Gets a flag indicating whether the email address for the specified user has been confirmed.
+    /// </summary>
+    /// <param name="user">The user whose email confirmation status should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing a flag indicating whether the email address has been confirmed.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<bool> GetEmailConfirmedAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -322,6 +427,13 @@ public class UserStore :
         return Task.FromResult(user.EmailConfirmed);
     }
 
+    /// <summary>
+    /// Gets the normalized email address for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose normalized email address should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the normalized email address for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetNormalizedEmailAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -332,6 +444,14 @@ public class UserStore :
         return Task.FromResult(user.NormalizedEmail);
     }
 
+    /// <summary>
+    /// Sets the email address for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose email address should be set.</param>
+    /// <param name="email">The email address to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -343,6 +463,14 @@ public class UserStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Sets a flag indicating whether the specified user's email address has been confirmed.
+    /// </summary>
+    /// <param name="user">The user whose email confirmation status should be set.</param>
+    /// <param name="confirmed">A flag indicating whether the email address is confirmed.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -354,6 +482,14 @@ public class UserStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Sets the normalized email address for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose normalized email address should be set.</param>
+    /// <param name="normalizedEmail">The normalized email address to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetNormalizedEmailAsync(User user, string normalizedEmail, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -369,6 +505,13 @@ public class UserStore :
 
     #region IUserPasswordStore<User> Implementation
 
+    /// <summary>
+    /// Gets the password hash for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose password hash should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the password hash for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -379,6 +522,13 @@ public class UserStore :
         return Task.FromResult(user.PasswordHash);
     }
 
+    /// <summary>
+    /// Returns a flag indicating whether the specified user has a password.
+    /// </summary>
+    /// <param name="user">The user to check.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing true if the user has a password; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -389,6 +539,14 @@ public class UserStore :
         return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
     }
 
+    /// <summary>
+    /// Sets the password hash for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose password hash should be set.</param>
+    /// <param name="passwordHash">The password hash to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetPasswordHashAsync(User user, string passwordHash, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -404,6 +562,13 @@ public class UserStore :
 
     #region IUserSecurityStampStore<User> Implementation
 
+    /// <summary>
+    /// Gets the security stamp for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose security stamp should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the security stamp for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetSecurityStampAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -414,6 +579,14 @@ public class UserStore :
         return Task.FromResult(user.SecurityStamp);
     }
 
+    /// <summary>
+    /// Sets the security stamp for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose security stamp should be set.</param>
+    /// <param name="stamp">The security stamp to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetSecurityStampAsync(User user, string stamp, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -429,6 +602,13 @@ public class UserStore :
 
     #region IUserLockoutStore<User> Implementation
 
+    /// <summary>
+    /// Gets the number of failed access attempts for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose access failed count should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the number of failed access attempts for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<int> GetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -439,6 +619,13 @@ public class UserStore :
         return Task.FromResult(user.AccessFailedCount);
     }
 
+    /// <summary>
+    /// Gets a flag indicating whether user lockout can be enabled for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose lockout enabled status should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing true if lockout can be enabled; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<bool> GetLockoutEnabledAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -449,6 +636,13 @@ public class UserStore :
         return Task.FromResult(user.LockoutEnabled);
     }
 
+    /// <summary>
+    /// Gets the date and time, in UTC, when the specified user's lockout should end.
+    /// </summary>
+    /// <param name="user">The user whose lockout end date should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the lockout end date for the specified user, or null if not locked out.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -459,6 +653,13 @@ public class UserStore :
         return Task.FromResult(user.LockoutEnd);
     }
 
+    /// <summary>
+    /// Increments the access failed count for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose access failed count should be incremented.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the new access failed count.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<int> IncrementAccessFailedCountAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -476,6 +677,13 @@ public class UserStore :
         return ret;
     }
 
+    /// <summary>
+    /// Resets the access failed count for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose access failed count should be reset.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task ResetAccessFailedCountAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -490,6 +698,14 @@ public class UserStore :
         await _plumber.SaveChanges(identityUser);
     }
 
+    /// <summary>
+    /// Sets a flag indicating whether the specified user can be locked out.
+    /// </summary>
+    /// <param name="user">The user whose lockout enabled status should be set.</param>
+    /// <param name="enabled">A flag indicating whether the user can be locked out.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetLockoutEnabledAsync(User user, bool enabled, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -501,6 +717,14 @@ public class UserStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Sets the date and time, in UTC, when the specified user's lockout should end.
+    /// </summary>
+    /// <param name="user">The user whose lockout end date should be set.</param>
+    /// <param name="lockoutEnd">The date and time when the lockout should end, or null to clear the lockout.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetLockoutEndDateAsync(User user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -516,6 +740,13 @@ public class UserStore :
 
     #region IUserTwoFactorStore<User> Implementation
 
+    /// <summary>
+    /// Gets a flag indicating whether two-factor authentication is enabled for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose two-factor authentication enabled status should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing true if two-factor authentication is enabled; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<bool> GetTwoFactorEnabledAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -526,6 +757,14 @@ public class UserStore :
         return Task.FromResult(user.TwoFactorEnabled);
     }
 
+    /// <summary>
+    /// Sets a flag indicating whether two-factor authentication is enabled for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose two-factor authentication enabled status should be set.</param>
+    /// <param name="enabled">A flag indicating whether two-factor authentication is enabled.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetTwoFactorEnabledAsync(User user, bool enabled, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -541,6 +780,13 @@ public class UserStore :
 
     #region IUserPhoneNumberStore<User> Implementation
 
+    /// <summary>
+    /// Gets the phone number for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose phone number should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the phone number for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<string> GetPhoneNumberAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -551,6 +797,13 @@ public class UserStore :
         return Task.FromResult(user.PhoneNumber);
     }
 
+    /// <summary>
+    /// Gets a flag indicating whether the phone number for the specified user has been confirmed.
+    /// </summary>
+    /// <param name="user">The user whose phone number confirmation status should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing a flag indicating whether the phone number has been confirmed.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task<bool> GetPhoneNumberConfirmedAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -561,6 +814,14 @@ public class UserStore :
         return Task.FromResult(user.PhoneNumberConfirmed);
     }
 
+    /// <summary>
+    /// Sets the phone number for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose phone number should be set.</param>
+    /// <param name="phoneNumber">The phone number to set.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetPhoneNumberAsync(User user, string phoneNumber, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -572,6 +833,14 @@ public class UserStore :
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Sets a flag indicating whether the specified user's phone number has been confirmed.
+    /// </summary>
+    /// <param name="user">The user whose phone number confirmation status should be set.</param>
+    /// <param name="confirmed">A flag indicating whether the phone number is confirmed.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public Task SetPhoneNumberConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -587,6 +856,14 @@ public class UserStore :
 
     #region IUserLoginStore<User> Implementation
 
+    /// <summary>
+    /// Adds an external login to the specified user.
+    /// </summary>
+    /// <param name="user">The user to add the login to.</param>
+    /// <param name="login">The external login information to add.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> or <paramref name="login"/> is null.</exception>
     public async Task AddLoginAsync(User user, UserLoginInfo login, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -606,6 +883,13 @@ public class UserStore :
         await _plumber.SaveChanges(externalLoginAggregate);
     }
 
+    /// <summary>
+    /// Finds a user by their external login information.
+    /// </summary>
+    /// <param name="loginProvider">The login provider name.</param>
+    /// <param name="providerKey">The key provided by the login provider.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing the user if found, or null if not found.</returns>
     public async Task<User> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -613,6 +897,13 @@ public class UserStore :
         return _usersModel.GetByExternalLogin(loginProvider, providerKey);
     }
 
+    /// <summary>
+    /// Gets the external logins for the specified user.
+    /// </summary>
+    /// <param name="user">The user whose external logins should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing a list of external logins for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<IList<UserLoginInfo>> GetLoginsAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -630,6 +921,15 @@ public class UserStore :
         )).ToList();
     }
 
+    /// <summary>
+    /// Removes an external login from the specified user.
+    /// </summary>
+    /// <param name="user">The user to remove the login from.</param>
+    /// <param name="loginProvider">The login provider name.</param>
+    /// <param name="providerKey">The key provided by the login provider.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task RemoveLoginAsync(User user, string loginProvider, string providerKey, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -651,6 +951,13 @@ public class UserStore :
 
     #region IUserClaimStore<User> Implementation
 
+    /// <summary>
+    /// Gets the claims associated with the specified user.
+    /// </summary>
+    /// <param name="user">The user whose claims should be retrieved.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing a list of claims for the specified user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<IList<Claim>> GetClaimsAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -662,6 +969,14 @@ public class UserStore :
         return _userAuthorizationModel.GetClaims(userId).ToList();
     }
 
+    /// <summary>
+    /// Adds claims to the specified user.
+    /// </summary>
+    /// <param name="user">The user to add claims to.</param>
+    /// <param name="claims">The claims to add.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> or <paramref name="claims"/> is null.</exception>
     public async Task AddClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -685,6 +1000,15 @@ public class UserStore :
         await _plumber.SaveChanges(authorizationAggregate);
     }
 
+    /// <summary>
+    /// Replaces a claim on the specified user with a new claim.
+    /// </summary>
+    /// <param name="user">The user to replace the claim on.</param>
+    /// <param name="claim">The claim to replace.</param>
+    /// <param name="newClaim">The new claim to add.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/>, <paramref name="claim"/>, or <paramref name="newClaim"/> is null.</exception>
     public async Task ReplaceClaimAsync(User user, Claim claim, Claim newClaim, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -712,6 +1036,14 @@ public class UserStore :
         await _plumber.SaveChanges(authorizationAggregate);
     }
 
+    /// <summary>
+    /// Removes claims from the specified user.
+    /// </summary>
+    /// <param name="user">The user to remove claims from.</param>
+    /// <param name="claims">The claims to remove.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> or <paramref name="claims"/> is null.</exception>
     public async Task RemoveClaimsAsync(User user, IEnumerable<Claim> claims, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -735,6 +1067,13 @@ public class UserStore :
         await _plumber.SaveChanges(authorizationAggregate);
     }
 
+    /// <summary>
+    /// Gets a list of users who possess the specified claim.
+    /// </summary>
+    /// <param name="claim">The claim to search for.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that represents the asynchronous operation, containing a list of users who possess the specified claim.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="claim"/> is null.</exception>
     public async Task<IList<User>> GetUsersForClaimAsync(Claim claim, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -755,6 +1094,16 @@ public class UserStore :
 
     #region IUserRoleStore<User> Implementation
 
+    /// <summary>
+    /// Adds a user to a role.
+    /// </summary>
+    /// <param name="user">The user to add to the role.</param>
+    /// <param name="roleName">The name of the role.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="roleName"/> is null or whitespace.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the specified role does not exist.</exception>
     public async Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -778,6 +1127,15 @@ public class UserStore :
         await _plumber.SaveChanges(authorizationAggregate);
     }
 
+    /// <summary>
+    /// Removes a user from a role.
+    /// </summary>
+    /// <param name="user">The user to remove from the role.</param>
+    /// <param name="roleName">The name of the role.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="roleName"/> is null or whitespace.</exception>
     public async Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -801,6 +1159,13 @@ public class UserStore :
         await _plumber.SaveChanges(authorizationAggregate);
     }
 
+    /// <summary>
+    /// Gets the roles for a user.
+    /// </summary>
+    /// <param name="user">The user to get roles for.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A list of role names for the user.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -813,6 +1178,13 @@ public class UserStore :
         
     }
 
+    /// <summary>
+    /// Determines whether a user is in the specified role.
+    /// </summary>
+    /// <param name="user">The user to check.</param>
+    /// <param name="roleName">The name of the role to check.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>True if the user is in the role; otherwise, false.</returns>
     public async Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -821,6 +1193,13 @@ public class UserStore :
         return _userAuthorizationModel.IsInRole(userId, roleName);
     }
 
+    /// <summary>
+    /// Gets all users in the specified role.
+    /// </summary>
+    /// <param name="roleName">The name of the role.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A list of users in the role.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="roleName"/> is null or whitespace.</exception>
     public async Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -853,6 +1232,16 @@ public class UserStore :
 
     #region IUserAuthenticationTokenStore<User> Implementation
 
+    /// <summary>
+    /// Gets a token value for a user.
+    /// </summary>
+    /// <param name="user">The user to get the token for.</param>
+    /// <param name="loginProvider">The login provider associated with the token.</param>
+    /// <param name="name">The name of the token.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The token value, or null if not found.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="name"/> is null or empty.</exception>
     public async Task<string> GetTokenAsync(User user, string loginProvider, string name, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -866,6 +1255,17 @@ public class UserStore :
         return _tokenModel.GetToken(userId, name, loginProvider);
     }
 
+    /// <summary>
+    /// Sets a token value for a user.
+    /// </summary>
+    /// <param name="user">The user to set the token for.</param>
+    /// <param name="loginProvider">The login provider associated with the token.</param>
+    /// <param name="name">The name of the token.</param>
+    /// <param name="value">The token value to set.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="name"/> is null or empty.</exception>
     public async Task SetTokenAsync(User user, string loginProvider, string name, string value, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -885,6 +1285,16 @@ public class UserStore :
         await _plumber.SaveChanges(tokenAggregate);
     }
 
+    /// <summary>
+    /// Removes a token for a user.
+    /// </summary>
+    /// <param name="user">The user to remove the token from.</param>
+    /// <param name="loginProvider">The login provider associated with the token.</param>
+    /// <param name="name">The name of the token to remove.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="name"/> is null or empty.</exception>
     public async Task RemoveTokenAsync(User user, string loginProvider, string name, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -907,6 +1317,13 @@ public class UserStore :
 
     #region IUserAuthenticatorKeyStore<User> Implementation
 
+    /// <summary>
+    /// Gets the authenticator key for two-factor authentication.
+    /// </summary>
+    /// <param name="user">The user to get the authenticator key for.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The authenticator key, or null if not set.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<string> GetAuthenticatorKeyAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -920,6 +1337,14 @@ public class UserStore :
         return key;
     }
 
+    /// <summary>
+    /// Sets the authenticator key for two-factor authentication.
+    /// </summary>
+    /// <param name="user">The user to set the authenticator key for.</param>
+    /// <param name="key">The authenticator key to set.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task SetAuthenticatorKeyAsync(User user, string key, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -938,6 +1363,13 @@ public class UserStore :
 
     #region IUserTwoFactorRecoveryCodeStore<User> Implementation
 
+    /// <summary>
+    /// Gets the count of valid two-factor recovery codes for a user.
+    /// </summary>
+    /// <param name="user">The user to count recovery codes for.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The number of valid recovery codes.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
     public async Task<int> CountCodesAsync(User user, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -951,6 +1383,15 @@ public class UserStore :
         return codes.Count;
     }
 
+    /// <summary>
+    /// Attempts to redeem a two-factor recovery code.
+    /// </summary>
+    /// <param name="user">The user attempting to redeem the code.</param>
+    /// <param name="code">The recovery code to redeem.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>True if the code was successfully redeemed; otherwise, false.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="code"/> is null or empty.</exception>
     public async Task<bool> RedeemCodeAsync(User user, string code, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -978,6 +1419,14 @@ public class UserStore :
         return true;
     }
 
+    /// <summary>
+    /// Replaces the current set of two-factor recovery codes for a user.
+    /// </summary>
+    /// <param name="user">The user to replace recovery codes for.</param>
+    /// <param name="recoveryCodes">The new collection of recovery codes.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> or <paramref name="recoveryCodes"/> is null.</exception>
     public async Task ReplaceCodesAsync(User user, IEnumerable<string> recoveryCodes, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
@@ -1016,6 +1465,9 @@ public class UserStore :
 
     #endregion
 
+    /// <summary>
+    /// Disposes of resources used by the user store.
+    /// </summary>
     public void Dispose()
     {
         // Nothing to dispose

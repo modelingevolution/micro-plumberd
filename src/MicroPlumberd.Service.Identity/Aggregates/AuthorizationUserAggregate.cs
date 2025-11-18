@@ -148,7 +148,11 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return state with { IsDeleted = true };
     }
 
-    // Command methods
+    /// <summary>
+    /// Creates a new authorization user aggregate for the specified user.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
+    /// <returns>A new <see cref="AuthorizationUserAggregate"/> instance.</returns>
     public static AuthorizationUserAggregate Create(UserIdentifier id)
     {
         var aggregate = Empty(id);
@@ -158,6 +162,11 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         return aggregate;
     }
 
+    /// <summary>
+    /// Adds a role to the user's authorization profile.
+    /// </summary>
+    /// <param name="roleId">The identifier of the role to add.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify authorization data of a deleted user.</exception>
     public void AddRole(RoleIdentifier roleId)
     {
         EnsureNotDeleted();
@@ -172,6 +181,11 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         });
     }
 
+    /// <summary>
+    /// Removes a role from the user's authorization profile.
+    /// </summary>
+    /// <param name="roleId">The identifier of the role to remove.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify authorization data of a deleted user.</exception>
     public void RemoveRole(RoleIdentifier roleId)
     {
         EnsureNotDeleted();
@@ -186,6 +200,12 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         });
     }
 
+    /// <summary>
+    /// Adds a claim to the user's authorization profile.
+    /// </summary>
+    /// <param name="claimType">The type of the claim to add.</param>
+    /// <param name="claimValue">The value of the claim to add.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify authorization data of a deleted user.</exception>
     public void AddClaim(ClaimType claimType, ClaimValue claimValue)
     {
         EnsureNotDeleted();
@@ -206,6 +226,12 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         });
     }
 
+    /// <summary>
+    /// Removes a claim from the user's authorization profile.
+    /// </summary>
+    /// <param name="claimType">The type of the claim to remove.</param>
+    /// <param name="claimValue">The value of the claim to remove.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify authorization data of a deleted user.</exception>
     public void RemoveClaim(ClaimType claimType, ClaimValue claimValue)
     {
         EnsureNotDeleted();
@@ -227,6 +253,11 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
         });
     }
 
+    /// <summary>
+    /// Replaces all claims for the user with the specified collection of claims.
+    /// </summary>
+    /// <param name="claims">The new collection of claims to set for the user.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify authorization data of a deleted user.</exception>
     public void ReplaceClaims(IEnumerable<Claim> claims)
     {
         EnsureNotDeleted();
@@ -240,6 +271,9 @@ public partial class AuthorizationUserAggregate : AggregateBase<UserIdentifier, 
     }
 
 
+    /// <summary>
+    /// Marks the authorization user aggregate as deleted.
+    /// </summary>
     public void Delete()
     {
         if (State.IsDeleted)

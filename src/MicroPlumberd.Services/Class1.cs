@@ -141,6 +141,9 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
     /// </summary>
     public class CorrelationNode : IEquatable<CorrelationNode>, INotifyCollectionChanged, IReadOnlyList<CorrelationNode>, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Gets or sets the parent node in the correlation tree.
+        /// </summary>
         public CorrelationNode? Parent
         {
             get => _parent;
@@ -233,7 +236,12 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
         /// <typeparam name="T">The type to cast the event to.</typeparam>
         /// <returns>The event cast to the specified type.</returns>
         public T EventAs<T>() => (T)Event;
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CorrelationNode"/> class.
+        /// </summary>
+        /// <param name="metadata">The metadata associated with the event.</param>
+        /// <param name="event">The event object.</param>
         public CorrelationNode(Metadata metadata, object @event)
         {
             Id = IdDuckTyping.Instance.TryGetGuidId(@event, out var g) ? g : throw new InvalidOperationException("Id is required!");
@@ -250,6 +258,7 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
             _children.Add(node);
             return this;
         }
+        /// <inheritdoc/>
         public IEnumerator<CorrelationNode> GetEnumerator()
         {
             return _children.GetEnumerator();
@@ -260,6 +269,7 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
             return ((IEnumerable)_children).GetEnumerator();
         }
 
+        /// <inheritdoc/>
         public bool Equals(CorrelationNode? other)
         {
             if (other is null) return false;
@@ -267,6 +277,7 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
             return Id.Equals(other.Id);
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object? obj)
         {
             if (obj is null) return false;
@@ -275,37 +286,66 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
             return Equals((CorrelationNode)obj);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return Id.GetHashCode();
         }
 
+        /// <summary>
+        /// Determines whether two correlation nodes are equal.
+        /// </summary>
+        /// <param name="left">The first correlation node to compare.</param>
+        /// <param name="right">The second correlation node to compare.</param>
+        /// <returns>True if the nodes are equal; otherwise, false.</returns>
         public static bool operator ==(CorrelationNode? left, CorrelationNode? right)
         {
             return Equals(left, right);
         }
 
+        /// <summary>
+        /// Determines whether two correlation nodes are not equal.
+        /// </summary>
+        /// <param name="left">The first correlation node to compare.</param>
+        /// <param name="right">The second correlation node to compare.</param>
+        /// <returns>True if the nodes are not equal; otherwise, false.</returns>
         public static bool operator !=(CorrelationNode? left, CorrelationNode? right)
         {
             return !Equals(left, right);
         }
 
+        /// <inheritdoc/>
         public event NotifyCollectionChangedEventHandler? CollectionChanged
         {
             add => _children.CollectionChanged += value;
             remove => _children.CollectionChanged -= value;
         }
 
+        /// <inheritdoc/>
         public int Count => _children.Count;
 
+        /// <inheritdoc/>
         public CorrelationNode this[int index] => _children[index];
+        /// <inheritdoc/>
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// Raises the PropertyChanged event for the specified property.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Sets the field value and raises PropertyChanged if the value changed.
+        /// </summary>
+        /// <typeparam name="T">The type of the field.</typeparam>
+        /// <param name="field">The field to set.</param>
+        /// <param name="value">The new value.</param>
+        /// <param name="propertyName">The name of the property.</param>
+        /// <returns>True if the field value changed; otherwise, false.</returns>
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value)) return false;
@@ -372,7 +412,7 @@ public class CorrelationModel : IEventHandler, IEnumerable<CorrelationNode>
        return Task.CompletedTask;
     }
 
-
+    /// <inheritdoc/>
     public IEnumerator<CorrelationNode> GetEnumerator()
     {
         return _items.GetEnumerator();

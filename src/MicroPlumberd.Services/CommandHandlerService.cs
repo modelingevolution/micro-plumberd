@@ -9,15 +9,26 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
-sealed class CommandHandlerService(ILogger<CommandHandlerService> log, 
-    PlumberEngine plumber, 
+/// <summary>
+/// Background service that manages command handler subscriptions and executes commands.
+/// </summary>
+sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
+    PlumberEngine plumber,
     IEnumerable<ICommandHandlerStarter> starters) : BackgroundService, IEventHandler
 {
     private readonly Dictionary<Type, IEventHandler> _handlersByCommand = new();
     private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
     private IAsyncDisposable? _subscription;
     private Dictionary<string, Type> _eventMapper;
+    /// <summary>
+    /// Gets a value indicating whether the command handler service is ready to process commands.
+    /// </summary>
     public bool IsReady { get; private set; }
+    /// <summary>
+    /// Stops the command handler service and disposes subscriptions.
+    /// </summary>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A task representing the asynchronous stop operation.</returns>
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
         if (_subscription != null)
@@ -25,8 +36,11 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
         _subscription = null;
     }
 
-    
-
+    /// <summary>
+    /// Executes the command handler service, subscribing to the command stream and processing commands.
+    /// </summary>
+    /// <param name="stoppingToken">A cancellation token to stop the service.</param>
+    /// <returns>A task representing the asynchronous execution.</returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
@@ -67,6 +81,12 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
         }
     }
 
+    /// <summary>
+    /// Maps a command event type name to its corresponding CLR type.
+    /// </summary>
+    /// <param name="evtType">The event type name.</param>
+    /// <param name="t">When this method returns, contains the CLR type if mapping succeeded; otherwise, null.</param>
+    /// <returns>True if the mapping succeeded; otherwise, false.</returns>
     private bool MapCommandType(string evtType, out Type t)
     {
         Debug.WriteLine($"Handling {evtType} command.");
@@ -82,6 +102,12 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
 
         return false;
     }
+    /// <summary>
+    /// Handles incoming command events by dispatching them to registered command handlers.
+    /// </summary>
+    /// <param name="m">The metadata associated with the event.</param>
+    /// <param name="ev">The command event to handle.</param>
+    /// <returns>A task representing the asynchronous handle operation.</returns>
     public async Task Handle(Metadata m, object ev)
     {
         if (_serviceConventions.CommandHandlerSkipFilter(m, ev))

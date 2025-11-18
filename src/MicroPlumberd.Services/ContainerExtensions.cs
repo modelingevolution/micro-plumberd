@@ -7,14 +7,24 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
+/// <summary>
+/// Executes event handlers using a singleton handler instance.
+/// </summary>
+/// <typeparam name="TOwner">The type of event handler.</typeparam>
 class EventHandlerExecutor<TOwner>(TOwner handler) : IEventHandler<TOwner>
     where TOwner : IEventHandler
 {
+    /// <inheritdoc/>
     public Task Handle(Metadata m, object ev) => handler.Handle(m, ev);
 }
+/// <summary>
+/// Executes event handlers within a scoped service provider.
+/// </summary>
+/// <typeparam name="TOwner">The type of event handler.</typeparam>
 class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TOwner>
     where TOwner : IEventHandler
 {
+    /// <inheritdoc/>
     public async Task Handle(Metadata m, object ev)
     {
         await using var scope = sp.CreateAsyncScope(); 

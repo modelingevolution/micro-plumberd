@@ -7,19 +7,48 @@ using MicroPlumberd.Services.Identity.Aggregates;
 
 namespace MicroPlumberd.Services.Identity.ReadModels
 {
+    /// <summary>
+    /// Read model maintaining authentication data including passwords, lockout status, and two-factor settings.
+    /// </summary>
     [EventHandler]
     [OutputStream("AuthenticationModel_v1")]
     public partial class AuthenticationModel
     {
         private readonly ConcurrentDictionary<UserIdentifier, AuthenticationData> _authDataByUserId = new();
 
+        /// <summary>
+        /// Represents authentication data for a user.
+        /// </summary>
         record AuthenticationData
         {
+            /// <summary>
+            /// Gets the hashed password.
+            /// </summary>
             public string PasswordHash { get; init; }
+
+            /// <summary>
+            /// Gets a value indicating whether two-factor authentication is enabled.
+            /// </summary>
             public bool TwoFactorEnabled { get; init; }
+
+            /// <summary>
+            /// Gets the authenticator key for two-factor authentication.
+            /// </summary>
             public string AuthenticatorKey { get; init; }
+
+            /// <summary>
+            /// Gets the number of failed access attempts.
+            /// </summary>
             public int AccessFailedCount { get; init; }
+
+            /// <summary>
+            /// Gets a value indicating whether lockout is enabled.
+            /// </summary>
             public bool LockoutEnabled { get; init; }
+
+            /// <summary>
+            /// Gets the date and time when lockout ends.
+            /// </summary>
             public DateTimeOffset? LockoutEnd { get; init; }
         }
 
@@ -149,7 +178,11 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             await Task.CompletedTask;
         }
 
-        // Query method
+        /// <summary>
+        /// Gets the authenticator key for a user.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>The authenticator key, or null if not found.</returns>
         public string GetAuthenticationDataKey(UserIdentifier userId)
         {
             _authDataByUserId.TryGetValue(userId, out var data);

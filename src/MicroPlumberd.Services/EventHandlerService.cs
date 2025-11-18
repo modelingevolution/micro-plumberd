@@ -9,10 +9,21 @@ using Microsoft.Extensions.Logging;
 [assembly: InternalsVisibleTo("MicroPlumberd.Tests.App.Dsl")]
 namespace MicroPlumberd.Services;
 
+/// <summary>
+/// Background service that starts and manages event handler subscriptions.
+/// </summary>
 sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : BackgroundService
 {
+    /// <summary>
+    /// Gets a value indicating whether all event handlers have been started and are ready.
+    /// </summary>
     public bool IsReady { get; private set; } = false;
 
+    /// <summary>
+    /// Executes the event handler service, starting all registered event handlers.
+    /// </summary>
+    /// <param name="stoppingToken">A cancellation token to stop the service.</param>
+    /// <returns>A task representing the asynchronous execution.</returns>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
@@ -32,8 +43,17 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
     }
 }
 
+/// <summary>
+/// Health check that verifies MicroPlumberd event and command handlers are ready.
+/// </summary>
 internal sealed class StartupHealthCheck(EventHandlerService eventHandlers, CommandHandlerService commandHandlers, ILogger<StartupHealthCheck> logger) : IHealthCheck
 {
+    /// <summary>
+    /// Checks the health status of event and command handlers.
+    /// </summary>
+    /// <param name="context">The health check context.</param>
+    /// <param name="cancellationToken">A cancellation token.</param>
+    /// <returns>A task representing the asynchronous health check operation.</returns>
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
     {
         if (!eventHandlers.IsReady)

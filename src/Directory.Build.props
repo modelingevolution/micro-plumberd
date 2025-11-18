@@ -3,4 +3,11 @@
     <!-- Suppress CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context -->
     <NoWarn>$(NoWarn);CS8632</NoWarn>
   </PropertyGroup>
+
+  <!-- Suppress nullable warnings for test and example projects -->
+  <PropertyGroup Condition="$(MSBuildProjectName.Contains('Test')) Or $(MSBuildProjectName.Contains('Example'))">
+    <!-- CS8618: Non-nullable property must contain a non-null value when exiting constructor -->
+    <!-- CS8669: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context -->
+    <NoWarn>$(NoWarn);CS8618;CS8669</NoWarn>
+  </PropertyGroup>
 </Project>

@@ -252,11 +252,23 @@ public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
         /// <inheritdoc/>
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        /// <summary>
+        /// Raises the <see cref="PropertyChanged"/> event to notify listeners of a property value change.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that changed. Automatically captured from the calling member when not specified.</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Updates a field with a new value if it differs from the current value and raises the <see cref="PropertyChanged"/> event.
+        /// </summary>
+        /// <typeparam name="T">The type of the field being updated.</typeparam>
+        /// <param name="field">A reference to the field to update.</param>
+        /// <param name="value">The new value to assign to the field.</param>
+        /// <param name="propertyName">The name of the property being changed. Automatically captured from the calling member when not specified.</param>
+        /// <returns>True if the field value was changed; otherwise, false.</returns>
         protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(field, value)) return false;
@@ -471,11 +483,23 @@ public class JobsMonitor : IJobsMonitor, INotifyPropertyChanged, IDisposable
     /// <inheritdoc/>
     public event PropertyChangedEventHandler? PropertyChanged;
 
+    /// <summary>
+    /// Raises the <see cref="PropertyChanged"/> event to notify listeners of a property value change.
+    /// </summary>
+    /// <param name="propertyName">The name of the property that changed. Automatically captured from the calling member when not specified.</param>
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
+    /// <summary>
+    /// Updates a field with a new value if it differs from the current value and raises the <see cref="PropertyChanged"/> event.
+    /// </summary>
+    /// <typeparam name="T">The type of the field being updated.</typeparam>
+    /// <param name="field">A reference to the field to update.</param>
+    /// <param name="value">The new value to assign to the field.</param>
+    /// <param name="propertyName">The name of the property being changed. Automatically captured from the calling member when not specified.</param>
+    /// <returns>True if the field value was changed; otherwise, false.</returns>
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;

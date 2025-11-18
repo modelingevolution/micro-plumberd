@@ -7,6 +7,9 @@ using MicroPlumberd.Services.Identity.Aggregates;
 
 namespace MicroPlumberd.Services.Identity.ReadModels
 {
+    /// <summary>
+    /// Read model maintaining authentication tokens for users.
+    /// </summary>
     [EventHandler]
     [OutputStream("TokenModel_v1")]
     public partial class TokenModel
@@ -54,7 +57,13 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             await Task.CompletedTask;
         }
 
-        // Query methods
+        /// <summary>
+        /// Gets a token for a user by name and login provider.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <param name="name">The name of the token.</param>
+        /// <param name="loginProvider">The login provider associated with the token.</param>
+        /// <returns>The token value, or null if not found.</returns>
         public string GetToken(UserIdentifier userId, string name, string loginProvider)
         {
             if (_tokensByUserId.TryGetValue(userId, out var userTokens))

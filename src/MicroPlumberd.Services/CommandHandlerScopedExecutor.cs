@@ -10,32 +10,62 @@ using Microsoft.Extensions.Logging;
 namespace MicroPlumberd.Services;
 
 /// <summary>
-/// TODO: Should switch to decorator pattern @CommandHandler Service-&gt;Executor
-/// 
-/// Than we would have separate decorators for:
+/// Defines the contract for executing command handlers.
+/// </summary>
+/// <typeparam name="THandle">The type of command handler.</typeparam>
+/// <remarks>
+/// TODO: Should switch to decorator pattern CommandHandler Service-&gt;Executor
+///
+/// Then we would have separate decorators for:
 /// - retry policy
 /// - validation
-/// - athorization
+/// - authorization
 /// - authentication
-/// 
-/// </summary>
-/// <typeparam name="THandle"></typeparam>
+/// </remarks>
 internal interface ICommandHandleExecutor<THandle>
 {
+    /// <summary>
+    /// Handles the execution of a command.
+    /// </summary>
+    /// <typeparam name="TCommand">The type of command to handle.</typeparam>
+    /// <param name="m">The metadata associated with the command.</param>
+    /// <param name="command">The command to execute.</param>
+    /// <returns>A task representing the asynchronous handle operation.</returns>
     Task Handle<TCommand>(Metadata m, TCommand command);
 }
 
+/// <summary>
+/// Root event handler executor that dispatches commands to the appropriate command handler.
+/// </summary>
+/// <typeparam name="THandler">The type of command handler.</typeparam>
 internal class EventHandlerRootExecutor<THandler>(ICommandHandleExecutor<THandler> next) : IEventHandler, ITypeRegister
     where THandler : ICommandHandler, IServiceTypeRegister
 {
+    /// <summary>
+    /// Generic invoker for strongly-typed command handling.
+    /// </summary>
+    /// <typeparam name="TCommand">The type of command.</typeparam>
     class Invoker<TCommand>(ICommandHandleExecutor<THandler> parent) : IInvoker
     {
+        /// <inheritdoc/>
         public async Task Handle(Metadata m, object ev) =>
             await parent.Handle<TCommand>(m, (TCommand)ev);
     }
-    interface IInvoker { Task Handle(Metadata m, object ev); }
+    /// <summary>
+    /// Interface for type-erased command invocation.
+    /// </summary>
+    interface IInvoker {
+        /// <summary>
+        /// Handles a command event.
+        /// </summary>
+        /// <param name="m">The metadata.</param>
+        /// <param name="ev">The event.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        Task Handle(Metadata m, object ev);
+    }
 
     private readonly ConcurrentDictionary<Type, IInvoker> _cached = new();
+    /// <inheritdoc/>
     public async Task Handle(Metadata m, object ev)
     {
         var invoker = _cached.GetOrAdd(ev.GetType(), x => (IInvoker)Activator.CreateInstance(typeof(Invoker<>).MakeGenericType(typeof(THandler), ev.GetType()), next)!);
@@ -43,17 +73,22 @@ internal class EventHandlerRootExecutor<THandler>(ICommandHandleExecutor<THandle
         await invoker.Handle(m, ev);
     }
 
+    /// <summary>
+    /// Gets the collection of command types supported by this handler.
+    /// </summary>
     public static IEnumerable<Type> Types => THandler.CommandTypes;
 }
 
+/// <summary>
+/// Factory class for creating command handler executors.
+/// </summary>
 static class CommandHandlerExecutor
 {
-   
     /// <summary>
-    /// Creates chain for command handler executors.
+    /// Creates a chain for command handler executors.
     /// </summary>
-    /// <param name="plumber">plumber instance</param>
-    /// <param name="t">Type of the handler</param>
+    /// <param name="plumber">The plumber instance.</param>
+    /// <param name="t">The type of the handler.</param>
     /// <returns>An event handler that wraps the command handler execution logic.</returns>
     public static IEventHandler Create(PlumberEngine plumber, Type t)
     {
@@ -241,14 +276,27 @@ public static class MetadataExtensions
     }
 }
 
+/// <summary>
+/// Base class for command handler executors providing common execution logic.
+/// </summary>
+/// <typeparam name="THandler">The type of command handler.</typeparam>
 abstract class CommandHandlerExecutorBase<THandler>(PlumberEngine plumber, ILogger log)
     : ICommandHandleExecutor<THandler>
     where THandler : ICommandHandler, IServiceTypeRegister
 {
     private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
 
+    /// <inheritdoc/>
     public abstract Task Handle<TCommand>(Metadata m, TCommand command);
-    
+
+    /// <summary>
+    /// Handles command execution, including error handling and result event generation.
+    /// </summary>
+    /// <typeparam name="TCommand">The type of command.</typeparam>
+    /// <param name="ch">The command handler instance.</param>
+    /// <param name="m">The metadata.</param>
+    /// <param name="command">The command to execute.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     protected async Task OnHandle<TCommand>(ICommandHandler<TCommand> ch, Metadata m, TCommand command)
     {
         var recipientId = m.RecipientId();
@@ -323,11 +371,16 @@ abstract class CommandHandlerExecutorBase<THandler>(PlumberEngine plumber, ILogg
 
 }
 
+/// <summary>
+/// Executes command handlers within a scoped service provider.
+/// </summary>
+/// <typeparam name="THandler">The type of command handler.</typeparam>
 class CommandHandlerScopedExecutor<THandler>(
     PlumberEngine plumber,
     ILogger<CommandHandlerScopedExecutor<THandler>> log) : CommandHandlerExecutorBase<THandler>(plumber, log)
     where THandler : ICommandHandler, IServiceTypeRegister
 {
+    /// <inheritdoc/>
     public override async Task Handle<TCommand>(Metadata m, TCommand command)
     {
 
@@ -339,6 +392,10 @@ class CommandHandlerScopedExecutor<THandler>(
 
 }
 
+/// <summary>
+/// Executes command handlers using singleton handler instances.
+/// </summary>
+/// <typeparam name="THandler">The type of command handler.</typeparam>
 class CommandHandlerSingletonExecutor<THandler>(
         PlumberEngine plumber,
         ILogger<CommandHandlerSingletonExecutor<THandler>> log)
@@ -348,7 +405,7 @@ class CommandHandlerSingletonExecutor<THandler>(
         private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
         private readonly ConcurrentDictionary<Type, ICommandHandler> _invokers = new();
 
-
+        /// <inheritdoc/>
         public override async Task Handle<TCommand>(Metadata m, TCommand command)
         {
             var ch = (ICommandHandler<TCommand>)_invokers.GetOrAdd(typeof(TCommand),

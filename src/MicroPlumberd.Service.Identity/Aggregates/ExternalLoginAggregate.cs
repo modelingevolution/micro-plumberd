@@ -2,23 +2,53 @@
 
 namespace MicroPlumberd.Services.Identity.Aggregates;
 
+/// <summary>
+/// Aggregate root managing external login providers for a user (e.g., Google, Microsoft, Facebook).
+/// </summary>
 [Aggregate]
 [OutputStream("ExternalLogin")]
 public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, ExternalLoginAggregate.ExternalLoginState>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ExternalLoginAggregate"/> class.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
     public ExternalLoginAggregate(UserIdentifier id) : base(id) { }
 
+    /// <summary>
+    /// Represents the state of all external logins associated with a user.
+    /// </summary>
     public record ExternalLoginState
     {
+        /// <summary>
+        /// Gets the list of external login providers configured for this user.
+        /// </summary>
         public ImmutableList<ExternalLoginRecord> Logins { get; init; } = ImmutableList<ExternalLoginRecord>.Empty;
-        
+
+        /// <summary>
+        /// Gets a value indicating whether this external login aggregate has been deleted.
+        /// </summary>
         public bool IsDeleted { get; init; }
     }
 
+    /// <summary>
+    /// Represents a single external login provider configuration for a user.
+    /// </summary>
     public record ExternalLoginRecord
     {
+        /// <summary>
+        /// Gets the external login provider.
+        /// </summary>
         public ExternalLoginProvider Provider { get; init; }
+
+        /// <summary>
+        /// Gets the unique identifier for the user within the external provider's system.
+        /// </summary>
         public ExternalLoginKey ProviderKey { get; init; }
+
+        /// <summary>
+        /// Gets the display name for this external login.
+        /// </summary>
         public string DisplayName { get; init; }
     }
 
@@ -79,7 +109,11 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return state with { IsDeleted = true };
     }
 
-    // Command methods
+    /// <summary>
+    /// Creates a new external login aggregate for the specified user.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
+    /// <returns>A new <see cref="ExternalLoginAggregate"/> instance.</returns>
     public static ExternalLoginAggregate Create(UserIdentifier id)
     {
         var aggregate = Empty(id);
@@ -89,6 +123,14 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         return aggregate;
     }
 
+    /// <summary>
+    /// Adds an external login provider for the user.
+    /// </summary>
+    /// <param name="provider">The external login provider. Cannot be empty.</param>
+    /// <param name="providerKey">The user's unique identifier within the provider's system. Cannot be empty.</param>
+    /// <param name="displayName">The display name for this external login.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify external logins of a deleted user.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="provider"/> or <paramref name="providerKey"/> is empty.</exception>
     public void AddLogin(
         ExternalLoginProvider provider,
         ExternalLoginKey providerKey,
@@ -123,6 +165,12 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         });
     }
 
+    /// <summary>
+    /// Removes an external login provider for the user.
+    /// </summary>
+    /// <param name="provider">The external login provider to remove.</param>
+    /// <param name="providerKey">The provider-specific key to remove.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify external logins of a deleted user.</exception>
     public void RemoveLogin(ExternalLoginProvider provider, ExternalLoginKey providerKey)
     {
         EnsureNotDeleted();
@@ -144,14 +192,17 @@ public partial class ExternalLoginAggregate : AggregateBase<UserIdentifier, Exte
         });
     }
 
-   
 
+
+    /// <summary>
+    /// Marks the external login aggregate as deleted.
+    /// </summary>
     public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        
+
         AppendPendingChange(new ExternalLoginAggregateDeleted());
     }
 

@@ -3,23 +3,53 @@ using System.Collections.Immutable;
 
 namespace MicroPlumberd.Services.Identity.Aggregates;
 
+/// <summary>
+/// Aggregate root managing authentication tokens for a user including refresh tokens, recovery codes, and provider-specific tokens.
+/// </summary>
 [Aggregate]
 [OutputStream("Token")]
 public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggregate.TokenState>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TokenAggregate"/> class.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
     public TokenAggregate(UserIdentifier id) : base(id) { }
 
+    /// <summary>
+    /// Represents the state of all tokens associated with a user.
+    /// </summary>
     public record TokenState
     {
+        /// <summary>
+        /// Gets the list of tokens for this user.
+        /// </summary>
         public ImmutableList<TokenRecord> Tokens { get; init; } = ImmutableList<TokenRecord>.Empty;
-        
+
+        /// <summary>
+        /// Gets a value indicating whether this token aggregate has been deleted.
+        /// </summary>
         public bool IsDeleted { get; init; }
     }
 
+    /// <summary>
+    /// Represents a single token record with name, value, and login provider association.
+    /// </summary>
     public record TokenRecord
     {
+        /// <summary>
+        /// Gets the name of the token.
+        /// </summary>
         public TokenName Name { get; init; }
+
+        /// <summary>
+        /// Gets the value of the token.
+        /// </summary>
         public TokenValue Value { get; init; }
+
+        /// <summary>
+        /// Gets the login provider associated with this token, if any.
+        /// </summary>
         public string LoginProvider { get; init; }
     }
 
@@ -86,7 +116,11 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return state with { IsDeleted = true };
     }
 
-    // Command methods
+    /// <summary>
+    /// Creates a new token aggregate for the specified user.
+    /// </summary>
+    /// <param name="id">The unique identifier for the user.</param>
+    /// <returns>A new <see cref="TokenAggregate"/> instance.</returns>
     public static TokenAggregate Create(UserIdentifier id)
     {
         var aggregate = Empty(id);
@@ -96,6 +130,14 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         return aggregate;
     }
 
+    /// <summary>
+    /// Sets a token for the user, replacing any existing token with the same name and login provider.
+    /// </summary>
+    /// <param name="name">The name of the token. Cannot be empty.</param>
+    /// <param name="value">The value of the token. Cannot be empty.</param>
+    /// <param name="loginProvider">The login provider associated with this token, if any.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify tokens of a deleted user.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="name"/> or <paramref name="value"/> is empty.</exception>
     public void SetToken(
         TokenName name,
         TokenValue value,
@@ -121,6 +163,12 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
         });
     }
 
+    /// <summary>
+    /// Removes a token for the user.
+    /// </summary>
+    /// <param name="name">The name of the token to remove.</param>
+    /// <param name="loginProvider">The login provider associated with the token to remove.</param>
+    /// <exception cref="InvalidOperationException">Thrown when attempting to modify tokens of a deleted user.</exception>
     public void RemoveToken(
         TokenName name,
         string loginProvider
@@ -146,12 +194,15 @@ public partial class TokenAggregate : AggregateBase<UserIdentifier, TokenAggrega
     }
 
 
+    /// <summary>
+    /// Marks the token aggregate as deleted.
+    /// </summary>
     public void Delete()
     {
         if (State.IsDeleted)
             return;
 
-        
+
 
         AppendPendingChange(new TokenAggregateDeleted());
     }

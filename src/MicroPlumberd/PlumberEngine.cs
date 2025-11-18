@@ -35,15 +35,35 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         this._errorHandle = config.ErrorHandlePolicy;
         config.OnCreated(this);
     }
+    /// <summary>
+    /// Gets the read-only configuration for this plumber engine instance.
+    /// </summary>
     public IPlumberReadOnlyConfig Config => this;
 
+    /// <summary>
+    /// Gets the type handler registers for mapping event types to their handlers.
+    /// </summary>
     public ITypeHandlerRegisters TypeHandlerRegisters => _typeHandlerRegisters;
+
+    /// <summary>
+    /// Gets the EventStore client for interacting with EventStoreDB.
+    /// </summary>
     public EventStoreClient Client { get; }
 
+    /// <summary>
+    /// Gets the projection register for managing EventStore projections.
+    /// </summary>
     public IProjectionRegister ProjectionRegister =>
         _projectionRegister ??= new ProjectionRegister(ProjectionManagementClient);
 
+    /// <summary>
+    /// Gets the persistent subscription client for managing persistent subscriptions.
+    /// </summary>
     public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
+
+    /// <summary>
+    /// Gets the projection management client for creating and managing EventStore projections.
+    /// </summary>
     public EventStoreProjectionManagementClient ProjectionManagementClient { get; }
 
     /// <summary>
@@ -138,6 +158,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     {
         await ProjectionManagementClient.TryCreateJoinProjection(outputStream, ProjectionRegister, eventTypes, token: token);
     }
+    /// <summary>
+    /// Subscribes an event handler to a stream using auto-discovered event types.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler that implements both IEventHandler and ITypeRegister.</typeparam>
+    /// <param name="eh">Optional event handler instance. If null, a new instance will be created from the service provider.</param>
+    /// <param name="outputStream">Optional output stream name. If null, determined by naming conventions.</param>
+    /// <param name="start">Optional starting position for reading events. If null, starts from the beginning.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists before subscribing.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>A disposable subscription that can be disposed to stop processing events.</returns>
     public async Task<IAsyncDisposable> SubscribeEventHandler<TEventHandler>(TEventHandler? eh = null,
         string? outputStream = null,
         FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,
@@ -166,12 +196,23 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var evts = TEventHandler.Types.Select(x => this.Conventions.SnapshotEventNameConvention(x)).ToArray();
         return await SubscribeStateEventHandler(evts, eh, outputStream, start, ensureOutputStreamProjection, token);
     }
+    /// <summary>
+    /// Subscribes an event handler to state snapshot events with custom event type filtering.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of event handler that implements both IEventHandler and ITypeRegister.</typeparam>
+    /// <param name="eventTypes">Collection of event type names to subscribe to. If null, subscribes to all types from TEventHandler.</param>
+    /// <param name="eh">Optional event handler instance. If null, a new instance will be created from the service provider.</param>
+    /// <param name="outputStream">Optional output stream name. If null, determined by naming conventions.</param>
+    /// <param name="start">Optional starting position for reading events. If null, starts from the beginning.</param>
+    /// <param name="ensureOutputStreamProjection">Whether to ensure the output stream projection exists before subscribing.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>A disposable subscription that can be disposed to stop processing events.</returns>
     public async Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(
-        IEnumerable<string>? eventTypes, 
+        IEnumerable<string>? eventTypes,
         TEventHandler? eh = default,
         string? outputStream = null,
-        FromRelativeStreamPosition? start = null, 
-        bool ensureOutputStreamProjection = true, 
+        FromRelativeStreamPosition? start = null,
+        bool ensureOutputStreamProjection = true,
         CancellationToken token = default)
         where TEventHandler : class, IEventHandler, ITypeRegister
     {
@@ -439,6 +480,17 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return new SubscriptionSet(this);
     }
 
+    /// <summary>
+    /// Reads events from a stream identified by an aggregate ID and owner type.
+    /// </summary>
+    /// <typeparam name="TOwner">The type that owns the stream and implements ITypeRegister.</typeparam>
+    /// <param name="context">The operation context for the read operation.</param>
+    /// <param name="id">The aggregate ID identifying the specific stream.</param>
+    /// <param name="start">Optional starting position in the stream. Defaults to the beginning.</param>
+    /// <param name="direction">Optional direction to read (forwards or backwards). Defaults to forwards.</param>
+    /// <param name="maxCount">Maximum number of events to read. Defaults to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>An async enumerable of deserialized events.</returns>
     public IAsyncEnumerable<object> Read<TOwner>(OperationContext context, object id, StreamPosition? start = null, Direction? direction = null,
         long maxCount = long.MaxValue, CancellationToken token = default) where TOwner : ITypeRegister
     {
@@ -449,6 +501,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return Read(context,streamId, registry, start, direction, maxCount, token);
     }
 
+    /// <summary>
+    /// Reads events from a category stream for the specified owner type.
+    /// </summary>
+    /// <typeparam name="TOwner">The type that owns the category stream and implements ITypeRegister.</typeparam>
+    /// <param name="context">The operation context for the read operation.</param>
+    /// <param name="start">Optional starting position in the stream. Defaults to the beginning.</param>
+    /// <param name="direction">Optional direction to read (forwards or backwards). Defaults to forwards.</param>
+    /// <param name="maxCount">Maximum number of events to read. Defaults to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>An async enumerable of deserialized events.</returns>
     public IAsyncEnumerable<object> Read<TOwner>(OperationContext context, StreamPosition? start = null, Direction? direction = null,
         long maxCount = long.MaxValue, CancellationToken token = default) where TOwner : ITypeRegister
     {
@@ -457,6 +519,17 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return Read(context, streamId, evNameConv, start, direction, maxCount, token);
     }
 
+    /// <summary>
+    /// Reads events from a stream including their metadata.
+    /// </summary>
+    /// <param name="context">The operation context for the read operation.</param>
+    /// <param name="streamId">The stream ID to read from.</param>
+    /// <param name="converter">Function to convert event names to types.</param>
+    /// <param name="start">Optional starting position in the stream. Defaults to the beginning.</param>
+    /// <param name="direction">Optional direction to read (forwards or backwards). Defaults to forwards.</param>
+    /// <param name="maxCount">Maximum number of events to read. Defaults to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>An async enumerable of tuples containing the event and its metadata.</returns>
     public async IAsyncEnumerable<(object, Metadata)> ReadFull(OperationContext context, string streamId, TypeEventConverter converter,
         StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue, [EnumeratorCancellation] CancellationToken token = default)
     {
@@ -473,6 +546,18 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         await foreach (var i in events)
             yield return i;
     }
+
+    /// <summary>
+    /// Reads events of a specific type from a stream.
+    /// </summary>
+    /// <typeparam name="T">The type of events to read.</typeparam>
+    /// <param name="context">The operation context for the read operation.</param>
+    /// <param name="streamId">Optional stream ID. If null, reads from the event type stream ($et-{eventName}).</param>
+    /// <param name="start">Optional starting position in the stream. Defaults to the beginning.</param>
+    /// <param name="direction">Optional direction to read (forwards or backwards). Defaults to forwards.</param>
+    /// <param name="maxCount">Maximum number of events to read. Defaults to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>An async enumerable of tuples containing the typed event and its metadata.</returns>
     public async IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(OperationContext context, string? streamId = null, StreamPosition? start = null, Direction? direction = null,
         long maxCount = 9223372036854775807, CancellationToken token = default)
     {
@@ -505,6 +590,18 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         await foreach (var i in events)
             yield return ((T)i.Item1, i.Item2);
     }
+
+    /// <summary>
+    /// Reads events from a stream using a custom type converter.
+    /// </summary>
+    /// <param name="context">The operation context for the read operation.</param>
+    /// <param name="streamId">The stream ID to read from.</param>
+    /// <param name="converter">Function to convert event names to types.</param>
+    /// <param name="start">Optional starting position in the stream. Defaults to the beginning.</param>
+    /// <param name="direction">Optional direction to read (forwards or backwards). Defaults to forwards.</param>
+    /// <param name="maxCount">Maximum number of events to read. Defaults to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>An async enumerable of deserialized events.</returns>
     public async IAsyncEnumerable<object> Read(OperationContext context, string streamId, TypeEventConverter converter,
         StreamPosition? start = null, Direction? direction = null, long maxCount = long.MaxValue,[EnumeratorCancellation] CancellationToken token = default)
     {
@@ -522,6 +619,14 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             yield return i;
     }
 
+    /// <summary>
+    /// Gets and rehydrates an aggregate from its event stream, optionally using a snapshot for performance.
+    /// </summary>
+    /// <typeparam name="TOwner">The type of aggregate to retrieve.</typeparam>
+    /// <param name="context">The operation context for the get operation.</param>
+    /// <param name="id">The aggregate ID.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The fully rehydrated aggregate.</returns>
     public async Task<TOwner> Get<TOwner>(OperationContext context, object id, CancellationToken token = default)
         where TOwner : IAggregate<TOwner>, ITypeRegister, IId
     {
@@ -541,8 +646,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return aggregate;
     }
 
-    
-
+    /// <summary>
+    /// Appends a collection of events to a stream with optimistic concurrency control using stream revision.
+    /// </summary>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="streamId">The stream ID to append to.</param>
+    /// <param name="rev">The expected stream revision for optimistic concurrency control.</param>
+    /// <param name="events">Collection of events to append.</param>
+    /// <param name="metadata">Optional metadata to attach to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
     public async Task<IWriteResult> AppendEvents(OperationContext context, string streamId, StreamRevision rev, IEnumerable<object> events,
         object? metadata = null, CancellationToken token = default)
     {
@@ -551,6 +664,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return await Client.AppendToStreamAsync(streamId, rev, evData, cancellationToken: token);
     }
 
+    /// <summary>
+    /// Appends a collection of events to a stream with optimistic concurrency control using stream state.
+    /// </summary>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="streamId">The stream ID to append to.</param>
+    /// <param name="state">The expected stream state (e.g., Any, NoStream, StreamExists).</param>
+    /// <param name="events">Collection of events to append.</param>
+    /// <param name="metadata">Optional metadata to attach to all events.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
     public async Task<IWriteResult> AppendEvents(OperationContext context, string streamId, StreamState state, IEnumerable<object> events,
         object? metadata = null, CancellationToken token = default)
     {
@@ -560,23 +683,50 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return r;
     }
 
-    public Task<IWriteResult> AppendState<T>(OperationContext context, T state, CancellationToken token = default) => 
+    /// <summary>
+    /// Appends a state snapshot to its designated stream, extracting ID and version from the state object.
+    /// </summary>
+    /// <typeparam name="T">The type of state to append.</typeparam>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="state">The state object to append. Must have ID and version properties.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    public Task<IWriteResult> AppendState<T>(OperationContext context, T state, CancellationToken token = default) =>
         AppendState(context,state, IdDuckTyping.Instance.GetId(state), _versionTyping.GetVersion(state), token);
 
-    
-    public async Task<IWriteResult> AppendState(OperationContext context, object state, object id, long? version, CancellationToken token = default) 
+    /// <summary>
+    /// Appends a state snapshot to its designated stream with explicit ID and version.
+    /// </summary>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="state">The state object to append.</param>
+    /// <param name="id">The ID identifying the state stream.</param>
+    /// <param name="version">Optional version for optimistic concurrency. If null or negative, uses stream state.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    public async Task<IWriteResult> AppendState(OperationContext context, object state, object id, long? version, CancellationToken token = default)
     {
         var m = Conventions.GetMetadata(context,null, state, null);
         var stateType = state.GetType();
         var streamId = Conventions.GetStreamIdStateConvention(context, stateType, id);
         var evId = Conventions.GetEventIdStateConvention(state, id, version);
         var evData = MakeEvent(context, evId, Conventions.SnapshotEventNameConvention(stateType), state, m);
-        var ret = (version == null || version < 0) ? 
-            await Client.AppendToStreamAsync(streamId, version == -1 ? StreamState.NoStream : StreamState.Any, [evData], cancellationToken: token) : 
+        var ret = (version == null || version < 0) ?
+            await Client.AppendToStreamAsync(streamId, version == -1 ? StreamState.NoStream : StreamState.Any, [evData], cancellationToken: token) :
             await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
         _versionTyping.SetVersion(state, (version??-1) + 1);
         return ret;
     }
+
+    /// <summary>
+    /// Appends a snapshot of an aggregate's state to its snapshot stream.
+    /// </summary>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="snapshot">The snapshot object to append.</param>
+    /// <param name="id">The aggregate ID.</param>
+    /// <param name="version">The aggregate version at the time of the snapshot.</param>
+    /// <param name="state">Optional expected stream state. Defaults to Any.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
     public async Task<IWriteResult> AppendSnapshot(OperationContext context, object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default)
     {
         var m = Conventions.GetMetadata(context, null, snapshot, new { SnapshotVersion = version });
@@ -586,7 +736,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var evData = MakeEvent(context, evId, Conventions.SnapshotEventNameConvention(stateType), snapshot, m);
 
         return await Client.AppendToStreamAsync(streamId, state ?? StreamState.Any, [evData], cancellationToken:token);
-        
+
     }
 
     /// <summary>
@@ -747,27 +897,21 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return await Client.SetStreamMetadataAsync(streamId, state ?? StreamState.Any, metadata);
     }
     /// <summary>
-    /// Appends an event to a stream in the Event Store.
+    /// Appends a single event to a stream determined by naming conventions.
     /// </summary>
-    /// <param name="evt">The event to append. Cannot be <c>null</c>.</param>
-    /// <param name="id">The optional identifier for the stream. If not provided, conventions will be used to determine the stream name.</param>
-    /// <param name="metadata">Optional metadata associated with the event.</param>
-    /// <param name="state">
-    /// The expected state of the stream. Defaults to <see cref="StreamState.Any"/> if not specified.
-    /// </param>
-    /// <param name="evtName">
-    /// The name of the event. If not provided, conventions will be used to determine the event name.
-    /// </param>
-    /// <param name="token">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-    /// <returns>
-    /// A task that represents the asynchronous operation. The task result contains an <see cref="IWriteResult"/> 
-    /// indicating the result of the append operation.
-    /// </returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="evt"/> is <c>null</c>.</exception>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="evt">The event to append. Cannot be null.</param>
+    /// <param name="id">Optional identifier for the stream. If not provided, conventions will be used.</param>
+    /// <param name="metadata">Optional metadata to attach to the event.</param>
+    /// <param name="state">Optional expected stream state. Defaults to Any.</param>
+    /// <param name="evtName">Optional event name. If not provided, determined by naming conventions.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    /// <exception cref="ArgumentException">Thrown when evt is null.</exception>
     public async Task<IWriteResult> AppendEvent(OperationContext context, object evt, object? id=null, object? metadata = null, StreamState? state=null, string? evtName=null, CancellationToken token = default)
     {
         if (evt == null) throw new ArgumentException("evt cannot be null.");
-        
+
 
         evtName ??= Conventions.GetEventNameConvention(null, evt.GetType());
         var m = Conventions.GetMetadata(context,null, evt, metadata);
@@ -779,6 +923,19 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var r = await Client.AppendToStreamAsync(streamId, st, [evData], cancellationToken:token);
         return r;
     }
+
+    /// <summary>
+    /// Appends a single event to a specific stream.
+    /// </summary>
+    /// <param name="context">The operation context for the append operation.</param>
+    /// <param name="streamId">The stream ID to append to. Cannot be null or empty.</param>
+    /// <param name="evt">The event to append. Cannot be null.</param>
+    /// <param name="state">Optional expected stream state. Defaults to Any.</param>
+    /// <param name="evtName">Optional event name. If not provided, determined by naming conventions.</param>
+    /// <param name="metadata">Optional metadata to attach to the event.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    /// <exception cref="ArgumentException">Thrown when streamId is null or empty, or when evt is null.</exception>
     public async Task<IWriteResult> AppendEventToStream(OperationContext context, string streamId, object evt, StreamState? state = null, string? evtName = null,
         object? metadata = null, CancellationToken token = default)
     {
@@ -795,8 +952,17 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return r;
     }
 
-    
-    
+    /// <summary>
+    /// Saves changes to an existing aggregate by appending its pending events to the stream.
+    /// </summary>
+    /// <typeparam name="T">The type of aggregate.</typeparam>
+    /// <param name="context">The operation context for the save operation.</param>
+    /// <param name="aggregate">The aggregate with pending events to save. Cannot be null.</param>
+    /// <param name="metadata">Optional metadata to attach to all events.</param>
+    /// <param name="streamMetadata">Optional stream metadata configuration.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when aggregate is null.</exception>
     public async Task<IWriteResult> SaveChanges<T>(OperationContext context, T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
@@ -807,7 +973,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var r = await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData, cancellationToken: token);
         aggregate.AckCommitted();
 
-        if (streamMetadata != null) 
+        if (streamMetadata != null)
             await Client.SetStreamMetadataAsync(streamId, StreamState.Any, streamMetadata.Value,null,null,null,token);
 
         var policy = GetPolicy<T>();
@@ -817,7 +983,17 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return r;
     }
 
-
+    /// <summary>
+    /// Saves a new aggregate by appending its pending events to a new stream.
+    /// </summary>
+    /// <typeparam name="T">The type of aggregate.</typeparam>
+    /// <param name="context">The operation context for the save operation.</param>
+    /// <param name="aggregate">The new aggregate with pending events to save. Cannot be null.</param>
+    /// <param name="metadata">Optional metadata to attach to all events.</param>
+    /// <param name="streamMetadata">Optional stream metadata configuration.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when aggregate is null.</exception>
     public async Task<IWriteResult> SaveNew<T>(OperationContext context, T aggregate, object? metadata = null, StreamMetadata? streamMetadata = null, CancellationToken token = default)
         where T : IAggregate<T>, IId
     {
@@ -839,6 +1015,15 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     }
     
 
+    /// <summary>
+    /// Gets the latest state snapshot for a given ID.
+    /// </summary>
+    /// <typeparam name="T">The type of state to retrieve.</typeparam>
+    /// <param name="context">The operation context for the get operation.</param>
+    /// <param name="id">The ID identifying the state stream.</param>
+    /// <param name="streamId">Optional stream ID. If null, determined by naming conventions.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The latest state with its metadata, or null if no state exists.</returns>
     public async Task<SubscriptionRunnerState<T>?> GetState<T>(OperationContext context, object id, string? streamId = null, CancellationToken token = default) where T:class
     {
         var streamType = typeof(T);
@@ -846,7 +1031,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var c = new SingleTypeConverter(streamType);
         var e = await ReadFull(context,streamId, c.Convert, StreamPosition.End, Direction.Backwards, 1, token).ToArrayAsync();
         if (!e.Any()) return null;
-        
+
         //TODO: DuckTyping
         var (evt, m) = e[0];
         _versionTyping.SetVersion(evt, m.SourceStreamPosition);
@@ -854,8 +1039,15 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return new SubscriptionRunnerState<T>((T)evt, m);
     }
 
-   
-
+    /// <summary>
+    /// Gets the latest snapshot for an aggregate by type and ID.
+    /// </summary>
+    /// <param name="context">The operation context for the get operation.</param>
+    /// <param name="id">The aggregate ID.</param>
+    /// <param name="snapshotType">The type of snapshot to retrieve.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The snapshot if it exists, or null if no snapshot is found.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when snapshotType is null.</exception>
     public async Task<Snapshot?> GetSnapshot(OperationContext context, object id, Type snapshotType, CancellationToken token = default)
     {
         if (snapshotType == null) throw new ArgumentNullException("snapshotType cannot be null.");
@@ -873,6 +1065,14 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return s;
     }
 
+    /// <summary>
+    /// Gets the latest typed snapshot for an aggregate by ID.
+    /// </summary>
+    /// <typeparam name="T">The type of snapshot to retrieve.</typeparam>
+    /// <param name="context">The operation context for the get operation.</param>
+    /// <param name="id">The aggregate ID.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The typed snapshot if it exists, or null if no snapshot is found.</returns>
     public async Task<Snapshot<T>?> GetSnapshot<T>(OperationContext context, Guid id, CancellationToken token = default)
     {
         var s = await GetSnapshot(context,id, typeof(T), token);
@@ -880,13 +1080,14 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     }
 
     /// <summary>
-    ///     Appends a link to the stream based on metadata loaded from somewhere else.
+    /// Appends a link to a stream based on event metadata.
     /// </summary>
-    /// <param name="streamId">Full name of the stream.</param>
-    /// <param name="metadata">Event's metadata that link will point to.</param>
-    /// <param name="state">StreamState, default is Any</param>
-    /// <param name="token"></param>
-    /// <returns></returns>
+    /// <param name="streamId">The target stream to append the link to. Cannot be null or empty.</param>
+    /// <param name="metadata">The metadata of the event to link to, containing source stream ID and position.</param>
+    /// <param name="state">Optional expected stream state. Defaults to Any.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    /// <exception cref="ArgumentException">Thrown when streamId is null or empty.</exception>
     public async Task<IWriteResult> AppendLink(string streamId, Metadata metadata, StreamState? state = null, CancellationToken token = default)
     {
         if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
@@ -897,14 +1098,17 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return await Client.AppendToStreamAsync(streamId, state ?? StreamState.Any,
             new[] { new EventData(Uuid.NewUuid(), eventType, data) }, cancellationToken: token);
     }
+
     /// <summary>
-    /// Appends the link.
+    /// Appends a link to a stream pointing to a specific event in another stream.
     /// </summary>
-    /// <param name="streamId">The stream identifier.</param>
-    /// <param name="streamPosition">Stream position in original stream</param>
-    /// <param name="streamSourceId">The stream source identifier.</param>
-    /// <param name="state">Optional expected stream state.</param>
-    /// <returns></returns>
+    /// <param name="streamId">The target stream to append the link to. Cannot be null or empty.</param>
+    /// <param name="streamPosition">The position of the event in the source stream.</param>
+    /// <param name="streamSourceId">The ID of the source stream containing the event. Cannot be null or empty.</param>
+    /// <param name="state">Optional expected stream state. Defaults to Any.</param>
+    /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
+    /// <returns>The write result indicating success or failure.</returns>
+    /// <exception cref="ArgumentException">Thrown when streamId or streamSourceId is null or empty.</exception>
     public async Task<IWriteResult> AppendLink(string streamId, ulong streamPosition, string streamSourceId,
         StreamState? state = null, CancellationToken token = default)
     {
@@ -924,6 +1128,11 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         return _policies.GetOrAdd(typeof(TOwner), x => Conventions.SnapshotPolicyFactoryConvention(x));
     }
 
+    /// <summary>
+    /// Gets or creates an extension object for the plumber engine.
+    /// </summary>
+    /// <typeparam name="T">The type of extension to retrieve or create.</typeparam>
+    /// <returns>The extension instance.</returns>
     public T GetExtension<T>() where T : new()
     {
         return (T)_extension.GetOrAdd(typeof(T), x => new T());
@@ -940,11 +1149,11 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     }
 
     /// <summary>
-    ///     Creates instance of IPlumber.
+    /// Creates a new instance of PlumberEngine with optional configuration.
     /// </summary>
-    /// <param name="settings">Connection settings to EventStore</param>
-    /// <param name="configure">Additional configuration</param>
-    /// <returns></returns>
+    /// <param name="settings">Optional EventStore connection settings. If null, defaults to localhost with admin credentials.</param>
+    /// <param name="configure">Optional configuration action for customizing the plumber behavior.</param>
+    /// <returns>A configured PlumberEngine instance.</returns>
     public static PlumberEngine Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
     {
         settings ??=
@@ -956,12 +1165,13 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     }
 
     /// <summary>
-    ///     This method is called only from subscriptions.
+    /// Deserializes an event record into a domain object with its metadata. This method is called internally from subscriptions.
     /// </summary>
-    /// <param name="er"></param>
-    /// <param name="eLink"></param>
-    /// <param name="t"></param>
-    /// <returns></returns>
+    /// <param name="context">The operation context for the read operation.</param>
+    /// <param name="er">The event record to deserialize.</param>
+    /// <param name="eLink">Optional link event record if the event is a link.</param>
+    /// <param name="t">The type to deserialize the event into.</param>
+    /// <returns>A tuple containing the deserialized event object and its metadata.</returns>
     internal (object, Metadata) ReadEventData(OperationContext context, EventRecord er, EventRecord? eLink, Type t)
     {
         var streamIdSuffix = er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1);

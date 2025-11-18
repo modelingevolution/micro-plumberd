@@ -2,12 +2,21 @@
 
 namespace MicroPlumberd.Services;
 
+/// <summary>
+/// Starts and configures event handler subscriptions for a specific event handler type.
+/// </summary>
+/// <typeparam name="THandler">The type of event handler to start.</typeparam>
 class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarter
     where THandler : class, IEventHandler, ITypeRegister
 {
     private FromStream _startPosition;
     private FromRelativeStreamPosition _relativeStartPosition;
     private bool _persistently;
+    /// <summary>
+    /// Starts the event handler subscription with the configured settings.
+    /// </summary>
+    /// <param name="stoppingToken">A cancellation token to stop the subscription.</param>
+    /// <returns>A task representing the asynchronous start operation.</returns>
     public async Task Start(CancellationToken stoppingToken)
     {
         if (!_persistently)
@@ -16,6 +25,12 @@ class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarte
             await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: _startPosition.ToStreamPosition(), token: stoppingToken);
     }
 
+    /// <summary>
+    /// Configures the event handler with persistence and start position settings.
+    /// </summary>
+    /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
+    /// <param name="start">The stream position to start reading from.</param>
+    /// <returns>This starter instance for method chaining.</returns>
     public EventHandlerStarter<THandler> Configure(bool persistently = false, FromStream? start = null)
     {
         this._persistently = persistently;
@@ -23,6 +38,11 @@ class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarte
         this._relativeStartPosition = _startPosition;
         return this;
     }
+    /// <summary>
+    /// Configures the event handler with a relative stream position.
+    /// </summary>
+    /// <param name="start">The relative stream position to start reading from.</param>
+    /// <returns>This starter instance for method chaining.</returns>
     public EventHandlerStarter<THandler> Configure(FromRelativeStreamPosition? start = null)
     {
         this._persistently = false;

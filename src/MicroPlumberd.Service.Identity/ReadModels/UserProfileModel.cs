@@ -7,6 +7,9 @@ using MicroPlumberd.Services.Identity.Aggregates;
 
 namespace MicroPlumberd.Services.Identity.ReadModels
 {
+    /// <summary>
+    /// Read model maintaining user profile data with efficient lookups by username and email.
+    /// </summary>
     [EventHandler]
     [OutputStream("UserProfileModel_v1")]
     public partial class UserProfileModel
@@ -15,16 +18,46 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         private readonly ConcurrentDictionary<string, UserIdentifier> _userIdsByNormalizedName = new();
         private readonly ConcurrentDictionary<string, UserIdentifier> _userIdsByNormalizedEmail = new();
 
+        /// <summary>
+        /// Represents user profile data in the read model.
+        /// </summary>
         public record ProfileData
         {
+            /// <summary>
+            /// Gets the username.
+            /// </summary>
             public string UserName { get; init; }
+
+            /// <summary>
+            /// Gets the normalized username for case-insensitive lookups.
+            /// </summary>
             public string NormalizedUserName { get; init; }
+
+            /// <summary>
+            /// Gets the email address.
+            /// </summary>
             public string Email { get; init; }
+
+            /// <summary>
+            /// Gets the normalized email address for case-insensitive lookups.
+            /// </summary>
             public string NormalizedEmail { get; init; }
+
+            /// <summary>
+            /// Gets a value indicating whether the email has been confirmed.
+            /// </summary>
             public bool EmailConfirmed { get; init; }
+
+            /// <summary>
+            /// Gets the phone number.
+            /// </summary>
             public string PhoneNumber { get; init; }
+
+            /// <summary>
+            /// Gets a value indicating whether the phone number has been confirmed.
+            /// </summary>
             public bool PhoneNumberConfirmed { get; init; }
-            
+
         }
 
         private async Task Given(Metadata m, UserProfileCreated ev)
@@ -177,25 +210,43 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             await Task.CompletedTask;
         }
 
-        // Query methods
+        /// <summary>
+        /// Gets a user profile by user ID.
+        /// </summary>
+        /// <param name="id">The user identifier.</param>
+        /// <returns>The profile data, or null if not found.</returns>
         public ProfileData GetById(UserIdentifier id)
         {
             _profilesById.TryGetValue(id, out var profile);
             return profile;
         }
 
+        /// <summary>
+        /// Gets a user ID by normalized username.
+        /// </summary>
+        /// <param name="normalizedUserName">The normalized username to lookup.</param>
+        /// <returns>The user identifier, or default if not found.</returns>
         public UserIdentifier GetIdByNormalizedUserName(string normalizedUserName)
         {
             _userIdsByNormalizedName.TryGetValue(normalizedUserName, out var id);
             return id;
         }
 
+        /// <summary>
+        /// Gets a user ID by normalized email.
+        /// </summary>
+        /// <param name="normalizedEmail">The normalized email to lookup.</param>
+        /// <returns>The user identifier, or default if not found.</returns>
         public UserIdentifier GetIdByNormalizedEmail(string normalizedEmail)
         {
             _userIdsByNormalizedEmail.TryGetValue(normalizedEmail, out var id);
             return id;
         }
 
+        /// <summary>
+        /// Gets all user profiles.
+        /// </summary>
+        /// <returns>An immutable list of all profile data.</returns>
         public ImmutableList<ProfileData> GetAllProfiles()
         {
             return _profilesById.Values.ToImmutableList();

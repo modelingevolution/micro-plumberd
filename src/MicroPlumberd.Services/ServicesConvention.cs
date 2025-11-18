@@ -114,27 +114,43 @@ class ServicesConfig : IServicesConfig
 /// <param name="handlerType">The type of the handler.</param>
 /// <returns><c>true</c> if the execution of the handler is persistent; otherwise, <c>false</c>.</returns>
 public delegate bool IsHandlerExecutionPersistent(Type handlerType);
+/// <summary>
+/// Default implementation of services conventions for MicroPlumberd.
+/// </summary>
 class ServicesConvention : IServicesConvention
 {
+    /// <inheritdoc/>
     public IsHandlerExecutionPersistent IsHandlerExecutionPersistent { get; set; } = static x => false;
+    /// <inheritdoc/>
     public Func<bool> AreCommandHandlersExecutedPersistently { get; set; } = () => false;
+    /// <inheritdoc/>
     public Func<Metadata, object, bool> CommandHandlerSkipFilter { get; set; } = (m, e) => false;
+    /// <inheritdoc/>
     public OutputSteamNameFromCommandHandler OutputSteamNameFromCommandHandlerConvention { get; set; } = static x => $">{x.GetFriendlyName()}";
+    /// <inheritdoc/>
     public GroupNameFromCommandHandler GroupNameFromCommandHandlerConvention { get; set; } = static x => $"{x.GetFriendlyName()}";
+    /// <inheritdoc/>
     public AppCommandStream AppCommandStreamConvention { get; set; } = static () => $">{AppDomain.CurrentDomain.FriendlyName}";
+    /// <inheritdoc/>
     public CommandName CommandNameConvention { get; set; } = static x => $"{x.Name}";
-    
+
+    /// <inheritdoc/>
     public SessionStreamFromSessionId SessionInStreamFromSessionIdConvention { get; set; } = static x => $">SessionIn-{x}";
+    /// <inheritdoc/>
     public SessionStreamFromSessionId SessionOutStreamFromSessionIdConvention { get; set; } = static x => $">SessionOut-{x}";
+    /// <inheritdoc/>
     public CommandMessageTypes CommandMessageTypes { get; set; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ServicesConvention"/> class.
+    /// </summary>
     public ServicesConvention()
     {
         CommandMessageTypes = x => CommandMappings.Discover(this.CommandNameConvention,x);
     }
 }
 /// <summary>
-/// Provides extension methods for working with conventionson service-layer.
+/// Provides extension methods for working with conventions on service-layer.
 /// </summary>
 public static class PlumberdConventionsExtensions
 {
@@ -171,8 +187,17 @@ public static class PlumberdConventionsExtensions
         config.GetExtension<ServicesConfig>();
 }
 
+/// <summary>
+/// Provides utility methods for discovering command message type mappings.
+/// </summary>
 class CommandMappings
 {
+    /// <summary>
+    /// Discovers all message types associated with a command, including execution results and failures.
+    /// </summary>
+    /// <param name="commandNameConvention">The command naming convention.</param>
+    /// <param name="command">The command type.</param>
+    /// <returns>A collection of message name and type tuples.</returns>
     public static IEnumerable<(string, Type)> Discover(CommandName commandNameConvention, Type command)
     {
         var cmdType = commandNameConvention(command);

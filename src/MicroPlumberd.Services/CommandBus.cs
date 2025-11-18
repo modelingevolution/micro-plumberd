@@ -21,6 +21,9 @@ using Microsoft.Extensions.Logging;
 
 namespace MicroPlumberd.Services;
 
+/// <summary>
+/// Provides command bus functionality for sending commands and receiving execution results via EventStore streams.
+/// </summary>
 internal class CommandBus : ICommandBus, IEventHandler
 {
     private readonly IPlumberApi _plumber;
@@ -34,7 +37,16 @@ internal class CommandBus : ICommandBus, IEventHandler
     private AsyncLazy<bool> _initialized;
     private readonly object _sync = new object();
     private IAsyncDisposable? _subscription;
+    /// <summary>
+    /// Gets the unique session ID for this command bus instance.
+    /// </summary>
     public Guid SessionId { get; } = Guid.NewGuid();
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CommandBus"/> class.
+    /// </summary>
+    /// <param name="plumber">The plumber API instance.</param>
+    /// <param name="pool">The command bus pool that owns this instance.</param>
+    /// <param name="log">The logger instance.</param>
     public CommandBus(IPlumberApi plumber, ICommandBusPool pool, ILogger<CommandBus> log)
     {
         _plumber = plumber;
@@ -46,6 +58,10 @@ internal class CommandBus : ICommandBus, IEventHandler
         _initialized = new AsyncLazy<bool>(OnInitialize);
     }
 
+    /// <summary>
+    /// Initializes the command bus by setting up stream metadata and subscriptions.
+    /// </summary>
+    /// <returns>A task representing the asynchronous initialization, with a result of true when complete.</returns>
     private async Task<bool> OnInitialize()
     {
         await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new EventStore.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
@@ -56,7 +72,12 @@ internal class CommandBus : ICommandBus, IEventHandler
         return true;
     }
 
-
+    /// <summary>
+    /// Attempts to map an event response type name to its corresponding CLR type.
+    /// </summary>
+    /// <param name="type">The event type name.</param>
+    /// <param name="t">When this method returns, contains the CLR type if mapping succeeded; otherwise, null.</param>
+    /// <returns>True if the mapping succeeded; otherwise, false.</returns>
     private bool TryMapEventResponse(string type, out Type t)
     {
         if (_commandMapping.TryGetValue(type, out t)) return true;
@@ -78,11 +99,13 @@ internal class CommandBus : ICommandBus, IEventHandler
 
     private readonly IdDuckTyping _idTyping = new();
 
+    /// <inheritdoc/>
     public async Task QueueAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = true, CancellationToken token = default)
     {
         using var scope = await _pool.RentScope(token);
         await scope.SendAsync(recipientId, command, timeout ?? TimeSpan.FromDays(7), fireAndForget, token);
     }
+    /// <inheritdoc/>
     public async Task SendAsync(object recipientId, object command, TimeSpan? timeout = null, bool fireAndForget = false, CancellationToken token = default)
     {
         var commandId = GetCommandId(command);
@@ -130,6 +153,11 @@ internal class CommandBus : ICommandBus, IEventHandler
         }
     }
 
+    /// <summary>
+    /// Extracts or generates a command ID from the command object.
+    /// </summary>
+    /// <param name="command">The command object.</param>
+    /// <returns>The command ID.</returns>
     private Guid GetCommandId(object command)
     {
         Guid commandId = Guid.NewGuid();
@@ -150,6 +178,10 @@ internal class CommandBus : ICommandBus, IEventHandler
         return commandId;
     }
 
+    /// <summary>
+    /// Checks and registers command type mappings for result events.
+    /// </summary>
+    /// <param name="command">The command object.</param>
     private void CheckMapping(object command)
     {
         var cmdType = command.GetType();
@@ -160,7 +192,7 @@ internal class CommandBus : ICommandBus, IEventHandler
             _commandMapping.TryAdd(name, type);
     }
 
-
+    /// <inheritdoc/>
     async Task IEventHandler.Handle(Metadata m, object ev)
     {
         var causationId = ev is ICommandSource cs ? cs.CommandId : (m.CausationId() ?? Guid.Empty);
@@ -176,7 +208,9 @@ internal class CommandBus : ICommandBus, IEventHandler
             _log.LogDebug("Session event unhandled. CausationId: {CausationId}, SessionId: {SessionId}, Stream: {StreamId}", causationId, SessionId, _streamOut);
     }
 
+    /// <inheritdoc/>
     public ValueTask DisposeAsync() => _subscription?.DisposeAsync() ?? ValueTask.CompletedTask;
+    /// <inheritdoc/>
     public void Dispose() => _ = DisposeAsync();
 }
 

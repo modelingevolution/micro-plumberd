@@ -28,7 +28,9 @@
       "Bash(/tmp/fullbuild.txt)",
       "Bash(for proj in MicroPlumberd MicroPlumberd.Services MicroPlumberd.Services.Cron MicroPlumberd.Encryption MicroPlumberd.Protobuf MicroPlumberd.Services.ProcessManagers MicroPlumberd.Services.Identity MicroPlumberd.Services.Cron.Ui MicroPlumberd.CommandBus.Abstractions MicroPlumberd.Testing MicroPlumberd.Services.Grpc.DirectConnect)",
       "Bash(do echo \"=== $proj ===\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)"
     ],
     "deny": []
   }
