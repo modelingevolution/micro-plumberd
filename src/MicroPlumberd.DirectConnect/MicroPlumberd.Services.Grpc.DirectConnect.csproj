@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <PackageReference Include="ModelingEvolution.DirectConnect" Version="1.1.0.1" />
-    <PackageReference Include="System.Collections.Immutable" Version="9.0.1" />
   </ItemGroup>
 
   <ItemGroup>

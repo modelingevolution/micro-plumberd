@@ -31,6 +31,10 @@ public interface IEventHandler
 /// </summary>
 public interface ICaughtUpHandler
 {
+    /// <summary>
+    /// Called when the subscription has caught up with all historical events and is now processing live events.
+    /// </summary>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task CaughtUp();
 }
 
@@ -64,30 +68,36 @@ public interface ISubscriptionSet
     /// <returns></returns>
     Task SubscribeAsync(string name, FromStream start);
 }
+
+/// <summary>
+/// Engine-level subscription set builder interface for internal use.
+/// </summary>
 public interface IEngineSubscriptionSet
 {
     /// <summary>
-    /// Withes the specified model.
+    /// Adds an event handler model to the subscription set.
     /// </summary>
     /// <typeparam name="TModel">The type of the model.</typeparam>
     /// <param name="model">The model.</param>
-    /// <returns></returns>
+    /// <returns>The subscription set for fluent chaining.</returns>
     IEngineSubscriptionSet With<TModel>(TModel model)
         where TModel : IEventHandler, ITypeRegister;
 
     /// <summary>
-    /// Subscribes persistently.
+    /// Subscribes all models in the set persistently to the specified output stream.
     /// </summary>
+    /// <param name="context">The operation context.</param>
     /// <param name="outputStream">The output stream.</param>
     /// <param name="groupName">Name of the group.</param>
-    /// <returns></returns>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task SubscribePersistentlyAsync(OperationContext context, string outputStream, string? groupName = null);
 
     /// <summary>
-    /// Subscribes to stream.
+    /// Subscribes all models in the set to the specified stream.
     /// </summary>
+    /// <param name="context">The operation context.</param>
     /// <param name="name">The name of the stream.</param>
-    /// <param name="start">The start.</param>
-    /// <returns></returns>
+    /// <param name="start">The start position.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task SubscribeAsync(OperationContext context, string name, FromStream start);
 }

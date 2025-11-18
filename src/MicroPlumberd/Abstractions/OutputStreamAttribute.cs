@@ -21,6 +21,11 @@
 [AttributeUsage(AttributeTargets.Class)]
 public class OutputStreamAttribute : Attribute
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="OutputStreamAttribute"/> class.
+    /// </summary>
+    /// <param name="outputStreamName">The name of the output stream.</param>
+    /// <exception cref="ArgumentException">Thrown when outputStreamName is null or whitespace.</exception>
     public OutputStreamAttribute(string outputStreamName)
     {
         if (string.IsNullOrWhiteSpace(outputStreamName))

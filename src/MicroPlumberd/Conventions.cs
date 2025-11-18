@@ -564,8 +564,16 @@ static class StandardMetadataEnrichers
 //    public void Dispose() => InvocationContext.Current.Clear();
 //}
 
+/// <summary>
+/// Provides extension methods for type operations.
+/// </summary>
 public static class TypeExtensions
 {
+    /// <summary>
+    /// Gets a human-friendly name for a type, including generic type parameter names.
+    /// </summary>
+    /// <param name="type">The type to get a friendly name for.</param>
+    /// <returns>A friendly string representation of the type name.</returns>
     public static string GetFriendlyName(this Type type)
     {
         if (!type.IsGenericType)

@@ -8,6 +8,12 @@ namespace MicroPlumberd
     {
         static abstract Type StartEvent { get; }
         static abstract IEnumerable<Type> CommandTypes { get; }
+
+        /// <summary>
+        /// Handles errors that occur during process manager execution.
+        /// </summary>
+        /// <param name="executionContext">The execution context containing error information.</param>
+        /// <returns>An optional command request to execute in response to the error, or <c>null</c> to skip error handling.</returns>
         Task<ICommandRequest?> HandleError(ExecutionContext executionContext);
         Task<ICommandRequest?> When(Metadata m, object evt);
         Task<ICommandRequest> StartWhen(Metadata m, object evt);
@@ -22,8 +28,12 @@ namespace MicroPlumberd
             get => _id;
         }
         public long Version { get; set; } = -1;
-        
 
+        /// <summary>
+        /// Handles errors that occur during process manager execution. Default implementation returns <c>null</c>.
+        /// </summary>
+        /// <param name="executionContext">The execution context containing error information.</param>
+        /// <returns>An optional command request to execute in response to the error, or <c>null</c> to skip error handling.</returns>
         public virtual async Task<ICommandRequest?> HandleError(ExecutionContext executionContext) => null;
     }
 

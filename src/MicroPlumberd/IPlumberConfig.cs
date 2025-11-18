@@ -64,22 +64,28 @@ public interface IPlumberReadOnlyConfig : IExtension
     Task<ErrorHandleDecision> HandleError(Exception ex, OperationContext context, CancellationToken token);
 }
 
+/// <summary>
+/// Defines how errors should be handled during event processing.
+/// </summary>
 public enum ErrorHandleDecision
 {
     /// <summary>
-    /// Will retry
+    /// Retry the operation that caused the error.
     /// </summary>
     Retry,
+
     /// <summary>
-    /// Will cancel subscription
+    /// Cancel the subscription and stop processing events.
     /// </summary>
     Cancel,
+
     /// <summary>
-    /// Will ignore current error.
+    /// Ignore the current error and continue processing.
     /// </summary>
     Ignore,
+
     /// <summary>
-    /// Logs error and shutdown the app
+    /// Log the error and perform a fail-fast shutdown of the application.
     /// </summary>
     FailFast
 }

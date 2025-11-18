@@ -204,6 +204,16 @@ public interface IPlumberApi
     /// <returns></returns>
     Task Rehydrate<T>(T model, Guid id, StreamPosition? position = null,  CancellationToken token = default) where T : IEventHandler, ITypeRegister;
 
+    /// <summary>
+    /// Rehydrates the specified model using a custom type converter.
+    /// </summary>
+    /// <typeparam name="T">The type of the event handler.</typeparam>
+    /// <param name="model">The event handler model to rehydrate.</param>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="converter">The custom type event converter.</param>
+    /// <param name="position">The optional stream position to start from.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter, StreamPosition? position = null,
         CancellationToken token = default)
         where T : IEventHandler;
@@ -400,21 +410,60 @@ public interface IPlumberApi
     /// <returns></returns>
     Task<IWriteResult> AppendState<T>(T state, CancellationToken token = default);
 
+    /// <summary>
+    /// Gets the state of a subscription runner for the specified type and identifier.
+    /// </summary>
+    /// <typeparam name="T">The type of the state.</typeparam>
+    /// <param name="id">The identifier of the state.</param>
+    /// <param name="streamId">Optional stream identifier. If null, stream is determined by convention.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>The subscription runner state if found; otherwise, null.</returns>
     Task<SubscriptionRunnerState<T>?> GetState<T>(object id, string? streamId = null, CancellationToken token = default) where T:class;
 
+    /// <summary>
+    /// Reads events of a specific type from a stream.
+    /// </summary>
+    /// <typeparam name="T">The type of events to read.</typeparam>
+    /// <param name="streamId">Optional stream identifier. If null, reads from the type's category stream.</param>
+    /// <param name="start">The stream start position.</param>
+    /// <param name="direction">The direction of reading.</param>
+    /// <param name="maxCount">The maximum number of events to read.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>An async enumerable of events with their metadata.</returns>
     IAsyncEnumerable<(T, Metadata)> ReadEventsOfType<T>(string? streamId = null,
         StreamPosition? start = null, Direction? direction = null, long maxCount = 9223372036854775807L,
         CancellationToken token = default);
 
+    /// <summary>
+    /// Subscribes a state event handler to process events of specified types.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    /// <param name="eventTypes">The event types to subscribe to. If null, uses types from ITypeRegister.</param>
+    /// <param name="eh">The event handler instance. If null, creates new instance.</param>
+    /// <param name="outputStream">The output stream name. If null, determined by convention.</param>
+    /// <param name="start">The starting position in the stream.</param>
+    /// <param name="ensureOutputStreamProjection">If true, ensures the output stream projection is created.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription that can be used to cancel the subscription.</returns>
     Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(
-        IEnumerable<string>? eventTypes, 
+        IEnumerable<string>? eventTypes,
         TEventHandler? eh = default,
         string? outputStream = null,
-        FromRelativeStreamPosition? start = null, 
-        bool ensureOutputStreamProjection = true, 
+        FromRelativeStreamPosition? start = null,
+        bool ensureOutputStreamProjection = true,
         CancellationToken token = default)
         where TEventHandler : class, IEventHandler, ITypeRegister;
 
+    /// <summary>
+    /// Subscribes a state event handler to process events based on the handler's registered types.
+    /// </summary>
+    /// <typeparam name="TEventHandler">The type of the event handler.</typeparam>
+    /// <param name="eh">The event handler instance. If null, creates new instance.</param>
+    /// <param name="outputStream">The output stream name. If null, determined by convention.</param>
+    /// <param name="start">The starting position in the stream.</param>
+    /// <param name="ensureOutputStreamProjection">If true, ensures the output stream projection is created.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription that can be used to cancel the subscription.</returns>
     Task<IAsyncDisposable> SubscribeStateEventHandler<TEventHandler>(TEventHandler? eh = null,
         string? outputStream = null,
         FromRelativeStreamPosition? start = null, bool ensureOutputStreamProjection = true,

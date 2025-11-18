@@ -68,7 +68,12 @@ public sealed record Snapshot<T> : Snapshot, ISnapshot
     /// </summary>
     public T Data { get; internal set; }
 
+    /// <summary>
+    /// Implicitly converts a <see cref="Snapshot{T}"/> to its underlying data.
+    /// </summary>
+    /// <param name="st">The snapshot to convert.</param>
     public static implicit operator T(Snapshot<T> st) => st.Data;
+
     internal override object Value
     {
         get => Data;

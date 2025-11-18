@@ -22,7 +22,13 @@
       "Bash(cmd.exe:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(tee:*)",
+      "Bash(cat:*)",
+      "Bash(/tmp/fullbuild.txt)",
+      "Bash(for proj in MicroPlumberd MicroPlumberd.Services MicroPlumberd.Services.Cron MicroPlumberd.Encryption MicroPlumberd.Protobuf MicroPlumberd.Services.ProcessManagers MicroPlumberd.Services.Identity MicroPlumberd.Services.Cron.Ui MicroPlumberd.CommandBus.Abstractions MicroPlumberd.Testing MicroPlumberd.Services.Grpc.DirectConnect)",
+      "Bash(do echo \"=== $proj ===\")",
+      "Bash(done)"
     ],
     "deny": []
   }
