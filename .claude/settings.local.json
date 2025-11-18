@@ -11,7 +11,12 @@
       "Bash(timeout 10 bash -c 'dotnet build /mnt/d/source/modelingevolution/micro-plumberd/src/MicroPlumberd.Tests.App/MicroPlumberd.Tests.App.csproj --no-incremental 2>&1 >/dev/null & sleep 3 && cat /mnt/d/source/modelingevolution/micro-plumberd/src/MicroPlumberd.Tests.App/obj/Debug/net9.0/MicroPlumberd.SourceGenerators/MicroPlumberd.SourceGenerators.AggregateSourceGenerator/FooAggregate_Aggregate.g.cs 2>/dev/null')",
       "Bash(dotnet list:*)",
       "Bash(dotnet restore:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(chmod:*)",
+      "Bash(./release.sh:*)",
+      "Bash(dos2unix:*)",
+      "Bash(git tag:*)",
+      "WebFetch(domain:www.nuget.org)"
     ],
     "deny": []
   }
