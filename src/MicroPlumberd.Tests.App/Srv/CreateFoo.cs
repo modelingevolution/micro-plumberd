@@ -67,6 +67,7 @@ public class CreateLoo : IId<Guid>
 
 public class CreateSecret
 {
+    public Guid Id { get; set; } = Guid.NewGuid();
     public SecretObject<string> Password { get; set; }
 }
 [OutputStream("Password")]

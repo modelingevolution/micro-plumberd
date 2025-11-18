@@ -1,5 +1,8 @@
-﻿namespace MicroPlumberd.Services.Cron;
+﻿using System.Text.Json.Serialization;
 
+namespace MicroPlumberd.Services.Cron;
+
+[JsonConverter(typeof(ScheduleJsonConverter<WeeklySchedule>))]
 public class WeeklySchedule : Schedule
 {
     public WeeklyScheduleItem[] Items

@@ -1,11 +1,13 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace MicroPlumberd.Services.Cron;
 
-public class ScheduleJsonConverter : JsonConverter<Schedule>
+
+public class ScheduleJsonConverter<T> : JsonConverter<T> where T:Schedule
 {
-    public override Schedule Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         // Parse the JSON into a JsonDocument to inspect the "type" property
         using JsonDocument doc = JsonDocument.ParseValue(ref reader);
@@ -19,21 +21,88 @@ public class ScheduleJsonConverter : JsonConverter<Schedule>
         if (string.IsNullOrEmpty(typeStr))
             throw new JsonException("The 'type' property cannot be null or empty.");
 
-        // Deserialize to the appropriate derived type based on "type"
-        return typeStr switch
+        // Read base properties
+        DateTime? startTime = root.TryGetProperty("StartTime", out var startProp) && startProp.ValueKind != JsonValueKind.Null
+            ? startProp.GetDateTime()
+            : null;
+
+        DateTime? endTime = root.TryGetProperty("EndTime", out var endProp) && endProp.ValueKind != JsonValueKind.Null
+            ? endProp.GetDateTime()
+            : null;
+
+        // Create instance based on type
+        Schedule? result = typeStr switch
         {
-            "Interval" => JsonSerializer.Deserialize<IntervalSchedule>(root.GetRawText(), options)
-                          ?? throw new JsonException("Failed to deserialize IntervalSchedule."),
-            "Daily" => JsonSerializer.Deserialize<DailySchedule>(root.GetRawText(), options)
-                       ?? throw new JsonException("Failed to deserialize DailySchedule."),
-            "Weekly" => JsonSerializer.Deserialize<WeeklySchedule>(root.GetRawText(), options)
-                        ?? throw new JsonException("Failed to deserialize WeeklySchedule."),
+            "Interval" => CreateIntervalSchedule(root, startTime, endTime),
+            "Daily" => CreateDailySchedule(root, startTime, endTime),
+            "Weekly" => CreateWeeklySchedule(root, startTime, endTime),
             "Empty" => new EmptySchedule(),
             _ => throw new JsonException($"Unknown schedule type: {typeStr}")
         };
+
+        return result as T ?? throw new JsonException($"Failed to deserialize {typeStr} schedule.");
     }
 
-    public override void Write(Utf8JsonWriter writer, Schedule value, JsonSerializerOptions options)
+    private static IntervalSchedule CreateIntervalSchedule(JsonElement root, DateTime? startTime, DateTime? endTime)
+    {
+        if (!root.TryGetProperty("Interval", out var intervalProp))
+            throw new JsonException("Missing 'Interval' property in IntervalSchedule JSON.");
+
+        var interval = TimeSpan.Parse(intervalProp.GetString() ?? throw new JsonException("Interval cannot be null."));
+
+        return new IntervalSchedule
+        {
+            StartTime = startTime,
+            EndTime = endTime,
+            Interval = interval
+        };
+    }
+
+    private static DailySchedule CreateDailySchedule(JsonElement root, DateTime? startTime, DateTime? endTime)
+    {
+        if (!root.TryGetProperty("Items", out var itemsProp) || itemsProp.ValueKind != JsonValueKind.Array)
+            throw new JsonException("Missing or invalid 'Items' property in DailySchedule JSON.");
+
+        var items = new List<TimeOnly>();
+        foreach (var item in itemsProp.EnumerateArray())
+        {
+            items.Add(TimeOnly.Parse(item.GetString() ?? throw new JsonException("Item cannot be null.")));
+        }
+
+        return new DailySchedule
+        {
+            StartTime = startTime,
+            EndTime = endTime,
+            Items = items.ToArray()
+        };
+    }
+
+    private static WeeklySchedule CreateWeeklySchedule(JsonElement root, DateTime? startTime, DateTime? endTime)
+    {
+        if (!root.TryGetProperty("Items", out var itemsProp) || itemsProp.ValueKind != JsonValueKind.Array)
+            throw new JsonException("Missing or invalid 'Items' property in WeeklySchedule JSON.");
+
+        var items = new List<WeeklyScheduleItem>();
+        foreach (var item in itemsProp.EnumerateArray())
+        {
+            if (!item.TryGetProperty("Day", out var dayProp) || !item.TryGetProperty("Time", out var timeProp))
+                throw new JsonException("WeeklyScheduleItem missing 'Day' or 'Time' property.");
+
+            var day = (DayOfWeek)dayProp.GetInt32();
+            var time = TimeOnly.Parse(timeProp.GetString() ?? throw new JsonException("Time cannot be null."));
+
+            items.Add(new WeeklyScheduleItem(day, time));
+        }
+
+        return new WeeklySchedule
+        {
+            StartTime = startTime,
+            EndTime = endTime,
+            Items = items.ToArray()
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
     {
         writer.WriteStartObject();
 
@@ -48,9 +117,16 @@ public class ScheduleJsonConverter : JsonConverter<Schedule>
         };
         writer.WriteString("type", typeStr);
 
-        // Write common properties from the base Schedule class
-        writer.WriteString("StartTime", value.StartTime?.ToString("O")); // ISO 8601 format
-        writer.WriteString("EndTime", value.EndTime?.ToString("O"));
+        // Write common base properties
+        if (value.StartTime.HasValue)
+            writer.WriteString("StartTime", value.StartTime.Value);
+        else
+            writer.WriteNull("StartTime");
+
+        if (value.EndTime.HasValue)
+            writer.WriteString("EndTime", value.EndTime.Value);
+        else
+            writer.WriteNull("EndTime");
 
         // Write type-specific properties
         switch (value)
@@ -61,14 +137,29 @@ public class ScheduleJsonConverter : JsonConverter<Schedule>
 
             case DailySchedule daily:
                 writer.WritePropertyName("Items");
-                JsonSerializer.Serialize(writer, daily.Items, options);
+                writer.WriteStartArray();
+                foreach (var item in daily.Items)
+                {
+                    writer.WriteStringValue(item.ToString("O"));
+                }
+                writer.WriteEndArray();
                 break;
 
             case WeeklySchedule weekly:
                 writer.WritePropertyName("Items");
-                JsonSerializer.Serialize(writer, weekly.Items, options); // Note: 'Item' property
+                writer.WriteStartArray();
+                foreach (var item in weekly.Items)
+                {
+                    writer.WriteStartObject();
+                    writer.WriteNumber("Day", (int)item.Day);
+                    writer.WriteString("Time", item.Time.ToString("O"));
+                    writer.WriteEndObject();
+                }
+                writer.WriteEndArray();
                 break;
-            case EmptySchedule e:
+
+            case EmptySchedule:
+                // No additional properties
                 break;
         }
 

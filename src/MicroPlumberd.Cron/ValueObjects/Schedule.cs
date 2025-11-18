@@ -2,7 +2,7 @@
 
 namespace MicroPlumberd.Services.Cron;
 
-[JsonConverter(typeof(ScheduleJsonConverter))]
+[JsonConverter(typeof(ScheduleJsonConverter<Schedule>))]
 public abstract class Schedule
 {
     public virtual DateTime? StartTime { get; set; } // When the schedule begins (optional)
@@ -11,6 +11,7 @@ public abstract class Schedule
     // Abstract method to compute the next run time
     public abstract DateTime GetNextRunTime(DateTime currentTime);
 }
+[JsonConverter(typeof(ScheduleJsonConverter<EmptySchedule>))]
 public class EmptySchedule : Schedule
 {
     public override DateTime GetNextRunTime(DateTime currentTime) => DateTime.MaxValue;

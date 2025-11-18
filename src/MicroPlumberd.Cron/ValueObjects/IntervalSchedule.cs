@@ -1,5 +1,8 @@
-﻿namespace MicroPlumberd.Services.Cron;
+﻿using System.Text.Json.Serialization;
 
+namespace MicroPlumberd.Services.Cron;
+
+[JsonConverter(typeof(ScheduleJsonConverter<IntervalSchedule>))]
 public class IntervalSchedule : Schedule
 {
     public TimeSpan Interval { get; init; } // e.g., Minutes

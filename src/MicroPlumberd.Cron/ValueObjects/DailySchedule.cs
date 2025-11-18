@@ -1,6 +1,9 @@
-﻿namespace MicroPlumberd.Services.Cron;
+﻿using System.Text.Json.Serialization;
 
-public class DailySchedule : Schedule
+namespace MicroPlumberd.Services.Cron;
+
+[JsonConverter(typeof(ScheduleJsonConverter<DailySchedule>))]
+public class DailySchedule() : Schedule
 {
     private SortedSet<TimeOnly> _items;
     public TimeOnly[] Items
