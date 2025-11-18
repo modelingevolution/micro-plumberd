@@ -31,15 +31,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="EventStore.Client.Grpc" Version="23.3.8" />
-    <PackageReference Include="EventStore.Client.Grpc.PersistentSubscriptions" Version="23.3.8" />
-    <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.8" />
-    <PackageReference Include="EventStore.Client.Grpc.ProjectionManagement" Version="23.3.8" />
-    <PackageReference Include="EventStore.Client.Grpc.UserManagement" Version="23.3.8" />
+    <PackageReference Include="EventStore.Client.Grpc" Version="23.3.9" />
+    <PackageReference Include="EventStore.Client.Grpc.PersistentSubscriptions" Version="23.3.9" />
+    <PackageReference Include="EventStore.Client.Grpc.Streams" Version="23.3.9" />
+    <PackageReference Include="EventStore.Client.Grpc.ProjectionManagement" Version="23.3.9" />
+    <PackageReference Include="EventStore.Client.Grpc.UserManagement" Version="23.3.9" />
   </ItemGroup>
 
   <!-- Exclude System.Linq.Async for .NET 10 as it conflicts with native BCL async LINQ -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-    <PackageReference Include="System.Linq.Async" Version="6.0.1" ExcludeAssets="all" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.3" ExcludeAssets="all" />
   </ItemGroup>
 </Project>

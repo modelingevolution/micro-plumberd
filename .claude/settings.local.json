@@ -16,7 +16,13 @@
       "Bash(./release.sh:*)",
       "Bash(dos2unix:*)",
       "Bash(git tag:*)",
-      "WebFetch(domain:www.nuget.org)"
+      "WebFetch(domain:www.nuget.org)",
+      "Bash(cmd.exe /c \"cd D:\\source\\modelingevolution\\micro-plumberd && dotnet --version\")",
+      "Bash(cmd.exe /c \"cd D:\\source\\modelingevolution\\micro-plumberd && dotnet --list-sdks\")",
+      "Bash(cmd.exe:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ],
     "deny": []
   }
