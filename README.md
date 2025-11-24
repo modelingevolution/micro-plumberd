@@ -2,7 +2,31 @@
 Micro library for EventStore, CQRS and EventSourcing.
 Just eXtreamly simple.
 
-[![NuGet](https://img.shields.io/nuget/v/MicroPlumberd.svg)](https://www.nuget.org/packages/MicroPlumberd/)
+## NuGet Packages
+
+### Core Packages
+[![MicroPlumberd](https://img.shields.io/nuget/v/MicroPlumberd.svg)](https://www.nuget.org/packages/MicroPlumberd/)
+[![MicroPlumberd.SourceGenerators](https://img.shields.io/nuget/v/MicroPlumberd.SourceGenerators.svg)](https://www.nuget.org/packages/MicroPlumberd.SourceGenerators/)
+[![MicroPlumberd.Testing](https://img.shields.io/nuget/v/MicroPlumberd.Testing.svg)](https://www.nuget.org/packages/MicroPlumberd.Testing/)
+
+### Service Packages
+[![MicroPlumberd.Services](https://img.shields.io/nuget/v/MicroPlumberd.Services.svg)](https://www.nuget.org/packages/MicroPlumberd.Services/)
+[![MicroPlumberd.CommandBus.Abstractions](https://img.shields.io/nuget/v/MicroPlumberd.CommandBus.Abstractions.svg)](https://www.nuget.org/packages/MicroPlumberd.CommandBus.Abstractions/)
+[![MicroPlumberd.Services.Cron](https://img.shields.io/nuget/v/MicroPlumberd.Services.Cron.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Cron/)
+[![MicroPlumberd.Services.Cron.Ui](https://img.shields.io/nuget/v/MicroPlumberd.Services.Cron.Ui.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Cron.Ui/)
+
+### Process Manager
+[![MicroPlumberd.ProcessManager.Abstractions](https://img.shields.io/nuget/v/MicroPlumberd.ProcessManager.Abstractions.svg)](https://www.nuget.org/packages/MicroPlumberd.ProcessManager.Abstractions/)
+[![MicroPlumberd.Services.ProcessManagers](https://img.shields.io/nuget/v/MicroPlumberd.Services.ProcessManagers.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.ProcessManagers/)
+
+### Additional Services
+[![MicroPlumberd.Encryption](https://img.shields.io/nuget/v/MicroPlumberd.Encryption.svg)](https://www.nuget.org/packages/MicroPlumberd.Encryption/)
+[![MicroPlumberd.Protobuf](https://img.shields.io/nuget/v/MicroPlumberd.Protobuf.svg)](https://www.nuget.org/packages/MicroPlumberd.Protobuf/)
+[![MicroPlumberd.Services.Uniqueness](https://img.shields.io/nuget/v/MicroPlumberd.Services.Uniqueness.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Uniqueness/)
+[![MicroPlumberd.Services.Grpc.DirectConnect](https://img.shields.io/nuget/v/MicroPlumberd.Services.Grpc.DirectConnect.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Grpc.DirectConnect/)
+[![MicroPlumberd.Services.Identity](https://img.shields.io/nuget/v/MicroPlumberd.Services.Identity.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Identity/)
+
+---
 
 Quick "how to" section is [here](#quick-how-to-section)
 Documentation can be found here:
