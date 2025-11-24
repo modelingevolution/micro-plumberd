@@ -1,6 +1,9 @@
 # micro-plumberd
 Micro library for EventStore, CQRS and EventSourcing.
 Just eXtreamly simple.
+
+[![NuGet](https://img.shields.io/nuget/v/MicroPlumberd.svg)](https://www.nuget.org/packages/MicroPlumberd/)
+
 Quick "how to" section is [here](#quick-how-to-section)
 Documentation can be found here:
 [MicroPlumberd Documentation](https://modelingevolution.github.io/micro-plumberd/)
