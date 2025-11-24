@@ -58,6 +58,24 @@ jobs:
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
+        dotnet pack src/MicroPlumberd.CommandBus.Abstractions/MicroPlumberd.CommandBus.Abstractions.csproj \
+          --configuration ${{ env.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+        dotnet pack src/MicroPlumberd.ProcessManager.Abstractions/MicroPlumberd.ProcessManager.Abstractions.csproj \
+          --configuration ${{ env.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+        dotnet pack src/MicroPlumberd.SourceGenerators/MicroPlumberd.SourceGenerators.csproj \
+          --configuration ${{ env.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
         dotnet pack src/MicroPlumberd.Services/MicroPlumberd.Services.csproj \
           --configuration ${{ env.CONFIGURATION }} \
           --no-build \
