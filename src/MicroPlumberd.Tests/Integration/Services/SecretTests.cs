@@ -57,9 +57,15 @@ public class SecretTests : IClassFixture<EventStoreServer>
         await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
 
         _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed);
-        var result = await System.Linq.AsyncEnumerable.FirstOrDefaultAsync(srv.GetRequiredService<IPlumber>().ReadEventsOfType<SecretCreated>());
+        // Use await foreach to avoid System.Linq.Async vs BCL conflict in .NET 10
+        (SecretCreated, EventMetadata)? result = null;
+        await foreach (var item in srv.GetRequiredService<IPlumber>().ReadEventsOfType<SecretCreated>())
+        {
+            result = item;
+            break;
+        }
 
-        string pwd = result.Item1.Password;
+        string pwd = result!.Value.Item1.Password;
         pwd.Should().Be("Very secret password");
 
     }
