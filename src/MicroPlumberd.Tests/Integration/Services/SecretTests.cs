@@ -57,7 +57,7 @@ public class SecretTests : IClassFixture<EventStoreServer>
         await client.GetRequiredService<ICommandBus>().SendAsync(recipientId, cmd);
 
         _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed);
-        var result = await srv.GetRequiredService<IPlumber>().ReadEventsOfType<SecretCreated>().FirstOrDefaultAsync();
+        var result = await System.Linq.AsyncEnumerable.FirstOrDefaultAsync(srv.GetRequiredService<IPlumber>().ReadEventsOfType<SecretCreated>());
 
         string pwd = result.Item1.Password;
         pwd.Should().Be("Very secret password");
