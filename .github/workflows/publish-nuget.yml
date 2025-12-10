@@ -100,11 +100,14 @@ jobs:
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
-        dotnet pack src/MicroPlumberd.Testing/MicroPlumberd.Testing.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
-          --no-build \
-          --output ./artifacts \
-          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+        # Testing has GeneratePackageOnBuild, so we need to copy from bin folder
+        # The --no-build pack doesn't work properly for multi-targeted projects with GeneratePackageOnBuild
+        mkdir -p ./artifacts
+        cp src/MicroPlumberd.Testing/bin/Release/*.nupkg ./artifacts/ 2>/dev/null || \
+          dotnet pack src/MicroPlumberd.Testing/MicroPlumberd.Testing.csproj \
+            --configuration ${{ env.CONFIGURATION }} \
+            --output ./artifacts \
+            /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Services.Uniqueness/MicroPlumberd.Services.Uniqueness.csproj \
           --configuration ${{ env.CONFIGURATION }} \
