@@ -58,7 +58,7 @@ public class SecretTests : IClassFixture<EventStoreServer>
 
         _testOutputHelper.WriteLine("Command executed in: " + sw.Elapsed);
         // Use await foreach to avoid System.Linq.Async vs BCL conflict in .NET 10
-        (SecretCreated, EventMetadata)? result = null;
+        (SecretCreated, MicroPlumberd.EventMetadata)? result = null;
         await foreach (var item in srv.GetRequiredService<IPlumber>().ReadEventsOfType<SecretCreated>())
         {
             result = item;
