@@ -19,10 +19,17 @@ class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarte
     /// <returns>A task representing the asynchronous start operation.</returns>
     public async Task Start(CancellationToken stoppingToken)
     {
-        if (!_persistently)
-            await plumber.SubscribeEventHandler<THandler>(start: _relativeStartPosition, token: stoppingToken);
-        else
-            await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: _startPosition.ToStreamPosition(), token: stoppingToken);
+        try
+        {
+            if (!_persistently)
+                await plumber.SubscribeEventHandler<THandler>(start: _relativeStartPosition, token: stoppingToken);
+            else
+                await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: _startPosition.ToStreamPosition(), token: stoppingToken);
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException($"Failed to start event handler subscription for '{typeof(THandler).Name}'. See inner exception for details.", ex);
+        }
     }
 
     /// <summary>
