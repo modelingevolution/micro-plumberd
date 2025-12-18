@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net10.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <!-- NuGet Package -->
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>MicroPlumberd.Services.BatchOperations</PackageId>
+    <Title>MicroPlumberd.Services.BatchOperations</Title>
+    <Description>Long-running operation tracking for MicroPlumberd event-sourced applications. Provides progress reporting, ETA calculation, and cancellation support.</Description>
+    <Authors>ModelingEvolution</Authors>
+    <Company>ModelingEvolution</Company>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageTags>EventStore;CQRS;EventSourcing;batch;operations;progress;long-running</PackageTags>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <!-- Build -->
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+</Project>

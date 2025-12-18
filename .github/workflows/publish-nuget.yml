@@ -136,6 +136,12 @@ jobs:
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
+        dotnet pack src/MicroPlumberd.Services.BatchOperations/MicroPlumberd.Services.BatchOperations.csproj \
+          --configuration ${{ env.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
     - name: List artifacts
       run: ls -lh ./artifacts
 
