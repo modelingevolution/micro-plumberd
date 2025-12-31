@@ -1,0 +1,500 @@
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@inject RoleManager<Role> RoleManager
+@inject UsersModel UsersModel
+@inject RolesModel RolesModel
+
+<div class="users-list">
+    <div class="toolbar">
+        <button class="btn btn-primary" @onclick="ShowAddUserDialog">Add User</button>
+        <button class="btn btn-secondary" @onclick="RefreshUsers">Refresh</button>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading">Loading users...</div>
+    }
+    else if (!_users.Any())
+    {
+        <div class="empty">No users found.</div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Username</th>
+                    <th>Roles</th>
+                    <th>Email Confirmed</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in _users)
+                {
+                    <tr>
+                        <td>@user.Email</td>
+                        <td>@user.UserName</td>
+                        <td>@string.Join(", ", user.Roles)</td>
+                        <td>@(user.EmailConfirmed ? "Yes" : "No")</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => ShowRolesDialog(user)">Roles</button>
+                            <button class="btn btn-sm btn-outline-warning" @onclick="() => ShowResetPasswordDialog(user)">Reset Password</button>
+                            <button class="btn btn-sm btn-outline-danger" @onclick="() => ShowDeleteDialog(user)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (_showAddDialog)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Add User</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="_newUser" OnValidSubmit="AddUser">
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <InputText class="form-control" @bind-Value="_newUser.Email" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Username</label>
+                                <InputText class="form-control" @bind-Value="_newUser.UserName" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Password</label>
+                                <InputText type="password" class="form-control" @bind-Value="_newUser.Password" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Roles</label>
+                                @foreach (var role in _allRoles)
+                                {
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input"
+                                               checked="@_newUser.SelectedRoles.Contains(role.Name!)"
+                                               @onchange="e => ToggleNewUserRole(role.Name!, (bool)e.Value!)" />
+                                        <label class="form-check-label">@role.Name</label>
+                                    </div>
+                                }
+                            </div>
+                            @if (!string.IsNullOrEmpty(_errorMessage))
+                            {
+                                <div class="alert alert-danger">@_errorMessage</div>
+                            }
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                                <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                                    @(_isSubmitting ? "Creating..." : "Create")
+                                </button>
+                            </div>
+                        </EditForm>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (_showRolesDialog && _selectedUser != null)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Manage Roles for @_selectedUser.Email</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        @foreach (var role in _allRoles)
+                        {
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input"
+                                       checked="@_selectedUserRoles.Contains(role.Name!)"
+                                       @onchange="e => ToggleUserRole(role.Name!, (bool)e.Value!)" />
+                                <label class="form-check-label">@role.Name</label>
+                            </div>
+                        }
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger mt-3">@_errorMessage</div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                        <button type="button" class="btn btn-primary" @onclick="SaveRoles" disabled="@_isSubmitting">
+                            @(_isSubmitting ? "Saving..." : "Save")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (_showResetPasswordDialog && _selectedUser != null)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Reset Password for @_selectedUser.Email</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">New Password</label>
+                            <input type="password" class="form-control" @bind="_newPassword" />
+                        </div>
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                        <button type="button" class="btn btn-primary" @onclick="ResetPassword" disabled="@_isSubmitting">
+                            @(_isSubmitting ? "Resetting..." : "Reset Password")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (_showDeleteDialog && _selectedUser != null)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Delete User</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete user <strong>@_selectedUser.Email</strong>?</p>
+                        <p class="text-danger">This action cannot be undone.</p>
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                        <button type="button" class="btn btn-danger" @onclick="DeleteUser" disabled="@_isSubmitting">
+                            @(_isSubmitting ? "Deleting..." : "Delete")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnUserChanged { get; set; }
+
+    private List<UserViewModel> _users = new();
+    private List<Role> _allRoles = new();
+    private bool _isLoading = true;
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private bool _showAddDialog;
+    private bool _showRolesDialog;
+    private bool _showResetPasswordDialog;
+    private bool _showDeleteDialog;
+
+    private NewUserModel _newUser = new();
+    private UserViewModel? _selectedUser;
+    private HashSet<string> _selectedUserRoles = new();
+    private string _newPassword = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshUsers();
+    }
+
+    private async Task RefreshUsers()
+    {
+        _isLoading = true;
+        try
+        {
+            _allRoles = RolesModel.GetAllRoles().ToList();
+            var users = UsersModel.GetAllUsers();
+            _users = new List<UserViewModel>();
+
+            foreach (var user in users)
+            {
+                var identityUser = await UserManager.FindByIdAsync(user.Id);
+                var roles = identityUser != null
+                    ? await UserManager.GetRolesAsync(identityUser)
+                    : Array.Empty<string>();
+
+                _users.Add(new UserViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    UserName = user.UserName,
+                    EmailConfirmed = user.EmailConfirmed,
+                    Roles = roles.ToList()
+                });
+            }
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void ShowAddUserDialog()
+    {
+        _newUser = new NewUserModel();
+        _errorMessage = null;
+        _showAddDialog = true;
+    }
+
+    private void ShowRolesDialog(UserViewModel user)
+    {
+        _selectedUser = user;
+        _selectedUserRoles = new HashSet<string>(user.Roles);
+        _errorMessage = null;
+        _showRolesDialog = true;
+    }
+
+    private void ShowResetPasswordDialog(UserViewModel user)
+    {
+        _selectedUser = user;
+        _newPassword = string.Empty;
+        _errorMessage = null;
+        _showResetPasswordDialog = true;
+    }
+
+    private void ShowDeleteDialog(UserViewModel user)
+    {
+        _selectedUser = user;
+        _errorMessage = null;
+        _showDeleteDialog = true;
+    }
+
+    private void CloseDialogs()
+    {
+        _showAddDialog = false;
+        _showRolesDialog = false;
+        _showResetPasswordDialog = false;
+        _showDeleteDialog = false;
+        _selectedUser = null;
+        _errorMessage = null;
+    }
+
+    private void ToggleNewUserRole(string roleName, bool isSelected)
+    {
+        if (isSelected)
+            _newUser.SelectedRoles.Add(roleName);
+        else
+            _newUser.SelectedRoles.Remove(roleName);
+    }
+
+    private void ToggleUserRole(string roleName, bool isSelected)
+    {
+        if (isSelected)
+            _selectedUserRoles.Add(roleName);
+        else
+            _selectedUserRoles.Remove(roleName);
+    }
+
+    private async Task AddUser()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var user = new User
+            {
+                Email = _newUser.Email,
+                UserName = _newUser.UserName ?? _newUser.Email,
+                EmailConfirmed = true
+            };
+
+            var result = await UserManager.CreateAsync(user, _newUser.Password);
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            if (_newUser.SelectedRoles.Any())
+            {
+                await UserManager.AddToRolesAsync(user, _newUser.SelectedRoles);
+            }
+
+            CloseDialogs();
+            await RefreshUsers();
+            await OnUserChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task SaveRoles()
+    {
+        if (_selectedUser == null) return;
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var user = await UserManager.FindByIdAsync(_selectedUser.Id);
+            if (user == null)
+            {
+                _errorMessage = "User not found";
+                return;
+            }
+
+            var currentRoles = await UserManager.GetRolesAsync(user);
+            var rolesToRemove = currentRoles.Except(_selectedUserRoles).ToList();
+            var rolesToAdd = _selectedUserRoles.Except(currentRoles).ToList();
+
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await UserManager.RemoveFromRolesAsync(user, rolesToRemove);
+                if (!removeResult.Succeeded)
+                {
+                    _errorMessage = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                    return;
+                }
+            }
+
+            if (rolesToAdd.Any())
+            {
+                var addResult = await UserManager.AddToRolesAsync(user, rolesToAdd);
+                if (!addResult.Succeeded)
+                {
+                    _errorMessage = string.Join(", ", addResult.Errors.Select(e => e.Description));
+                    return;
+                }
+            }
+
+            CloseDialogs();
+            await RefreshUsers();
+            await OnUserChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task ResetPassword()
+    {
+        if (_selectedUser == null || string.IsNullOrEmpty(_newPassword)) return;
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var user = await UserManager.FindByIdAsync(_selectedUser.Id);
+            if (user == null)
+            {
+                _errorMessage = "User not found";
+                return;
+            }
+
+            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+            var result = await UserManager.ResetPasswordAsync(user, token, _newPassword);
+
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            CloseDialogs();
+            await OnUserChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task DeleteUser()
+    {
+        if (_selectedUser == null) return;
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var user = await UserManager.FindByIdAsync(_selectedUser.Id);
+            if (user == null)
+            {
+                _errorMessage = "User not found";
+                return;
+            }
+
+            var result = await UserManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            CloseDialogs();
+            await RefreshUsers();
+            await OnUserChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private class UserViewModel
+    {
+        public string Id { get; set; } = string.Empty;
+        public string? Email { get; set; }
+        public string? UserName { get; set; }
+        public bool EmailConfirmed { get; set; }
+        public List<string> Roles { get; set; } = new();
+    }
+
+    private class NewUserModel
+    {
+        public string Email { get; set; } = string.Empty;
+        public string? UserName { get; set; }
+        public string Password { get; set; } = string.Empty;
+        public HashSet<string> SelectedRoles { get; set; } = new();
+    }
+}

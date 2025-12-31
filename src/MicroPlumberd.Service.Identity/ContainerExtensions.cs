@@ -8,6 +8,7 @@ using MicroPlumberd.Services.Identity.ReadModels;
 using MicroPlumberd.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using static MicroPlumberd.Services.Identity.Aggregates.RoleAggregate;
 
 namespace MicroPlumberd.Services.Identity
@@ -61,6 +62,52 @@ namespace MicroPlumberd.Services.Identity
             // Register stores
             return container;
 
+        }
+
+        /// <summary>
+        /// Adds the identity initializer service that seeds an admin user on first startup.
+        /// </summary>
+        /// <param name="services">The service collection to add services to.</param>
+        /// <param name="configure">Optional action to configure the identity initializer options.</param>
+        /// <returns>The service collection for method chaining.</returns>
+        public static IServiceCollection AddIdentityInitializer(
+            this IServiceCollection services,
+            Action<IdentityInitializerOptions>? configure = null)
+        {
+            if (configure != null)
+            {
+                services.Configure(configure);
+            }
+            else
+            {
+                services.TryAddSingleton(Microsoft.Extensions.Options.Options.Create(new IdentityInitializerOptions()));
+            }
+
+            services.AddHostedService<IdentityInitializerService>();
+            return services;
+        }
+
+        /// <summary>
+        /// Adds the registration policy service that controls who can register new users.
+        /// </summary>
+        /// <param name="services">The service collection to add services to.</param>
+        /// <param name="configure">Optional action to configure the registration policy options.</param>
+        /// <returns>The service collection for method chaining.</returns>
+        public static IServiceCollection AddRegistrationPolicy(
+            this IServiceCollection services,
+            Action<RegistrationPolicyOptions>? configure = null)
+        {
+            if (configure != null)
+            {
+                services.Configure(configure);
+            }
+            else
+            {
+                services.TryAddSingleton(Microsoft.Extensions.Options.Options.Create(new RegistrationPolicyOptions()));
+            }
+
+            services.AddSingleton<RegistrationPolicyService>();
+            return services;
         }
     }
 }

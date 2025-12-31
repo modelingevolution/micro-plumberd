@@ -1,0 +1,316 @@
+@using Microsoft.AspNetCore.Identity
+@inject RoleManager<Role> RoleManager
+@inject RolesModel RolesModel
+
+<div class="roles-list">
+    <div class="toolbar">
+        <button class="btn btn-primary" @onclick="ShowAddRoleDialog">Add Role</button>
+        <button class="btn btn-secondary" @onclick="RefreshRoles">Refresh</button>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div class="loading">Loading roles...</div>
+    }
+    else if (!_roles.Any())
+    {
+        <div class="empty">No roles found.</div>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Role Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var role in _roles)
+                {
+                    <tr>
+                        <td>@role.Name</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => ShowEditDialog(role)">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger"
+                                    @onclick="() => ShowDeleteDialog(role)"
+                                    disabled="@(role.Name == "Admin")">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (_showAddDialog)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Add Role</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Role Name</label>
+                            <input type="text" class="form-control" @bind="_newRoleName" />
+                        </div>
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                        <button type="button" class="btn btn-primary" @onclick="AddRole" disabled="@_isSubmitting">
+                            @(_isSubmitting ? "Creating..." : "Create")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (_showEditDialog && _selectedRole != null)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Edit Role</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Role Name</label>
+                            <input type="text" class="form-control" @bind="_editRoleName" />
+                        </div>
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                        <button type="button" class="btn btn-primary" @onclick="UpdateRole" disabled="@_isSubmitting">
+                            @(_isSubmitting ? "Saving..." : "Save")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (_showDeleteDialog && _selectedRole != null)
+    {
+        <div class="modal-backdrop"></div>
+        <div class="modal show">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Delete Role</h5>
+                        <button class="btn-close" @onclick="CloseDialogs"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete role <strong>@_selectedRole.Name</strong>?</p>
+                        <p class="text-danger">This action cannot be undone.</p>
+                        @if (!string.IsNullOrEmpty(_errorMessage))
+                        {
+                            <div class="alert alert-danger">@_errorMessage</div>
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
+                        <button type="button" class="btn btn-danger" @onclick="DeleteRole" disabled="@_isSubmitting">
+                            @(_isSubmitting ? "Deleting..." : "Delete")
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnRoleChanged { get; set; }
+
+    private List<Role> _roles = new();
+    private bool _isLoading = true;
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private bool _showAddDialog;
+    private bool _showEditDialog;
+    private bool _showDeleteDialog;
+
+    private string _newRoleName = string.Empty;
+    private string _editRoleName = string.Empty;
+    private Role? _selectedRole;
+
+    protected override void OnInitialized()
+    {
+        RefreshRoles();
+    }
+
+    private void RefreshRoles()
+    {
+        _isLoading = true;
+        try
+        {
+            _roles = RolesModel.GetAllRoles().ToList();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void ShowAddRoleDialog()
+    {
+        _newRoleName = string.Empty;
+        _errorMessage = null;
+        _showAddDialog = true;
+    }
+
+    private void ShowEditDialog(Role role)
+    {
+        _selectedRole = role;
+        _editRoleName = role.Name ?? string.Empty;
+        _errorMessage = null;
+        _showEditDialog = true;
+    }
+
+    private void ShowDeleteDialog(Role role)
+    {
+        _selectedRole = role;
+        _errorMessage = null;
+        _showDeleteDialog = true;
+    }
+
+    private void CloseDialogs()
+    {
+        _showAddDialog = false;
+        _showEditDialog = false;
+        _showDeleteDialog = false;
+        _selectedRole = null;
+        _errorMessage = null;
+    }
+
+    private async Task AddRole()
+    {
+        if (string.IsNullOrWhiteSpace(_newRoleName)) return;
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var role = new Role { Name = _newRoleName };
+            var result = await RoleManager.CreateAsync(role);
+
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            CloseDialogs();
+            RefreshRoles();
+            await OnRoleChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task UpdateRole()
+    {
+        if (_selectedRole == null || string.IsNullOrWhiteSpace(_editRoleName)) return;
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var role = await RoleManager.FindByIdAsync(_selectedRole.Id);
+            if (role == null)
+            {
+                _errorMessage = "Role not found";
+                return;
+            }
+
+            role.Name = _editRoleName;
+            var result = await RoleManager.UpdateAsync(role);
+
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            CloseDialogs();
+            RefreshRoles();
+            await OnRoleChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+
+    private async Task DeleteRole()
+    {
+        if (_selectedRole == null) return;
+        if (_selectedRole.Name == "Admin")
+        {
+            _errorMessage = "Cannot delete the Admin role";
+            return;
+        }
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var role = await RoleManager.FindByIdAsync(_selectedRole.Id);
+            if (role == null)
+            {
+                _errorMessage = "Role not found";
+                return;
+            }
+
+            var result = await RoleManager.DeleteAsync(role);
+
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            CloseDialogs();
+            RefreshRoles();
+            await OnRoleChanged.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

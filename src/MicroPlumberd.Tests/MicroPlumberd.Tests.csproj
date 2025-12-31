@@ -48,6 +48,7 @@
     <ProjectReference Include="..\MicroPlumberd.Services.ProcessManager\MicroPlumberd.Services.ProcessManagers.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Service.Identity\MicroPlumberd.Services.Identity.csproj" />
     <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Testing\MicroPlumberd.Testing.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Tests.App.Dsl\MicroPlumberd.Tests.App.Dsl.csproj" />
