@@ -142,6 +142,12 @@ jobs:
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
+        dotnet pack src/MicroPlumberd.Services.Identity.Blazor/MicroPlumberd.Services.Identity.Blazor.csproj \
+          --configuration ${{ env.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
     - name: List artifacts
       run: ls -lh ./artifacts
 
