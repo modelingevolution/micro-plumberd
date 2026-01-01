@@ -158,6 +158,14 @@ jobs:
           --source https://api.nuget.org/v3/index.json \
           --skip-duplicate
 
+    - name: Publish to ModelingEvolution NuGet
+      run: |
+        dotnet nuget push "./artifacts/*.nupkg" \
+          --api-key ${{ secrets.NUGET_API_KEY_ME }} \
+          --source https://nuget.modelingevolution.com/v3/index.json \
+          --skip-duplicate
+      continue-on-error: true
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
