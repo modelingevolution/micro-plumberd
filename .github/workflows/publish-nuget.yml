@@ -162,7 +162,7 @@ jobs:
       run: |
         dotnet nuget push "./artifacts/*.nupkg" \
           --api-key ${{ secrets.NUGET_API_KEY_ME }} \
-          --source http://nuget.modelingevolution.com/v3/index.json \
+          --source https://nuget.modelingevolution.com/v3/index.json \
           --skip-duplicate
       continue-on-error: true
 
