@@ -2,137 +2,124 @@
 @inject RoleManager<Role> RoleManager
 @inject RolesModel RolesModel
 
-<div class="roles-list">
-    <div class="toolbar">
-        <button class="btn btn-primary" @onclick="ShowAddRoleDialog">Add Role</button>
-        <button class="btn btn-secondary" @onclick="RefreshRoles">Refresh</button>
-    </div>
+<MudStack Spacing="4">
+    <MudStack Row="true" Spacing="2">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="ShowAddRoleDialog">
+            Add Role
+        </MudButton>
+        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Refresh" OnClick="RefreshRoles">
+            Refresh
+        </MudButton>
+    </MudStack>
 
     @if (_isLoading)
     {
-        <div class="loading">Loading roles...</div>
+        <MudProgressLinear Indeterminate="true" />
     }
     else if (!_roles.Any())
     {
-        <div class="empty">No roles found.</div>
+        <MudAlert Severity="Severity.Info">No roles found.</MudAlert>
     }
     else
     {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Role Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var role in _roles)
-                {
-                    <tr>
-                        <td>@role.Name</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary" @onclick="() => ShowEditDialog(role)">Edit</button>
-                            <button class="btn btn-sm btn-outline-danger"
-                                    @onclick="() => ShowDeleteDialog(role)"
-                                    disabled="@(role.Name == "Admin")">Delete</button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <MudTable Items="@_roles" Hover="true" Striped="true" Dense="true">
+            <HeaderContent>
+                <MudTh>Role Name</MudTh>
+                <MudTh>Actions</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Role Name">
+                    <MudChip T="string" Color="@(context.Name == "Admin" ? Color.Primary : Color.Default)">
+                        @context.Name
+                    </MudChip>
+                </MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudTooltip Text="Edit Role">
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Primary"
+                                       OnClick="() => ShowEditDialog(context)" />
+                    </MudTooltip>
+                    <MudTooltip Text="Delete Role">
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error"
+                                       OnClick="() => ShowDeleteDialog(context)"
+                                       Disabled="@(context.Name == "Admin")" />
+                    </MudTooltip>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
     }
+</MudStack>
 
-    @if (_showAddDialog)
-    {
-        <div class="modal-backdrop"></div>
-        <div class="modal show">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Add Role</h5>
-                        <button class="btn-close" @onclick="CloseDialogs"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Role Name</label>
-                            <input type="text" class="form-control" @bind="_newRoleName" />
-                        </div>
-                        @if (!string.IsNullOrEmpty(_errorMessage))
-                        {
-                            <div class="alert alert-danger">@_errorMessage</div>
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
-                        <button type="button" class="btn btn-primary" @onclick="AddRole" disabled="@_isSubmitting">
-                            @(_isSubmitting ? "Creating..." : "Create")
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+<MudDialog @bind-Visible="_showAddDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2" /> Add Role
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="3">
+            <MudTextField @bind-Value="_newRoleName" Label="Role Name" Required="true"
+                          Variant="Variant.Outlined" />
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddRole" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Creating..." : "Create")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
-    @if (_showEditDialog && _selectedRole != null)
-    {
-        <div class="modal-backdrop"></div>
-        <div class="modal show">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Edit Role</h5>
-                        <button class="btn-close" @onclick="CloseDialogs"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Role Name</label>
-                            <input type="text" class="form-control" @bind="_editRoleName" />
-                        </div>
-                        @if (!string.IsNullOrEmpty(_errorMessage))
-                        {
-                            <div class="alert alert-danger">@_errorMessage</div>
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
-                        <button type="button" class="btn btn-primary" @onclick="UpdateRole" disabled="@_isSubmitting">
-                            @(_isSubmitting ? "Saving..." : "Save")
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+<MudDialog @bind-Visible="_showEditDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-2" /> Edit Role
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="3">
+            <MudTextField @bind-Value="_editRoleName" Label="Role Name" Required="true"
+                          Variant="Variant.Outlined" />
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="UpdateRole" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Saving..." : "Save")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
-    @if (_showDeleteDialog && _selectedRole != null)
-    {
-        <div class="modal-backdrop"></div>
-        <div class="modal show">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5>Delete Role</h5>
-                        <button class="btn-close" @onclick="CloseDialogs"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to delete role <strong>@_selectedRole.Name</strong>?</p>
-                        <p class="text-danger">This action cannot be undone.</p>
-                        @if (!string.IsNullOrEmpty(_errorMessage))
-                        {
-                            <div class="alert alert-danger">@_errorMessage</div>
-                        }
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="CloseDialogs">Cancel</button>
-                        <button type="button" class="btn btn-danger" @onclick="DeleteRole" disabled="@_isSubmitting">
-                            @(_isSubmitting ? "Deleting..." : "Delete")
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<MudDialog @bind-Visible="_showDeleteDialog">
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-2" Color="Color.Error" /> Delete Role
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText>Are you sure you want to delete role <strong>@_selectedRole?.Name</strong>?</MudText>
+            <MudAlert Severity="Severity.Warning">This action cannot be undone.</MudAlert>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteRole" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Deleting..." : "Delete")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
 
 @code {
     [Parameter]
