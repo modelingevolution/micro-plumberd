@@ -20,6 +20,8 @@ namespace MicroPlumberd.Services.Identity
     {
         /// <summary>
         /// Adds MicroPlumberd Identity services to the service collection, including ASP.NET Core Identity integration and event-sourced read models.
+        /// Uses AddIdentityCore (not AddIdentity) to avoid registering authentication schemes - the consuming app
+        /// should configure authentication separately via AddAuthentication().AddIdentityCookies() or similar.
         /// </summary>
         /// <param name="container">The service collection to add services to.</param>
         /// <param name="GetCurrentUser">Optional function to retrieve the current user ID from the operation context.</param>
@@ -31,13 +33,13 @@ namespace MicroPlumberd.Services.Identity
         {
             container.AddSingleton<UsersModel>();
             container.AddSingleton<RolesModel>();
-            
+
             container.AddSingleton<AuthenticationModel>();
             container.AddSingleton<UserProfileModel>();
             container.AddSingleton<UserAuthorizationModel>();
             container.AddSingleton<ExternalLoginModel>();
             container.AddSingleton<TokenModel>();
-            
+
 
             // Register event handlers for read models
             container.AddEventHandler<UsersModel>();
@@ -47,8 +49,11 @@ namespace MicroPlumberd.Services.Identity
             container.AddEventHandler<UserAuthorizationModel>();
             container.AddEventHandler<ExternalLoginModel>();
             container.AddEventHandler<TokenModel>();
-            
-            container.AddIdentity<User, Role>()
+
+            // Use AddIdentityCore instead of AddIdentity to avoid registering auth schemes.
+            // The consuming app should configure authentication (e.g., AddAuthentication().AddIdentityCookies()).
+            container.AddIdentityCore<User>()
+                .AddRoles<Role>()
                 .AddDefaultTokenProviders()
                 .AddSignInManager<PlumberdSignInManager>();
             container.AddScoped<IUserStore<User>, UserStore>();
