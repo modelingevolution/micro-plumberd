@@ -1,62 +1,65 @@
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.UI.Services
+@using Microsoft.Extensions.DependencyInjection
+@using ModelingEvolution.Observable.Blazor
 @inject UserManager<User> UserManager
 @inject RoleManager<Role> RoleManager
 @inject UsersModel UsersModel
 @inject RolesModel RolesModel
 @inject IDialogService DialogService
+@inject IServiceProvider ServiceProvider
 
 <MudStack Spacing="4">
     <MudStack Row="true" Spacing="2">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PersonAdd" OnClick="ShowAddUserDialog">
             Add User
         </MudButton>
-        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Refresh" OnClick="RefreshUsers">
-            Refresh
-        </MudButton>
     </MudStack>
 
-    @if (_isLoading)
-    {
-        <MudProgressLinear Indeterminate="true" />
-    }
-    else if (!_users.Any())
+    @if (!UsersModel.Items.Any())
     {
         <MudAlert Severity="Severity.Info">No users found.</MudAlert>
     }
     else
     {
-        <MudTable Items="@_users" Hover="true" Striped="true" Dense="true">
+        <MudTable Items="@UsersModel.Items" Hover="true" Striped="true" Dense="true">
             <HeaderContent>
                 <MudTh>Email</MudTh>
                 <MudTh>Username</MudTh>
-                <MudTh>Roles</MudTh>
                 <MudTh>Email Confirmed</MudTh>
                 <MudTh>Actions</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="Email">@context.Email</MudTd>
                 <MudTd DataLabel="Username">@context.UserName</MudTd>
-                <MudTd DataLabel="Roles">
-                    @foreach (var role in context.Roles)
+                <MudTd DataLabel="Email Confirmed">
+                    @if (context.EmailConfirmed)
                     {
-                        <MudChip T="string" Size="Size.Small" Color="Color.Primary">@role</MudChip>
+                        <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" />
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Cancel" Color="Color.Error" />
                     }
                 </MudTd>
-                <MudTd DataLabel="Email Confirmed">
-                    <MudIcon Icon="@(context.EmailConfirmed ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.Cancel)"
-                             Color="@(context.EmailConfirmed ? Color.Success : Color.Error)" />
-                </MudTd>
                 <MudTd DataLabel="Actions">
+                    @if (!context.EmailConfirmed)
+                    {
+                        <MudTooltip Text="Confirm Email">
+                            <MudIconButton Icon="@Icons.Material.Filled.MarkEmailRead" Size="Size.Small" Color="Color.Default"
+                                           OnClick="() => ConfirmEmail(context)" />
+                        </MudTooltip>
+                    }
                     <MudTooltip Text="Manage Roles">
-                        <MudIconButton Icon="@Icons.Material.Filled.Security" Size="Size.Small" Color="Color.Primary"
+                        <MudIconButton Icon="@Icons.Material.Filled.Security" Size="Size.Small" Color="Color.Default"
                                        OnClick="() => ShowRolesDialog(context)" />
                     </MudTooltip>
                     <MudTooltip Text="Reset Password">
-                        <MudIconButton Icon="@Icons.Material.Filled.Password" Size="Size.Small" Color="Color.Warning"
+                        <MudIconButton Icon="@Icons.Material.Filled.Password" Size="Size.Small" Color="Color.Default"
                                        OnClick="() => ShowResetPasswordDialog(context)" />
                     </MudTooltip>
                     <MudTooltip Text="Delete User">
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error"
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Default"
                                        OnClick="() => ShowDeleteDialog(context)" />
                     </MudTooltip>
                 </MudTd>
@@ -65,413 +68,106 @@
     }
 </MudStack>
 
-<MudDialog @bind-Visible="_showAddDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.PersonAdd" Class="mr-2" /> Add User
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="3">
-            <MudTextField @bind-Value="_newUser.Email" Label="Email" Required="true"
-                          InputType="InputType.Email" Variant="Variant.Outlined" />
-            <MudTextField @bind-Value="_newUser.UserName" Label="Username"
-                          HelperText="Optional, defaults to email" Variant="Variant.Outlined" />
-            <MudTextField @bind-Value="_newUser.Password" Label="Password" Required="true"
-                          InputType="InputType.Password" Variant="Variant.Outlined" />
-            <MudText Typo="Typo.subtitle2">Roles</MudText>
-            @foreach (var role in _allRoles)
-            {
-                <MudCheckBox T="bool" Value="@_newUser.SelectedRoles.Contains(role.Name!)"
-                             ValueChanged="@(v => ToggleNewUserRole(role.Name!, v))"
-                             Label="@role.Name" Color="Color.Primary" />
-            }
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddUser" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Creating..." : "Create")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
-<MudDialog @bind-Visible="_showRolesDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Security" Class="mr-2" /> Manage Roles for @_selectedUser?.Email
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="2">
-            @foreach (var role in _allRoles)
-            {
-                <MudCheckBox T="bool" Value="@_selectedUserRoles.Contains(role.Name!)"
-                             ValueChanged="@(v => ToggleUserRole(role.Name!, v))"
-                             Label="@role.Name" Color="Color.Primary" />
-            }
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error" Class="mt-3">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="SaveRoles" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Saving..." : "Save")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
-<MudDialog @bind-Visible="_showResetPasswordDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Password" Class="mr-2" /> Reset Password for @_selectedUser?.Email
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="3">
-            <MudTextField @bind-Value="_newPassword" Label="New Password" Required="true"
-                          InputType="InputType.Password" Variant="Variant.Outlined" />
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="ResetPassword" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Resetting..." : "Reset Password")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
-<MudDialog @bind-Visible="_showDeleteDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-2" Color="Color.Error" /> Delete User
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="2">
-            <MudText>Are you sure you want to delete user <strong>@_selectedUser?.Email</strong>?</MudText>
-            <MudAlert Severity="Severity.Warning">This action cannot be undone.</MudAlert>
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteUser" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Deleting..." : "Delete")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
 @code {
     [Parameter]
     public EventCallback OnUserChanged { get; set; }
 
-    private List<UserViewModel> _users = new();
-    private List<Role> _allRoles = new();
-    private bool _isLoading = true;
-    private bool _isSubmitting;
-    private string? _errorMessage;
+    private bool _isEmailSenderConfigured;
+    private IEmailSender? _emailSender;
 
-    private bool _showAddDialog;
-    private bool _showRolesDialog;
-    private bool _showResetPasswordDialog;
-    private bool _showDeleteDialog;
-
-    private NewUserModel _newUser = new();
-    private UserViewModel? _selectedUser;
-    private HashSet<string> _selectedUserRoles = new();
-    private string _newPassword = string.Empty;
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await RefreshUsers();
-    }
-
-    private async Task RefreshUsers()
-    {
-        _isLoading = true;
-        try
+        _emailSender = ServiceProvider.GetService<IEmailSender>();
+        if (_emailSender != null)
         {
-            _allRoles = RolesModel.GetAllRoles().ToList();
-            var users = UsersModel.GetAllUsers();
-            _users = new List<UserViewModel>();
-
-            foreach (var user in users)
-            {
-                var identityUser = await UserManager.FindByIdAsync(user.Id);
-                var roles = identityUser != null
-                    ? await UserManager.GetRolesAsync(identityUser)
-                    : Array.Empty<string>();
-
-                _users.Add(new UserViewModel
-                {
-                    Id = user.Id,
-                    Email = user.Email,
-                    UserName = user.UserName,
-                    EmailConfirmed = user.EmailConfirmed,
-                    Roles = roles.ToList()
-                });
-            }
-        }
-        finally
-        {
-            _isLoading = false;
+            var emailSenderType = _emailSender.GetType();
+            _isEmailSenderConfigured = !emailSenderType.Name.Contains("NoOp", StringComparison.OrdinalIgnoreCase);
         }
     }
 
-    private void ShowAddUserDialog()
+    private async Task ShowAddUserDialog()
     {
-        _newUser = new NewUserModel();
-        _errorMessage = null;
-        _showAddDialog = true;
-    }
-
-    private void ShowRolesDialog(UserViewModel user)
-    {
-        _selectedUser = user;
-        _selectedUserRoles = new HashSet<string>(user.Roles);
-        _errorMessage = null;
-        _showRolesDialog = true;
-    }
-
-    private void ShowResetPasswordDialog(UserViewModel user)
-    {
-        _selectedUser = user;
-        _newPassword = string.Empty;
-        _errorMessage = null;
-        _showResetPasswordDialog = true;
-    }
-
-    private void ShowDeleteDialog(UserViewModel user)
-    {
-        _selectedUser = user;
-        _errorMessage = null;
-        _showDeleteDialog = true;
-    }
-
-    private void CloseDialogs()
-    {
-        _showAddDialog = false;
-        _showRolesDialog = false;
-        _showResetPasswordDialog = false;
-        _showDeleteDialog = false;
-        _selectedUser = null;
-        _errorMessage = null;
-    }
-
-    private void ToggleNewUserRole(string roleName, bool isSelected)
-    {
-        if (isSelected)
-            _newUser.SelectedRoles.Add(roleName);
-        else
-            _newUser.SelectedRoles.Remove(roleName);
-    }
-
-    private void ToggleUserRole(string roleName, bool isSelected)
-    {
-        if (isSelected)
-            _selectedUserRoles.Add(roleName);
-        else
-            _selectedUserRoles.Remove(roleName);
-    }
-
-    private async Task AddUser()
-    {
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
+        var availableRoles = RolesModel.Items.Select(r => r.Name!).ToList();
+        var parameters = new DialogParameters<AddUserDialog>
         {
-            var user = new User
-            {
-                Email = _newUser.Email,
-                UserName = _newUser.UserName ?? _newUser.Email,
-                EmailConfirmed = true
-            };
+            { x => x.UserManager, UserManager },
+            { x => x.EmailSender, _emailSender },
+            { x => x.AvailableRoles, availableRoles },
+            { x => x.IsEmailSenderConfigured, _isEmailSenderConfigured }
+        };
 
-            var result = await UserManager.CreateAsync(user, _newUser.Password);
-            if (!result.Succeeded)
-            {
-                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-                return;
-            }
+        var options = new DialogOptions { MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<AddUserDialog>("Add User", parameters, options);
+        var result = await dialog.Result;
 
-            if (_newUser.SelectedRoles.Any())
-            {
-                await UserManager.AddToRolesAsync(user, _newUser.SelectedRoles);
-            }
-
-            CloseDialogs();
-            await RefreshUsers();
+        if (!result!.Canceled)
+        {
             await OnUserChanged.InvokeAsync();
         }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isSubmitting = false;
-        }
     }
 
-    private async Task SaveRoles()
+    private async Task ShowRolesDialog(User user)
     {
-        if (_selectedUser == null) return;
-
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
+        var availableRoles = RolesModel.Items.Select(r => r.Name!).ToList();
+        var currentRoles = await UserManager.GetRolesAsync(user);
+        var parameters = new DialogParameters<ManageUserRolesDialog>
         {
-            var user = await UserManager.FindByIdAsync(_selectedUser.Id);
-            if (user == null)
-            {
-                _errorMessage = "User not found";
-                return;
-            }
+            { x => x.UserManager, UserManager },
+            { x => x.User, user },
+            { x => x.AvailableRoles, availableRoles },
+            { x => x.CurrentRoles, currentRoles }
+        };
 
-            var currentRoles = await UserManager.GetRolesAsync(user);
-            var rolesToRemove = currentRoles.Except(_selectedUserRoles).ToList();
-            var rolesToAdd = _selectedUserRoles.Except(currentRoles).ToList();
+        var dialog = await DialogService.ShowAsync<ManageUserRolesDialog>($"Manage Roles for {user.Email}", parameters);
+        var result = await dialog.Result;
 
-            if (rolesToRemove.Any())
-            {
-                var removeResult = await UserManager.RemoveFromRolesAsync(user, rolesToRemove);
-                if (!removeResult.Succeeded)
-                {
-                    _errorMessage = string.Join(", ", removeResult.Errors.Select(e => e.Description));
-                    return;
-                }
-            }
-
-            if (rolesToAdd.Any())
-            {
-                var addResult = await UserManager.AddToRolesAsync(user, rolesToAdd);
-                if (!addResult.Succeeded)
-                {
-                    _errorMessage = string.Join(", ", addResult.Errors.Select(e => e.Description));
-                    return;
-                }
-            }
-
-            CloseDialogs();
-            await RefreshUsers();
+        if (!result!.Canceled)
+        {
             await OnUserChanged.InvokeAsync();
         }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isSubmitting = false;
-        }
     }
 
-    private async Task ResetPassword()
+    private async Task ShowResetPasswordDialog(User user)
     {
-        if (_selectedUser == null || string.IsNullOrEmpty(_newPassword)) return;
-
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
+        var parameters = new DialogParameters<ResetPasswordDialog>
         {
-            var user = await UserManager.FindByIdAsync(_selectedUser.Id);
-            if (user == null)
-            {
-                _errorMessage = "User not found";
-                return;
-            }
+            { x => x.UserManager, UserManager },
+            { x => x.User, user }
+        };
 
-            var token = await UserManager.GeneratePasswordResetTokenAsync(user);
-            var result = await UserManager.ResetPasswordAsync(user, token, _newPassword);
+        var dialog = await DialogService.ShowAsync<ResetPasswordDialog>($"Reset Password for {user.Email}", parameters);
+        var result = await dialog.Result;
 
-            if (!result.Succeeded)
-            {
-                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-                return;
-            }
-
-            CloseDialogs();
+        if (!result!.Canceled)
+        {
             await OnUserChanged.InvokeAsync();
         }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isSubmitting = false;
-        }
     }
 
-    private async Task DeleteUser()
+    private async Task ShowDeleteDialog(User user)
     {
-        if (_selectedUser == null) return;
-
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
+        var parameters = new DialogParameters<DeleteUserDialog>
         {
-            var user = await UserManager.FindByIdAsync(_selectedUser.Id);
-            if (user == null)
-            {
-                _errorMessage = "User not found";
-                return;
-            }
+            { x => x.UserManager, UserManager },
+            { x => x.User, user }
+        };
 
-            var result = await UserManager.DeleteAsync(user);
-            if (!result.Succeeded)
-            {
-                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-                return;
-            }
+        var dialog = await DialogService.ShowAsync<DeleteUserDialog>("Delete User", parameters);
+        var result = await dialog.Result;
 
-            CloseDialogs();
-            await RefreshUsers();
+        if (!result!.Canceled)
+        {
             await OnUserChanged.InvokeAsync();
         }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isSubmitting = false;
-        }
     }
 
-    private class UserViewModel
+    private async Task ConfirmEmail(User user)
     {
-        public string Id { get; set; } = string.Empty;
-        public string? Email { get; set; }
-        public string? UserName { get; set; }
-        public bool EmailConfirmed { get; set; }
-        public List<string> Roles { get; set; } = new();
-    }
-
-    private class NewUserModel
-    {
-        public string Email { get; set; } = string.Empty;
-        public string? UserName { get; set; }
-        public string Password { get; set; } = string.Empty;
-        public HashSet<string> SelectedRoles { get; set; } = new();
+        var token = await UserManager.GenerateEmailConfirmationTokenAsync(user);
+        var result = await UserManager.ConfirmEmailAsync(user, token);
+        if (result.Succeeded)
+        {
+            await OnUserChanged.InvokeAsync();
+        }
     }
 }

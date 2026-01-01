@@ -134,7 +134,7 @@ public partial class IdentityUserAggregate : AggregateBase<UserIdentifier, Ident
     }
 
 
-
+    public bool IsNew => base.Version == -1;
     private static IdentityUserState Given(IdentityUserState state, IdentityUserDeleted ev)
     {
         return state with { IsDeleted = true };

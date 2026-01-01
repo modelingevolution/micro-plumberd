@@ -59,6 +59,15 @@ public class Program
             return null;
         });
 
+        // Seed admin user if no users exist
+        builder.Services.AddIdentityInitializer(opts =>
+        {
+            opts.AdminEmail = builder.Configuration["Identity:AdminEmail"] ?? "admin@localhost";
+            opts.AdminUserName = builder.Configuration["Identity:AdminUserName"] ?? "admin";
+            opts.AdminPassword = builder.Configuration["Identity:AdminPassword"] ?? "Admin123!";
+            opts.ProjectionWaitTime = TimeSpan.FromSeconds(5);
+        });
+
         builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 
         var app = builder.Build();

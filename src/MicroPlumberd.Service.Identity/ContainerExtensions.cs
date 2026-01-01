@@ -50,7 +50,7 @@ namespace MicroPlumberd.Services.Identity
             
             container.AddIdentity<User, Role>()
                 .AddDefaultTokenProviders()
-                .AddSignInManager();
+                .AddSignInManager<PlumberdSignInManager>();
             container.AddScoped<IUserStore<User>, UserStore>();
             container.AddScoped<IRoleStore<Role>, RoleStore>();
 

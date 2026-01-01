@@ -1,28 +1,23 @@
 @using Microsoft.AspNetCore.Identity
+@using ModelingEvolution.Observable.Blazor
 @inject RoleManager<Role> RoleManager
 @inject RolesModel RolesModel
+@inject IDialogService DialogService
 
 <MudStack Spacing="4">
     <MudStack Row="true" Spacing="2">
         <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="ShowAddRoleDialog">
             Add Role
         </MudButton>
-        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Refresh" OnClick="RefreshRoles">
-            Refresh
-        </MudButton>
     </MudStack>
 
-    @if (_isLoading)
-    {
-        <MudProgressLinear Indeterminate="true" />
-    }
-    else if (!_roles.Any())
+    @if (!RolesModel.Items.Any())
     {
         <MudAlert Severity="Severity.Info">No roles found.</MudAlert>
     }
     else
     {
-        <MudTable Items="@_roles" Hover="true" Striped="true" Dense="true">
+        <MudTable Items="@RolesModel.Items" Hover="true" Striped="true" Dense="true">
             <HeaderContent>
                 <MudTh>Role Name</MudTh>
                 <MudTh>Actions</MudTh>
@@ -35,11 +30,11 @@
                 </MudTd>
                 <MudTd DataLabel="Actions">
                     <MudTooltip Text="Edit Role">
-                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Primary"
+                        <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Color="Color.Default"
                                        OnClick="() => ShowEditDialog(context)" />
                     </MudTooltip>
                     <MudTooltip Text="Delete Role">
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error"
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Default"
                                        OnClick="() => ShowDeleteDialog(context)"
                                        Disabled="@(context.Name == "Admin")" />
                     </MudTooltip>
@@ -49,255 +44,57 @@
     }
 </MudStack>
 
-<MudDialog @bind-Visible="_showAddDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-2" /> Add Role
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="3">
-            <MudTextField @bind-Value="_newRoleName" Label="Role Name" Required="true"
-                          Variant="Variant.Outlined" />
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="AddRole" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Creating..." : "Create")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
-<MudDialog @bind-Visible="_showEditDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-2" /> Edit Role
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="3">
-            <MudTextField @bind-Value="_editRoleName" Label="Role Name" Required="true"
-                          Variant="Variant.Outlined" />
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="UpdateRole" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Saving..." : "Save")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
-<MudDialog @bind-Visible="_showDeleteDialog">
-    <TitleContent>
-        <MudText Typo="Typo.h6">
-            <MudIcon Icon="@Icons.Material.Filled.Delete" Class="mr-2" Color="Color.Error" /> Delete Role
-        </MudText>
-    </TitleContent>
-    <DialogContent>
-        <MudStack Spacing="2">
-            <MudText>Are you sure you want to delete role <strong>@_selectedRole?.Name</strong>?</MudText>
-            <MudAlert Severity="Severity.Warning">This action cannot be undone.</MudAlert>
-            @if (!string.IsNullOrEmpty(_errorMessage))
-            {
-                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
-            }
-        </MudStack>
-    </DialogContent>
-    <DialogActions>
-        <MudButton OnClick="CloseDialogs">Cancel</MudButton>
-        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="DeleteRole" Disabled="_isSubmitting">
-            @(_isSubmitting ? "Deleting..." : "Delete")
-        </MudButton>
-    </DialogActions>
-</MudDialog>
-
 @code {
     [Parameter]
     public EventCallback OnRoleChanged { get; set; }
 
-    private List<Role> _roles = new();
-    private bool _isLoading = true;
-    private bool _isSubmitting;
-    private string? _errorMessage;
-
-    private bool _showAddDialog;
-    private bool _showEditDialog;
-    private bool _showDeleteDialog;
-
-    private string _newRoleName = string.Empty;
-    private string _editRoleName = string.Empty;
-    private Role? _selectedRole;
-
-    protected override void OnInitialized()
+    private async Task ShowAddRoleDialog()
     {
-        RefreshRoles();
-    }
-
-    private void RefreshRoles()
-    {
-        _isLoading = true;
-        try
+        var parameters = new DialogParameters<AddRoleDialog>
         {
-            _roles = RolesModel.GetAllRoles().ToList();
-        }
-        finally
+            { x => x.RoleManager, RoleManager }
+        };
+
+        var dialog = await DialogService.ShowAsync<AddRoleDialog>("Add Role", parameters);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
         {
-            _isLoading = false;
-        }
-    }
-
-    private void ShowAddRoleDialog()
-    {
-        _newRoleName = string.Empty;
-        _errorMessage = null;
-        _showAddDialog = true;
-    }
-
-    private void ShowEditDialog(Role role)
-    {
-        _selectedRole = role;
-        _editRoleName = role.Name ?? string.Empty;
-        _errorMessage = null;
-        _showEditDialog = true;
-    }
-
-    private void ShowDeleteDialog(Role role)
-    {
-        _selectedRole = role;
-        _errorMessage = null;
-        _showDeleteDialog = true;
-    }
-
-    private void CloseDialogs()
-    {
-        _showAddDialog = false;
-        _showEditDialog = false;
-        _showDeleteDialog = false;
-        _selectedRole = null;
-        _errorMessage = null;
-    }
-
-    private async Task AddRole()
-    {
-        if (string.IsNullOrWhiteSpace(_newRoleName)) return;
-
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
-        {
-            var role = new Role { Name = _newRoleName };
-            var result = await RoleManager.CreateAsync(role);
-
-            if (!result.Succeeded)
-            {
-                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-                return;
-            }
-
-            CloseDialogs();
-            RefreshRoles();
             await OnRoleChanged.InvokeAsync();
         }
-        catch (Exception ex)
+    }
+
+    private async Task ShowEditDialog(Role role)
+    {
+        var parameters = new DialogParameters<EditRoleDialog>
         {
-            _errorMessage = ex.Message;
-        }
-        finally
+            { x => x.RoleManager, RoleManager },
+            { x => x.Role, role }
+        };
+
+        var dialog = await DialogService.ShowAsync<EditRoleDialog>("Edit Role", parameters);
+        var result = await dialog.Result;
+
+        if (!result!.Canceled)
         {
-            _isSubmitting = false;
+            await OnRoleChanged.InvokeAsync();
         }
     }
 
-    private async Task UpdateRole()
+    private async Task ShowDeleteDialog(Role role)
     {
-        if (_selectedRole == null || string.IsNullOrWhiteSpace(_editRoleName)) return;
-
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
+        var parameters = new DialogParameters<DeleteRoleDialog>
         {
-            var role = await RoleManager.FindByIdAsync(_selectedRole.Id);
-            if (role == null)
-            {
-                _errorMessage = "Role not found";
-                return;
-            }
+            { x => x.RoleManager, RoleManager },
+            { x => x.Role, role }
+        };
 
-            role.Name = _editRoleName;
-            var result = await RoleManager.UpdateAsync(role);
+        var dialog = await DialogService.ShowAsync<DeleteRoleDialog>("Delete Role", parameters);
+        var result = await dialog.Result;
 
-            if (!result.Succeeded)
-            {
-                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-                return;
-            }
-
-            CloseDialogs();
-            RefreshRoles();
+        if (!result!.Canceled)
+        {
             await OnRoleChanged.InvokeAsync();
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isSubmitting = false;
-        }
-    }
-
-    private async Task DeleteRole()
-    {
-        if (_selectedRole == null) return;
-        if (_selectedRole.Name == "Admin")
-        {
-            _errorMessage = "Cannot delete the Admin role";
-            return;
-        }
-
-        _isSubmitting = true;
-        _errorMessage = null;
-
-        try
-        {
-            var role = await RoleManager.FindByIdAsync(_selectedRole.Id);
-            if (role == null)
-            {
-                _errorMessage = "Role not found";
-                return;
-            }
-
-            var result = await RoleManager.DeleteAsync(role);
-
-            if (!result.Succeeded)
-            {
-                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
-                return;
-            }
-
-            CloseDialogs();
-            RefreshRoles();
-            await OnRoleChanged.InvokeAsync();
-        }
-        catch (Exception ex)
-        {
-            _errorMessage = ex.Message;
-        }
-        finally
-        {
-            _isSubmitting = false;
         }
     }
 }

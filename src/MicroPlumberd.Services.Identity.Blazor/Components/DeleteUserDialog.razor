@@ -1,0 +1,60 @@
+@using Microsoft.AspNetCore.Identity
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText>Are you sure you want to delete user <strong>@User.Email</strong>?</MudText>
+            <MudAlert Severity="Severity.Warning">This action cannot be undone.</MudAlert>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Submit" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Deleting..." : "Delete")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public UserManager<User> UserManager { get; set; } = default!;
+    [Parameter] public User User { get; set; } = default!;
+
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var result = await UserManager.DeleteAsync(User);
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

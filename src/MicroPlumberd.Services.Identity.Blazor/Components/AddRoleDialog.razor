@@ -1,0 +1,68 @@
+@using Microsoft.AspNetCore.Identity
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="3">
+            <MudTextField @bind-Value="_roleName" Label="Role Name" Required="true"
+                          Variant="Variant.Outlined" />
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Creating..." : "Create")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public RoleManager<Role> RoleManager { get; set; } = default!;
+
+    private string _roleName = string.Empty;
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        if (string.IsNullOrWhiteSpace(_roleName))
+        {
+            _errorMessage = "Role name is required";
+            return;
+        }
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var role = new Role { Name = _roleName };
+            var result = await RoleManager.CreateAsync(role);
+
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            MudDialog.Close(DialogResult.Ok(role));
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

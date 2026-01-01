@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using MicroPlumberd;
 using MicroPlumberd.Services.Identity.Aggregates;
@@ -8,7 +9,8 @@ using MicroPlumberd.Services.Identity.Aggregates;
 namespace MicroPlumberd.Services.Identity.ReadModels
 {
     /// <summary>
-    /// Consolidated read model for roles with direct references in lookups
+    /// Consolidated read model for roles with direct references in lookups.
+    /// Exposes Items as ObservableCollection for UI binding.
     /// </summary>
     [EventHandler]
     [OutputStream("RolesModel_v1")]
@@ -17,8 +19,17 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         // Primary collection - clustered index
         private readonly ConcurrentDictionary<RoleIdentifier, Role> _rolesById = new();
 
+        // Observable collection for UI binding
+        private readonly ObservableCollection<Role> _items = new();
+
         // Lookup dictionary - direct references to the same Role objects
         private readonly ConcurrentDictionary<string, Role> _rolesByNormalizedName = new();
+
+        /// <summary>
+        /// Gets the observable collection of roles for UI binding.
+        /// The underlying collection implements INotifyCollectionChanged.
+        /// </summary>
+        public IReadOnlyList<Role> Items => _items;
 
         /// <summary>
         /// Gets all roles in the read model.
@@ -43,6 +54,9 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             // Add to primary collection
             if (_rolesById.TryAdd(roleId, role))
             {
+                // Add to observable collection for UI
+                _items.Add(role);
+
                 // Add to lookup - same reference
                 if (!string.IsNullOrEmpty(ev.NormalizedName))
                 {
@@ -86,6 +100,9 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             // Remove from primary collection
             if (_rolesById.TryRemove(roleId, out var role))
             {
+                // Remove from observable collection for UI
+                _items.Remove(role);
+
                 // Remove from lookup
                 if (!string.IsNullOrEmpty(role.NormalizedName))
                 {

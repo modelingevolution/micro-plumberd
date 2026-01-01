@@ -9,25 +9,25 @@ namespace MicroPlumberd.Services.Identity;
 
 /// <summary>
 /// Background service that initializes the identity system on application startup.
-/// Creates an admin user and role if no users exist in the system.
+/// Creates an admin user and role if no users exist in the admin role.
 /// </summary>
 public class IdentityInitializerService : BackgroundService
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly UsersModel _usersModel;
+    private readonly UserAuthorizationModel _userAuthorizationModel;
     private readonly RolesModel _rolesModel;
     private readonly IdentityInitializerOptions _options;
     private readonly ILogger<IdentityInitializerService> _logger;
 
     public IdentityInitializerService(
         IServiceProvider serviceProvider,
-        UsersModel usersModel,
+        UserAuthorizationModel userAuthorizationModel,
         RolesModel rolesModel,
         IOptions<IdentityInitializerOptions> options,
         ILogger<IdentityInitializerService> logger)
     {
         _serviceProvider = serviceProvider;
-        _usersModel = usersModel;
+        _userAuthorizationModel = userAuthorizationModel;
         _rolesModel = rolesModel;
         _options = options.Value;
         _logger = logger;
@@ -54,14 +54,17 @@ public class IdentityInitializerService : BackgroundService
             return;
         }
 
-        var users = _usersModel.GetAllUsers();
-        if (users.Count > 0)
+        var normalizedRoleName = _options.AdminRoleName.ToUpperInvariant();
+        var usersInAdminRole = _userAuthorizationModel.GetUsersInRole(normalizedRoleName);
+
+        if (usersInAdminRole.Count > 0)
         {
-            _logger.LogInformation("Found {UserCount} existing users, skipping admin seeding", users.Count);
+            _logger.LogInformation("Found {UserCount} users in '{RoleName}' role, skipping admin seeding",
+                usersInAdminRole.Count, _options.AdminRoleName);
             return;
         }
 
-        _logger.LogInformation("No users found, creating initial admin user");
+        _logger.LogInformation("No users found in '{RoleName}' role, creating initial admin user", _options.AdminRoleName);
 
         // Use a scope for UserManager and RoleManager (they are scoped services)
         using var scope = _serviceProvider.CreateScope();
@@ -112,13 +115,12 @@ public class IdentityInitializerService : BackgroundService
         if (!createResult.Succeeded)
         {
             var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
-            _logger.LogError("Failed to create admin user '{UserName}': {Errors}",
-                _options.AdminUserName, errors);
+            _logger.LogError("Failed to create admin user '{Email}': {Errors}",
+                _options.AdminEmail, errors);
             return;
         }
 
-        _logger.LogInformation("Created admin user '{UserName}' with email '{Email}'",
-            _options.AdminUserName, _options.AdminEmail);
+        _logger.LogInformation("Created admin user with email '{Email}'", _options.AdminEmail);
 
         // Assign admin role
         var roleResult = await userManager.AddToRoleAsync(adminUser, _options.AdminRoleName);

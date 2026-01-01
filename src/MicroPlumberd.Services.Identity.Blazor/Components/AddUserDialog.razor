@@ -1,0 +1,151 @@
+@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity.UI.Services
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="3">
+            <MudTextField @bind-Value="_email" Label="Email" Required="true"
+                          InputType="InputType.Email" Variant="Variant.Outlined" />
+            <MudTextField @bind-Value="_userName" Label="Username"
+                          HelperText="Optional, defaults to email" Variant="Variant.Outlined" />
+            @if (IsEmailSenderConfigured)
+            {
+                <MudCheckBox @bind-Value="_sendInvitationEmail" Label="Send invitation email" Color="Color.Primary" />
+                @if (!_sendInvitationEmail)
+                {
+                    <MudTextField @bind-Value="_password" Label="Password" Required="true"
+                                  InputType="InputType.Password" Variant="Variant.Outlined" />
+                }
+            }
+            else
+            {
+                <MudTextField @bind-Value="_password" Label="Password" Required="true"
+                              InputType="InputType.Password" Variant="Variant.Outlined"
+                              HelperText="Email sender not configured - password required" />
+            }
+            <MudCheckBox @bind-Value="_emailConfirmed" Label="Email Confirmed" Color="Color.Primary"
+                         Disabled="@_sendInvitationEmail" />
+            @if (AvailableRoles.Any())
+            {
+                <MudText Typo="Typo.subtitle2">Roles</MudText>
+                @foreach (var role in AvailableRoles)
+                {
+                    <MudCheckBox T="bool" Value="@_selectedRoles.Contains(role)"
+                                 ValueChanged="@(v => ToggleRole(role, v))"
+                                 Label="@role" Color="Color.Primary" />
+                }
+            }
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Creating..." : "Create")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public UserManager<User> UserManager { get; set; } = default!;
+    [Parameter] public IEmailSender? EmailSender { get; set; }
+    [Parameter] public IReadOnlyList<string> AvailableRoles { get; set; } = [];
+    [Parameter] public bool IsEmailSenderConfigured { get; set; }
+
+    private string _email = string.Empty;
+    private string? _userName;
+    private string _password = string.Empty;
+    private bool _emailConfirmed = true;
+    private bool _sendInvitationEmail = true;
+    private HashSet<string> _selectedRoles = new();
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private void ToggleRole(string role, bool isSelected)
+    {
+        if (isSelected)
+            _selectedRoles.Add(role);
+        else
+            _selectedRoles.Remove(role);
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        if (string.IsNullOrWhiteSpace(_email))
+        {
+            _errorMessage = "Email is required";
+            return;
+        }
+
+        if (!_sendInvitationEmail && string.IsNullOrWhiteSpace(_password))
+        {
+            _errorMessage = "Password is required";
+            return;
+        }
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var user = new User
+            {
+                Email = _email,
+                UserName = _userName ?? _email,
+                EmailConfirmed = _sendInvitationEmail ? false : _emailConfirmed
+            };
+
+            IdentityResult result;
+            if (_sendInvitationEmail && IsEmailSenderConfigured)
+            {
+                result = await UserManager.CreateAsync(user);
+            }
+            else
+            {
+                result = await UserManager.CreateAsync(user, _password);
+            }
+
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            if (_selectedRoles.Any())
+            {
+                await UserManager.AddToRolesAsync(user, _selectedRoles);
+            }
+
+            if (_sendInvitationEmail && IsEmailSenderConfigured && EmailSender != null)
+            {
+                var token = await UserManager.GeneratePasswordResetTokenAsync(user);
+                var encodedToken = System.Net.WebUtility.UrlEncode(token);
+                var callbackUrl = $"/Account/SetPassword?email={System.Net.WebUtility.UrlEncode(user.Email!)}&token={encodedToken}";
+
+                await EmailSender.SendEmailAsync(
+                    user.Email!,
+                    "You've been invited",
+                    $"An account has been created for you. Please <a href='{callbackUrl}'>click here to set your password</a>.");
+            }
+
+            MudDialog.Close(DialogResult.Ok(user));
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

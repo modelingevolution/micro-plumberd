@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using MicroPlumberd;
 using MicroPlumberd.Services.Identity.Aggregates;
@@ -7,7 +8,8 @@ using MicroPlumberd.Services.Identity.Aggregates;
 namespace MicroPlumberd.Services.Identity.ReadModels
 {
     /// <summary>
-    /// Consolidated read model for users with multiple lookup dictionaries
+    /// Consolidated read model for users with multiple lookup dictionaries.
+    /// Exposes Items as ObservableCollection for UI binding.
     /// </summary>
     [EventHandler]
     [OutputStream("UsersModel_v1")]
@@ -16,10 +18,19 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         // Primary collection - clustered index
         private readonly ConcurrentDictionary<UserIdentifier, User> _usersById = new();
 
+        // Observable collection for UI binding
+        private readonly ObservableCollection<User> _items = new();
+
         // Lookup dictionaries - direct references to the same User objects
         private readonly ConcurrentDictionary<string, User> _usersByNormalizedName = new();
         private readonly ConcurrentDictionary<string, User> _usersByNormalizedEmail = new();
         private readonly ConcurrentDictionary<string, User> _usersByExternalLogin = new();
+
+        /// <summary>
+        /// Gets the observable collection of users for UI binding.
+        /// The underlying collection implements INotifyCollectionChanged.
+        /// </summary>
+        public IReadOnlyList<User> Items => _items;
 
         /// <summary>
         /// Gets all users in the read model.
@@ -48,6 +59,9 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             // Add to primary collection
             if (_usersById.TryAdd(userId, user))
             {
+                // Add to observable collection for UI
+                _items.Add(user);
+
                 // Add to lookups - same reference
                 if (!string.IsNullOrEmpty(ev.NormalizedUserName))
                 {
@@ -262,6 +276,9 @@ namespace MicroPlumberd.Services.Identity.ReadModels
             // Remove from primary collection
             if (_usersById.TryRemove(userId, out var user))
             {
+                // Remove from observable collection for UI
+                _items.Remove(user);
+
                 // Remove from lookups
                 if (!string.IsNullOrEmpty(user.NormalizedUserName))
                 {

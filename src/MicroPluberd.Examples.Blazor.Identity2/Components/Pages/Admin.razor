@@ -1,0 +1,16 @@
+@page "/admin"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>Administration</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4">Administration</MudText>
+
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-4">
+    <MudTabPanel Text="Users" Icon="@Icons.Material.Filled.People">
+        <UsersList />
+    </MudTabPanel>
+    <MudTabPanel Text="Roles" Icon="@Icons.Material.Filled.Security">
+        <RolesList />
+    </MudTabPanel>
+</MudTabs>

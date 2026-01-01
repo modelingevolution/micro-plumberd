@@ -1,0 +1,73 @@
+@using Microsoft.AspNetCore.Identity
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText>Are you sure you want to delete role <strong>@Role.Name</strong>?</MudText>
+            <MudAlert Severity="Severity.Warning">This action cannot be undone.</MudAlert>
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Submit" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Deleting..." : "Delete")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public RoleManager<Role> RoleManager { get; set; } = default!;
+    [Parameter] public Role Role { get; set; } = default!;
+
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        if (Role.Name == "Admin")
+        {
+            _errorMessage = "Cannot delete the Admin role";
+            return;
+        }
+
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var role = await RoleManager.FindByIdAsync(Role.Id);
+            if (role == null)
+            {
+                _errorMessage = "Role not found";
+                return;
+            }
+
+            var result = await RoleManager.DeleteAsync(role);
+            if (!result.Succeeded)
+            {
+                _errorMessage = string.Join(", ", result.Errors.Select(e => e.Description));
+                return;
+            }
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

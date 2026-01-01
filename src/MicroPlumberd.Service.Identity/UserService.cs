@@ -452,15 +452,23 @@ public class UserStore :
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
-    public Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
+    public async Task SetEmailAsync(User user, string email, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         if (user == null)
             throw new ArgumentNullException(nameof(user));
 
+        if (email != user.Email)
+        {
+            var userId = GetUserIdentifier(user.Id);
+            var userProfile = await _plumber.Get<UserProfileAggregate>(userId);
+            userProfile.ChangeEmail(email, user.NormalizedEmail);
+            if (userProfile.HasPendingChanges)
+                await _plumber.SaveChanges(userProfile);
+        }
+
         user.Email = email;
-        return Task.CompletedTask;
     }
 
     /// <summary>
@@ -471,15 +479,23 @@ public class UserStore :
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
-    public Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
+    public async Task SetEmailConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         if (user == null)
             throw new ArgumentNullException(nameof(user));
 
-        user.EmailConfirmed = confirmed;
-        return Task.CompletedTask;
+        if (confirmed && !user.EmailConfirmed)
+        {
+            var userId = GetUserIdentifier(user.Id);
+            var userProfile = await _plumber.Get<UserProfileAggregate>(userId);
+            userProfile.ConfirmEmail();
+            if (userProfile.HasPendingChanges)
+                await _plumber.SaveChanges(userProfile);
+        }
+
+        
     }
 
     /// <summary>
@@ -547,15 +563,26 @@ public class UserStore :
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="user"/> is null.</exception>
-    public Task SetPasswordHashAsync(User user, string passwordHash, CancellationToken cancellationToken)
+    public async Task SetPasswordHashAsync(User user, string passwordHash, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
         if (user == null)
             throw new ArgumentNullException(nameof(user));
 
+        if (passwordHash != user.PasswordHash)
+        {
+            var userId = GetUserIdentifier(user.Id);
+            var identityUser = await _plumber.Get<IdentityUserAggregate>(userId);
+            if (!identityUser.IsNew)
+            {
+                identityUser.ChangePasswordHash(passwordHash);
+                if (identityUser.HasPendingChanges)
+                    await _plumber.SaveChanges(identityUser);
+            }
+        }
+
         user.PasswordHash = passwordHash;
-        return Task.CompletedTask;
     }
 
     #endregion

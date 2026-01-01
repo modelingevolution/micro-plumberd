@@ -1,0 +1,97 @@
+@using Microsoft.AspNetCore.Identity
+@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="2">
+            @foreach (var role in AvailableRoles)
+            {
+                <MudCheckBox T="bool" Value="@_selectedRoles.Contains(role)"
+                             ValueChanged="@(v => ToggleRole(role, v))"
+                             Label="@role" Color="Color.Primary" />
+            }
+            @if (!string.IsNullOrEmpty(_errorMessage))
+            {
+                <MudAlert Severity="Severity.Error" Class="mt-3">@_errorMessage</MudAlert>
+            }
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit" Disabled="_isSubmitting">
+            @(_isSubmitting ? "Saving..." : "Save")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter] public UserManager<User> UserManager { get; set; } = default!;
+    [Parameter] public User User { get; set; } = default!;
+    [Parameter] public IReadOnlyList<string> AvailableRoles { get; set; } = [];
+    [Parameter] public IEnumerable<string> CurrentRoles { get; set; } = [];
+
+    private HashSet<string> _selectedRoles = new();
+    private bool _isSubmitting;
+    private string? _errorMessage;
+
+    protected override void OnInitialized()
+    {
+        _selectedRoles = new HashSet<string>(CurrentRoles);
+    }
+
+    private void ToggleRole(string role, bool isSelected)
+    {
+        if (isSelected)
+            _selectedRoles.Add(role);
+        else
+            _selectedRoles.Remove(role);
+    }
+
+    private void Cancel() => MudDialog.Cancel();
+
+    private async Task Submit()
+    {
+        _isSubmitting = true;
+        _errorMessage = null;
+
+        try
+        {
+            var currentRoles = await UserManager.GetRolesAsync(User);
+            var rolesToRemove = currentRoles.Except(_selectedRoles).ToList();
+            var rolesToAdd = _selectedRoles.Except(currentRoles).ToList();
+
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await UserManager.RemoveFromRolesAsync(User, rolesToRemove);
+                if (!removeResult.Succeeded)
+                {
+                    _errorMessage = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                    return;
+                }
+            }
+
+            if (rolesToAdd.Any())
+            {
+                var addResult = await UserManager.AddToRolesAsync(User, rolesToAdd);
+                if (!addResult.Succeeded)
+                {
+                    _errorMessage = string.Join(", ", addResult.Errors.Select(e => e.Description));
+                    return;
+                }
+            }
+
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = ex.Message;
+        }
+        finally
+        {
+            _isSubmitting = false;
+        }
+    }
+}

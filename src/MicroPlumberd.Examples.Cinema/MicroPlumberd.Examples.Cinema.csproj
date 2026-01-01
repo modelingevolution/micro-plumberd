@@ -1,18 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MicroPlumberd" Version="1.0.77.125" />
-    <PackageReference Include="MicroPlumberd.Encryption" Version="1.0.77.125" />
-    <PackageReference Include="MicroPlumberd.Services" Version="1.0.77.125" />
-    <PackageReference Include="MicroPlumberd.SourceGenerators" Version="1.0.77.125" />
     <PackageReference Include="MudBlazor" Version="8.0.0" />
     <PackageReference Include="System.Collections.Immutable" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Encryption\MicroPlumberd.Encryption.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
