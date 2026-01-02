@@ -11,6 +11,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

@@ -13,6 +13,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Copyright>Rafal Maciag</Copyright>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
 
 

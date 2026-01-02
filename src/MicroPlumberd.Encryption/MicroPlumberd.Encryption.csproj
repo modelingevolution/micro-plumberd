@@ -6,8 +6,6 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>MicroPlumberd.Encryption</Title>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
     <PackageTags>EventStore;CQRS;EventSourcing;Plumberd</PackageTags>
 
     <PackageIcon>logo-squere.png</PackageIcon>
@@ -17,6 +15,7 @@
     <Copyright>Rafal Maciag</Copyright>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <Description>SecretObject that uses certificates for message confidentiality when using with EventStore as a CommandBus.</Description>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

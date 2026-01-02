@@ -6,8 +6,6 @@
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>MicroPlumberd</Title>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
     <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
     <PackageIcon>logo-squere.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -16,6 +14,7 @@
     <Copyright>Rafal Maciag</Copyright>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <Description>CQRS/EventSourcing made eXtreamly simple. Domain-Layer abstractions: Read-Model, Event-Handler, Aggregate, Subscriptions</Description>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
 
 

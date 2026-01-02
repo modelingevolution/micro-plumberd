@@ -39,6 +39,8 @@ print_usage() {
     echo "  -p, --patch           Auto-increment patch version"
     echo "  -n, --minor           Auto-increment minor version"
     echo "  -M, --major           Auto-increment major version"
+    echo "  -c, --config CONFIG   Build configuration: Release (default) or Debug"
+    echo "                        Debug creates preview NuGet packages (e.g., 1.1.5.0-preview)"
     echo "  -y, --yes             Auto-confirm release without prompts"
     echo "  --dry-run             Show what would be done without executing"
     echo "  -h, --help            Show this help message"
@@ -49,6 +51,7 @@ print_usage() {
     echo "  ./release.sh --build -m \"New features\"        # Auto-increment build (default)"
     echo "  ./release.sh --patch -m \"API changes\"         # Auto-increment patch"
     echo "  ./release.sh --minor -y -m \"New feature\"      # Auto-confirm release"
+    echo "  ./release.sh -c Debug --patch -m \"Testing\"    # Preview/debug release"
     echo "  ./release.sh --dry-run                         # Preview next build release"
 }
 
@@ -198,6 +201,7 @@ create_release() {
     local version=$1
     local message=$2
     local dry_run=$3
+    local configuration=$4
 
     local tag="micro-plumberd/$version"
 
@@ -205,6 +209,7 @@ create_release() {
 
     if [[ "$dry_run" == "true" ]]; then
         echo -e "${YELLOW}[DRY RUN]${NC} Would create tag: $tag"
+        echo -e "${YELLOW}[DRY RUN]${NC} Configuration: $configuration"
         if [[ -n "$message" ]]; then
             echo -e "${YELLOW}[DRY RUN]${NC} With message: $message"
         fi
@@ -228,7 +233,15 @@ create_release() {
 
     # Show next steps
     echo
-    print_info "🚀 Release $tag created successfully!"
+    if [[ "$configuration" == "Debug" ]]; then
+        print_info "🧪 Preview release $tag created successfully!"
+        echo
+        echo "This is a PRERELEASE version. To install:"
+        echo "  dotnet add package MicroPlumberd --version $version"
+        echo "  (or enable 'Include prerelease' in NuGet Package Manager)"
+    else
+        print_info "🚀 Release $tag created successfully!"
+    fi
     echo
     echo "Next steps:"
     echo "1. Monitor the GitHub Actions workflow: https://github.com/modelingevolution/micro-plumberd/actions"
@@ -261,6 +274,7 @@ main() {
     local dry_run="false"
     local auto_confirm="false"
     local needs_interactive="true"
+    local configuration="Release"
 
     # Parse arguments first to check for help, dry-run, or auto-confirm
     while [[ $# -gt 0 ]]; do
@@ -298,6 +312,14 @@ main() {
             -M|--major)
                 increment_type="major"
                 shift
+                ;;
+            -c|--config)
+                configuration="$2"
+                if [[ "$configuration" != "Debug" && "$configuration" != "Release" ]]; then
+                    print_error "Invalid configuration: $configuration. Use 'Debug' or 'Release'"
+                    exit 1
+                fi
+                shift 2
                 ;;
             -*)
                 print_error "Unknown option: $1"
@@ -350,9 +372,16 @@ main() {
         print_info "Auto-incrementing $increment_type version: $current_version → $version"
     fi
 
-    # Validate version
+    # Validate version (base version without suffix)
     if ! validate_version "$version"; then
         exit 1
+    fi
+
+    # Add preview suffix for Debug configuration
+    local package_version="$version"
+    if [[ "$configuration" == "Debug" ]]; then
+        package_version="${version}-preview"
+        print_info "Debug configuration: creating preview package version $package_version"
     fi
 
     # Check if version already exists
@@ -370,7 +399,13 @@ main() {
     # Show summary
     echo
     print_info "Release Summary:"
-    echo "  Version: micro-plumberd/$version"
+    echo "  Version: micro-plumberd/$package_version"
+    echo "  Config:  $configuration"
+    if [[ "$configuration" == "Debug" ]]; then
+        echo -e "  Type:    ${YELLOW}PREVIEW (prerelease)${NC}"
+    else
+        echo "  Type:    Stable"
+    fi
     echo "  Message: ${message:-"(none)"}"
     echo "  Branch:  $(git branch --show-current)"
     echo "  Commit:  $(git rev-parse --short HEAD)"
@@ -392,7 +427,7 @@ main() {
     fi
 
     # Create release
-    create_release "$version" "$message" "$dry_run"
+    create_release "$package_version" "$message" "$dry_run" "$configuration"
 }
 
 # Run main function

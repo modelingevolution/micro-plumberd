@@ -15,6 +15,7 @@
 	  <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
 	  <Description>CQRS/EventSourcing made eXtreamly simple. Application-Layer: Command-Handlers, Command-Bus</Description>
 
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
 
 	<ItemGroup>

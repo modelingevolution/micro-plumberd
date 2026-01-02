@@ -5,8 +5,6 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Title>MicroPlumberd.SourceGenerators</Title>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
     <PackageTags>EventStore;CQRS;EventSourcing</PackageTags>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <PackageIcon>logo-squere.png</PackageIcon>
@@ -15,6 +13,7 @@
     <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <Description>CQRS/EventSourcing made eXtreamly simple. Code Generators.</Description>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
   
   <ItemGroup>

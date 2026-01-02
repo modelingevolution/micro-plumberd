@@ -7,13 +7,20 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to publish (e.g., 1.0.122.154)'
+        description: 'Version to publish (e.g., 1.0.122.154 or 1.0.122.154-preview)'
         required: true
         type: string
+      configuration:
+        description: 'Build configuration'
+        required: false
+        default: 'Release'
+        type: choice
+        options:
+          - Release
+          - Debug
 
 env:
   DOTNET_VERSION: '10.0.x'
-  CONFIGURATION: Release
 
 jobs:
   publish:
@@ -32,118 +39,126 @@ jobs:
           9.0.x
           10.0.x
 
-    - name: Extract version from tag
+    - name: Extract version and configuration from tag
       id: get_version
       run: |
         if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
           VERSION="${{ github.event.inputs.version }}"
+          CONFIGURATION="${{ github.event.inputs.configuration }}"
         else
-          # Extract version from tag format: micro-plumberd/1.0.122.154
+          # Extract version from tag format: micro-plumberd/1.0.122.154 or micro-plumberd/1.0.122.154-preview
           VERSION=${GITHUB_REF#refs/tags/micro-plumberd/}
+          # Auto-detect configuration from version suffix
+          if [[ "$VERSION" == *"-preview"* ]] || [[ "$VERSION" == *"-alpha"* ]] || [[ "$VERSION" == *"-beta"* ]]; then
+            CONFIGURATION="Debug"
+          else
+            CONFIGURATION="Release"
+          fi
         fi
         echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
-        echo "Publishing version: $VERSION"
+        echo "CONFIGURATION=$CONFIGURATION" >> $GITHUB_OUTPUT
+        echo "Publishing version: $VERSION (Configuration: $CONFIGURATION)"
 
     - name: Restore dependencies
       run: dotnet restore src/MicroPlumberd.sln
 
     - name: Build solution
-      run: dotnet build src/MicroPlumberd.sln --configuration ${{ env.CONFIGURATION }} --no-restore /p:Version=${{ steps.get_version.outputs.VERSION }}
+      run: dotnet build src/MicroPlumberd.sln --configuration ${{ steps.get_version.outputs.CONFIGURATION }} --no-restore /p:Version=${{ steps.get_version.outputs.VERSION }}
 
     - name: Pack NuGet packages
       run: |
         dotnet pack src/MicroPlumberd/MicroPlumberd.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.CommandBus.Abstractions/MicroPlumberd.CommandBus.Abstractions.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.ProcessManager.Abstractions/MicroPlumberd.ProcessManager.Abstractions.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.SourceGenerators/MicroPlumberd.SourceGenerators.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Services/MicroPlumberd.Services.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Cron/MicroPlumberd.Services.Cron.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Encryption/MicroPlumberd.Encryption.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Protobuf/MicroPlumberd.Protobuf.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Testing/MicroPlumberd.Testing.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Services.Uniqueness/MicroPlumberd.Services.Uniqueness.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Services.ProcessManager/MicroPlumberd.Services.ProcessManagers.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.DirectConnect/MicroPlumberd.Services.Grpc.DirectConnect.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Service.Identity/MicroPlumberd.Services.Identity.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Cron.Ui/MicroPlumberd.Services.Cron.Ui.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Services.BatchOperations/MicroPlumberd.Services.BatchOperations.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
         dotnet pack src/MicroPlumberd.Services.Identity.Blazor/MicroPlumberd.Services.Identity.Blazor.csproj \
-          --configuration ${{ env.CONFIGURATION }} \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}

@@ -15,6 +15,7 @@
     <Copyright>Rafal Maciag</Copyright>
     <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <Description>Testing utilities for MicroPlumberd. Includes Given-When-Then specs, Docker-based EventStore server management, and integration testing helpers for aggregates, command handlers, and process managers.</Description>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
