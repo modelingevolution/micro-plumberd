@@ -21,6 +21,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Load secrets from appsettings.secret.json (not committed to git)
+        builder.Configuration.AddJsonFile("appsettings.secret.json", optional: true, reloadOnChange: true);
+
         // Add MudBlazor services
         builder.Services.AddMudServices();
 
@@ -33,12 +36,19 @@ public class Program
         builder.Services.AddScoped<IdentityRedirectManager>();
         builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
 
-        //builder.Services.AddAuthentication(options =>
-        //    {
-        //        options.DefaultScheme = IdentityConstants.ApplicationScheme;
-        //        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-        //    })
-        //    .AddIdentityCookies();
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = builder.Configuration["Authentication:Google:ClientId"]
+                    ?? throw new InvalidOperationException("Google ClientId not configured");
+                options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]
+                    ?? throw new InvalidOperationException("Google ClientSecret not configured");
+            })
+            .AddIdentityCookies();
 
        
         
