@@ -71,9 +71,11 @@ print_info() {
     echo -e "${BLUE}$1${NC}"
 }
 
-# Get the latest version tag
+# Get the latest version tag (including preview versions, but strips suffix for comparison)
 get_latest_version() {
-    git tag --sort=-version:refname | grep -E '^micro-plumberd/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$' | head -n1 | sed 's/^micro-plumberd\///' || echo "1.0.0.0"
+    # Match both stable (1.1.4.0) and prerelease (1.1.5.0-preview) tags
+    # Strip the suffix to get base version, then sort and get highest
+    git tag --sort=-version:refname | grep -E '^micro-plumberd/[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n1 | sed 's/^micro-plumberd\///' | sed 's/-.*$//' || echo "1.0.0.0"
 }
 
 # Increment version
