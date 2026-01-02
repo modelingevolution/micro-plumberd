@@ -456,16 +456,20 @@ public class UserStore :
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (user == null)
+        if (user == null || string.IsNullOrWhiteSpace(email))
             throw new ArgumentNullException(nameof(user));
 
         if (email != user.Email)
         {
             var userId = GetUserIdentifier(user.Id);
             var userProfile = await _plumber.Get<UserProfileAggregate>(userId);
-            userProfile.ChangeEmail(email, email?.ToUpperInvariant());
-            if (userProfile.HasPendingChanges)
-                await _plumber.SaveChanges(userProfile);
+
+            if (!userProfile.IsNew)
+            {
+                userProfile.ChangeEmail(email, email?.ToUpperInvariant());
+                if (userProfile.HasPendingChanges)
+                    await _plumber.SaveChanges(userProfile);
+            }
         }
 
         user.Email = email;

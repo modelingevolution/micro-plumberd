@@ -132,7 +132,7 @@ namespace MicroPlumberd.Services.Identity.Aggregates
         }
 
 
-
+        public bool IsNew => this.Version == -1;
         private static UserProfileState Given(UserProfileState state, UserProfileDeleted ev)
         {
             return state with { IsDeleted = true };
