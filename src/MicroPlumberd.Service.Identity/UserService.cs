@@ -463,7 +463,7 @@ public class UserStore :
         {
             var userId = GetUserIdentifier(user.Id);
             var userProfile = await _plumber.Get<UserProfileAggregate>(userId);
-            userProfile.ChangeEmail(email, user.NormalizedEmail);
+            userProfile.ChangeEmail(email, email?.ToUpperInvariant());
             if (userProfile.HasPendingChanges)
                 await _plumber.SaveChanges(userProfile);
         }
