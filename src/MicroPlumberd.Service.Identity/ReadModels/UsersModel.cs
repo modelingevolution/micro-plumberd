@@ -24,7 +24,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         // Lookup dictionaries - direct references to the same User objects
         private readonly ConcurrentDictionary<string, User> _usersByNormalizedName = new();
         private readonly ConcurrentDictionary<string, User> _usersByNormalizedEmail = new();
-        private readonly ConcurrentDictionary<string, User> _usersByExternalLogin = new();
+        private readonly ConcurrentDictionary<ExternalLoginLookupKey, User> _usersByExternalLogin = new();
 
         /// <summary>
         /// Gets the observable collection of users for UI binding.
@@ -248,8 +248,8 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
             if (_usersById.TryGetValue(userId, out var user))
             {
-                // Create a composite key for the external login
-                string loginKey = GetExternalLoginKey(ev.Provider.Name, ev.ProviderKey.Value);
+                // Create a composite key for the external login (provider is normalized to uppercase)
+                var loginKey = ExternalLoginLookupKey.From(ev.Provider, ev.ProviderKey);
 
                 // Add to lookup - same reference to the user
                 _usersByExternalLogin.TryAdd(loginKey, user);
@@ -260,8 +260,8 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         private async Task Given(Metadata m, ExternalLoginRemoved ev)
         {
-            // Create a composite key for the external login
-            string loginKey = GetExternalLoginKey(ev.Provider.Name, ev.ProviderKey.Value);
+            // Create a composite key for the external login (provider is normalized to uppercase)
+            var loginKey = ExternalLoginLookupKey.From(ev.Provider, ev.ProviderKey);
 
             // Remove from lookup
             _usersByExternalLogin.TryRemove(loginKey, out _);
@@ -345,14 +345,15 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         }
 
         /// <summary>
-        /// Gets a user by external login provider and key
+        /// Gets a user by external login provider and key.
+        /// The provider name is normalized to uppercase for lookup.
         /// </summary>
         public User GetByExternalLogin(string loginProvider, string providerKey)
         {
             if (string.IsNullOrEmpty(loginProvider) || string.IsNullOrEmpty(providerKey))
                 return null;
 
-            string loginKey = GetExternalLoginKey(loginProvider, providerKey);
+            var loginKey = new ExternalLoginLookupKey(loginProvider, providerKey);
 
             _usersByExternalLogin.TryGetValue(loginKey, out var user);
             return user;
@@ -388,11 +389,6 @@ namespace MicroPlumberd.Services.Identity.ReadModels
         #endregion
 
         #region Helper Methods
-
-        private string GetExternalLoginKey(string providerName, string providerKey)
-        {
-            return $"{providerName}|{providerKey}";
-        }
 
         private UserIdentifier GetUserIdentifier(string userId)
         {

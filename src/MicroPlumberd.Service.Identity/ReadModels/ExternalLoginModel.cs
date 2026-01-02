@@ -16,7 +16,7 @@ namespace MicroPlumberd.Services.Identity.ReadModels
     public partial class ExternalLoginModel
     {
         private readonly ConcurrentDictionary<UserIdentifier, ImmutableList<ExternalLoginInfo>> _loginsByUserId = new();
-        private readonly ConcurrentDictionary<string, UserIdentifier> _userIdsByLogin = new();
+        private readonly ConcurrentDictionary<ExternalLoginLookupKey, UserIdentifier> _userIdsByLogin = new();
 
         /// <summary>
         /// Represents external login information for a user.
@@ -63,8 +63,8 @@ namespace MicroPlumberd.Services.Identity.ReadModels
                 _loginsByUserId[userId] = logins.Add(loginInfo);
             }
 
-            // Add to login lookup
-            var lookupKey = GetLookupKey(ev.Provider.Name, ev.ProviderKey.Value);
+            // Add to login lookup (provider name normalized to uppercase)
+            var lookupKey = ExternalLoginLookupKey.From(ev.Provider, ev.ProviderKey);
             _userIdsByLogin[lookupKey] = userId;
 
             await Task.CompletedTask;
@@ -87,8 +87,8 @@ namespace MicroPlumberd.Services.Identity.ReadModels
                 }
             }
 
-            // Remove from login lookup
-            var lookupKey = GetLookupKey(ev.Provider.Name, ev.ProviderKey.Value);
+            // Remove from login lookup (provider name normalized to uppercase)
+            var lookupKey = ExternalLoginLookupKey.From(ev.Provider, ev.ProviderKey);
             _userIdsByLogin.TryRemove(lookupKey, out _);
 
             await Task.CompletedTask;
@@ -100,10 +100,10 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
             if (_loginsByUserId.TryRemove(userId, out var logins))
             {
-                // Remove all lookups for this user
+                // Remove all lookups for this user (provider names normalized to uppercase)
                 foreach (var login in logins)
                 {
-                    var lookupKey = GetLookupKey(login.ProviderName, login.ProviderKey);
+                    var lookupKey = new ExternalLoginLookupKey(login.ProviderName, login.ProviderKey);
                     _userIdsByLogin.TryRemove(lookupKey, out _);
                 }
             }
@@ -128,22 +128,19 @@ namespace MicroPlumberd.Services.Identity.ReadModels
 
         /// <summary>
         /// Finds a user ID by external login provider and key.
+        /// The provider name is normalized to uppercase for lookup.
         /// </summary>
         /// <param name="providerName">The name of the external login provider.</param>
         /// <param name="providerKey">The provider-specific key.</param>
         /// <returns>The user identifier, or default if not found.</returns>
         public UserIdentifier FindUserIdByLogin(string providerName, string providerKey)
         {
-            var lookupKey = GetLookupKey(providerName, providerKey);
+            if (string.IsNullOrEmpty(providerName) || string.IsNullOrEmpty(providerKey))
+                return default;
 
+            var lookupKey = new ExternalLoginLookupKey(providerName, providerKey);
             _userIdsByLogin.TryGetValue(lookupKey, out var userId);
             return userId;
-        }
-
-        // Helper method for lookup key
-        private string GetLookupKey(string providerName, string providerKey)
-        {
-            return $"{providerName}|{providerKey}";
         }
     }
 }
