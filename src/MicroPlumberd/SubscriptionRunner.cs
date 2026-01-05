@@ -214,6 +214,7 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
         var context = OperationContext.Create(Flow.EventHandler);
         using var scope = context.CreateScope();
 
+        Type evType = null;
         context.SetStreamName(subscription.StreamName);
 
         while (!subscription.CancellationToken.IsCancellationRequested)
@@ -222,7 +223,8 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
                 if (!func(e.Event.EventType, out var t)) return;
 
                 var (ev, metadata) = plumber.ReadEventData(context, e.Event, e.Link, t);
-                
+
+                evType = ev.GetType();
                 context.SetCausationId(metadata.CausationId());
                 context.SetCorrelationId(metadata.CorrelationId());
                 context.SetUserId(metadata.UserId());
@@ -240,7 +242,7 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
             {
                 var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
 
-                l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered exception. Most likely because of Given/Handle methods throwing exceptions. Retry in 30sec.");
+                l?.LogError(ex, $"Subscription '{subscription.StreamName}' encountered exception. Most likely because of Given/Handle({evType?.Name}) methods throwing exceptions. Retry in 30sec.");
                 var decision = await
                     plumber.Config.HandleError(ex, context, subscription.CancellationToken);
                 switch (decision)
