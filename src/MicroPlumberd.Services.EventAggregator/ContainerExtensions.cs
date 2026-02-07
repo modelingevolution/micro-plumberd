@@ -1,7 +1,10 @@
+using System.Runtime.CompilerServices;
 using MicroPlumberd;
 using MicroPlumberd.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+
+[assembly: InternalsVisibleTo("MicroPlumberd.Services.EventAggregator.Tests")]
 
 namespace MicroPlumberd.Services.EventAggregator;
 
