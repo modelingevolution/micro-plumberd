@@ -7,6 +7,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 [assembly: InternalsVisibleTo("MicroPlumberd.Tests.App.Dsl")]
+[assembly: InternalsVisibleTo("MicroPlumberd.Services.EventAggregator")]
 namespace MicroPlumberd.Services;
 
 /// <summary>

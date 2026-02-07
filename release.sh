@@ -263,6 +263,7 @@ create_release() {
     echo "   - MicroPlumberd.Services.Identity $version"
     echo "   - MicroPlumberd.Services.Cron.Ui $version"
     echo "   - MicroPlumberd.Services.BatchOperations $version"
+    echo "   - MicroPlumberd.Services.EventAggregator $version"
     echo "3. Check packages on NuGet.org: https://www.nuget.org/profiles/modelingevolution"
 
     return 0
