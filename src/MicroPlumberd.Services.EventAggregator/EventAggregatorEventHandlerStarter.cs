@@ -1,4 +1,3 @@
-using System.Text.Json;
 using MicroPlumberd;
 using MicroPlumberd.Services;
 using ModelingEvolution.EventAggregator;
@@ -62,11 +61,7 @@ class EventAggregatorEventHandlerStarter<THandler, TId> : IEventHandlerStarter
             {
                 try
                 {
-                    var sourceStreamId = _plumber.Conventions.StreamNameFromEventConvention(
-                        context, typeof(TEvent), envelope.RecipientId);
-                    var metadataObj = _plumber.Conventions.GetMetadata(context, null, envelope.Event!, null);
-                    var data = JsonSerializer.SerializeToElement(metadataObj);
-                    var metadata = new Metadata(Guid.Empty, Guid.NewGuid(), 0, null, sourceStreamId, data);
+                    var metadata = _plumber.MetadataFactory.Create(context, envelope.Event!, envelope.RecipientId);
                     await handler.Handle(metadata, envelope.Event!);
                 }
                 catch (Exception ex)

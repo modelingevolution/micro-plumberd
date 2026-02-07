@@ -28,6 +28,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         PersistentSubscriptionClient = new EventStorePersistentSubscriptionsClient(settings);
         ProjectionManagementClient = new EventStoreProjectionManagementClient(settings);
         Conventions = config.Conventions;
+        MetadataFactory = new MetadataFactory(Conventions);
         SerializerFactory = config.SerializerFactory;
         ServiceProvider = config.ServiceProvider;
         _extension = config.Extension; // Shouldn't we make a copy?
@@ -79,6 +80,11 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
     /// <inheritdoc/>
     public IReadOnlyConventions Conventions { get; }
+
+    /// <summary>
+    /// Gets the metadata factory for creating <see cref="Metadata"/> instances with proper JSON schema.
+    /// </summary>
+    public MetadataFactory MetadataFactory { get; }
 
     /// <summary>
     /// Creates a subscription to a stream starting from the specified position.
@@ -1175,17 +1181,15 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     internal (object, Metadata) ReadEventData(OperationContext context, EventRecord er, EventRecord? eLink, Type t)
     {
         var streamIdSuffix = er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1);
-        if (!Guid.TryParse(streamIdSuffix, out var aggregateId)) 
+        if (!Guid.TryParse(streamIdSuffix, out var aggregateId))
             aggregateId = streamIdSuffix.ToGuid();
 
         var s = Serializer(t);
         var ev = s.Deserialize(context,er.Data.Span, t)!;
         var m = s.ParseMetadata(context, er.Metadata.Span);
 
-        long? linkStreamPosition = eLink?.EventNumber.ToInt64();
-        long sourceStreamPosition = er.EventNumber.ToInt64();
-        
-        var metadata = new Metadata(aggregateId, er.EventId.ToGuid(), sourceStreamPosition, linkStreamPosition, er.EventStreamId, m);
+        var metadata = MetadataFactory.Create(aggregateId, er.EventStreamId, er.EventId.ToGuid(),
+            er.EventNumber.ToInt64(), eLink?.EventNumber.ToInt64(), m);
         return (ev, metadata);
     }
 

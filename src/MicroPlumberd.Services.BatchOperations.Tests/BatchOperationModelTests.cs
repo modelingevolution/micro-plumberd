@@ -1,4 +1,3 @@
-using System.Text.Json;
 using FluentAssertions;
 using MicroPlumberd;
 using Xunit;
@@ -53,28 +52,13 @@ namespace MicroPlumberd.Services.BatchOperations.Tests;
 /// </summary>
 public class BatchOperationModelTests
 {
+    private static readonly MetadataFactory _metadataFactory = new();
+
     /// <summary>
     /// Creates test Metadata with minimal required fields.
     /// </summary>
     private static Metadata CreateMetadata(Guid id, DateTimeOffset? created = null)
-    {
-        var eventId = Guid.NewGuid();
-        var streamId = $"BatchOperations-{id}";
-
-        // Build metadata JSON with Created timestamp if provided
-        var metadataJson = created.HasValue
-            ? JsonDocument.Parse($"{{\"Created\":\"{created.Value:O}\"}}")
-            : JsonDocument.Parse("{}");
-
-        return new Metadata(
-            id: id,
-            eventId: eventId,
-            sourceStreamPosition: 0,
-            linkStreamPosition: null,
-            sourceStreamId: streamId,
-            data: metadataJson.RootElement
-        );
-    }
+        => _metadataFactory.Create($"BatchOperations-{id}", created: created);
 
     [Fact]
     public async Task Given_BatchOperationStarted_CreatesOperation()

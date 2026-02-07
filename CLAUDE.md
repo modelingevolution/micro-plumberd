@@ -44,6 +44,7 @@ MicroPlumberd is a CQRS/Event Sourcing framework built on EventStore that emphas
 #### 1. Event Sourcing Layer
 - **PlumberEngine** serves as the core abstraction over EventStore operations
 - **IPlumber/IPlumberInstance** interfaces provide the main API surface
+- **MetadataFactory** centralizes `Metadata` construction with proper JSON schema (`plumber.MetadataFactory` or standalone `new MetadataFactory()`)
 - Events are stored in streams following naming conventions (e.g., `agg-{type}-{id}` for aggregates)
 - Supports snapshots for aggregate performance optimization
 

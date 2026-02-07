@@ -315,6 +315,24 @@ services.AddPlumberd(configure: c => {
     .AddCommandHandler<FooCommandHandler>()
 ```
     
+### MetadataFactory
+
+`MetadataFactory` centralizes `Metadata` construction with proper JSON schema. Available via `plumber.MetadataFactory` or standalone with `new MetadataFactory()` (uses default conventions).
+
+```csharp
+// From an event object — conventions compute sourceStreamId and enrich metadata
+var metadata = plumber.MetadataFactory.Create(context, evt, recipientId);
+
+// With explicit sourceStreamId — for tests and simple scenarios
+var factory = new MetadataFactory();
+var metadata = factory.Create($"Category-{id}", created: DateTimeOffset.Now, userId: "admin");
+
+// Typed — conventions compute sourceStreamId from event type
+var metadata = factory.Create<OrderCreated, Guid>(orderId, evt, created: DateTimeOffset.Now);
+```
+
+The factory ensures `Metadata.StreamId<T>()`, `Metadata.Created()`, `Metadata.UserId()` and other accessors work correctly by building the proper JSON `Data` schema.
+
 ### Conventions
   - SteamNameConvention - from aggregate type, and aggregate id
   - EventNameConvention - from aggregate? instance and event instance
