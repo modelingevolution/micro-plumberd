@@ -71,12 +71,9 @@ public class EventAggregatorEventHandlerStarterTests
         var (metadata, receivedEvent) = handler.ReceivedEvents[0];
         receivedEvent.Should().Be(evt);
 
-        // SourceStreamId should contain the recipientId, parsable by StreamId<T>()
+        // StreamId<Guid>() should correctly parse the recipientId from SourceStreamId
+        metadata.StreamId<Guid>().Should().Be(recipientId);
         metadata.SourceStreamId.Should().Contain(recipientId.ToString());
-        // Parse the id from SourceStreamId the same way StreamId<T>() does
-        var idx = metadata.SourceStreamId.IndexOf('-');
-        var parsedId = Guid.Parse(metadata.SourceStreamId[(idx + 1)..]);
-        parsedId.Should().Be(recipientId);
     }
 
     [Fact]
