@@ -65,8 +65,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.Iden
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Services.EventAggregator", "MicroPlumberd.Services.EventAggregator\MicroPlumberd.Services.EventAggregator.csproj", "{78683DDB-A241-4E89-9015-450C545B8207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingEvolution.EventAggregator", "..\..\event-aggregator\src\ModelingEvolution.EventAggregator\ModelingEvolution.EventAggregator.csproj", "{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -389,18 +387,6 @@ Global
 		{78683DDB-A241-4E89-9015-450C545B8207}.Release|x64.Build.0 = Release|Any CPU
 		{78683DDB-A241-4E89-9015-450C545B8207}.Release|x86.ActiveCfg = Release|Any CPU
 		{78683DDB-A241-4E89-9015-450C545B8207}.Release|x86.Build.0 = Release|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Debug|x64.Build.0 = Debug|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Debug|x86.Build.0 = Debug|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Release|x64.ActiveCfg = Release|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Release|x64.Build.0 = Release|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Release|x86.ActiveCfg = Release|Any CPU
-		{E3E94EFD-64F7-4FE1-ABB9-0E8C2D059B72}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
