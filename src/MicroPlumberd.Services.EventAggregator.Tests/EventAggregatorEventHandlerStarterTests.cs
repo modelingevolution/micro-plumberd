@@ -42,10 +42,12 @@ public class EventAggregatorEventHandlerStarterTests
         services.AddSingleton<IEventAggregatorForwarder, NullForwarder>();
         services.AddScoped<IEventAggregator, ModelingEvolution.EventAggregator.EventAggregator>();
 
+        // Propagation for both event types (broadcast so pool.Broadcast delivers too)
+        services.AddEventAggregatorPropagation<TestEvent, Guid>(broadcast: true);
+        services.AddEventAggregatorPropagation<AnotherEvent, Guid>(broadcast: true);
+
         // Handler as singleton so we can observe it across scopes
         services.AddSingleton<TestHandler>();
-
-        // Starter registration (uses the public extension method)
         services.AddScopedEventAggregatorHandler<TestHandler, Guid>();
 
         return services.BuildServiceProvider();
@@ -59,10 +61,11 @@ public class EventAggregatorEventHandlerStarterTests
         var starter = sp.GetRequiredService<EventAggregatorEventHandlerStarter<TestHandler, Guid>>();
         await starter.Start(CancellationToken.None);
 
-        var pool = sp.GetRequiredService<IEventAggregatorPool>();
+        var propagation = sp.GetRequiredService<EventAggregatorPropagation>();
         var recipientId = Guid.NewGuid();
         var evt = new TestEvent("hello");
-        await pool.Broadcast(recipientId, evt);
+        var context = OperationContext.Create(Flow.Component);
+        await propagation.OnEventAppendingAsync(context, evt, recipientId, null);
 
         await Task.Delay(200);
 
@@ -71,7 +74,6 @@ public class EventAggregatorEventHandlerStarterTests
         var (metadata, receivedEvent) = handler.ReceivedEvents[0];
         receivedEvent.Should().Be(evt);
 
-        // StreamId<Guid>() should correctly parse the recipientId from SourceStreamId
         metadata.StreamId<Guid>().Should().Be(recipientId);
         metadata.SourceStreamId.Should().Contain(recipientId.ToString());
     }
@@ -84,10 +86,11 @@ public class EventAggregatorEventHandlerStarterTests
         var starter = sp.GetRequiredService<EventAggregatorEventHandlerStarter<TestHandler, Guid>>();
         await starter.Start(CancellationToken.None);
 
-        var pool = sp.GetRequiredService<IEventAggregatorPool>();
+        var propagation = sp.GetRequiredService<EventAggregatorPropagation>();
         var id = Guid.NewGuid();
-        await pool.Broadcast(id, new TestEvent("first"));
-        await pool.Broadcast(id, new AnotherEvent(42));
+        var context = OperationContext.Create(Flow.Component);
+        await propagation.OnEventAppendingAsync(context, new TestEvent("first"), id, null);
+        await propagation.OnEventAppendingAsync(context, new AnotherEvent(42), id, null);
 
         await Task.Delay(200);
 
@@ -105,9 +108,10 @@ public class EventAggregatorEventHandlerStarterTests
         var starter = sp.GetRequiredService<EventAggregatorEventHandlerStarter<TestHandler, Guid>>();
         await starter.Start(CancellationToken.None);
 
-        var pool = sp.GetRequiredService<IEventAggregatorPool>();
+        var propagation = sp.GetRequiredService<EventAggregatorPropagation>();
         var recipientId = Guid.NewGuid();
-        await pool.Broadcast(recipientId, new TestEvent("test"));
+        var context = OperationContext.Create(Flow.Component);
+        await propagation.OnEventAppendingAsync(context, new TestEvent("test"), recipientId, null);
 
         await Task.Delay(200);
 
@@ -130,18 +134,15 @@ public class EventAggregatorEventHandlerStarterTests
         services.AddScoped(_ => OperationContext.Create(Flow.Component));
         services.AddSingleton<EventAggregatorPool>();
         services.AddSingleton<IEventAggregatorPool>(sp => sp.GetRequiredService<EventAggregatorPool>());
-        services.AddSingleton<IEventAggregatorForwarder, NullForwarder>();
-        services.AddScoped<IEventAggregator, ModelingEvolution.EventAggregator.EventAggregator>();
 
+        services.AddEventAggregatorPropagation<TestEvent, Guid>();
         services.AddScopedEventAggregatorHandler<TestHandler, Guid>();
 
         await using var sp = services.BuildServiceProvider();
 
-        // Starter should be resolvable
         var starter = sp.GetService<EventAggregatorEventHandlerStarter<TestHandler, Guid>>();
         starter.Should().NotBeNull();
 
-        // Handler should be resolvable from scope
         using var scope = sp.CreateScope();
         var handler = scope.ServiceProvider.GetService<TestHandler>();
         handler.Should().NotBeNull();
@@ -156,22 +157,18 @@ public class EventAggregatorEventHandlerStarterTests
         services.AddScoped(_ => OperationContext.Create(Flow.Component));
         services.AddSingleton<EventAggregatorPool>();
         services.AddSingleton<IEventAggregatorPool>(sp => sp.GetRequiredService<EventAggregatorPool>());
-        services.AddSingleton<IEventAggregatorForwarder, NullForwarder>();
-        services.AddScoped<IEventAggregator, ModelingEvolution.EventAggregator.EventAggregator>();
 
+        services.AddEventAggregatorPropagation<TestEvent, Guid>();
         services.AddSingletonEventAggregatorHandler<TestHandler, Guid>();
 
         await using var sp = services.BuildServiceProvider();
 
-        // Starter should be resolvable
         var starter = sp.GetService<EventAggregatorEventHandlerStarter<TestHandler, Guid>>();
         starter.Should().NotBeNull();
 
-        // Handler should be resolvable as singleton
         var handler = sp.GetService<TestHandler>();
         handler.Should().NotBeNull();
 
-        // Should be the same instance
         var handler2 = sp.GetService<TestHandler>();
         handler2.Should().BeSameAs(handler);
     }
