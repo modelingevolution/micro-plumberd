@@ -46,7 +46,7 @@ public class EventAggregatorEventHandlerStarterTests
         services.AddSingleton<TestHandler>();
 
         // Starter registration (uses the public extension method)
-        services.AddEventHandlerWithEventAggregatorSource<TestHandler, Guid>();
+        services.AddScopedEventAggregatorHandler<TestHandler, Guid>();
 
         return services.BuildServiceProvider();
     }
@@ -122,7 +122,7 @@ public class EventAggregatorEventHandlerStarterTests
     }
 
     [Fact]
-    public async Task AddEventHandlerWithEventAggregatorSource_registers_all_services()
+    public async Task AddScopedEventAggregatorHandler_registers_all_services()
     {
         var services = new ServiceCollection();
         services.AddLogging();
@@ -133,7 +133,7 @@ public class EventAggregatorEventHandlerStarterTests
         services.AddSingleton<IEventAggregatorForwarder, NullForwarder>();
         services.AddScoped<IEventAggregator, ModelingEvolution.EventAggregator.EventAggregator>();
 
-        services.AddEventHandlerWithEventAggregatorSource<TestHandler, Guid>();
+        services.AddScopedEventAggregatorHandler<TestHandler, Guid>();
 
         await using var sp = services.BuildServiceProvider();
 
@@ -145,5 +145,34 @@ public class EventAggregatorEventHandlerStarterTests
         using var scope = sp.CreateScope();
         var handler = scope.ServiceProvider.GetService<TestHandler>();
         handler.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task AddSingletonEventAggregatorHandler_registers_all_services()
+    {
+        var services = new ServiceCollection();
+        services.AddLogging();
+        services.AddSingleton(_ => PlumberEngine.Create());
+        services.AddScoped(_ => OperationContext.Create(Flow.Component));
+        services.AddSingleton<EventAggregatorPool>();
+        services.AddSingleton<IEventAggregatorPool>(sp => sp.GetRequiredService<EventAggregatorPool>());
+        services.AddSingleton<IEventAggregatorForwarder, NullForwarder>();
+        services.AddScoped<IEventAggregator, ModelingEvolution.EventAggregator.EventAggregator>();
+
+        services.AddSingletonEventAggregatorHandler<TestHandler, Guid>();
+
+        await using var sp = services.BuildServiceProvider();
+
+        // Starter should be resolvable
+        var starter = sp.GetService<EventAggregatorEventHandlerStarter<TestHandler, Guid>>();
+        starter.Should().NotBeNull();
+
+        // Handler should be resolvable as singleton
+        var handler = sp.GetService<TestHandler>();
+        handler.Should().NotBeNull();
+
+        // Should be the same instance
+        var handler2 = sp.GetService<TestHandler>();
+        handler2.Should().BeSameAs(handler);
     }
 }

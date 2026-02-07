@@ -113,8 +113,15 @@ public static class ContainerExtensions
             collection.TryAddSingleton<ICommandBusPool>(sp => new CommandBusPool(sp, commandBusPoolSize).Init());
         }
         collection.TryAddSingleton(typeof(IEventHandler<>), typeof(EventHandlerExecutor<>));
-        
-        
+
+        // Decorator chain (outermost first):
+        // CommandBusAttributeValidator → InProcCommandBusDecorator → CommandBus
+        // InProc is registered first so it wraps CommandBus directly.
+        // The validator is registered second so it wraps InProc.
+        // InProcCommandBusDecorator is a no-op if no command types are registered in InProcCommandRegistry.
+        // Empty registry ensures the decorator resolves even if AddCommandInProcExecutor was never called.
+        collection.TryAddSingleton(new InProcCommandRegistry());
+        collection.TryDecorate<ICommandBus, InProcCommandBusDecorator>();
         collection.TryDecorate<ICommandBus, CommandBusAttributeValidator>();
 
         return collection;
@@ -316,5 +323,58 @@ public static class ContainerExtensions
 
         TCommandHandler.RegisterHandlers(services, scopedExecutor);
         return services;
+    }
+
+    /// <summary>
+    /// Registers a specific command type for in-process execution.
+    /// When the <see cref="ICommandBus"/> receives this command type, it will resolve the handler from DI
+    /// and call <see cref="ICommandHandler.Execute"/> directly — skipping EventStore entirely.
+    /// The in-process decorator is automatically registered on first use.
+    /// </summary>
+    /// <typeparam name="TCommand">The command type to execute in-process.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection for method chaining.</returns>
+    public static IServiceCollection AddCommandInProcExecutor<TCommand>(this IServiceCollection services)
+    {
+        var registry = EnsureInProcDecorator(services);
+        var handlerType = typeof(ICommandHandler<TCommand>);
+        var isSingleton = services.Any(d => d.ServiceType == handlerType && d.Lifetime == ServiceLifetime.Singleton);
+        registry.Register(typeof(TCommand), isSingleton);
+        return services;
+    }
+
+    /// <summary>
+    /// Registers all command types from a command handler for in-process execution.
+    /// Uses <see cref="IServiceTypeRegister.CommandTypes"/> to discover all supported commands.
+    /// When the <see cref="ICommandBus"/> receives any of these command types, it will resolve the handler from DI
+    /// and call <see cref="ICommandHandler.Execute"/> directly — skipping EventStore entirely.
+    /// The in-process decorator is automatically registered on first use.
+    /// </summary>
+    /// <typeparam name="TCommandHandler">The command handler type whose commands should be executed in-process.</typeparam>
+    /// <param name="services">The service collection.</param>
+    /// <returns>The service collection for method chaining.</returns>
+    public static IServiceCollection AddCommandInProcExecutorFor<TCommandHandler>(this IServiceCollection services)
+        where TCommandHandler : ICommandHandler, IServiceTypeRegister
+    {
+        var registry = EnsureInProcDecorator(services);
+        foreach (var cmdType in TCommandHandler.CommandTypes)
+        {
+            var handlerType = typeof(ICommandHandler<>).MakeGenericType(cmdType);
+            var isSingleton = services.Any(d => d.ServiceType == handlerType && d.Lifetime == ServiceLifetime.Singleton);
+            registry.Register(cmdType, isSingleton);
+        }
+        return services;
+    }
+
+    private static InProcCommandRegistry EnsureInProcDecorator(IServiceCollection services)
+    {
+        var existing = services.FirstOrDefault(d => d.ImplementationInstance is InProcCommandRegistry);
+        if (existing != null)
+            return (InProcCommandRegistry)existing.ImplementationInstance!;
+
+        // Registry is singleton instance — decorator is already registered in AddPlumberd().
+        var registry = new InProcCommandRegistry();
+        services.AddSingleton(registry);
+        return registry;
     }
 }

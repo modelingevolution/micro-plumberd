@@ -363,7 +363,14 @@ public interface IExtension
     /// </summary>
     /// <typeparam name="T">The type of extension to retrieve or create.</typeparam>
     /// <returns>The extension instance.</returns>
-    T GetExtension<T>() where T : new();
+    T GetExtension<T>();
+
+    /// <summary>
+    /// Sets an extension of the specified type.
+    /// </summary>
+    /// <typeparam name="T">The type of extension to set.</typeparam>
+    /// <param name="extension">The extension instance.</param>
+    void SetExtension<T>(T extension);
 }
 
 /// <summary>
@@ -397,7 +404,8 @@ public static class GuidExtensions
 class Conventions : IConventions, IReadOnlyConventions
 {
     private readonly ConcurrentDictionary<Type,object> _extension = new();
-    public T GetExtension<T>() where T : new() => (T)_extension.GetOrAdd(typeof(T), x => new T());
+    public T GetExtension<T>() => (T)_extension.GetOrAdd(typeof(T), x => Activator.CreateInstance<T>());
+    public void SetExtension<T>(T extension) => _extension[typeof(T)] = extension!;
     private StandardMetadataEnricherTypes _standardMetadataEnricherTypes = StandardMetadataEnricherTypes.All;
     public SteamNameConvention GetStreamIdConvention { get; set; }
     public SteamNameConvention GetStreamIdSnapshotConvention { get; set; }

@@ -344,9 +344,14 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     /// </summary>
     /// <typeparam name="T">The type of extension to retrieve or create.</typeparam>
     /// <returns>The extension instance.</returns>
-    public T GetExtension<T>() where T : new()
+    public T GetExtension<T>()
     {
         return engine.GetExtension<T>();
+    }
+
+    public void SetExtension<T>(T extension)
+    {
+        engine.SetExtension(extension);
     }
 
     /// <summary>
@@ -782,9 +787,14 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
     /// </summary>
     /// <typeparam name="T">The type of extension to retrieve or create.</typeparam>
     /// <returns>The extension instance.</returns>
-    public T GetExtension<T>() where T : new()
+    public T GetExtension<T>()
     {
         return engine.GetExtension<T>();
+    }
+
+    public void SetExtension<T>(T extension)
+    {
+        engine.SetExtension(extension);
     }
 
     /// <summary>

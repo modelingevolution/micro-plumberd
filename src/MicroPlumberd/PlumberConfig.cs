@@ -8,7 +8,8 @@ namespace MicroPlumberd;
 class PlumberConfig : IPlumberConfig
 {
     internal readonly ConcurrentDictionary<Type, object> Extension = new();
-    public T GetExtension<T>() where T : new() => (T)Extension.GetOrAdd(typeof(T), x => new T());
+    public T GetExtension<T>() => (T)Extension.GetOrAdd(typeof(T), x => Activator.CreateInstance<T>());
+    public void SetExtension<T>(T extension) => Extension[typeof(T)] = extension!;
 
     private IServiceProvider _serviceProvider = new ActivatorServiceProvider();
     private static readonly JsonObjectSerializer serializer = new JsonObjectSerializer();

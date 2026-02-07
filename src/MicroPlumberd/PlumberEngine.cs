@@ -8,6 +8,17 @@ using MicroPlumberd.Utils;
 namespace MicroPlumberd;
 
 /// <summary>
+/// Delegate invoked just before an event is appended to EventStore.
+/// Used as a fast delivery channel — the event is delivered to subscribers immediately,
+/// before the EventStore write completes. EventStore is always written to regardless.
+/// </summary>
+/// <param name="context">The operation context.</param>
+/// <param name="evt">The event being appended.</param>
+/// <param name="id">The stream identifier (second segment of typical streamId).</param>
+/// <param name="metadata">Optional metadata.</param>
+public delegate Task EventAppendingHandler(OperationContext context, object evt, object? id, object? metadata);
+
+/// <summary>
 ///     Root class for ED plumbing.
 /// </summary>
 public class PlumberEngine : IPlumberReadOnlyConfig
@@ -16,6 +27,13 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     private readonly ConcurrentDictionary<Type, ISnapshotPolicy> _policies = new();
     private readonly TypeHandlerRegisters _typeHandlerRegisters;
     private readonly ConcurrentDictionary<Type, IObjectSerializer> _serializers = new();
+
+    /// <summary>
+    /// Raised just before an event is appended to EventStore.
+    /// Provides a fast in-process delivery channel — subscribers receive the event
+    /// before the EventStore write begins. EventStore is always written to regardless.
+    /// </summary>
+    public event EventAppendingHandler? EventAppending;
     
     private readonly VersionDuckTyping _versionTyping = new();
     private readonly Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> _errorHandle;
@@ -918,6 +936,8 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     {
         if (evt == null) throw new ArgumentException("evt cannot be null.");
 
+        if (EventAppending != null)
+            await EventAppending(context, evt, id, metadata);
 
         evtName ??= Conventions.GetEventNameConvention(null, evt.GetType());
         var m = Conventions.GetMetadata(context,null, evt, metadata);
@@ -947,6 +967,9 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     {
         if (string.IsNullOrEmpty(streamId)) throw new ArgumentException("steamId cannot be null or empty.");
         if (evt == null) throw new ArgumentException("Event cannot be null");
+
+        if (EventAppending != null)
+            await EventAppending(context, evt, streamId, metadata);
 
         StreamState st = state ?? StreamState.Any;
         var eventName = evtName ?? Conventions.GetEventNameConvention( null, evt.GetType());
@@ -1139,9 +1162,14 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// </summary>
     /// <typeparam name="T">The type of extension to retrieve or create.</typeparam>
     /// <returns>The extension instance.</returns>
-    public T GetExtension<T>() where T : new()
+    public T GetExtension<T>()
     {
-        return (T)_extension.GetOrAdd(typeof(T), x => new T());
+        return (T)_extension.GetOrAdd(typeof(T), x => Activator.CreateInstance<T>());
+    }
+
+    public void SetExtension<T>(T extension)
+    {
+        _extension[typeof(T)] = extension!;
     }
 
     /// <summary>
