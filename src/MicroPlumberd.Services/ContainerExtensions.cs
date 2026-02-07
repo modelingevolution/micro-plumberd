@@ -159,6 +159,8 @@ public static class ContainerExtensions
 
     /// <summary>
     /// Adds a singleton event handler to the service collection.
+    /// Uses <see cref="EventHandlerExecutor{TOwner}"/> (no scope per event) since the handler is a singleton
+    /// and does not need scoped lifetime management. This avoids unnecessary scope creation per event.
     /// </summary>
     /// <typeparam name="TEventHandler">The type of event handler to add.</typeparam>
     /// <param name="services">The service collection.</param>
@@ -168,7 +170,15 @@ public static class ContainerExtensions
     public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
         bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
     {
-        return services.AddSingleton<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start);
+        services.AddSingleton<TEventHandler>();
+        services.AddSingleton<EventHandlerStarter<TEventHandler>>();
+        services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start));
+        // EventHandlerExecutor delegates directly to the handler without creating a scope per event.
+        // Previously this used ScopedEventHandlerExecutor which created and disposed a scope per event
+        // for no benefit — the handler is singleton and resolves to the same instance regardless.
+        services.AddSingleton<IEventHandler<TEventHandler>>(sp =>
+            new EventHandlerExecutor<TEventHandler>(sp.GetRequiredService<TEventHandler>()));
+        return services;
     }
 
     /// <summary>
@@ -183,6 +193,8 @@ public static class ContainerExtensions
     {
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
         services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start));
+        // ScopedEventHandlerExecutor creates a new scope per event so the handler and its
+        // scoped dependencies (e.g. DbContext) get proper lifetime management.
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();
         services.TryAddScoped<TEventHandler>();
         return services;
