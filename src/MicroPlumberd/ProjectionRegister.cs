@@ -29,7 +29,7 @@ static class Executor
         catch (TException e)
         {
             last = e;
-            await Task.Delay(delay);
+            await Task.Delay(delay + i*delay);
         }
 
         throw last!;
@@ -46,7 +46,7 @@ class ProjectionRegister : IProjectionRegister
         _lazyLoader = new AsyncLazy<Dictionary<string, ProjectionDetails>>(async () =>
         {
             return await Executor.Retry<RpcException,Dictionary<string, ProjectionDetails>>(async () =>
-                await _client.ListContinuousAsync().ToDictionaryAsync(x => x.Name).AsTask(), delay:500);
+                await _client.ListContinuousAsync().ToDictionaryAsync(x => x.Name).AsTask(), delay:500, count: 5);
         });
     }
 
