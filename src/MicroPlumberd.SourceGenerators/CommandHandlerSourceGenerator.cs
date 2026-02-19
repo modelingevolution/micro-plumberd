@@ -205,12 +205,23 @@ namespace MicroPlumberd.SourceGenerators
             // Generate RegisterHandlers method
             sb.AppendLine("    static IServiceCollection IServiceTypeRegister.RegisterHandlers(IServiceCollection services, bool scoped=true)");
             sb.AppendLine("    {");
+            sb.AppendLine("        if(scoped)");
+            sb.AppendLine("        {");
             foreach (var cmdType in commandTypes)
             {
-                sb.AppendLine($"        if(scoped) services.AddScoped<ICommandHandler<{cmdType}>, {info.ClassName}>();");
-                sb.AppendLine($"        else services.AddSingleton<ICommandHandler<{cmdType}>, {info.ClassName}>();");
-                sb.AppendLine($"        services.Decorate<ICommandHandler<{cmdType}>, CommandHandlerAttributeValidator<{cmdType}>>();");
+                sb.AppendLine($"            services.AddScoped<ICommandHandler<{cmdType}>, {info.ClassName}>();");
+                sb.AppendLine($"            services.Decorate<ICommandHandler<{cmdType}>, CommandHandlerAttributeValidator<{cmdType}>>();");
             }
+            sb.AppendLine("        }");
+            sb.AppendLine("        else");
+            sb.AppendLine("        {");
+            sb.AppendLine($"            services.AddSingleton<{info.ClassName}>();");
+            foreach (var cmdType in commandTypes)
+            {
+                sb.AppendLine($"            services.AddSingleton<ICommandHandler<{cmdType}>>(sp => sp.GetRequiredService<{info.ClassName}>());");
+                sb.AppendLine($"            services.Decorate<ICommandHandler<{cmdType}>, CommandHandlerAttributeValidator<{cmdType}>>();");
+            }
+            sb.AppendLine("        }");
             sb.AppendLine("        return services;");
             sb.AppendLine("    }");
             sb.AppendLine();
