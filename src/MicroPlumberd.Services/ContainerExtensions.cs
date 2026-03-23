@@ -9,27 +9,43 @@ namespace MicroPlumberd.Services;
 
 /// <summary>
 /// Executes event handlers using a singleton handler instance.
+/// Forwards ICaughtUpHandler if the inner handler implements it.
 /// </summary>
 /// <typeparam name="TOwner">The type of event handler.</typeparam>
-class EventHandlerExecutor<TOwner>(TOwner handler) : IEventHandler<TOwner>
+class EventHandlerExecutor<TOwner>(TOwner handler) : IEventHandler<TOwner>, ICaughtUpHandler
     where TOwner : IEventHandler
 {
     /// <inheritdoc/>
     public Task Handle(Metadata m, object ev) => handler.Handle(m, ev);
+
+    /// <summary>
+    /// Forwards CaughtUp to the inner handler if it implements ICaughtUpHandler.
+    /// </summary>
+    public Task CaughtUp() => handler is ICaughtUpHandler cuh ? cuh.CaughtUp() : Task.CompletedTask;
 }
 /// <summary>
 /// Executes event handlers within a scoped service provider.
+/// Forwards ICaughtUpHandler if the inner handler implements it.
 /// </summary>
 /// <typeparam name="TOwner">The type of event handler.</typeparam>
-class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TOwner>
+class ScopedEventHandlerExecutor<TOwner>(IServiceProvider sp) : IEventHandler<TOwner>, ICaughtUpHandler
     where TOwner : IEventHandler
 {
     /// <inheritdoc/>
     public async Task Handle(Metadata m, object ev)
     {
-        await using var scope = sp.CreateAsyncScope(); 
-        
+        await using var scope = sp.CreateAsyncScope();
+
         await scope.ServiceProvider.GetRequiredService<TOwner>().Handle(m, ev);
+    }
+
+    /// <summary>
+    /// Forwards CaughtUp to the inner handler if it implements ICaughtUpHandler.
+    /// </summary>
+    public Task CaughtUp()
+    {
+        var handler = sp.GetRequiredService<TOwner>();
+        return handler is ICaughtUpHandler cuh ? cuh.CaughtUp() : Task.CompletedTask;
     }
 }
 /// <summary>
