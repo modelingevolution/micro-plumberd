@@ -322,6 +322,102 @@ namespace MicroPlumberd.Tests.Integration.Services
         }
 
 
+        [Fact]
+        public async Task HostShutdownShouldCompletePromptly()
+        {
+            // Arrange - standalone host (not the shared _serverTestApp)
+            var app = new TestAppHost(_testOutputHelper);
+            app.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .AddCommandHandler<FooCommandHandler>(start: StreamPosition.Start));
+            await app.StartAsync();
+
+            // Act - measure shutdown time
+            var sw = Stopwatch.StartNew();
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+            try
+            {
+                await app.Host.StopAsync(cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                _testOutputHelper.WriteLine($"StopAsync timed out after {sw.Elapsed}");
+            }
+            app.Dispose();
+            sw.Stop();
+
+            _testOutputHelper.WriteLine($"Shutdown took: {sw.Elapsed}");
+
+            // Assert - should complete in under 5 seconds.
+            // CommandHandlerService.StopAsync() must call base.StopAsync()
+            // to cancel _stoppingCts so subscription runners exit cleanly.
+            sw.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(5),
+                "Host shutdown should complete promptly. " +
+                "CommandHandlerService.StopAsync() must call base.StopAsync() " +
+                "to cancel _stoppingCts so subscription runners exit cleanly.");
+        }
+
+        [Fact]
+        public async Task HostShutdownShouldCompletePromptly_ScopedCommandBus()
+        {
+            // Arrange - closer to production: scopedCommandBus + active command bus
+            var serverApp = new TestAppHost(_testOutputHelper);
+            serverApp.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings(), scopedCommandBus: true)
+                .AddCommandHandler<FooCommandHandler>(start: StreamPosition.Start));
+            var srv = await serverApp.StartAsync();
+
+            var clientApp = new TestAppHost(_testOutputHelper);
+            var client = await clientApp.Configure(x => x
+                    .AddPlumberd(_eventStore.GetEventStoreSettings(),
+                        (sp, x) => x.ServicesConfig().DefaultTimeout = TimeSpan.FromSeconds(5),
+                        scopedCommandBus: true))
+                .StartAsync();
+
+            // Send a command to warm up the CommandBus (triggers lazy initialization
+            // which creates EventStore subscriptions on the session streams)
+            using (var scope = client.CreateScope())
+            {
+                var bus = scope.ServiceProvider.GetRequiredService<ICommandBus>();
+                await bus.SendAsync(Guid.NewGuid(), new CreateFoo { Name = "WarmUp" });
+            }
+
+            // Act - measure shutdown of both hosts
+            var sw = Stopwatch.StartNew();
+
+            using var cts1 = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+            try
+            {
+                await clientApp.Host.StopAsync(cts1.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                _testOutputHelper.WriteLine($"Client StopAsync timed out after {sw.Elapsed}");
+            }
+            clientApp.Dispose();
+            var clientTime = sw.Elapsed;
+            _testOutputHelper.WriteLine($"Client shutdown took: {clientTime}");
+
+            using var cts2 = new CancellationTokenSource(TimeSpan.FromSeconds(15));
+            try
+            {
+                await serverApp.Host.StopAsync(cts2.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                _testOutputHelper.WriteLine($"Server StopAsync timed out after {sw.Elapsed}");
+            }
+            serverApp.Dispose();
+            sw.Stop();
+
+            _testOutputHelper.WriteLine($"Total shutdown took: {sw.Elapsed}");
+
+            // Assert - both hosts should shut down within 5 seconds total
+            sw.Elapsed.Should().BeLessThan(TimeSpan.FromSeconds(5),
+                "Host shutdown with scopedCommandBus and active subscriptions " +
+                "should complete promptly.");
+        }
+
         public async Task InitializeAsync()
         {
             await _eventStore.StartInDocker();
