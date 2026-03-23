@@ -193,6 +193,78 @@ namespace MicroPlumberd.Tests.HowTo
 
         }
 
+        [Fact]
+        public async Task RehydrateFromStart_WithCount_ReadsOnlyRequestedEvents()
+        {
+            await es.StartInDocker();
+            var streamSuffix = Guid.NewGuid();
+            var streamId = $"ReservationStream-{streamSuffix}";
+
+            for (int i = 0; i < 5; i++)
+                await plumber.AppendEvent(new TicketReserved { MovieName = $"Movie{i}" }, streamSuffix);
+
+            // Start + 3 = first 3 events
+            var model = new ReservationModel(new InMemoryAssertionDb());
+            await plumber.Rehydrate(model, streamId, FromRelativeStreamPosition.Start + 3);
+
+            model.ModelStore.Index.Count.Should().Be(3);
+            ((TicketReserved)model.ModelStore.Index[0].Event).MovieName.Should().Be("Movie0");
+            ((TicketReserved)model.ModelStore.Index[2].Event).MovieName.Should().Be("Movie2");
+        }
+
+        [Fact]
+        public async Task RehydrateFromEnd_WithCount_GetsLastEventsInChronologicalOrder()
+        {
+            await es.StartInDocker();
+            var streamSuffix = Guid.NewGuid();
+            var streamId = $"ReservationStream-{streamSuffix}";
+
+            for (int i = 0; i < 5; i++)
+                await plumber.AppendEvent(new TicketReserved { MovieName = $"Movie{i}" }, streamSuffix);
+
+            // End - 3 = last 3 events, dispatched in chronological order
+            var model = new ReservationModel(new InMemoryAssertionDb());
+            await plumber.Rehydrate(model, streamId, FromRelativeStreamPosition.End - 3);
+
+            model.ModelStore.Index.Count.Should().Be(3);
+            ((TicketReserved)model.ModelStore.Index[0].Event).MovieName.Should().Be("Movie2");
+            ((TicketReserved)model.ModelStore.Index[1].Event).MovieName.Should().Be("Movie3");
+            ((TicketReserved)model.ModelStore.Index[2].Event).MovieName.Should().Be("Movie4");
+        }
+
+        [Fact]
+        public async Task RehydrateFromEnd_AllEvents()
+        {
+            await es.StartInDocker();
+            var streamSuffix = Guid.NewGuid();
+            var streamId = $"ReservationStream-{streamSuffix}";
+
+            for (int i = 0; i < 3; i++)
+                await plumber.AppendEvent(new TicketReserved { MovieName = $"Movie{i}" }, streamSuffix);
+
+            // End with no count = all events from start
+            var model = new ReservationModel(new InMemoryAssertionDb());
+            await plumber.Rehydrate(model, streamId, FromRelativeStreamPosition.Start);
+
+            model.ModelStore.Index.Count.Should().Be(3);
+            ((TicketReserved)model.ModelStore.Index[0].Event).MovieName.Should().Be("Movie0");
+            ((TicketReserved)model.ModelStore.Index[1].Event).MovieName.Should().Be("Movie1");
+            ((TicketReserved)model.ModelStore.Index[2].Event).MovieName.Should().Be("Movie2");
+        }
+
+        [Fact]
+        public async Task RehydrateNonExistentStream_DoesNothing()
+        {
+            await es.StartInDocker();
+
+            var model = new ReservationModel(new InMemoryAssertionDb());
+            await plumber.Rehydrate(model, $"ReservationStream-{Guid.NewGuid()}",
+                FromRelativeStreamPosition.End - 10);
+
+            model.ModelStore.Index.Count.Should().Be(0);
+            model.EventHandled.Should().BeFalse();
+        }
+
 
         public void Dispose()
         {

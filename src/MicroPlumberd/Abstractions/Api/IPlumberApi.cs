@@ -219,6 +219,34 @@ public interface IPlumberApi
         where T : IEventHandler;
 
     /// <summary>
+    /// Rehydrates a model by replaying events from a relative stream position.
+    /// When reading backwards (e.g. <c>FromRelativeStreamPosition.End - 100</c>),
+    /// events are dispatched in chronological order.
+    /// </summary>
+    /// <typeparam name="T">The type of the event handler with type register.</typeparam>
+    /// <param name="model">The event handler model to rehydrate.</param>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="start">The relative stream position.</param>
+    /// <param name="token">Cancellation token.</param>
+    Task Rehydrate<T>(T model, string streamId,
+        FromRelativeStreamPosition start, CancellationToken token = default)
+        where T : IEventHandler, ITypeRegister;
+
+    /// <summary>
+    /// Rehydrates a model by replaying events from a relative stream position using a custom type converter.
+    /// When reading backwards, events are dispatched in chronological order.
+    /// </summary>
+    /// <typeparam name="T">The type of the event handler.</typeparam>
+    /// <param name="model">The event handler model to rehydrate.</param>
+    /// <param name="streamId">The stream identifier.</param>
+    /// <param name="converter">The custom type event converter.</param>
+    /// <param name="start">The relative stream position.</param>
+    /// <param name="token">Cancellation token.</param>
+    Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter,
+        FromRelativeStreamPosition start, CancellationToken token = default)
+        where T : IEventHandler;
+
+    /// <summary>
     /// Returns the aggregate identified by id.
     /// This usually mean that all the event will be loaded from the EventStoreDB and executed through 'Given' method on it's instance. 
     /// If the aggregate supports snapshoting, it's state will be loaded from latest snapshot and relevant events from that time will be replied on it's instance.

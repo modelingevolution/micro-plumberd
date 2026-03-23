@@ -430,7 +430,81 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         {
             if (!converter(i.Event.EventType, out var t))
                 continue;
-            var (evt, metadata) = ReadEventData(context,i.Event, i.Link, t);
+            var (evt, metadata) = ReadEventData(context, i.Event, i.Link, t);
+            await model.Handle(metadata, evt);
+            vAware?.Increase();
+        }
+    }
+
+    /// <summary>
+    /// Rehydrates a model by replaying events from a relative stream position.
+    /// When reading backwards (e.g. <c>FromRelativeStreamPosition.End - 100</c>),
+    /// events are collected and dispatched in chronological (forward) order
+    /// so that Given() methods build state correctly.
+    /// </summary>
+    /// <typeparam name="T">The type of model to rehydrate. Must implement IEventHandler and ITypeRegister.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <param name="model">The model instance to rehydrate.</param>
+    /// <param name="streamId">The stream ID.</param>
+    /// <param name="start">The relative stream position (e.g. <c>FromRelativeStreamPosition.End - 50</c>).</param>
+    /// <param name="token">Cancellation token.</param>
+    public async Task Rehydrate<T>(OperationContext context, T model, string streamId,
+        FromRelativeStreamPosition start, CancellationToken token = default)
+        where T : IEventHandler, ITypeRegister
+    {
+        TypeEventConverter registry = _typeHandlerRegisters.GetEventNameConverterFor<T>();
+        await Rehydrate(context, model, streamId, registry, start, token);
+    }
+
+    /// <summary>
+    /// Rehydrates a model by replaying events from a relative stream position using a custom type converter.
+    /// When reading backwards (e.g. <c>FromRelativeStreamPosition.End - 100</c>),
+    /// events are collected and dispatched in chronological (forward) order
+    /// so that Given() methods build state correctly.
+    /// </summary>
+    /// <typeparam name="T">The type of model to rehydrate. Must implement IEventHandler.</typeparam>
+    /// <param name="context">The operation context.</param>
+    /// <param name="model">The model instance to rehydrate.</param>
+    /// <param name="streamId">The stream ID.</param>
+    /// <param name="converter">Function to convert event names to types.</param>
+    /// <param name="start">The relative stream position (e.g. <c>FromRelativeStreamPosition.End - 50</c>).</param>
+    /// <param name="token">Cancellation token.</param>
+    public async Task Rehydrate<T>(OperationContext context, T model, string streamId, TypeEventConverter converter,
+        FromRelativeStreamPosition start, CancellationToken token = default)
+        where T : IEventHandler
+    {
+        var count = start.Count == 0 ? long.MaxValue : (long)start.Count;
+        StreamPosition pos;
+
+        if (start.Direction == Direction.Backwards)
+        {
+            // "End - N" means: find the last event, compute start position, read forward
+            var probe = Client.ReadStreamAsync(Direction.Backwards, streamId, StreamPosition.End,
+                resolveLinkTos: false, maxCount: 1, cancellationToken: token);
+            if (await probe.ReadState == ReadState.StreamNotFound) return;
+
+            var last = await probe.FirstOrDefaultAsync(token);
+            var lastPos = (long)last.Event.EventNumber.ToUInt64();
+            var startPos = Math.Max(0, lastPos - (long)start.Count + 1);
+            pos = StreamPosition.FromInt64(startPos);
+        }
+        else
+        {
+            pos = StreamPosition.Start;
+        }
+
+        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, pos, resolveLinkTos: true,
+            maxCount: count, cancellationToken: token);
+
+        var vAware = model as IVersionAware;
+
+        if (await items.ReadState == ReadState.StreamNotFound) return;
+
+        await foreach (var i in items)
+        {
+            if (!converter(i.Event.EventType, out var t))
+                continue;
+            var (evt, metadata) = ReadEventData(context, i.Event, i.Link, t);
             await model.Handle(metadata, evt);
             vAware?.Increase();
         }

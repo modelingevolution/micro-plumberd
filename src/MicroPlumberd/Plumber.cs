@@ -167,6 +167,20 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     }
 
     /// <inheritdoc />
+    public Task Rehydrate<T>(T model, string streamId,
+        FromRelativeStreamPosition start, CancellationToken token = default) where T : IEventHandler, ITypeRegister
+    {
+        return engine.Rehydrate(context, model, streamId, start, token);
+    }
+
+    /// <inheritdoc />
+    public Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter,
+        FromRelativeStreamPosition start, CancellationToken token = default) where T : IEventHandler
+    {
+        return engine.Rehydrate(context, model, streamId, converter, start, token);
+    }
+
+    /// <inheritdoc />
     public Task<T> Get<T>(object id, CancellationToken token = default) where T : IAggregate<T>, ITypeRegister, IId
     {
         return engine.Get<T>(context, id, token);
@@ -557,6 +571,24 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
         using var scope = OperationContext.GetOrCreate(Flow.Request);
         var context = scope.Context;
         return engine.Rehydrate(context, model, streamId, converter, position, token);
+    }
+
+    /// <inheritdoc />
+    public Task Rehydrate<T>(T model, string streamId,
+        FromRelativeStreamPosition start, CancellationToken token = default) where T : IEventHandler, ITypeRegister
+    {
+        using var scope = OperationContext.GetOrCreate(Flow.Request);
+        var context = scope.Context;
+        return engine.Rehydrate(context, model, streamId, start, token);
+    }
+
+    /// <inheritdoc />
+    public Task Rehydrate<T>(T model, string streamId, TypeEventConverter converter,
+        FromRelativeStreamPosition start, CancellationToken token = default) where T : IEventHandler
+    {
+        using var scope = OperationContext.GetOrCreate(Flow.Request);
+        var context = scope.Context;
+        return engine.Rehydrate(context, model, streamId, converter, start, token);
     }
 
     /// <inheritdoc />
