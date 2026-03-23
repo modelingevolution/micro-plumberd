@@ -177,7 +177,9 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
                                 subscription.Position = FromStream.After(e.OriginalEventNumber);
                                 break;
                             case StreamMessage.CaughtUp:
+                                l?.LogDebug($"Subscription '{subscription.StreamName}' caught up.");
                                 if (model is ICaughtUpHandler cuh) await cuh.CaughtUp();
+                                else l?.LogDebug($"Subscription '{subscription.StreamName}' model does not implement ICaughtUpHandler, skipping CaughtUp callback.");
                                 break;
                             default: break;
 
