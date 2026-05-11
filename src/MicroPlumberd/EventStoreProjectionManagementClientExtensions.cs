@@ -17,22 +17,27 @@ public static class KurrentDBProjectionManagementClientExtensions
     /// <summary>
     /// Attempts to create or update a join projection in the EventStore.
     /// </summary>
-    public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
+    /// <returns><c>true</c> if the projection was created or updated; <c>false</c> if it was already up-to-date and no change was applied.</returns>
+    public static async Task<bool> TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
         KurrentDBClient esClient,
         string outputStream, IEnumerable<string> eventTypes)
     {
         var query = CreateQuery(outputStream, eventTypes);
 
         if (await client.ListContinuousAsync().AnyAsync(x => x.Name == outputStream))
-            await UpdateIfChanged(client, esClient, outputStream, query);
+            return await UpdateIfChanged(client, esClient, outputStream, query);
         else
+        {
             await CreateAndStoreHash(client, esClient, outputStream, query);
+            return true;
+        }
     }
 
     /// <summary>
     /// Ensures the existence and proper configuration of a lookup projection in the EventStore.
     /// </summary>
-    public static async Task EnsureLookupProjection(this KurrentDBProjectionManagementClient client,
+    /// <returns><c>true</c> if the projection was created or updated; <c>false</c> if it was already up-to-date and no change was applied.</returns>
+    public static async Task<bool> EnsureLookupProjection(this KurrentDBProjectionManagementClient client,
         KurrentDBClient esClient,
         IProjectionRegister register,
         string category, string eventProperty, string outputStreamCategory,
@@ -42,15 +47,19 @@ public static class KurrentDBProjectionManagementClientExtensions
             $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
 
         if ((await register.Get(outputStreamCategory)) != null)
-            await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
+            return await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
         else
+        {
             await CreateAndStoreHash(client, esClient, outputStreamCategory, query, token);
+            return true;
+        }
     }
 
     /// <summary>
     /// Attempts to create or update a join projection in the EventStore.
     /// </summary>
-    public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
+    /// <returns><c>true</c> if the projection was created or updated; <c>false</c> if it was already up-to-date and no change was applied.</returns>
+    public static async Task<bool> TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
         KurrentDBClient esClient,
         string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes,
         CancellationToken token = default)
@@ -62,20 +71,24 @@ public static class KurrentDBProjectionManagementClientExtensions
         var query = CreateQuery(outputStream, eventTypes);
 
         if ((await register.Get(outputStream)) != null)
-            await UpdateIfChanged(client, esClient, outputStream, query, token);
+            return await UpdateIfChanged(client, esClient, outputStream, query, token);
         else
+        {
             await CreateAndStoreHash(client, esClient, outputStream, query, token);
+            return true;
+        }
     }
 
-    private static async Task UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+    private static async Task<bool> UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
         string outputStream, string query, CancellationToken token = default)
     {
         var newHash = ComputeQueryHash(query);
         var existing = await TryGetStoredQueryHash(esClient, outputStream, token);
-        if (existing == newHash) return;
+        if (existing == newHash) return false;
 
         await UpdateWithRetry(client, outputStream, query, token);
         await StoreQueryHash(esClient, outputStream, newHash, token);
+        return true;
     }
 
     private static async Task CreateAndStoreHash(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,

@@ -90,6 +90,20 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
 
     }
     [Fact]
+    public async Task TryCreateJoinProjection_SkipsRecreate_OnSecondBoot_WhenQueryUnchanged()
+    {
+        await _eventStore.StartInDocker();
+
+        var firstResult = await plumber.TryCreateJoinProjection<FooModel>();
+        firstResult.Should().BeTrue("the projection does not exist on first boot");
+
+        var plumber2 = Plumber.Create(_eventStore.GetEventStoreSettings());
+
+        var secondResult = await plumber2.TryCreateJoinProjection<FooModel>();
+        secondResult.Should().BeFalse("the projection's query is unchanged since first boot");
+    }
+
+    [Fact]
     public async Task SubscribeScopedModel()
     {
         // TODO: Switch to EF to check

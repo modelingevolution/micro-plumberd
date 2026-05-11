@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
 using KurrentDB.Client;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using MicroPlumberd.Utils;
 
 namespace MicroPlumberd;
@@ -158,7 +160,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <returns>
     /// A <see cref="Task"/> representing the asynchronous operation.
     /// </returns>
-    public Task TryCreateJoinProjection<TEventHandler>(string? outputStream=null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+    public Task<bool> TryCreateJoinProjection<TEventHandler>(string? outputStream=null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return TryCreateJoinProjection(outputStream ?? Conventions.OutputStreamModelConvention(typeof(TEventHandler)), _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(), token);
     }
@@ -178,9 +180,21 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <returns>
     /// A <see cref="Task"/> representing the asynchronous operation.
     /// </returns>
-    public async Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
+    public async Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
-        await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
+        var changed = await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
+        LogProjectionEnsured(outputStream, changed);
+        return changed;
+    }
+
+    internal void LogProjectionEnsured(string outputStream, bool changed)
+    {
+        var logger = ServiceProvider?.GetService<ILogger<PlumberEngine>>();
+        if (logger == null) return;
+        if (changed)
+            logger.LogInformation("Projection {Projection} was created or updated.", outputStream);
+        else
+            logger.LogDebug("Projection {Projection} is up-to-date; skipped recreate.", outputStream);
     }
     /// <summary>
     /// Subscribes an event handler to a stream using auto-discovered event types.
@@ -244,7 +258,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
+            LogProjectionEnsured(outputStream, await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token));
         var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken: token);
         if (eh == null)
             await sub.WithSnapshotHandler<TEventHandler>();
@@ -274,7 +288,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
+            LogProjectionEnsured(outputStream, await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token));
         var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken:token);
         if (eh == null)
             await sub.WithHandler<TEventHandler>(mapFunc);
@@ -311,7 +325,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
         groupName ??= Conventions.GroupNameModelConvention(handlerType);
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, events, token);
+            LogProjectionEnsured(outputStream, await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, events, token: token));
 
         try
         {

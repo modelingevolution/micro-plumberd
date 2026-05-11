@@ -513,7 +513,7 @@ public interface IPlumberApi
     /// <returns>
     /// A <see cref="Task"/> representing the asynchronous operation.
     /// </returns>
-    Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default);
+    Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default);
 
     /// <summary>
     /// Ensures that a join projection is created for the specified event handler type.
@@ -531,7 +531,7 @@ public interface IPlumberApi
     /// <returns>
     /// A <see cref="Task"/> representing the asynchronous operation.
     /// </returns>
-    Task TryCreateJoinProjection<TEventHandler>(string? outputStream=null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister;
+    Task<bool> TryCreateJoinProjection<TEventHandler>(string? outputStream=null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister;
 
     /// <summary>
     /// Appends metadata to a stream derived from the specified event type and identifier.

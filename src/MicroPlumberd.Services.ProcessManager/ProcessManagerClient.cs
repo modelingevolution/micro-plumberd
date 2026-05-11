@@ -103,8 +103,14 @@ namespace MicroPlumberd.Services.ProcessManagers
             c += await Plumber.SubscribeEventHandlerPersistently(sender, $"{typeof(TProcessManager).Name}Outbox", ensureOutputStreamProjection: true);
             c += await Plumber.SubscribeEventHandlerPersistently(executor, $"{typeof(TProcessManager).Name}Inbox", ensureOutputStreamProjection: true);
 
-            await Plumber.ProjectionManagementClient.EnsureLookupProjection(Plumber.Client, Plumber.ProjectionRegister,
-                typeof(TProcessManager).Name, "RecipientId", $"{typeof(TProcessManager).Name}Lookup");
+            var lookupStream = $"{typeof(TProcessManager).Name}Lookup";
+            var changed = await Plumber.ProjectionManagementClient.EnsureLookupProjection(Plumber.Client, Plumber.ProjectionRegister,
+                typeof(TProcessManager).Name, "RecipientId", lookupStream);
+            var logger = _serviceProvider.GetService<ILogger<ProcessManagerClient>>();
+            if (changed)
+                logger?.LogInformation("Lookup projection {Projection} was created or updated.", lookupStream);
+            else
+                logger?.LogDebug("Lookup projection {Projection} is up-to-date; skipped recreate.", lookupStream);
 
             return c;
         }

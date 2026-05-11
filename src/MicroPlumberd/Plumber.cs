@@ -314,13 +314,13 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     }
 
     /// <inheritdoc />
-    public Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
+    public Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
         return engine.TryCreateJoinProjection(outputStream, eventTypes, token);
     }
 
     /// <inheritdoc />
-    public Task TryCreateJoinProjection<TEventHandler>(string? outputStream = null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+    public Task<bool> TryCreateJoinProjection<TEventHandler>(string? outputStream = null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return engine.TryCreateJoinProjection<TEventHandler>(outputStream, token);
     }
@@ -767,13 +767,13 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
     }
 
     /// <inheritdoc />
-    public Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
+    public Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
         return engine.TryCreateJoinProjection(outputStream, eventTypes, token);
     }
 
     /// <inheritdoc />
-    public Task TryCreateJoinProjection<TEventHandler>(string? outputStream = null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
+    public Task<bool> TryCreateJoinProjection<TEventHandler>(string? outputStream = null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
     {
         return engine.TryCreateJoinProjection<TEventHandler>(outputStream, token);
     }
