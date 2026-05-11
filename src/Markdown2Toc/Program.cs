@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.CommandLine;
-using System.IO;
-using System.Linq;
 
-
-class Program
+var inOpt = new Option<string>("--input-file")
 {
-    static async Task<int> Main(string[] args)
-    {
-        var inArg = new Argument<string>("--input-file");
-        inArg.Description = "Input markdown file(s) path";
-        var outArg = new Argument<string>("--output-file");
-        outArg.DefaultValueFactory = (r) => "./";
-        outArg.Description= "Output TOC file or directory path";
-        var toc = new Option<string>("--toc-file");
-        toc.Description="TOC file to merge";
-        var rootCommand = new RootCommand();
-        rootCommand.Description = "Simple tool to generate table-of-content yaml files from Markdown files";
-        
-        rootCommand.Add(inArg);
-        rootCommand.Add(outArg);
-        rootCommand.Add(toc);
-        rootCommand.SetAction(p => Md2TocGenerator.Generate(p.GetValue(inArg), p.GetValue(outArg), p.GetValue(toc)));
+    Description = "Input markdown file(s) path",
+    Required = true
+};
+var outOpt = new Option<string>("--output-file")
+{
+    Description = "Output TOC file or directory path",
+    DefaultValueFactory = _ => "./"
+};
+var tocOpt = new Option<string?>("--toc-file")
+{
+    Description = "TOC file to merge"
+};
 
-        // Parse the incoming args and invoke the handler
-        //return await rootCommand.InvokeAsync(args);
-        throw new ArgumentException("WTF");
-    }
+var rootCommand = new RootCommand("Simple tool to generate table-of-content yaml files from Markdown files")
+{
+    inOpt,
+    outOpt,
+    tocOpt
+};
 
-    
-}
+rootCommand.SetAction(async (parseResult, _) =>
+{
+    await Md2TocGenerator.Generate(
+        parseResult.GetValue(inOpt)!,
+        parseResult.GetValue(outOpt)!,
+        parseResult.GetValue(tocOpt) ?? string.Empty);
+    return 0;
+});
+
+return await rootCommand.Parse(args).InvokeAsync();
