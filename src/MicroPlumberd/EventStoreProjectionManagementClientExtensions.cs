@@ -141,7 +141,7 @@ public static class KurrentDBProjectionManagementClientExtensions
     {
         var existing = await esClient.GetStreamMetadataAsync(outputStream, cancellationToken: token);
         var customDoc = JsonDocument.Parse($"{{\"{QueryHashMetadataKey}\":\"{hash}\"}}");
-        var newMeta = new StreamMetadata(
+        var newMeta = new KurrentDB.Client.StreamMetadata(
             maxCount: existing.Metadata.MaxCount,
             maxAge: existing.Metadata.MaxAge,
             truncateBefore: existing.Metadata.TruncateBefore,
