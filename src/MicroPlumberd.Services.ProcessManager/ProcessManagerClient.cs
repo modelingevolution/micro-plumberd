@@ -103,7 +103,7 @@ namespace MicroPlumberd.Services.ProcessManagers
             c += await Plumber.SubscribeEventHandlerPersistently(sender, $"{typeof(TProcessManager).Name}Outbox", ensureOutputStreamProjection: true);
             c += await Plumber.SubscribeEventHandlerPersistently(executor, $"{typeof(TProcessManager).Name}Inbox", ensureOutputStreamProjection: true);
 
-            await Plumber.ProjectionManagementClient.EnsureLookupProjection(Plumber.ProjectionRegister,
+            await Plumber.ProjectionManagementClient.EnsureLookupProjection(Plumber.Client, Plumber.ProjectionRegister,
                 typeof(TProcessManager).Name, "RecipientId", $"{typeof(TProcessManager).Name}Lookup");
 
             return c;

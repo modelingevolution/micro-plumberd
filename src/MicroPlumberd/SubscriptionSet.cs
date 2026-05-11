@@ -24,7 +24,7 @@ class SubscriptionSet(PlumberEngine plumber) : IEngineSubscriptionSet
     public async Task SubscribePersistentlyAsync(OperationContext context, string outputStream, string? groupName = null)
     {
         groupName ??= outputStream;
-        await plumber.ProjectionManagementClient.TryCreateJoinProjection(outputStream, _register.Keys);
+        await plumber.ProjectionManagementClient.TryCreateJoinProjection(plumber.Client, outputStream, _register.Keys);
         var subscription = plumber.PersistentSubscriptionClient.SubscribeToStream(outputStream, groupName);
         var state = Tuple.Create(this,context, subscription);
 
@@ -52,7 +52,7 @@ class SubscriptionSet(PlumberEngine plumber) : IEngineSubscriptionSet
 
     public async Task SubscribeAsync(OperationContext context, string name, FromStream start)
     {
-        await plumber.ProjectionManagementClient.TryCreateJoinProjection(name, _register.Keys);
+        await plumber.ProjectionManagementClient.TryCreateJoinProjection(plumber.Client, name, _register.Keys);
         
         KurrentDBClient.StreamSubscriptionResult subscription = plumber.Client.SubscribeToStream(name, start, true);
         var state = Tuple.Create(this, context,subscription);

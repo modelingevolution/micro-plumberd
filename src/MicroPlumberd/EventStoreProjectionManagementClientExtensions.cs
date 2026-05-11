@@ -1,6 +1,8 @@
-﻿using KurrentDB.Client;
+using KurrentDB.Client;
 using Grpc.Core;
-using Microsoft.Win32;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.Json;
 
 namespace MicroPlumberd;
 
@@ -9,26 +11,85 @@ namespace MicroPlumberd;
 /// </summary>
 public static class KurrentDBProjectionManagementClientExtensions
 {
+    private const string QueryHashMetadataKey = "mp_query_hash";
+    private const int PROJECTION_UPDATE_RETRY_COUNT = 10;
+
     /// <summary>
     /// Attempts to create or update a join projection in the EventStore.
     /// </summary>
-    /// <param name="client">The projection management client.</param>
-    /// <param name="outputStream">The name of the output stream.</param>
-    /// <param name="eventTypes">The event types to include in the projection.</param>
-    /// <returns>A task representing the asynchronous operation.</returns>
     public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
+        KurrentDBClient esClient,
         string outputStream, IEnumerable<string> eventTypes)
     {
         var query = CreateQuery(outputStream, eventTypes);
 
         if (await client.ListContinuousAsync().AnyAsync(x => x.Name == outputStream))
-            await Update(client, outputStream, query);
+            await UpdateIfChanged(client, esClient, outputStream, query);
         else
-            await client.CreateContinuousAsync(outputStream, query, true);
+            await CreateAndStoreHash(client, esClient, outputStream, query);
     }
 
-    private static async Task Update(KurrentDBProjectionManagementClient client, string outputStream, string query,
+    /// <summary>
+    /// Ensures the existence and proper configuration of a lookup projection in the EventStore.
+    /// </summary>
+    public static async Task EnsureLookupProjection(this KurrentDBProjectionManagementClient client,
+        KurrentDBClient esClient,
+        IProjectionRegister register,
+        string category, string eventProperty, string outputStreamCategory,
         CancellationToken token = default)
+    {
+        string query =
+            $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
+
+        if ((await register.Get(outputStreamCategory)) != null)
+            await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
+        else
+            await CreateAndStoreHash(client, esClient, outputStreamCategory, query, token);
+    }
+
+    /// <summary>
+    /// Attempts to create or update a join projection in the EventStore.
+    /// </summary>
+    public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
+        KurrentDBClient esClient,
+        string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes,
+        CancellationToken token = default)
+    {
+        if (!eventTypes.Any())
+            throw new ArgumentOutOfRangeException(
+                $"There are not event type to create the output stream: {outputStream}");
+
+        var query = CreateQuery(outputStream, eventTypes);
+
+        if ((await register.Get(outputStream)) != null)
+            await UpdateIfChanged(client, esClient, outputStream, query, token);
+        else
+            await CreateAndStoreHash(client, esClient, outputStream, query, token);
+    }
+
+    private static async Task UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+        string outputStream, string query, CancellationToken token = default)
+    {
+        var newHash = ComputeQueryHash(query);
+        var existing = await TryGetStoredQueryHash(esClient, outputStream, token);
+        if (existing == newHash) return;
+
+        await UpdateWithRetry(client, outputStream, query, token);
+        await StoreQueryHash(esClient, outputStream, newHash, token);
+    }
+
+    private static async Task CreateAndStoreHash(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+        string outputStream, string query, CancellationToken token = default)
+    {
+        await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+        await client.DisableAsync(outputStream, cancellationToken: token);
+        await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
+        await client.EnableAsync(outputStream, cancellationToken: token);
+        await StoreQueryHash(esClient, outputStream, ComputeQueryHash(query), token);
+    }
+
+    private static async Task UpdateWithRetry(KurrentDBProjectionManagementClient client, string outputStream,
+        string query, CancellationToken token)
     {
         for (int i = 0; i < PROJECTION_UPDATE_RETRY_COUNT; i++)
         {
@@ -46,88 +107,49 @@ public static class KurrentDBProjectionManagementClientExtensions
                 if (ex.Status.StatusCode != StatusCode.DeadlineExceeded) throw;
                 if (i == PROJECTION_UPDATE_RETRY_COUNT - 1)
                     throw;
-                
+
                 await Task.Delay(Random.Shared.Next(1000), token);
             }
         }
-        // We'll never reach this place, because of if in catch.
     }
 
-    /// <summary>
-    /// Ensures the existence and proper configuration of a lookup projection in the EventStore.
-    /// </summary>
-    /// <param name="client">
-    /// The <see cref="KurrentDBProjectionManagementClient"/> instance used to manage projections.
-    /// </param>
-    /// <param name="register">
-    /// The <see cref="IProjectionRegister"/> instance used to check the existence of the projection.
-    /// </param>
-    /// <param name="category">
-    /// The category of events to be processed by the projection.
-    /// </param>
-    /// <param name="eventProperty">
-    /// The property of the event used to determine the output stream.
-    /// </param>
-    /// <param name="outputStreamCategory">
-    /// The category of the output stream to which events will be linked.
-    /// </param>
-    /// <param name="token">
-    /// A <see cref="CancellationToken"/> to observe while waiting for the task to complete.
-    /// </param>
-    /// <returns>
-    /// A <see cref="Task"/> representing the asynchronous operation.
-    /// </returns>
-    /// <remarks>
-    /// This method creates a continuous projection in the EventStore that links events from the specified category
-    /// to output streams based on the value of the specified event property. If the projection already exists,
-    /// it will be updated to ensure it matches the desired configuration.
-    /// </remarks>
-    public static async Task EnsureLookupProjection(this KurrentDBProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)
+    private static string ComputeQueryHash(string query)
     {
-        string query =
-            $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
-        if ((await register.Get(outputStreamCategory)) != null)
-            await Update(client, outputStreamCategory, query);
-        else
+        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(query));
+        return Convert.ToHexString(bytes);
+    }
+
+    private static async Task<string?> TryGetStoredQueryHash(KurrentDBClient esClient, string outputStream,
+        CancellationToken token)
+    {
+        try
         {
-            await client.CreateContinuousAsync(outputStreamCategory, query, false, cancellationToken: token);
-            await client.DisableAsync(outputStreamCategory, cancellationToken: token);
-            await client.UpdateAsync(outputStreamCategory, query, true, cancellationToken: token);
-            await client.EnableAsync(outputStreamCategory, cancellationToken: token);
+            var meta = await esClient.GetStreamMetadataAsync(outputStream, cancellationToken: token);
+            var custom = meta.Metadata.CustomMetadata;
+            if (custom == null) return null;
+            if (!custom.RootElement.TryGetProperty(QueryHashMetadataKey, out var v)) return null;
+            return v.GetString();
+        }
+        catch
+        {
+            return null;
         }
     }
 
-    private const int PROJECTION_UPDATE_RETRY_COUNT = 10;
-    /// <summary>
-    /// Attempts to create or update a join projection in the EventStore.
-    /// </summary>
-    /// <param name="client">The <see cref="KurrentDBProjectionManagementClient"/> used to manage projections.</param>
-    /// <param name="outputStream">The name of the output stream for the join projection.</param>
-    /// <param name="register">The projection register used to check for existing projections.</param>
-    /// <param name="eventTypes">The collection of event types to include in the join projection.</param>
-    /// <param name="token">An optional <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-    /// <returns>A task that represents the asynchronous operation.</returns>
-    public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
-        string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, CancellationToken token = default)
+    private static async Task StoreQueryHash(KurrentDBClient esClient, string outputStream, string hash,
+        CancellationToken token)
     {
-        if (!eventTypes.Any())
-            throw new ArgumentOutOfRangeException(
-                $"There are not event type to create the output stream: {outputStream}");
-        
-        var query = CreateQuery(outputStream, eventTypes);
-
-
-        if ((await register.Get(outputStream)) != null)
-            await Update(client, outputStream, query, token);
-        else
-        {
-            await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
-            await client.DisableAsync(outputStream, cancellationToken: token);
-            await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
-            await client.EnableAsync(outputStream, cancellationToken: token);
-        }
-
-
+        var existing = await esClient.GetStreamMetadataAsync(outputStream, cancellationToken: token);
+        var customDoc = JsonDocument.Parse($"{{\"{QueryHashMetadataKey}\":\"{hash}\"}}");
+        var newMeta = new StreamMetadata(
+            maxCount: existing.Metadata.MaxCount,
+            maxAge: existing.Metadata.MaxAge,
+            truncateBefore: existing.Metadata.TruncateBefore,
+            cacheControl: existing.Metadata.CacheControl,
+            acl: existing.Metadata.Acl,
+            customMetadata: customDoc);
+        await esClient.SetStreamMetadataAsync(outputStream, StreamState.Any, newMeta,
+            cancellationToken: token);
     }
 
     private static string CreateQuery(string outputStream, IEnumerable<string> eventTypes)

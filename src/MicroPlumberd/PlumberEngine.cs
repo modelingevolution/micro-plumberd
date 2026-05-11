@@ -180,7 +180,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// </returns>
     public async Task TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
-        await ProjectionManagementClient.TryCreateJoinProjection(outputStream, ProjectionRegister, eventTypes, token: token);
+        await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
     }
     /// <summary>
     /// Subscribes an event handler to a stream using auto-discovered event types.
@@ -244,7 +244,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.TryCreateJoinProjection(outputStream, ProjectionRegister, eventTypes, token: token);
+            await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
         var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken: token);
         if (eh == null)
             await sub.WithSnapshotHandler<TEventHandler>();
@@ -274,7 +274,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.TryCreateJoinProjection(outputStream, ProjectionRegister, eventTypes, token: token);
+            await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
         var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken:token);
         if (eh == null)
             await sub.WithHandler<TEventHandler>(mapFunc);
@@ -311,7 +311,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
         groupName ??= Conventions.GroupNameModelConvention(handlerType);
         if (ensureOutputStreamProjection)
-            await ProjectionManagementClient.TryCreateJoinProjection(outputStream, ProjectionRegister, events, token);
+            await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, events, token);
 
         try
         {
