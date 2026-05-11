@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Net;
-using EventStore.Client;
+using KurrentDB.Client;
 using FluentAssertions;
 using MicroPlumberd.DirectConnect;
 using MicroPlumberd.Testing;

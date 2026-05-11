@@ -11,7 +11,7 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd;
 using MicroPlumberd.Services;
 using MicroPlumberd.Utils;

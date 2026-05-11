@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Numerics;
-using EventStore.Client;
+using KurrentDB.Client;
 using FluentAssertions;
 using MicroPlumberd.Services;
 

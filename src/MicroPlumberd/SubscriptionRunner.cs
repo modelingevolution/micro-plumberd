@@ -1,4 +1,4 @@
-﻿using EventStore.Client;
+﻿using KurrentDB.Client;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -12,7 +12,7 @@ record SubscriptionRunnerState : IDisposable
 {
     private IDisposable? _subscription;
 
-    public SubscriptionRunnerState(FromStream initialPosition, EventStoreClient client, string streamName, UserCredentials? userCredentials, CancellationToken cancellationToken)
+    public SubscriptionRunnerState(FromStream initialPosition, KurrentDBClient client, string streamName, UserCredentials? userCredentials, CancellationToken cancellationToken)
     {
         _initialPosition = initialPosition;
         _client = client;
@@ -22,7 +22,7 @@ record SubscriptionRunnerState : IDisposable
         Position = initialPosition;
     }
 
-    public EventStoreClient.StreamSubscriptionResult Subscribe()
+    public KurrentDBClient.StreamSubscriptionResult Subscribe()
     {
         var result = _client.SubscribeToStream(StreamName, Position, true, UserCredentials, CancellationToken);
         _subscription = result;
@@ -31,7 +31,7 @@ record SubscriptionRunnerState : IDisposable
     public FromStream Position { get; set; }
     public IEventHandler Handler { get; set; }
     private readonly FromStream _initialPosition;
-    private readonly EventStoreClient _client;
+    private readonly KurrentDBClient _client;
     public string StreamName { get; init; }
     public UserCredentials? UserCredentials { get; init; }
     public CancellationToken CancellationToken { get; init; }

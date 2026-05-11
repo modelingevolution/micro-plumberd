@@ -1,4 +1,4 @@
-﻿using EventStore.Client;
+﻿using KurrentDB.Client;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -63,7 +63,7 @@ public static class ContainerExtensions
     /// <param name="commandBusPoolSize">The size of the command bus pool for QueueAsync operations. Defaults to 64.</param>
     /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
-        EventStoreClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false, int commandBusPoolSize = 64) =>
+        KurrentDBClientSettings? settings = null, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false, int commandBusPoolSize = 64) =>
         collection.AddPlumberd(sp => settings, configure, scopedCommandBus, commandBusPoolSize);
 
     /// <summary>
@@ -73,7 +73,7 @@ public static class ContainerExtensions
     /// The <see cref="IServiceCollection"/> to which the services will be added.
     /// </param>
     /// <param name="settingsFactory">
-    /// A factory function to create <see cref="EventStoreClientSettings"/> for configuring the Event Store client.
+    /// A factory function to create <see cref="KurrentDBClientSettings"/> for configuring the Event Store client.
     /// </param>
     /// <param name="configure">
     /// An optional action to configure the <see cref="IPlumberConfig"/> instance.
@@ -88,7 +88,7 @@ public static class ContainerExtensions
     /// The updated <see cref="IServiceCollection"/> with the MicroPlumberd services added.
     /// </returns>
     public static IServiceCollection AddPlumberd(this IServiceCollection collection,
-        Func<IServiceProvider, EventStoreClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false, int commandBusPoolSize=64)
+        Func<IServiceProvider, KurrentDBClientSettings> settingsFactory, Action<IServiceProvider, IPlumberConfig>? configure = null, bool scopedCommandBus = false, int commandBusPoolSize=64)
     {
         collection.AddSingleton(sp => PlumberEngine.Create(settingsFactory(sp), x =>
         {

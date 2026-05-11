@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd;
 using Xunit;
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using EventStore.Client;
+using KurrentDB.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -111,7 +111,7 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
         if (action is ICommandRequest cmd)
             await plb.AppendEvents(streamId, StreamState.Any, CommandEnqueued.Create(cmd.RecipientId, cmd.Command));
         else if (action is IStateChangeAction s)
-            await plb.AppendEvents(streamId, StreamRevision.FromInt64(s.Version), s.Events);
+            await plb.AppendEvents(streamId, (ulong)(s.Version), s.Events);
     }
 
 

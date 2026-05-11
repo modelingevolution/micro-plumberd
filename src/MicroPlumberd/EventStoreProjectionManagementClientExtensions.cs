@@ -1,13 +1,13 @@
-﻿using EventStore.Client;
+﻿using KurrentDB.Client;
 using Grpc.Core;
 using Microsoft.Win32;
 
 namespace MicroPlumberd;
 
 /// <summary>
-/// Provides extension methods for EventStoreProjectionManagementClient to simplify projection management.
+/// Provides extension methods for KurrentDBProjectionManagementClient to simplify projection management.
 /// </summary>
-public static class EventStoreProjectionManagementClientExtensions
+public static class KurrentDBProjectionManagementClientExtensions
 {
     /// <summary>
     /// Attempts to create or update a join projection in the EventStore.
@@ -16,7 +16,7 @@ public static class EventStoreProjectionManagementClientExtensions
     /// <param name="outputStream">The name of the output stream.</param>
     /// <param name="eventTypes">The event types to include in the projection.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    public static async Task TryCreateJoinProjection(this EventStoreProjectionManagementClient client,
+    public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
         string outputStream, IEnumerable<string> eventTypes)
     {
         var query = CreateQuery(outputStream, eventTypes);
@@ -27,7 +27,7 @@ public static class EventStoreProjectionManagementClientExtensions
             await client.CreateContinuousAsync(outputStream, query, true);
     }
 
-    private static async Task Update(EventStoreProjectionManagementClient client, string outputStream, string query,
+    private static async Task Update(KurrentDBProjectionManagementClient client, string outputStream, string query,
         CancellationToken token = default)
     {
         for (int i = 0; i < PROJECTION_UPDATE_RETRY_COUNT; i++)
@@ -57,7 +57,7 @@ public static class EventStoreProjectionManagementClientExtensions
     /// Ensures the existence and proper configuration of a lookup projection in the EventStore.
     /// </summary>
     /// <param name="client">
-    /// The <see cref="EventStoreProjectionManagementClient"/> instance used to manage projections.
+    /// The <see cref="KurrentDBProjectionManagementClient"/> instance used to manage projections.
     /// </param>
     /// <param name="register">
     /// The <see cref="IProjectionRegister"/> instance used to check the existence of the projection.
@@ -82,7 +82,7 @@ public static class EventStoreProjectionManagementClientExtensions
     /// to output streams based on the value of the specified event property. If the projection already exists,
     /// it will be updated to ensure it matches the desired configuration.
     /// </remarks>
-    public static async Task EnsureLookupProjection(this EventStoreProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)
+    public static async Task EnsureLookupProjection(this KurrentDBProjectionManagementClient client, IProjectionRegister register, string category, string eventProperty, string outputStreamCategory, CancellationToken token = default)
     {
         string query =
             $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
@@ -101,13 +101,13 @@ public static class EventStoreProjectionManagementClientExtensions
     /// <summary>
     /// Attempts to create or update a join projection in the EventStore.
     /// </summary>
-    /// <param name="client">The <see cref="EventStoreProjectionManagementClient"/> used to manage projections.</param>
+    /// <param name="client">The <see cref="KurrentDBProjectionManagementClient"/> used to manage projections.</param>
     /// <param name="outputStream">The name of the output stream for the join projection.</param>
     /// <param name="register">The projection register used to check for existing projections.</param>
     /// <param name="eventTypes">The collection of event types to include in the join projection.</param>
     /// <param name="token">An optional <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
     /// <returns>A task that represents the asynchronous operation.</returns>
-    public static async Task TryCreateJoinProjection(this EventStoreProjectionManagementClient client,
+    public static async Task TryCreateJoinProjection(this KurrentDBProjectionManagementClient client,
         string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, CancellationToken token = default)
     {
         if (!eventTypes.Any())

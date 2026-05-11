@@ -2,7 +2,7 @@ using System.Diagnostics;
 using System.Net;
 using Docker.DotNet;
 using Docker.DotNet.Models;
-using EventStore.Client;
+using KurrentDB.Client;
 using Xunit;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -10,7 +10,7 @@ namespace MicroPlumberd.Testing;
 
 public class EventStoreServer :  IDisposable, IAsyncDisposable
 {
-    public EventStoreClientSettings GetEventStoreSettings() => EventStoreClientSettings.Create(HttpUrl.ToString());
+    public KurrentDBClientSettings GetEventStoreSettings() => KurrentDBClientSettings.Create(HttpUrl.ToString());
 
     public Uri HttpUrl { get; }
     private readonly int httpPort;

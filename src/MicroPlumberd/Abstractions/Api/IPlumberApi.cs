@@ -1,4 +1,5 @@
-﻿using EventStore.Client;
+﻿using KurrentDB;
+using KurrentDB.Client;
 
 namespace MicroPlumberd.Api;
 
@@ -11,19 +12,19 @@ public interface IPlumberApi
     /// Plubers configuration.
     /// </summary>
     IPlumberReadOnlyConfig Config { get; }
-    
+
     /// <summary>
     /// EventStore's client
     /// </summary>
-    EventStoreClient Client { get; }
+    KurrentDBClient Client { get; }
     /// <summary>
     /// EventStore's persistent subsctiption client
     /// </summary>
-    EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
+    KurrentDBPersistentSubscriptionsClient PersistentSubscriptionClient { get; }
     /// <summary>
     /// EventStore's projection managemenet client
     /// </summary>
-    EventStoreProjectionManagementClient ProjectionManagementClient { get; }
+    KurrentDBProjectionManagementClient ProjectionManagementClient { get; }
     /// <summary>
     /// Projection's register, responsible for caching information about projection from EventStore.
     /// </summary>
@@ -42,7 +43,7 @@ public interface IPlumberApi
     /// <param name="metadata">Metadata that will be merged with metadata created from conventions</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events,
+    Task<IWriteResult> AppendEvents(string streamId, ulong rev, IEnumerable<object> events,
         object? metadata = null, CancellationToken token = default);
 
     /// <summary>

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Docker.DotNet.Models;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd.Services;
 
 using FluentAssertions;

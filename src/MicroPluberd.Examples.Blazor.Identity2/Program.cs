@@ -7,7 +7,7 @@ using MicroPluberd.Examples.Blazor.Identity2.Components.Account;
 
 using MicroPlumberd.Services;
 using MicroPlumberd.Services.Identity;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd;
 using System.Security.Claims;
 using MicroPluberd.Examples.Blazor.Identity2.Components.SampleLogic;
@@ -108,11 +108,11 @@ public class Program
 
     }
 
-    private static async Task<EventStoreClientSettings> GetEventStoreSettings(IConfiguration config)
+    private static async Task<KurrentDBClientSettings> GetEventStoreSettings(IConfiguration config)
     {
         
         var connectionString = config.GetValue<string>("EventStore");
-        var conn = EventStoreClientSettings.Create(connectionString!);
+        var conn = KurrentDBClientSettings.Create(connectionString!);
         await conn.WaitUntilReady(TimeSpan.FromSeconds(120));
         return conn;
     }

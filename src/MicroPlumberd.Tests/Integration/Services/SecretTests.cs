@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using EventStore.Client;
+using KurrentDB.Client;
 using FluentAssertions;
 using MicroPlumberd.Encryption;
 using MicroPlumberd.Services;

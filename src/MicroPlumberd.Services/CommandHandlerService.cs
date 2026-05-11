@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using EventStore.Client;
-using JetBrains.Annotations;
+using KurrentDB.Client;
 using MicroPlumberd.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

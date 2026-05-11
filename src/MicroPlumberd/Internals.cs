@@ -1,14 +1,14 @@
 ﻿using System.Collections.Concurrent;
-using EventStore.Client;
+using KurrentDB.Client;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("MicroPlumberd.Tests")]
 //[assembly: InternalsVisibleTo("MicroPlumberd.Services")]
 
 /// <summary>
-/// Extension methods for <see cref="EventStoreClientSettings"/> to provide utility functionality.
+/// Extension methods for <see cref="KurrentDBClientSettings"/> to provide utility functionality.
 /// </summary>
-public static class EventStoreClientSettingsExtensions
+public static class KurrentDBClientSettingsExtensions
 {
     static readonly HttpClient client = new HttpClient();
 
@@ -20,7 +20,7 @@ public static class EventStoreClientSettingsExtensions
     /// <param name="delay">The delay between health check attempts. Defaults to 100 milliseconds if not specified.</param>
     /// <returns>A task that completes when the EventStore server is ready.</returns>
     /// <exception cref="TimeoutException">Thrown when the EventStore server does not respond as ready within the specified timeout period.</exception>
-    public static async Task WaitUntilReady(this EventStoreClientSettings settings, TimeSpan timeout, TimeSpan? delay = null)
+    public static async Task WaitUntilReady(this KurrentDBClientSettings settings, TimeSpan timeout, TimeSpan? delay = null)
     {
 
         DateTime until = DateTime.Now.Add(timeout);

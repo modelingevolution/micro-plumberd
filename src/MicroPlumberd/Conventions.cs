@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
-using EventStore.Client;
+using KurrentDB.Client;
 using Grpc.Core;
 using MicroPlumberd.Utils;
 using static System.Formats.Asn1.AsnWriter;

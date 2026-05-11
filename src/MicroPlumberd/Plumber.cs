@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using EventStore.Client;
+using KurrentDB.Client;
 using Grpc.Core;
 
 namespace MicroPlumberd;
@@ -18,7 +18,7 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     /// <param name="settings">EventStore client settings.</param>
     /// <param name="flow">The flow type for the operation context.</param>
     /// <returns>A new Plumber instance.</returns>
-    public static IPlumber Create(EventStoreClientSettings settings, Flow flow = Flow.Component)
+    public static IPlumber Create(KurrentDBClientSettings settings, Flow flow = Flow.Component)
     {
         return new Plumber(new PlumberEngine(settings), new OperationContext(flow));
     }
@@ -31,17 +31,17 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     /// <summary>
     /// Gets the EventStore client.
     /// </summary>
-    public EventStoreClient Client => engine.Client;
+    public KurrentDBClient Client => engine.Client;
 
     /// <summary>
     /// Gets the EventStore persistent subscriptions client.
     /// </summary>
-    public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient => engine.PersistentSubscriptionClient;
+    public KurrentDBPersistentSubscriptionsClient PersistentSubscriptionClient => engine.PersistentSubscriptionClient;
 
     /// <summary>
     /// Gets the EventStore projection management client.
     /// </summary>
-    public EventStoreProjectionManagementClient ProjectionManagementClient => engine.ProjectionManagementClient;
+    public KurrentDBProjectionManagementClient ProjectionManagementClient => engine.ProjectionManagementClient;
 
     /// <summary>
     /// Gets the projection register.
@@ -54,7 +54,7 @@ public class Plumber(PlumberEngine engine, OperationContext context) : IPlumber,
     public ITypeHandlerRegisters TypeHandlerRegisters => engine.TypeHandlerRegisters;
 
     /// <inheritdoc />
-    public Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null,
+    public Task<IWriteResult> AppendEvents(string streamId, ulong rev, IEnumerable<object> events, object? metadata = null,
         CancellationToken token = default)
     {
         return engine.AppendEvents(context, streamId, rev, events, metadata, token);
@@ -407,7 +407,7 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
     /// <param name="settings">EventStore client settings.</param>
     /// <param name="flow">The flow type for the operation context.</param>
     /// <returns>A new Plumber instance.</returns>
-    public static IPlumber Create(EventStoreClientSettings settings, Flow flow = Flow.Component)
+    public static IPlumber Create(KurrentDBClientSettings settings, Flow flow = Flow.Component)
     {
         return new Plumber(new PlumberEngine(settings), new OperationContext(flow));
     }
@@ -420,17 +420,17 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
     /// <summary>
     /// Gets the EventStore client.
     /// </summary>
-    public EventStoreClient Client => engine.Client;
+    public KurrentDBClient Client => engine.Client;
 
     /// <summary>
     /// Gets the EventStore persistent subscriptions client.
     /// </summary>
-    public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient => engine.PersistentSubscriptionClient;
+    public KurrentDBPersistentSubscriptionsClient PersistentSubscriptionClient => engine.PersistentSubscriptionClient;
 
     /// <summary>
     /// Gets the EventStore projection management client.
     /// </summary>
-    public EventStoreProjectionManagementClient ProjectionManagementClient => engine.ProjectionManagementClient;
+    public KurrentDBProjectionManagementClient ProjectionManagementClient => engine.ProjectionManagementClient;
 
     /// <summary>
     /// Gets the projection register.
@@ -443,7 +443,7 @@ public class PlumberInstance(PlumberEngine engine) : IPlumberInstance, IPlumberR
     public ITypeHandlerRegisters TypeHandlerRegisters => engine.TypeHandlerRegisters;
 
     /// <inheritdoc />
-    public Task<IWriteResult> AppendEvents(string streamId, StreamRevision rev, IEnumerable<object> events, object? metadata = null,
+    public Task<IWriteResult> AppendEvents(string streamId, ulong rev, IEnumerable<object> events, object? metadata = null,
         CancellationToken token = default)
     {
         using var scope = OperationContext.GetOrCreate(Flow.Request);

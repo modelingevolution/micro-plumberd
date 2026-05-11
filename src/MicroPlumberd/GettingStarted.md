@@ -41,7 +41,7 @@ using System.Threading;
 // Configure services
 builder.Services.AddPlumberd(
     // Configure EventStore connection
-    settings: EventStoreClientSettings.Create("esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false"),
+    settings: KurrentDBClientSettings.Create("esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false"),
     // Optional additional configuration
     configure: (sp, config) => 
     {

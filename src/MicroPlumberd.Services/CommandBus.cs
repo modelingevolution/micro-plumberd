@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd;
 using MicroPlumberd.Api;
 using MicroPlumberd.Collections;
@@ -64,8 +64,8 @@ internal class CommandBus : ICommandBus, IEventHandler
     /// <returns>A task representing the asynchronous initialization, with a result of true when complete.</returns>
     private async Task<bool> OnInitialize()
     {
-        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new EventStore.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
-        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.NoStream, new EventStore.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new KurrentDB.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.NoStream, new KurrentDB.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
         _subscription = await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.End, false);
         _log.LogDebug("Session {steamId} subscribed.", _streamOut);
        

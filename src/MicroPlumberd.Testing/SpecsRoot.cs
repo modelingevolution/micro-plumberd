@@ -1,5 +1,5 @@
 ﻿using System.Collections.Concurrent;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd;
 using MicroPlumberd.Services;
 

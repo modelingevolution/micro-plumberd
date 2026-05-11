@@ -1,4 +1,4 @@
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd.Testing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -52,11 +52,11 @@ class ServerApp : IDisposable, IAsyncDisposable
         await app.StartAsync();
         return app.Services;
     }
-    private EventStoreClientSettings GetEventStoreSettings()
+    private KurrentDBClientSettings GetEventStoreSettings()
     {
         string connectionString = $"esdb://admin:changeit@localhost:{_esPort}?tls=false&tlsVerifyCert=false";
 
-        return EventStoreClientSettings.Create(connectionString);
+        return KurrentDBClientSettings.Create(connectionString);
     }
     public void Dispose()
     {

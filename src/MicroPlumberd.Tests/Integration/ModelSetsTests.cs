@@ -1,4 +1,4 @@
-using EventStore.Client;
+using KurrentDB.Client;
 using FluentAssertions;
 using MicroPlumberd.Testing;
 using MicroPlumberd.Tests.App.Domain;

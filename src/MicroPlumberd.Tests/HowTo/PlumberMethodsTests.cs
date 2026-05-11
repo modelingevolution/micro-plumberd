@@ -1,4 +1,4 @@
-﻿using EventStore.Client;
+﻿using KurrentDB.Client;
 using FluentAssertions;
 using LiteDB;
 using MicroPlumberd.Services;

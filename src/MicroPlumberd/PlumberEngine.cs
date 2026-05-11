@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd.Utils;
 
 namespace MicroPlumberd;
@@ -39,12 +39,12 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     private readonly Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> _errorHandle;
     private ProjectionRegister? _projectionRegister;
 
-    internal PlumberEngine(EventStoreClientSettings settings, PlumberConfig? config = null)
+    internal PlumberEngine(KurrentDBClientSettings settings, PlumberConfig? config = null)
     {
         config ??= new PlumberConfig();
-        Client = new EventStoreClient(settings);
-        PersistentSubscriptionClient = new EventStorePersistentSubscriptionsClient(settings);
-        ProjectionManagementClient = new EventStoreProjectionManagementClient(settings);
+        Client = new KurrentDBClient(settings);
+        PersistentSubscriptionClient = new KurrentDBPersistentSubscriptionsClient(settings);
+        ProjectionManagementClient = new KurrentDBProjectionManagementClient(settings);
         Conventions = config.Conventions;
         MetadataFactory = new MetadataFactory(Conventions);
         SerializerFactory = config.SerializerFactory;
@@ -67,7 +67,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <summary>
     /// Gets the EventStore client for interacting with EventStoreDB.
     /// </summary>
-    public EventStoreClient Client { get; }
+    public KurrentDBClient Client { get; }
 
     /// <summary>
     /// Gets the projection register for managing EventStore projections.
@@ -78,12 +78,12 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <summary>
     /// Gets the persistent subscription client for managing persistent subscriptions.
     /// </summary>
-    public EventStorePersistentSubscriptionsClient PersistentSubscriptionClient { get; }
+    public KurrentDBPersistentSubscriptionsClient PersistentSubscriptionClient { get; }
 
     /// <summary>
     /// Gets the projection management client for creating and managing EventStore projections.
     /// </summary>
-    public EventStoreProjectionManagementClient ProjectionManagementClient { get; }
+    public KurrentDBProjectionManagementClient ProjectionManagementClient { get; }
 
     /// <summary>
     /// Gets the service provider for dependency injection.
@@ -754,7 +754,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <param name="metadata">Optional metadata to attach to all events.</param>
     /// <param name="token">Cancellation token to observe while waiting for the task to complete.</param>
     /// <returns>The write result indicating success or failure.</returns>
-    public async Task<IWriteResult> AppendEvents(OperationContext context, string streamId, StreamRevision rev, IEnumerable<object> events,
+    public async Task<IWriteResult> AppendEvents(OperationContext context, string streamId, ulong rev, IEnumerable<object> events,
         object? metadata = null, CancellationToken token = default)
     {
         var evData = MakeEvents(context,events, metadata);
@@ -810,7 +810,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         var evData = MakeEvent(context, evId, Conventions.SnapshotEventNameConvention(stateType), state, m);
         var ret = (version == null || version < 0) ?
             await Client.AppendToStreamAsync(streamId, version == -1 ? StreamState.NoStream : StreamState.Any, [evData], cancellationToken: token) :
-            await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(version.Value), [evData], cancellationToken: token);
+            await Client.AppendToStreamAsync(streamId, (ulong)(version.Value), [evData], cancellationToken: token);
         _versionTyping.SetVersion(state, (version??-1) + 1);
         return ret;
     }
@@ -984,7 +984,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     public async Task<IWriteResult> AppendStreamMetadata(OperationContext context, string streamId, StreamState? state, TimeSpan? maxAge, StreamPosition? truncateBefore,
         TimeSpan? cacheControl, StreamAcl? acl, int? maxCount)
     {
-        var metadata = new EventStore.Client.StreamMetadata(
+        var metadata = new KurrentDB.Client.StreamMetadata(
             maxAge: maxAge,
             truncateBefore: truncateBefore,
             cacheControl: cacheControl,
@@ -1073,7 +1073,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         var streamId = Conventions.GetStreamIdConvention(context,typeof(T), aggregate.Id);
         var evData = MakeEvents(context,aggregate.PendingEvents, metadata, aggregate);
-        var r = await Client.AppendToStreamAsync(streamId, StreamRevision.FromInt64(aggregate.Version), evData, cancellationToken: token);
+        var r = await Client.AppendToStreamAsync(streamId, (ulong)(aggregate.Version), evData, cancellationToken: token);
         aggregate.AckCommitted();
 
         if (streamMetadata != null)
@@ -1262,10 +1262,10 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <param name="settings">Optional EventStore connection settings. If null, defaults to localhost with admin credentials.</param>
     /// <param name="configure">Optional configuration action for customizing the plumber behavior.</param>
     /// <returns>A configured PlumberEngine instance.</returns>
-    public static PlumberEngine Create(EventStoreClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
+    public static PlumberEngine Create(KurrentDBClientSettings? settings = null, Action<IPlumberConfig>? configure = null)
     {
         settings ??=
-            EventStoreClientSettings.Create("esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false");
+            KurrentDBClientSettings.Create("esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false");
         var cfg = new PlumberConfig();
         configure?.Invoke(cfg);
 
@@ -1353,8 +1353,8 @@ public readonly record struct StreamMetadata
     /// Implicitly converts MicroPlumberd StreamMetadata to EventStore StreamMetadata.
     /// </summary>
     /// <param name="m">The MicroPlumberd stream metadata.</param>
-    public static implicit operator EventStore.Client.StreamMetadata(StreamMetadata m)
+    public static implicit operator KurrentDB.Client.StreamMetadata(StreamMetadata m)
     {
-        return new EventStore.Client.StreamMetadata(m.MaxCount, m.MaxAge, m.TruncateBefore, m.CacheControl, m.Acl, m.Custom);
+        return new KurrentDB.Client.StreamMetadata(m.MaxCount, m.MaxAge, m.TruncateBefore, m.CacheControl, m.Acl, m.Custom);
     }
 }

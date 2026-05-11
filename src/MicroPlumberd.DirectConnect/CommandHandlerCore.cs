@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd.Services;
 using Microsoft.Extensions.DependencyInjection;
 using ModelingEvolution.DirectConnect;

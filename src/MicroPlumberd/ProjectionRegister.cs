@@ -1,4 +1,4 @@
-﻿using EventStore.Client;
+﻿using KurrentDB.Client;
 using Grpc.Core;
 
 namespace MicroPlumberd;
@@ -38,9 +38,9 @@ static class Executor
 class ProjectionRegister : IProjectionRegister
 {
     private readonly AsyncLazy<Dictionary<string, ProjectionDetails>> _lazyLoader;
-    private readonly EventStoreProjectionManagementClient _client;
+    private readonly KurrentDBProjectionManagementClient _client;
 
-    public ProjectionRegister(EventStoreProjectionManagementClient client)
+    public ProjectionRegister(KurrentDBProjectionManagementClient client)
     {
         _client = client;
         _lazyLoader = new AsyncLazy<Dictionary<string, ProjectionDetails>>(async () =>

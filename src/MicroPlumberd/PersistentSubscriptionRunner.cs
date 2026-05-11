@@ -1,10 +1,10 @@
 ﻿using System.Diagnostics;
-using EventStore.Client;
+using KurrentDB.Client;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MicroPlumberd;
 
-class PersistentSubscriptionRunner(PlumberEngine plumber, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult subscription) : ISubscriptionRunner
+class PersistentSubscriptionRunner(PlumberEngine plumber, KurrentDBPersistentSubscriptionsClient.PersistentSubscriptionResult subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
@@ -15,10 +15,10 @@ class PersistentSubscriptionRunner(PlumberEngine plumber, EventStorePersistentSu
     public async Task<T> WithHandler<T>(T model, TypeEventConverter func)
         where T : IEventHandler
     {
-        var state = new Tuple<EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult, T>(subscription, model);
+        var state = new Tuple<KurrentDBPersistentSubscriptionsClient.PersistentSubscriptionResult, T>(subscription, model);
         await Task.Factory.StartNew(async (x) =>
         {
-            var (sub, model) = (Tuple<EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult, T>)x!;
+            var (sub, model) = (Tuple<KurrentDBPersistentSubscriptionsClient.PersistentSubscriptionResult, T>)x!;
 
             await foreach (var e in sub)
             {

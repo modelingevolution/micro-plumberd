@@ -1,4 +1,4 @@
-﻿using EventStore.Client;
+﻿using KurrentDB.Client;
 
 namespace MicroPlumberd;
 
@@ -30,7 +30,7 @@ class SubscriptionSet(PlumberEngine plumber) : IEngineSubscriptionSet
 
         await Task.Factory.StartNew(static async (x) =>
         {
-            var (builder, context,sub) = (Tuple<SubscriptionSet, OperationContext, EventStorePersistentSubscriptionsClient.PersistentSubscriptionResult>)x!;
+            var (builder, context,sub) = (Tuple<SubscriptionSet, OperationContext, KurrentDBPersistentSubscriptionsClient.PersistentSubscriptionResult>)x!;
             var plumber = builder.plumber;
             await foreach (var e in sub)
             {
@@ -54,12 +54,12 @@ class SubscriptionSet(PlumberEngine plumber) : IEngineSubscriptionSet
     {
         await plumber.ProjectionManagementClient.TryCreateJoinProjection(name, _register.Keys);
         
-        EventStoreClient.StreamSubscriptionResult subscription = plumber.Client.SubscribeToStream(name, start, true);
+        KurrentDBClient.StreamSubscriptionResult subscription = plumber.Client.SubscribeToStream(name, start, true);
         var state = Tuple.Create(this, context,subscription);
         
         await Task.Factory.StartNew(static async (x) =>
         {
-            var (builder, context,sub) = (Tuple<SubscriptionSet, OperationContext, EventStoreClient.StreamSubscriptionResult>)x!;
+            var (builder, context,sub) = (Tuple<SubscriptionSet, OperationContext, KurrentDBClient.StreamSubscriptionResult>)x!;
             var plumber = builder.plumber;
             await foreach (var e in sub)
             {

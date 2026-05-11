@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using EventStore.Client;
+using KurrentDB.Client;
 using MicroPlumberd.Api;
 using Microsoft.Extensions.DependencyInjection;
 namespace MicroPlumberd.Services;

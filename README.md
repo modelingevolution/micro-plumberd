@@ -47,7 +47,7 @@ dotnet add package MicroPlumberd.SourceGenerators     # Code generators for Aggr
 ```csharp
 // Vanilla
 string connectionString = $"esdb://admin:changeit@localhost:2113?tls=false&tlsVerifyCert=false";
-var settings = EventStoreClientSettings.Create(connectionString);
+var settings = KurrentDBClientSettings.Create(connectionString);
 var plumber = Plumber.Create(settings);
 ```
 
