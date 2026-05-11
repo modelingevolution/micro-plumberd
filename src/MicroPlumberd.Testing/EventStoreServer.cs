@@ -95,17 +95,17 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
         {
             var response = await client.Containers.CreateContainerAsync(new CreateContainerParameters()
             {
-                Image = "eventstore/eventstore:latest",
+                Image = "docker.kurrent.io/kurrent-latest/kurrentdb:latest",
                 Env = new List<string>()
                 {
-                    "EVENTSTORE_RUN_PROJECTIONS=All",
-                    "EVENTSTORE_START_STANDARD_PROJECTIONS=true",
-                    "EVENTSTORE_INSECURE=true",
-                    "EVENTSTORE_ENABLE_ATOM_PUB_OVER_HTTP=true",
-                    $"EVENTSTORE_MEM_DB={inMemory.ToString().ToLower()}",
-                    //"EVENTSTORE_CERTIFICATE_PASSWORD=ca",
-                    //"EVENTSTORE_CERTIFICATE_FILE=/cert/eventstore.p12",
-                    //"EVENTSTORE_TRUSTED_ROOT_CERTIFICATES_PATH=/cert/ca-certificates/"
+                    "KURRENTDB_RUN_PROJECTIONS=All",
+                    "KURRENTDB_START_STANDARD_PROJECTIONS=true",
+                    "KURRENTDB_INSECURE=true",
+                    "KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP=true",
+                    $"KURRENTDB_MEM_DB={inMemory.ToString().ToLower()}",
+                    //"KURRENTDB_CERTIFICATE_PASSWORD=ca",
+                    //"KURRENTDB_CERTIFICATE_FILE=/cert/eventstore.p12",
+                    //"KURRENTDB_TRUSTED_ROOT_CERTIFICATES_PATH=/cert/ca-certificates/"
                 },
                 Name = ContainerName,
                 HostConfig = new HostConfig()

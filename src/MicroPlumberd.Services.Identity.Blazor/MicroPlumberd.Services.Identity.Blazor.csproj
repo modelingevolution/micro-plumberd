@@ -33,10 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.11" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.11" />
-    <PackageReference Include="ModelingEvolution.Observable.Blazor" Version="0.0.5.4" />
-    <PackageReference Include="MudBlazor" Version="8.*" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="10.0.7" />
+    <PackageReference Include="ModelingEvolution.Observable.Blazor" Version="0.0.10" />
+    <PackageReference Include="MudBlazor" Version="9.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,6 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
 </Project>

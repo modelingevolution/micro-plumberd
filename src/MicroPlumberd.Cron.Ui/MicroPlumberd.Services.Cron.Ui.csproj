@@ -35,8 +35,8 @@
 
 
 	<ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.1" />
-    <PackageReference Include="MudBlazor" Version="8.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="10.0.7" />
+    <PackageReference Include="MudBlazor" Version="9.4.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
 </Project>

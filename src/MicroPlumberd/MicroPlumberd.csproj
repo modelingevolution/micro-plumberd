@@ -39,9 +39,9 @@
 
   <!-- Exclude System.Linq.Async for .NET 10 as it conflicts with native BCL async LINQ -->
   <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
-    <PackageReference Include="System.Linq.Async" Version="6.0.3" ExcludeAssets="all" />
+    <PackageReference Include="System.Linq.Async" Version="7.0.1" ExcludeAssets="all" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
 </Project>

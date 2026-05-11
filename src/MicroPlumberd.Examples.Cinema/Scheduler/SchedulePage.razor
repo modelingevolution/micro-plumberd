@@ -10,8 +10,8 @@
 </MudButton>
 
 @code {
-    private void OpenDialog()
+    private async Task OpenDialog()
     {
-        DialogService.Show<AddScreeningDialog>("Add Screening");
+        await DialogService.ShowAsync<AddScreeningDialog>("Add Screening");
     }
 }
