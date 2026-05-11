@@ -31,14 +31,13 @@ namespace MicroPlumberd.SpecFlow.SourceGenerators
                     }
 
                     return ((Compilation Compilation, GenerationContext GenContext)?)(compilation, genContext);
-                })
-                .Where(static x => x.HasValue)
-                .Select(static (x, _) => x!.Value);
+                });
 
             context.RegisterSourceOutput(generationDataProvider, (sourceProductionContext, data) =>
             {
-                var assemblySymbol = data.Compilation.Assembly;
-                foreach (var a in data.GenContext.Aggregates)
+                if (!data.HasValue) return;
+                var assemblySymbol = data.Value.Compilation.Assembly;
+                foreach (var a in data.Value.GenContext.Aggregates)
                 {
                     var c = a.Generate(assemblySymbol);
                     sourceProductionContext.AddSource($"{a.Name}Steps", c);
