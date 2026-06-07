@@ -1,0 +1,30 @@
+<!--
+  Epic 039 — build-triggered C# symbol indexing.
+
+  SAFE TO COMMIT: the index step fires ONLY on machines where the indexer is installed
+  (i.e. ~/.me-index/bin/ensure-ide exists, created by ide/src/RocketCoder/install.sh). On CI and on
+  any machine without it, the target's Exists() condition is false → it never runs → zero impact.
+  It is also ContinueOnError, so even a transient failure can't fail your build.
+
+  On an installed machine a plain `dotnet build` auto-(re)indexes the project's symbols into the local
+  IDE daemon (127.0.0.1:5179) via ensure-ide — no manual step, no flag. To opt OUT for one build:
+  -p:IndexOnBuild=false. Override the daemon URL with -p:IndexHealthUrl=/-p:IndexUrl= if it moves.
+-->
+<Project>
+  <PropertyGroup>
+    <_IndexToolchain Condition="'$(OS)'=='Windows_NT'">win</_IndexToolchain>
+    <_IndexToolchain Condition="'$(OS)'!='Windows_NT'">linux</_IndexToolchain>
+    <!-- Full path to the launcher; presence of this file is the install gate AND we invoke it by path
+         so no PATH wiring is required in the build shell. -->
+    <_MEIndexLauncher Condition="'$(OS)'!='Windows_NT' and '$(_MEIndexLauncher)'==''">$(HOME)/.me-index/bin/ensure-ide</_MEIndexLauncher>
+    <_MEIndexLauncher Condition="'$(OS)'=='Windows_NT' and '$(_MEIndexLauncher)'==''">$(USERPROFILE)\.me-index\bin\ensure-ide.cmd</_MEIndexLauncher>
+    <IndexHealthUrl Condition="'$(IndexHealthUrl)'==''">http://127.0.0.1:5179/health</IndexHealthUrl>
+    <IndexUrl       Condition="'$(IndexUrl)'==''">http://127.0.0.1:5179/index</IndexUrl>
+  </PropertyGroup>
+
+  <Target Name="EmitIndexCommand" AfterTargets="Build"
+          Condition="Exists('$(_MEIndexLauncher)') and '$(IndexOnBuild)'!='false'">
+    <Exec Command="&quot;$(_MEIndexLauncher)&quot; --health &quot;$(IndexHealthUrl)&quot; --index &quot;$(IndexUrl)&quot; --project &quot;$(MSBuildProjectFullPath)&quot; --assembly &quot;$(TargetPath)&quot; --tfm $(TargetFramework) --config $(Configuration) --toolchain $(_IndexToolchain)"
+          ContinueOnError="true" StandardOutputImportance="low" />
+  </Target>
+</Project>
