@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>SQLite provider for MicroPlumberd.Services.Uniqueness. Development, test and single-instance hosts only: SQLite is file-local and single-writer, so it cannot arbitrate uniqueness across replicas. Use the Postgres package in production.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

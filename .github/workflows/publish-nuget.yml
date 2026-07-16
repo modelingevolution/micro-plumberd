@@ -127,6 +127,24 @@ jobs:
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
 
+        dotnet pack src/MicroPlumberd.Services.Uniqueness.Sqlite/MicroPlumberd.Services.Uniqueness.Sqlite.csproj \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+        dotnet pack src/MicroPlumberd.Services.Uniqueness.Postgres/MicroPlumberd.Services.Uniqueness.Postgres.csproj \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+        dotnet pack src/MicroPlumberd.Services.Uniqueness.SqlServer/MicroPlumberd.Services.Uniqueness.SqlServer.csproj \
+          --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
+          --no-build \
+          --output ./artifacts \
+          /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
         dotnet pack src/MicroPlumberd.Services.ProcessManager/MicroPlumberd.Services.ProcessManagers.csproj \
           --configuration ${{ steps.get_version.outputs.CONFIGURATION }} \
           --no-build \

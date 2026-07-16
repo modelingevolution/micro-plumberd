@@ -1,15 +1,19 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace MicroPlumberd.Services.Uniqueness;
 
-class UniquenessDb<TProvider> : DbContext
-    where TProvider:IUniqueCategoryProvider
+/// <summary>One context (and one table) per uniqueness category. The unique index on Name IS the lock.</summary>
+class UniquenessDb<TCategory>(DbContextOptions<UniquenessDb<TCategory>> options) : DbContext(options)
 {
-    public DbSet<UniqueNameReservation> Reservations { get; set; }
+    public DbSet<UniqueNameReservation> Reservations => Set<UniqueNameReservation>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UniqueNameReservation>().ToTable(TProvider.Category);
-        modelBuilder.Entity<UniqueNameReservation>().HasIndex(x => new { x.Name }).IsUnique(true);
-        modelBuilder.Entity<UniqueNameReservation>().HasIndex(x => new { x.SourceId }).IsUnique(false);
+        var e = modelBuilder.Entity<UniqueNameReservation>();
+        e.ToTable(CategoryName<TCategory>.Value);
+        e.HasKey(x => x.Id);
+        e.Property(x => x.Name).HasMaxLength(400).IsRequired();
+        e.HasIndex(x => x.Name).IsUnique();      // <- the hard lock
+        e.HasIndex(x => x.SourceId);
     }
 }
