@@ -11,6 +11,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.7" />
+    <!--
+      Pins the native SQLite bundle off GHSA-2m69-gcr7-jv3q (High): SQLitePCLRaw.lib.e_sqlite3 <= 2.1.11
+      has a vulnerable dependency on SQLite. EF Core Sqlite 10.0.7 resolves the family to 2.1.11
+      transitively, so without this pin the vulnerability ships to every consumer of this package.
+      The bundle drags core/lib/provider with it, so one pin lifts all four.
+      Remove once Microsoft.EntityFrameworkCore.Sqlite depends on 2.1.12 or later by itself.
+    -->
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="2.1.12" />
   </ItemGroup>
 
   <ItemGroup>
