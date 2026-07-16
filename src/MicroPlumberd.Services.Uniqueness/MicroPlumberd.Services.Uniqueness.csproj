@@ -19,4 +19,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Lets the test assembly reach UniquenessDb<T> to open a connection the way the library does.
+      Needed because busy_timeout is PER-CONNECTION: it can only be observed on a connection the
+      SQLite pragma interceptor actually ran on. Reading it from a raw SqliteConnection measures the
+      CONNECTION POOL instead — Microsoft.Data.Sqlite may hand back an already-configured handle
+      (false pass) or a fresh one (false fail). Without this the test resolves the context factory by
+      reflecting on a type-name string, which cannot fail at compile time and so rots silently.
+    -->
+    <InternalsVisibleTo Include="MicroPlumberd.Services.Uniqueness.Tests" />
+  </ItemGroup>
 </Project>

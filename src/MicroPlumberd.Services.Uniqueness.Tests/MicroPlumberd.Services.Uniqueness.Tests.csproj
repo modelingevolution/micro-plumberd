@@ -29,6 +29,9 @@
     <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness.Postgres\MicroPlumberd.Services.Uniqueness.Postgres.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness.SqlServer\MicroPlumberd.Services.Uniqueness.SqlServer.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Testing\MicroPlumberd.Testing.csproj" />
+    <!-- UQ-SQLITE-01 spawns this as real OS processes; referenced so it is always built alongside. -->
+    <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness.Tests.Worker\MicroPlumberd.Services.Uniqueness.Tests.Worker.csproj"
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
