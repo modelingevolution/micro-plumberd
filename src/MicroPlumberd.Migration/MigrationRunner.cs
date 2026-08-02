@@ -24,6 +24,15 @@ public sealed class MigrationRunResult
 
     /// <summary>Names of the source user projections pre-created on the dest (empty when no projection copy ran).</summary>
     public IReadOnlyList<string> CopiedProjections { get; init; } = [];
+
+    /// <summary>
+    /// User-defined indexes created on the destination to serve the <c>[OutputStream]</c> merges in commit order
+    /// (empty unless a <see cref="UserDefinedIndexCopyContext"/> ran). <b>REWIRING REQUIRED:</b> the physical
+    /// merge streams are NOT rebuilt — for each entry a consumer must read
+    /// <see cref="CreatedIndex.IndexStream"/> (<c>$idx-user-…</c>) INSTEAD of <see cref="CreatedIndex.OutputStream"/>
+    /// (which is left empty on the dest). See <see cref="UserDefinedIndexCopyContext"/>.
+    /// </summary>
+    public IReadOnlyList<CreatedIndex> CreatedIndexes { get; init; } = [];
 }
 
 /// <summary>
@@ -82,11 +91,17 @@ public sealed class MigrationRunner(ILoggerFactory? loggerFactory = null)
         IReadOnlyList<Migration> migrations,
         bool dryRun,
         ProjectionCopyContext? projectionCopy = null,
+        UserDefinedIndexCopyContext? indexCopy = null,
         CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(source);
         ArgumentNullException.ThrowIfNull(dest);
         ArgumentNullException.ThrowIfNull(migrations);
+        if (projectionCopy is not null && indexCopy is not null)
+            throw new InvalidOperationException(
+                "ProjectionCopyContext and UserDefinedIndexCopyContext are mutually exclusive merge-recovery "
+                + "strategies — supply at most one. The projection copy PACES a rebuild of the physical merge "
+                + "streams; the index copy creates user-defined indexes read in commit order.");
 
         var logger = _lf.CreateLogger<MigrationRunner>();
         var runTimeUtc = DateTime.UtcNow;
@@ -187,6 +202,20 @@ public sealed class MigrationRunner(ILoggerFactory? loggerFactory = null)
                 logger.LogWarning("{Count} source event(s) had unparseable JSON payloads and were copied "
                                   + "VERBATIM (byte-for-byte, not dropped) — no data loss.", copy.UnparseableVerbatim);
 
+            // 5c. INDEX-BASED merge recovery (optional, the clean alternative to the projection copy): now that the
+            //     dest holds every aggregate stream, create one user-defined index per app merge on the dest,
+            //     each read in commit order via $idx-user-… (no paced projection, no type-clustering).
+            IReadOnlyList<CreatedIndex> createdIndexes = [];
+            if (indexCopy is not null)
+            {
+                Progress.EnterPhase(MigrationPhase.ProjectionCopy);
+                createdIndexes = await new UserDefinedIndexMergeBuilder(_lf)
+                    .BuildAsync(indexCopy, dest, dryRun, ct).ConfigureAwait(false);
+                logger.LogInformation("Index copy: {Count} user-defined index(es) {Verb}: {Names}",
+                    createdIndexes.Count, dryRun ? "planned (dry run — not created)" : "created on dest",
+                    createdIndexes.Count == 0 ? "(none)" : string.Join(", ", createdIndexes.Select(i => i.IndexName)));
+            }
+
             if (dryRun)
             {
                 Progress.Complete(DateTime.UtcNow);
@@ -196,7 +225,8 @@ public sealed class MigrationRunner(ILoggerFactory? loggerFactory = null)
                     PendingMigrationIds = pending.Select(p => p.Id).ToList(),
                     Copy = copy,
                     NewlyApplied = [],
-                    CopiedProjections = copied.Select(p => p.Name).ToList()
+                    CopiedProjections = copied.Select(p => p.Name).ToList(),
+                    CreatedIndexes = createdIndexes
                 };
             }
 
@@ -229,7 +259,8 @@ public sealed class MigrationRunner(ILoggerFactory? loggerFactory = null)
                 Copy = copy,
                 Verification = verification,
                 NewlyApplied = newlyApplied,
-                CopiedProjections = copied.Select(p => p.Name).ToList()
+                CopiedProjections = copied.Select(p => p.Name).ToList(),
+                CreatedIndexes = createdIndexes
             };
         }
         catch (Exception ex)

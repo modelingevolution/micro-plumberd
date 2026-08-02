@@ -1,4 +1,3 @@
-using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -50,8 +49,8 @@ internal sealed class ProjectionCopier(ILogger? logger = null)
         string sourceConnectionString,
         CancellationToken ct = default)
     {
-        var (baseUri, user, pass) = ParseHttpEndpoint(sourceConnectionString);
-        using var http = CreateHttpClient(user, pass);
+        var (baseUri, user, pass) = KurrentHttpEndpoint.Parse(sourceConnectionString);
+        using var http = KurrentHttpEndpoint.CreateClient(user, pass);
 
         var result = new List<ProjectionInfo>();
         await foreach (var p in sourceProjections.ListContinuousAsync().WithCancellation(ct).ConfigureAwait(false))
@@ -249,42 +248,5 @@ internal sealed class ProjectionCopier(ILogger? logger = null)
         using var resp = await http.GetAsync(url, ct).ConfigureAwait(false);
         resp.EnsureSuccessStatusCode();
         return await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
-    }
-
-    private static HttpClient CreateHttpClient(string user, string pass)
-    {
-        var handler = new HttpClientHandler
-        {
-            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-        };
-        var http = new HttpClient(handler);
-        var basic = Convert.ToBase64String(Encoding.ASCII.GetBytes($"{user}:{pass}"));
-        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", basic);
-        return http;
-    }
-
-    /// <summary>Derives the HTTP(S) base + basic-auth creds from a KurrentDB connection string.</summary>
-    internal static (Uri BaseUri, string User, string Pass) ParseHttpEndpoint(string connectionString)
-    {
-        var m = Regex.Match(connectionString,
-            @"^(?<scheme>[a-zA-Z0-9+]+)://(?:(?<user>[^:@/]+):(?<pass>[^@/]+)@)?(?<hosts>[^/?]+)(?:/[^?]*)?(?:\?(?<query>.*))?$");
-        if (!m.Success)
-            throw new ArgumentException($"Unrecognised KurrentDB connection string: '{connectionString}'.");
-
-        var user = m.Groups["user"].Success ? m.Groups["user"].Value : "admin";
-        var pass = m.Groups["pass"].Success ? m.Groups["pass"].Value : "changeit";
-        var firstHost = m.Groups["hosts"].Value.Split(',', StringSplitOptions.RemoveEmptyEntries)[0].Trim();
-        if (!firstHost.Contains(':')) firstHost += ":2113";
-
-        var tls = true;
-        if (m.Groups["query"].Success)
-            foreach (var kv in m.Groups["query"].Value.Split('&', StringSplitOptions.RemoveEmptyEntries))
-            {
-                var parts = kv.Split('=', 2);
-                if (parts.Length == 2 && parts[0].Equals("tls", StringComparison.OrdinalIgnoreCase))
-                    tls = !parts[1].Equals("false", StringComparison.OrdinalIgnoreCase);
-            }
-
-        return (new Uri($"{(tls ? "https" : "http")}://{firstHost}/"), user, pass);
     }
 }
