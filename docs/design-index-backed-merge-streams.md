@@ -492,9 +492,13 @@ Nothing is left open; the design is fully evidenced.
   over `$idx-user-*` (resolveLinkTos true/false) and persistent `CreateToStream` both deliver ZERO; Control A
   (persistent filtered-`$all` over `EventTypeFilter`) = 3/3 → real KurrentDB limitation. Persistent consumers stay
   projection-backed permanently (the one permanent exclusion).
-- **OPEN-7 / SPIKE-8 — shape-B via field partitions — RESOLVED (PASS, rescued).** SPIKE-4's "impossible" was an
+- **OPEN-7 / SPIKE-8/11 — shape-B via field partitions — RESOLVED (PASS, rescued).** SPIKE-4's "impossible" was an
   accessor bug (`rec.data`/`rec.body` vs the real `rec.value`). A field-partitioned index + `:<key>`-prefixed
-  filtered-`$all` read reproduces per-key lookup for catch-up consumers. ⇒ shape B is index-backable (v2 fast-follow).
+  filtered-`$all` read (SPIKE-8) with confirmed per-key subscribe isolation (SPIKE-11) reproduces per-key lookup
+  for catch-up consumers. ⇒ shape B is index-backable (v2 fast-follow).
+- **OPEN-8 / SPIKE-12 — `$ce`-category source as an index filter — RESOLVED (PASS).**
+  `rec.position.stream.startsWith("<category>-")` selects by category directly (proven with a control). ⇒ the v2
+  base predicate can be event-type OR category; shape-B guidance is fully closed, no caveat.
 - **OPEN-9 / SPIKE-9 — direct index-stream access — RESOLVED (definitively non-functional).** Both
   `SubscribeToStream` and `ReadStream` on `$idx-user-*` deliver nothing, exhaustively. ⇒ the loud guard stays and
   covers reads too; index streams are reached ONLY via filtered `$all`.
@@ -524,7 +528,7 @@ Nothing is left open; the design is fully evidenced.
 - [x] Conflicts: coexistence (not replacement) resolves the default-safety vs new-capability tension; layering
       decision resolves the core↔Migration dependency direction.
 
-**v1 is FINAL — no open v1 items.** All empirical questions (OPEN-1..9) are RESOLVED with spike evidence folded
+**v1 is FINAL — no open v1 items.** All empirical questions (OPEN-1..9, 12 spikes across 3 rounds) are RESOLVED with spike evidence folded
 in. The confirmed dividing line: catch-up consumers index-backable (both shapes), persistent consumers
-projection-only (both shapes). v1 ships shape-A (S1–S4); shape-B is a proven-feasible v2 fast-follow with one v2
-design-open item (`$ce`-category filter form, does not affect v1).
+projection-only (both shapes). v1 ships shape-A (S1–S4); shape-B is a proven-feasible v2 fast-follow, now fully
+closed with no open design items (`$ce`-category source resolved by SPIKE-12).
