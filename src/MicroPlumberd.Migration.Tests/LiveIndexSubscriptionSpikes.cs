@@ -47,6 +47,16 @@ public class LiveIndexSubscriptionSpikes(ITestOutputHelper output)
             return (new KurrentDBClient(s), es.HttpUrl.ToString());
         }
 
+        // Variant that also hands back a persistent-subscriptions client (for the persistent-sub spike).
+        public async Task<(KurrentDBClient Client, KurrentDBPersistentSubscriptionsClient Persistent, string Conn)> NewWithPsAsync(string tag)
+        {
+            var es = EventStoreServer.Create($"mp-live-{tag}-{Guid.NewGuid():N}");
+            _servers.Add(es);
+            await es.StartInDocker(inMemory: true);
+            var s = es.GetEventStoreSettings();
+            return (new KurrentDBClient(s), new KurrentDBPersistentSubscriptionsClient(s), es.HttpUrl.ToString());
+        }
+
         public async ValueTask DisposeAsync()
         {
             foreach (var s in _servers) await s.DisposeAsync();
@@ -399,5 +409,326 @@ public class LiveIndexSubscriptionSpikes(ITestOutputHelper output)
         output.WriteLine("SPIKE-4 conclusion: a user-defined index cannot PARTITION by body value (no dynamic linkTo); " +
                          "at best it filters to one merged stream. Lookup-by-key projections are NOT index-replaceable.");
         true.Should().BeTrue();
+    }
+
+    // =====================================================================================================
+    // SPIKE-5 (arch §3 Q4) — FILTER DRIFT / RECREATION COST. Can an existing index's filter be mutated in
+    // place? If not, is there a DELETE, and what does delete+recreate+backfill cost for a realistic size?
+    // This becomes the "projection update" replacement for mp_query_hash's disable/update/enable.
+    // =====================================================================================================
+    [Fact]
+    public async Task Spike5_filter_drift_and_recreation_cost()
+    {
+        await using var stores = new Store();
+        var (client, conn) = await stores.NewAsync("s5");
+
+        // A realistic-size store: 5000 UdiA + 5000 UdiB interleaved (10k total).
+        const int per = 5000;
+        var expected = StreamState.NoStream;
+        var total = 0;
+        for (var offset = 0; offset < per * 2; offset += 1000)
+        {
+            var chunk = Enumerable.Range(offset, 1000).Select(i => Typed(i % 2 == 0 ? "UdiA" : "UdiB", i)).ToArray();
+            await client.AppendToStreamAsync("S5-1", expected, chunk);
+            expected = (ulong)(offset + chunk.Length - 1);
+            total += chunk.Length;
+        }
+
+        var (httpBase, user, pass) = KurrentHttpEndpoint.Parse(conn);
+        using var http = KurrentHttpEndpoint.CreateClient(user, pass);
+        var src = new UserDefinedIndexSource(client, conn);
+
+        // Create index filtering ONLY UdiA (5000 events).
+        var name = "s5-drift";
+        var url = new Uri(httpBase, $"v2/indexes/{name}");
+        async Task<(HttpStatusCode, string)> Post(string filter)
+        {
+            using var c = new StringContent(new JsonObject { ["filter"] = filter, ["start"] = true }.ToJsonString(),
+                Encoding.UTF8, "application/json");
+            var r = await http.PostAsync(url, c);
+            return (r.StatusCode, await r.Content.ReadAsStringAsync());
+        }
+        async Task<string?> GetFilter()
+        {
+            var r = await http.GetAsync(url);
+            if (!r.IsSuccessStatusCode) return $"<GET {(int)r.StatusCode}>";
+            return JsonNode.Parse(await r.Content.ReadAsStringAsync())?["index"]?["filter"]?.GetValue<string>();
+        }
+
+        var onlyA = "rec => rec.schema.name == \"UdiA\"";
+        var aAndB = "rec => rec.schema.name == \"UdiA\" || rec.schema.name == \"UdiB\"";
+
+        var (createStatus, createBody) = await Post(onlyA);
+        output.WriteLine($"SPIKE-5 create(onlyA) -> HTTP {(int)createStatus}: {createBody}");
+        await src.WaitUntilReadyAsync(name, expectedCount: per, TimeSpan.FromSeconds(120));
+        output.WriteLine($"SPIKE-5 filter after create: {await GetFilter()}");
+
+        // (a) Attempt in-place mutation: POST same name, DIFFERENT filter (A+B).
+        var (mutStatus, mutBody) = await Post(aAndB);
+        var filterAfterMutate = await GetFilter();
+        output.WriteLine($"SPIKE-5 mutate(A+B) POST -> HTTP {(int)mutStatus}: {mutBody}");
+        output.WriteLine($"SPIKE-5 filter after mutate attempt: {filterAfterMutate}  (unchanged={filterAfterMutate == onlyA})");
+
+        // (b) Is there a DELETE? Capture verbatim.
+        var delResp = await http.DeleteAsync(url);
+        var delBody = await delResp.Content.ReadAsStringAsync();
+        output.WriteLine($"SPIKE-5 DELETE -> HTTP {(int)delResp.StatusCode} {delResp.StatusCode}: {delBody}");
+
+        // (c) If delete worked, measure delete+recreate+backfill cost for the WIDENED filter (A+B = 10k).
+        if (delResp.IsSuccessStatusCode)
+        {
+            // small settle so the delete is visible
+            await Task.Delay(500);
+            var sw = System.Diagnostics.Stopwatch.StartNew();
+            var (recStatus, recBody) = await Post(aAndB);
+            output.WriteLine($"SPIKE-5 recreate(A+B) -> HTTP {(int)recStatus}: {recBody}");
+            try
+            {
+                await src.WaitUntilReadyAsync(name, expectedCount: total, TimeSpan.FromSeconds(180));
+                sw.Stop();
+                output.WriteLine($"SPIKE-5 recreate+backfill of {total} events took {sw.ElapsedMilliseconds} ms");
+                var widened = await GetFilter();
+                output.WriteLine($"SPIKE-5 filter after recreate: {widened}");
+            }
+            catch (Exception ex)
+            {
+                sw.Stop();
+                output.WriteLine($"SPIKE-5 recreate backfill FAILED after {sw.ElapsedMilliseconds} ms: {ex.Message}");
+            }
+        }
+        else
+        {
+            output.WriteLine("SPIKE-5: no working DELETE — an index cannot be cheaply re-pointed; a filter change " +
+                             "requires a NEW index name (old one lingers). This is the update-cost finding.");
+        }
+
+        // No hard assert on the timing (informational), but the in-place mutation MUST NOT silently change the
+        // filter — that's the correctness-relevant part (drift is either rejected or ignored, never a silent swap).
+        // If the server DID redefine in place, filterAfterMutate would equal aAndB; record whichever happened.
+        (filterAfterMutate == onlyA || filterAfterMutate == aAndB || filterAfterMutate!.StartsWith("<GET"))
+            .Should().BeTrue("captured the actual post-mutation filter state for the report");
+    }
+
+    // =====================================================================================================
+    // SPIKE-6 (arch §3 Q6) — INDEX COUNT CEILING. 20 read models exist today under a naive 1:1 index-per-model
+    // mapping and that grows. Create ~60 indexes on one node; confirm no rejection/degradation and that a
+    // sampled index still reads correctly.
+    // =====================================================================================================
+    [Fact]
+    public async Task Spike6_many_indexes_no_rejection_or_degradation()
+    {
+        await using var stores = new Store();
+        var (client, conn) = await stores.NewAsync("s6");
+
+        // A modest shared store; every index filters the same two types (worst case: all overlap $all fully).
+        await client.AppendToStreamAsync("S6-1", StreamState.NoStream,
+            Enumerable.Range(0, 100).Select(i => Typed(i % 2 == 0 ? "UdiA" : "UdiB", i)).ToArray());
+
+        var src = new UserDefinedIndexSource(client, conn);
+        const int count = 60;
+        var failures = new List<string>();
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        for (var i = 0; i < count; i++)
+        {
+            try
+            {
+                await src.EnsureAsync(new UserDefinedIndexSpec
+                {
+                    Name = $"s6-idx-{i:D3}",
+                    EventTypes = new HashSet<string> { "UdiA", "UdiB" }
+                });
+            }
+            catch (Exception ex) { failures.Add($"#{i}: {ex.GetType().Name} {ex.Message}"); }
+        }
+        sw.Stop();
+        output.WriteLine($"SPIKE-6 created {count - failures.Count}/{count} indexes in {sw.ElapsedMilliseconds} ms; " +
+                         $"failures={failures.Count}");
+        foreach (var f in failures.Take(5)) output.WriteLine("  " + f);
+
+        // Sample the FIRST and LAST index: both must backfill to the full 100 and read in commit order — proving
+        // no degradation/starvation under many concurrent index backfills.
+        foreach (var idx in new[] { "s6-idx-000", $"s6-idx-{count - 1:D3}" })
+        {
+            await src.WaitUntilReadyAsync(idx, expectedCount: 100, TimeSpan.FromSeconds(120));
+            var ords = await ReadOrdsAsync(src, idx);
+            output.WriteLine($"SPIKE-6 sample {idx}: count={ords.Count}, ordered={ords.SequenceEqual(Enumerable.Range(0, 100))}");
+            ords.Should().Equal(Enumerable.Range(0, 100), $"{idx} must read the full merge in commit order");
+        }
+
+        failures.Should().BeEmpty("creating ~60 indexes on one node must not be rejected");
+    }
+
+    // =====================================================================================================
+    // SPIKE-7 (team-lead's "SPIKE-5 persistent" / arch's persistent-sub open item) — THE REAL BLOCKER for
+    // shape-A merges that go through SubscribeEventHandlerPersistently (ProcessManager Inbox/Outbox, competing
+    // consumers, server checkpoints). EMPIRICAL RESULT: a SERVER-CHECKPOINTED PERSISTENT subscription over
+    // filtered $all (StreamFilter.Prefix("$idx-user-<name>") + resolveLinkTos) is CREATABLE and connects with
+    // NO error — but delivers ZERO index entries (catch-up AND live). Same silent-empty as SubscribeToStream on
+    // the index stream (SPIKE-2a). The Spike7_controls test proves this is NOT a broken harness (a persistent
+    // filtered-$all sub over a NON-link filter delivers fine) — persistent subscriptions simply do not see the
+    // $idx-user-* index links, by ANY mechanism (filtered-$all resolve/no-resolve, or direct CreateToStream).
+    // This test ENCODES that measured reality: create succeeds, subscribe yields nothing. Contrast SPIKE-2b
+    // (catch-up SubscribeToAll+filter) which DOES deliver — so index-backing is a CATCH-UP-only capability.
+    // =====================================================================================================
+    [Fact]
+    public async Task Spike7_persistent_subscription_over_filtered_all_delivers_nothing_blocker()
+    {
+        await using var stores = new Store();
+        var (client, ps, conn) = await stores.NewWithPsAsync("s7");
+
+        await client.AppendToStreamAsync("S7-a", StreamState.NoStream,
+            [Typed("UdiA", 0), Typed("UdiB", 1), Typed("UdiA", 2)]);
+
+        var src = new UserDefinedIndexSource(client, conn);
+        var spec = new UserDefinedIndexSpec { Name = "s7-merge", EventTypes = new HashSet<string> { "UdiA", "UdiB" } };
+        await src.EnsureAsync(spec);
+        await src.WaitUntilReadyAsync(spec.Name, expectedCount: 3, TimeSpan.FromSeconds(30));
+
+        var indexStream = UserDefinedIndexSource.IndexStream(spec.Name);
+        const string group = "rm-group";
+
+        // The persistent group over FILTERED $all with resolveLinkTos IS creatable (this is the trap — it looks
+        // like it should work).
+        string? createError = null;
+        try
+        {
+            await ps.CreateToAllAsync(group, StreamFilter.Prefix(indexStream),
+                new PersistentSubscriptionSettings(resolveLinkTos: true, startFrom: Position.Start,
+                    checkPointLowerBound: 1, checkPointAfter: TimeSpan.FromMilliseconds(100)));
+        }
+        catch (Exception ex) { createError = $"{ex.GetType().Name}: {ex.Message}"; }
+        output.WriteLine($"SPIKE-7 CreateToAllAsync(filtered) error: {createError ?? "<none>"}");
+        createError.Should().BeNull("the persistent group IS creatable — the failure is delivery, not creation");
+
+        var received = new ConcurrentQueue<int>();
+        string? pumpError = null;
+        using var cts = new CancellationTokenSource();
+        var pump = Task.Run(async () =>
+        {
+            try
+            {
+                await using var sub = ps.SubscribeToAll(group, cancellationToken: cts.Token);
+                await foreach (var e in sub.WithCancellation(cts.Token))
+                {
+                    received.Enqueue(JsonNode.Parse(e.Event.Data.Span)?["Ord"]?.GetValue<int>() ?? -1);
+                    await sub.Ack(e);
+                }
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception ex) { pumpError = $"{ex.GetType().Name}: {ex.Message}"; }
+        });
+
+        // Wait for catch-up that will NOT come; also append live to prove live push is dead too.
+        var caughtUp = await WaitUntil(() => Task.FromResult(received.Count >= 3), TimeSpan.FromSeconds(15));
+        await client.AppendToStreamAsync("S7-b", StreamState.NoStream, [Typed("UdiB", 3), Typed("UdiA", 4)]);
+        var gotLive = await WaitUntil(() => Task.FromResult(received.Count >= 5), TimeSpan.FromSeconds(15));
+
+        cts.Cancel();
+        await pump;
+
+        output.WriteLine($"SPIKE-7 pump error: {pumpError ?? "<none>"}");
+        output.WriteLine($"SPIKE-7 persistent delivery — caughtUp={caughtUp} gotLive={gotLive} received=[{string.Join(",", received)}]");
+        pumpError.Should().BeNull("subscribing does not fault — it just silently delivers nothing");
+        received.Should().BeEmpty(
+            "MEASURED BLOCKER: a persistent subscription over filtered $all delivers ZERO $idx-user-* index entries " +
+            "(catch-up and live) — no error, no events. Persistent (server-checkpointed) read models CANNOT be " +
+            "index-backed; only catch-up (client-checkpointed) subscriptions see the index (SPIKE-2b). See " +
+            "Spike7_controls for the harness-sanity control (a NON-link filter delivers fine).");
+    }
+
+    // SPIKE-7 CONTROLS — distinguish "my persistent-sub harness is broken" from "persistent-sub-to-$idx-user
+    // genuinely delivers nothing". Counts what a filtered persistent $all subscription delivers for:
+    //  A) a NORMAL event-type filter (domain events directly in $all)      -> proves the harness works at all
+    //  B) StreamFilter.Prefix($idx-user-*) with resolveLinkTos:FALSE       -> are the raw index LINK events deliverable
+    //  C) StreamFilter.Prefix($idx-user-*) with resolveLinkTos:TRUE        -> the failing case, re-measured alongside
+    private async Task<int> DrainPersistentAsync(KurrentDBPersistentSubscriptionsClient ps, string group,
+        int expect, TimeSpan timeout)
+    {
+        var got = new ConcurrentQueue<int>();
+        using var cts = new CancellationTokenSource();
+        var pump = Task.Run(async () =>
+        {
+            try
+            {
+                await using var sub = ps.SubscribeToAll(group, cancellationToken: cts.Token);
+                await foreach (var e in sub.WithCancellation(cts.Token))
+                {
+                    got.Enqueue(1);
+                    await sub.Ack(e);
+                }
+            }
+            catch (OperationCanceledException) { }
+        });
+        await WaitUntil(() => Task.FromResult(got.Count >= expect), timeout);
+        await Task.Delay(300);
+        cts.Cancel();
+        await pump;
+        return got.Count;
+    }
+
+    [Fact]
+    public async Task Spike7_controls_isolate_whether_persistent_filtered_all_harness_works()
+    {
+        await using var stores = new Store();
+        var (client, ps, conn) = await stores.NewWithPsAsync("s7c");
+
+        await client.AppendToStreamAsync("S7c-a", StreamState.NoStream,
+            [Typed("UdiA", 0), Typed("UdiB", 1), Typed("UdiA", 2)]);
+
+        var src = new UserDefinedIndexSource(client, conn);
+        var spec = new UserDefinedIndexSpec { Name = "s7c-merge", EventTypes = new HashSet<string> { "UdiA", "UdiB" } };
+        await src.EnsureAsync(spec);
+        await src.WaitUntilReadyAsync(spec.Name, expectedCount: 3, TimeSpan.FromSeconds(30));
+        var indexStream = UserDefinedIndexSource.IndexStream(spec.Name);
+
+        var settings = () => new PersistentSubscriptionSettings(resolveLinkTos: false, startFrom: Position.Start,
+            checkPointLowerBound: 1, checkPointAfter: TimeSpan.FromMilliseconds(100));
+
+        // A) Normal event-type filter over $all (domain events themselves). Proves the harness delivers.
+        await ps.CreateToAllAsync("ctrl-a", EventTypeFilter.Prefix("Udi"), settings());
+        var a = await DrainPersistentAsync(ps, "ctrl-a", 3, TimeSpan.FromSeconds(20));
+        output.WriteLine($"SPIKE-7 CONTROL A (EventTypeFilter 'Udi', domain events): delivered {a} (expect 3)");
+
+        // B) $idx-user prefix filter, resolveLinkTos FALSE — raw link events.
+        await ps.CreateToAllAsync("ctrl-b", StreamFilter.Prefix(indexStream), settings());
+        var b = await DrainPersistentAsync(ps, "ctrl-b", 3, TimeSpan.FromSeconds(20));
+        output.WriteLine($"SPIKE-7 CONTROL B ($idx-user prefix, resolveLinkTos=FALSE): delivered {b} (expect 3 if links deliverable)");
+
+        // C) $idx-user prefix filter, resolveLinkTos TRUE — the failing case, measured here too.
+        await ps.CreateToAllAsync("ctrl-c", StreamFilter.Prefix(indexStream),
+            new PersistentSubscriptionSettings(resolveLinkTos: true, startFrom: Position.Start,
+                checkPointLowerBound: 1, checkPointAfter: TimeSpan.FromMilliseconds(100)));
+        var c = await DrainPersistentAsync(ps, "ctrl-c", 3, TimeSpan.FromSeconds(20));
+        output.WriteLine($"SPIKE-7 CONTROL C ($idx-user prefix, resolveLinkTos=TRUE): delivered {c} (expect 3)");
+
+        // D) PERSISTENT subscription created DIRECTLY on the $idx-user stream (CreateToStreamAsync) — the
+        // persistent analog of SPIKE-2a's SubscribeToStream, measured rather than inferred.
+        var d = -1; string? dErr = null;
+        try
+        {
+            await ps.CreateToStreamAsync(indexStream, "ctrl-d",
+                new PersistentSubscriptionSettings(resolveLinkTos: true, startFrom: StreamPosition.Start,
+                    checkPointLowerBound: 1, checkPointAfter: TimeSpan.FromMilliseconds(100)));
+            var got = new ConcurrentQueue<int>();
+            using var cts = new CancellationTokenSource();
+            var pump = Task.Run(async () =>
+            {
+                try
+                {
+                    await using var sub = ps.SubscribeToStream(indexStream, "ctrl-d", cancellationToken: cts.Token);
+                    await foreach (var e in sub.WithCancellation(cts.Token)) { got.Enqueue(1); await sub.Ack(e); }
+                }
+                catch (OperationCanceledException) { }
+            });
+            await WaitUntil(() => Task.FromResult(got.Count >= 3), TimeSpan.FromSeconds(20));
+            await Task.Delay(300); cts.Cancel(); await pump;
+            d = got.Count;
+        }
+        catch (Exception ex) { dErr = $"{ex.GetType().Name}: {ex.Message}"; }
+        output.WriteLine($"SPIKE-7 CONTROL D (persistent CreateToStream on $idx-user): delivered {d} (expect 3), err={dErr ?? "<none>"}");
+
+        output.WriteLine($"SPIKE-7 CONTROLS SUMMARY: A(domain)={a} B(link,noresolve)={b} C(link,resolve)={c} D(persist-to-stream)={d}");
+        // A is the harness sanity check — it MUST deliver. B/C/D are the actual findings (logged, not asserted hard).
+        a.Should().Be(3, "the persistent filtered-$all harness itself works when the filter matches non-link events");
     }
 }

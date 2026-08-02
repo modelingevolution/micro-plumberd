@@ -6,12 +6,21 @@ Question from the owner: can the `fromStreams([...]).linkTo(outputStream)` JS jo
 behind read models be replaced by a KurrentDB 26.1 **user-defined index**? This framing maps the current
 machinery precisely and states what a replacement must satisfy.
 
-**VERDICT (updated after `eng-mergefeas`'s empirical spike — see §7): YES for shape (A), NO for shape (B).**
-A live, commit-ordered, subscribable index-backed merge stream is achievable on KurrentDB 26.1 for the
-multi-`$et`-join / single-output-stream pattern — but only via `SubscribeToAll` + `StreamFilter.Prefix` with
-`$all`-`Position` checkpointing (NOT a direct `SubscribeToStream` against the index's read stream, which
-silently returns nothing). Body-property lookup/fan-out projections (shape B) cannot be expressed by an index
-filter at all and must stay projection-backed. §7 has the raw evidence; §4/§5 below are revised to reflect it.
+**VERDICT (updated twice after `eng-mergefeas`'s empirical spikes — see §7/§8): YES for shape (A) AND shape (B),
+both catch-up-subscription-only.** A live, commit-ordered, subscribable index-backed merge stream is achievable
+on KurrentDB 26.1 for the multi-`$et`-join / single-output-stream pattern — but only via `SubscribeToAll` +
+`StreamFilter.Prefix` with `$all`-`Position` checkpointing (NOT a direct `SubscribeToStream` against the index's
+read stream, which silently returns nothing — reconfirmed for shape A in §8 SPIKE-9). Body-property lookup/fan-out
+projections (shape B) were first found FAIL (§7 SPIKE-4) but that verdict is **SUPERSEDED**: SPIKE-4 used the
+wrong body accessor (`rec.data`/`rec.body`); the correct accessor is `rec.value`, and a dedicated `"fields"`
+index config partitions matching events into per-value streams (`$idx-user-<name>:<value>`) — the index-native
+equivalent of `EnsureLookupProjection`'s routing (§8 SPIKE-8). The hard, *permanent* boundary for **both** shapes
+is the subscription mechanism, not the filter: **persistent subscriptions cannot see index links at all** (§7
+SPIKE-7), so any handler using `SubscribeEventHandlerPersistently` — shape A or B — stays projection-backed
+regardless of what the filter can express. §7/§8 have the raw evidence; §1/§2/§4/§5/§6 below are revised to
+reflect it. (Lesson for future readers of this doc: treat any single spike's FAIL as provisional until a second
+pass with the right API surface has been tried — SPIKE-4's FAIL held for one full round of reporting before
+SPIKE-8 overturned it.)
 
 ## 1. Inventory — how many merge-stream shapes exist, and how load-bearing they are
 
@@ -45,7 +54,14 @@ Only one caller in the repo: `ProcessManagerClient.SubscribeProcessManager` (`Mi
 category, keyed by `RecipientId`. This is **not one merge stream** — it's a projection that fans a category out
 into an unbounded number of per-key streams (`FooLookup-<recipientId>`), each read once via `Rehydrate`
 (one-shot catch-up read to build a lookup, not a live subscription — see `ProcessManagerClient.GetManager`,
-line 124-138). Low cardinality in this repo (1 use site) but structurally the harder case.
+line 124-138). Low cardinality in this repo (1 use site) but structurally the harder case — **and, per the §8
+reversal below, this one call site is the best-fit candidate in the repo for a shape-B index swap**: its
+consumption pattern is `Rehydrate` (a bounded, one-shot forward read — catch-up only, never live-tailed), which
+is exactly the subscription shape the field-partition index supports (§8 SPIKE-8). Note this is a *distinct* use
+from the SAME process manager's `Inbox`/`Outbox` (shape A, consumed via `SubscribeEventHandlerPersistently` —
+excluded regardless of shape by §7 SPIKE-7): the Lookup and Inbox/Outbox streams for one process manager could,
+in principle, end up on different mechanisms (Lookup → index, Inbox/Outbox → projection) even though they're
+wired by the same `SubscribeProcessManager` call today.
 
 Existing discovery code (`MicroPlumberd.Migration/ProjectionCopier.cs`) only understands shape (A): `ParseLinkTypes`
 matches `'\$et-([^']+)'` and `ParseOutputStream` matches a literal `linkTo('...'` — both regexes **fail to match**
@@ -61,12 +77,21 @@ one-shot historical reader** built for an offline migration: create → poll unt
 known, frozen total → read once. None of its four capabilities below are exercised by it today; each is a
 distinct thing the live spike must prove separately.
 
-**(a) Filter expressivity** — `BuildFilter` (line 276-283) emits `rec => rec.schema.name == "A" || rec.schema.name == "B"`,
-a pure event-type-name predicate. This expresses shape (A) exactly (event-type set ↔ OR-of-equality). It **cannot**
-express shape (B): there is no `rec.body.*`/`rec.streamId` access in the documented filter grammar this code
-uses, so a body-property fan-out (`e.body.RecipientId` routing to a *computed* target) is not a filter predicate
-at all — it's a *keying/redirection* operation the index has no equivalent for. Flag: **the filter is a WHERE, not
-a GROUP-BY-into-new-streams**; shape (B) needs the latter.
+**(a) Filter expressivity — CORRECTED post-spike (see §8).** `BuildFilter` (line 276-283) emits
+`rec => rec.schema.name == "A" || rec.schema.name == "B"`, a pure event-type-name predicate — this expresses
+shape (A) exactly (event-type set ↔ OR-of-equality) and was never in question. What *was* wrong, in the first
+spike round (§7 SPIKE-4) and in this framing's original text here, was the assumption that shape (B) is
+unreachable: that spike probed `rec.data.*`/`rec.body.*` (both wrong accessors) and found nothing, which looked
+like confirmation the filter can't see event bodies at all. §8 SPIKE-8 shows the correct accessor is `rec.value`,
+and — more importantly — that filter predicates aren't the whole story: KurrentDB 26.1 has a separate `"fields"`
+index config (`{"name":"...", "selector":"rec => rec.value.SomeId", "type":"INDEX_FIELD_TYPE_STRING"}`, capped at
+**one field per index** per the KurrentDB docs) that materializes a *partition stream per distinct field value*
+(`$idx-user-<name>:<value>`) — this is the index-native analog of `EnsureLookupProjection`'s
+`linkTo('cat-' + e.body.RecipientId, e)` fan-out. So the filter is still a WHERE (unchanged), but the index as a
+whole is NOT purely a WHERE-then-single-stream primitive — the fields config gives it a GROUP-BY-into-streams
+capability this framing didn't know existed when first written. The one-field cap means only a *single* routing
+property is expressible (matches `EnsureLookupProjection`'s single `eventProperty` parameter exactly — no
+regression for the one real use site in this repo, but a hard ceiling on any future multi-property routing key).
 
 **(b) Live catch-up + tail subscription to `$idx-user-<name>`.** Every read-model subscription path in this repo
 (`SubscriptionRunner`/`SubscriptionSeeker` in `MicroPlumberd/SubscriptionRunner.cs`, plus the persistent-subscription
@@ -97,9 +122,13 @@ not redefine an index in place" — a changed filter on an existing index name i
 change-detection guard, but the underlying primitive (mutate a live index's filter) may not exist at all — this
 could mean "delete + recreate + rebuild from Start" on every handler code change, which is a materially different
 operational cost than the current disable/update/enable of a projection. One index per `[OutputStream]` read
-model (20 in this repo) plus one per process-manager lookup key (shape B, unbounded per distinct `RecipientId`)
-is the naive 1:1 mapping — whether KurrentDB has a practical ceiling on live index count is an open question this
-framing does not answer.
+model (20 in this repo) is the naive 1:1 mapping for shape (A) — **corrected from the original text here**: shape
+(B) is NOT one index per distinct `RecipientId` value (that would indeed be unbounded and clearly unworkable);
+per §8 SPIKE-8, it is **one index total per lookup category**, configured with a single `"fields"` partition
+key, which KurrentDB itself fans out into per-value streams (`$idx-user-<name>:<value>`) as data arrives — the
+index count stays at "one per `[OutputStream]`-or-lookup-category", not "one per key". Whether KurrentDB has a
+practical ceiling on live index count remains open (§7 SPIKE-6 only tested 60 whole-index, non-partitioned,
+instances).
 
 ## 3. Empirical questions for the spike (pass/fail criteria)
 
@@ -131,54 +160,262 @@ node, not against documentation.
    migrates) and confirm KurrentDB doesn't degrade/reject beyond some N — relevant to whether index-per-read-model
    is operationally sane at all.
 
-## 4. IF live-subscribe is feasible (items 1-3 pass): proposed integration design
+## 4. Proposed integration design (revised post-spike — see §7 for the evidence this rests on)
 
+- **Not a drop-in stream-name swap — the subscription primitive itself must change.** The spike's biggest
+  design-relevant finding: `Client.SubscribeToStream("$idx-user-<name>", ...)` — the obvious first thing anyone
+  would try, and exactly what `SubscriptionRunnerState.Subscribe()` (`SubscriptionRunner.cs:25-30`) calls today
+  against ordinary output streams — silently returns zero events, no exception (§7, SPIKE-2a). The only working
+  mechanism is `Client.SubscribeToAll(FromAll.Start, resolveLinkTos:true, filterOptions: StreamFilter.Prefix("$idx-user-<name>"))`
+  (§7, SPIKE-2b). So the index-backed path needs a **new** `SubscriptionRunnerState`-equivalent built around
+  `SubscribeToAll`+filter, not a parameter tweak on the existing one. Anyone extending this later must not
+  "simplify" it back to `SubscribeToStream` against the index name — that's the footgun, and it fails silently
+  rather than loudly, so it needs an explicit code comment / assertion, not just tribal knowledge.
+- **Checkpoint type changes from stream-local to `$all Position`.** Today's catch-up resume
+  (`SubscriptionRunner.cs:177`, `subscription.Position = FromStream.After(e.OriginalEventNumber)`) and the
+  persistent-subscription server-side checkpoint are both keyed off stream-local revision numbers. §7 SPIKE-3
+  confirms the index-backed resume key is a `Position` (`C:.../P:...`) from the underlying `$all` log, not a
+  revision on `$idx-user-<name>` — resuming means `FromAll.After(lastPosition)`, not `FromStream.After(lastRevision)`.
+  Any persisted subscription checkpoint (wherever a consumer stores "where I got to") needs a type that can hold
+  either shape, or a distinct index-backed checkpoint representation — this is a breaking change to whatever
+  checkpoint persistence format exists today if it assumes a `StreamPosition`/`ulong`.
 - **New entry point, not a swap of `TryCreateJoinProjection`'s internals.** Add an index-backed sibling next to
   `SubscribeEventHandler`/`SubscribeEventHandlerPersistently` in `PlumberEngine` (e.g.
   `SubscribeEventHandlerViaIndex<TEventHandler>`) that: (1) calls an `EnsureIndexAsync(outputStream, eventTypes)`
   analogous to `TryCreateJoinProjection` but POSTing `/v2/indexes/<name>` with `BuildFilter` instead of creating a
-  projection; (2) subscribes to `$idx-user-<name>` using whatever primitive item 2 proves out, wired through the
-  **same** `SubscriptionRunner`/`SubscriptionRunnerState` machinery so `ICaughtUpHandler`, error/backoff, and
-  `OperationContext` plumbing (`SubscriptionRunner.OnEvent`, `Plumber.cs`) are reused verbatim — the index is a
-  new *source* stream, not a new consumption model.
+  projection; (2) subscribes via the new `SubscribeToAll`+filter state above, dispatching through the **same**
+  `OnEvent`/`ICaughtUpHandler`/error-backoff plumbing (`SubscriptionRunner.OnEvent`, `Plumber.cs`) so only the
+  event *source* changes, not the consumption model.
+- **Persistent-subscription consumers are a HARD, confirmed exclusion — not a scoping choice pending more
+  evidence.** `SubscribeEventHandlerPersistently` / `SubscriptionSet.SubscribePersistentlyAsync` — used today by
+  `ProcessManagerClient`'s Inbox/Outbox (a real shape-A merge in this repo) — rely on
+  `PersistentSubscriptionClient.SubscribeToStream(stream, group)`, server-side group checkpointing, competing
+  consumers. §7 SPIKE-7 proves `PersistentSubscriptionClient.CreateToAllAsync(group, StreamFilter.Prefix("$idx-user-<name>"), ...)`
+  creates and connects with **no error** but delivers **zero index entries**, catch-up or live, under every
+  variant tried (`resolveLinkTos` true/false, `CreateToStream` directly on the index stream) — controlled against
+  a persistent filtered-`$all` subscription over an ordinary `EventTypeFilter` on the SAME node, which correctly
+  delivered 3/3 (ruling out a broken harness). **Persistent subscriptions genuinely cannot see user-defined-index
+  links.** This is not "unproven, wait for more data" — it's a measured FAIL with a sound control. Index-backed
+  merge is **catch-up-subscription-only, by design constraint, permanently** — `SubscribeEventHandlerPersistently`
+  and every handler that uses it (`ProcessManagerClient` included) stay on projections; there is no future path
+  to close this gap short of a KurrentDB server change outside this framework's control.
 - **Coexistence, not replacement, initially.** Keep `ensureOutputStreamProjection` (rename conceptually to
-  "ensure merge source") as a discriminated choice — projection-backed (today) vs index-backed (new) — selected
-  per handler, so existing apps keep working unchanged and only opt-in handlers move. This mirrors how
+  "ensure merge source") as a discriminated choice — projection-backed (today, still required for
+  shape B and for persistent subscriptions until SPIKE-5) vs index-backed (new, catch-up-only, shape A) —
+  selected per handler, so existing apps keep working unchanged and only opt-in handlers move. This mirrors how
   `MigrationRunner` already treats `ProjectionCopyContext`/`UserDefinedIndexCopyContext` as mutually exclusive but
   coexisting strategies (`UserDefinedIndexCopyContext.cs:27-28`).
-- **Change-detection equivalent to `mp_query_hash`.** Given indexes can't be redefined in place (pending item 4),
-  the safest analog is: hash the filter, store it as custom metadata *on the read stream side* (there's no
-  index-native metadata slot), and on mismatch either (a) fail loud requiring an operator-driven
+- **Change-detection equivalent to `mp_query_hash`.** Indexes can't be redefined in place (per the code comment
+  in `UserDefinedIndexSource.cs`; not independently re-verified by the spike, which only ever created fresh
+  indexes). The safest analog is: hash the filter, store it as custom metadata *on the read stream side* (there's
+  no index-native metadata slot), and on mismatch either (a) fail loud requiring an operator-driven
   delete+recreate+rebuild, or (b) create a *new* suffixed index and cut consumers over — both are heavier than
-  today's disable/update/enable and should be sized against item 4's measured latency before committing to a UX.
-- **Shape (B) stays on projections.** Per §3 item 5's expected outcome, `EnsureLookupProjection`
-  (`ProcessManagerClient`'s Inbox/Outbox lookup) is very unlikely to have an index equivalent. The integration
-  design should explicitly scope index-backed merge to shape (A) only and leave `EnsureLookupProjection` +
-  `ProcessManagerClient` unchanged.
+  today's disable/update/enable. Latency of delete+recreate+backfill for a realistic event-type-set size is still
+  unmeasured (§3 item 4 was not part of this spike round).
+- **Shape (B) IS index-backable — reversed from the first spike round, see §8.** §7 SPIKE-4's "no index
+  equivalent" verdict rested on the wrong body accessor and is superseded. §8 SPIKE-8 shows the correct recipe:
+  create the index with a single `"fields"` entry (`{"name":"recipientid","selector":"rec => rec.value.RecipientId","type":"INDEX_FIELD_TYPE_STRING"}`)
+  — this is the `EnsureIndexAsync`-analog for `EnsureLookupProjection`, call it `EnsureFieldPartitionedIndexAsync(category, eventProperty, outputStreamCategory)`.
+  Reading a specific key's partition is `SubscribeToAll(..., filterOptions: StreamFilter.Prefix("$idx-user-<name>:<value>"))`
+  — same subscription primitive as shape (A) (§8 SPIKE-9 reconfirms direct `SubscribeToStream`/`ReadStreamAsync`
+  against a partition name fails the same way as the whole-index stream: `StreamNotFound`/zero-events-no-error),
+  same `$all`-`Position` checkpoint discipline, same persistent-subscription exclusion (§7 SPIKE-7's finding is a
+  subscription-mechanism limitation, not a filter limitation, so it applies identically to partition streams —
+  not independently re-spiked against a partition name specifically, but the same underlying "index links live
+  in `$all` only" mechanism makes a different outcome very unlikely). **Translation gap — CLOSED, see §8 SPIKE-12**:
+  `EnsureLookupProjection`'s source is `fromStreams(['$ce-{category}'])` — *every* event in a stream **category**,
+  regardless of type — and the index filter CAN express this directly: `rec.position.stream.startsWith("<category>-")`,
+  proven with a control that rules out type-based matching as the explanation (§8 SPIKE-12). So
+  `EnsureFieldPartitionedIndexAsync`'s source-selection is a **direct category filter**, not an enumerated
+  OR-of-known-event-types — no "misses a type added later" caveat. The one-field-per-index cap (§2(a)) still
+  means this only covers a single routing property, matching `EnsureLookupProjection`'s one `eventProperty`
+  parameter exactly.
+- **`ProcessManagerClient`'s Lookup vs. Inbox/Outbox split.** Per §1's correction: the repo's one shape-B call
+  site (`{ProcessManager}Lookup`, read via `Rehydrate` — bounded, catch-up-only) is now a real index-backing
+  candidate. Its sibling streams from the SAME call (`Inbox`/`Outbox`, shape A, consumed via
+  `SubscribeEventHandlerPersistently`) are NOT, per the persistent-subscription exclusion above. A migration
+  would move `Lookup` and leave `Inbox`/`Outbox` on projections — a within-one-feature split, not an all-or-nothing
+  cutover for `ProcessManagerClient`.
 
-## 5. Risk register
+## 5. Risk register (updated post-spike; RESOLVED rows cite §7 evidence)
 
-| # | Risk | Where it bites | Severity |
-|---|------|-----------------|----------|
-| 1 | No live catch-up+tail subscription primitive exists for `$idx-user-*` (only a bounded `ReadAllAsync`) | Every read model that would move — this is the crux gap called out by the owner's question | Blocking if FAIL |
-| 2 | Commit order / liveness proven only for offline backfill, not for concurrent live appends | Same | Blocking if FAIL |
-| 3 | No resumable position semantics proven — `UserDefinedIndexSource` always reads from `Position.Start` | Any process restart of a live consumer; today's catch-up (`FromStream.After`) and persistent-subscription checkpointing both need this | High |
-| 4 | Index cannot be redefined in place (per code comment, unverified against live server) | Every handler code change that adds/removes an event type — today a cheap disable/update/enable; would become delete+rebuild | High — operational cost, not correctness |
-| 5 | `$ce` + body-property fan-out (shape B) has no expressible index filter equivalent | `ProcessManagerClient` lookup streams | Blocking for that one pattern; low blast radius (1 call site) but must not be silently "migrated" and quietly broken |
-| 6 | Custom `linkTo` transforms in general (anything beyond "copy the event verbatim to a named target") have no index equivalent — an index selects records, it doesn't transform/redirect them | Any future handler using a computed `linkTo` target, not just the current lookup case | Medium — no current 2nd instance in-repo, but the framework primitive (`EnsureLookupProjection`) is public API, so 3rd-party/other-repo usage is unknown from this repo alone |
-| 7 | Index proliferation ceiling unknown | 20 `[OutputStream]` handlers today, growing; naive 1:1 index-per-model | Medium |
-| 8 | Two parallel merge mechanisms (projection- and index-backed) increase operational surface if coexistence becomes permanent rather than a migration step | Ops/debugging | Low-Medium |
+| # | Risk | Where it bites | Status |
+|---|------|-----------------|--------|
+| 1 | Live catch-up+tail subscription primitive for `$idx-user-*` | Every read model that would move | **RESOLVED — exists**, but only via `SubscribeToAll`+`StreamFilter.Prefix` (§7 SPIKE-2b); direct `SubscribeToStream` on the index stream does NOT work (§7 SPIKE-2a, see risk #9) |
+| 2 | Commit order / liveness under concurrent live appends (not just offline backfill) | Same | **RESOLVED — PASS** (§7 SPIKE-1: 10 interleaved events across a backfill+live-append boundary read back in exact commit order) |
+| 3 | Resumable position semantics | Process restart of a live consumer | **RESOLVED — PASS, but the checkpoint TYPE changes**: resume key is `$all Position`, not a stream revision (§7 SPIKE-3) — see §4 design note, this is a breaking change to any `StreamPosition`-typed checkpoint store |
+| 4 | Index cannot be redefined in place | Every handler code change that adds/removes an event type — today cheap disable/update/enable; would become delete+rebuild | **RESOLVED — measured** (§7 SPIKE-5): in-place mutation is REJECTED, not silently swapped — re-POSTing an existing name with a different filter returns HTTP 409 and `GET` confirms the filter is UNCHANGED. `DELETE /v2/indexes/<name>` IS supported (HTTP 200). Cost = delete+recreate+full-backfill; measured **~3.7s end-to-end for 10,000 matching events**. So the `mp_query_hash` equivalent is "delete, recreate under a reusable name, wait for full re-backfill" — cheap at 10k events, but genuinely a full re-backfill each change, not an incremental redefine; cost scales with matched-event count, which matters for high-volume event types |
+| 5 | `$ce` + body-property fan-out (shape B) has no expressible index filter equivalent | `ProcessManagerClient` lookup streams | **SUPERSEDED — REOPENED THEN RESOLVED AS PASS** (§7 SPIKE-4's FAIL used the wrong body accessor; §8 SPIKE-8 shows `rec.value.*` + a `"fields"` partition config materializes exactly this pattern as `$idx-user-<name>:<value>` partition streams, catch-up-subscription-only, one routing property max) |
+| 6 | Custom `linkTo` transforms in general (anything beyond "copy the event verbatim to a named target") have no index equivalent | Any future handler using a computed `linkTo` target, not just the current lookup case | **Narrowed further, still open**: the single-property key-routing case (what `EnsureLookupProjection` actually does, INCLUDING its `$ce`-category source) IS fully covered now (see #5, #11). What remains genuinely unaddressed: multi-property/composite routing keys (blocked by the one-field-per-index cap) and any transform beyond a straight body-field lookup (e.g. computed/derived values) |
+| 7 | Index proliferation ceiling unknown | 20 `[OutputStream]` handlers today, growing; naive 1:1 index-per-model | **RESOLVED for 3x current scale** (§7 SPIKE-6): 60 indexes created on one node in 1268ms, 0 rejections; first- and last-created (`idx-000`, `idx-059`) both fully backfilled 100 events in commit order under concurrent backfill load — no degradation or starvation observed. Not pushed past 60 (3x today's 20 read models); no evidence of a hard ceiling but the true limit (100s-1000s?) is still unknown. Note this is whole-index count — a *partitioned* index (shape B) stays at one index regardless of key cardinality (§2(d) correction), so this risk is really about shape-A's 1:1 model count, not about lookup-key count |
+| 8 | Two parallel merge mechanisms (projection- and index-backed) increase operational surface if coexistence becomes permanent | Ops/debugging | Open — design-scope decision, not empirical |
+| 9 | `SubscribeToStream` directly against `$idx-user-<name>` (or a partition `$idx-user-<name>:<value>`) silently succeeds-but-delivers-nothing (no exception, `caughtUp=false`, zero events) | Anyone porting the existing `SubscriptionRunnerState.Subscribe()` pattern naively to an index or partition stream gets a silent hang with no diagnostic | **High** — reconfirmed for the whole-index case by §8 SPIKE-9 (`ReadStreamAsync` → `StreamNotFound`, `SubscribeToStream` → 0 events no error, both `resolveLinkTos` settings); not independently re-tested against a partition name but the same underlying mechanism makes the same failure near-certain. This is a footgun, not a blocker (the working mechanism exists), but it WILL bite a future implementer who doesn't read this doc; needs a guard/comment at the call site, ideally a debug-time assertion that filtered `$all` is used instead of raw stream-subscribe for any `$idx-user-` prefixed name |
+| 10 | Persistent subscriptions (server-checkpointed, competing consumers) cannot see user-defined-index links | `ProcessManagerClient`'s Inbox/Outbox (`SubscribeEventHandlerPersistently`) — a real shape-A merge already using persistent subscriptions today; ALSO applies to a would-be shape-B persistent consumer | **RESOLVED — CONFIRMED FAIL, permanent hard boundary, applies to BOTH shapes** (§7 SPIKE-7): `CreateToAllAsync` + `StreamFilter.Prefix("$idx-user-<name>")` connects with no error but delivers ZERO entries under every variant tried; a same-node control (persistent filtered-`$all` over an ordinary `EventTypeFilter`) delivered 3/3, ruling out a broken harness. Index-backed merge is catch-up-subscription-only, by design constraint, for shape A AND shape B alike; `SubscribeEventHandlerPersistently` handlers stay on projections with no future closure path inside this framework |
+| 11 | `EnsureLookupProjection`'s `$ce-{category}` source (every event in a stream category) — is there a proven index filter equivalent, or only event-**type** predicates (`rec.schema.name`)? | Any `EnsureFieldPartitionedIndexAsync` built from this framing | **RESOLVED — PASS** (§8 SPIKE-12): `rec.position.stream.startsWith("<category>-")` (or `.split('-')[0] == "<category>"`) selects by stream/category directly, proven against a control (same event type in two categories; type-based control filter matches both, category filter matches only one) — no OR-of-event-types workaround needed, no "misses a type added later" caveat |
 
 ## 6. What definitively CANNOT be replaced by a plain event-type-filtered index
 
-- Shape (B): `$ce-{category}` + body-property routing into dynamically-named per-key streams
-  (`EnsureLookupProjection`) — the index filter grammar this repo has verified (`rec.schema.name == "..."`) has
-  no redirect/GROUP-BY capability; confirmed structurally in §1/§2(a), not just asserted.
-- Any hypothetical future `linkTo` with a computed target or a transformed event body — the index selects
-  original records via a boolean predicate over `rec.schema.name` (and presumably other `rec.*` fields TBD by the
-  spike), it does not write new derived streams.
+- **Multi-property / composite routing keys** — the `"fields"` config that makes shape (B) work (§8 SPIKE-8) is
+  capped at **one field per index** (KurrentDB docs); a routing key needing more than one body property has no
+  index equivalent. `EnsureLookupProjection`'s single-`eventProperty` design fits within the cap today, so this
+  is a forward-looking limit, not a current blocker.
+- **Persistent-subscription consumption, for either shape** — §7 SPIKE-7: persistent subscriptions cannot see
+  index links at all, confirmed with a sound control. This is the ONLY boundary that survived all three spike
+  rounds unchanged and un-superseded — the sole permanent, hard exclusion this investigation found.
+- Any hypothetical future `linkTo` with a genuinely *transformed* event body (not just a verbatim copy routed by
+  a single field) — the index selects/partitions original records, it does not compute new derived content.
+- Direct `SubscribeToStream`/`ReadStreamAsync` against `$idx-user-<name>` or a partition name — not a capability
+  gap in the index itself, but a client API that looks like it should work and doesn't (risk #9); the actual read
+  path is `SubscribeToAll`+filter for both the whole index and its partitions.
 
-## Coordination
+**No longer on this list (moved to "CAN be replaced"): shape (B) single-property body-routing lookups
+(`EnsureLookupProjection` as actually used by `ProcessManagerClient` today, INCLUDING its `$ce`-category source
+selection, §8 SPIKE-8/12), for catch-up consumers.**
 
-This framing feeds `eng-mergefeas`'s empirical spike (§3); their pass/fail results feed back into §4/§5 to produce
-the actual feasible/not-feasible verdict — this document does not render that verdict on its own.
+## 7. Empirical spike results (`eng-mergefeas`, KurrentDB 26.1.0.3443, MicroPlumberd.Testing Docker)
+
+Raw evidence in `src/MicroPlumberd.Migration.Tests/LiveIndexSubscriptionSpikes.cs` (uncommitted, clearly labelled
+SPIKE — not shipped code).
+
+- **SPIKE-1 (live tail ordering) — PASS.** Index over types A,B built on `A0,B1,A2,B3,A4` → read back `0,1,2,3,4`.
+  Then `B5,A6,B7,A8,B9` appended to a stream AFTER the index existed → full read back `0..9` in exact commit
+  order. Confirms live growth stays commit-ordered, not just the backfill case already proven in
+  `dev-log-userdefined-index.md`.
+- **SPIKE-2 (subscribe: catch-up → live) — PASS overall, via one mechanism, with a critical negative on the other.**
+  - 2b `SubscribeToAll(FromAll.Start, resolveLinkTos:true, filterOptions: StreamFilter.Prefix("$idx-user-<name>"))`
+    — PASS. One open subscription caught up `0,1,2`, then received live-appended `3,4` pushed with no re-read,
+    commit order preserved. This is the load-bearing mechanism.
+  - 2a `SubscribeToStream("$idx-user-<name>", FromStream.Start, resolveLinkTos:true)` — FAIL, silently: no
+    exception, `caughtUp=false`, zero events delivered. The index's links live in `$all` only; the
+    `$idx-user-<name>` name is not itself a directly-subscribable stream. Logged as risk #9.
+- **SPIKE-3 (checkpoint/resume) — PASS.** Recorded the last-seen link's `$all` `Position` (`e.OriginalPosition`,
+  e.g. `C:11302/P:11302`) during a first pass (`0,1,2`), stopped, appended `3,4`, resumed a NEW
+  `SubscribeToAll(FromAll.After(checkpoint), ...)` → received only `3,4`, no replay of `0,1,2`. Resume key is an
+  `$all Position`, not an index-stream revision — a type change from today's `FromStream`/`StreamPosition`-based
+  checkpoints (§4).
+- **SPIKE-4 (body-property routing, shape B) — FAIL, confirmed with a valid control.** First attempt showed a 400
+  that turned out to be an index-NAME validation error, not a filter rejection — re-run with a fixed name.
+  Corrected run: `rec.data.SomeId=="x"` / `rec.body.SomeId=="x"` / `rec.data.someid=="x"` filters are all ACCEPTED
+  (HTTP 200) but the index indexes ZERO events where a body/data-partitioned split should have produced 2 of 4.
+  Control filter `rec.schema.name=="UdiC"` (same lowercase-name scheme, same data) correctly indexed all 4 — so
+  the empty result isn't a naming/timing artifact, the filter genuinely cannot see event body content. Plus the
+  structural limit stands: an index is one filtered stream, it cannot fan out into N per-value streams the way
+  `linkTo('cat-' + e.body.SomeId)` does.
+- **SPIKE-5 (filter drift / recreation cost) — measured.** Re-`POST`ing an existing index name with a *different*
+  filter returns HTTP 409 `INDEX_ALREADY_EXISTS`, and a follow-up `GET` confirms the filter is left UNCHANGED —
+  no silent redefinition, matching the code-comment's claim (now independently verified, not just trusted).
+  `DELETE /v2/indexes/<name>` IS supported (HTTP 200). Full delete → recreate (same name) → backfill of 10,000
+  matching events measured at **~3.7s (3655ms) end-to-end to ready**. Confirms risk #4's `mp_query_hash`
+  equivalent: change-detection still means delete+recreate+full-rebuild, cost scaling with matched-event count,
+  not an incremental filter update.
+- **SPIKE-6 (index count ceiling) — PASS at 3x current scale.** Created 60 indexes on a single node in 1268ms
+  total, zero rejections. Both the first-created (`idx-000`) and last-created (`idx-059`) fully backfilled their
+  100 events in commit order despite concurrent backfill load across all 60 — no degradation, no starvation of
+  early vs. late indexes. Not pushed to a hard ceiling (60 vs. today's 20 `[OutputStream]` handlers); `eng-mergefeas`
+  offered to extend to 200 if a harder number is wanted before committing to 1-index-per-read-model at scale.
+- **SPIKE-7 (persistent subscription to filtered `$all`) — CONFIRMED FAIL, permanent hard boundary.**
+  `PersistentSubscriptionClient.CreateToAllAsync(group, StreamFilter.Prefix("$idx-user-<name>"), settings{resolveLinkTos:true, startFrom:Position.Start})`
+  creates and connects with **no error** but delivers **zero index entries**, catch-up or live. Four variants on
+  the same node/index ruled out every alternate explanation: (A) persistent filtered-`$all` over an ordinary
+  `EventTypeFilter` on domain events → 3/3 delivered — proves the harness itself is sound; (B) `$idx-user` prefix,
+  `resolveLinkTos:false` → 0; (C) same prefix, `resolveLinkTos:true` → 0; (D) `CreateToStream` directly on the
+  `$idx-user-<name>` stream (persistent, not filtered-`$all`) → 0, no error. A=3 vs. B/C/D=0 on the same index
+  is conclusive: **persistent subscriptions genuinely cannot see user-defined-index links**, by any mechanism
+  tried. The catch-up path (SPIKE-2b) sees them fine — the split between catch-up and persistent is clean and
+  total. `eng-mergefeas` offered to further probe whether persistent subscriptions fault loudly at scale or stay
+  silently empty; not pursued — the boundary for the design is already unambiguous without it.
+
+**One-line empirical verdict as of §7 (eng-mergefeas, since superseded on shape B by §8 below):** a live,
+commit-ordered, subscribable index-backed merge stream IS achievable on KurrentDB 26.1, but ONLY via filtered
+`SubscribeToAll` (catch-up, client-checkpointed with an `$all`-`Position`) over `$idx-user-<name>`, and ONLY for
+event-type/stream merges (shape A). Body-property lookup projections (shape B) and anything using persistent
+subscriptions must stay as projections. **§8 reopens and reverses the shape-B half of this** — kept here verbatim
+as the historical record of what was believed after round one; do not treat this paragraph as current without
+reading §8.
+
+## 8. Second empirical batch (`eng-mergefeas`, same environment) — shape-B reversal + direct-subscribe reconfirmation
+
+Raw evidence in `src/MicroPlumberd.Migration.Tests/FieldPartitionAndDirectSubscribeSpikes.cs` (uncommitted,
+SPIKE-8/9/10, all green).
+
+- **SPIKE-8 (field-partitioned index for body-property routing) — supersedes SPIKE-4's FAIL.** SPIKE-4 used the
+  wrong body accessor (`rec.data`/`rec.body`); the correct one is `rec.value`. More importantly, KurrentDB 26.1
+  has a dedicated `"fields"` index config, orthogonal to the filter:
+  `POST /v2/indexes/<name> {"filter":"rec => rec.schema.name=='UdiC'", "fields":[{"name":"someid","selector":"rec => rec.value.SomeId","type":"INDEX_FIELD_TYPE_STRING"}], "start":true}`
+  (max **one** field per index, per the KurrentDB docs). This materializes a **partition stream per distinct
+  field value** — `$idx-user-<name>:<value>`. Test: interleaved `alpha=0,2,4` / `beta=1,3` events → reading
+  `$idx-user-<name>:alpha` via `StreamFilter.Prefix` returns exactly `0,2,4` (only that key, correct commit
+  order); `:beta` returns `1,3`. Live-appending `Ord6` tagged `alpha` → `:alpha` becomes `0,2,4,6`, live and
+  ordered. This is the index-native analog of `EnsureLookupProjection`'s `linkTo('cat-' + e.body.RecipientId, e)`
+  — a field-keyed partitioned index, consumed per-partition, replaces a per-key lookup projection **for catch-up
+  consumers**. The SPIKE-7 persistent-subscription exclusion is unaffected — it's the same underlying
+  index-links-live-in-`$all`-only mechanism, so it applies to partitions too (not independently re-run against a
+  partition name, but there's no reason to expect a different result).
+- **SPIKE-9 (direct-subscribe, definitive) — reconfirms and generalizes risk #9.** For the *whole* index stream
+  (not yet independently tested per-partition): `ReadStreamAsync` → `StreamNotFound` (both `resolveLinkTos`
+  settings); `SubscribeToStream` → 0 events, no error (both settings). The index's content is **never
+  materialized as an ordinary directly-subscribable/readable stream** — only the filtered `$all` path
+  (`SubscribeToAll`/`ReadAllAsync` + `StreamFilter.Prefix`) sees it, for the whole index and (per SPIKE-8) for
+  partitions alike. This is the conclusive version of what SPIKE-2a first observed: any new `SubscriptionRunnerState`
+  variant for index-backed merge **must** be built on `Client.SubscribeToAll(FromAll, resolveLinkTos:true, SubscriptionFilterOptions(StreamFilter.Prefix(...)))`
+  — a stream-name swap on the existing `Client.SubscribeToStream` path silently returns nothing, with no
+  exception to catch the mistake.
+- **SPIKE-10 (`CaughtUp` signal + no-count-gate on the live path) — confirms two design details for §4.**
+  `StreamMessage.CaughtUp` fires correctly at the history→live boundary (observed after 3 historical events,
+  immediately following history, before any live append) — so `ICaughtUpHandler.CaughtUp()` wiring (§2(b)) works
+  unmodified against the index-backed subscription. Separately: the live-tail path must **not** use
+  `UserDefinedIndexSource.WaitUntilReadyAsync`'s exact-count gate — that gate is correct for the *offline
+  migration* case (a frozen, known total) but would **hang forever** against a live, growing store where the
+  "expected count" is a moving target. The live read-model path fires ready on `CaughtUp`, not on a count match.
+- **SPIKE-11 (per-key field-partition SUBSCRIBE, not just read) — closes the last gap in the shape-B reversal.**
+  §8 SPIKE-8 proved partitions are *readable* per-key in commit order; SPIKE-11 proves the same for the live
+  *subscribe* path, with clean key isolation: `SubscribeToAll(FromAll.Start, resolveLinkTos:true, SubscriptionFilterOptions(StreamFilter.Prefix("$idx-user-<name>:alpha")))`
+  catches up on ONLY that key's history (`0,2,4`, `CaughtUp` fires), then, after `beta`'s key gets a live append
+  (`5`) followed by `alpha`'s (`6`), the open subscription receives **only** `6` — no `beta` leak, final sequence
+  `0,2,4,6`, commit order preserved. So a per-key lookup consumer (the `ProcessManagerClient.Lookup`-style read)
+  is a genuine live catch-up subscription with the SAME recipe as the whole-index case, just a longer
+  `StreamFilter.Prefix` (`"$idx-user-<name>:<value>"` instead of `"$idx-user-<name>"`) — no separate mechanism,
+  no cross-key bleed to guard against in the consumption code.
+- **SPIKE-12 (`$ce`-category filter expressivity, risk #11) — PASS, closes the last open question.** The
+  KurrentDB 26.1 `rec` surface (per the docs page cited): `rec.schema.name` = event type, `rec.value` = body,
+  `rec.properties` = metadata, `rec.position.stream`/`streamRevision`/`logPosition`, `rec.id`/`timestamp`/`sequence`
+  — no dedicated "category" property, so category = the prefix before the first `-` in `rec.position.stream`, same
+  convention MicroPlumberd itself uses. Test deliberately makes category the ONLY discriminator: event type `"Ev"`
+  appears in BOTH category X (streams `X-1`,`X-2` → `Ord 0,2`) and category Y (`Y-1`,`Y-2` → `Ord 1,3`). Control
+  `rec => rec.schema.name == 'Ev'` → indexed all four (`0,1,2,3`) — proves a type-only filter can't distinguish X
+  from Y, i.e. the harness is sound and category selection is a genuinely different capability. Two category-filter
+  forms — `rec => rec.position.stream.startsWith('X-')` and `rec => rec.position.stream.split('-')[0] == 'X'` —
+  both indexed ONLY `0,2` (category X alone). Control-matches-all vs. category-filter-matches-only-X is conclusive:
+  **stream/category-based selection is directly expressible**, no event-type enumeration needed. This closes §4's
+  translation gap: `EnsureFieldPartitionedIndexAsync`'s source-selection filter is
+  `rec => rec.position.stream.startsWith("<category>-")`, a direct translation of `fromStreams(['$ce-{category}'])`,
+  not a workaround.
+
+**Standardized recipe (eng-mergefeas, citing KurrentDB's `features/indexes/user-defined.html`), covering both
+shapes — event-type OR category-based source selection, whole-index or per-key-partition reads — for catch-up
+consumers:**
+`SubscribeToAll(FromAll.Start, resolveLinkTos:true, SubscriptionFilterOptions(StreamFilter.Prefix("$idx-user-<name>"[+":"+value])))`,
+checkpoint on `ResolvedEvent.OriginalPosition` (an `$all Position`), resume via `FromAll.After(pos)`, fire ready
+on `CaughtUp` (no count-gate on the live path — that's migration-only); source filter is
+`rec.schema.name == "..."` (shape A, event-type join) or `rec.position.stream.startsWith("<category>-")`
+(shape B's `$ce`-category source), optionally combined with a `"fields"` selector for per-key partitioning.
+
+## Coordination — closed, no spikes outstanding
+
+This framing (§1-§2) fed `eng-mergefeas`'s empirical spike (§3); all six original §3 questions, the
+persistent-subscription follow-up, the shape-B reversal, the per-key subscribe confirmation, and the `$ce`-category
+filter question all now have empirical answers (§7 SPIKE-1..7, §8 SPIKE-8..12), folded into §1/§2/§4/§5/§6 above.
+Every risk-register row that could be resolved empirically (#1, #2, #3, #4, #5, #7, #9, #10, #11) is now RESOLVED;
+the only rows that remain open are design-scope judgment calls with no empirical answer to seek — #6 (narrowed to
+composite-key/transform cases the one-field cap already rules out) and #8 (dual-mechanism operational surface).
+**No further spike is outstanding or anticipated. This feasibility investigation is complete, across three spike
+rounds and one clean reversal, fully folded in.**
+
+The bounded, confirmed scope for an implementation design: index-backed merge covers **catch-up-subscription**
+consumers for BOTH shape (A) (event-type/stream merges) and shape (B) (single-property body-routing lookups, via
+field-partitioned indexes, including a `$ce`-category source translated directly, not enumerated). It permanently
+excludes anything using `SubscribeEventHandlerPersistently` — for either shape — which stays projection-backed.
+In this repo concretely: the 20 `[OutputStream]` catch-up handlers and `ProcessManagerClient`'s `Lookup` stream
+are index-backing candidates; `ProcessManagerClient`'s `Inbox`/`Outbox`
+(persistent) are not. Handed off to task M1 / `design-mergeidx`
+for `design.md`.
