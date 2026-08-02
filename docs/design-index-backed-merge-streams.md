@@ -236,77 +236,12 @@ pointing at this doc and at the filtered-`$all` reader. Index streams are ONLY e
 checkpoint = `ResolvedEvent.OriginalPosition`; resume = `FromAll.After(pos)`. Bounded read: the same
 `StreamFilter.Prefix` via `ReadAllAsync`. Per-key (shape B): prefix `"$idx-user-<name>:<key>"`.
 
-## V2 / fast-follow — shape-B field-partitioned per-key lookup (PROVEN-FEASIBLE, deferred)
-
-> **NOT part of v1.** The owner scoped v1 to shape-A. This section is a proven-feasible spec (SPIKE-8 read PASS,
-> SPIKE-11 subscribe PASS) so v2 can pick it up without re-discovery. It is index-backable for **catch-up**
-> consumers only (the persistent exclusion below applies here too).
-
-`EnsureLookupProjection` today fans a `$ce-<category>` stream out into one stream per key via
-`linkTo('<cat>-' + e.body.<Key>, e)`. SPIKE-8/11 show a KurrentDB 26.1 **field-partitioned index** reproduces
-this for catch-up consumers.
-
-**Scalability (corrects the earlier proliferation concern):** shape-B needs **ONE field-keyed index per lookup
-category — NOT one index per key value.** KurrentDB fans that single index out into per-value partition streams
-(`$idx-user-<name>:<value>`) itself. So a lookup over N distinct keys is ONE index, not N — no unbounded
-index proliferation. (Field config allows max 1 field/index, which is exactly one routing property — matches
-`EnsureLookupProjection`'s single-key design.)
-
-Index definition (adds a `fields` selector to the shape-A create; note the body accessor is `rec.value`, NOT
-`rec.data`/`rec.body` — the SPIKE-4 bug):
-```
-POST /v2/indexes/<name>
-{ "filter": "rec => rec.schema.name == 'X'",
-  "fields": [ { "name": "recipientid", "selector": "rec => rec.value.RecipientId", "type": "INDEX_FIELD_TYPE_STRING" } ],
-  "start": true }
-```
-
-Per-key read/subscribe — the key is a **prefix suffix** on the index read stream:
-```csharp
-// bounded per-key read (the Rehydrate analog):
-var filter = StreamFilter.Prefix($"$idx-user-{name}:{key}");
-client.ReadAllAsync(Direction.Forwards, Position.Start, filter, resolveLinkTos: true);   // only this key's events, commit order
-// live per-key catch-up (if a consumer wants live rather than one-shot):
-client.SubscribeToAll(FromAll.Start, resolveLinkTos: true, new SubscriptionFilterOptions(StreamFilter.Prefix($"$idx-user-{name}:{key}")));
-```
-SPIKE-8 (PASS): the prefix read yields ONLY that key's events in commit order, and live-appends tail into the
-right partition. So per-key routing maps onto a field-partitioned index + a `:<key>`-prefixed filtered-`$all`
-read — for **catch-up** consumers.
-
-v2 work items: `UserDefinedIndex` gains an optional `fields` parameter on create; `UserDefinedIndexSource` gains
-`ReadPartitionAsync(name, key)` (bounded, the `Rehydrate` analog) plus, if needed, an `IndexSubscriptionState`
-constructed with a `:<key>` prefix (live). Everything else — filter-hashed name, create-new-and-swap, the
-`SubscribeToStream`/`ReadStream` guard — carries over unchanged.
-
-**v2 design-open (do NOT block v1):** `EnsureLookupProjection` sources from `$ce-<category>` (every event in a
-stream category), whereas every PROVEN index filter is event-type-based (`rec.schema.name == …`). The
-`$ce`-category filter form for an index is **UNTESTED**. Replicating category semantics likely means enumerating
-the category's known event types as an OR-predicate — which works if the type set is closed but silently misses a
-type added later without updating the list. v2 must resolve this (test the category filter form, or accept the
-enumerated-types approach with a guard). v1 is `$et` event-type merges and is unaffected.
-
-#### Definitive `ProcessManagerClient` determination (from the code)
-
-`ProcessManagerClient.SubscribeProcessManager` (`MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs`)
-has **two distinct consumption paths**, and they resolve OPPOSITELY:
-
-| Concern | Code | Consumption | Index-backable? |
-|---------|------|-------------|-----------------|
-| Inbox / Outbox **merge** (shape A) | lines 103–104: `SubscribeEventHandlerPersistently(sender, "…Outbox")` / `(executor, "…Inbox")` | **PERSISTENT** subscription | **NO — permanent** (SPIKE-7). Stays projection-backed. |
-| `{PM}Lookup` **per-key lookup** (shape B) | line 107 `EnsureLookupProjection(…, "RecipientId", "…Lookup")`; consumed in `GetManager` line 129 `_plumber.Rehydrate(lookup, "…Lookup-{recipientId}")` | **bounded catch-up READ** (`Rehydrate` = `ReadStream`), NOT a subscription | **YES — via field partitions** (SPIKE-8), because it is a catch-up read. |
-
-So the concrete answer (architect-traced, matches the code): the PM **merge** stays on projections (persistent,
-permanent); the PM **lookup** is a catch-up `Rehydrate` read → an index-backing candidate for v2. The one required
-rewire is the read itself — `Rehydrate` reads `ReadStream("{PM}Lookup-{recipientId}")`, and
-`ReadStream`/`SubscribeToStream` on an index stream is **definitively non-functional** (SPIKE-9), so the lookup
-read must become a filtered-`$all` prefix read of `$idx-user-<name>:{recipientId}`. That app-level rewire of
-`GetManager`/`Rehydrate` is a v2 item and is optional — the PM lookup keeps working on its projection until
-migrated.
-
 ### Persistent-subscription consumers: permanently excluded (SPIKE-7, RESOLVED)
 
-Persistent-subscription consumers — e.g. `ProcessManagerClient`'s Inbox/Outbox merge above — **cannot be
-index-backed, permanently.** KurrentDB limitation, not a usage bug (SPIKE-7, real KurrentDB 26.1, with controls):
+Persistent-subscription consumers — e.g. `ProcessManagerClient`'s Inbox/Outbox merge
+(`SubscribeEventHandlerPersistently`) — **cannot be index-backed, permanently.** This holds for BOTH shapes: it
+is a property of the persistent pipeline, not of the merge shape. KurrentDB limitation, not a usage bug (SPIKE-7,
+real KurrentDB 26.1, with controls):
 
 - A persistent group over `StreamFilter.Prefix("$idx-user-<name>")` delivers **ZERO** on catch-up AND live —
   `resolveLinkTos` both **true and false**; a persistent `CreateToStream` directly on `$idx-user-<name>` also **0**.
@@ -375,8 +310,9 @@ StreamFilter.Prefix("$idx-user-<name>"))`.
 | `UserDefinedIndex` (relocated to core) | One index-lifecycle implementation shared by live + offline paths | Behavior-preserving relocation; Migration parity test (S1) guards it. |
 | `MicroPlumberd.Testing` `EventStoreServer` (Docker, KurrentDB 26.1) | Integration test substrate | Per workspace rule, NEVER Testcontainers; each test gets an isolated in-memory server. |
 
-## Vertical-slice implementation plan
+## Vertical-slice implementation plan (v1 = shape-A, slices S1–S4)
 
+**v1 scope is S1–S4 only.** Shape-B is a v2 fast-follow (spec in the "V2 / fast-follow" section, not a v1 slice).
 Each slice is independently buildable (`dotnet.exe build src/MicroPlumberd.sln`) and ends with a green
 integration test against a **real KurrentDB 26.1** via `MicroPlumberd.Testing` (`EventStoreServer.StartInDocker`).
 Commit at each slice boundary (`docs/standards/dev-process.md`; team-lead owns git).
@@ -445,22 +381,75 @@ Integration tests:
   (3× today's count). Regression guard, not a gate — assert N index-backed handlers in one app all build
   correctly; re-measure a hard ceiling only if the live count approaches ~60.
 
-### S5 — Shape-B: field-partitioned per-key lookup (catch-up)
-`UserDefinedIndex` create gains an optional `fields` selector (`rec => rec.value.<field>`);
-`UserDefinedIndexSource` gains `ReadPartitionAsync(name, key)` (bounded, the `Rehydrate` analog) via
-`StreamFilter.Prefix("$idx-user-<name>:<key>")`, and an optional live per-key `IndexSubscriptionState`. Optional
-app-level migration of `ProcessManagerClient.GetManager`/`Rehydrate` from `ReadStream("{PM}Lookup-{id}")` to the
-prefix read (the PM lookup is a catch-up read, so eligible; the PM Inbox/Outbox merge stays on projections).
+The v1 slice list is S1–S4 (above). Shape-B is a v2 fast-follow — spec below, NOT a v1 slice.
 
-Integration tests:
-- **S5-T1 (partition read):** append interleaved events for keys x,y; a field-partitioned index; assert the
-  `:<x>` prefix read yields ONLY x's events in commit order (SPIKE-8).
-- **S5-T2 (partition live tail):** with a `:<x>` prefix subscription open, append a new x event post-subscription;
-  assert it tails into the x partition, in order.
-- **S5-T3 (rec.value accessor):** a field selector over `rec.value.<field>` indexes the partition; a `rec.data`/
-  `rec.body` selector indexes nothing — documents the SPIKE-4 accessor bug so it never regresses.
-- **S5-T4 (guard on index-stream read):** `ReadStream`/`SubscribeToStream` on a `$idx-user-<name>:<key>` name
-  throws (SPIKE-9); the partition is reachable only via filtered `$all`.
+## V2 / fast-follow — shape-B field-partitioned per-key lookup (PROVEN-FEASIBLE, deferred)
+
+> **NOT part of v1.** The owner scoped v1 to shape-A. This section is a proven-feasible spec (SPIKE-8 read PASS,
+> SPIKE-11 subscribe PASS — per-key partition pushes ONLY that key's events, catch-up and live, isolated) so v2
+> can pick it up without re-discovery. Index-backable for **catch-up** consumers only; the persistent exclusion
+> applies here too.
+
+`EnsureLookupProjection` today fans a `$ce-<category>` stream out into one stream per key via
+`linkTo('<cat>-' + e.body.<Key>, e)`. SPIKE-8/11 show a KurrentDB 26.1 **field-partitioned index** reproduces
+this for catch-up consumers.
+
+**Scalability (corrects the earlier proliferation concern):** shape-B needs **ONE field-keyed index per lookup
+category — NOT one index per key value.** KurrentDB fans that single index out into per-value partition streams
+(`$idx-user-<name>:<value>`) itself. A lookup over N distinct keys is ONE index, not N — no unbounded index
+proliferation. (Field config allows max 1 field/index — exactly one routing property, matching
+`EnsureLookupProjection`'s single-key design.)
+
+Index definition (adds a `fields` selector; body accessor is `rec.value`, NOT `rec.data`/`rec.body` — the SPIKE-4 bug):
+```
+POST /v2/indexes/<name>
+{ "filter": "rec => rec.schema.name == 'X'",
+  "fields": [ { "name": "recipientid", "selector": "rec => rec.value.RecipientId", "type": "INDEX_FIELD_TYPE_STRING" } ],
+  "start": true }
+```
+Per-key read/subscribe — the key is a **prefix suffix** on the index read stream:
+```csharp
+var filter = StreamFilter.Prefix($"$idx-user-{name}:{key}");                 // bounded per-key read (Rehydrate analog)
+client.ReadAllAsync(Direction.Forwards, Position.Start, filter, resolveLinkTos: true);
+client.SubscribeToAll(FromAll.Start, resolveLinkTos: true,                    // live per-key catch-up
+    new SubscriptionFilterOptions(StreamFilter.Prefix($"$idx-user-{name}:{key}")));
+```
+
+v2 work items: `UserDefinedIndex` create gains an optional `fields` selector; `UserDefinedIndexSource` gains
+`ReadPartitionAsync(name, key)` (bounded) plus an optional live per-key `IndexSubscriptionState` with a `:<key>`
+prefix. Everything else — filter-hashed name, create-new-and-swap, the `SubscribeToStream`/`ReadStream` guard —
+carries over unchanged.
+
+**`$ce`-category source — RESOLVED (SPIKE-12, no caveat).** `EnsureLookupProjection` sources from
+`$ce-<category>` (every event in a stream category). An index expresses this DIRECTLY via
+`rec.position.stream.startsWith("<category>-")` — proven with a control (same event type in two categories: a
+type-only filter matches both, the category filter matches only the target). So it is a straight translation of
+`fromStreams(['$ce-{category}'])`, NOT an enumerated-OR-of-event-types workaround (no "misses a later-added type"
+risk). Consequence: the v2 `EnsureFieldPartitionedIndexAsync` base predicate can be EITHER an event-type filter
+(`rec.schema.name == …`, shape A) OR a category filter (`rec.position.stream.startsWith("<cat>-")`, shape B's
+`$ce` source), combined with the optional single `fields` selector for per-key partitioning (max 1 field —
+matches `EnsureLookupProjection`'s single `eventProperty`). Shape-B guidance is now fully closed, no open items.
+
+#### Definitive `ProcessManagerClient` determination (from the code — answers the v2 routing question)
+
+`ProcessManagerClient.SubscribeProcessManager` (`MicroPlumberd.Services.ProcessManager/ProcessManagerClient.cs`)
+has **two consumption paths** that resolve OPPOSITELY:
+
+| Concern | Code | Consumption | Index-backable? |
+|---------|------|-------------|-----------------|
+| Inbox / Outbox **merge** | lines 103–104: `SubscribeEventHandlerPersistently(sender,"…Outbox")` / `(executor,"…Inbox")` | **PERSISTENT** | **NO — permanent** (SPIKE-7). Stays on projections. |
+| `{PM}Lookup` **per-key lookup** | line 107 `EnsureLookupProjection(…,"RecipientId","…Lookup")`; consumed in `GetManager` line 129 `_plumber.Rehydrate(lookup,"…Lookup-{recipientId}")` | **bounded catch-up READ** (`Rehydrate` = `ReadStream`) | **YES — via field partitions** (v2). |
+
+So: the PM **merge** stays on projections (persistent); the PM **lookup** is a catch-up `Rehydrate` read → a v2
+index-backing candidate. The one required rewire is the read — `Rehydrate` uses `ReadStream("{PM}Lookup-{id}")`,
+and `ReadStream`/`SubscribeToStream` on an index stream is definitively non-functional (SPIKE-9), so the lookup
+read becomes a filtered-`$all` prefix read of `$idx-user-<name>:{recipientId}`. That `GetManager`/`Rehydrate`
+rewire is a v2 item and optional — the PM lookup keeps working on its projection until migrated.
+
+v2 slice sketch (integration tests, when v2 is scheduled): partition read isolation (`:<x>` yields only x, commit
+order — SPIKE-8); partition live tail (SPIKE-11); `rec.value` accessor works / `rec.data`·`rec.body` index
+nothing (guards the SPIKE-4 regression); `ReadStream`/`SubscribeToStream` on `$idx-user-<name>:<key>` throws
+(SPIKE-9).
 
 ## Correctness guarantees (mapped from projection path to index path)
 
@@ -505,7 +494,7 @@ Nothing is left open; the design is fully evidenced.
   projection-backed permanently (the one permanent exclusion).
 - **OPEN-7 / SPIKE-8 — shape-B via field partitions — RESOLVED (PASS, rescued).** SPIKE-4's "impossible" was an
   accessor bug (`rec.data`/`rec.body` vs the real `rec.value`). A field-partitioned index + `:<key>`-prefixed
-  filtered-`$all` read reproduces per-key lookup for catch-up consumers. ⇒ shape B is index-backable (S5).
+  filtered-`$all` read reproduces per-key lookup for catch-up consumers. ⇒ shape B is index-backable (v2 fast-follow).
 - **OPEN-9 / SPIKE-9 — direct index-stream access — RESOLVED (definitively non-functional).** Both
   `SubscribeToStream` and `ReadStream` on `$idx-user-*` deliver nothing, exhaustively. ⇒ the loud guard stays and
   covers reads too; index streams are reached ONLY via filtered `$all`.
@@ -523,18 +512,19 @@ Nothing is left open; the design is fully evidenced.
   built by `IndexNameFor`.
 
 ## Validation Status
-- [x] Completeness (event-modeling): every opt-in intention → index-ensure + filtered-`$all` subscription →
-      read-model view is traced; scope is ALL catch-up consumers (shape-A merges + shape-B field-partition
-      lookups); persistent consumers are the one permanent exclusion (evidence); snapshot handlers deferred.
+- [x] Completeness (event-modeling): every v1 opt-in intention → index-ensure + filtered-`$all` subscription →
+      read-model view is traced; v1 scope = shape-A catch-up (S1–S4); shape-B is a proven-feasible v2 fast-follow;
+      persistent consumers are the one permanent exclusion (evidence); snapshot handlers deferred.
 - [x] Clarity: no vague terms; each guarantee is quantified or cited to a spike.
 - [x] Consistency: one index-creation implementation; terminology matches the feasibility doc and code.
-- [x] Testability: every slice maps to a named integration test against real KurrentDB 26.1; the parity test
+- [x] Testability: every v1 slice maps to a named integration test against real KurrentDB 26.1; the parity test
       (S2-T1) is the acceptance bar.
 - [x] Dependencies: KurrentDB index API, `SubscribeToAll`, relocated `UserDefinedIndex`, `MicroPlumberd.Testing`
       documented with failure handling.
 - [x] Conflicts: coexistence (not replacement) resolves the default-safety vs new-capability tension; layering
       decision resolves the core↔Migration dependency direction.
 
-All empirical questions (OPEN-1 through OPEN-9) are RESOLVED with spike evidence folded in; the design is final.
-Scope: ALL catch-up consumers (shape-A merges + shape-B field-partition lookups); persistent consumers are the
-one permanent exclusion.
+**v1 is FINAL — no open v1 items.** All empirical questions (OPEN-1..9) are RESOLVED with spike evidence folded
+in. The confirmed dividing line: catch-up consumers index-backable (both shapes), persistent consumers
+projection-only (both shapes). v1 ships shape-A (S1–S4); shape-B is a proven-feasible v2 fast-follow with one v2
+design-open item (`$ce`-category filter form, does not affect v1).
