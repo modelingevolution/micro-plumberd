@@ -12,6 +12,7 @@ class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarte
     private FromStream _startPosition;
     private FromRelativeStreamPosition _relativeStartPosition;
     private bool _persistently;
+    private MergeSource _mergeSource;
     /// <summary>
     /// Starts the event handler subscription with the configured settings.
     /// </summary>
@@ -21,7 +22,9 @@ class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarte
     {
         try
         {
-            if (!_persistently)
+            if (_mergeSource == MergeSource.UserDefinedIndex)
+                await plumber.SubscribeEventHandlerViaIndex<THandler>(start: _relativeStartPosition, token: stoppingToken);
+            else if (!_persistently)
                 await plumber.SubscribeEventHandler<THandler>(start: _relativeStartPosition, token: stoppingToken);
             else
                 await plumber.SubscribeEventHandlerPersistently<THandler>(startFrom: _startPosition.ToStreamPosition(), token: stoppingToken);
@@ -33,16 +36,19 @@ class EventHandlerStarter<THandler>(PlumberEngine plumber) : IEventHandlerStarte
     }
 
     /// <summary>
-    /// Configures the event handler with persistence and start position settings.
+    /// Configures the event handler with persistence, start position, and merge-source settings.
     /// </summary>
     /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
     /// <param name="start">The stream position to start reading from.</param>
+    /// <param name="mergeSource">Where to source the merged stream (projection default, or a user-defined index).</param>
     /// <returns>This starter instance for method chaining.</returns>
-    public EventHandlerStarter<THandler> Configure(bool persistently = false, FromStream? start = null)
+    public EventHandlerStarter<THandler> Configure(bool persistently = false, FromStream? start = null,
+        MergeSource mergeSource = MergeSource.Projection)
     {
         this._persistently = persistently;
         this._startPosition = start ?? FromStream.Start;
         this._relativeStartPosition = _startPosition;
+        this._mergeSource = mergeSource;
         return this;
     }
     /// <summary>

@@ -15,6 +15,13 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.7" />
   </ItemGroup>
 
+  <!-- Migration → core: the user-defined-index lifecycle primitives (create/name/filter/stream + HTTP endpoint)
+       live in core (MicroPlumberd.UserDefinedIndex / KurrentHttpEndpoint). Migration delegates to them so there
+       is ONE implementation. See docs/design-index-backed-merge-streams.md — "Assembly layering". -->
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>

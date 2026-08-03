@@ -6,9 +6,12 @@ using Microsoft.Extensions.Logging;
 namespace MicroPlumberd;
 
 /// <summary>
-/// Represents the state of a subscription runner.
+/// Stream-backed (projection output-stream) subscription state — the existing behaviour, refactored behind
+/// <see cref="ISubscriptionState"/> so the shared loop can also drive the index-backed
+/// <see cref="IndexSubscriptionState"/>. Subscribes via <c>SubscribeToStream</c> and resumes on the stream-local
+/// revision (<c>FromStream.After(OriginalEventNumber)</c>).
 /// </summary>
-record SubscriptionRunnerState : IDisposable
+record SubscriptionRunnerState : ISubscriptionState
 {
     private IDisposable? _subscription;
 
@@ -24,12 +27,23 @@ record SubscriptionRunnerState : IDisposable
 
     public KurrentDBClient.StreamSubscriptionResult Subscribe()
     {
+        // Loud guard against the SPIKE-2a/SPIKE-9 footgun: an index read stream is NOT directly subscribable —
+        // SubscribeToStream("$idx-user-…") silently delivers ZERO events. Fail LOUD instead of hanging silent.
+        // Index streams are ONLY ever read via filtered $all (IndexSubscriptionState).
+        if (StreamName.StartsWith(UserDefinedIndex.IndexStreamPrefixRoot, StringComparison.Ordinal))
+            throw new InvalidOperationException(
+                $"'{StreamName}' is a user-defined-index read stream and cannot be consumed via SubscribeToStream "
+                + "(it silently delivers zero events — SPIKE-2a/SPIKE-9). Use IndexSubscriptionState (filtered "
+                + "SubscribeToAll + StreamFilter.Prefix) instead. See docs/design-index-backed-merge-streams.md.");
+
         var result = _client.SubscribeToStream(StreamName, Position, true, UserCredentials, CancellationToken);
         _subscription = result;
         return result;
     }
+
+    public void Advance(ResolvedEvent e) => Position = FromStream.After(e.OriginalEventNumber);
+
     public FromStream Position { get; set; }
-    public IEventHandler Handler { get; set; }
     private readonly FromStream _initialPosition;
     private readonly KurrentDBClient _client;
     public string StreamName { get; init; }
@@ -41,7 +55,7 @@ record SubscriptionRunnerState : IDisposable
         _subscription?.Dispose();
     }
 
-   
+
 };
 class SubscriptionSeeker(PlumberEngine plumber, string streamName, FromRelativeStreamPosition start,
     UserCredentials? userCredentials = null, CancellationToken cancellationToken = default) : ISubscriptionRunner
@@ -143,7 +157,7 @@ public class FailFastException : Exception
         
     }
 }
-class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscription) : ISubscriptionRunner
+class SubscriptionRunner(PlumberEngine plumber, ISubscriptionState subscription) : ISubscriptionRunner
 {
     public async Task<T> WithHandler<T>(T model)
         where T : IEventHandler, ITypeRegister
@@ -159,7 +173,6 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
     
     public async Task<IEventHandler> WithHandler(IEventHandler model, TypeEventConverter func)
     {
-        subscription.Handler = model;
         await Task.Factory.StartNew(async (_) =>
         {
             var l = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
@@ -174,7 +187,7 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
                         {
                             case StreamMessage.Event(var e):
                                 await OnEvent(func, e, model);
-                                subscription.Position = FromStream.After(e.OriginalEventNumber);
+                                subscription.Advance(e);
                                 break;
                             case StreamMessage.CaughtUp:
                                 l?.LogDebug($"Subscription '{subscription.StreamName}' caught up.");

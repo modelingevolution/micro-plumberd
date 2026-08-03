@@ -173,11 +173,31 @@ public static class ContainerExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
     /// <param name="start">The stream position to start reading from. If null, defaults to the start of the stream.</param>
+    /// <param name="mergeSource">Where to source the merged stream. Default <see cref="MergeSource.Projection"/> (unchanged).
+    /// <see cref="MergeSource.UserDefinedIndex"/> is opt-in and CATCH-UP-only, with WEAKER CaughtUp semantics — see that
+    /// enum value: <c>CaughtUp</c> may fire before all history is delivered, so do NOT opt in if the read model uses
+    /// <c>ICaughtUpHandler</c> as a "fully caught up / now authoritative" readiness signal. No-loss + commit order still hold.</param>
     /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddScopedEventHandler<TEventHandler>(this IServiceCollection services,
-        bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
+        bool persistently = false, FromStream? start = null, MergeSource mergeSource = MergeSource.Projection)
+        where TEventHandler : class, IEventHandler, ITypeRegister
     {
-        return services.AddScoped<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start);
+        return services.AddScoped<TEventHandler>().AddEventHandler<TEventHandler>(persistently, start, mergeSource);
+    }
+
+    // Registration-time guards (fail fast): index-backing is CATCH-UP-only (persistent subscriptions cannot see
+    // index links — SPIKE-7, permanent), and only Start/End are meaningful on a filtered-$all subscription.
+    private static void ValidateMergeSource(MergeSource mergeSource, bool persistently, FromStream? start)
+    {
+        if (mergeSource != MergeSource.UserDefinedIndex) return;
+        if (persistently)
+            throw new InvalidOperationException(
+                "index-backed merge supports catch-up subscriptions only; persistent subscriptions stay "
+                + "projection-backed (SPIKE-7). Remove persistently:true or use MergeSource.Projection.");
+        if (start is { } s && s != FromStream.Start && s != FromStream.End)
+            throw new InvalidOperationException(
+                "index-backed merge supports only Start or End as a start position; a specific stream revision has "
+                + "no meaning on a filtered-$all subscription.");
     }
 
     /// <summary>
@@ -189,13 +209,19 @@ public static class ContainerExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
     /// <param name="start">The stream position to start reading from. If null, defaults to the start of the stream.</param>
+    /// <param name="mergeSource">Where to source the merged stream. Default <see cref="MergeSource.Projection"/> (unchanged).
+    /// <see cref="MergeSource.UserDefinedIndex"/> is opt-in and CATCH-UP-only, with WEAKER CaughtUp semantics — see that
+    /// enum value: <c>CaughtUp</c> may fire before all history is delivered, so do NOT opt in if the read model uses
+    /// <c>ICaughtUpHandler</c> as a "fully caught up / now authoritative" readiness signal. No-loss + commit order still hold.</param>
     /// <returns>The service collection for method chaining.</returns>
     public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
-        bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
+        bool persistently = false, FromStream? start = null, MergeSource mergeSource = MergeSource.Projection)
+        where TEventHandler : class, IEventHandler, ITypeRegister
     {
+        ValidateMergeSource(mergeSource, persistently, start);
         services.AddSingleton<TEventHandler>();
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
-        services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start));
+        services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start, mergeSource));
         // EventHandlerExecutor delegates directly to the handler without creating a scope per event.
         // Previously this used ScopedEventHandlerExecutor which created and disposed a scope per event
         // for no benefit — the handler is singleton and resolves to the same instance regardless.
@@ -211,11 +237,16 @@ public static class ContainerExtensions
     /// <param name="services">The service collection.</param>
     /// <param name="persistently">If true, uses persistent subscriptions; otherwise, uses catch-up subscriptions.</param>
     /// <param name="start">The stream position to start reading from. If null, defaults to the start of the stream.</param>
+    /// <param name="mergeSource">Where to source the merged stream. Default <see cref="MergeSource.Projection"/> (unchanged).
+    /// <see cref="MergeSource.UserDefinedIndex"/> is opt-in and CATCH-UP-only, with WEAKER CaughtUp semantics — see that
+    /// enum value: <c>CaughtUp</c> may fire before all history is delivered, so do NOT opt in if the read model uses
+    /// <c>ICaughtUpHandler</c> as a "fully caught up / now authoritative" readiness signal. No-loss + commit order still hold.</param>
     /// <returns>The service collection for method chaining.</returns>
-    public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null) where TEventHandler : class, IEventHandler, ITypeRegister
+    public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services, bool persistently = false, FromStream? start = null, MergeSource mergeSource = MergeSource.Projection) where TEventHandler : class, IEventHandler, ITypeRegister
     {
+        ValidateMergeSource(mergeSource, persistently, start);
         services.AddSingleton<EventHandlerStarter<TEventHandler>>();
-        services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start));
+        services.AddSingleton<IEventHandlerStarter>(sp => sp.GetRequiredService<EventHandlerStarter<TEventHandler>>().Configure(persistently, start, mergeSource));
         // ScopedEventHandlerExecutor creates a new scope per event so the handler and its
         // scoped dependencies (e.g. DbContext) get proper lifetime management.
         services.AddSingleton<IEventHandler<TEventHandler>, ScopedEventHandlerExecutor<TEventHandler>>();

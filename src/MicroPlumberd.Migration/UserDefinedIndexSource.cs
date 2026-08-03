@@ -54,13 +54,14 @@ public sealed record UserDefinedIndexSpec
 public sealed class UserDefinedIndexSource
 {
     /// <summary>The read stream for an index is <c>$idx-user-{name}</c> — read it via filtered <c>$all</c>.</summary>
-    public const string IndexStreamPrefixRoot = "$idx-user-";
+    public const string IndexStreamPrefixRoot = UserDefinedIndex.IndexStreamPrefixRoot;
 
     private readonly KurrentDBClient _client;
     private readonly Uri _httpBase;
     private readonly string _user;
     private readonly string _pass;
     private readonly ILogger _logger;
+    private readonly UserDefinedIndex _core;
 
     /// <summary>
     /// </summary>
@@ -74,60 +75,21 @@ public sealed class UserDefinedIndexSource
         _client = client ?? throw new ArgumentNullException(nameof(client));
         (_httpBase, _user, _pass) = KurrentHttpEndpoint.Parse(connectionString);
         _logger = logger ?? NullLogger.Instance;
+        _core = new UserDefinedIndex(_httpBase, _user, _pass, _logger);
     }
 
     /// <summary>The read stream (<c>$idx-user-{name}</c>) that carries <paramref name="name"/>'s indexed links.</summary>
-    public static string IndexStream(string name) => IndexStreamPrefixRoot + name;
+    public static string IndexStream(string name) => UserDefinedIndex.IndexStream(name);
 
     /// <summary>
-    /// Creates the index if it does not already exist (idempotent). Returns without waiting for the backfill —
-    /// call <see cref="WaitUntilReadyAsync"/> before reading. No-op when <paramref name="dryRun"/> is true.
+    /// Creates the index if it does not already exist (idempotent) — delegates to the core
+    /// <see cref="UserDefinedIndex"/>. Returns without waiting for the backfill — call
+    /// <see cref="WaitUntilReadyAsync"/> before reading. No-op when <paramref name="dryRun"/> is true.
     /// </summary>
-    public async Task EnsureAsync(UserDefinedIndexSpec spec, bool dryRun = false, CancellationToken ct = default)
+    public Task EnsureAsync(UserDefinedIndexSpec spec, bool dryRun = false, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(spec);
-        var name = NormalizeName(spec.Name);
-        var filter = BuildFilter(spec.EventTypes);
-
-        if (dryRun)
-        {
-            _logger.LogInformation("DRY RUN: would create user-defined index '{Name}' with filter [{Filter}].",
-                name, filter);
-            return;
-        }
-
-        var url = new Uri(_httpBase, $"v2/indexes/{Uri.EscapeDataString(name)}");
-        using var http = KurrentHttpEndpoint.CreateClient(_user, _pass);
-        var payload = new JsonObject { ["filter"] = filter, ["start"] = true };
-        using var content = new StringContent(payload.ToJsonString(), Encoding.UTF8, "application/json");
-
-        HttpResponseMessage resp;
-        try { resp = await http.PostAsync(url, content, ct).ConfigureAwait(false); }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Failed to POST user-defined index '{Name}' at {Uri}.", name, url);
-            throw;
-        }
-
-        if (resp.IsSuccessStatusCode)
-        {
-            _logger.LogInformation("Created (or confirmed) user-defined index '{Name}' with filter [{Filter}].",
-                name, filter);
-            return;
-        }
-
-        var body = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
-        if (resp.StatusCode == HttpStatusCode.Conflict) // 409 INDEX_ALREADY_EXISTS — idempotent success
-        {
-            await WarnOnFilterDriftAsync(http, name, filter, ct).ConfigureAwait(false);
-            _logger.LogInformation("User-defined index '{Name}' already exists — reusing it.", name);
-            return;
-        }
-
-        _logger.LogError("Creating user-defined index '{Name}' at {Uri} failed: HTTP {Code} {Body}.",
-            name, url, (int)resp.StatusCode, body);
-        throw new InvalidOperationException(
-            $"Creating user-defined index '{name}' failed: HTTP {(int)resp.StatusCode} at {url} — {body}");
+        return _core.EnsureAsync(spec.Name, spec.EventTypes, dryRun, ct);
     }
 
     /// <summary>
@@ -268,55 +230,14 @@ public sealed class UserDefinedIndexSource
     // ---- helpers -------------------------------------------------------------------------------------------
 
     /// <summary>
-    /// Builds the index filter as the single-argument JavaScript arrow function KurrentDB requires:
-    /// <c>rec =&gt; rec.schema.name == "A" || rec.schema.name == "B"</c>. An empty set ⇒ null (index all records).
-    /// Each event-type name is escaped for the JS double-quoted string context so a name containing a quote,
-    /// backslash or control character cannot break out of the literal (or silently corrupt the filter).
+    /// Normalises a name to a valid KurrentDB index name — delegates to the core <see cref="UserDefinedIndex"/>
+    /// (single implementation shared by the live and offline paths). Kept as a forwarder so existing internal
+    /// callers (e.g. <see cref="UserDefinedIndexCopyContext"/>) are unchanged.
     /// </summary>
-    internal static string? BuildFilter(IReadOnlySet<string> eventTypes)
-    {
-        if (eventTypes.Count == 0) return null;
-        // Ordinal-sorted so the generated filter is STABLE for the same set (matters for drift detection).
-        var terms = eventTypes.OrderBy(t => t, StringComparer.Ordinal)
-            .Select(t => $"rec.schema.name == \"{EscapeJsString(t)}\"");
-        return "rec => " + string.Join(" || ", terms);
-    }
+    internal static string NormalizeName(string raw) => UserDefinedIndex.NormalizeName(raw);
 
-    /// <summary>Escapes a string for a JavaScript double-quoted literal (backslash, quote, control chars).</summary>
-    internal static string EscapeJsString(string s)
-    {
-        var sb = new StringBuilder(s.Length + 8);
-        foreach (var ch in s)
-            sb.Append(ch switch
-            {
-                '\\' => "\\\\",
-                '"' => "\\\"",
-                '\n' => "\\n",
-                '\r' => "\\r",
-                '\t' => "\\t",
-                < ' ' => $"\\u{(int)ch:x4}",
-                _ => ch.ToString()
-            });
-        return sb.ToString();
-    }
-
-    /// <summary>
-    /// Normalises an arbitrary name (e.g. an <c>[OutputStream]</c> stream id like <c>FooModel_v1</c>) to a valid
-    /// KurrentDB index name: lower-case; every character outside <c>[a-z0-9_]</c> becomes <c>-</c>. Names that
-    /// would collide after lower-casing/replacement should be disambiguated by the caller (the runner appends a
-    /// short content hash — see <see cref="UserDefinedIndexCopyContext"/>).
-    /// </summary>
-    internal static string NormalizeName(string raw)
-    {
-        if (string.IsNullOrWhiteSpace(raw)) throw new ArgumentException("Index name must be non-empty.", nameof(raw));
-        var sb = new StringBuilder(raw.Length);
-        foreach (var ch in raw)
-        {
-            var c = char.ToLowerInvariant(ch);
-            sb.Append(c is (>= 'a' and <= 'z') or (>= '0' and <= '9') or '_' or '-' ? c : '-');
-        }
-        return sb.ToString();
-    }
+    /// <summary>Builds the index filter — delegates to the core <see cref="UserDefinedIndex"/>.</summary>
+    internal static string? BuildFilter(IReadOnlySet<string> eventTypes) => UserDefinedIndex.BuildFilter(eventTypes);
 
     private async Task<string?> TryGetStateAsync(HttpClient http, Uri url, string name, CancellationToken ct)
     {
@@ -340,28 +261,6 @@ public sealed class UserDefinedIndexSource
         var json = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
         var node = JsonNode.Parse(json);
         return node?["index"]?["state"]?.GetValue<string>();
-    }
-
-    private async Task WarnOnFilterDriftAsync(HttpClient http, string name, string? requestedFilter, CancellationToken ct)
-    {
-        var url = new Uri(_httpBase, $"v2/indexes/{Uri.EscapeDataString(name)}");
-        try
-        {
-            using var resp = await http.GetAsync(url, ct).ConfigureAwait(false);
-            if (!resp.IsSuccessStatusCode) return;
-            var json = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
-            var existing = JsonNode.Parse(json)?["index"]?["filter"]?.GetValue<string>();
-            var existingNorm = string.IsNullOrEmpty(existing) ? null : existing;
-            if (!string.Equals(existingNorm, requestedFilter, StringComparison.Ordinal))
-                _logger.LogWarning(
-                    "User-defined index '{Name}' already exists with a DIFFERENT filter (existing [{Existing}], "
-                    + "requested [{Requested}]) — the existing definition is kept.", name, existingNorm ?? "<all>",
-                    requestedFilter ?? "<all>");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogWarning(ex, "Could not read existing filter for user-defined index '{Name}'.", name);
-        }
     }
 
     // O(n) count of the indexed events EXACTLY as ReadAsync would yield them: same filtered read, same

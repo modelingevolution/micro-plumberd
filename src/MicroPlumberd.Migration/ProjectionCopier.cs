@@ -235,7 +235,9 @@ internal sealed class ProjectionCopier(ILogger? logger = null)
     {
         var existing = await esClient.GetStreamMetadataAsync(stream, cancellationToken: ct).ConfigureAwait(false);
         var customDoc = JsonDocument.Parse($"{{\"{QueryHashMetadataKey}\":\"{hash}\"}}");
-        var newMeta = new StreamMetadata(existing.Metadata.MaxCount, existing.Metadata.MaxAge,
+        // Fully qualify: core (referenced since the UserDefinedIndex relocation) also declares a
+        // MicroPlumberd.StreamMetadata that would otherwise shadow this KurrentDB.Client type.
+        var newMeta = new KurrentDB.Client.StreamMetadata(existing.Metadata.MaxCount, existing.Metadata.MaxAge,
             existing.Metadata.TruncateBefore, existing.Metadata.CacheControl, existing.Metadata.Acl, customDoc);
         await esClient.SetStreamMetadataAsync(stream, StreamState.Any, newMeta, cancellationToken: ct)
             .ConfigureAwait(false);
