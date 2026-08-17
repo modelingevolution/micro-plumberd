@@ -11,8 +11,26 @@ using System.Security.Claims;
 /// </summary>
 [EventHandler]
 [OutputStream("UserAuthorizationModel_v1")]
-public partial class UserAuthorizationModel
+public partial class UserAuthorizationModel : ICaughtUpHandler
 {
+
+    // Readiness (feature-001 design.md §2): the seed runner waits for this before its first read.
+    private readonly TaskCompletionSource _live = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    /// <summary>
+    /// Completes once the subscription feeding this read model has replayed history and gone live
+    /// (<see cref="ICaughtUpHandler.CaughtUp"/>). Completes once and stays completed.
+    /// </summary>
+    public Task Live => _live.Task;
+
+    /// <summary>
+    /// Called by the subscription runner on the history-to-live boundary; completes <see cref="Live"/>.
+    /// </summary>
+    public Task CaughtUp()
+    {
+        _live.TrySetResult();
+        return Task.CompletedTask;
+    }
     // Primary user authorization data store
     private readonly ConcurrentDictionary<UserIdentifier, UserAuthData> _userAuthData = new();
 

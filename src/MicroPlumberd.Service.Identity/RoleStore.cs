@@ -86,6 +86,7 @@ public class RoleStore :
                 {
                     return IdentityResult.Failed(new IdentityError
                     {
+                        Code = "DuplicateRoleName",
                         Description = $"Role with name '{role.Name}' already exists"
                     });
                 }
