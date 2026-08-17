@@ -1,7 +1,3 @@
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("MicroPlumberd.Tests")]
-
 namespace MicroPlumberd.Services.Identity;
 
 /// <summary>
@@ -84,12 +80,12 @@ public sealed class IdentitySeedBuilder
     /// retry and health rules as the declarative steps.
     /// </summary>
     /// <param name="step">The step. Everything it throws fails the attempt and is retried with backoff.</param>
-    /// <param name="label">Optional human readable label; defaults to <c>custom step #n</c>.</param>
+    /// <param name="label">Optional human readable label; defaults to <c>custom step #n</c>, counting custom steps only.</param>
     /// <returns>The builder, for chaining.</returns>
     public IdentitySeedBuilder Then(Func<IIdentitySeedContext, CancellationToken, Task> step, string? label = null)
     {
         ArgumentNullException.ThrowIfNull(step);
-        _steps.Add(new CustomStep(step, label ?? $"custom step #{_steps.Count + 1}"));
+        _steps.Add(new CustomStep(step, label ?? $"custom step #{_steps.Count(x => x is CustomStep) + 1}"));
         return this;
     }
 

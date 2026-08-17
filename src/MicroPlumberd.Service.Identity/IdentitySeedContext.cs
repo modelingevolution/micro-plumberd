@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using MicroPlumberd.Services.Identity.ReadModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -29,14 +30,17 @@ public interface IIdentitySeedContext
     Task EnsureRoleAsync(string name, CancellationToken ct = default);
 
     /// <summary>
-    /// Ensures a user with this e-mail exists (<c>EmailConfirmed = true</c>), then waits until it is visible in
-    /// <see cref="UsersModel"/>. An existing user is returned untouched — no password reset, no role removal (R2).
+    /// Ensures a user with this e-mail exists and has <c>EmailConfirmed = true</c>, then waits until that is
+    /// visible in <see cref="UsersModel"/>. The confirm-only flip false→true is the ONLY write ever applied to an
+    /// existing user — no password reset, no user-name change, no role removal (R2).
     /// </summary>
     /// <param name="email">E-mail; also the lookup key.</param>
     /// <param name="userName">User name; defaults to the e-mail when null.</param>
     /// <param name="password">Password; when null the user is created without one (external-login-only account).</param>
     /// <param name="ct">Cancellation token.</param>
-    /// <returns>The existing or freshly created user, as held by <see cref="UsersModel"/>.</returns>
+    /// <returns>
+    /// The user as held by <see cref="UsersModel"/>. The returned instance is the read model's own; do not mutate.
+    /// </returns>
     /// <exception cref="TimeoutException">The write did not become visible within the per-attempt bound.</exception>
     Task<User> EnsureUserAsync(string email, string? userName = null, string? password = null, CancellationToken ct = default);
 
@@ -60,12 +64,20 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
     /// <summary>How often a read-your-write wait re-checks visibility.</summary>
     internal static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(100);
 
+    private readonly IUserStore<User> _userStore;
     private readonly IUserEmailStore<User>? _emailStore;
     private readonly RolesModel _roles;
     private readonly UsersModel _users;
     private readonly UserAuthorizationModel _userAuth;
     private readonly TimeSpan _waitUpTo;
     private readonly TimeProvider _time;
+
+    /// <summary>
+    /// Runner-scoped memory of writes that already succeeded, spanning attempts (design.md §4.3). Without it a
+    /// retry after a timed-out visibility wait creates a duplicate: neither <c>RoleStore</c> nor <c>UserStore</c>
+    /// dedupes against anything but the (still unfolded) read model.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, string> _written;
 
     public IdentitySeedContext(
         UserManager<User> userManager,
@@ -74,16 +86,19 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
         RolesModel roles,
         UsersModel users,
         UserAuthorizationModel userAuth,
+        ConcurrentDictionary<string, string> written,
         TimeSpan waitUpTo,
         TimeProvider time,
         ILogger logger)
     {
         UserManager = userManager;
         RoleManager = roleManager;
+        _userStore = userStore;
         _emailStore = userStore as IUserEmailStore<User>;
         _roles = roles;
         _users = users;
         _userAuth = userAuth;
+        _written = written;
         _waitUpTo = waitUpTo;
         _time = time;
         Logger = logger;
@@ -102,23 +117,36 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
     public async Task EnsureRoleAsync(string name, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
-        var normalized = Normalize(name);
+        var normalized = NormalizeRole(name);
+        var key = $"role:{normalized}";
         var label = $"role '{name}'";
 
-        if (_roles.GetByNormalizedName(normalized) is null)
+        if (_roles.GetByNormalizedName(normalized) is not null)
         {
-            Logger.LogInformation("Identity seed: ensuring {Step}", label);
-            var result = await RoleManager.CreateAsync(new Role { Name = name });
-            if (result.Succeeded)
-                Logger.LogInformation("Identity seed: created {Step}", label);
-            else if (IsAlreadyThere(result))
-                Logger.LogInformation("Identity seed: {Step} was created concurrently: {Errors}", label, Describe(result));
-            else
-                throw new InvalidOperationException($"Could not create {label}: {Describe(result)}");
+            Logger.LogInformation("Identity seed: {Step} already present", label);
+        }
+        else if (_written.ContainsKey(key))
+        {
+            Logger.LogInformation("Identity seed: {Step} was already created by this runner; waiting for it to become visible", label);
         }
         else
         {
-            Logger.LogInformation("Identity seed: {Step} already present", label);
+            Logger.LogInformation("Identity seed: ensuring {Step}", label);
+            var role = new Role { Name = name };
+            var result = await RoleManager.CreateAsync(role);
+            if (result.Succeeded)
+            {
+                _written[key] = role.Id;
+                Logger.LogInformation("Identity seed: created {Step}", label);
+            }
+            else if (IsAlreadyThere(result, label))
+            {
+                Logger.LogInformation("Identity seed: {Step} was created concurrently: {Errors}", label, Describe(result));
+            }
+            else
+            {
+                throw new InvalidOperationException($"Could not create {label}: {Describe(result)}");
+            }
         }
 
         await UntilAsync(() => _roles.GetByNormalizedName(normalized) is not null,
@@ -129,47 +157,51 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
     public async Task<User> EnsureUserAsync(string email, string? userName = null, string? password = null, CancellationToken ct = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(email);
-        var normalizedEmail = Normalize(email);
+        var normalizedEmail = NormalizeEmail(email);
+        var key = $"user:{normalizedEmail}";
         var label = $"user '{email}'";
 
-        var existing = _users.GetByNormalizedEmail(normalizedEmail);
-        if (existing is not null)
+        if (_users.GetByNormalizedEmail(normalizedEmail) is not null)
         {
             Logger.LogInformation("Identity seed: {Step} already present", label);
-            return existing;
         }
-
-        Logger.LogInformation("Identity seed: ensuring {Step}", label);
-        var user = new User
+        else if (_written.ContainsKey(key))
         {
-            UserName = userName ?? email,
-            Email = email,
-            EmailConfirmed = true
-        };
-
-        var result = password is null
-            ? await UserManager.CreateAsync(user)
-            : await UserManager.CreateAsync(user, password);
-
-        if (result.Succeeded)
-            Logger.LogInformation("Identity seed: created {Step}", label);
-        else if (IsAlreadyThere(result))
-            Logger.LogInformation("Identity seed: {Step} was created concurrently: {Errors}", label, Describe(result));
+            Logger.LogInformation("Identity seed: {Step} was already created by this runner; waiting for it to become visible", label);
+        }
         else
-            throw new InvalidOperationException($"Could not create {label}: {Describe(result)}");
+        {
+            Logger.LogInformation("Identity seed: ensuring {Step}", label);
+            var user = new User
+            {
+                UserName = userName ?? email,
+                Email = email,
+                EmailConfirmed = true
+            };
+
+            var result = password is null
+                ? await UserManager.CreateAsync(user)
+                : await UserManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                _written[key] = user.Id;
+                Logger.LogInformation("Identity seed: created {Step}", label);
+            }
+            else if (IsAlreadyThere(result, label))
+            {
+                Logger.LogInformation("Identity seed: {Step} was created concurrently: {Errors}", label, Describe(result));
+            }
+            else
+            {
+                throw new InvalidOperationException($"Could not create {label}: {Describe(result)}");
+            }
+        }
 
         await UntilAsync(() => _users.GetByNormalizedEmail(normalizedEmail) is not null,
             $"{label} to become visible in UsersModel", ct);
 
-        // UserStore.CreateAsync does not carry User.EmailConfirmed into the aggregate (a profile is created
-        // unconfirmed), so a seeded user has to be confirmed with its own write. Only on creation: an existing
-        // user is never modified (R2).
-        if (_users.GetByNormalizedEmail(normalizedEmail) is { EmailConfirmed: false } fresh && _emailStore is not null)
-        {
-            await _emailStore.SetEmailConfirmedAsync(fresh, true, ct);
-            await UntilAsync(() => _users.GetByNormalizedEmail(normalizedEmail) is { EmailConfirmed: true },
-                $"{label} e-mail confirmation to become visible in UsersModel", ct);
-        }
+        await EnsureEmailConfirmedAsync(normalizedEmail, label, ct);
 
         return _users.GetByNormalizedEmail(normalizedEmail)!;
     }
@@ -184,28 +216,66 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
         // "Role 'X' does not exist" cannot happen. Idempotent when the role step already ran.
         await EnsureRoleAsync(role, ct);
 
-        var normalizedRole = Normalize(role);
+        var normalizedRole = NormalizeRole(role);
         var userId = UserIdentifier.Parse(user.Id, null);
+        var key = $"membership:{user.Id}:{normalizedRole}";
         var label = $"user '{user.Email}' in role '{role}'";
 
-        if (!_userAuth.IsInRole(userId, normalizedRole))
+        if (_userAuth.IsInRole(userId, normalizedRole))
+        {
+            Logger.LogInformation("Identity seed: {Step} already present", label);
+        }
+        else if (_written.ContainsKey(key))
+        {
+            Logger.LogInformation("Identity seed: {Step} was already assigned by this runner; waiting for it to become visible", label);
+        }
+        else
         {
             Logger.LogInformation("Identity seed: ensuring {Step}", label);
             var result = await UserManager.AddToRoleAsync(user, role);
             if (result.Succeeded)
+            {
+                _written[key] = normalizedRole;
                 Logger.LogInformation("Identity seed: created {Step}", label);
-            else if (IsAlreadyThere(result))
+            }
+            else if (IsAlreadyThere(result, label))
+            {
                 Logger.LogInformation("Identity seed: {Step} was assigned concurrently: {Errors}", label, Describe(result));
+            }
             else
+            {
                 throw new InvalidOperationException($"Could not assign {label}: {Describe(result)}");
-        }
-        else
-        {
-            Logger.LogInformation("Identity seed: {Step} already present", label);
+            }
         }
 
         await UntilAsync(() => _userAuth.IsInRole(userId, normalizedRole),
             $"{label} to become visible in UserAuthorizationModel", ct);
+    }
+
+    /// <summary>
+    /// <c>UserStore.CreateAsync</c> does not carry <c>User.EmailConfirmed</c> into <c>UserProfileAggregate</c>, so a
+    /// seeded user is created unconfirmed and needs its own write. This runs for an existing declared user too: the
+    /// confirm-only flip false→true is part of the declared state (R2) and is the only write ever applied to one.
+    /// The aggregate itself is idempotent (<c>ConfirmEmail</c> returns early when already confirmed), so a repeat
+    /// after a timed-out visibility wait appends nothing.
+    /// </summary>
+    private async Task EnsureEmailConfirmedAsync(string normalizedEmail, string label, CancellationToken ct)
+    {
+        if (_users.GetByNormalizedEmail(normalizedEmail) is not { EmailConfirmed: false } unconfirmed)
+            return;
+
+        if (_emailStore is null)
+        {
+            Logger.LogWarning(
+                "Identity seed: {Step} is not e-mail confirmed and the registered IUserStore<User> ({StoreType}) is not an IUserEmailStore<User>; leaving it unconfirmed",
+                label, _userStore.GetType().FullName);
+            return;
+        }
+
+        Logger.LogInformation("Identity seed: confirming the e-mail of {Step}", label);
+        await _emailStore.SetEmailConfirmedAsync(unconfirmed, true, ct);
+        await UntilAsync(() => _users.GetByNormalizedEmail(normalizedEmail) is { EmailConfirmed: true },
+            $"{label} e-mail confirmation to become visible in UsersModel", ct);
     }
 
     /// <summary>
@@ -236,12 +306,31 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
         }
     }
 
-    private static string Normalize(string value) => value.ToUpperInvariant();
+    /// <summary>
+    /// Normalizes a role name with the registered <see cref="ILookupNormalizer"/>, so the key matches what
+    /// <c>RoleManager.CreateAsync</c> stored in <c>RoleCreated.NormalizedName</c>. Never <c>ToUpperInvariant()</c>:
+    /// a consumer with a custom normalizer would otherwise make every visibility check fail forever.
+    /// </summary>
+    private string NormalizeRole(string name) => RoleManager.NormalizeKey(name) ?? name;
 
-    private static bool IsAlreadyThere(IdentityResult result) =>
-        result.Errors.Any(e =>
-            e.Code is "DuplicateRoleName" or "DuplicateUserName" or "DuplicateEmail" or "UserAlreadyInRole" ||
-            (e.Description?.Contains("already", StringComparison.OrdinalIgnoreCase) ?? false));
+    /// <summary>Normalizes an e-mail with the registered <see cref="ILookupNormalizer"/>.</summary>
+    private string NormalizeEmail(string email) => UserManager.NormalizeEmail(email) ?? email;
+
+    /// <summary>
+    /// A failed <see cref="IdentityResult"/> counts as "someone else already created it" only by
+    /// <see cref="IdentityError.Code"/> — never by message text. A failure carrying no code is logged at Warning
+    /// and treated as a real failure, so the visibility wait cannot mask it.
+    /// </summary>
+    private bool IsAlreadyThere(IdentityResult result, string label)
+    {
+        if (result.Errors.Any(e => e.Code is "DuplicateRoleName" or "DuplicateUserName" or "DuplicateEmail" or "UserAlreadyInRole"))
+            return true;
+
+        foreach (var e in result.Errors.Where(e => string.IsNullOrEmpty(e.Code)))
+            Logger.LogWarning("Identity seed: {Step} failed with an error that carries no code: {Description}", label, e.Description);
+
+        return false;
+    }
 
     private static string Describe(IdentityResult result) =>
         string.Join(", ", result.Errors.Select(e => e.Description));

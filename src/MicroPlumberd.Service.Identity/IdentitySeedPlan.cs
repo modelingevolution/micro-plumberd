@@ -87,9 +87,3 @@ internal sealed class IdentitySeedPlan
         }
     }
 }
-
-/// <summary>
-/// Marker used to register the hosted <see cref="IdentityInitializerService"/> exactly once, however many
-/// times <c>AddIdentitySeed</c> / <c>AddIdentityInitializer</c> are called.
-/// </summary>
-internal sealed class IdentitySeedHostedMarker;

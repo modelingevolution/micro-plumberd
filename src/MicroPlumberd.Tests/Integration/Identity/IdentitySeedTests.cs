@@ -143,6 +143,70 @@ public class IdentitySeedTests : IClassFixture<EventStoreServer>, IAsyncLifetime
         await second.StopAsync();
     }
 
+    [Fact]
+    public async Task AT02b_AnExistingUnconfirmedDeclaredUserIsConfirmedAndNothingElseIsTouched()
+    {
+        // Given: a user an operator created with a password, which the store persists UNCONFIRMED
+        // (UserStore.CreateAsync does not carry User.EmailConfirmed into UserProfileAggregate).
+        using (var first = CreateHost(NewLogs(), s => s.AddIdentitySeed(seed => seed.Role("Administrator"))))
+        {
+            await first.StartAsync();
+            await Seed(first).Completed.WaitAsync(Cap);
+
+            using var scope = first.Services.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var created = await userManager.CreateAsync(
+                new User { UserName = "operator", Email = "unconfirmed@example.com", EmailConfirmed = true },
+                "Original123!");
+            created.Succeeded.Should().BeTrue(
+                "the operator's user must land: {0}", string.Join(", ", created.Errors.Select(e => e.Description)));
+
+            await Until(async () => await userManager.FindByEmailAsync("unconfirmed@example.com") is not null,
+                "the operator's user to become visible");
+
+            // Positive control: the precondition this test exists for really holds.
+            var beforeSeed = await userManager.FindByEmailAsync("unconfirmed@example.com");
+            beforeSeed!.EmailConfirmed.Should().BeFalse(
+                "UserStore.CreateAsync leaves the profile unconfirmed - without that this test proves nothing");
+
+            await first.StopAsync();
+        }
+
+        // When: a host declares that same user.
+        var logs = NewLogs();
+        using var second = CreateHost(logs, s => s.AddIdentitySeed(seed => seed
+            .Role("Administrator")
+            .User("unconfirmed@example.com", u => u
+                .WithUserName("seeded")
+                .WithPassword("Seeded999!")
+                .InRoles("Administrator"))));
+
+        await second.StartAsync();
+        await Seed(second).Completed.WaitAsync(Cap);
+
+        second.Services.GetRequiredService<UsersModel>().GetAllUsers().Should().HaveCount(1);
+
+        using (var scope = second.Services.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var user = await userManager.FindByEmailAsync("unconfirmed@example.com");
+            user.Should().NotBeNull();
+
+            user!.EmailConfirmed.Should().BeTrue("the confirm-only flip false->true is part of the declared state");
+            (await userManager.IsInRoleAsync(user, "Administrator")).Should().BeTrue();
+
+            // ...and it is the ONLY write applied to an existing user.
+            user.UserName.Should().Be("operator", "the declared user name must not overwrite an existing one");
+            (await userManager.CheckPasswordAsync(user, "Original123!"))
+                .Should().BeTrue("the declared password must not be applied to an existing user");
+            (await userManager.CheckPasswordAsync(user, "Seeded999!")).Should().BeFalse();
+        }
+
+        logs.Errors.Should().BeEmpty();
+
+        await second.StopAsync();
+    }
+
     #endregion
 
     #region AT-03
@@ -208,11 +272,14 @@ public class IdentitySeedTests : IClassFixture<EventStoreServer>, IAsyncLifetime
         // deterministically, while the whole test still costs well under two seconds of waiting.
         using var host = CreateHost(logs, s => s.AddIdentitySeed(seed => seed
             .Role("Administrator")
-            .Then((_, _) =>
+            .Then(async (ctx, ct) =>
             {
                 if (Interlocked.Increment(ref invocations) <= 2)
                     throw new InvalidOperationException("planted");
-                return Task.CompletedTask;
+
+                // R6: the escape hatch works through the context, with the same read-your-write waits.
+                await ctx.EnsureRoleAsync("FromCustomStep", ct);
+                await ctx.EnsureUserAsync("custom@example.com", ct: ct);
             })
             .WaitUpTo(TimeSpan.FromMinutes(2))), new CompressedTimeProvider(2));
 
@@ -251,9 +318,21 @@ public class IdentitySeedTests : IClassFixture<EventStoreServer>, IAsyncLifetime
         Seed(host).State.Attempts.Should().Be(3);
         (await HealthOf(host)).Status.Should().Be(HealthStatus.Healthy);
 
-        host.Services.GetRequiredService<RolesModel>().GetAllRoles()
-            .Where(r => r.Name == "Administrator").Should().HaveCount(1,
-                "the retried attempts re-run the whole plan and every step is idempotent");
+        var rolesAfter = host.Services.GetRequiredService<RolesModel>().GetAllRoles();
+        rolesAfter.Where(r => r.Name == "Administrator").Should().HaveCount(1,
+            "the retried attempts re-run the whole plan and every step is idempotent");
+
+        // R6: what the custom step did through IIdentitySeedContext really landed.
+        rolesAfter.Where(r => r.Name == "FromCustomStep").Should().HaveCount(1);
+        using (var scope = host.Services.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var fromStep = await userManager.FindByEmailAsync("custom@example.com");
+            fromStep.Should().NotBeNull();
+            fromStep!.UserName.Should().Be("custom@example.com", "EnsureUserAsync defaults the user name to the e-mail");
+            fromStep.EmailConfirmed.Should().BeTrue();
+            (await userManager.HasPasswordAsync(fromStep)).Should().BeFalse();
+        }
 
         await host.StopAsync();
     }
@@ -294,6 +373,57 @@ public class IdentitySeedTests : IClassFixture<EventStoreServer>, IAsyncLifetime
         await host.StopAsync();
     }
 
+    [Fact]
+    public async Task AT06b_APostWriteVisibilityTimeoutIsRetriedWithoutCreatingDuplicates()
+    {
+        // A FRESH store plus a 1 ms per-attempt bound: once the read models are live, every attempt writes and
+        // then times out waiting for its own write to be projected back. That is the path that used to create a
+        // duplicate role/user on the next attempt (the stores dedupe only through the still-unfolded read model).
+        //
+        // The compression factor is load-bearing, not cosmetic. The duplicate only exists in the window between
+        // "the append returned" and "the projection delivered it back" (measured here: tens of milliseconds). At
+        // x10 the retry lands AFTER that window, the read model already shows the role, and the test passes even
+        // with the written-keys memory removed - i.e. it proves nothing. At x1000 the retry lands inside the
+        // window, so this test fails (two roles, two users) if the memory is taken away. Verified by mutation.
+        var logs = NewLogs();
+        using var host = CreateHost(logs, s => s.AddIdentitySeed(seed => seed
+            .Role("Administrator")
+            .User("admin@localhost", u => u.WithUserName("admin").WithPassword("Admin123!").InRoles("Administrator"))
+            .WaitUpTo(TimeSpan.FromMilliseconds(1))), new CompressedTimeProvider(1000));
+
+        await host.StartAsync();
+        await Seed(host).Completed.WaitAsync(Cap);
+
+        // Positive control: at least one attempt really failed AFTER a write, in a visibility wait - not only in
+        // the read-model wait that happens before anything is written.
+        logs.Errors.Any(l => l.Exception is TimeoutException && l.Exception.Message.Contains("to become visible"))
+            .Should().BeTrue("a 1 ms bound cannot cover an append being projected back, so a post-write wait must time out");
+
+        host.Services.GetRequiredService<IHostApplicationLifetime>()
+            .ApplicationStopping.IsCancellationRequested.Should().BeFalse();
+
+        Seed(host).State.Ready.Should().BeTrue();
+        Seed(host).State.Attempts.Should().BeGreaterThan(1);
+
+        var roles = host.Services.GetRequiredService<RolesModel>();
+        roles.GetAllRoles().Should().HaveCount(1, "the retried attempts must not create a second role");
+        roles.GetAllRoles().Single().Name.Should().Be("Administrator");
+
+        var users = host.Services.GetRequiredService<UsersModel>();
+        users.GetAllUsers().Should().HaveCount(1, "the retried attempts must not create a second user");
+        users.GetAllUsers().Single().EmailConfirmed.Should().BeTrue();
+
+        using (var scope = host.Services.CreateScope())
+        {
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+            var user = await userManager.FindByEmailAsync("admin@localhost");
+            user.Should().NotBeNull();
+            (await userManager.IsInRoleAsync(user!, "Administrator")).Should().BeTrue();
+        }
+
+        await host.StopAsync();
+    }
+
     #endregion
 
     #region AT-07
@@ -313,7 +443,7 @@ public class IdentitySeedTests : IClassFixture<EventStoreServer>, IAsyncLifetime
         await Until(async () =>
         {
             var e = await HealthOf(host);
-            return e.Status == HealthStatus.Unhealthy && (e.Description?.Contains("custom step #2") ?? false);
+            return e.Status == HealthStatus.Unhealthy && (e.Description?.Contains("custom step #1") ?? false);
         }, "health 'identity' to be Unhealthy naming the custom step in progress");
 
         Seed(host).State.Ready.Should().BeFalse();

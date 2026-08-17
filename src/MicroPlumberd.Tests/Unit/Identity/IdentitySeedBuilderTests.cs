@@ -35,7 +35,7 @@ public class IdentitySeedBuilderTests
             "role 'Administrator'",
             "user 'admin@localhost'",
             "role 'Accountant'",
-            "custom step #4");
+            "custom step #1");
     }
 
     [Fact]
@@ -48,6 +48,33 @@ public class IdentitySeedBuilderTests
         });
 
         plan.Build().Select(x => x.Label).Should().Equal("role 'First'", "role 'Second'");
+    }
+
+    [Fact]
+    public void Then_DefaultLabelCountsCustomStepsOnly()
+    {
+        var plan = PlanOf(s => s.AddIdentitySeed(seed => seed
+            .Role("A")
+            .Then((_, _) => Task.CompletedTask)
+            .Role("B")
+            .Then((_, _) => Task.CompletedTask)));
+
+        plan.Build().OfType<CustomStep>().Select(x => x.Label)
+            .Should().Equal("custom step #1", "custom step #2");
+    }
+
+    [Fact]
+    public void AddIdentityInitializer_CalledTwice_DoesNotDoubleThePlan()
+    {
+        var plan = PlanOf(s =>
+        {
+            s.AddIdentityInitializer(o => o.AdminRoleName = "Owner");
+            s.AddIdentityInitializer(o => o.AdminEmail = "root@x");
+        });
+
+        var steps = plan.Build();
+        steps.OfType<RoleStep>().Should().ContainSingle();
+        steps.OfType<UserStep>().Should().ContainSingle();
     }
 
     [Fact]

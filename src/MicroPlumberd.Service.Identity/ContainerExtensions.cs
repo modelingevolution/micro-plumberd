@@ -131,7 +131,11 @@ namespace MicroPlumberd.Services.Identity
                 services.TryAddSingleton(Microsoft.Extensions.Options.Options.Create(new IdentityInitializerOptions()));
             }
 
-            services.AddSingleton(IdentitySeedDeclaration.FromOptions());
+            // The options-backed declaration contributes the whole legacy seed, so it must be registered once
+            // however many times AddIdentityInitializer is called - otherwise the plan doubles.
+            if (!services.Any(d => d.ImplementationInstance is IdentitySeedDeclaration { IsFromOptions: true }))
+                services.AddSingleton(IdentitySeedDeclaration.FromOptions());
+
             RegisterSeedRunner(services);
             return services;
         }
@@ -142,22 +146,13 @@ namespace MicroPlumberd.Services.Identity
         /// <c>AddIdentitySeedHealthCheck</c> are called.
         /// </summary>
         /// <remarks>
-        /// This mirrors <c>MicroPlumberd.Services.ContainerExtensions.AddBackgroundServiceIfMissing</c>, but
-        /// dedupes on an explicit marker: that helper's guard matches on
-        /// <c>ServiceDescriptor.ImplementationType</c>, which is null for the factory registration it itself adds,
-        /// so it does not actually dedupe.
+        /// <c>AddHostedService(sp =&gt; ...)</c> registers through <c>TryAddEnumerable</c> with the descriptor's
+        /// implementation type taken from the factory's generic argument, so repeat calls are already deduped.
         /// </remarks>
         internal static void RegisterSeedRunner(IServiceCollection services)
         {
             services.TryAddSingleton<IdentitySeedPlan>();
-            services.TryAddSingleton(sp => new IdentityInitializerService(
-                sp,
-                sp.GetRequiredService<IdentitySeedPlan>(),
-                sp.GetRequiredService<ILogger<IdentityInitializerService>>()));
-
-            if (services.Any(d => d.ServiceType == typeof(IdentitySeedHostedMarker))) return;
-
-            services.AddSingleton<IdentitySeedHostedMarker>();
+            services.TryAddSingleton<IdentityInitializerService>();
             services.AddHostedService(sp => sp.GetRequiredService<IdentityInitializerService>());
         }
 

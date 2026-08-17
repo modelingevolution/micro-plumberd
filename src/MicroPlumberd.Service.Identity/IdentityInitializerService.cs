@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using MicroPlumberd.Services.Identity.ReadModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,13 +20,21 @@ namespace MicroPlumberd.Services.Identity;
 /// and its progress is <b>observable</b> through <see cref="State"/> and the opt-in <c>identity</c> health check.
 /// </para>
 /// </summary>
-public sealed class IdentityInitializerService : BackgroundService
+public class IdentityInitializerService : BackgroundService
 {
     private readonly IServiceProvider _sp;
     private readonly IdentitySeedPlan _plan;
     private readonly ILogger<IdentityInitializerService> _logger;
     private readonly TimeProvider _time;
     private readonly TaskCompletionSource _completed = new(TaskCreationOptions.RunContinuationsAsynchronously);
+
+    /// <summary>
+    /// Writes that already succeeded, keyed by kind + normalized key, carried across attempts (design.md §4.3).
+    /// A retry after a timed-out visibility wait must not create a second role, user or membership: the stores
+    /// dedupe only against the (still unfolded) read models.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, string> _written = new();
+
     private volatile IdentitySeedState _state = new(false, "not started", 0);
 
     /// <summary>
@@ -33,13 +42,13 @@ public sealed class IdentityInitializerService : BackgroundService
     /// the backoff; otherwise <see cref="TimeProvider.System"/> is used.
     /// </summary>
     /// <param name="sp">Root service provider; a scope is created per attempt.</param>
-    /// <param name="plan">The accumulated seed declarations.</param>
     /// <param name="logger">Logger.</param>
-    internal IdentityInitializerService(IServiceProvider sp, IdentitySeedPlan plan, ILogger<IdentityInitializerService> logger)
+    public IdentityInitializerService(IServiceProvider sp, ILogger<IdentityInitializerService> logger)
     {
+        ArgumentNullException.ThrowIfNull(sp);
         _sp = sp;
-        _plan = plan;
         _logger = logger;
+        _plan = sp.GetRequiredService<IdentitySeedPlan>();
         _time = sp.GetService<TimeProvider>() ?? TimeProvider.System;
     }
 
@@ -90,26 +99,35 @@ public sealed class IdentityInitializerService : BackgroundService
 
     private async Task RunAsync(CancellationToken stoppingToken)
     {
-        var steps = _plan.Build();
-        var waitUpTo = _plan.WaitUpTo;
-
-        if (steps.Count == 0)
-        {
-            _logger.LogInformation("Identity seed: nothing declared; ready.");
-            _state = new IdentitySeedState(true, "nothing declared", 0);
-            _completed.TrySetResult();
-            return;
-        }
-
-        _logger.LogInformation(
-            "Identity seed: {Roles} role(s), {Users} user(s), {Custom} custom step(s); per-attempt bound {WaitUpTo}",
-            steps.Count(s => s is RoleStep), steps.Count(s => s is UserStep), steps.Count(s => s is CustomStep), waitUpTo);
+        IReadOnlyList<IdentitySeedStep>? steps = null;
+        var waitUpTo = IdentitySeedBuilder.DefaultWaitUpTo;
 
         for (var attempt = 1; !stoppingToken.IsCancellationRequested; attempt++)
         {
-            var current = "identity read models";
+            // R4: building the plan runs a consumer lambda, so it belongs inside the attempt — an error in it is
+            // logged and retried like any other, never a permanent wedge.
+            var current = "building the seed plan";
             try
             {
+                if (steps is null)
+                {
+                    steps = _plan.Build();
+                    waitUpTo = _plan.WaitUpTo;
+
+                    if (steps.Count == 0)
+                    {
+                        _logger.LogInformation("Identity seed: nothing declared; ready.");
+                        _state = new IdentitySeedState(true, "nothing declared", 0);
+                        _completed.TrySetResult();
+                        return;
+                    }
+
+                    _logger.LogInformation(
+                        "Identity seed: {Roles} role(s), {Users} user(s), {Custom} custom step(s); per-attempt bound {WaitUpTo}",
+                        steps.Count(s => s is RoleStep), steps.Count(s => s is UserStep), steps.Count(s => s is CustomStep), waitUpTo);
+                }
+
+                current = "identity read models";
                 _state = new IdentitySeedState(false, $"attempt {attempt}: waiting for identity read models", attempt, _state.LastError);
                 _logger.LogDebug(
                     "Identity seed attempt {Attempt}: waiting for identity read models (RolesModel, UsersModel, UserAuthorizationModel)",
@@ -122,7 +140,7 @@ public sealed class IdentityInitializerService : BackgroundService
                     scope.ServiceProvider.GetRequiredService<UserManager<User>>(),
                     scope.ServiceProvider.GetRequiredService<RoleManager<Role>>(),
                     scope.ServiceProvider.GetRequiredService<IUserStore<User>>(),
-                    roles, users, userAuth, waitUpTo, _time, _logger);
+                    roles, users, userAuth, _written, waitUpTo, _time, _logger);
 
                 foreach (var step in steps)
                 {
