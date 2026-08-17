@@ -60,6 +60,7 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
     /// <summary>How often a read-your-write wait re-checks visibility.</summary>
     internal static readonly TimeSpan PollInterval = TimeSpan.FromMilliseconds(100);
 
+    private readonly IUserEmailStore<User>? _emailStore;
     private readonly RolesModel _roles;
     private readonly UsersModel _users;
     private readonly UserAuthorizationModel _userAuth;
@@ -69,6 +70,7 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
     public IdentitySeedContext(
         UserManager<User> userManager,
         RoleManager<Role> roleManager,
+        IUserStore<User> userStore,
         RolesModel roles,
         UsersModel users,
         UserAuthorizationModel userAuth,
@@ -78,6 +80,7 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
     {
         UserManager = userManager;
         RoleManager = roleManager;
+        _emailStore = userStore as IUserEmailStore<User>;
         _roles = roles;
         _users = users;
         _userAuth = userAuth;
@@ -157,6 +160,16 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
 
         await UntilAsync(() => _users.GetByNormalizedEmail(normalizedEmail) is not null,
             $"{label} to become visible in UsersModel", ct);
+
+        // UserStore.CreateAsync does not carry User.EmailConfirmed into the aggregate (a profile is created
+        // unconfirmed), so a seeded user has to be confirmed with its own write. Only on creation: an existing
+        // user is never modified (R2).
+        if (_users.GetByNormalizedEmail(normalizedEmail) is { EmailConfirmed: false } fresh && _emailStore is not null)
+        {
+            await _emailStore.SetEmailConfirmedAsync(fresh, true, ct);
+            await UntilAsync(() => _users.GetByNormalizedEmail(normalizedEmail) is { EmailConfirmed: true },
+                $"{label} e-mail confirmation to become visible in UsersModel", ct);
+        }
 
         return _users.GetByNormalizedEmail(normalizedEmail)!;
     }

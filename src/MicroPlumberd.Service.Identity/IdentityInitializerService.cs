@@ -121,6 +121,7 @@ public sealed class IdentityInitializerService : BackgroundService
                 var ctx = new IdentitySeedContext(
                     scope.ServiceProvider.GetRequiredService<UserManager<User>>(),
                     scope.ServiceProvider.GetRequiredService<RoleManager<Role>>(),
+                    scope.ServiceProvider.GetRequiredService<IUserStore<User>>(),
                     roles, users, userAuth, waitUpTo, _time, _logger);
 
                 foreach (var step in steps)
