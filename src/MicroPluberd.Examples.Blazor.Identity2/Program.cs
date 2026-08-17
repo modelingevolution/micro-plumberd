@@ -69,14 +69,27 @@ public class Program
             return null;
         });
 
-        // Seed admin user if no users exist
-        builder.Services.AddIdentityInitializer(opts =>
-        {
-            opts.AdminEmail = builder.Configuration["Identity:AdminEmail"] ?? "admin@localhost";
-            opts.AdminUserName = builder.Configuration["Identity:AdminUserName"] ?? "admin";
-            opts.AdminPassword = builder.Configuration["Identity:AdminPassword"] ?? "Admin123!";
-            opts.ProjectionWaitTime = TimeSpan.FromSeconds(5);
-        });
+        // Declare the identity state that must exist. The seed runs once the identity read models are live,
+        // converges the store to this declaration, and never stops the host.
+        builder.Services.AddIdentitySeed(seed => seed
+            .Role("Administrator")
+            .User(builder.Configuration["Identity:AdminEmail"] ?? "admin@localhost", u => u
+                .WithUserName(builder.Configuration["Identity:AdminUserName"] ?? "admin")
+                .WithPassword(builder.Configuration["Identity:AdminPassword"] ?? "Admin123!")
+                .InRoles("Administrator"))
+            .WaitUpTo(TimeSpan.FromSeconds(30)));
+
+        // Opt-in readiness entry: "identity" is Unhealthy (naming the step or the last error) until the seed
+        // converged, Healthy afterwards.
+        builder.Services.AddHealthChecks()
+            .AddPlumberdHealthChecks()
+            .AddIdentitySeedHealthCheck();
+
+        // A stated choice, never the silent default (requirement R8). The .NET default is StopHost: one throwing
+        // background service takes the whole host down, which in a container is a restart loop. The identity seed
+        // never throws out of ExecuteAsync, but other hosted services might, so the host says what it wants.
+        builder.Services.Configure<HostOptions>(o =>
+            o.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
 
         builder.Services.AddSingleton<IEmailSender<User>, IdentityNoOpEmailSender>();
 
@@ -97,6 +110,8 @@ public class Program
         app.MapStaticAssets();
         app.MapRazorComponents<App>()
             .AddInteractiveServerRenderMode();
+
+        app.MapHealthChecks("/health");
 
         // Add additional endpoints required by the Identity /Account Razor components.
         app.MapAdditionalIdentityEndpoints();
