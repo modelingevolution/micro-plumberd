@@ -141,6 +141,9 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
             }
             else if (IsAlreadyThere(result, label))
             {
+                // It exists - another attempt or another host won the race - so a later retry must not try to
+                // create it again. The aggregate id is not ours to know here.
+                _written[key] = string.Empty;
                 Logger.LogInformation("Identity seed: {Step} was created concurrently: {Errors}", label, Describe(result));
             }
             else
@@ -190,6 +193,9 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
             }
             else if (IsAlreadyThere(result, label))
             {
+                // It exists - another attempt or another host won the race - so a later retry must not try to
+                // create it again. The aggregate id is not ours to know here.
+                _written[key] = string.Empty;
                 Logger.LogInformation("Identity seed: {Step} was created concurrently: {Errors}", label, Describe(result));
             }
             else
@@ -240,6 +246,8 @@ internal sealed class IdentitySeedContext : IIdentitySeedContext
             }
             else if (IsAlreadyThere(result, label))
             {
+                // The membership exists, so a later retry must not try to assign it again.
+                _written[key] = string.Empty;
                 Logger.LogInformation("Identity seed: {Step} was assigned concurrently: {Errors}", label, Describe(result));
             }
             else

@@ -33,9 +33,15 @@ Consequences worth stating:
 - A role dropped from the declaration is **left alone** — the seed is additive, it does not converge downwards.
 - A seeded user deleted by an operator is **recreated** on the next boot. To take an account out of service, lock it
   or change its password; do not delete it.
+- Likewise a declared user whose e-mail an operator changed: the declared address is ensured as a **new account**.
+  The declaration is keyed by e-mail, so changing it away from the declared value reads as "the declared user is
+  missing".
 - Uniqueness is enforced by the read models, not by the store. Two **different hosts** seeding the same empty store
   at the same instant can each create a role of the same name. Within one host — restarts, retries, concurrent
   attempts — the ensure steps are idempotent.
+- The identity stores (`UserStore.AddToRoleAsync` / `RemoveFromRoleAsync` / `IsInRoleAsync`) assume the default
+  upper-invariant `ILookupNormalizer`. A custom normalizer is **unsupported end-to-end** — the seed's own keys are
+  normalizer-correct (`RoleManager.NormalizeKey`, `UserManager.NormalizeEmail`), but the stores are not.
 
 ## Readiness, not time
 

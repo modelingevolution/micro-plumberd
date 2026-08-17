@@ -43,9 +43,15 @@ public class IdentityInitializerService : BackgroundService
     /// </summary>
     /// <param name="sp">Root service provider; a scope is created per attempt.</param>
     /// <param name="logger">Logger.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="sp"/> or <paramref name="logger"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// No seed plan is registered. Register one with <c>AddIdentitySeed(...)</c> or
+    /// <c>AddIdentityInitializer(...)</c> — they register the plan and this hosted service together.
+    /// </exception>
     public IdentityInitializerService(IServiceProvider sp, ILogger<IdentityInitializerService> logger)
     {
         ArgumentNullException.ThrowIfNull(sp);
+        ArgumentNullException.ThrowIfNull(logger);
         _sp = sp;
         _logger = logger;
         _plan = sp.GetRequiredService<IdentitySeedPlan>();

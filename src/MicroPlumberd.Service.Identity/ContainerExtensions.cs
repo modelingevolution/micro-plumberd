@@ -81,7 +81,10 @@ namespace MicroPlumberd.Services.Identity
         /// registered exactly once. The last <see cref="IdentitySeedBuilder.WaitUpTo"/> wins.
         /// </remarks>
         /// <param name="services">The service collection to add services to.</param>
-        /// <param name="configure">The fluent declaration.</param>
+        /// <param name="configure">
+        /// The fluent declaration. May be invoked more than once (the plan is rebuilt on each retry until it
+        /// succeeds); keep it free of side effects.
+        /// </param>
         /// <returns>The service collection for method chaining.</returns>
         /// <example>
         /// <code>
