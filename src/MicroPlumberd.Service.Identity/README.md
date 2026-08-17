@@ -76,6 +76,26 @@ services.Configure<HostOptions>(o =>
     o.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
 ```
 
+## Non-web hosts must add data protection
+
+`AddPlumberdIdentity` calls `AddDefaultTokenProviders()`, which registers `DataProtectorTokenProvider<User>`. The
+`UserManager<TUser>` constructor resolves every provider in `Options.Tokens.ProviderMap`, so **`UserManager<User>`
+cannot be constructed without an `IDataProtectionProvider`**. A web host gets one from `WebApplicationBuilder`; a
+generic host (worker service, test host, `Host.CreateDefaultBuilder()`) does not, and the seed fails every attempt
+with:
+
+```
+Unable to resolve service for type 'Microsoft.AspNetCore.DataProtection.IDataProtectionProvider'
+while attempting to activate 'Microsoft.AspNetCore.Identity.DataProtectorTokenProvider`1[...User]'
+```
+
+The library does not register it for you — neither does ASP.NET Core's own `AddIdentity`/`AddIdentityCore`. In a
+non-web host, add it yourself:
+
+```csharp
+services.AddDataProtection();   // plus a key-persistence choice if the host is not ephemeral
+```
+
 ## Compatibility
 
 `AddIdentityInitializer(o => …)` and `IdentityInitializerOptions` keep their names and meaning. The call is now an

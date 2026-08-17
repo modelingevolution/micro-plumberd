@@ -37,7 +37,7 @@ public class AdminSeedingTests : IClassFixture<EventStoreServer>, IAsyncLifetime
                 services.AddPlumberdIdentity();
                 // pre-existing red on master: UserManager<User> resolves DataProtectorTokenProvider
                 // (AddDefaultTokenProviders) which needs IDataProtectionProvider; a generic Host has none
-                // — see epic-083 feature-001 §4.1
+                // — see epic-083 feature-001 status.md (AdminSeedingTests pre-existing red)
                 services.AddDataProtection();
 
                 if (configureInitializer != null)
