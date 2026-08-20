@@ -15,6 +15,16 @@ public static class KurrentDBProjectionManagementClientExtensions
     private const int PROJECTION_UPDATE_RETRY_COUNT = 10;
 
     /// <summary>
+    /// A source event the projection runtime could not resolve (its target was scavenged, typically by $maxAge)
+    /// arrives with streamId == null and sequenceNumber == -1. Emitting linkTo for such an event writes an
+    /// invalid link and faults the projection permanently ("Invalid link to event -1@null"), which takes down
+    /// every subscription reading the output stream. Skip those events instead.
+    /// Accepted trade-off: a skipped event is never re-linked, so the guard assumes an unresolvable source
+    /// event is one whose loss is intended (expired by design).
+    /// </summary>
+    private const string LinkableEventGuard = "e && e.streamId !== null && e.sequenceNumber >= 0";
+
+    /// <summary>
     /// Attempts to create or update a join projection in the EventStore.
     /// </summary>
     /// <returns><c>true</c> if the projection was created or updated; <c>false</c> if it was already up-to-date and no change was applied.</returns>
@@ -22,7 +32,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         KurrentDBClient esClient,
         string outputStream, IEnumerable<string> eventTypes)
     {
-        var query = CreateQuery(outputStream, eventTypes);
+        var query = CreateJoinQuery(outputStream, eventTypes);
 
         if (await client.ListContinuousAsync().AnyAsync(x => x.Name == outputStream))
             return await UpdateIfChanged(client, esClient, outputStream, query);
@@ -43,8 +53,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         string category, string eventProperty, string outputStreamCategory,
         CancellationToken token = default)
     {
-        string query =
-            $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if(e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
+        string query = CreateLookupQuery(category, eventProperty, outputStreamCategory);
 
         if ((await register.Get(outputStreamCategory)) != null)
             return await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
@@ -68,7 +77,7 @@ public static class KurrentDBProjectionManagementClientExtensions
             throw new ArgumentOutOfRangeException(
                 $"There are not event type to create the output stream: {outputStream}");
 
-        var query = CreateQuery(outputStream, eventTypes);
+        var query = CreateJoinQuery(outputStream, eventTypes);
 
         if ((await register.Get(outputStream)) != null)
             return await UpdateIfChanged(client, esClient, outputStream, query, token);
@@ -165,12 +174,15 @@ public static class KurrentDBProjectionManagementClientExtensions
             cancellationToken: token);
     }
 
-    private static string CreateQuery(string outputStream, IEnumerable<string> eventTypes)
+    internal static string CreateJoinQuery(string outputStream, IEnumerable<string> eventTypes)
     {
         string fromStreamsArg = string.Join(',', eventTypes.Select(x => $"'$et-{x}'"));
         string query = $"fromStreams([{fromStreamsArg}]).when( {{ " +
-                       $"\n    $any : function(s,e) {{ linkTo('{outputStream}', e) }}" +
+                       $"\n    $any : function(s,e) {{ if({LinkableEventGuard}) linkTo('{outputStream}', e) }}" +
                        $"\n}});";
         return query;
     }
+
+    internal static string CreateLookupQuery(string category, string eventProperty, string outputStreamCategory) =>
+        $"fromStreams(['$ce-{category}']).when( {{ \n    $any : function(s,e) {{ \n        if({LinkableEventGuard} && e.body && e.body.{eventProperty}) {{\n            linkTo('{outputStreamCategory}-' + e.body.{eventProperty}, e) \n        }}\n        \n    }}\n}});";
 }
