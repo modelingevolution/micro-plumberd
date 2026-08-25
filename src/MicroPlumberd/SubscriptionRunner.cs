@@ -212,6 +212,20 @@ class SubscriptionRunner(PlumberEngine plumber, SubscriptionRunnerState subscrip
     }
     private async Task OnEvent( TypeEventConverter func, ResolvedEvent e, IEventHandler model)
     {
+        // A resolved link whose target event is gone (the linked stream was tombstoned/hard-deleted, or its metadata
+        // truncated it away) surfaces as a ResolvedEvent with a null Event — only the Link is present. There is nothing
+        // to convert or hand to the model; dereferencing e.Event.EventType below would NRE and, on a $ce-* category
+        // catch-up, wedge the whole subscription in a 30s retry loop. Skip it so the reader advances past the marker.
+        if (e.Event is null)
+        {
+            // Information, not Debug: a skip means an entire target event (a whole stream's history, on a $ce-* catch-up)
+            // is being dropped from the projection — an operator watching a rebuild should SEE it without turning on debug.
+            var log = plumber.Config.ServiceProvider.GetService<ILogger<SubscriptionRunner>>();
+            log?.LogInformation("Subscription '{Stream}' skipped an unresolved link (deleted/tombstoned target stream) at link #{Link}.",
+                subscription.StreamName, e.OriginalEventNumber);
+            return;
+        }
+
         OperationContext.ClearContext();
         var context = OperationContext.Create(Flow.EventHandler);
         using var scope = context.CreateScope();

@@ -32,8 +32,11 @@ public class IdentityInitializerOptions
     public string AdminRoleName { get; set; } = "Admin";
 
     /// <summary>
-    /// Time to wait for projections to catch up before checking for users.
-    /// This delay ensures read models are populated after EventStore starts.
+    /// Per-attempt readiness bound; maps onto <see cref="IdentitySeedBuilder.WaitUpTo"/>.
+    /// It is not a delay: the seed starts as soon as the identity read models report
+    /// <see cref="ICaughtUpHandler.CaughtUp"/>. This value bounds one attempt — how long it may wait for that
+    /// catch-up, and how long each write may take to become visible in the read model the next step reads.
+    /// Expiry fails the attempt (logged at Error, retried with backoff), never the host.
     /// Default: 30 seconds
     /// </summary>
     public TimeSpan ProjectionWaitTime { get; set; } = TimeSpan.FromSeconds(30);

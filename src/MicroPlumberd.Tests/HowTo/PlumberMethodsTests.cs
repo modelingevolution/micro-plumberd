@@ -10,7 +10,6 @@ using MicroPlumberd.Tests.App.Infrastructure;
 
 using MicroPlumberd.Tests.Utils;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Identity.Client;
 using Xunit.Abstractions;
 
 namespace MicroPlumberd.Tests.HowTo

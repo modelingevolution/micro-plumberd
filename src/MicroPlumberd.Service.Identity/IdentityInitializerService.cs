@@ -1,139 +1,234 @@
+using System.Collections.Concurrent;
 using MicroPlumberd.Services.Identity.ReadModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace MicroPlumberd.Services.Identity;
 
 /// <summary>
-/// Background service that initializes the identity system on application startup.
-/// Creates an admin user and role if no users exist in the admin role.
+/// Runs the declared identity seed (see <c>AddIdentitySeed</c>) once the identity read models are live, and
+/// converges the store to it.
+/// <para>
+/// Three invariants (feature-001 requirements R3–R5):
+/// it starts on <b>readiness</b> — <see cref="ICaughtUpHandler.CaughtUp"/> of <see cref="RolesModel"/>,
+/// <see cref="UsersModel"/> and <c>UserAuthorizationModel</c> — never on a timer;
+/// it <b>never stops the host</b> — no exception escapes <see cref="ExecuteAsync"/>, a failed attempt logs Error
+/// and is retried with bounded backoff, which holds even with the .NET default
+/// <c>BackgroundServiceExceptionBehavior.StopHost</c>;
+/// and its progress is <b>observable</b> through <see cref="State"/> and the opt-in <c>identity</c> health check.
+/// </para>
 /// </summary>
 public class IdentityInitializerService : BackgroundService
 {
-    private readonly IServiceProvider _serviceProvider;
-    private readonly UserAuthorizationModel _userAuthorizationModel;
-    private readonly RolesModel _rolesModel;
-    private readonly IdentityInitializerOptions _options;
+    private readonly IServiceProvider _sp;
+    private readonly IdentitySeedPlan _plan;
     private readonly ILogger<IdentityInitializerService> _logger;
+    private readonly TimeProvider _time;
+    private readonly TaskCompletionSource _completed = new(TaskCreationOptions.RunContinuationsAsynchronously);
 
-    public IdentityInitializerService(
-        IServiceProvider serviceProvider,
-        UserAuthorizationModel userAuthorizationModel,
-        RolesModel rolesModel,
-        IOptions<IdentityInitializerOptions> options,
-        ILogger<IdentityInitializerService> logger)
+    /// <summary>
+    /// Writes that already succeeded, keyed by kind + normalized key, carried across attempts (design.md §4.3).
+    /// A retry after a timed-out visibility wait must not create a second role, user or membership: the stores
+    /// dedupe only against the (still unfolded) read models.
+    /// </summary>
+    private readonly ConcurrentDictionary<string, string> _written = new();
+
+    private volatile IdentitySeedState _state = new(false, "not started", 0);
+
+    /// <summary>
+    /// Creates the runner. <see cref="TimeProvider"/> is resolved from DI when registered so tests can compress
+    /// the backoff; otherwise <see cref="TimeProvider.System"/> is used.
+    /// </summary>
+    /// <param name="sp">Root service provider; a scope is created per attempt.</param>
+    /// <param name="logger">Logger.</param>
+    /// <exception cref="ArgumentNullException"><paramref name="sp"/> or <paramref name="logger"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">
+    /// No seed plan is registered. Register one with <c>AddIdentitySeed(...)</c> or
+    /// <c>AddIdentityInitializer(...)</c> — they register the plan and this hosted service together.
+    /// </exception>
+    public IdentityInitializerService(IServiceProvider sp, ILogger<IdentityInitializerService> logger)
     {
-        _serviceProvider = serviceProvider;
-        _userAuthorizationModel = userAuthorizationModel;
-        _rolesModel = rolesModel;
-        _options = options.Value;
+        ArgumentNullException.ThrowIfNull(sp);
+        ArgumentNullException.ThrowIfNull(logger);
+        _sp = sp;
         _logger = logger;
+        _plan = sp.GetRequiredService<IdentitySeedPlan>();
+        _time = sp.GetService<TimeProvider>() ?? TimeProvider.System;
     }
 
+    /// <summary>
+    /// Live snapshot of the seed's progress. Read by the opt-in <c>identity</c> health check.
+    /// </summary>
+    public IdentitySeedState State => _state;
+
+    /// <summary>
+    /// Completes when the seed converged (or when nothing was declared). Never faults — a failing seed keeps
+    /// retrying, so this task simply stays incomplete. Intended for tests and start-up gates.
+    /// </summary>
+    public Task Completed => _completed.Task;
+
+    /// <summary>
+    /// The bounded retry backoff of requirement R4: 1, 2, 5, 10, 20, then 30 seconds for every further attempt.
+    /// </summary>
+    /// <param name="attempt">1-based attempt number that just failed.</param>
+    /// <returns>How long to wait before the next attempt.</returns>
+    public static TimeSpan Backoff(int attempt) => TimeSpan.FromSeconds(attempt switch
+    {
+        <= 1 => 1,
+        2 => 2,
+        3 => 5,
+        4 => 10,
+        5 => 20,
+        _ => 30
+    });
+
+    /// <inheritdoc/>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        if (!_options.SeedAdminUser)
+        // R4: the outer catch is the invariant. Whatever happens below, the host stays up.
+        try
         {
-            _logger.LogInformation("Admin user seeding is disabled");
-            return;
+            await RunAsync(stoppingToken);
+        }
+        catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+        {
+            _logger.LogInformation("Identity seed cancelled (host stopping).");
+        }
+        catch (Exception ex)
+        {
+            _state = new IdentitySeedState(false, $"seed runner terminated: {ex.Message}", _state.Attempts, ex.Message);
+            _logger.LogError(ex, "Identity seed runner terminated unexpectedly; the host stays up, /health reports identity Unhealthy.");
+        }
+    }
+
+    private async Task RunAsync(CancellationToken stoppingToken)
+    {
+        IReadOnlyList<IdentitySeedStep>? steps = null;
+        var waitUpTo = IdentitySeedBuilder.DefaultWaitUpTo;
+
+        for (var attempt = 1; !stoppingToken.IsCancellationRequested; attempt++)
+        {
+            // R4: building the plan runs a consumer lambda, so it belongs inside the attempt — an error in it is
+            // logged and retried like any other, never a permanent wedge.
+            var current = "building the seed plan";
+            try
+            {
+                if (steps is null)
+                {
+                    steps = _plan.Build();
+                    waitUpTo = _plan.WaitUpTo;
+
+                    if (steps.Count == 0)
+                    {
+                        _logger.LogInformation("Identity seed: nothing declared; ready.");
+                        _state = new IdentitySeedState(true, "nothing declared", 0);
+                        _completed.TrySetResult();
+                        return;
+                    }
+
+                    _logger.LogInformation(
+                        "Identity seed: {Roles} role(s), {Users} user(s), {Custom} custom step(s); per-attempt bound {WaitUpTo}",
+                        steps.Count(s => s is RoleStep), steps.Count(s => s is UserStep), steps.Count(s => s is CustomStep), waitUpTo);
+                }
+
+                current = "identity read models";
+                _state = new IdentitySeedState(false, $"attempt {attempt}: waiting for identity read models", attempt, _state.LastError);
+                _logger.LogDebug(
+                    "Identity seed attempt {Attempt}: waiting for identity read models (RolesModel, UsersModel, UserAuthorizationModel)",
+                    attempt);
+
+                var (roles, users, userAuth) = await WaitForReadModelsAsync(waitUpTo, stoppingToken);
+
+                using var scope = _sp.CreateScope();
+                var ctx = new IdentitySeedContext(
+                    scope.ServiceProvider.GetRequiredService<UserManager<User>>(),
+                    scope.ServiceProvider.GetRequiredService<RoleManager<Role>>(),
+                    scope.ServiceProvider.GetRequiredService<IUserStore<User>>(),
+                    roles, users, userAuth, _written, waitUpTo, _time, _logger);
+
+                foreach (var step in steps)
+                {
+                    current = step.Label;
+                    _state = new IdentitySeedState(false, $"attempt {attempt}: {step.Label}", attempt, _state.LastError);
+                    await RunStepAsync(ctx, step, stoppingToken);
+                }
+
+                _state = new IdentitySeedState(true, $"{steps.Count} step(s) converged", attempt);
+                _logger.LogInformation("Identity seed converged after {Attempts} attempt(s): {Summary}",
+                    attempt, string.Join(", ", steps.Select(s => s.Label)));
+                _completed.TrySetResult();
+                return;
+            }
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                _logger.LogInformation("Identity seed cancelled (host stopping) at attempt {Attempt}", attempt);
+                _state = _state with { Description = "cancelled (host stopping)" };
+                return;
+            }
+            catch (Exception ex)
+            {
+                var backoff = Backoff(attempt);
+                _state = new IdentitySeedState(false,
+                    $"attempt {attempt} failed at {current}: {ex.Message} — retry in {backoff}", attempt, ex.Message);
+                _logger.LogError(ex,
+                    "Identity seed attempt {Attempt} failed at {Step}: {Message}; the host stays up, /health reports identity Unhealthy; retrying in {Backoff}",
+                    attempt, current, ex.Message, backoff);
+
+                try
+                {
+                    await Task.Delay(backoff, _time, stoppingToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    _logger.LogInformation("Identity seed cancelled (host stopping) at attempt {Attempt}", attempt);
+                    _state = _state with { Description = "cancelled (host stopping)" };
+                    return;
+                }
+            }
         }
 
-        _logger.LogInformation("Waiting {WaitTime} for projections to catch up before checking for users",
-            _options.ProjectionWaitTime);
+        _logger.LogInformation("Identity seed cancelled (host stopping) at attempt {Attempt}", _state.Attempts);
+        _state = _state with { Description = "cancelled (host stopping)" };
+    }
+
+    private static Task RunStepAsync(IIdentitySeedContext ctx, IdentitySeedStep step, CancellationToken ct) => step switch
+    {
+        RoleStep r => ctx.EnsureRoleAsync(r.Name, ct),
+        UserStep u => RunUserStepAsync(ctx, u, ct),
+        CustomStep c => c.Action(ctx, ct),
+        _ => throw new NotSupportedException($"Unknown seed step '{step.GetType().Name}'.")
+    };
+
+    private static async Task RunUserStepAsync(IIdentitySeedContext ctx, UserStep step, CancellationToken ct)
+    {
+        var user = await ctx.EnsureUserAsync(step.Email, step.UserName, step.Password, ct);
+        foreach (var role in step.Roles)
+            await ctx.EnsureInRoleAsync(user, role, ct);
+    }
+
+    /// <summary>
+    /// Readiness wait (design.md §4.1). <c>Live</c> completes once and stays completed, so a later attempt after
+    /// a compressed bound succeeds immediately.
+    /// </summary>
+    private async Task<(RolesModel Roles, UsersModel Users, UserAuthorizationModel UserAuth)> WaitForReadModelsAsync(
+        TimeSpan waitUpTo, CancellationToken ct)
+    {
+        var roles = _sp.GetRequiredService<RolesModel>();
+        var users = _sp.GetRequiredService<UsersModel>();
+        var userAuth = _sp.GetRequiredService<UserAuthorizationModel>();
 
         try
         {
-            await Task.Delay(_options.ProjectionWaitTime, stoppingToken);
+            await Task.WhenAll(roles.Live, users.Live, userAuth.Live).WaitAsync(waitUpTo, _time, ct);
         }
-        catch (OperationCanceledException)
+        catch (TimeoutException)
         {
-            _logger.LogInformation("Identity initialization cancelled during wait period");
-            return;
-        }
-
-        var normalizedRoleName = _options.AdminRoleName.ToUpperInvariant();
-        var usersInAdminRole = _userAuthorizationModel.GetUsersInRole(normalizedRoleName);
-
-        if (usersInAdminRole.Count > 0)
-        {
-            _logger.LogInformation("Found {UserCount} users in '{RoleName}' role, skipping admin seeding",
-                usersInAdminRole.Count, _options.AdminRoleName);
-            return;
+            throw new TimeoutException(
+                $"Waited {waitUpTo} for the identity read models (RolesModel, UsersModel, UserAuthorizationModel) to catch up; not there yet.");
         }
 
-        _logger.LogInformation("No users found in '{RoleName}' role, creating initial admin user", _options.AdminRoleName);
-
-        // Use a scope for UserManager and RoleManager (they are scoped services)
-        using var scope = _serviceProvider.CreateScope();
-        var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
-
-        await CreateAdminRoleAsync(roleManager, stoppingToken);
-        await CreateAdminUserAsync(userManager, stoppingToken);
-    }
-
-    private async Task CreateAdminRoleAsync(RoleManager<Role> roleManager, CancellationToken stoppingToken)
-    {
-        var normalizedRoleName = _options.AdminRoleName.ToUpperInvariant();
-        var existingRole = _rolesModel.GetByNormalizedName(normalizedRoleName);
-
-        if (existingRole != null)
-        {
-            _logger.LogDebug("Admin role '{RoleName}' already exists", _options.AdminRoleName);
-            return;
-        }
-
-        var role = new Role { Name = _options.AdminRoleName };
-        var result = await roleManager.CreateAsync(role);
-
-        if (result.Succeeded)
-        {
-            _logger.LogInformation("Created admin role '{RoleName}'", _options.AdminRoleName);
-        }
-        else
-        {
-            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            _logger.LogError("Failed to create admin role '{RoleName}': {Errors}",
-                _options.AdminRoleName, errors);
-        }
-    }
-
-    private async Task CreateAdminUserAsync(UserManager<User> userManager, CancellationToken stoppingToken)
-    {
-        var adminUser = new User
-        {
-            UserName = _options.AdminUserName,
-            Email = _options.AdminEmail,
-            EmailConfirmed = true
-        };
-
-        var createResult = await userManager.CreateAsync(adminUser, _options.AdminPassword);
-
-        if (!createResult.Succeeded)
-        {
-            var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
-            _logger.LogError("Failed to create admin user '{Email}': {Errors}",
-                _options.AdminEmail, errors);
-            return;
-        }
-
-        _logger.LogInformation("Created admin user with email '{Email}'", _options.AdminEmail);
-
-        // Assign admin role
-        var roleResult = await userManager.AddToRoleAsync(adminUser, _options.AdminRoleName);
-
-        if (roleResult.Succeeded)
-        {
-            _logger.LogInformation("Assigned admin user to role '{RoleName}'", _options.AdminRoleName);
-        }
-        else
-        {
-            var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
-            _logger.LogError("Failed to assign admin user to role '{RoleName}': {Errors}",
-                _options.AdminRoleName, errors);
-        }
+        return (roles, users, userAuth);
     }
 }

@@ -103,6 +103,36 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
         secondResult.Should().BeFalse("the projection's query is unchanged since first boot");
     }
 
+    /// <summary>
+    /// The lookup query is only ever compiled server-side, so a malformed guard would ship undetected:
+    /// invalid syntax throws on create, a query the engine rejects at runtime leaves the projection Faulted.
+    /// </summary>
+    [Fact]
+    public async Task EnsureLookupProjection_EmitsQuery_ProjectionEngineAccepts()
+    {
+        await _eventStore.StartInDocker();
+
+        var created = await plumber.ProjectionManagementClient.EnsureLookupProjection(plumber.Client,
+            plumber.ProjectionRegister, nameof(FooAggregate), "RecipientId", LookupProjectionName);
+
+        created.Should().BeTrue("the lookup projection does not exist on first boot");
+        (await WaitForSettledStatus(LookupProjectionName)).Should().Be("Running");
+    }
+
+    private const string LookupProjectionName = "FooLookup";
+
+    private async Task<string?> WaitForSettledStatus(string projection)
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            var status = (await plumber.ProjectionManagementClient.GetStatusAsync(projection))?.Status;
+            if (status is "Running" or "Faulted") return status;
+            await Task.Delay(200);
+        }
+
+        return (await plumber.ProjectionManagementClient.GetStatusAsync(projection))?.Status;
+    }
+
     [Fact]
     public async Task SubscribeScopedModel()
     {

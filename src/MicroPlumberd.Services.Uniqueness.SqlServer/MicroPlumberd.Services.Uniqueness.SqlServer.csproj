@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>SQL Server provider for MicroPlumberd.Services.Uniqueness — set-wide uniqueness of event-sourced aggregates, backed by a relational unique index.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.Services.Uniqueness\MicroPlumberd.Services.Uniqueness.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
+  </ItemGroup>
+</Project>

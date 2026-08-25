@@ -23,6 +23,9 @@ Just eXtreamly simple.
 [![MicroPlumberd.Encryption](https://img.shields.io/nuget/v/MicroPlumberd.Encryption.svg)](https://www.nuget.org/packages/MicroPlumberd.Encryption/)
 [![MicroPlumberd.Protobuf](https://img.shields.io/nuget/v/MicroPlumberd.Protobuf.svg)](https://www.nuget.org/packages/MicroPlumberd.Protobuf/)
 [![MicroPlumberd.Services.Uniqueness](https://img.shields.io/nuget/v/MicroPlumberd.Services.Uniqueness.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Uniqueness/)
+[![MicroPlumberd.Services.Uniqueness.Postgres](https://img.shields.io/nuget/v/MicroPlumberd.Services.Uniqueness.Postgres.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Uniqueness.Postgres/)
+[![MicroPlumberd.Services.Uniqueness.Sqlite](https://img.shields.io/nuget/v/MicroPlumberd.Services.Uniqueness.Sqlite.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Uniqueness.Sqlite/)
+[![MicroPlumberd.Services.Uniqueness.SqlServer](https://img.shields.io/nuget/v/MicroPlumberd.Services.Uniqueness.SqlServer.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Uniqueness.SqlServer/)
 [![MicroPlumberd.Services.Grpc.DirectConnect](https://img.shields.io/nuget/v/MicroPlumberd.Services.Grpc.DirectConnect.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Grpc.DirectConnect/)
 [![MicroPlumberd.Services.Identity](https://img.shields.io/nuget/v/MicroPlumberd.Services.Identity.svg)](https://www.nuget.org/packages/MicroPlumberd.Services.Identity/)
 
@@ -480,49 +483,118 @@ public class OrderProcessManager(IPlumberd plumberd)
 
 ```
 
-### EXPERIMENTAL Uniqueness support
+### Uniqueness (set-wide constraints)
 
-Uniqueness support in EventSourcing is not out-of-the-box, especially in regards to EventStoreDB. You can use some "hacks" but at the end of the day, you want uniqueness to be enforced by some kind of database. EventStoreDB is not designed for that purpose. 
+An event store enforces invariants **within one stream**. Uniqueness — "no two companies share a tax id" —
+spans streams, and there is no stream whose optimistic-concurrency check can express it. KurrentDB is not
+designed for it, and the usual workaround (one stream per value, append-at-NoStream) does not survive
+contact with reality: a *released* value's stream still exists, so it can never be re-reserved, and you get
+one stream per possible value forever.
 
-However, you can leverage typical reservation patterns. At the moment the library supports only the first option:
+So put the constraint where constraints belong: a **relational unique index**, as a sidecar to the
+aggregate write. `MicroPlumberd.Services.Uniqueness` implements the **reservation pattern**
+(try / confirm / cancel).
 
-- At domain-layer, a domain-service usually would enforce uniqueness. This commonly requires a round-trip to a database. So just before actual event(s) are saved in a stream, a check against uniqueness constraints should be evaluated - thus reservation is made. When the event is appended to the stream, a confirmation is done automatically (on db).
-
-- At a app-layer, command-handler would typically reserve a name. And when aggregate, which is being executed by the handler, saves its events successfully, then the reservation is confirmed. If the handler fails, then the reservation is deleted. Seems simple? Under the hood, it is not that simple, because what if the process is terminated while the command-handler is executing? We need to make sure, that we can recover successfully from this situation.
-
-Let's see the API proposal:
-
-```csharp
-// Let's define unique-category name
-record FooCategory;
-
-
-public class FooCreated 
-    // and apply it to one fo the columns.
-    [Unique<FooCategory>]
-    public string? Name { get; set; }
-    
-    // other stuff   
-}
+```
+1. Reserve(name, source, lease)   INSERT {name, source, validUntil, confirmed=false}
+                                  the UNIQUE index arbitrates; losers learn who won
+2. persist the aggregate to the event store
+3. Confirm(source)                confirmed=true (permanent)
+   on failure at 2: RollbackReservation(source)
 ```
 
-For complex types, we need more flexibility.
+**The lease is the point.** If the process dies between 1 and 3 the row is left unconfirmed and expires,
+so the name frees itself — no distributed transaction, and a crash costs the lease duration, not the name.
+
+#### Install
+
+The core package is provider-neutral; add exactly one provider package. A dialect is **required** — it
+supplies both the DDL and the database clock.
+
+```
+dotnet add package MicroPlumberd.Services.Uniqueness.Postgres    # recommended for a real server
+dotnet add package MicroPlumberd.Services.Uniqueness.Sqlite      # light + serverless, shared volume
+dotnet add package MicroPlumberd.Services.Uniqueness.SqlServer
+```
+
+#### Use
 
 ```csharp
-// Let's define unique-category name, this will be mapped to columns in db
-// If you'd opt for domain-layer enforcment, you need to change commands to events.
-record BooCategory(string Name, string OtherName) : IUniqueFrom<BooCategory, BooCreated>, IUniqueFrom<BooCategory, BooRefined>
+// A category is just a marker type. It names its own table, and several categories may share one database.
+record CompanyNip;
+
+services.AddUniquenessPostgres<CompanyNip>(connectionString);   // table "CompanyNip"
+services.AddUniquenessPostgres<InvoiceNumber>(connectionString); // table "InvoiceNumber", same database
+```
+
+```csharp
+public partial class CompanyCommandHandler(IPlumberInstance plumber, IUniqueNameReservation<CompanyNip> unique)
 {
-    public static BooCategory From(BooCreated x) => new(x.InitialName, x.OtherName);
-    public static BooCategory From(BooRefined x) => new(x.NewName, x.OtherName);
+    public async Task Handle(Guid id, RegisterCompany cmd)
+    {
+        var agg = CompanyAggregate.Empty(id);
+        agg.Register(cmd);                       // validate BEFORE reserving
+
+        await unique.Reserve(cmd.Nip, id);       // throws UniqueNameConflictException (its Code maps to 409)
+        try
+        {
+            await plumber.SaveNew(agg);
+        }
+        catch
+        {
+            await unique.RollbackReservation(id);
+            throw;
+        }
+        await unique.Confirm(id);                // see the warning below
+    }
 }
-
-[Unique<BooCategory>]
-public record BooCreated(string InitialName, string OtherName);
-
-[Unique<BooCategory>]
-public record BooRefined(string NewName, string OtherName);
 ```
+
+`TryReserve` is the non-throwing overload. `DeleteConfirmedNameReservation(source)` releases a confirmed
+name; `Confirm` releases the source's previous name automatically when it renames.
+
+#### ⚠️ If `Confirm` throws, you MUST compensate
+
+**The lease buys liveness, not safety.** If a caller stalls past its lease, another source may take the
+name — and the stalled caller's aggregate write can still land. Its `Confirm` then fails, but the aggregate
+is *already persisted*. That failure is your signal to compensate (reject / soft-delete). It cannot be
+fixed by reordering: `Reserve → Confirm → SaveNew` is strictly worse, because a crash between Confirm and
+SaveNew burns the name **permanently** (confirmed rows never expire).
+
+Size the lease to swamp your worst-case persist time. The default is 10 minutes against a sub-second
+append: a stall that long means a dead process.
+
+#### Choosing a provider
+
+| Provider | When |
+|---|---|
+| **PostgreSQL** | Default for a real server. |
+| **SQLite** | Light and serverless. **Requires a shared volume, and all instances MUST be on the SAME HOST** (docker named volume / bind mount — one kernel). Verified: 16 separate processes racing one file yield exactly one winner. **Never put the file on NFS/SMB or any cross-host share** — SQLite's locking is unreliable there and the failure mode is *database corruption*, which is worse than the bug this library prevents. WAL is enabled, which also makes that boundary structural: WAL needs shared memory, so it cannot work cross-host. |
+| **SQL Server** | Supported. The dialect pins `COLLATE Latin1_General_100_BIN2` — SQL Server's *default* collation is case-INsensitive, which would otherwise make `"abc"` and `"ABC"` collide there but not on the other providers. |
+
+#### Names are compared exactly
+
+Comparison is **ordinal/binary on every provider**. There is no per-category case sensitivity: that would
+be per-provider collation configuration, and normalisation is domain knowledge the library must not guess
+(`ToLowerInvariant` and culture-aware casing disagree on the Turkish dotless i; Unicode folding has choices
+only you can make). **Normalise before calling** if you want case-insensitive uniqueness.
+
+#### This is NOT for document numbering
+
+Numbering (`FV-12222/07/2024`) is a different problem: you **mint** the value rather than validating
+someone else's, there is one counter per series rather than an unbounded candidate set, and the series key
+is a real domain entity. Model it as an **aggregate** — the id is the template *without* the counter, the
+sequence is state, and the versioned append gives you atomicity and gaplessness for free. No index, no
+lease, no second store.
+
+> Rule of thumb: if you would be creating **one stream per possible value**, you are not modelling an
+> entity — you are building a lock, so use the index. A bounded domain entity is an aggregate.
+
+#### `[Unique<T>]` / `IUniqueFrom<,>` — declarative only, NOT implemented
+
+These types exist and are **inert**: nothing reads them. There is no source-generated wiring; reservation
+is performed by calling `IUniqueNameReservation<T>` explicitly, as above. Do not decorate an event with
+`[Unique<T>]` and assume anything is enforced.
 
 # How-to
 
