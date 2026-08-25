@@ -50,9 +50,10 @@ class CommandBusPool : IAsyncDisposable, ICommandBusPool
     private readonly IServiceProvider _sp;
     protected readonly int _maxCount;
     
-    private ConcurrentStack<CommandBusOwner> _pool;
-    private SemaphoreSlim _semaphore;
-    private bool _disposed;
+    private readonly object _initGate = new();
+    private ConcurrentStack<CommandBusOwner>? _pool;
+    private SemaphoreSlim? _semaphore;
+    private int _disposed;
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandBusPool"/> class.
     /// </summary>
@@ -73,32 +74,60 @@ class CommandBusPool : IAsyncDisposable, ICommandBusPool
         if (o is not CommandBusOwner cbo)
             throw new ArgumentException();
 
-        if (_disposed)
+        if (Volatile.Read(ref _disposed) != 0)
         {
             cbo.CommandBus.DisposeAsync();
             return;
         }
 
-        _pool.Push(cbo);
-        _semaphore.Release();
+        // The pool can only be non-null here (a rent implies an Init), but read both fields once into
+        // locals: DisposeAsync may be clearing them concurrently on another thread.
+        var pool = _pool;
+        var semaphore = _semaphore;
+        if (pool is null || semaphore is null)
+        {
+            cbo.CommandBus.DisposeAsync();
+            return;
+        }
+
+        pool.Push(cbo);
+        semaphore.Release();
     }
     /// <summary>
     /// Initializes the command bus pool by creating all command bus instances.
     /// </summary>
     /// <returns>This pool instance for method chaining.</returns>
+    /// <remarks>
+    /// Idempotent and thread-safe. On the SCOPED registration path this is called lazily, from the
+    /// <c>ICommandBus</c> factory, which several request threads can enter at once. The previous shape
+    /// published <c>_semaphore</c> BEFORE <c>_pool</c> was built, so a second caller saw a non-null
+    /// semaphore, returned early, and then hit a null <c>_pool</c> inside <see cref="RentScope"/>.
+    /// Building under a gate and publishing <c>_pool</c> first closes that window.
+    /// </remarks>
     public ICommandBusPool Init()
     {
-        if (_semaphore != null!) return this;
-        _semaphore = new SemaphoreSlim(_maxCount);
-        _pool = new ConcurrentStack<CommandBusOwner>(Create(number: _maxCount).Select(x=>new CommandBusOwner(this,x)));
+        if (_semaphore is not null) return this;
+        lock (_initGate)
+        {
+            if (_semaphore is not null) return this;
+            _pool = new ConcurrentStack<CommandBusOwner>(Create(number: _maxCount).Select(x=>new CommandBusOwner(this,x)));
+            _semaphore = new SemaphoreSlim(_maxCount);   // published LAST: it is the initialised flag
+        }
         return this;
     }
 
     /// <inheritdoc/>
     public async ValueTask<ICommandBusOwner> RentScope(CancellationToken ct = default)
     {
-        await _semaphore.WaitAsync(ct);
-        if (!_pool.TryPop(out var x))
+        // Deliberately does NOT call Init(): on the scoped path Create() resolves ICommandBus, whose
+        // factory calls Init() itself, so self-initialising here would re-enter the (re-entrant) init
+        // lock on the same thread and recurse until the stack blows. Fail loudly instead of NRE-ing.
+        var semaphore = _semaphore ?? throw new InvalidOperationException(
+            $"{nameof(CommandBusPool)} has not been initialised (or is already disposed). Call Init() first.");
+        var pool = _pool ?? throw new InvalidOperationException(
+            $"{nameof(CommandBusPool)} has not been initialised (or is already disposed). Call Init() first.");
+        await semaphore.WaitAsync(ct);
+        if (!pool.TryPop(out var x))
             throw new InvalidOperationException();
         return x;
     }
@@ -117,17 +146,29 @@ class CommandBusPool : IAsyncDisposable, ICommandBusPool
     }
 
     /// <inheritdoc/>
+    /// <remarks>
+    /// IDEMPOTENT, AND SAFE ON A POOL THAT WAS NEVER INITIALISED. On the SCOPED registration path
+    /// <c>Init()</c> is deferred to the first resolve of a scoped <c>ICommandBus</c>, so a host that is
+    /// built and torn down without ever sending a command disposes a pool whose <c>_semaphore</c> and
+    /// <c>_pool</c> are still null. The previous shape dereferenced both unconditionally and threw
+    /// <see cref="NullReferenceException"/> out of the DI container's disposal, failing the whole
+    /// host teardown. An uninitialised pool is a legal state — there is simply nothing to release.
+    /// </remarks>
     public virtual async ValueTask DisposeAsync()
     {
-        if (_disposed) return;
-        _disposed = true;
-        
-        if (_semaphore is IAsyncDisposable semaphoreAsyncDisposable)
+        if (Interlocked.Exchange(ref _disposed, 1) != 0) return;
+
+        // Claim both handles so a concurrent Return()/RentScope sees null and bails out instead of
+        // touching a semaphore this method is disposing.
+        var semaphore = Interlocked.Exchange(ref _semaphore, null);
+        var pool = Interlocked.Exchange(ref _pool, null);
+
+        if (semaphore is IAsyncDisposable semaphoreAsyncDisposable)
             await semaphoreAsyncDisposable.DisposeAsync();
         else
-            _semaphore.Dispose();
+            semaphore?.Dispose();
 
-        foreach (var i in _pool.ToArray())
+        foreach (var i in pool?.ToArray() ?? [])
             await i.CommandBus.DisposeAsync();
     }
 }
