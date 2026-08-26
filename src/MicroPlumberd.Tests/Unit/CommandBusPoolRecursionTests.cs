@@ -106,4 +106,54 @@ public class CommandBusPoolRecursionTests
             "concurrent first-resolves must not deadlock or recurse");
         (await all).Should().OnlyContain(x => x != null);
     }
+
+    // ── The scoped semantics themselves (owner ruling, 2026-08-26) ──────────────────────────────
+
+    /// <summary>
+    /// <c>ICommandBus</c> in rocket-welder2 <b>must be scoped</b> — an owner architectural requirement,
+    /// not a preference. A scope is an authenticated circuit, so a scoped bus is the seam that stamps a
+    /// command with the identity of the operator who issued it. A singleton bus attributes every command
+    /// in the plant to one identity: invisible while auth is off, silently wrong the day it is turned on,
+    /// and unanswerable exactly when it matters — "who stopped the cell?".
+    /// </summary>
+    /// <remarks>
+    /// Pinned here so no future simplification quietly de-scopes it. The failure this guards against is
+    /// not a crash: flipping the registration to singleton passes every other test in this file and
+    /// changes nothing observable until the day attribution is needed.
+    /// </remarks>
+    [Fact]
+    public async Task Scoped_registration_yields_one_bus_per_scope()
+    {
+        await using var sp = BuildHost();
+
+        using var scopeA = sp.CreateScope();
+        var a1 = scopeA.ServiceProvider.GetRequiredService<ICommandBus>();
+        var a2 = scopeA.ServiceProvider.GetRequiredService<ICommandBus>();
+
+        using var scopeB = sp.CreateScope();
+        var b1 = scopeB.ServiceProvider.GetRequiredService<ICommandBus>();
+
+        a2.Should().BeSameAs(a1, "twice in ONE scope is one bus — that is what makes the scope the unit of attribution");
+        b1.Should().NotBeSameAs(a1, "a second scope is a second circuit, and must get its own bus");
+    }
+
+    /// <summary>
+    /// The complement, and the reason the pool exists at all: singletons have no user context of their
+    /// own, so they rent from <see cref="ICommandBusPool"/> rather than holding a scoped bus. The pool is
+    /// a singleton and its rentals are not the scoped instances.
+    /// </summary>
+    [Fact]
+    public async Task The_pool_is_the_singleton_complement_not_the_scoped_bus()
+    {
+        await using var sp = BuildHost();
+
+        sp.GetRequiredService<ICommandBusPool>()
+          .Should().BeSameAs(sp.GetRequiredService<ICommandBusPool>(), "the pool is the singleton half of the pair");
+
+        using var scope = sp.CreateScope();
+        var scoped = scope.ServiceProvider.GetRequiredService<ICommandBus>();
+
+        using var rented = await sp.GetRequiredService<ICommandBusPool>().RentScope();
+        rented.Should().NotBeSameAs(scoped, "a rented bus serves a caller that has no scope of its own");
+    }
 }
