@@ -40,4 +40,26 @@ public interface IMigrationBuilder
 
     /// <summary>Retargets every event from stream <paramref name="oldName"/> to stream <paramref name="newName"/>.</summary>
     IMigrationBuilder RenameStream(string oldName, string newName);
+
+    /// <summary>
+    /// Registers ONE generic per-event rule: every surviving (non-system, non-link) event is handed to
+    /// <paramref name="transform"/> as an immutable <see cref="RawEvent"/>, and the returned event replaces it.
+    /// Returning <c>null</c> — or an event with an empty <see cref="RawEvent.StreamId"/> or
+    /// <see cref="RawEvent.Type"/> — DROPS the event.
+    /// </summary>
+    /// <remarks>
+    /// <para>This is the escape hatch the type-specific operations above are sugar for, and what a
+    /// script-defined migration compiles to. Like every other operation it is applied in DECLARATION ORDER, so
+    /// a <see cref="DropStream(string)"/> declared before it short-circuits and the transform never sees those
+    /// events, while a <see cref="RenameType"/> declared before it is already reflected in
+    /// <see cref="RawEvent.Type"/>.</para>
+    /// <para><b>Return the SAME <see cref="RawEvent.Data"/>/<see cref="RawEvent.Metadata"/> node instances when
+    /// you did not change them</b> (e.g. return the argument itself). Change is detected by reference: an
+    /// untouched payload is then copied BYTE-VERBATIM instead of being re-serialised, which is what keeps a pure
+    /// copy identical to the source.</para>
+    /// <para><see cref="RawEvent.EventNumber"/>, <see cref="RawEvent.EventId"/> and
+    /// <see cref="RawEvent.Created"/> on the returned event are IGNORED: destination streams are renumbered
+    /// gaplessly and the source event id and timestamp are preserved.</para>
+    /// </remarks>
+    IMigrationBuilder Transform(Func<RawEvent, RawEvent?> transform);
 }

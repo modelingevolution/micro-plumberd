@@ -32,4 +32,16 @@ public sealed record RawEvent
 
     /// <summary>The JSON metadata, or <c>null</c> when the source has none.</summary>
     public required JsonNode? Metadata { get; init; }
+
+    /// <summary>
+    /// The stored event id. Preserved verbatim by the copy engine, so a rule may match an event by the id an
+    /// operator read out of the source store (the id is the only stable per-event handle across a rewrite).
+    /// </summary>
+    public required Guid EventId { get; init; }
+
+    /// <summary>
+    /// The instant the event was written at the SOURCE (UTC), so a rule may match by date. This is the source
+    /// record's own timestamp — the destination stamps its own <c>Created</c> on append.
+    /// </summary>
+    public required DateTime Created { get; init; }
 }

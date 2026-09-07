@@ -39,6 +39,13 @@ internal sealed class MigrationPlan
     /// </summary>
     public bool AnyDropEventRule { get; }
 
+    /// <summary>
+    /// True if any generic <c>Transform(Func&lt;RawEvent,RawEvent?&gt;)</c> rule exists. Such a rule is handed
+    /// EVERY event as a <see cref="RawEvent"/> whose payload/metadata are PARSED, and the delegate is opaque,
+    /// so — exactly as for <see cref="AnyDropEventRule"/> — every event must be parsed.
+    /// </summary>
+    public bool AnyTransformRule { get; }
+
     public MigrationPlan(IReadOnlyList<CompiledMigration> migrations)
     {
         Migrations = migrations;
@@ -49,16 +56,19 @@ internal sealed class MigrationPlan
 
         var transformTypes = new HashSet<string>(StringComparer.Ordinal);
         var anyDropEvent = false;
+        var anyTransform = false;
         foreach (var (_, op) in _ops)
         {
             switch (op)
             {
                 case TransformJsonOp t: transformTypes.Add(t.Type); break;
                 case DropEventOp: anyDropEvent = true; break;
+                case TransformOp: anyTransform = true; break;
             }
         }
         TransformTypes = transformTypes;
         AnyDropEventRule = anyDropEvent;
+        AnyTransformRule = anyTransform;
     }
 
     /// <summary>
@@ -66,7 +76,7 @@ internal sealed class MigrationPlan
     /// the common case (no rule inspects/transforms the payload) → the event is copied byte-verbatim.
     /// </summary>
     public bool RequiresPayloadParse(string eventType) =>
-        AnyDropEventRule || TransformTypes.Contains(eventType);
+        AnyDropEventRule || AnyTransformRule || TransformTypes.Contains(eventType);
 
     /// <summary>Folds <paramref name="ctx"/> through every operation, updating per-migration <see cref="Stats"/>.</summary>
     public void Apply(EventContext ctx, IMigrationOpLog? log)
@@ -93,6 +103,11 @@ internal sealed class MigrationPlan
     /// </summary>
     public IEnumerable<string> ReferencedStreamNames =>
         _ops.SelectMany(t => t.Op.ReferencedStreamNames);
+
+    /// <summary>Every operation descriptor of every pending migration, keyed by migration id, in order.</summary>
+    public IReadOnlyList<string> DescriptorsOf(string migrationId) =>
+        _ops.Where(t => string.Equals(t.MigId, migrationId, StringComparison.Ordinal))
+            .Select(t => t.Op.Descriptor).ToList();
 
     /// <summary>New stream names that a <c>RenameStream</c> rule retargets events into (validated by the runner).</summary>
     public IEnumerable<string> RenameStreamTargets =>

@@ -29,6 +29,12 @@ internal sealed class EventContext
     public JsonNode? Meta { get; set; }
     public bool Dropped { get; set; }
 
+    /// <summary>The SOURCE event id (never rewritten — the copy engine preserves it on the destination).</summary>
+    public Guid EventId { get; set; }
+
+    /// <summary>The SOURCE write timestamp (UTC), exposed to rules so they can match by date.</summary>
+    public DateTime Created { get; set; }
+
     /// <summary>
     /// True once a <c>TransformJson</c> rule mutated this event's payload/metadata — the copy engine then
     /// re-serialises <see cref="Data"/>/<see cref="Meta"/>. When false the original bytes are copied VERBATIM
@@ -43,7 +49,9 @@ internal sealed class EventContext
         EventNumber = EventNumber,
         Type = Type,
         Data = Data,
-        Metadata = Meta
+        Metadata = Meta,
+        EventId = EventId,
+        Created = Created
     };
 }
 
@@ -201,5 +209,79 @@ internal sealed class RenameStreamOp(string oldName, string newName) : IMigratio
         if (ctx.Dropped || ctx.TargetStream != oldName) return OpEffect.None;
         ctx.TargetStream = newName;
         return OpEffect.Renamed;
+    }
+}
+
+/// <summary>
+/// The one GENERIC per-event operation: hands each surviving event to <paramref name="transform"/> as an
+/// immutable <see cref="RawEvent"/> and folds the returned event back into the running state. Returning
+/// <c>null</c> DROPS the event.
+/// </summary>
+/// <remarks>
+/// <para>Unlike <see cref="TransformJsonOp"/> (which targets ONE event type and mutates the payload in place),
+/// this op sees EVERY non-system, non-link event and may change the target stream, the event type, the payload
+/// and the metadata in one pass. It is what a script-defined migration compiles to.</para>
+/// <para><b>Change detection is by REFERENCE.</b> The returned <see cref="RawEvent.Data"/>/<see cref="RawEvent.Metadata"/>
+/// are compared to the ones handed in with <c>ReferenceEquals</c>: a transform that did not touch the
+/// payload returns the SAME node, the event is therefore NOT marked transformed, and the copy engine writes the
+/// ORIGINAL BYTES verbatim. That is what keeps a pure copy byte-identical — re-serialising an untouched payload
+/// would silently re-render its JSON (number formatting, key escapes) for every event in the store.</para>
+/// <para><b><see cref="RawEvent.EventNumber"/>, <see cref="RawEvent.EventId"/> and <see cref="RawEvent.Created"/>
+/// on the returned event are IGNORED</b> — the copy engine renumbers each destination stream gaplessly and
+/// preserves the source event id and write timestamp.</para>
+/// </remarks>
+internal sealed class TransformOp(Func<RawEvent, RawEvent?> transform) : IMigrationOp
+{
+    public string Descriptor => $"Transform({DelegateChecksum.Describe(transform)})";
+    public IEnumerable<string> ReferencedStreamNames => [];
+
+    public OpEffect Apply(EventContext ctx, IMigrationOpLog? log)
+    {
+        if (ctx.Dropped) return OpEffect.None;
+
+        var result = transform(ctx.AsRawEvent());
+        if (result is null)
+        {
+            ctx.Dropped = true;
+            return OpEffect.Dropped;
+        }
+
+        // An empty stream or event type is the script contract's second way of saying "drop" (Replicator).
+        if (result.StreamId.Length == 0 || result.Type.Length == 0)
+        {
+            ctx.Dropped = true;
+            return OpEffect.Dropped;
+        }
+
+        var renamed = false;
+        if (!string.Equals(result.StreamId, ctx.TargetStream, StringComparison.Ordinal))
+        {
+            ctx.TargetStream = result.StreamId;
+            renamed = true;
+        }
+        if (!string.Equals(result.Type, ctx.Type, StringComparison.Ordinal))
+        {
+            ctx.Type = result.Type;
+            renamed = true;
+        }
+
+        var transformed = false;
+        if (!ReferenceEquals(result.Data, ctx.Data))
+        {
+            ctx.Data = result.Data;
+            transformed = true;
+        }
+        if (!ReferenceEquals(result.Metadata, ctx.Meta))
+        {
+            ctx.Meta = result.Metadata;
+            transformed = true;
+        }
+
+        if (transformed)
+        {
+            ctx.Transformed = true; // payload/metadata changed → the copy engine must re-serialise
+            return OpEffect.Transformed;
+        }
+        return renamed ? OpEffect.Renamed : OpEffect.None;
     }
 }

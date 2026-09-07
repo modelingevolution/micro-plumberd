@@ -241,7 +241,8 @@ public sealed class MigrationRunner(ILoggerFactory? loggerFactory = null)
                 SourceEvents = copy.SourceEvents,
                 Kept = copy.Kept,
                 Dropped = copy.MigrationStats[p.Id].Dropped,
-                Transformed = copy.MigrationStats[p.Id].Transformed + copy.MigrationStats[p.Id].Renamed
+                Transformed = copy.MigrationStats[p.Id].Transformed + copy.MigrationStats[p.Id].Renamed,
+                Descriptors = plan.DescriptorsOf(p.Id)
             }).ToList();
             await history.WriteAsync(dest, applied, newlyApplied, runTimeUtc, ct).ConfigureAwait(false);
             Progress.MarkPendingCompleted(DateTime.UtcNow);

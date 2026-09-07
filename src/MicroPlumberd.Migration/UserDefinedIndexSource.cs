@@ -208,7 +208,9 @@ public sealed class UserDefinedIndexSource
                 EventNumber = er.EventNumber.ToUInt64(),
                 Type = er.EventType,
                 Data = TryParseJson(er.Data),
-                Metadata = TryParseJson(er.Metadata)
+                Metadata = TryParseJson(er.Metadata),
+                EventId = er.EventId.ToGuid(),
+                Created = er.Created
             };
         }
     }

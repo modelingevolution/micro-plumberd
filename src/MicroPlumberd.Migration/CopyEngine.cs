@@ -171,7 +171,11 @@ internal sealed class CopyEngine(ILogger? logger = null) : IMigrationOpLog
         // single-threaded, so a single writer + a single reused EventContext are safe.
         var scratch = new ArrayBufferWriter<byte>(1024);
         using var writer = new Utf8JsonWriter(scratch);
-        var ctx = new EventContext { SourceStream = "", EventNumber = 0, TargetStream = "", Type = "" };
+        var ctx = new EventContext
+        {
+            SourceStream = "", EventNumber = 0, TargetStream = "", Type = "",
+            EventId = Guid.Empty, Created = default
+        };
 
         // Per-dest-stream rolling SHA-256 over each written event (write-fidelity checksum for the verifier).
         var hashers = new Dictionary<string, IncrementalHash>(StringComparer.Ordinal);
@@ -286,6 +290,10 @@ internal sealed class CopyEngine(ILogger? logger = null) : IMigrationOpLog
             ctx.Meta = meta;
             ctx.Dropped = false;
             ctx.Transformed = false;
+            // Identity fields rules may MATCH on but never rewrite: the copy preserves the source event id
+            // (BuildEventData below) and the destination stamps its own write timestamp.
+            ctx.EventId = er.EventId.ToGuid();
+            ctx.Created = er.Created;
 
             plan.Apply(ctx, this);
 

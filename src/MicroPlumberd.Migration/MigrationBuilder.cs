@@ -54,6 +54,13 @@ internal sealed class MigrationBuilder : IMigrationBuilder
         return this;
     }
 
+    public IMigrationBuilder Transform(Func<RawEvent, RawEvent?> transform)
+    {
+        ArgumentNullException.ThrowIfNull(transform);
+        _ops.Add(new TransformOp(transform));
+        return this;
+    }
+
     public IMigrationBuilder RenameStream(string oldName, string newName)
     {
         ArgumentException.ThrowIfNullOrEmpty(oldName);
@@ -83,7 +90,9 @@ internal sealed class CompiledMigration
             Id = migration.Id,
             Name = migration.Name,
             Operations = b.Operations,
-            Checksum = ComputeChecksum(migration.Id, b.Operations)
+            // A migration whose rules come from an EXTERNAL artifact (a script file) supplies its own checksum
+            // over that artifact — see Migration.ChecksumOverride for why the descriptor checksum cannot serve.
+            Checksum = migration.ChecksumOverride ?? ComputeChecksum(migration.Id, b.Operations)
         };
     }
 
