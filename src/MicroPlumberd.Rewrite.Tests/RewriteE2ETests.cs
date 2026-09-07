@@ -5,6 +5,7 @@ using FluentAssertions;
 using KurrentDB.Client;
 using MicroPlumberd.Migration;
 using MicroPlumberd.Rewrite;
+using Microsoft.Extensions.Logging.Abstractions;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -658,6 +659,56 @@ public class RewriteE2ETests(ITestOutputHelper output)
             + "assertion in this file is unfalsifiable");
         seenDuringRun.Should().AllSatisfy(n => n.Should().StartWith($"mp-rewrite-{f.ContainerName}-"));
         (await f.ScratchContainersAsync()).Should().BeEmpty("and it is gone once the run finishes");
+    }
+
+    /// <summary>
+    /// RR-1 — the anchor for `--status`'s debris lines, against the PRODUCTION query rather than the
+    /// fixture's own.
+    /// </summary>
+    /// <remarks>
+    /// The #4 anchor proves the FIXTURE's scratch-container helper can see something; it says nothing about
+    /// `DockerStore.FindScratchContainersAsync`, which is what `--status` actually calls. Same class of hole,
+    /// one level up: delete both status lines and nothing else in the suite goes red.
+    /// <para>The debris is real, not fabricated — `--status` is run WHILE a rewrite is in flight, which is
+    /// exactly the state an operator sees when a run is interrupted: a `data.new.*` directory on disk and a
+    /// live `mp-rewrite-&lt;ctr&gt;-*` container.</para>
+    /// </remarks>
+    [Fact]
+    public async Task status_names_the_scratch_container_and_the_half_written_directory_while_a_rewrite_is_running()
+    {
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+        var production = new DockerStore(f.Docker, NullLogger.Instance);
+
+        var rewrite = Task.Run(() => RewriteCommand.RunAsync(Options(f), f.Docker, f.Loggers));
+
+        // Wait for the state to exist, using the very method --status depends on.
+        IReadOnlyList<string> liveScratch = [];
+        var deadline = DateTime.UtcNow + TimeSpan.FromSeconds(90);
+        while (DateTime.UtcNow < deadline && liveScratch.Count == 0 && !rewrite.IsCompleted)
+        {
+            liveScratch = await production.FindScratchContainersAsync(f.ContainerName);
+            if (liveScratch.Count == 0) await Task.Delay(200);
+        }
+        liveScratch.Should().NotBeEmpty(
+            "DockerStore.FindScratchContainersAsync must be able to SEE a scratch container that certainly "
+            + "exists — otherwise the --status line built on it is unfalsifiable");
+        liveScratch.Should().AllSatisfy(n => n.Should().StartWith($"mp-rewrite-{f.ContainerName}-"));
+
+        var during = (await RunAsync(f, Options(f) with { Mode = RewriteMode.Status })).Format();
+
+        during.Should().Contain(liveScratch[0], "--status must name the container an operator has to deal with");
+        during.Should().Contain("data.new.", "and the half-written directory it cannot delete itself");
+        during.Should().Contain("interrupted").And.Contain("scratch");
+
+        (await rewrite).Code.Should().Be(ExitCode.Ok);
+
+        // The control: on a clean store both lines say so. Without it, "the lines appear" would also pass if
+        // they were hard-coded to appear always.
+        var after = (await RunAsync(f, Options(f) with { Mode = RewriteMode.Status })).Format();
+        after.Should().Contain("interrupted  : (none)").And.Contain("scratch      : (none)");
+        after.Should().NotContain("data.new.");
+        (await production.FindScratchContainersAsync(f.ContainerName)).Should().BeEmpty();
     }
 
     // ================================================================= E2E-11

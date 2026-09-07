@@ -230,8 +230,6 @@ public sealed class RewriteCommand
             // M1 — the guards ran minutes ago, before an unbounded prompt and the whole copy, with the old
             // store writable throughout. Re-check both halves NOW, while nothing has been swapped and a
             // refusal therefore costs nothing.
-            var anchorAfter = await RewriteVerification.ReadSourceHeadAsync(sourceClient, ReservedStreams, ct)
-                .ConfigureAwait(false);
             await sourceProjections.DisposeAsync().ConfigureAwait(false);
             await sourceClient.DisposeAsync().ConfigureAwait(false);
 
@@ -249,6 +247,16 @@ public sealed class RewriteCommand
                     Headline = "Refusing at the last check before the swap: " + preSwapGuards.Refusal
                                 + " Nothing was swapped; the old store is untouched."
                 };
+
+            // Read LAST, after the drain wait and the re-guard, so the gap between the final look at the
+            // source and the stop is one round trip. Reading it before those (a wait of up to 15 s plus a
+            // guard evaluation) left a window in which a client could write, disconnect, and be missed by
+            // both checks. A fresh short-lived client: the guard above has already run, so this call cannot
+            // be counted against us.
+            ulong anchorAfter;
+            await using (var anchorClient = new KurrentDBClient(KurrentDBClientSettings.Create(connectionString)))
+                anchorAfter = await RewriteVerification.ReadSourceHeadAsync(anchorClient, ReservedStreams, ct)
+                    .ConfigureAwait(false);
 
             if (anchorAfter != anchorBefore)
                 return Fill(new RewriteReport

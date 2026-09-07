@@ -78,7 +78,7 @@ jobs:
           # for the 71 that had run. A dying run looks green, so the count is the only thing that catches it —
           # and a floor far below the real total would have let that very run through. Raise this
           # deliberately when tests are added; never lower it to make a red build green.
-          MIN_TESTS=80
+          MIN_TESTS=83
           if [ -z "$EXECUTED" ] || [ "$EXECUTED" -lt "$MIN_TESTS" ]; then
             echo "::error::Only ${EXECUTED:-0} test(s) ran; expected at least $MIN_TESTS. A run that dies partway still reports success."
             exit 1
