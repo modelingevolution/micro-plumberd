@@ -1,3 +1,117 @@
+# Seeding
+
+`AddIdentitySeed` declares the identity state that must exist after start-up. The library converges the store to
+that declaration; it knows no role name and no user name of its own.
+
+```csharp
+services.AddPlumberd(settings);
+services.AddPlumberdIdentity();
+
+services.AddIdentitySeed(seed => seed
+    .Role("Administrator")
+    .Role("Accountant")
+    .User("admin@localhost", u => u.WithUserName("admin").WithPassword(pwd).InRoles("Administrator"))
+    .User("audit@example.com", u => u.InRoles("Auditor"))   // no password => external-login-only account
+    .Then(async (ctx, ct) => await ctx.EnsureRoleAsync("Reporting", ct))
+    .WaitUpTo(TimeSpan.FromSeconds(30)));
+```
+
+`AddIdentitySeed` may be called more than once; declarations accumulate in registration order and the hosted
+runner (`IdentityInitializerService`) is registered exactly once. The last `WaitUpTo` wins.
+
+## Ensure semantics
+
+Everything is **idempotent and additive**.
+
+| Declaration | What the seed guarantees | What it never does |
+|---|---|---|
+| `Role(n)` | The role exists after the seed converged. | Rename it, delete it, or touch a role that is not declared. |
+| `User(e)` | The user exists with `EmailConfirmed = true` and is a member of the declared roles. A role named in `InRoles` that was not declared with `Role` is ensured before the membership is assigned. | Modify an existing user: no password reset, no role removal, no user-name change. |
+
+Consequences worth stating:
+
+- A role dropped from the declaration is **left alone** — the seed is additive, it does not converge downwards.
+- A seeded user deleted by an operator is **recreated** on the next boot. To take an account out of service, lock it
+  or change its password; do not delete it.
+- Likewise a declared user whose e-mail an operator changed: the declared address is ensured as a **new account**.
+  The declaration is keyed by e-mail, so changing it away from the declared value reads as "the declared user is
+  missing".
+- Uniqueness is enforced by the read models, not by the store. Two **different hosts** seeding the same empty store
+  at the same instant can each create a role of the same name. Within one host — restarts, retries, concurrent
+  attempts — the ensure steps are idempotent.
+- The identity stores (`UserStore.AddToRoleAsync` / `RemoveFromRoleAsync` / `IsInRoleAsync`) assume the default
+  upper-invariant `ILookupNormalizer`. A custom normalizer is **unsupported end-to-end** — the seed's own keys are
+  normalizer-correct (`RoleManager.NormalizeKey`, `UserManager.NormalizeEmail`), but the stores are not.
+
+## Readiness, not time
+
+The seed starts when the read models it consults (`RolesModel`, `UsersModel`, `UserAuthorizationModel`) report
+`ICaughtUpHandler.CaughtUp()` — not after a `Task.Delay`. Each write then waits until **its own write is visible**
+in the read model the next step reads (`RoleManager.CreateAsync` appends an event; `AddToRoleAsync` reads the role
+back out of `RolesModel`, and a read taken before the fold is what used to throw
+`Role 'X' does not exist`).
+
+Both waits are bounded by one per-attempt bound, `WaitUpTo` (default 30 s). Expiry fails the **attempt**, never the
+host: the attempt logs at `Error`, and the runner retries with backoff `1, 2, 5, 10, 20, 30, 30…` seconds until it
+converges or the host stops. `TimeProvider` is resolved from DI when registered, so tests can compress the backoff.
+
+## Observing it
+
+`IdentityInitializerService.State` is an `IdentitySeedState(bool Ready, string Description, int Attempts, string? LastError)`
+snapshot, and `IdentityInitializerService.Completed` is a `Task` that completes when the seed converged.
+
+```csharp
+services.AddHealthChecks().AddIdentitySeedHealthCheck();   // entry "identity", untagged
+```
+
+The health check is **opt-in**: a patch upgrade must not silently add a `/health` entry to every consumer. It reads
+`State` live — Unhealthy naming the current step or the last error until the seed converged, Healthy afterwards.
+
+## `HostOptions.BackgroundServiceExceptionBehavior` — state it
+
+The .NET default is `BackgroundServiceExceptionBehavior.StopHost`: one background service that throws out of
+`ExecuteAsync` takes the whole host down. In a container that is a restart loop, and `/health` stays green right up
+to the moment the process exits.
+
+`IdentityInitializerService` never lets an exception escape `ExecuteAsync`, so it cannot trigger that on its own —
+but the option is host-wide and a library cannot set it on a consumer's behalf. **Set it explicitly, whichever way
+you want it**, so it is a stated choice and not an accident:
+
+```csharp
+services.Configure<HostOptions>(o =>
+    o.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
+```
+
+## Non-web hosts must add data protection
+
+`AddPlumberdIdentity` calls `AddDefaultTokenProviders()`, which registers `DataProtectorTokenProvider<User>`. The
+`UserManager<TUser>` constructor resolves every provider in `Options.Tokens.ProviderMap`, so **`UserManager<User>`
+cannot be constructed without an `IDataProtectionProvider`**. A web host gets one from `WebApplicationBuilder`; a
+generic host (worker service, test host, `Host.CreateDefaultBuilder()`) does not, and the seed fails every attempt
+with:
+
+```
+Unable to resolve service for type 'Microsoft.AspNetCore.DataProtection.IDataProtectionProvider'
+while attempting to activate 'Microsoft.AspNetCore.Identity.DataProtectorTokenProvider`1[...User]'
+```
+
+The library does not register it for you — neither does ASP.NET Core's own `AddIdentity`/`AddIdentityCore`. In a
+non-web host, add it yourself:
+
+```csharp
+services.AddDataProtection();   // plus a key-persistence choice if the host is not ephemeral
+```
+
+## Compatibility
+
+`AddIdentityInitializer(o => …)` and `IdentityInitializerOptions` keep their names and meaning. The call is now an
+adapter over the seed: `Role(AdminRoleName)`,
+`User(AdminEmail, WithUserName(AdminUserName), WithPassword(AdminPassword), InRoles(AdminRoleName))`,
+`WaitUpTo(ProjectionWaitTime)`. `SeedAdminUser = false` contributes nothing, so the seed is ready immediately.
+`ProjectionWaitTime` is no longer a delay — it is the per-attempt readiness bound.
+
+---
+
 Specifications for Integrating ASP.NET Core Identity with MicroPlumberd and EventStore
 Introduction
 This document outlines the specifications for integrating ASP.NET Core Identity with MicroPlumberd and EventStore in an ASP.NET Core application. The integration uses event sourcing (ES) and Command Query Responsibility Segregation (CQRS) to manage user and role data, providing scalability, auditability, and consistency. Designed with a Blazor application in mind, the solution is adaptable to any ASP.NET Core app. It supports all ASP.NET Core Identity features�user management, roles, claims, external logins, and two-factor authentication�while adhering to domain-driven design (DDD) principles.
