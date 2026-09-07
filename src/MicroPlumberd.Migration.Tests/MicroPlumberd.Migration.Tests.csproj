@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="8.9.0" />
+    <PackageReference Include="coverlet.collector" Version="10.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd.Migration\MicroPlumberd.Migration.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Migration.Runner\MicroPlumberd.Migration.Runner.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Testing\MicroPlumberd.Testing.csproj" />
+    <!-- Real MicroPlumberd aggregate + [OutputStream] read model (FooAggregate/FooModel) for the
+         incident replay test — the OffersReadModel analog. -->
+    <ProjectReference Include="..\MicroPlumberd.Services\MicroPlumberd.Services.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Tests.App\MicroPlumberd.Tests.App.csproj" />
+  </ItemGroup>
+
+</Project>

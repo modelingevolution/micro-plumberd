@@ -1,0 +1,103 @@
+# End-to-end suite for mp-rewrite (epic-095).
+#
+# These tests are the acceptance bar for the tool: they start REAL KurrentDB containers, bind-mount a data
+# directory, rewrite it, swap it in and read the result back through the original container. They cannot be
+# replaced by unit tests, because the whole value of the tool is the orchestration.
+name: mp-rewrite end-to-end
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master, 'feature/**']
+  workflow_dispatch:
+
+# One run per ref. These scenarios start real containers on a shared docker host and the tool refuses when a
+# sibling of the same compose project is up, so two concurrent runs would refuse each other.
+concurrency:
+  group: rewrite-e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    # The suite starts two containers per scenario and runs strictly sequentially; ~7 minutes on saturn.
+    # 30 minutes leaves room for a cold image pull and a slower runner without letting a hang burn an hour.
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore src/MicroPlumberd.Rewrite.Tests/MicroPlumberd.Rewrite.Tests.csproj
+
+      - name: Build
+        run: >-
+          dotnet build src/MicroPlumberd.Rewrite.Tests/MicroPlumberd.Rewrite.Tests.csproj
+          --configuration Release --no-restore
+
+      # The fixture pulls this itself if it is missing, but doing it here gives the pull its own step, its own
+      # log and its own failure — rather than surfacing as a container-start timeout inside the first scenario.
+      - name: Pull KurrentDB image
+        run: docker pull docker.kurrent.io/kurrent-latest/kurrentdb:latest
+
+      # Sequential is not optional: two fixtures up at once are siblings of each other's compose project and
+      # the tool would correctly refuse. xunit.runner.json pins it too, so a local run behaves the same.
+      - name: Run end-to-end suite
+        run: >-
+          dotnet test src/MicroPlumberd.Rewrite.Tests/MicroPlumberd.Rewrite.Tests.csproj
+          --configuration Release --no-build
+          --logger "trx;LogFileName=rewrite-e2e.trx"
+          --results-directory ${{ github.workspace }}/test-results
+          -- xUnit.ParallelizeTestCollections=false
+
+      # A discovery break runs ZERO tests and dotnet test exits 0 — green, with nothing to notice it in. For a
+      # suite that is the acceptance bar for a tool whose failure mode is losing a production store, "no tests
+      # ran" must be a failure, and the floor must be a number someone has to consciously lower.
+      - name: Require the suite to have actually run
+        if: always()
+        run: |
+          TRX=$(ls ${{ github.workspace }}/test-results/*.trx 2>/dev/null | head -1)
+          if [ -z "$TRX" ]; then echo "::error::No TRX produced — the suite did not run."; exit 1; fi
+          EXECUTED=$(grep -o 'executed="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          PASSED=$(grep -o 'passed="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          OUTCOME=$(grep -o 'outcome="[A-Za-z]*"' "$TRX" | tail -1 | sed 's/.*="\(.*\)"/\1/')
+          echo "executed=$EXECUTED passed=$PASSED outcome=$OUTCOME"
+          # Measured on saturn 2026-09-07: a run that ABORTED after 71 of 76 tests still printed "Passed!"
+          # for the 71 that had run. A dying run looks green, so the count is the only thing that catches it —
+          # and a floor far below the real total would have let that very run through. Raise this
+          # deliberately when tests are added; never lower it to make a red build green.
+          MIN_TESTS=83
+          if [ -z "$EXECUTED" ] || [ "$EXECUTED" -lt "$MIN_TESTS" ]; then
+            echo "::error::Only ${EXECUTED:-0} test(s) ran; expected at least $MIN_TESTS. A run that dies partway still reports success."
+            exit 1
+          fi
+          if [ "$OUTCOME" != "Completed" ]; then
+            echo "::error::Test run outcome was '$OUTCOME', not 'Completed'."
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rewrite-e2e-trx
+          path: ${{ github.workspace }}/test-results/*.trx
+          retention-days: 14
+
+      # A scenario that fails midway can leave a container behind; the runner is thrown away, but leaving them
+      # named in the log makes a CI-only failure diagnosable. Only ever by the exact name prefix this suite owns.
+      - name: Report leftover containers
+        if: always()
+        run: docker ps -a --filter "name=mp-rewrite-" --format '{{.Names}}\t{{.Status}}' || true

@@ -40,10 +40,14 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     private readonly VersionDuckTyping _versionTyping = new();
     private readonly Func<Exception, OperationContext, CancellationToken, Task<ErrorHandleDecision>> _errorHandle;
     private ProjectionRegister? _projectionRegister;
+    private readonly KurrentDBClientSettings _settings;
+    private UserDefinedIndex? _userDefinedIndex;
+    private IIndexDefinitionReconciler? _indexReconciler;
 
     internal PlumberEngine(KurrentDBClientSettings settings, PlumberConfig? config = null)
     {
         config ??= new PlumberConfig();
+        _settings = settings;
         Client = new KurrentDBClient(settings);
         PersistentSubscriptionClient = new KurrentDBPersistentSubscriptionsClient(settings);
         ProjectionManagementClient = new KurrentDBProjectionManagementClient(settings);
@@ -295,6 +299,80 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         else
             await sub.WithHandler(eh, mapFunc);
         return sub;
+    }
+
+    /// <summary>The relocated user-defined-index lifecycle primitive, built from this engine's connection settings.</summary>
+    internal UserDefinedIndex UserDefinedIndex =>
+        _userDefinedIndex ??= BuildUserDefinedIndex();
+
+    private UserDefinedIndex BuildUserDefinedIndex()
+    {
+        var (baseUri, user, pass) = KurrentHttpEndpoint.FromSettings(_settings);
+        return new UserDefinedIndex(baseUri, user, pass, ServiceProvider?.GetService<ILogger<UserDefinedIndex>>());
+    }
+
+    private IIndexDefinitionReconciler IndexReconciler =>
+        _indexReconciler ??= new UserDefinedIndexReconciler(UserDefinedIndex,
+            ServiceProvider?.GetService<ILogger<UserDefinedIndexReconciler>>());
+
+    /// <summary>
+    /// INDEX-BACKED sibling of <see cref="SubscribeEventHandler{TEventHandler}(TEventHandler,string,FromRelativeStreamPosition?,bool,CancellationToken)"/>:
+    /// sources the merged stream from a KurrentDB user-defined index (filtered <c>$all</c>) instead of a
+    /// <c>fromStreams(...).linkTo(outputStream)</c> join projection. Catch-up only (persistent subscriptions
+    /// cannot see index links — SPIKE-7). Same handler dispatch, <c>ICaughtUpHandler</c> and error-backoff as the
+    /// projection path — only the event SOURCE differs. Opt-in; the projection path stays the default.
+    /// <para>
+    /// <b>Weaker CaughtUp semantics than the projection path.</b> The history→live boundary tracks the <c>$all</c>
+    /// position, so while the index is still backfilling, <c>ICaughtUpHandler.CaughtUp()</c> can fire BEFORE all
+    /// historical links are delivered (they arrive as "live"). No-loss and commit ordering still hold; a read model
+    /// that treats <c>CaughtUp</c> as a "fully caught up / authoritative" signal should stay projection-backed.
+    /// </para>
+    /// </summary>
+    /// <typeparam name="TEventHandler">The catch-up read model to index-back.</typeparam>
+    /// <param name="eh">Optional handler instance; resolved from DI when null.</param>
+    /// <param name="outputStream">Optional output-stream name (convention-derived when null) — the index-name seed.</param>
+    /// <param name="start">Only <c>Start</c> (default, rebuild) or <c>End</c> (tail-only) are valid on filtered <c>$all</c>.</param>
+    /// <param name="token">Cancellation token.</param>
+    /// <returns>A disposable subscription that stops the index-backed tail when disposed.</returns>
+    public async Task<IAsyncDisposable> SubscribeEventHandlerViaIndex<TEventHandler>(TEventHandler? eh = null,
+        string? outputStream = null, FromRelativeStreamPosition? start = null, CancellationToken token = default)
+        where TEventHandler : class, IEventHandler, ITypeRegister
+    {
+        outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
+        var eventTypes = _typeHandlerRegisters.GetEventNamesFor<TEventHandler>().ToHashSet(StringComparer.Ordinal);
+        var tailOnly = IsTailOnlyStart(start);
+        var fromAll = tailOnly ? FromAll.End : FromAll.Start;
+
+        var name = await IndexReconciler.ReconcileAsync(outputStream, eventTypes, token).ConfigureAwait(false);
+        var indexStream = UserDefinedIndex.IndexStream(name);
+
+        var logger = ServiceProvider?.GetService<ILogger<PlumberEngine>>();
+        logger?.LogInformation(
+            "Index-backed subscription: handler {Handler} → index '{Index}' → stream {IndexStream} → types [{Types}] (start {Start}).",
+            typeof(TEventHandler).Name, name, indexStream, string.Join(",", eventTypes),
+            tailOnly ? "End" : "Start");
+
+        var state = new IndexSubscriptionState(Client, indexStream, fromAll, _settings.DefaultCredentials, token);
+        var runner = new SubscriptionRunner(this, state);
+        var mapFunc = _typeHandlerRegisters.GetEventNameConverterFor<TEventHandler>()!;
+        if (eh == null)
+            await runner.WithHandler<TEventHandler>(mapFunc);
+        else
+            await runner.WithHandler(eh, mapFunc);
+        return runner;
+    }
+
+    // Only Start/End are meaningful on a filtered-$all subscription; a specific-revision start is rejected loud
+    // (it has no meaning on the index path). FromStream.Start → false (rebuild), FromStream.End → true (tail-only).
+    private static bool IsTailOnlyStart(FromRelativeStreamPosition? start)
+    {
+        if (start is null) return false;
+        var s = start.Value;
+        if (s.StartPosition == FromStream.Start) return false;
+        if (s.StartPosition == FromStream.End) return true;
+        throw new InvalidOperationException(
+            "Index-backed merge supports only Start or End as a start position; a specific stream revision has no "
+            + "meaning on a filtered-$all subscription. See docs/design-index-backed-merge-streams.md.");
     }
 
     /// <summary>

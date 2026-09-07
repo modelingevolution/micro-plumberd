@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Description>Offline event-store migration / rewrite tool for KurrentDB (EventStore). Copies a source store to a fresh destination in $all commit order, applying raw (non-typed) migration rules — drop streams, drop events, rename event types, transform JSON payload/metadata, rename streams — with applied-migration history that travels with the store.</Description>
+    <Title>MicroPlumberd.Migration</Title>
+    <Authors>Rafal Maciag</Authors>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
+    <PackageTags>EventStore;KurrentDB;CQRS;EventSourcing;Migration</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="KurrentDB.Client" Version="1.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.7" />
+  </ItemGroup>
+
+  <!-- Migration → core: the user-defined-index lifecycle primitives (create/name/filter/stream + HTTP endpoint)
+       live in core (MicroPlumberd.UserDefinedIndex / KurrentHttpEndpoint). Migration delegates to them so there
+       is ONE implementation. See docs/design-index-backed-merge-streams.md — "Assembly layering". -->
+  <ItemGroup>
+    <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="MicroPlumberd.Migration.Tests" />
+  </ItemGroup>
+
+  <!-- Packaging assets, as the other 20 packages in this repo carry them. Published metadata is permanent. -->
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png" Pack="True" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="True" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
