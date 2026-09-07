@@ -26,6 +26,7 @@
     <ProjectReference Include="..\MicroPlumberd.Migration\MicroPlumberd.Migration.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Migration.Scripting\MicroPlumberd.Migration.Scripting.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Testing\MicroPlumberd.Testing.csproj" />
+    <ProjectReference Include="..\MicroPlumberd.Rewrite\MicroPlumberd.Rewrite.csproj" />
   </ItemGroup>
 
   <ItemGroup>

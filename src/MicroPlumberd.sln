@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Migration.Scr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Rewrite.Tests", "MicroPlumberd.Rewrite.Tests\MicroPlumberd.Rewrite.Tests.csproj", "{15DECE8B-BCA9-4C02-B8A9-83F82FB86CDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroPlumberd.Rewrite", "MicroPlumberd.Rewrite\MicroPlumberd.Rewrite.csproj", "{11B13FE4-AF80-4801-9A4E-58752001A8D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -513,6 +515,18 @@ Global
 		{15DECE8B-BCA9-4C02-B8A9-83F82FB86CDF}.Release|x64.Build.0 = Release|Any CPU
 		{15DECE8B-BCA9-4C02-B8A9-83F82FB86CDF}.Release|x86.ActiveCfg = Release|Any CPU
 		{15DECE8B-BCA9-4C02-B8A9-83F82FB86CDF}.Release|x86.Build.0 = Release|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Debug|x64.Build.0 = Debug|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Debug|x86.Build.0 = Debug|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Release|x64.ActiveCfg = Release|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Release|x64.Build.0 = Release|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Release|x86.ActiveCfg = Release|Any CPU
+		{11B13FE4-AF80-4801-9A4E-58752001A8D2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
