@@ -321,12 +321,11 @@ public sealed partial class DockerStore(IDockerClient client, ILogger logger)
     public static async Task<(int OpenGrpcCalls, int KestrelConnections)> ReadConnectionMetricsAsync(
         string connectionString, CancellationToken ct = default)
     {
-        var (baseUri, user, pass) = KurrentHttpEndpoint.Parse(connectionString);
-        using var http = KurrentHttpEndpoint.CreateClient(user, pass);
+        var baseUri = StoreHttp.BaseUriOf(connectionString);
         string text;
         try
         {
-            using var resp = await http.GetAsync(new Uri(baseUri, "metrics"), ct).ConfigureAwait(false);
+            using var resp = await StoreHttp.GetAsync(connectionString, "metrics", ct).ConfigureAwait(false);
             // A rejected LOGIN is a different problem from a store that is down, and telling them apart is the
             // difference between "check your password" and an hour spent diagnosing a healthy store.
             if (resp.StatusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden)

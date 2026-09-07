@@ -10,9 +10,7 @@ public static class StoreHealth
     public static async Task WaitLiveAsync(string connectionString, TimeSpan timeout, ILogger logger,
         CancellationToken ct = default)
     {
-        var (baseUri, user, pass) = KurrentHttpEndpoint.Parse(connectionString);
-        using var http = KurrentHttpEndpoint.CreateClient(user, pass);
-        var url = new Uri(baseUri, "health/live");
+        var url = new Uri(StoreHttp.BaseUriOf(connectionString), "health/live");
         var deadline = DateTime.UtcNow + timeout;
         string last = "no response";
 
@@ -21,7 +19,8 @@ public static class StoreHealth
             ct.ThrowIfCancellationRequested();
             try
             {
-                using var resp = await http.GetAsync(url, ct).ConfigureAwait(false);
+                using var resp = await StoreHttp.GetAsync(connectionString, "health/live", ct)
+                    .ConfigureAwait(false);
                 if (resp.IsSuccessStatusCode) { logger.LogInformation("{Url} is live.", url); return; }
                 last = $"HTTP {(int)resp.StatusCode}";
             }

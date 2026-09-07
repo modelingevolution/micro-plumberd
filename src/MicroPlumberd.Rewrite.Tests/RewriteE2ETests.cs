@@ -451,14 +451,14 @@ public class RewriteE2ETests(ITestOutputHelper output)
         var before = f.RootEntries();
         var startedAt = await f.StartedAtAsync();
 
-        using var writesThenConfirms = new AppendThenAnswer(f, "LateWriter-1", "yes");
+        using var writesThenConfirms = AppendsThenConfirms(f, "LateWriter-1");
         var report = await RunAsync(f, Options(f) with
         {
             Yes = false,
             ConfirmationInput = writesThenConfirms
         });
 
-        writesThenConfirms.Appended.Should().BeTrue("the scenario is only meaningful if the write happened");
+        writesThenConfirms.Acted.Should().BeTrue("the scenario is only meaningful if the write happened");
         report.Code.Should().Be(ExitCode.EngineFailure);
         report.Headline.Should().Contain("written to DURING the run")
             .And.Contain("old store is untouched");
@@ -473,25 +473,79 @@ public class RewriteE2ETests(ITestOutputHelper output)
     }
 
     /// <summary>
-    /// Appends one event the moment the tool asks for confirmation, then answers it — so the write lands
-    /// inside the window between the guards and the swap, every time.
+    /// Does something the moment the tool asks for confirmation, then answers it — which puts that something
+    /// inside the window between the guards and the swap, deterministically, with no fault injection.
     /// </summary>
-    private sealed class AppendThenAnswer(RewriteFixture f, string stream, string answer) : TextReader
+    private sealed class ActOnPromptThenAnswer(Action act, string answer) : TextReader
     {
-        public bool Appended { get; private set; }
+        public bool Acted { get; private set; }
 
         public override string ReadLine()
         {
-            if (!Appended)
-            {
-                using var client = f.NewClient();
-                client.AppendToStreamAsync(stream, StreamState.Any,
-                    [new EventData(Uuid.NewUuid(), "LateWrite", Encoding.UTF8.GetBytes("""{"late":true}"""))])
-                    .GetAwaiter().GetResult();
-                Appended = true;
-            }
+            if (!Acted) { act(); Acted = true; }
             return answer;
         }
+    }
+
+    private static ActOnPromptThenAnswer AppendsThenConfirms(RewriteFixture f, string stream) =>
+        new(() =>
+        {
+            using var client = f.NewClient();
+            client.AppendToStreamAsync(stream, StreamState.Any,
+                [new EventData(Uuid.NewUuid(), "LateWrite", Encoding.UTF8.GetBytes("""{"late":true}"""))])
+                .GetAwaiter().GetResult();
+        }, "yes");
+
+    /// <summary>
+    /// The other half of M1: the guards are re-evaluated immediately before the swap. A sibling container
+    /// brought up during the confirmation prompt passed the first check and must still be caught — nothing
+    /// has been swapped yet, so refusing costs nothing.
+    /// </summary>
+    [Fact]
+    public async Task A_sibling_started_during_the_run_is_caught_by_the_guard_re_check_before_the_swap()
+    {
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+        var before = f.RootEntries();
+        var startedAt = await f.StartedAtAsync();
+
+        string sibling = "";
+        using var startsSiblingThenConfirms = new ActOnPromptThenAnswer(
+            () => sibling = f.StartSiblingAsync().GetAwaiter().GetResult(), "yes");
+
+        var report = await RunAsync(f, Options(f) with
+        {
+            Yes = false,
+            ConfirmationInput = startsSiblingThenConfirms
+        });
+
+        startsSiblingThenConfirms.Acted.Should().BeTrue();
+        report.Code.Should().Be(ExitCode.GuardRefusal);
+        report.Headline.Should().Contain("last check before the swap").And.Contain(sibling);
+
+        f.RootEntries().Should().Equal(before, "nothing was swapped and no backup was taken");
+        (await f.ScratchContainersAsync()).Should().BeEmpty("the scratch store is removed on the way out");
+        (await f.StartedAtAsync()).Should().Be(startedAt, "the container is never stopped");
+        (await f.ReadAsync("Order-1")).Should().HaveCount(3);
+    }
+
+    [Fact]
+    public async Task rollback_refuses_while_a_sibling_container_is_running()
+    {
+        // A rollback discards every write made since the backup, so it is MORE destructive than a rewrite —
+        // and it was the one path with no sibling and no connected-client check at all.
+        await using var f = await RewriteFixture.StartAsync(output);
+        (await RewriteAsync(f, Options(f) with { Eval = "dropStream(/^Junk-/)" })).Code.Should().Be(ExitCode.Ok);
+        (await f.StreamExistsAsync("Junk-1")).Should().BeFalse();
+
+        var sibling = await f.StartSiblingAsync();
+        var report = await RunAsync(f, Options(f) with { Mode = RewriteMode.Rollback });
+
+        report.Code.Should().Be(ExitCode.GuardRefusal);
+        report.Headline.Should().Contain(sibling);
+        (await f.StreamExistsAsync("Junk-1")).Should().BeFalse(
+            "the rollback did not happen, so the rewritten store is still the live one");
+        f.RootEntries().Should().NotContain(e => e.StartsWith("data.rolledback."));
     }
 
     // ================================================================= the confirmation prompt

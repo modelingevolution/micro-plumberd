@@ -47,9 +47,10 @@ public sealed class RewriteCommand
             var message = "named-volume rewrite is not implemented in this version; move the store to a bind "
                           + "mount or wait for a version that implements --force-volume-copy";
             logger.LogError("{Message}", message);
-            // GuardRefusal, not ScriptError: exit 2 is documented as "the script does not parse", and the same
-            // store WITHOUT this flag is already refused with 1. One kind of refusal, one code.
-            return new RewriteReport { Code = ExitCode.GuardRefusal, Headline = message, Elapsed = sw.Elapsed };
+            // Exit 2 — an ARGUMENT this version does not support, like --script together with --eval. That is
+            // a different thing from the store itself being on a named volume, which is a guard on the store's
+            // state and exits 1 (RequireSwappableData below). Same subject, two refusals, two codes.
+            return new RewriteReport { Code = ExitCode.ScriptError, Headline = message, Elapsed = sw.Elapsed };
         }
 
         try
@@ -464,8 +465,14 @@ public sealed class RewriteCommand
     /// </remarks>
     public static string ScriptIdPrefix(DateTime utc) => $"rewrite_{utc:yyyyMMddTHHmmssfff}";
 
-    /// <remarks>Exit 1 (a guard refusal), not 2 — 2 is documented as "the script does not parse".</remarks>
-    private static void RequireSwappableData(StoreContainer c, RewriteOptions options)
+    /// <summary>
+    /// Refuses a store this tool cannot swap by renaming directories.
+    /// </summary>
+    /// <remarks>
+    /// Exit 1, a guard refusal on the STORE'S STATE — distinct from passing <c>--force-volume-copy</c>, which
+    /// is an unsupported argument and exits 2. Internal so both codes can be pinned by a test.
+    /// </remarks>
+    internal static void RequireSwappableData(StoreContainer c, RewriteOptions options)
     {
         if (c.Data.IsBind) return;
         throw new RewriteRefusedException(ExitCode.GuardRefusal,

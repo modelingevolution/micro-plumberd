@@ -9,8 +9,14 @@ on:
   pull_request:
     branches: [master]
   push:
-    branches: ['feature/**']
+    branches: [master, 'feature/**']
   workflow_dispatch:
+
+# One run per ref. These scenarios start real containers on a shared docker host and the tool refuses when a
+# sibling of the same compose project is up, so two concurrent runs would refuse each other.
+concurrency:
+  group: rewrite-e2e-${{ github.ref }}
+  cancel-in-progress: true
 
 env:
   DOTNET_VERSION: '10.0.x'
@@ -56,8 +62,34 @@ jobs:
           --results-directory ${{ github.workspace }}/test-results
           -- xUnit.ParallelizeTestCollections=false
 
+      # A discovery break runs ZERO tests and dotnet test exits 0 — green, with nothing to notice it in. For a
+      # suite that is the acceptance bar for a tool whose failure mode is losing a production store, "no tests
+      # ran" must be a failure, and the floor must be a number someone has to consciously lower.
+      - name: Require the suite to have actually run
+        if: always()
+        run: |
+          TRX=$(ls ${{ github.workspace }}/test-results/*.trx 2>/dev/null | head -1)
+          if [ -z "$TRX" ]; then echo "::error::No TRX produced — the suite did not run."; exit 1; fi
+          EXECUTED=$(grep -o 'executed="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          PASSED=$(grep -o 'passed="[0-9]*"' "$TRX" | head -1 | grep -o '[0-9]*')
+          OUTCOME=$(grep -o 'outcome="[A-Za-z]*"' "$TRX" | tail -1 | sed 's/.*="\(.*\)"/\1/')
+          echo "executed=$EXECUTED passed=$PASSED outcome=$OUTCOME"
+          # Measured on saturn 2026-09-07: a run that ABORTED after 71 of 76 tests still printed "Passed!"
+          # for the 71 that had run. A dying run looks green, so the count is the only thing that catches it —
+          # and a floor far below the real total would have let that very run through. Raise this
+          # deliberately when tests are added; never lower it to make a red build green.
+          MIN_TESTS=80
+          if [ -z "$EXECUTED" ] || [ "$EXECUTED" -lt "$MIN_TESTS" ]; then
+            echo "::error::Only ${EXECUTED:-0} test(s) ran; expected at least $MIN_TESTS. A run that dies partway still reports success."
+            exit 1
+          fi
+          if [ "$OUTCOME" != "Completed" ]; then
+            echo "::error::Test run outcome was '$OUTCOME', not 'Completed'."
+            exit 1
+          fi
+
       - name: Upload test results
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: rewrite-e2e-trx

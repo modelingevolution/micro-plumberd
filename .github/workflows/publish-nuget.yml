@@ -256,8 +256,10 @@ jobs:
     - name: Publish single-file binaries
       run: |
         for RID in linux-x64 linux-arm64; do
+          # Always Release: a preview TAG is about the package version, not about shipping an unoptimised
+          # binary to a neuron that has no SDK to rebuild it with.
           dotnet publish src/MicroPlumberd.Rewrite/MicroPlumberd.Rewrite.csproj \
-            --configuration ${{ needs.publish.outputs.CONFIGURATION }} \
+            --configuration Release \
             --runtime "$RID" \
             --self-contained true \
             -p:PublishSingleFile=true \

@@ -143,8 +143,8 @@ identifiers, restrict your rules to the streams that need them.
 | Code | Meaning | State of your store |
 |---|---|---|
 | `0` | The rewrite completed and was verified. | The container runs on the new store; the old one is in `data.bak.<ts>`. |
-| `1` | A guard refused, or you declined at the prompt. | Untouched. Nothing was created or started. |
-| `2` | The script does not parse (the message carries line and column). | Untouched. No container was started. |
+| `1` | A guard refused, or you declined at the prompt — including a store on a named volume. | Untouched. Nothing was created or started. |
+| `2` | The script does not parse (the message carries line and column), or an argument this version does not support (`--script` with `--eval`; `--force-volume-copy`). | Untouched. No container was started. |
 | `3` | Docker unreachable, no such container, or the image could not be pulled. | Untouched. |
 | `4` | The copy engine or the verification failed. | **Untouched.** The scratch store is removed. |
 | `5` | The filesystem swap, or something after it, failed. | **Restored.** The original directory is back and the container is running on it. |
@@ -176,8 +176,10 @@ The KurrentDB image runs as **uid 1001**. The operator running this tool usually
 ## Limits
 
 - **Named volumes are refused.** The tool swaps stores by renaming directories, which needs a bind mount.
+  A store on a named volume is refused with exit `1` — a guard on the store's state, like the other refusals.
   `--force-volume-copy` is **reserved** for a future version that implements the named-volume path; passing it
-  to this one exits `1` and says so, rather than being silently ignored.
+  to this one exits `2` (an argument this version does not support, like `--script` with `--eval`) and says
+  so, rather than being silently ignored.
 - **Integers beyond 2^53** change in any payload a rule touches (see *The script* above).
 - **The connected-client guard counts open gRPC calls**, not connected clients (see *Refusals* above).
 
