@@ -106,6 +106,62 @@ public class DockerStoreTests
         DockerStore.ReadMetric(body, DockerStore.OpenGrpcCallsMetric).Should().Be(-1);
     }
 
+    // ------------------------------------------------------------------ state paths outside the mount
+
+    [Theory]
+    [InlineData("KURRENTDB_INDEX")]
+    [InlineData("KURRENTDB_DB")]
+    [InlineData("EVENTSTORE_INDEX")]
+    public void A_state_path_outside_the_swapped_mount_is_refused_and_the_setting_is_named(string key)
+    {
+        // The index is the dangerous one: the scratch store builds an index for the NEW log, but if the
+        // original container keeps its index somewhere this tool does not swap, it comes back on new data with
+        // a stale index — silent, and the same shape as the in-memory-database case.
+        var data = new DataLocation("/srv/store/data", "/var/lib/kurrentdb", IsBind: true, VolumeName: null);
+
+        var (refusals, _) = DockerStore.CheckStatePathsInsideMount([$"{key}=/var/lib/kurrentdb-index"], data);
+
+        refusals.Should().ContainSingle().Which.Should().Contain(key).And.Contain("/var/lib/kurrentdb");
+    }
+
+    [Fact]
+    public void A_state_path_inside_the_mount_is_accepted()
+    {
+        // The control: the gate must not refuse the ordinary layout, or it refuses every run.
+        var data = new DataLocation("/srv/store/data", "/var/lib/kurrentdb", IsBind: true, VolumeName: null);
+
+        var (refusals, notes) = DockerStore.CheckStatePathsInsideMount(
+            ["KURRENTDB_DB=/var/lib/kurrentdb", "KURRENTDB_INDEX=/var/lib/kurrentdb/index"], data);
+
+        refusals.Should().BeEmpty();
+        notes.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void A_log_path_outside_the_mount_is_reported_but_never_refused()
+    {
+        // Logs are not state. KurrentDB's own default log path is outside the data directory, so refusing on
+        // it would block a legitimate repair — with no override — for no safety gain.
+        var data = new DataLocation("/srv/store/data", "/var/lib/kurrentdb", IsBind: true, VolumeName: null);
+
+        var (refusals, notes) = DockerStore.CheckStatePathsInsideMount(["KURRENTDB_LOG=/var/log/kurrentdb"], data);
+
+        refusals.Should().BeEmpty("a log path cannot make a rewrite incorrect");
+        notes.Should().ContainSingle().Which.Should().Contain("KURRENTDB_LOG");
+    }
+
+    [Theory]
+    [InlineData("/var/lib/kurrentdb", "/var/lib/kurrentdb", true)]
+    [InlineData("/var/lib/kurrentdb/index", "/var/lib/kurrentdb", true)]
+    [InlineData("/var/lib/kurrentdb-index", "/var/lib/kurrentdb", false)]
+    [InlineData("/var/lib/other", "/var/lib/kurrentdb", false)]
+    public void Containment_is_by_path_SEGMENT_not_by_string_prefix(string path, string root, bool inside)
+    {
+        // "/var/lib/kurrentdb-index".StartsWith("/var/lib/kurrentdb") is true and would silently accept a
+        // sibling directory that is not swapped at all.
+        DockerStore.IsInside(path, root).Should().Be(inside);
+    }
+
     // ------------------------------------------------------------------ scratch environment
 
     [Fact]

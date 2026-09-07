@@ -19,8 +19,15 @@ public sealed class RewriteCommand
     /// <summary>How long the original container gets to come back after the swap.</summary>
     private static readonly TimeSpan RestartTimeout = TimeSpan.FromSeconds(120);
 
+    /// <summary>How long the tool waits for its own connections to drain before the pre-swap guard re-check.</summary>
+    private static readonly TimeSpan OwnCallDrainTimeout = TimeSpan.FromSeconds(15);
+
     /// <summary>The standard projection the copy engine needs live on the destination.</summary>
     private const string ByEventType = "$by_event_type";
+
+    /// <summary>Streams the copy engine reserves for itself — excluded from the independent recount too.</summary>
+    private static readonly IReadOnlySet<string> ReservedStreams =
+        new HashSet<string>(StringComparer.Ordinal) { MigrationRunner.HistoryStreamName };
 
     /// <summary>Runs the tool. Never throws for an expected failure — the outcome is in the report's code.</summary>
     public static async Task<RewriteReport> RunAsync(RewriteOptions options, IDockerClient docker,
@@ -40,7 +47,9 @@ public sealed class RewriteCommand
             var message = "named-volume rewrite is not implemented in this version; move the store to a bind "
                           + "mount or wait for a version that implements --force-volume-copy";
             logger.LogError("{Message}", message);
-            return new RewriteReport { Code = ExitCode.ScriptError, Headline = message, Elapsed = sw.Elapsed };
+            // GuardRefusal, not ScriptError: exit 2 is documented as "the script does not parse", and the same
+            // store WITHOUT this flag is already refused with 1. One kind of refusal, one code.
+            return new RewriteReport { Code = ExitCode.GuardRefusal, Headline = message, Elapsed = sw.Elapsed };
         }
 
         try
@@ -67,12 +76,17 @@ public sealed class RewriteCommand
     {
         // STEP 0 — the script is parsed BEFORE anything else. A typo must cost the operator nothing: no
         // container started, no store touched, no directory created.
-        ScriptMigration? migration;
+        // A run ALWAYS has a migration, even with no script. requirements.md § Safety and lead decision 4 both
+        // say every run records history, and a pure copy is the tool's headline invocation — it must not be the
+        // one that leaves no trace. A script-less run is modelled as a script that is empty rather than as "no
+        // migration": the id still carries the run's timestamp, the checksum is honestly sha256("") and stays
+        // comparable with a scripted run, and the recorded descriptor list is empty rather than absent.
+        ScriptMigration migration;
         string? source;
         try
         {
             source = options.ReadScriptSource();
-            migration = source is null ? null : new ScriptMigration(source, ScriptIdPrefix(DateTime.UtcNow), logger);
+            migration = new ScriptMigration(source ?? "", ScriptIdPrefix(DateTime.UtcNow), logger);
         }
         catch (Exception ex) when (ex is ScriptSyntaxException or FileNotFoundException or ArgumentException)
         {
@@ -84,7 +98,14 @@ public sealed class RewriteCommand
         // STEP 1 — inspect.
         var c = await store.InspectAsync(options.Container, ct).ConfigureAwait(false);
         RequireSwappableData(c, options);
-        var connectionString = DockerStore.ConnectionString(c);
+        var (pathRefusals, pathNotes) = DockerStore.CheckStatePathsInsideMount(c.Env, c.Data);
+        if (pathRefusals.Count > 0)
+            return new RewriteReport
+            {
+                Code = ExitCode.GuardRefusal, Container = c, Elapsed = sw.Elapsed, Notes = pathNotes,
+                Headline = "Refusing: " + string.Join(" ", pathRefusals)
+            };
+        var connectionString = DockerStore.ConnectionString(c, options.User, options.Password);
 
         // STEP 2 — guards, BEFORE the tool opens its own client to the old store, so the connection count it
         // reads is the operator's, never its own.
@@ -96,9 +117,19 @@ public sealed class RewriteCommand
                 Notes = guards.Notes, Elapsed = sw.Elapsed
             };
 
+        // M1 — anchor the source NOW, while the guards have just said nobody is writing. Everything after
+        // this point (an unbounded confirmation prompt, then the whole copy) happens with the old store up and
+        // writable, so this position is what turns "nobody was writing then" into "nobody wrote at all".
+        ulong anchorBefore;
+        await using (var anchorClient = new KurrentDBClient(KurrentDBClientSettings.Create(connectionString)))
+            anchorBefore = await RewriteVerification.ReadSourceHeadAsync(anchorClient, ReservedStreams, ct)
+                .ConfigureAwait(false);
+
         // The plan, then the operator's confirmation.
         var stamp = DirectorySwap.Stamp(DateTime.UtcNow);
-        var descriptors = DescriptorsOf(migration);
+        var descriptorRecorder = new DescriptorRecorder();
+        migration.Migrate(descriptorRecorder);
+        var descriptors = descriptorRecorder.Descriptors;
         if (!options.Yes && !await ConfirmAsync(options, c, migration, descriptors, ct).ConfigureAwait(false))
             return new RewriteReport
             {
@@ -113,6 +144,8 @@ public sealed class RewriteCommand
         var scratchName = $"mp-rewrite-{c.Name}-{stamp}";
         ScratchStore? scratch = null;
         SwapResult? swapped = null;
+        KurrentDBClient? sourceClient = null;
+        KurrentDBProjectionManagementClient? sourceProjections = null;
 
         try
         {
@@ -129,8 +162,11 @@ public sealed class RewriteCommand
             await StoreHealth.WaitProjectionRunningAsync(destProjections, ByEventType, ScratchStartTimeout, logger, ct)
                 .ConfigureAwait(false);
 
-            await using var sourceClient = new KurrentDBClient(KurrentDBClientSettings.Create(connectionString));
-            await using var sourceProjections =
+            // NOT `await using`: these must be disposed BEFORE the pre-swap guard re-check below, or the tool
+            // counts its own gRPC calls as a connected client and refuses itself. The finally block disposes
+            // them on every other path.
+            sourceClient = new KurrentDBClient(KurrentDBClientSettings.Create(connectionString));
+            sourceProjections =
                 new KurrentDBProjectionManagementClient(KurrentDBClientSettings.Create(connectionString));
 
             var projectionCopy = options.NoProjectionCopy
@@ -147,7 +183,7 @@ public sealed class RewriteCommand
             try
             {
                 run = await new MigrationRunner(lf).RunAsync(sourceClient, destClient,
-                    migration is null ? [] : [migration], options.DryRun, projectionCopy, null, ct)
+                    [migration], options.DryRun, projectionCopy, null, ct)
                     .ConfigureAwait(false);
             }
             catch (Exception ex) when (ex is not OperationCanceledException)
@@ -160,13 +196,26 @@ public sealed class RewriteCommand
                 };
             }
 
-            if (run.Verification is { AllOk: false })
+            // STEP 5 — verify. Two independent things must both hold before an irreversible swap:
+            //   (a) what the engine believed it wrote arrived intact (the library's per-stream counts + hash);
+            //   (b) what the engine believed it READ is what the source actually holds, everything it read was
+            //       either kept or dropped, and every stream that vanished is attributable to a rule.
+            // (a) alone cannot fail for a lost event: both its sides come from the same bookkeeping.
+            var recount = await RewriteVerification
+                .RecountSourceAsync(sourceClient, ReservedStreams, ct).ConfigureAwait(false);
+            var issues = RewriteVerification.Check(run.Copy, recount, descriptorRecorder.Reach);
+
+            if (run.Verification is { AllOk: false } || issues.Count > 0)
+            {
+                foreach (var i in issues) logger.LogError("Verification: {Stream}: {Reason}", i.Subject, i.Reason);
                 return Fill(new RewriteReport
                 {
                     Code = ExitCode.EngineFailure, Container = c,
                     Headline = "Verification MISMATCH — the swap was not performed and the old store is untouched.",
-                    Verification = run.Verification, Elapsed = sw.Elapsed
+                    Verification = run.Verification, Elapsed = sw.Elapsed,
+                    Notes = issues.Select(i => $"unexplained : {i.Subject}: {i.Reason}").ToList()
                 }, run, migration, descriptors);
+            }
 
             if (options.DryRun)
                 return Fill(new RewriteReport
@@ -175,6 +224,39 @@ public sealed class RewriteCommand
                     Headline = $"Dry run complete — {run.Copy.SourceEvents} event(s) read, "
                                + $"{run.Copy.Kept} would be written, {run.Copy.Dropped} dropped. Nothing changed.",
                     Elapsed = sw.Elapsed
+                }, run, migration, descriptors);
+
+            // M1 — the guards ran minutes ago, before an unbounded prompt and the whole copy, with the old
+            // store writable throughout. Re-check both halves NOW, while nothing has been swapped and a
+            // refusal therefore costs nothing.
+            var anchorAfter = await RewriteVerification.ReadSourceHeadAsync(sourceClient, ReservedStreams, ct)
+                .ConfigureAwait(false);
+            await sourceProjections.DisposeAsync().ConfigureAwait(false);
+            await sourceClient.DisposeAsync().ConfigureAwait(false);
+
+            // Our own reads have to be gone before the connected-client guard runs again, or the tool refuses
+            // itself. Best-effort and bounded: if the count never settles, the guard below says so — which is
+            // the correct answer when someone else really is connected.
+            await WaitForOwnCallsToDrainAsync(connectionString, logger, ct).ConfigureAwait(false);
+
+            var preSwapGuards = await EvaluateGuardsAsync(store, c, connectionString, ct).ConfigureAwait(false);
+            if (preSwapGuards.Refusal is not null)
+                return new RewriteReport
+                {
+                    Code = ExitCode.GuardRefusal, Container = c, Elapsed = sw.Elapsed,
+                    Notes = preSwapGuards.Notes,
+                    Headline = "Refusing at the last check before the swap: " + preSwapGuards.Refusal
+                                + " Nothing was swapped; the old store is untouched."
+                };
+
+            if (anchorAfter != anchorBefore)
+                return Fill(new RewriteReport
+                {
+                    Code = ExitCode.EngineFailure, Container = c, Elapsed = sw.Elapsed,
+                    Headline = "The source was written to DURING the run (its last commit position moved from "
+                               + $"{anchorBefore} to {anchorAfter}). Those events are not in the new store and "
+                               + "the swap would destroy them — aborted, the old store is untouched.",
+                    Verification = run.Verification
                 }, run, migration, descriptors);
 
             // STEP 6 — the swap. Both stores must be stopped first, and the scratch container must be gone
@@ -249,6 +331,8 @@ public sealed class RewriteCommand
         finally
         {
             // The scratch container and its directory never outlive the run — a dry run included (E2E-06).
+            if (sourceProjections is not null) await SafeDisposeAsync(sourceProjections, logger).ConfigureAwait(false);
+            if (sourceClient is not null) await SafeDisposeAsync(sourceClient, logger).ConfigureAwait(false);
             if (scratch is not null) await store.RemoveAsync(scratch.Id, ct).ConfigureAwait(false);
             if (swapped is null)
                 await PurgeNewStoreDirAsync(store, c.Image, newStoreDir, logger, ct).ConfigureAwait(false);
@@ -270,7 +354,20 @@ public sealed class RewriteCommand
             var swap = new DirectorySwap(c.Data, logger);
             var backups = swap.Backups();
             notes.Add($"backups      : {(backups.Count == 0 ? "(none)" : string.Join(", ", backups))}");
-            var guards = await EvaluateGuardsAsync(store, c, DockerStore.ConnectionString(c), ct)
+
+            // Debris from an interrupted run. It is root-owned, an operator on this fleet cannot delete it by
+            // hand, and until now nothing told them it was there at all.
+            var leftovers = swap.NewStoreDirs();
+            notes.Add($"interrupted  : {(leftovers.Count == 0 ? "(none)" : string.Join(", ", leftovers)
+                + " — left by an interrupted run; remove with a root helper, they are not the operator's to delete")}");
+            var scratch = await store.FindScratchContainersAsync(c.Name, ct).ConfigureAwait(false);
+            notes.Add($"scratch      : {(scratch.Count == 0 ? "(none)" : string.Join(", ", scratch)
+                + " — a rewrite is running, or one was interrupted")}");
+
+            var (_, statusPathNotes) = DockerStore.CheckStatePathsInsideMount(c.Env, c.Data);
+            notes.AddRange(statusPathNotes);
+
+            var guards = await EvaluateGuardsAsync(store, c, DockerStore.ConnectionString(c, options.User, options.Password), ct)
                 .ConfigureAwait(false);
             notes.AddRange(guards.Notes);
             safe = guards.Refusal is null ? "yes" : $"no — {guards.Refusal}";
@@ -296,8 +393,36 @@ public sealed class RewriteCommand
         var c = await store.InspectAsync(options.Container, ct).ConfigureAwait(false);
         RequireSwappableData(c, options);
 
+        // A rollback discards every write made since the backup, so it is MORE destructive than a rewrite —
+        // and it was the one path with no sibling and no connected-client check at all.
+        var guards = await EvaluateGuardsAsync(store, c,
+            DockerStore.ConnectionString(c, options.User, options.Password), ct).ConfigureAwait(false);
+        if (guards.Refusal is not null)
+            return new RewriteReport
+            {
+                Code = ExitCode.GuardRefusal, Container = c, Elapsed = sw.Elapsed, Notes = guards.Notes,
+                Headline = guards.Refusal
+            };
+
         var swap = new DirectorySwap(c.Data, logger);
         var stamp = DirectorySwap.Stamp(DateTime.UtcNow);
+
+        // Only a directory this tool created as a backup may be restored. An arbitrary path would let a typo
+        // rename something else into the store's place — and the store directory is not a thing to guess at.
+        if (options.BackupDir is { } requested)
+        {
+            var known = swap.Backups();
+            var match = known.FirstOrDefault(b =>
+                string.Equals(Path.GetFullPath(b).TrimEnd(Path.DirectorySeparatorChar),
+                    Path.GetFullPath(requested).TrimEnd(Path.DirectorySeparatorChar), StringComparison.Ordinal));
+            if (match is null)
+                return new RewriteReport
+                {
+                    Code = ExitCode.GuardRefusal, Container = c, Elapsed = sw.Elapsed,
+                    Headline = $"'{requested}' is not one of this store's backups. Available: "
+                               + (known.Count == 0 ? "(none)" : string.Join(", ", known))
+                };
+        }
 
         var wasRunning = await store.IsRunningAsync(c.Id, ct).ConfigureAwait(false);
         if (wasRunning) await store.StopAsync(c.Id, ct).ConfigureAwait(false);
@@ -318,8 +443,8 @@ public sealed class RewriteCommand
         }
 
         await store.StartAsync(c.Id, ct).ConfigureAwait(false);
-        await StoreHealth.WaitLiveAsync(DockerStore.ConnectionString(c), RestartTimeout, logger, ct)
-            .ConfigureAwait(false);
+        await StoreHealth.WaitLiveAsync(DockerStore.ConnectionString(c, options.User, options.Password),
+            RestartTimeout, logger, ct).ConfigureAwait(false);
 
         return new RewriteReport
         {
@@ -332,8 +457,14 @@ public sealed class RewriteCommand
     // ================================================================= helpers
 
     /// <summary>The id prefix the tool gives every run, so a second pure copy is its own history record.</summary>
-    public static string ScriptIdPrefix(DateTime utc) => $"rewrite_{utc:yyyyMMddTHHmmss}";
+    /// <remarks>
+    /// Millisecond precision, not second: two runs of the same script within one second would otherwise share
+    /// an id, and the history guard would silently SKIP the second as already applied — the trap is removed
+    /// rather than documented.
+    /// </remarks>
+    public static string ScriptIdPrefix(DateTime utc) => $"rewrite_{utc:yyyyMMddTHHmmssfff}";
 
+    /// <remarks>Exit 1 (a guard refusal), not 2 — 2 is documented as "the script does not parse".</remarks>
     private static void RequireSwappableData(StoreContainer c, RewriteOptions options)
     {
         if (c.Data.IsBind) return;
@@ -382,23 +513,18 @@ public sealed class RewriteCommand
         return new GuardOutcome(null, notes);
     }
 
-    private static IReadOnlyList<string> DescriptorsOf(ScriptMigration? migration)
-    {
-        if (migration is null) return [];
-        var b = new DescriptorRecorder();
-        migration.Migrate(b);
-        return b.Descriptors;
-    }
+    /// <summary>How the plan and the report name the script — a hash of nothing is not a useful thing to read.</summary>
+    private static string DescribeScript(ScriptMigration m) =>
+        m.IsPureCopy ? $"(none — pure copy; recorded as {m.ScriptChecksum[..12]}…)" : m.ScriptChecksum;
 
     private static async Task<bool> ConfirmAsync(RewriteOptions options, StoreContainer c,
-        ScriptMigration? migration, IReadOnlyList<string> descriptors, CancellationToken ct)
+        ScriptMigration migration, IReadOnlyList<string> descriptors, CancellationToken ct)
     {
         var output = options.Output ?? Console.Out;
         await output.WriteLineAsync($"About to rewrite the store of container '{c.Name}' ({c.Image}).")
             .ConfigureAwait(false);
         await output.WriteLineAsync($"  data          : {c.Data.StoreDir}").ConfigureAwait(false);
-        await output.WriteLineAsync($"  script sha256 : {migration?.ScriptChecksum ?? "(none — pure copy)"}")
-            .ConfigureAwait(false);
+        await output.WriteLineAsync($"  script sha256 : {DescribeScript(migration)}").ConfigureAwait(false);
         foreach (var d in descriptors) await output.WriteLineAsync($"  rule          : {d}").ConfigureAwait(false);
         await output.WriteLineAsync("Type 'yes' to continue: ").ConfigureAwait(false);
 
@@ -407,11 +533,11 @@ public sealed class RewriteCommand
         return string.Equals(answer?.Trim(), "yes", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static RewriteReport Fill(RewriteReport r, MigrationRunResult run, ScriptMigration? migration,
+    private static RewriteReport Fill(RewriteReport r, MigrationRunResult run, ScriptMigration migration,
         IReadOnlyList<string> descriptors) => r with
     {
-        MigrationId = migration?.Id,
-        ScriptChecksum = migration?.ScriptChecksum,
+        MigrationId = migration.Id,
+        ScriptChecksum = DescribeScript(migration),
         Descriptors = descriptors,
         SourceEvents = run.Copy.SourceEvents,
         Kept = run.Copy.Kept,
@@ -446,6 +572,32 @@ public sealed class RewriteCommand
             // Leftover scratch data is untidy, never dangerous — it must not mask the real outcome of the run.
             logger.LogWarning(ex, "Could not remove the scratch directory {Dir}; remove it by hand.", dir);
         }
+    }
+
+    /// <summary>
+    /// Waits, briefly, for the tool's OWN gRPC calls to finish after it disposes its clients, so the
+    /// connected-client guard does not count them. Bounded and best-effort: if the count never reaches zero
+    /// the guard itself decides, which is the right answer when someone else is genuinely connected.
+    /// </summary>
+    private static async Task WaitForOwnCallsToDrainAsync(string connectionString, ILogger logger,
+        CancellationToken ct)
+    {
+        var deadline = DateTime.UtcNow + OwnCallDrainTimeout;
+        while (DateTime.UtcNow < deadline)
+        {
+            var (grpc, _) = await DockerStore.ReadConnectionMetricsAsync(connectionString, ct)
+                .ConfigureAwait(false);
+            if (grpc <= 0) return;
+            await Task.Delay(200, ct).ConfigureAwait(false);
+        }
+        logger.LogInformation("The store still reports open gRPC calls after {Seconds}s; the guard below "
+                              + "decides whether they are ours or a client's.", OwnCallDrainTimeout.TotalSeconds);
+    }
+
+    private static async Task SafeDisposeAsync(IAsyncDisposable d, ILogger logger)
+    {
+        try { await d.DisposeAsync().ConfigureAwait(false); }
+        catch (Exception ex) { logger.LogWarning(ex, "Disposing a store client failed."); }
     }
 
     private static async Task SafeStopAsync(DockerStore store, string id, ILogger logger, CancellationToken ct)

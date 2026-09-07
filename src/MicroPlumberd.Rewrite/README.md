@@ -16,6 +16,7 @@ mp-rewrite <container> --status
 | Option | Meaning |
 |---|---|
 | `--script <file.js>` | Rule script to run every event through. |
+| `--user` / `--password` | Credentials for the store being rewritten (or `MP_REWRITE_USER` / `MP_REWRITE_PASSWORD`). Default `admin`/`changeit`. |
 | `--eval "<js>"` | The same, inline. Mutually exclusive with `--script`. |
 | `--dry-run` | Copy nothing. Print the per-rule counts and the names of every affected stream. |
 | `--no-projection-copy` | Do not pre-create the app's user projections on the new store (default: copy them). |
@@ -176,7 +177,7 @@ The KurrentDB image runs as **uid 1001**. The operator running this tool usually
 
 - **Named volumes are refused.** The tool swaps stores by renaming directories, which needs a bind mount.
   `--force-volume-copy` is **reserved** for a future version that implements the named-volume path; passing it
-  to this one exits `2` and says so, rather than being silently ignored.
+  to this one exits `1` and says so, rather than being silently ignored.
 - **Integers beyond 2^53** change in any payload a rule touches (see *The script* above).
 - **The connected-client guard counts open gRPC calls**, not connected clients (see *Refusals* above).
 

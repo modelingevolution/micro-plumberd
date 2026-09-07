@@ -27,7 +27,12 @@ public sealed record RawEvent
     /// <summary>The stored event-type string (e.g. <c>OfferCreated</c>).</summary>
     public required string Type { get; init; }
 
-    /// <summary>The JSON payload, or <c>null</c> for non-JSON payloads.</summary>
+    /// <summary>
+    /// The JSON payload, or <c>null</c> when there is none to give: a payload that is not JSON, AND one that
+    /// claims to be JSON but does not parse (copied verbatim and counted as
+    /// <c>CopyResult.UnparseableVerbatim</c>). A rule is handed both cases and must expect <c>null</c> — a
+    /// caller that assumes otherwise meets a <see cref="NullReferenceException"/> in the middle of a rewrite.
+    /// </summary>
     public required JsonNode? Data { get; init; }
 
     /// <summary>The JSON metadata, or <c>null</c> when the source has none.</summary>

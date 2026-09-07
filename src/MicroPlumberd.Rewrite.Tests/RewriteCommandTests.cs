@@ -28,13 +28,13 @@ public class RewriteCommandTests
     [InlineData(RewriteMode.Rewrite)]
     [InlineData(RewriteMode.Status)]
     [InlineData(RewriteMode.Rollback)]
-    public async Task force_volume_copy_is_refused_with_exit_2_before_any_docker_call(RewriteMode mode)
+    public async Task force_volume_copy_is_refused_with_a_guard_refusal_before_any_docker_call(RewriteMode mode)
     {
         // The ruling this pins: a flag the tool accepts and ignores is a trap. An operator on a named-volume
         // host would pass it, be refused for the volume anyway, and have no way to tell the flag never helped.
         var report = await RunAsync(Options() with { ForceVolumeCopy = true, Mode = mode });
 
-        report.Code.Should().Be(ExitCode.ScriptError);
+        report.Code.Should().Be(ExitCode.GuardRefusal);
         report.Headline.Should().Contain("--force-volume-copy",
             "the refusal has to name the flag the operator typed")
             .And.Contain("not implemented in this version")

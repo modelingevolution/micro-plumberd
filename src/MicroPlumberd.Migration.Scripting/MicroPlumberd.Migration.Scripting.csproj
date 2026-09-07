@@ -7,6 +7,14 @@
     <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>JavaScript rule scripting for MicroPlumberd.Migration: loads a Kurrent-Replicator-compatible rewrite script (function transform(original) plus dropStream/dropEvent/update/updateById/renameType/renameStream helpers) into a sandboxed Jint engine and compiles it to a Migration.</Description>
+    <Title>MicroPlumberd.Migration.Scripting</Title>
+    <Authors>Rafal Maciag</Authors>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <PackageTags>EventStore;KurrentDB;CQRS;EventSourcing;Migration;JavaScript;Jint</PackageTags>
   </PropertyGroup>
 
@@ -20,6 +28,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MicroPlumberd.Migration\MicroPlumberd.Migration.csproj" />
+  </ItemGroup>
+
+  <!-- Packaging assets, as the other 20 packages in this repo carry them. Published metadata is permanent. -->
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png" Pack="True" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="True" PackagePath="\" />
   </ItemGroup>
 
 </Project>

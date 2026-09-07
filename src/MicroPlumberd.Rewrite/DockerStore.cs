@@ -74,6 +74,26 @@ public sealed partial class DockerStore(IDockerClient client, ILogger logger)
     /// <summary>Default in-container data directories, newest product name first.</summary>
     private static readonly string[] DefaultDbPaths = ["/var/lib/kurrentdb", "/var/lib/eventstore"];
 
+    /// <summary>
+    /// Settings that point at STATE which must move with the data. If one of these resolves outside the
+    /// directory being swapped, the rewrite cannot be correct and the tool refuses.
+    /// </summary>
+    /// <remarks>
+    /// The index is the dangerous one: the scratch store builds an index for the NEW log, but if the original
+    /// container keeps its index somewhere this tool does not swap, it comes back on new data with a stale
+    /// index — silent and catastrophic, and the same shape as the in-memory-database case (D13). Refusing an
+    /// unsupported layout is the posture the owner already chose for named volumes (ADR 7, decision 7);
+    /// replicating arbitrary extra mounts is not iteration-1 scope.
+    /// </remarks>
+    private static readonly string[] StatePathEnvKeys =
+        ["KURRENTDB_DB", "KURRENTDB_INDEX", "EVENTSTORE_DB", "EVENTSTORE_INDEX"];
+
+    /// <summary>
+    /// Settings that point at a path which is NOT state. Reported, never refused — see
+    /// <see cref="CheckStatePathsInsideMount"/>.
+    /// </summary>
+    private static readonly string[] DiagnosticPathEnvKeys = ["KURRENTDB_LOG", "EVENTSTORE_LOG"];
+
     /// <summary>The metric that counts gRPC calls a client currently has open against the node.</summary>
     /// <remarks>
     /// Measured on KurrentDB 26.1 (2026-09-07): <c>/stats</c> has <c>proc/tcp/connections</c>, which counts
@@ -86,6 +106,18 @@ public sealed partial class DockerStore(IDockerClient client, ILogger logger)
 
     /// <summary>Reported alongside the guard, never gated on — the tool's own HTTP request is one of them.</summary>
     public const string KestrelConnectionsMetric = "kurrentdb_kestrel_connections";
+
+    /// <summary>The fleet default, used when the operator names no credentials.</summary>
+    /// <remarks>
+    /// Kept as a DEFAULT rather than demanded up front: on this fleet it is correct, and a hard fail-fast
+    /// would tax every 3 a.m. invocation. What makes that safe is that a wrong password now says so
+    /// (<see cref="ReadConnectionMetricsAsync"/> separates 401/403 from unreachable) instead of sending the
+    /// operator to diagnose a store that is answering perfectly well.
+    /// </remarks>
+    public const string DefaultUser = "admin";
+
+    /// <inheritdoc cref="DefaultUser"/>
+    public const string DefaultPassword = "changeit";
 
     // ---------------------------------------------------------------- inspect
 
@@ -158,6 +190,53 @@ public sealed partial class DockerStore(IDockerClient client, ILogger logger)
             + "directory (a bind mount is what this tool supports) before rewriting it.");
     }
 
+    /// <summary>
+    /// Refuses when a path-valued STATE setting resolves outside the directory this tool swaps, and reports
+    /// (without refusing) a log path that does.
+    /// </summary>
+    /// <remarks>
+    /// <b>Deviation, deliberate and flagged:</b> the review list names <c>KURRENTDB_LOG</c> alongside
+    /// <c>_DB</c>/<c>_INDEX</c>. Logs are not state — nothing about a log path outside the mount makes a
+    /// rewrite incorrect, and KurrentDB's own default (<c>/var/log/kurrentdb</c>) IS outside the data
+    /// directory. Refusing on it would block a legitimate 3 a.m. repair, with no override, for no safety gain
+    /// — the same "false refusal blocks the repair" hazard this tool is otherwise careful about. So a log path
+    /// is surfaced in the report and never gates the run.
+    /// </remarks>
+    public static (IReadOnlyList<string> Refusals, IReadOnlyList<string> Notes) CheckStatePathsInsideMount(
+        IReadOnlyList<string> env, DataLocation data)
+    {
+        var refusals = new List<string>();
+        var notes = new List<string>();
+
+        foreach (var key in StatePathEnvKeys)
+        {
+            var value = EnvValue(env, key);
+            if (value is null || IsInside(value, data.Destination)) continue;
+            refusals.Add($"{key}={value} resolves outside the directory this tool swaps "
+                         + $"({data.Destination}), so the container would come back on the new log with state "
+                         + $"this rewrite never touched. Move it inside {data.Destination} and try again.");
+        }
+
+        foreach (var key in DiagnosticPathEnvKeys)
+        {
+            var value = EnvValue(env, key);
+            if (value is null || IsInside(value, data.Destination)) continue;
+            notes.Add($"note         : {key}={value} is outside {data.Destination}; it is not state, so it is "
+                      + "not swapped and not a reason to refuse");
+        }
+
+        return (refusals, notes);
+    }
+
+    /// <summary>Whether a container path is the mount root or sits beneath it.</summary>
+    internal static bool IsInside(string path, string root)
+    {
+        var p = path.TrimEnd('/');
+        var r = root.TrimEnd('/');
+        return string.Equals(p, r, StringComparison.Ordinal)
+               || p.StartsWith(r + "/", StringComparison.Ordinal);
+    }
+
     /// <summary>Reads a <c>KEY=value</c> entry out of a container's environment.</summary>
     public static string? EnvValue(IReadOnlyList<string> env, string key)
     {
@@ -204,12 +283,13 @@ public sealed partial class DockerStore(IDockerClient client, ILogger logger)
     /// on the bridge network. It works because the tool runs on the docker host itself; from anywhere else the
     /// bridge address is unroutable and the operator must publish the port.
     /// </remarks>
-    public static string ConnectionString(StoreContainer c)
+    public static string ConnectionString(StoreContainer c, string user = DefaultUser, string password = DefaultPassword)
     {
+        var credentials = $"{Uri.EscapeDataString(user)}:{Uri.EscapeDataString(password)}";
         if (c.PublishedPort is { } port)
-            return $"esdb://admin:changeit@127.0.0.1:{port}?tls=false&tlsVerifyCert=false";
+            return $"esdb://{credentials}@127.0.0.1:{port}?tls=false&tlsVerifyCert=false";
         if (c.BridgeIp is { } ip)
-            return $"esdb://admin:changeit@{ip}:2113?tls=false&tlsVerifyCert=false";
+            return $"esdb://{credentials}@{ip}:2113?tls=false&tlsVerifyCert=false";
         throw new RewriteRefusedException(ExitCode.GuardRefusal,
             $"Container '{c.Name}' publishes no port for 2113 and has no bridge address — the tool cannot "
             + "read its store. Publish 2113 on the host and try again.");
@@ -246,7 +326,16 @@ public sealed partial class DockerStore(IDockerClient client, ILogger logger)
         string text;
         try
         {
-            text = await http.GetStringAsync(new Uri(baseUri, "metrics"), ct).ConfigureAwait(false);
+            using var resp = await http.GetAsync(new Uri(baseUri, "metrics"), ct).ConfigureAwait(false);
+            // A rejected LOGIN is a different problem from a store that is down, and telling them apart is the
+            // difference between "check your password" and an hour spent diagnosing a healthy store.
+            if (resp.StatusCode is System.Net.HttpStatusCode.Unauthorized or System.Net.HttpStatusCode.Forbidden)
+                throw new RewriteRefusedException(ExitCode.GuardRefusal,
+                    $"The store at {baseUri} rejected the credentials ({(int)resp.StatusCode} "
+                    + $"{resp.StatusCode}). It is running and reachable — the user or password is wrong. Pass "
+                    + "--user/--password, or set MP_REWRITE_USER / MP_REWRITE_PASSWORD.");
+            resp.EnsureSuccessStatusCode();
+            text = await resp.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
         }
         catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException)
         {

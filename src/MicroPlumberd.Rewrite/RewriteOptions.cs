@@ -64,6 +64,12 @@ public sealed record RewriteOptions
     /// </remarks>
     public bool FailAfterSwapForTest { get; init; }
 
+    /// <summary>Username for the store being rewritten. Defaults to the fleet's.</summary>
+    public string User { get; init; } = DockerStore.DefaultUser;
+
+    /// <summary>Password for the store being rewritten. Defaults to the fleet's.</summary>
+    public string Password { get; init; } = DockerStore.DefaultPassword;
+
     /// <summary>Where the confirmation prompt reads its answer from. Defaults to standard input.</summary>
     public TextReader? ConfirmationInput { get; init; }
 

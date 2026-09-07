@@ -141,13 +141,25 @@ public sealed class RewriteFixture : IAsyncDisposable
                 }
             }
         });
-        await docker.Containers.StartContainerAsync(created.ID, new ContainerStartParameters());
-
+        // Everything past this point can throw — the container may never become live, seeding may fail, the
+        // dangling-link precondition may not take. Without this, the container AND its root-owned data
+        // directory leak permanently: a uid-1000 operator cannot delete the directory (dev-log D11), and this
+        // host's root filesystem sits at 92 %. A failed SETUP has to clean up as reliably as a failed
+        // assertion already does.
         var fixture = new RewriteFixture(docker, lf, output, root, store, created.ID, name, port, composeProject);
-        await StoreHealth.WaitLiveAsync(fixture.ConnectionString, TimeSpan.FromSeconds(120),
-            lf.CreateLogger("fixture"));
-        await fixture.SeedAsync();
-        return fixture;
+        try
+        {
+            await docker.Containers.StartContainerAsync(created.ID, new ContainerStartParameters());
+            await StoreHealth.WaitLiveAsync(fixture.ConnectionString, TimeSpan.FromSeconds(120),
+                lf.CreateLogger("fixture"));
+            await fixture.SeedAsync();
+            return fixture;
+        }
+        catch
+        {
+            await fixture.DisposeAsync();
+            throw;
+        }
     }
 
     // ---------------------------------------------------------------- seeding

@@ -24,6 +24,10 @@ namespace MicroPlumberd.Rewrite.Tests;
 [Collection("rewrite-e2e")]
 public class RewriteE2ETests(ITestOutputHelper output)
 {
+    /// <summary>Uppercase hex SHA-256 of the empty string — the checksum a script-less run records.</summary>
+    private static readonly string EmptyScriptSha256 =
+        Convert.ToHexString(System.Security.Cryptography.SHA256.HashData([]));
+
     private static RewriteOptions Options(RewriteFixture f) => new()
     {
         Container = f.ContainerName,
@@ -92,6 +96,21 @@ public class RewriteE2ETests(ITestOutputHelper output)
         faultyAfter.Should().Contain("Running").And.NotContain("Faulted",
             "the projection that was Faulted on the old store runs on the rewritten one — that is the repair");
         (await f.ProjectionStatusAsync(RewriteFixture.MergeStream)).Should().Contain("Running");
+
+        // requirements.md § Safety and lead decision 4: EVERY run records history. A pure copy is the tool's
+        // headline invocation — the one an operator reaches for at 3 a.m. — and it must not be the one that
+        // leaves no trace that the store they are looking at is not the original.
+        var history = await f.ReadAsync("mp-migrations");
+        history.Should().ContainSingle("a pure copy is still a run, and its history travels with the data");
+        var applied = JsonSerializer.Deserialize<MigrationApplied>(history[0].Data.Span)!;
+        applied.Id.Should().StartWith("rewrite_");
+        applied.Checksum.Should().Be(EmptyScriptSha256,
+            "a pure copy applied no script, so the checksum is the hash of an empty one — which is honest, "
+            + "stays comparable with a scripted run, and is identical for every pure copy");
+        applied.Descriptors.Should().NotBeNull().And.BeEmpty(
+            "'no rules were recorded' and 'no rules ran' must not look the same to whoever reads this later");
+        applied.SourceEvents.Should().Be(report.SourceEvents).And.BeGreaterThan(0);
+        applied.Dropped.Should().Be(0);
 
         // uid 1001 in the container vs the operator's uid on the host: the swapped-in directory must stay
         // writable by the container's user, and the only proof of that is a write.
@@ -312,19 +331,36 @@ public class RewriteE2ETests(ITestOutputHelper output)
         // The one scenario that deliberately keeps a client open while the tool runs.
         await using var client = f.NewClient();
         using var cts = new CancellationTokenSource();
+        // Signalled once the subscription has actually been ESTABLISHED — the client connects lazily, so
+        // "the task was started" is not the same thing, and waiting on the wrong one is a race.
+        var established = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
         var subscription = Task.Run(async () =>
         {
             try
             {
-                await foreach (var _ in client.SubscribeToAll(FromAll.Start, cancellationToken: cts.Token)) { }
+                // From the START, so the fixture's existing events arrive at once: receiving one is direct
+                // evidence the subscription is live, and needs no assumption about which control messages this
+                // client surfaces through its default enumerator.
+                await foreach (var _ in client.SubscribeToAll(FromAll.Start, cancellationToken: cts.Token))
+                    established.TrySetResult();
             }
             // The client surfaces its own cancellation as an RpcException(Cancelled), not as
             // OperationCanceledException — catching only the latter turns tearing the subscription down into
             // a test failure that says nothing about the tool.
             catch (OperationCanceledException) { }
             catch (Grpc.Core.RpcException ex) when (ex.StatusCode == Grpc.Core.StatusCode.Cancelled) { }
+            finally
+            {
+                // If it ended without ever being confirmed, unblock the wait below with the real reason
+                // instead of letting it time out saying something that is true but not the cause.
+                established.TrySetException(new InvalidOperationException(
+                    "the $all subscription ended before it ever received an event"));
+            }
         });
-        await WaitUntilOpenCallsAsync(f, atLeast: 1, TimeSpan.FromSeconds(30));
+
+        // 60s, not 30: establishing a subscription is slower when this shared host has just run sixty
+        // container-heavy scenarios, and the point of the wait is to reach the state the assertion needs.
+        await WaitUntilOpenCallsAsync(f, subscription, established.Task, atLeast: 1, TimeSpan.FromSeconds(60));
 
         var report = await RunAsync(f, Options(f));
 
@@ -338,19 +374,30 @@ public class RewriteE2ETests(ITestOutputHelper output)
         await subscription;
     }
 
-    private static async Task WaitUntilOpenCallsAsync(RewriteFixture f, int atLeast, TimeSpan timeout)
+    private async Task WaitUntilOpenCallsAsync(RewriteFixture f, Task subscription, Task established,
+        int atLeast, TimeSpan timeout)
     {
+        // Wait for the subscription to be CONFIRMED by the server first. Polling the metric without this is a
+        // race — the subscribe call is only in flight once the client has actually connected, and under load
+        // that takes long enough for a naive poll to give up and blame the store.
+        var confirmed = await Task.WhenAny(established, subscription, Task.Delay(timeout));
+        if (confirmed == established) await established;          // rethrows the real reason if it failed
+        else if (confirmed == subscription) await subscription;   // ended early — surface ITS exception
+        else throw new InvalidOperationException(
+            $"The $all subscription received no event within {timeout.TotalSeconds:0}s, so it was never live.");
+
         var deadline = DateTime.UtcNow + timeout;
         var last = 0;
         while (DateTime.UtcNow < deadline)
         {
             (last, _) = await DockerStore.ReadConnectionMetricsAsync(f.ConnectionString);
             if (last >= atLeast) return;
+            if (subscription.IsCompleted) await subscription;
             await Task.Delay(200);
         }
         throw new InvalidOperationException(
-            $"The subscription never registered as an open gRPC call ({last} < {atLeast}); the scenario would "
-            + "otherwise 'pass' against a store with no client connected at all.");
+            $"The subscription is live but the store reports {last} open gRPC call(s) (< {atLeast}); the "
+            + "scenario would otherwise 'pass' against a store with no client connected at all.");
     }
 
     // ================================================================= E2E-10
@@ -381,6 +428,182 @@ public class RewriteE2ETests(ITestOutputHelper output)
         var write = async () => await client.AppendToStreamAsync("PostRestore-1", StreamState.NoStream,
             [new EventData(Uuid.NewUuid(), "AfterRestore", Encoding.UTF8.GetBytes("""{"ok":true}"""))]);
         await write.Should().NotThrowAsync("the container is running on the restored store and can write to it");
+    }
+
+    // ================================================================= exit 4
+
+    /// <summary>
+    /// M1 — the guards can only say "nobody is writing" at the instant they run, and between that instant and
+    /// the swap sit an unbounded confirmation prompt and the whole copy, with the old store up and writable.
+    /// An event appended in that window is not in the new store and the swap would destroy it, silently: the
+    /// engine never saw it, so its own bookkeeping balances perfectly without it.
+    /// </summary>
+    /// <remarks>
+    /// The write happens while the tool is blocked on the confirmation prompt, which makes the race the
+    /// scenario is about deterministic — and needs no fault-injection hook, so what is exercised here is the
+    /// real trigger rather than a simulation of one.
+    /// </remarks>
+    [Fact]
+    public async Task A_write_to_the_source_during_the_run_aborts_before_the_swap_with_exit_4()
+    {
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+        var before = f.RootEntries();
+        var startedAt = await f.StartedAtAsync();
+
+        using var writesThenConfirms = new AppendThenAnswer(f, "LateWriter-1", "yes");
+        var report = await RunAsync(f, Options(f) with
+        {
+            Yes = false,
+            ConfirmationInput = writesThenConfirms
+        });
+
+        writesThenConfirms.Appended.Should().BeTrue("the scenario is only meaningful if the write happened");
+        report.Code.Should().Be(ExitCode.EngineFailure);
+        report.Headline.Should().Contain("written to DURING the run")
+            .And.Contain("old store is untouched");
+
+        // "Untouched" has to mean it: no swap, no backup, no scratch directory, container never stopped, and
+        // the late event still where the writer put it.
+        f.RootEntries().Should().Equal(before);
+        (await f.ScratchContainersAsync()).Should().BeEmpty();
+        (await f.StartedAtAsync()).Should().Be(startedAt, "the container is never stopped before the gate passes");
+        (await f.ReadAsync("LateWriter-1")).Should().ContainSingle("the write that caused the abort survived it");
+        (await f.ReadAsync("Order-1")).Should().HaveCount(3);
+    }
+
+    /// <summary>
+    /// Appends one event the moment the tool asks for confirmation, then answers it — so the write lands
+    /// inside the window between the guards and the swap, every time.
+    /// </summary>
+    private sealed class AppendThenAnswer(RewriteFixture f, string stream, string answer) : TextReader
+    {
+        public bool Appended { get; private set; }
+
+        public override string ReadLine()
+        {
+            if (!Appended)
+            {
+                using var client = f.NewClient();
+                client.AppendToStreamAsync(stream, StreamState.Any,
+                    [new EventData(Uuid.NewUuid(), "LateWrite", Encoding.UTF8.GetBytes("""{"late":true}"""))])
+                    .GetAwaiter().GetResult();
+                Appended = true;
+            }
+            return answer;
+        }
+    }
+
+    // ================================================================= the confirmation prompt
+
+    /// <summary>
+    /// The only human interlock in the tool, and the one branch that most needs to work: saying anything but
+    /// "yes" must leave everything exactly as it was.
+    /// </summary>
+    [Fact]
+    public async Task Declining_the_confirmation_changes_nothing()
+    {
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+        var before = f.RootEntries();
+        var startedAt = await f.StartedAtAsync();
+        var plan = new StringWriter();
+
+        var report = await RunAsync(f, Options(f) with
+        {
+            Yes = false,
+            Eval = "dropStream(/^Junk-/)",
+            ConfirmationInput = new StringReader("no\n"),
+            Output = plan
+        });
+
+        report.Code.Should().Be(ExitCode.GuardRefusal);
+        f.RootEntries().Should().Equal(before, "not even the new-store directory is created");
+        (await f.ScratchContainersAsync()).Should().BeEmpty();
+        (await f.StartedAtAsync()).Should().Be(startedAt, "the container is never stopped");
+        (await f.ReadAsync("Junk-1")).Should().HaveCount(2, "the stream the rule would have dropped is still there");
+
+        // The prompt is also the only place the operator sees what the script was understood to MEAN.
+        var printed = plan.ToString();
+        printed.Should().Contain("DropStreamPredicate", "the rules must be shown before they are applied");
+        printed.Should().Contain(Convert.ToHexString(
+            System.Security.Cryptography.SHA256.HashData(Encoding.UTF8.GetBytes("dropStream(/^Junk-/)"))),
+            "and the checksum of the exact script text");
+    }
+
+    [Fact]
+    public async Task Confirming_with_yes_proceeds()
+    {
+        // The control: without this, "declining changes nothing" would also pass if the prompt rejected
+        // every answer, or if the tool never got past the prompt at all.
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+
+        var report = await RunAsync(f, Options(f) with
+        {
+            Yes = false,
+            Eval = "dropStream(/^Junk-/)",
+            ConfirmationInput = new StringReader("yes\n")
+        });
+
+        report.Code.Should().Be(ExitCode.Ok);
+        (await f.StreamExistsAsync("Junk-1")).Should().BeFalse();
+    }
+
+    // ================================================================= --no-projection-copy
+
+    [Fact]
+    public async Task no_projection_copy_suppresses_the_projection_copy_and_still_copies_the_events()
+    {
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+
+        var report = await RunAsync(f, Options(f) with { NoProjectionCopy = true });
+
+        report.Code.Should().Be(ExitCode.Ok);
+        report.CopiedProjections.Should().BeEmpty();
+        (await f.ProjectionStatusAsync(RewriteFixture.MergeStream)).Should().BeNull(
+            "with the copy suppressed the app's projection is not pre-created — the app recreates it on boot");
+        (await f.ReadAsync("Order-1")).Should().HaveCount(3, "the events are copied either way");
+    }
+
+    // ================================================================= a second run
+
+    /// <summary>
+    /// The positive anchor for every "no scratch container was left / started" assertion in this file. Those
+    /// are all negatives over a searchable space, and a query that can never see anything satisfies them for
+    /// free — proven: the reviewer replaced the filter with one that cannot match and they all stayed green.
+    /// </summary>
+    [Fact]
+    public async Task The_scratch_container_query_sees_the_scratch_container_while_it_is_up()
+    {
+        await using var f = await RewriteFixture.StartAsync(output);
+        await f.WaitUntilNoClientsAsync(TimeSpan.FromSeconds(30));
+
+        IReadOnlyList<string> seenDuringRun = [];
+        // Look while the tool is blocked on the prompt: the scratch store is not up yet at that point, so the
+        // observation is taken from a background poll that runs across the whole rewrite instead.
+        using var polling = new CancellationTokenSource();
+        var watcher = Task.Run(async () =>
+        {
+            while (!polling.IsCancellationRequested)
+            {
+                var now = await f.ScratchContainersAsync();
+                if (now.Count > 0) { seenDuringRun = now; return; }
+                await Task.Delay(200);
+            }
+        });
+
+        var report = await RunAsync(f, Options(f));
+        await polling.CancelAsync();
+        await watcher;
+
+        report.Code.Should().Be(ExitCode.Ok);
+        seenDuringRun.Should().NotBeEmpty(
+            "if this query cannot see a scratch container that certainly existed, every 'no scratch container' "
+            + "assertion in this file is unfalsifiable");
+        seenDuringRun.Should().AllSatisfy(n => n.Should().StartWith($"mp-rewrite-{f.ContainerName}-"));
+        (await f.ScratchContainersAsync()).Should().BeEmpty("and it is gone once the run finishes");
     }
 
     // ================================================================= E2E-11
@@ -435,6 +658,26 @@ public class RewriteE2ETests(ITestOutputHelper output)
             .And.Contain(d => d.StartsWith("DropStreamPredicate"),
                 "an operator reading this store months later must see WHAT the rewrite did");
         record.Dropped.Should().Be(2, "Junk-1 held two events");
+    }
+
+    [Fact]
+    public async Task A_second_run_appends_its_own_history_record()
+    {
+        // Lead decision 4's entire purpose: a second rewrite is a new migration, not one silently skipped as
+        // already applied. Two runs of the SAME script inside one second used to collide on the id.
+        await using var f = await RewriteFixture.StartAsync(output);
+
+        (await RewriteAsync(f, Options(f))).Code.Should().Be(ExitCode.Ok);
+        var second = await RewriteAsync(f, Options(f));
+        second.Code.Should().Be(ExitCode.Ok);
+
+        var history = await f.ReadAsync("mp-migrations");
+        history.Should().HaveCount(2, "the first run's record is carried forward and the second adds its own");
+        var ids = history
+            .Select(e => JsonSerializer.Deserialize<MigrationApplied>(e.Data.Span)!.Id)
+            .ToList();
+        ids.Should().OnlyHaveUniqueItems("two runs must not share an id — the second would be skipped");
+        ids.Should().AllSatisfy(id => id.Should().StartWith("rewrite_"));
     }
 
     // ================================================================= exit codes

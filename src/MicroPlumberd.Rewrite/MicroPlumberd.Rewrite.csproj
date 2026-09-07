@@ -14,6 +14,14 @@
     <ToolCommandName>mp-rewrite</ToolCommandName>
     <PackageId>MicroPlumberd.Rewrite</PackageId>
     <Description>mp-rewrite — rewrites the history of a KurrentDB running in docker into a NEW store and swaps it in place, optionally through a JavaScript rule script. The old data directory is kept as a backup and never edited.</Description>
+    <Title>mp-rewrite</Title>
+    <Authors>Rafal Maciag</Authors>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <PackageTags>EventStore;KurrentDB;CQRS;EventSourcing;Migration;dotnet-tool</PackageTags>
     <!-- Single-file self-contained publishes (linux-x64/linux-arm64) are produced by CI for neurons with no SDK. -->
     <InvariantGlobalization>true</InvariantGlobalization>
@@ -33,6 +41,12 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="MicroPlumberd.Rewrite.Tests" />
+  </ItemGroup>
+
+  <!-- Packaging assets. This package ships its OWN README — it is the tool's manual. -->
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png" Pack="True" PackagePath="\" />
+    <None Include="README.md" Pack="True" PackagePath="\" />
   </ItemGroup>
 
 </Project>

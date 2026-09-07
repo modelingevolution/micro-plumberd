@@ -167,6 +167,23 @@ public sealed partial class DockerStore
         return port;
     }
 
+    /// <summary>
+    /// Scratch containers this tool has running or left behind for <paramref name="containerName"/>, so
+    /// <c>--status</c> can tell an operator that a rewrite is in flight — or was interrupted.
+    /// </summary>
+    public async Task<IReadOnlyList<string>> FindScratchContainersAsync(string containerName,
+        CancellationToken ct = default)
+    {
+        var all = await client.Containers.ListContainersAsync(new ContainersListParameters { All = true }, ct)
+            .ConfigureAwait(false);
+        var prefix = $"mp-rewrite-{containerName}-";
+        return all.SelectMany(x => x.Names ?? [])
+            .Select(n => n.TrimStart('/'))
+            .Where(n => n.StartsWith(prefix, StringComparison.Ordinal))
+            .OrderBy(n => n, StringComparer.Ordinal)
+            .ToList();
+    }
+
     private static string Short(string id) => id.Length > 12 ? id[..12] : id;
 }
 
@@ -196,17 +213,9 @@ public sealed partial class DockerStore
     {
         if (!Directory.Exists(dir)) return;
 
-        // This runs `rm -rf` as root. The guard is deliberately structural and unconditional: a bug in a
-        // caller must not be able to aim it at a system directory.
         var full = Path.GetFullPath(dir).TrimEnd(Path.DirectorySeparatorChar);
-        var parent = Path.GetDirectoryName(full)
-            ?? throw new ArgumentException($"Refusing to purge a filesystem root: '{dir}'.", nameof(dir));
-        var name = Path.GetFileName(full);
-        if (name.Length == 0 || full.Split(Path.DirectorySeparatorChar,
-                StringSplitOptions.RemoveEmptyEntries).Length < 3)
-            throw new ArgumentException(
-                $"Refusing to purge '{dir}': a store directory always sits at least three levels deep.",
-                nameof(dir));
+        if (Path.GetDirectoryName(full) is null)
+            throw new ArgumentException($"Refusing to purge a filesystem root: '{dir}'.", nameof(dir));
 
         // Try the cheap path first — an empty or tool-owned directory needs no container at all.
         try
@@ -217,17 +226,22 @@ public sealed partial class DockerStore
         }
         catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
         {
-            logger.LogInformation("{Dir} holds files written by the container's user; removing it from a "
-                                  + "root helper container.", full);
+            logger.LogInformation("{Dir} holds files written by the container's user; removing its contents "
+                                  + "from a root helper container.", full);
         }
 
+        // THE INTERLOCK IS THE MOUNT. The container gets ONLY the directory being deleted, and deletes its
+        // CONTENTS — so the blast radius equals that directory by construction, for every caller, and no
+        // convention about names or path depth has to hold for that to be true. The parent (which holds the
+        // LIVE store and every backup) is never mounted into a root container at all; the now-empty directory
+        // is removed from the host afterwards, which needs no privileges.
         var created = await client.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = image,
             Name = $"mp-rewrite-purge-{Guid.NewGuid():N}"[..40],
             User = "0:0",
-            Entrypoint = ["/bin/sh", "-c", $"rm -rf '/purge/{name}'"],
-            HostConfig = new HostConfig { Binds = [$"{parent}:/purge"], AutoRemove = false }
+            Entrypoint = ["/bin/sh", "-c", "rm -rf /purge/..?* /purge/.[!.]* /purge/*"],
+            HostConfig = new HostConfig { Binds = [$"{full}:/purge"], AutoRemove = false }
         }, ct).ConfigureAwait(false);
 
         try
@@ -244,9 +258,16 @@ public sealed partial class DockerStore
             await RemoveAsync(created.ID, ct).ConfigureAwait(false);
         }
 
-        if (Directory.Exists(full))
+        // The helper emptied it; removing an empty directory needs no privileges.
+        try
+        {
+            Directory.Delete(full, recursive: true);
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or IOException)
+        {
             throw new RewriteRefusedException(ExitCode.FilesystemFailure,
-                $"'{full}' still exists after the helper container ran.");
-        logger.LogInformation("Removed {Dir} via a root helper container.", full);
+                $"'{full}' could not be removed even after its contents were purged: {ex.Message}");
+        }
+        logger.LogInformation("Removed {Dir} (contents via a root helper container).", full);
     }
 }

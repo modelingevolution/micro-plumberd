@@ -103,6 +103,12 @@ public sealed class DirectorySwap(DataLocation data, ILogger logger)
     /// <summary>Backup directories present, most recent first.</summary>
     public IReadOnlyList<string> Backups() => Find(BackupSuffix);
 
+    /// <summary>
+    /// Half-written store directories left by an interrupted run. Root-owned, so the operator cannot remove
+    /// them by hand — which is exactly why <c>--status</c> has to name them.
+    /// </summary>
+    public IReadOnlyList<string> NewStoreDirs() => Find(NewSuffix);
+
     private IReadOnlyList<string> Find(string suffix)
     {
         if (!Directory.Exists(data.Parent)) return [];

@@ -339,6 +339,31 @@ internal sealed class JsRuleHost
         return o;
     }
 
+    /// <summary>
+    /// Reads <c>Stream</c> / <c>EventType</c> off the returned object, insisting it is a string.
+    /// </summary>
+    /// <remarks>
+    /// Absent is NOT empty. Building a fresh result object and forgetting a field is the most likely mistake a
+    /// script author makes, and the contract's "an empty <c>Stream</c> drops the event" would otherwise turn it
+    /// into total, silent data loss at exit 0. A non-string is rejected for the same reason from the other
+    /// side: coercing <c>123</c> to <c>"123"</c> writes events into a stream nobody named. Neither is a drop,
+    /// so both are errors — and a script that means "drop" still writes <c>undefined</c> or <c>""</c>, which is
+    /// what Replicator documents.
+    /// </remarks>
+    private static string RequiredString(ObjectInstance o, string property, RawEvent e)
+    {
+        var v = o.Get(property);
+        if (v.IsUndefined() || v.IsNull())
+            throw new ScriptExecutionException(e.StreamId, e.EventNumber,
+                $"the returned event has no '{property}'. That is not the same as an empty '{property}', which "
+                + "would DROP the event — return the original's value, or an explicit empty string if dropping "
+                + "is what you meant.");
+        if (!v.IsString())
+            throw new ScriptExecutionException(e.StreamId, e.EventNumber,
+                $"the returned event's '{property}' is {Describe(v)}, but it must be a string.");
+        return v.AsString();
+    }
+
     /// <summary>The JSON text of a value as JavaScript renders it, or <c>null</c> for undefined/null.</summary>
     private string? Snapshot(JsValue v)
     {
@@ -359,12 +384,12 @@ internal sealed class JsRuleHost
     /// </summary>
     private RawEvent? FromJsEvent(ObjectInstance o, RawEvent original, string? dataIn, string? metaIn)
     {
-        var stream = o.Get("Stream");
-        var type = o.Get("EventType");
-        var streamName = stream.IsString() ? stream.AsString() : stream.IsUndefined() || stream.IsNull() ? "" : stream.ToString();
-        var typeName = type.IsString() ? type.AsString() : type.IsUndefined() || type.IsNull() ? "" : type.ToString();
+        var streamName = RequiredString(o, "Stream", original);
+        var typeName = RequiredString(o, "EventType", original);
 
-        // The Replicator contract's second way of saying "drop".
+        // The Replicator contract's second way of saying "drop" — an EXPLICIT empty string. An absent or
+        // non-string property is an authoring error and was rejected above; folding it in here is what would
+        // turn one forgotten field into the silent deletion of every event the rule touched.
         if (streamName.Length == 0 || typeName.Length == 0) return null;
 
         var data = FromJs(o.Get("Data"), original.Data, dataIn, original, "Data");

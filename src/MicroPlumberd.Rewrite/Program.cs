@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 const string Usage = """
 mp-rewrite <container> [--script <file.js>] [--eval "<js>"] [--dry-run]
-                       [--no-projection-copy] [--yes]
+                       [--no-projection-copy] [--yes] [--user <u>] [--password <p>]
 mp-rewrite <container> --rollback [<backup-dir>]
 mp-rewrite <container> --status
 
@@ -50,6 +50,9 @@ static RewriteOptions ParseArgs(string[] args)
         throw new ArgumentException("The first argument must be the container id or name.");
 
     string? script = null, eval = null, backupDir = null;
+    // Credentials: flag beats environment beats the fleet default.
+    var user = Environment.GetEnvironmentVariable("MP_REWRITE_USER") ?? DockerStore.DefaultUser;
+    var password = Environment.GetEnvironmentVariable("MP_REWRITE_PASSWORD") ?? DockerStore.DefaultPassword;
     bool dryRun = false, noProjectionCopy = false, yes = false, forceVolume = false;
     var mode = RewriteMode.Rewrite;
 
@@ -59,6 +62,8 @@ static RewriteOptions ParseArgs(string[] args)
         {
             case "--script": script = Next(args, ref i, "--script"); break;
             case "--eval": eval = Next(args, ref i, "--eval"); break;
+            case "--user": user = Next(args, ref i, "--user"); break;
+            case "--password": password = Next(args, ref i, "--password"); break;
             case "--dry-run": dryRun = true; break;
             case "--no-projection-copy": noProjectionCopy = true; break;
             case "--yes" or "-y": yes = true; break;
@@ -89,6 +94,8 @@ static RewriteOptions ParseArgs(string[] args)
         ForceVolumeCopy = forceVolume,
         Mode = mode,
         BackupDir = backupDir,
+        User = user,
+        Password = password,
         // The fault injection is a TEST hook and is deliberately reachable only through an environment
         // variable, never a command-line flag: nothing an operator can mistype should be able to arm it.
         FailAfterSwapForTest = Environment.GetEnvironmentVariable("MP_REWRITE_TEST_FAIL_AFTER_SWAP") == "1"

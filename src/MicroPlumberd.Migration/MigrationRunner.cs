@@ -77,6 +77,13 @@ public sealed class MigrationRunner(ILoggerFactory? loggerFactory = null)
     /// </summary>
     public MigrationProgressTracker Progress { get; } = new();
 
+    /// <summary>
+    /// The stream the applied-migration history lives in. Reserved: the copy engine never copies it, and no
+    /// rule may target it. Exposed because a caller that reads the source independently of the engine has to
+    /// exclude exactly the same stream — deriving that from a second copy of the literal is how the two drift.
+    /// </summary>
+    public static string HistoryStreamName => MigrationHistory.StreamName;
+
     /// <summary>Shorthand for <c>Progress.CurrentStatus</c> — the thread-safe status snapshot for a REST layer.</summary>
     public MigrationStatusSnapshot CurrentStatus => Progress.CurrentStatus;
 

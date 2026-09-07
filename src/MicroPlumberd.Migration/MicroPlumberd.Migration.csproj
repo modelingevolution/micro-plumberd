@@ -7,6 +7,14 @@
     <DebugType Condition="'$(Configuration)' == 'Debug'">embedded</DebugType>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Description>Offline event-store migration / rewrite tool for KurrentDB (EventStore). Copies a source store to a fresh destination in $all commit order, applying raw (non-typed) migration rules — drop streams, drop events, rename event types, transform JSON payload/metadata, rename streams — with applied-migration history that travels with the store.</Description>
+    <Title>MicroPlumberd.Migration</Title>
+    <Authors>Rafal Maciag</Authors>
+    <Copyright>Rafal Maciag</Copyright>
+    <PackageIcon>logo-squere.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/modelingevolution/micro-plumberd</RepositoryUrl>
+    <PackageProjectUrl>https://modelingevolution.github.io/micro-plumberd/</PackageProjectUrl>
     <PackageTags>EventStore;KurrentDB;CQRS;EventSourcing;Migration</PackageTags>
   </PropertyGroup>
 
@@ -28,6 +36,12 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="MicroPlumberd.Migration.Tests" />
+  </ItemGroup>
+
+  <!-- Packaging assets, as the other 20 packages in this repo carry them. Published metadata is permanent. -->
+  <ItemGroup>
+    <None Include="..\..\logo-squere.png" Pack="True" PackagePath="\" />
+    <None Include="..\..\README.md" Pack="True" PackagePath="\" />
   </ItemGroup>
 
 </Project>

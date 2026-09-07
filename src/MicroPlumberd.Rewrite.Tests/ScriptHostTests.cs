@@ -90,6 +90,40 @@ public class ScriptHostTests
         new ScriptRunner(script).Run(Ev.Make()).Should().BeNull();
     }
 
+    /// <summary>
+    /// The single most likely authoring mistake in this contract: build a fresh result object and forget a
+    /// field. Folding an ABSENT property into "" would make that delete every event the rule touched, silently
+    /// and at exit 0. Only an EXPLICIT empty string means drop.
+    /// </summary>
+    [Theory]
+    [InlineData("function transform(o){ return { Data: o.Data, Metadata: o.Metadata }; }", "Stream")]
+    [InlineData("function transform(o){ return { Stream: o.Stream, Data: o.Data }; }", "EventType")]
+    [InlineData("function transform(o){ return []; }", "Stream")]
+    public void UT02_A_returned_object_MISSING_Stream_or_EventType_is_an_error_not_a_silent_drop(
+        string script, string missing)
+    {
+        var runner = new ScriptRunner(script);
+
+        var act = () => runner.Run(Ev.Make(stream: "Order-7", number: 3));
+
+        act.Should().Throw<ScriptExecutionException>()
+            .Where(e => e.Stream == "Order-7" && e.EventNumber == 3)
+            .WithMessage($"*{missing}*")
+            .WithMessage("*Order-7#3*", "an operator must be told which event the script mishandled");
+    }
+
+    [Fact]
+    public void UT02_A_Stream_or_EventType_that_is_not_a_string_is_an_error_rather_than_being_coerced()
+    {
+        // Same class as the missing property: coercing 123 to "123" would quietly write events into a stream
+        // nobody named. It cannot be a drop either, so it is the third thing an error must cover.
+        var runner = new ScriptRunner("function transform(o){ o.Stream = 123; return o; }");
+
+        var act = () => runner.Run(Ev.Make(stream: "Order-7", number: 3));
+
+        act.Should().Throw<ScriptExecutionException>().WithMessage("*Stream*").WithMessage("*string*");
+    }
+
     [Fact]
     public void UT02_A_transform_returning_a_non_object_fails_naming_the_event_it_was_processing()
     {
