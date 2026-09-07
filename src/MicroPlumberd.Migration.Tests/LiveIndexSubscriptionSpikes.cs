@@ -138,7 +138,10 @@ public class LiveIndexSubscriptionSpikes(ITestOutputHelper output)
     // =====================================================================================================
 
     // 2a: SubscribeToStream on the index stream itself ($idx-user-<name>).
-    [Fact]
+    // FINDING RECORDED (feasibility §7 / design R1): a direct SubscribeToStream on $idx-user-* silently delivers ZERO
+    // events on KurrentDB 26.1 — this spike stays red by construction and its job is done; the loud guard in
+    // SubscriptionRunnerState.Subscribe() and Spike2b (filtered $all) are the live tests. Skipped, not deleted.
+    [Fact(Skip = "SPIKE-2a is a recorded negative finding: SubscribeToStream on $idx-user-* delivers zero events (design R1). See Spike2b.")]
     public async Task Spike2a_subscribe_to_index_stream_catches_up_then_receives_live_appends_in_order()
     {
         await using var stores = new Store();
