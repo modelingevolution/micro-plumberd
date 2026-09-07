@@ -111,6 +111,11 @@ public sealed class RewriteFixture : IAsyncDisposable
         var name = $"mp-rewrite-test-{tag}";
         var composeProject = $"mp-rewrite-test-{tag}";
         var port = FreePort();
+
+        // A clean CI runner has no images at all. Pulling here rather than in the workflow keeps the suite
+        // self-sufficient wherever it runs, and puts the pull's time and failures in one obvious place instead
+        // of inside a container-start timeout.
+        await new DockerStore(docker, lf.CreateLogger("fixture")).EnsureImageAsync(Image);
         var created = await docker.Containers.CreateContainerAsync(new CreateContainerParameters
         {
             Image = Image,

@@ -37,7 +37,15 @@ public sealed record RewriteOptions
     /// <summary>Skip the confirmation prompt.</summary>
     public bool Yes { get; init; }
 
-    /// <summary>Allow rewriting a store on a named volume (swapped through a helper container).</summary>
+    /// <summary>
+    /// RESERVED. design.md §1 defines a named-volume swap through a helper container; this version does not
+    /// implement it, so setting this is REFUSED rather than ignored.
+    /// </summary>
+    /// <remarks>
+    /// A flag that is accepted and does nothing is a trap: an operator on a named-volume host passes it, is
+    /// refused anyway, and has no way to tell that the flag was never going to help. The option is kept on the
+    /// command line only so it fails with the reason instead of "unknown argument".
+    /// </remarks>
     public bool ForceVolumeCopy { get; init; }
 
     /// <summary>Rewrite, rollback or status.</summary>

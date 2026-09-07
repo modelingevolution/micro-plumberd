@@ -32,6 +32,17 @@ public sealed class RewriteCommand
 
         var logger = loggerFactory.CreateLogger<RewriteCommand>();
         var sw = Stopwatch.StartNew();
+
+        // Refused before ANY docker call, in every mode: the answer does not depend on inspecting anything,
+        // and an operator must not watch the tool start work it will not finish.
+        if (options.ForceVolumeCopy)
+        {
+            var message = "named-volume rewrite is not implemented in this version; move the store to a bind "
+                          + "mount or wait for a version that implements --force-volume-copy";
+            logger.LogError("{Message}", message);
+            return new RewriteReport { Code = ExitCode.ScriptError, Headline = message, Elapsed = sw.Elapsed };
+        }
+
         try
         {
             return options.Mode switch
@@ -328,8 +339,7 @@ public sealed class RewriteCommand
         if (c.Data.IsBind) return;
         throw new RewriteRefusedException(ExitCode.GuardRefusal,
             $"The store of '{c.Name}' is on the named volume '{c.Data.VolumeName}', which this tool cannot "
-            + "swap by renaming directories. Re-run with --force-volume-copy once that path is implemented, "
-            + "or move the store onto a bind mount.");
+            + "swap by renaming directories. Move the store onto a bind mount.");
     }
 
     private sealed record GuardOutcome(string? Refusal, IReadOnlyList<string> Notes);

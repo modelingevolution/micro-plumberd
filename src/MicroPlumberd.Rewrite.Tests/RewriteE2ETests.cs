@@ -456,6 +456,19 @@ public class RewriteE2ETests(ITestOutputHelper output)
     }
 
     [Fact]
+    public async Task Naming_both_a_script_file_and_an_inline_script_exits_2()
+    {
+        // One invalid command line, one exit code. The parser used to reject this too, and returned 1 —
+        // which meant the code an operator's script branched on depended on which check ran first.
+        await using var f = await RewriteFixture.StartAsync(output);
+
+        var report = await RunAsync(f, Options(f) with { Eval = "dropStream(\"a\")", ScriptPath = "/tmp/x.js" });
+
+        report.Code.Should().Be(ExitCode.ScriptError);
+        report.Headline.Should().Contain("mutually exclusive");
+    }
+
+    [Fact]
     public async Task An_unknown_container_exits_3()
     {
         await using var f = await RewriteFixture.StartAsync(output);

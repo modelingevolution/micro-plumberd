@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 const string Usage = """
 mp-rewrite <container> [--script <file.js>] [--eval "<js>"] [--dry-run]
-                       [--no-projection-copy] [--yes] [--force-volume-copy]
+                       [--no-projection-copy] [--yes]
 mp-rewrite <container> --rollback [<backup-dir>]
 mp-rewrite <container> --status
 
@@ -62,6 +62,8 @@ static RewriteOptions ParseArgs(string[] args)
             case "--dry-run": dryRun = true; break;
             case "--no-projection-copy": noProjectionCopy = true; break;
             case "--yes" or "-y": yes = true; break;
+            // Still accepted so it fails with its REASON rather than "unknown argument"; RewriteCommand
+            // refuses it. Deliberately absent from the usage above — it is reserved, not offered.
             case "--force-volume-copy": forceVolume = true; break;
             case "--status": mode = RewriteMode.Status; break;
             case "--rollback":
@@ -73,9 +75,9 @@ static RewriteOptions ParseArgs(string[] args)
         }
     }
 
-    if (script is not null && eval is not null)
-        throw new ArgumentException("--script and --eval are mutually exclusive.");
-
+    // Deliberately NOT checked here: --script with --eval is a script-input error, and RewriteOptions
+    // already rejects it. Deciding it in two places is how one invalid command line ends up with two
+    // different exit codes depending on which check happens to run first.
     return new RewriteOptions
     {
         Container = container,

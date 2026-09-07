@@ -1,0 +1,71 @@
+# End-to-end suite for mp-rewrite (epic-095).
+#
+# These tests are the acceptance bar for the tool: they start REAL KurrentDB containers, bind-mount a data
+# directory, rewrite it, swap it in and read the result back through the original container. They cannot be
+# replaced by unit tests, because the whole value of the tool is the orchestration.
+name: mp-rewrite end-to-end
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: ['feature/**']
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    # The suite starts two containers per scenario and runs strictly sequentially; ~7 minutes on saturn.
+    # 30 minutes leaves room for a cold image pull and a slower runner without letting a hang burn an hour.
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore src/MicroPlumberd.Rewrite.Tests/MicroPlumberd.Rewrite.Tests.csproj
+
+      - name: Build
+        run: >-
+          dotnet build src/MicroPlumberd.Rewrite.Tests/MicroPlumberd.Rewrite.Tests.csproj
+          --configuration Release --no-restore
+
+      # The fixture pulls this itself if it is missing, but doing it here gives the pull its own step, its own
+      # log and its own failure — rather than surfacing as a container-start timeout inside the first scenario.
+      - name: Pull KurrentDB image
+        run: docker pull docker.kurrent.io/kurrent-latest/kurrentdb:latest
+
+      # Sequential is not optional: two fixtures up at once are siblings of each other's compose project and
+      # the tool would correctly refuse. xunit.runner.json pins it too, so a local run behaves the same.
+      - name: Run end-to-end suite
+        run: >-
+          dotnet test src/MicroPlumberd.Rewrite.Tests/MicroPlumberd.Rewrite.Tests.csproj
+          --configuration Release --no-build
+          --logger "trx;LogFileName=rewrite-e2e.trx"
+          --results-directory ${{ github.workspace }}/test-results
+          -- xUnit.ParallelizeTestCollections=false
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rewrite-e2e-trx
+          path: ${{ github.workspace }}/test-results/*.trx
+          retention-days: 14
+
+      # A scenario that fails midway can leave a container behind; the runner is thrown away, but leaving them
+      # named in the log makes a CI-only failure diagnosable. Only ever by the exact name prefix this suite owns.
+      - name: Report leftover containers
+        if: always()
+        run: docker ps -a --filter "name=mp-rewrite-" --format '{{.Names}}\t{{.Status}}' || true
