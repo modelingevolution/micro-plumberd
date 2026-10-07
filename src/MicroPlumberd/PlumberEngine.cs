@@ -1372,6 +1372,9 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <param name="eLink">Optional link event record if the event is a link.</param>
     /// <param name="t">The type to deserialize the event into.</param>
     /// <returns>A tuple containing the deserialized event object and its metadata.</returns>
+    // Never inlined: an error-handle policy on an older MicroPlumberd recognises a read failure by this
+    // method's stack frame, which an inlining JIT would erase. New code matches EventDeserializationException.
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
     internal (object, Metadata) ReadEventData(OperationContext context, EventRecord er, EventRecord? eLink, Type t)
     {
         var streamIdSuffix = er.EventStreamId.Substring(er.EventStreamId.IndexOf('-') + 1);
@@ -1379,8 +1382,18 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             aggregateId = streamIdSuffix.ToGuid();
 
         var s = Serializer(t);
-        var ev = s.Deserialize(context,er.Data.Span, t)!;
-        var m = s.ParseMetadata(context, er.Metadata.Span);
+        object ev;
+        JsonElement m;
+        try
+        {
+            ev = s.Deserialize(context,er.Data.Span, t)!;
+            m = s.ParseMetadata(context, er.Metadata.Span);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException and not OutOfMemoryException)
+        {
+            // The bytes are already in memory: whatever failed here fails the same way on every retry.
+            throw new EventDeserializationException(er.EventStreamId, er.EventType, er.EventNumber.ToInt64(), ex);
+        }
 
         var metadata = MetadataFactory.Create(aggregateId, er.EventStreamId, er.EventId.ToGuid(),
             er.EventNumber.ToInt64(), eLink?.EventNumber.ToInt64(), m);

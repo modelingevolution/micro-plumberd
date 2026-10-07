@@ -68,6 +68,12 @@ jobs:
     - name: Build solution
       run: dotnet build src/MicroPlumberd.sln --configuration ${{ steps.get_version.outputs.CONFIGURATION }} --no-restore /p:Version=${{ steps.get_version.outputs.VERSION }}
 
+    # A publish gate, in RELEASE whatever the package configuration: an error-handle policy that skips
+    # undeserializable stored events depends on how a read failure surfaces (EventDeserializationException,
+    # and ReadEventData's frame for older consumers). A Debug-green run cannot prove the Release JIT agrees.
+    - name: Poison-event read test (Release)
+      run: dotnet test src/MicroPlumberd.Tests/MicroPlumberd.Tests.csproj --configuration Release --filter "FullyQualifiedName~PoisonEventContextTests"
+
     - name: Pack NuGet packages
       run: |
         dotnet pack src/MicroPlumberd/MicroPlumberd.csproj \
