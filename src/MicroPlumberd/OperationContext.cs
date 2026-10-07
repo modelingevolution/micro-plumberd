@@ -175,6 +175,25 @@ public readonly record struct OperationContextProperty(string Name, bool IsMetad
     public readonly static OperationContextProperty AggregateId = new OperationContextProperty("AggregateId",false);
 
     /// <summary>
+    /// The stream of the stored event a subscription is handling (the event's own stream, not the
+    /// subscription's output stream). Set before the event is deserialized, so an error-handle policy can
+    /// name an event that cannot be read. Not included in metadata.
+    /// </summary>
+    public readonly static OperationContextProperty SourceStreamId = new OperationContextProperty("SourceStreamId", false);
+
+    /// <summary>
+    /// The stored event type name of the event a subscription is handling. Set before the event is
+    /// deserialized. Not included in metadata.
+    /// </summary>
+    public readonly static OperationContextProperty EventType = new OperationContextProperty("EventType", false);
+
+    /// <summary>
+    /// The number (revision) of the stored event in <see cref="SourceStreamId"/>, as a <see cref="long"/>.
+    /// Set before the event is deserialized. Not included in metadata.
+    /// </summary>
+    public readonly static OperationContextProperty SourceEventNumber = new OperationContextProperty("SourceEventNumber", false);
+
+    /// <summary>
     /// Gets the maximum property ID assigned so far.
     /// </summary>
     public static ulong Max => _counter;
