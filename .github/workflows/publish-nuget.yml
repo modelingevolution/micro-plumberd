@@ -71,6 +71,11 @@ jobs:
     # A publish gate, in RELEASE whatever the package configuration: an error-handle policy that skips
     # undeserializable stored events depends on how a read failure surfaces (EventDeserializationException,
     # and ReadEventData's frame for older consumers). A Debug-green run cannot prove the Release JIT agrees.
+    # EventStoreServer.StartInDocker creates the container without pulling, and a fresh runner has no
+    # image — the first 1.3.1.0 publish failed here with "No such image" and published nothing.
+    - name: Pull KurrentDB for the poison-event test
+      run: docker pull docker.kurrent.io/kurrent-latest/kurrentdb:latest
+
     - name: Poison-event read test (Release)
       run: dotnet test src/MicroPlumberd.Tests/MicroPlumberd.Tests.csproj --configuration Release --filter "FullyQualifiedName~PoisonEventContextTests"
 
