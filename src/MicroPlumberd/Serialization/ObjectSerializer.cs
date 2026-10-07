@@ -137,27 +137,46 @@ public sealed class JsonObjectSerializer : IObjectSerializer
     /// <summary>
     /// Gets the default JSON serializer options used by this serializer.
     /// </summary>
+    /// <remarks>
+    /// Shared by every plumber in the process that uses the default serializer, and read-only after its first
+    /// use. Do not add converters to it at run time: build a copy (<see cref="CreateOptions"/>) and pass it to
+    /// <see cref="JsonObjectSerializer(JsonSerializerOptions)"/>.
+    /// </remarks>
     public static readonly JsonSerializerOptions Options = new() { Converters = { new ExpandoObjectConverter(), new OptionConverterFactory() } };
 
+    /// <summary>A fresh, mutable copy of <see cref="Options"/>, for a serializer of one's own.</summary>
+    public static JsonSerializerOptions CreateOptions() => new(Options);
+
     private static JsonElement Empty = JsonSerializer.Deserialize<JsonElement>("{}");
+
+    private readonly JsonSerializerOptions _options;
+
+    /// <summary>A serializer over the process-wide <see cref="Options"/>.</summary>
+    public JsonObjectSerializer() : this(Options) { }
+
+    /// <summary>A serializer over options of its own (e.g. <see cref="CreateOptions"/> plus converters).</summary>
+    public JsonObjectSerializer(JsonSerializerOptions options) => _options = options;
+
+    /// <summary>True when this serializer uses the process-wide <see cref="Options"/>.</summary>
+    public bool UsesDefaultOptions => ReferenceEquals(_options, Options);
 
     /// <inheritdoc/>
     public object? Deserialize(OperationContext context, ReadOnlySpan<byte> span, Type t)
     {
-        return JsonSerializer.Deserialize(span, t, Options);
+        return JsonSerializer.Deserialize(span, t, _options);
     }
 
     /// <inheritdoc/>
     public JsonElement ParseMetadata(OperationContext context, ReadOnlySpan<byte> span)
     {
         if(span.Length == 0) return Empty;
-        return JsonSerializer.Deserialize<JsonElement>(span, Options);
+        return JsonSerializer.Deserialize<JsonElement>(span, _options);
     }
 
     /// <inheritdoc/>
     public byte[] Serialize(OperationContext context, object? t)
     {
-        return t == null ? Array.Empty<byte>() : JsonSerializer.SerializeToUtf8Bytes(t, t.GetType(), Options);
+        return t == null ? Array.Empty<byte>() : JsonSerializer.SerializeToUtf8Bytes(t, t.GetType(), _options);
     }
 
     /// <inheritdoc/>

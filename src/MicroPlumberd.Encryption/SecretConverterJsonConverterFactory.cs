@@ -6,7 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MicroPlumberd.Encryption
 {
-    class SecretConverterJsonConverterFactory(IServiceProvider serviceProvider) : JsonConverterFactory
+    class SecretConverterJsonConverterFactory(Func<IServiceProvider> serviceProvider) : JsonConverterFactory
     {
         public override bool CanConvert(Type typeToConvert)
         {
@@ -17,7 +17,7 @@ namespace MicroPlumberd.Encryption
         {
             var t = typeToConvert.GetGenericArguments()[0];
             var type = typeof(SecretObjectJsonConverter<>).MakeGenericType(t);
-            return (JsonConverter)Activator.CreateInstance(type, serviceProvider.GetRequiredService<IEncryptor>())!;
+            return (JsonConverter)Activator.CreateInstance(type, serviceProvider().GetRequiredService<IEncryptor>())!;
         }
     }
 }
