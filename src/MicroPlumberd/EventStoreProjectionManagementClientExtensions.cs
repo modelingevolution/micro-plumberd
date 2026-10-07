@@ -11,7 +11,6 @@ namespace MicroPlumberd;
 /// </summary>
 public static class KurrentDBProjectionManagementClientExtensions
 {
-    private const string QueryHashMetadataKey = "mp_query_hash";
     private const int PROJECTION_UPDATE_RETRY_COUNT = 10;
 
     /// <summary>
@@ -91,12 +90,21 @@ public static class KurrentDBProjectionManagementClientExtensions
     private static async Task<bool> UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
         string outputStream, string query, CancellationToken token = default)
     {
-        var newHash = ComputeQueryHash(query);
-        var existing = await TryGetStoredQueryHash(esClient, outputStream, token);
-        if (existing == newHash) return false;
+        var newHash = ProjectionQueryHash.Of(query);
+        var (existing, legacy) = await ProjectionQueryHash.ReadWithSourceAsync(esClient, outputStream, token);
+        if (existing == newHash)
+        {
+            // Recognised from the legacy location (the output stream's metadata, which the projection's own
+            // writes can erase): move it to its own stream so it cannot be lost there again.
+            if (legacy) await ProjectionQueryHash.StoreAsync(esClient, outputStream, newHash, token);
+            return false;
+        }
 
+        // Changed — or unknown (no hash anywhere, e.g. erased by the projection's first emit under an older
+        // MicroPlumberd). Either way the update below is safe: it never disables the projection, and an update
+        // with the same query keeps the projection's checkpoint (nothing is linked twice).
         await UpdateWithRetry(client, outputStream, query, token);
-        await StoreQueryHash(esClient, outputStream, newHash, token);
+        await ProjectionQueryHash.StoreAsync(esClient, outputStream, newHash, token);
         return true;
     }
 
@@ -104,75 +112,44 @@ public static class KurrentDBProjectionManagementClientExtensions
         string outputStream, string query, CancellationToken token = default)
     {
         await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
-        await client.DisableAsync(outputStream, cancellationToken: token);
-        await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
-        await client.EnableAsync(outputStream, cancellationToken: token);
-        await StoreQueryHash(esClient, outputStream, ComputeQueryHash(query), token);
+        // The gRPC create cannot enable emitting; the update does — on the running projection, never after
+        // disabling it.
+        await UpdateWithRetry(client, outputStream, query, token);
+        await ProjectionQueryHash.StoreAsync(esClient, outputStream, ProjectionQueryHash.Of(query), token);
     }
 
+    /// <summary>
+    /// Updates the query of a projection WITHOUT disabling it first. It used to disable, then update: when
+    /// the update was refused the projection stayed disabled — a read model that silently stops. KurrentDB
+    /// accepts an update on a running projection. Should a retried update still fail, the projection is
+    /// enabled before the failure propagates, so an ensure can fail but never switch a projection off.
+    /// </summary>
     private static async Task UpdateWithRetry(KurrentDBProjectionManagementClient client, string outputStream,
         string query, CancellationToken token)
     {
-        for (int i = 0; i < PROJECTION_UPDATE_RETRY_COUNT; i++)
+        for (int i = 0; ; i++)
         {
             try
             {
-                var state = await client.GetStatusAsync(outputStream, cancellationToken: token);
-                if (state!.Status != "Stopped")
-                    await client.DisableAsync(outputStream, cancellationToken: token);
                 await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
                 await client.EnableAsync(outputStream, cancellationToken: token);
                 return;
             }
-            catch (RpcException ex)
+            catch (RpcException ex) when (IsTransient(ex) && i < PROJECTION_UPDATE_RETRY_COUNT - 1)
             {
-                if (ex.Status.StatusCode != StatusCode.DeadlineExceeded) throw;
-                if (i == PROJECTION_UPDATE_RETRY_COUNT - 1)
-                    throw;
-
                 await Task.Delay(Random.Shared.Next(1000), token);
+            }
+            catch (Exception) when (!token.IsCancellationRequested)
+            {
+                try { await client.EnableAsync(outputStream, cancellationToken: token); }
+                catch { /* the original failure is the one to report */ }
+                throw;
             }
         }
     }
 
-    private static string ComputeQueryHash(string query)
-    {
-        var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(query));
-        return Convert.ToHexString(bytes);
-    }
-
-    private static async Task<string?> TryGetStoredQueryHash(KurrentDBClient esClient, string outputStream,
-        CancellationToken token)
-    {
-        try
-        {
-            var meta = await esClient.GetStreamMetadataAsync(outputStream, cancellationToken: token);
-            var custom = meta.Metadata.CustomMetadata;
-            if (custom == null) return null;
-            if (!custom.RootElement.TryGetProperty(QueryHashMetadataKey, out var v)) return null;
-            return v.GetString();
-        }
-        catch
-        {
-            return null;
-        }
-    }
-
-    private static async Task StoreQueryHash(KurrentDBClient esClient, string outputStream, string hash,
-        CancellationToken token)
-    {
-        var existing = await esClient.GetStreamMetadataAsync(outputStream, cancellationToken: token);
-        var customDoc = JsonDocument.Parse($"{{\"{QueryHashMetadataKey}\":\"{hash}\"}}");
-        var newMeta = new KurrentDB.Client.StreamMetadata(
-            maxCount: existing.Metadata.MaxCount,
-            maxAge: existing.Metadata.MaxAge,
-            truncateBefore: existing.Metadata.TruncateBefore,
-            cacheControl: existing.Metadata.CacheControl,
-            acl: existing.Metadata.Acl,
-            customMetadata: customDoc);
-        await esClient.SetStreamMetadataAsync(outputStream, StreamState.Any, newMeta,
-            cancellationToken: token);
-    }
+    private static bool IsTransient(RpcException ex) => ex.StatusCode is StatusCode.DeadlineExceeded
+        or StatusCode.Unavailable or StatusCode.Aborted or StatusCode.FailedPrecondition;
 
     internal static string CreateJoinQuery(string outputStream, IEnumerable<string> eventTypes)
     {
