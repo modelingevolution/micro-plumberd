@@ -246,6 +246,12 @@ class SubscriptionRunner(PlumberEngine plumber, ISubscriptionState subscription)
         Type evType = null;
         context.SetStreamName(subscription.StreamName);
 
+        // Which stored event this is, set BEFORE deserialization: an event that cannot be read reaches the
+        // error-handle policy with nothing else that names it (the subscription's stream is not the event's).
+        context.SetValue(OperationContextProperty.SourceStreamId, e.Event.EventStreamId);
+        context.SetValue(OperationContextProperty.EventType, e.Event.EventType);
+        context.SetValue(OperationContextProperty.SourceEventNumber, e.Event.EventNumber.ToInt64());
+
         while (!subscription.CancellationToken.IsCancellationRequested)
             try
             {
