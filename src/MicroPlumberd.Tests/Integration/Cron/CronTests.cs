@@ -14,7 +14,7 @@ using Xunit.Abstractions;
 
 namespace MicroPlumberd.Tests.Integration.Cron
 {
-    public class CronTests
+    public class CronTests : IDisposable
     {
         private readonly EventStoreServer _eventStore;
         private readonly ITestOutputHelper _testOutputHelper;
