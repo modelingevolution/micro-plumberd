@@ -166,7 +166,10 @@ public class IndexBackedMergeS1Tests
                             if (e.OriginalPosition is { } p) checkpoint = p;
                         }
                 }
-                catch (OperationCanceledException) { }
+                // Cancelling the token surfaces as OperationCanceledException OR as RpcException(Cancelled)
+                // depending on where the gRPC read is when it lands — both mean "we stopped it".
+                catch (Exception ex) when (ex is OperationCanceledException
+                                           || ex is Grpc.Core.RpcException { StatusCode: Grpc.Core.StatusCode.Cancelled }) { }
             });
             await WaitUntil(() => firstPass.Count >= 3, TimeSpan.FromSeconds(30));
             await cts1.CancelAsync();
