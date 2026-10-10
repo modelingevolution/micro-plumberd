@@ -56,4 +56,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203" PrivateAssets="All" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- EventStoreServer.WaitReady: the readiness-budget wiring test. -->
+    <InternalsVisibleTo Include="MicroPlumberd.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -27,6 +27,18 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
     public const string OwnerLabel = "microplumberd.testing.owner";
 
     private static readonly TimeSpan DefaultReadyTimeout = TimeSpan.FromSeconds(30);
+    private static int _starting;
+
+    /// <summary>
+    /// The readiness budget when <paramref name="startingAtOnce"/> stores are starting in this process: one store's
+    /// budget each. A suite starting stores in parallel shares the host's CPU between their startups, and a fixed
+    /// 30 s was one store's budget split between all of them (AggregateTests.Update timed out that way in-suite).
+    /// </summary>
+    public static TimeSpan ReadyBudget(TimeSpan perStore, int startingAtOnce) => perStore * Math.Max(1, startingAtOnce);
+
+    /// <summary>The readiness wait itself — a seam so a test can see the budget each start actually waited with.</summary>
+    internal static Func<KurrentDBClientSettings, TimeSpan, Task> WaitReady { get; set; } =
+        (settings, budget) => settings.WaitUntilReady(budget);
     private static readonly ConcurrentDictionary<EventStoreServer, byte> Undisposed = new();
     private static readonly string CurrentOwner = OwnerOf(Environment.ProcessId, Process.GetCurrentProcess().StartTime);
 
@@ -117,6 +129,13 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
     /// </param>
     public async Task<EventStoreServer> StartInDocker(bool wait, bool inMemory, TimeSpan readyTimeout)
     {
+        Interlocked.Increment(ref _starting);
+        try { return await StartAndWait(wait, inMemory, readyTimeout); }
+        finally { Interlocked.Decrement(ref _starting); }
+    }
+
+    private async Task<EventStoreServer> StartAndWait(bool wait, bool inMemory, TimeSpan readyTimeout)
+    {
         await ReapOrphans(client);
 
         var container = await GetEventStoreContainer();
@@ -170,7 +189,9 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
                     await client.Containers.StartContainerAsync(data.ID, new ContainerStartParameters());
             }
 
-            await this.GetEventStoreSettings().WaitUntilReady(readyTimeout);
+            // Health THEN a gRPC round trip (WaitUntilReady), on a budget that grows with the stores starting
+            // alongside this one — read now, when they are all competing for the host.
+            await WaitReady(this.GetEventStoreSettings(), ReadyBudget(readyTimeout, Volatile.Read(ref _starting)));
         }
         catch
         {
