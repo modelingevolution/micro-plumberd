@@ -82,8 +82,10 @@ namespace MicroPlumberd.Tests.HowTo
             await plumber.SubscribeEventHandler(dbModel);
 
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
-            // THIS row's own reservation: the class-fixture store also holds other rows' TicketReserved, and the model subscribes
-            // from the beginning — an absolute count over it is order-dependent ("found 2", "found 6"). Count ours, by its own name.
+            // THIS row's own reservation, by its own name. The "found 2/6" reds were a LiteDB journal replayed from earlier runs
+            // (fixed in LiteDbFactory); the class-fixture store contributes nothing TODAY (the absolute-count mutant survives) —
+            // but the model subscribes from the beginning, so the next row in this class that reserves under a shared name would
+            // bring an absolute count's order-dependence back. Count ours.
             var movie = $"Golden Eye {Guid.NewGuid():N}";
             var ourLovelyEvent = new TicketReserved() { MovieName = movie, RoomName = "101"};
 
