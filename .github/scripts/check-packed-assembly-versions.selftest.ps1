@@ -95,3 +95,7 @@ finally { Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue }
 
 Write-Host "check-packed-assembly-versions self-test: $pass ok, $fail failed"
 if ($fail -gt 0) { exit 1 }
+# EXPLICIT (publish-nuget run 39152113710): the last case runs the guard on a NEGATIVE package, where it exits 1 on
+# purpose, so $LASTEXITCODE is 1 here — and GitHub's pwsh shell appends `exit $LASTEXITCODE` when it exists, turning a
+# passing self-test ("6 ok, 0 failed") into a failed step. The verdict is $fail, said here, never a leaked native code.
+exit 0

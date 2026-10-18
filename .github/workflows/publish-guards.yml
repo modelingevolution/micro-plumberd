@@ -1,0 +1,37 @@
+# The publish GATES' own self-tests, on every pull request and every push to master — not only at publish time.
+#
+# publish-nuget run 39152113710 failed the "packed-assembly-version guard's self-test" step on its FIRST CI run, after
+# printing "6 ok, 0 failed": the self-test's last case left $LASTEXITCODE at 1, and GitHub's pwsh shell appends
+# `exit $LASTEXITCODE`. A gate that only runs at publish shows its own defects at the worst moment. This runs it the
+# SAME way (shell: pwsh, the same script), so the same wrapper judges it on every PR.
+name: publish guards
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: publish-guards-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  selftests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          9.0.x
+          10.0.x
+
+    - name: Guard - the packed-assembly-version guard's self-test
+      shell: pwsh
+      run: ./.github/scripts/check-packed-assembly-versions.selftest.ps1

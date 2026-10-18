@@ -107,3 +107,6 @@ if ($bad.Count -gt 0) {
     Write-Error "$($bad.Count) packed assembly version problem(s); expected every first-party DLL at $expected ($checked checked in $($packages.Count) packages). Nothing may be pushed."
 }
 Write-Host "All $checked first-party DLLs in $($packages.Count) packages are AssemblyVersion $expected."
+# EXPLICIT, the self-test's lesson (publish-nuget run 39152113710): GitHub's pwsh shell appends `exit $LASTEXITCODE`, so a
+# step's verdict must never rest on whatever native code ran last. A failure above is a terminating Write-Error ('Stop').
+exit 0
