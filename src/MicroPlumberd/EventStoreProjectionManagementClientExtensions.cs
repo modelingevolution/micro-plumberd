@@ -237,9 +237,17 @@ public static class KurrentDBProjectionManagementClientExtensions
         new($"Projection '{outputStream}' already exists with a DIFFERENT definition (query hash {existing}, this one {mine}); " +
             "it was not overwritten. Two code paths define the same output stream differently.", cause);
 
-    /// <summary>KurrentDB answers a create of an existing projection "Envelope callback expected Updated, received Conflict".</summary>
-    private static bool IsConflict(RpcException ex) =>
-        ex.StatusCode == StatusCode.AlreadyExists || ex.Status.Detail.Contains("Conflict", StringComparison.Ordinal);
+    /// <summary>
+    /// The Detail word KurrentDB uses for a create of an existing projection: "Envelope callback expected Updated, received
+    /// Conflict". Measured: KurrentDB.Client reports it with <see cref="StatusCode.Unknown"/>, NOT AlreadyExists, so THIS match
+    /// is what fires today (pinned by JoinProjectionConflictTests against a real store; the client has no Conflict enum).
+    /// </summary>
+    // Measured on KurrentDB.Client 1.6.0 (Unknown + this Detail): a client bump must re-run that row and re-measure.
+    internal const string ConflictDetail = "received Conflict";
+
+    /// <summary>A create refused because the projection exists: the measured Detail, or AlreadyExists from a client that reports it.</summary>
+    internal static bool IsConflict(RpcException ex) =>
+        ex.StatusCode == StatusCode.AlreadyExists || (ex.Status.Detail ?? "").Contains(ConflictDetail, StringComparison.Ordinal);
 
     /// <summary>
     /// Updates the query of a projection WITHOUT disabling it first. It used to disable, then update: when
