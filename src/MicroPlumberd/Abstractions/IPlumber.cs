@@ -53,6 +53,13 @@ public abstract record Snapshot
     /// Gets the version of the snapshot.
     /// </summary>
     public long Version { get; internal set; }
+
+    /// <summary>
+    /// Whether <see cref="Version"/> is known to be the STREAM REVISION the snapshot covers (written by a build with #26/#28).
+    /// A snapshot without it was written by an earlier build, which counted only the events it could map: over a stream
+    /// holding events it did not know, its version is LOW (issue #28).
+    /// </summary>
+    public bool VersionIsRevision { get; internal set; }
 }
 
 /// <summary>

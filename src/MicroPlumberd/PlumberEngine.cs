@@ -848,6 +848,9 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         if (GetPolicy<TOwner>() != null && aggregate is IStatefull i)
         {
             var snapshot = await GetSnapshot(context,id, i.SnapshotType, token);
+            if (snapshot != null && !snapshot.VersionIsRevision &&
+                await LegacySnapshotMayBeLow(context, typeof(TOwner), id, i.SnapshotType, snapshot.Version, token))
+                snapshot = null; // rebuilt from the stream: always right, where reading on from snapshot.Version + 1 would re-fold
             if (snapshot != null)
             {
                 i.Initialize(snapshot.Value, new StateInfo(snapshot.Version, snapshot.Created));
@@ -866,6 +869,54 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         if (read.Revision is { } revision && aggregate is IAggregateRevision versioned) versioned.RehydratedTo(revision);
         return aggregate;
     }
+
+    /// <summary>
+    /// Issue #28. A snapshot written before #26 recorded a COUNT of the events its build could map, not the stream revision:
+    /// over a stream holding events that build did not know, the version is LOW, and reading on from version + 1 re-folds
+    /// events already in the snapshot's state. Such a snapshot carries no marker, and its true revision cannot be recovered
+    /// from the number alone — the build that wrote it mapped a set of types this build may not share (it may know them now).
+    /// What CAN be told: the snapshot was appended after the events it covers. If the event at version + 1 was written
+    /// BEFORE the snapshot, the snapshot may cover it → may be low → do not use it (the caller rebuilds from the stream, which
+    /// is always right). Otherwise version + 1 was written after the snapshot: the version is the revision, use it.
+    /// (A writer that appended between another's save and its snapshot also reads as "may be low": a needless rebuild, never
+    /// a wrong state.) The order is the $all COMMIT POSITION of both records (<see cref="WrittenAfter"/>), never a timestamp.
+    /// </summary>
+    private async Task<bool> LegacySnapshotMayBeLow(OperationContext context, Type owner, object id, Type snapshotType, long version, CancellationToken token)
+    {
+        var (next, snapshot) = await SnapshotOrderRecords(context, owner, id, snapshotType, version, token);
+        if (next == null) return false;        // nothing after the snapshot's version: nothing to re-fold
+        if (snapshot == null) return true;
+        return !WrittenAfter(next, snapshot);
+    }
+
+    /// <summary>
+    /// The two records the legacy-snapshot decision compares, read as <see cref="Get{TOwner}"/> reads them: the aggregate
+    /// stream's event at <paramref name="version"/> + 1, and the snapshot stream's latest event. Their $all Position comes
+    /// from the SERVER on a stream read (KurrentDB.Client builds it from the server's commit/prepare position); a row pins
+    /// that it is populated and in commit order — a zero would make every legacy snapshot "may be low" (rebuilt), silently.
+    /// </summary>
+    internal async Task<(EventRecord? Next, EventRecord? Snapshot)> SnapshotOrderRecords(OperationContext context, Type owner, object id,
+        Type snapshotType, long version, CancellationToken token)
+    {
+        var nextRead = Client.ReadStreamAsync(Direction.Forwards, Conventions.GetStreamIdConvention(context, owner, id),
+            StreamPosition.FromInt64(version + 1), maxCount: 1, resolveLinkTos: false, cancellationToken: token);
+        if (await nextRead.ReadState == ReadState.StreamNotFound) return (null, null);
+        var next = (await nextRead.FirstOrDefaultAsync(token)).Event;
+        if (next == null) return (null, null);
+
+        var snapRead = Client.ReadStreamAsync(Direction.Backwards, Conventions.GetStreamIdSnapshotConvention(context, snapshotType, id),
+            StreamPosition.End, maxCount: 1, resolveLinkTos: false, cancellationToken: token);
+        if (await snapRead.ReadState == ReadState.StreamNotFound) return (next, null);
+        return (next, (await snapRead.FirstOrDefaultAsync(token)).Event);
+    }
+
+    /// <summary>
+    /// Whether <paramref name="later"/> was committed after <paramref name="earlier"/> — by the $all COMMIT POSITION, which is
+    /// monotonic across streams. NOT <c>Created</c> (rev-reach a3f8d0c32): that is the server's wall clock, and a clock step
+    /// BACK between the write of the event at version + 1 and the snapshot's write would make a SHORT legacy snapshot look
+    /// as if its next event came later — the snapshot used, the event re-folded: the very state #28 fixes.
+    /// </summary>
+    internal static bool WrittenAfter(EventRecord later, EventRecord earlier) => later.Position > earlier.Position;
 
     /// <summary>The revision of the last event a read went past, mapped or not.</summary>
     private sealed class LastRevisionRead
@@ -974,7 +1025,9 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <returns>The write result indicating success or failure.</returns>
     public async Task<IWriteResult> AppendSnapshot(OperationContext context, object snapshot, object id, long version, StreamState? state = null, CancellationToken token = default)
     {
-        var m = Conventions.GetMetadata(context, null, snapshot, new { SnapshotVersion = version });
+        // SnapshotVersionIsRevision (issue #28): the version is the aggregate's — since #26 the STREAM REVISION. A snapshot
+        // without the marker comes from an earlier build, whose version may be low; Get checks such a snapshot before using it.
+        var m = Conventions.GetMetadata(context, null, snapshot, new { SnapshotVersion = version, SnapshotVersionIsRevision = true });
         var stateType = snapshot.GetType();
         var streamId = Conventions.GetStreamIdSnapshotConvention(context, stateType, id);
         var evId = Conventions.GetEventIdConvention(context, null, snapshot);
@@ -1312,6 +1365,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         s.Created = m.Created().Value;
         s.Value = evt;
         s.Version = m.SnapshotVersion() ?? 0;
+        s.VersionIsRevision = m.SnapshotVersionIsRevision();
         return s;
     }
 

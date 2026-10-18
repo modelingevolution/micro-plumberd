@@ -647,6 +647,13 @@ public static class MetadataExtensions
     }
 
     /// <summary>
+    /// Whether the snapshot's SnapshotVersion is a STREAM REVISION — written by a build where it is (issue #28). Absent on
+    /// snapshots of earlier builds, whose version counted only the events they could map.
+    /// </summary>
+    public static bool SnapshotVersionIsRevision(this Metadata m) =>
+        m.Data.TryGetProperty("SnapshotVersionIsRevision", out var v) && v.ValueKind == System.Text.Json.JsonValueKind.True;
+
+    /// <summary>
     /// Extracts the correlation ID from metadata.
     /// </summary>
     /// <param name="m">The metadata to read from.</param>
