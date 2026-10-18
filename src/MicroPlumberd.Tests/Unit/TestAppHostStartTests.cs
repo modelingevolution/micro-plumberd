@@ -57,6 +57,19 @@ public class TestAppHostStartTests(ITestOutputHelper output)
         ex.Should().BeOfType<InvalidOperationException>().Which.Message.Should().Contain("stopped before it was ready");
     }
 
+    [Fact]
+    public async Task AHostedServiceThatNeverFinishesStarting_Throws_AfterTheBound_Named()
+    {
+        var host = new TestAppHost(output).Configure(x => x
+            .AddPlumberd(KurrentDBClientSettings.Create("kurrentdb://127.0.0.1:1?tls=false"))
+            .AddHostedService<NeverStartingService>());
+        host.ReadyTimeout = TimeSpan.FromSeconds(2);
+
+        var ex = await StartWithin(host); // no Dispose: the blocked StartAsync would block StopAsync too
+
+        ex.Should().BeOfType<TimeoutException>().Which.Message.Should().Contain("Host.StartAsync did not return within 2 s");
+    }
+
     // ---- must still start ----
 
     [Fact]
@@ -93,4 +106,10 @@ sealed class FailingStarter : IEventHandlerStarter
 sealed class CompletingStarter(TimeSpan after) : IEventHandlerStarter
 {
     public Task Start(CancellationToken stoppingToken) => Task.Delay(after, stoppingToken);
+}
+
+sealed class NeverStartingService : Microsoft.Extensions.Hosting.IHostedService
+{
+    public Task StartAsync(CancellationToken cancellationToken) => Task.Delay(Timeout.Infinite);
+    public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
 }
