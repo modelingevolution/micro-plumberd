@@ -74,6 +74,27 @@ public class TestAppHostStartTests(ITestOutputHelper output)
 
         (await StartWithin(host)).Should().BeNull();
     }
+
+    // ---- the not-ready health result NAMES the starter (EventHandlerService.Starting / Failure) ----
+
+    [Fact]
+    public async Task AStall_IsReported_NamingTheStarterItWaitsFor()
+    {
+        using var host = Host(new StallingStarter(), TimeSpan.FromSeconds(2));
+
+        (await StartWithin(host)).Should().BeOfType<TimeoutException>().Which.Message.Should().Contain($"(starting {nameof(StallingStarter)})");
+    }
+
+    [Fact]
+    public async Task AFailure_IsReported_NamingTheStarter_WithItsException()
+    {
+        using var host = Host(new FailingStarter(), TimeSpan.FromMinutes(10));
+
+        var ex = await StartWithin(host);
+
+        ex.Should().BeOfType<InvalidOperationException>().Which.Message.Should().Contain($"failed to start at {nameof(FailingStarter)}: index unreachable");
+        ex!.InnerException!.Message.Should().Be("index unreachable");
+    }
 }
 
 sealed class StallingStarter : IEventHandlerStarter

@@ -20,6 +20,13 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
     /// </summary>
     public bool IsReady { get; private set; } = false;
 
+    /// <summary>The starter in progress — named (e.g. <c>EventHandlerStarter&lt;FooModel&gt;</c>) so a startup that never becomes
+    /// ready says WHICH handler it is waiting for, not only "not ready".</summary>
+    internal string? Starting { get; private set; }
+
+    /// <summary>The exception that stopped the start, if one did; IsReady then stays false for good.</summary>
+    internal Exception? Failure { get; private set; }
+
     /// <summary>
     /// Executes the event handler service, starting all registered event handlers.
     /// </summary>
@@ -30,7 +37,11 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
         try
         {
             foreach (var i in starters)
+            {
+                Starting = i.GetType().GetFriendlyName();
                 await i.Start(stoppingToken);
+            }
+            Starting = null;
             IsReady = true;
         }
         catch (OperationCanceledException ex)
@@ -39,6 +50,7 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
         }
         catch (Exception ex)
         {
+            Failure = ex;
             throw;
         }
     }
@@ -58,7 +70,10 @@ internal sealed class StartupHealthCheck(EventHandlerService eventHandlers, Comm
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
     {
         if (!eventHandlers.IsReady)
-            return HealthCheckResult.Unhealthy("Event handlers' projections are not ready.");
+            return HealthCheckResult.Unhealthy(eventHandlers.Failure != null
+                ? $"Event handlers failed to start at {eventHandlers.Starting}: {eventHandlers.Failure.Message}"
+                : $"Event handlers' projections are not ready{(eventHandlers.Starting is { } s ? $" (starting {s})" : "")}.",
+                eventHandlers.Failure);
         if(!commandHandlers.IsReady)
             return HealthCheckResult.Unhealthy("Command handlers' projections are not ready.");
         
