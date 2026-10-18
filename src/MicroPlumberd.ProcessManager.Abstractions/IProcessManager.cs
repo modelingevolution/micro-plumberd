@@ -47,7 +47,7 @@ namespace MicroPlumberd
     /// Abstract base class for process managers with strongly-typed identifiers, providing common infrastructure for ID and version management.
     /// </summary>
     /// <typeparam name="TId">The type of the process manager identifier, which must be parsable.</typeparam>
-    public abstract class ProcessManagerBase<TId> : IVersionAware, IIdAware, IId<TId> where TId : IParsable<TId>
+    public abstract class ProcessManagerBase<TId> : IVersionAware, IAppliedEventsAware, IIdAware, IId<TId> where TId : IParsable<TId>
     {
         private TId _id;
 
@@ -67,6 +67,16 @@ namespace MicroPlumberd
         /// Gets or sets the version of this process manager for optimistic concurrency control.
         /// </summary>
         public long Version { get; set; } = -1;
+
+        /// <inheritdoc />
+        long IAppliedEventsAware.AppliedEvents { get; set; }
+
+        /// <summary>
+        /// Whether THIS build applied at least one event of the manager's stream (issue #27, rev-reach cc224bd49). The version is
+        /// the stream revision — a stream holding only events this build does not map (a newer release created the manager, then
+        /// a rollback) has a version yet was never initialised here; the executor must not act on its default state.
+        /// </summary>
+        public bool Created => ((IAppliedEventsAware)this).AppliedEvents > 0;
 
         /// <summary>
         /// Handles errors that occur during process manager execution. Default implementation returns <c>null</c>.

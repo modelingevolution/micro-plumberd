@@ -14,6 +14,21 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
     where TProcessManager : IProcessManager, ITypeRegister
 {
     /// <summary>
+    /// rev-reach (CB2): the engine sets an IVersionAware manager's Version to the STREAM REVISION (issue #27), so for such a manager
+    /// `Version >= 0` no longer means "this build initialised it" — a stream of only events this build does not map reads as
+    /// created. "Created" needs the applied-events count (IAppliedEventsAware, which ProcessManagerBase implements); a manager that
+    /// is IVersionAware WITHOUT it cannot be told apart, and is refused here, by name, when the executor is built (at startup).
+    /// A manager that is not IVersionAware keeps its own Version semantics and the old rule.
+    /// </summary>
+    private static readonly bool CountsAppliedEvents = typeof(IAppliedEventsAware).IsAssignableFrom(typeof(TProcessManager));
+    private readonly bool _refusedUnlessItCountsAppliedEvents =
+        CountsAppliedEvents || !typeof(IVersionAware).IsAssignableFrom(typeof(TProcessManager))
+            ? true
+            : throw new InvalidOperationException(
+                $"Process manager {typeof(TProcessManager).FullName} is IVersionAware but not IAppliedEventsAware: its Version is the " +
+                "stream revision, so whether THIS build ever initialised it cannot be told. Derive from ProcessManagerBase, or implement IAppliedEventsAware.");
+
+    /// <summary>
     /// Maintains a lookup table mapping command recipient IDs to process manager IDs.
     /// </summary>
     public class Lookup : IEventHandler, ITypeRegister
@@ -99,9 +114,17 @@ public class ProcessManagerExecutor<TProcessManager>(ProcessManagerClient pmClie
         {
             var manager = await pmClient.GetManager<TProcessManager>(m.Id);
             streamId = plb.Config.Conventions.GetStreamIdConvention(null, typeof(TProcessManager), manager.Id);
-            if (manager.Version < 0)
+            // "Created" is at least one APPLIED event, never `Version < 0` (rev-reach cc224bd49): the version is the stream revision
+            // (issue #27), so a stream of only events this build does not map has a version yet a manager in its default state —
+            // acting on it would enqueue commands from nothing. A manager that is not IVersionAware keeps its own Version rule (an
+            // IVersionAware one that does not count applied events is refused when the executor is built).
+            var created = manager is IAppliedEventsAware applied ? applied.AppliedEvents > 0 : manager.Version >= 0; // not IVersionAware: its own Version
+            if (!created)
             {
-                log.LogDebug("We've received event to process-manager that was not created.");
+                if (manager.Version >= 0)
+                    log.LogWarning("Process manager {Stream} holds only events this build does not map (version {Version}); the event is not handled.", streamId, manager.Version);
+                else
+                    log.LogDebug("We've received event to process-manager that was not created.");
                 return;
             }
             action = await manager.When(m, evt);
