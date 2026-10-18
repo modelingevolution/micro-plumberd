@@ -64,6 +64,9 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
 
 /// <summary>
 /// Health check that verifies MicroPlumberd event and command handlers are ready.
+/// A failed start is DESCRIBED by the starter's name and the exception TYPE only — its message can carry a connection
+/// string with credentials. The full exception is attached to the result: a CUSTOM health response writer that serialises
+/// <c>HealthReportEntry.Exception.Message</c> re-exposes what the description hides (the default writer prints only the status).
 /// </summary>
 internal sealed class StartupHealthCheck(EventHandlerService eventHandlers, CommandHandlerService commandHandlers, ILogger<StartupHealthCheck> logger) : IHealthCheck
 {
