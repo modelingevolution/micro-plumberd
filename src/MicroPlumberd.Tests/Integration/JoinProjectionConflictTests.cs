@@ -1,3 +1,4 @@
+using Grpc.Core;
 using FluentAssertions;
 using KurrentDB.Client;
 using MicroPlumberd.Testing;
@@ -160,6 +161,47 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
             KurrentDBProjectionManagementClientExtensions.ConflictHashWait = wait;
         }
     }
+
+    /// <summary>
+    /// microplumberd-isconflict-status: the shape KurrentDB.Client ACTUALLY gives a create of an existing projection —
+    /// StatusCode Unknown with Detail "… received Conflict", not AlreadyExists — read from a real double create, so a client
+    /// upgrade that changes it reddens here instead of silently sending #29's resolution down the failure path.
+    /// </summary>
+    [Fact]
+    public async Task ACreateOfAnExistingProjection_IsRecognisedAsAConflict_InTheShapeTheClientReallyGives()
+    {
+        await _eventStore.StartInDocker();
+        const string query = "fromStreams(['$et-NothingAtAll']).when({})";
+        await WithStoreReady(() => plumber.ProjectionManagementClient.CreateContinuousAsync("isconflict-row", query, false));
+
+        var second = await Record.ExceptionAsync(() => plumber.ProjectionManagementClient.CreateContinuousAsync("isconflict-row", query, false));
+
+        var rpc = second.Should().BeOfType<RpcException>().Subject;
+        rpc.StatusCode.Should().Be(StatusCode.Unknown, "measured: the client does not report AlreadyExists for this");
+        rpc.Status.Detail.Should().Contain(KurrentDBProjectionManagementClientExtensions.ConflictDetail);
+        KurrentDBProjectionManagementClientExtensions.IsConflict(rpc).Should().BeTrue();
+    }
+
+    /// <summary>The deny path: a real refusal that is NOT a conflict (an update of a projection that does not exist).</summary>
+    [Fact]
+    public async Task ARefusalThatIsNotAConflict_IsNotTakenForOne()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(() => plumber.ProjectionManagementClient.CreateContinuousAsync("isconflict-ready",
+            "fromStreams(['$et-NothingAtAll']).when({})", false));   // ready — so the refusal below is a single, real one
+
+        var refused = await Record.ExceptionAsync(() =>
+            plumber.ProjectionManagementClient.UpdateAsync("isconflict-no-such-projection", "fromAll().when({})", true));
+
+        var rpc = refused.Should().BeOfType<RpcException>().Subject;
+        KurrentDBProjectionManagementClientExtensions.IsConflict(rpc).Should().BeFalse($"'{rpc.Status.Detail}' ({rpc.StatusCode}) is not a conflict");
+    }
+
+    /// <summary>A client that reports the conflict as AlreadyExists, with any detail, is still recognised (kept per the card).</summary>
+    [Fact]
+    public void AnAlreadyExistsStatus_IsAConflict_WhateverItsDetail() =>
+        KurrentDBProjectionManagementClientExtensions.IsConflict(new RpcException(new Status(StatusCode.AlreadyExists, "")))
+            .Should().BeTrue();
 
     private static async Task WithStoreReady(Func<Task> act)
     {
