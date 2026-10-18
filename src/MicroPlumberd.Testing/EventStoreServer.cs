@@ -220,8 +220,13 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
         {
             // The START failure is the one to see (dev-clean, 2026-10-18): a cleanup that throws too (Docker 409 "removal
             // already in progress") replaced it, and the first failure was lost. Cleanup's failure rides along, never instead.
+            // Both visible (rev-reach 9de418b9d m2): Data is printed by neither xUnit nor ToString. The start failure FIRST.
             try { await Cleanup(); }
-            catch (Exception cleanup) { started.Data["MicroPlumberd.Testing.CleanupFailure"] = cleanup.ToString(); }
+            catch (Exception cleanup)
+            {
+                throw new AggregateException($"Store '{ContainerName}' failed to start, and removing its container failed too.",
+                    started, cleanup);
+            }
             System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(started).Throw();
             throw; // unreachable
         }
