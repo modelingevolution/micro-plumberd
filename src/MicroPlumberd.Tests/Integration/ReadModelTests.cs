@@ -22,19 +22,45 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
         plumber = Plumber.Create(_eventStore.GetEventStoreSettings());
     }
 
+    /// <summary>
+    /// A persistent subscription from the start delivers the event that was there, then what follows — checked by identity
+    /// with a FENCE (as SubscribeModelFromEnd): one subscription delivers in order, so once the event appended after
+    /// subscribing has arrived, the delivered sequence must be exactly [the pre-subscribe event, the fence]. It waited a
+    /// fixed second and counted, which passed only when the server's projection and the subscription were both fast enough.
+    /// </summary>
     [Fact]
     public async Task SubscribeModelPersistently()
     {
         await _eventStore.StartInDocker();
-        await AppendOneEvent();
+        var before = await AppendOneEvent();
+
+        // As SubscribeModel: the projection holds the pre-subscribe event BEFORE the group is created, or Start and End
+        // would be the same (empty) position and "from the start" could not be told from "from the end".
+        await plumber.TryCreateJoinProjection<FooModel>();
+        var modelStream = plumber.Config.Conventions.OutputStreamModelConvention(typeof(FooModel));
+        var linked = await Eventually(() => CountIn(modelStream), n => n == 1);
+        linked.Should().Be(1, $"the projection must link the pre-subscribe event into {modelStream} first — it held {linked} of 1 after 30 s");
 
         var fooModel = new FooModel(new InMemoryAssertionDb());
+        var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom: StreamPosition.Start,
+            ensureOutputStreamProjection: false);
+        var fence = await AppendOneEvent();
+        try
+        {
+            var delivered = await Eventually(() => Task.FromResult(fooModel.AssertionDb.Index.Count), n => n >= 2);
+            delivered.Should().BeGreaterThanOrEqualTo(2, $"the event before subscribing and the fence are delivered — held {delivered} of 2 after 30 s");
+        }
+        finally
+        {
+            // Disposed BEFORE the ids are read (rev-reach b77357c5c): Index is a SortedList the subscription writes on
+            // its own thread; enumerating it while a late delivery lands throws "collection was modified".
+            await sub.DisposeAsync();
+        }
+        var ids = fooModel.AssertionDb.Index.Values.Select(i => i.Metadata.Id).ToList();
 
-        var sub = await plumber.SubscribeEventHandlerPersistently(fooModel, startFrom: StreamPosition.Start);
-
-        await Task.Delay(1000);
-
-        fooModel.AssertionDb.Index.Should().HaveCount(1);
+        // In order, nothing else: the pre-subscribe event, then the fence. DISTINCT (rev-reach b77357c5c): a persistent
+        // subscription is at-least-once, so a redelivery may repeat an id; the "from End" mutant still reads [fence].
+        ids.Distinct().Should().Equal(before, fence);
     }
     /// <summary>
     /// "From End-1" delivers the LAST event of the model's stream, then what follows. ORDER-INDEPENDENT (epic-099 card
@@ -62,15 +88,24 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
         var fooModel = new FooModel(new InMemoryAssertionDb());
         // The projection exists and is verified populated (above), so the subscription must not ensure it again: an
         // immediate second ensure of a just-created projection is answered Conflict by the server (measured).
-        await using var sub = await plumber.SubscribeEventHandler(fooModel, start: FromRelativeStreamPosition.End - 1,
+        var sub = await plumber.SubscribeEventHandler(fooModel, start: FromRelativeStreamPosition.End - 1,
             ensureOutputStreamProjection: false);
-
         var appended = await AppendOneEvent();   // the FENCE
-        var delivered = await Eventually(() => Task.FromResult(fooModel.AssertionDb.Index.Count), n => n >= 2);
-        delivered.Should().BeGreaterThanOrEqualTo(2, $"the fence and the event before it are delivered — held {delivered} of 2 after 30 s");
+        try
+        {
+            var delivered = await Eventually(() => Task.FromResult(fooModel.AssertionDb.Index.Count), n => n >= 2);
+            delivered.Should().BeGreaterThanOrEqualTo(2, $"the fence and the event before it are delivered — held {delivered} of 2 after 30 s");
+        }
+        finally
+        {
+            // Disposed BEFORE the ids are read (rev-reach b77357c5c): Index is a SortedList the subscription writes on
+            // its own thread; enumerating it while a late delivery lands throws "collection was modified".
+            await sub.DisposeAsync();
+        }
+        var ids = fooModel.AssertionDb.Index.Values.Select(i => i.Metadata.Id).ToList();
 
         // From End-1, in order: the last pre-subscribe event, then the fence — nothing earlier, nothing between.
-        fooModel.AssertionDb.Index.Values.Select(i => i.Metadata.Id).Should().Equal(last, appended);
+        ids.Should().Equal(last, appended);
     }
 
     /// <summary>
@@ -97,18 +132,38 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
         return await read.CountAsync();
     }
     [Fact]
+    /// <summary>
+    /// A subscription from the start: [the pre-subscribe event, the fence], in order — fenced by identity, no fixed wait.
+    /// The projection must hold the pre-subscribe event BEFORE subscribing: created at subscribe time it is still empty, its
+    /// End IS its start, and "from the start" could not be told from "from the end" (that mutant survived until this wait).
+    /// </summary>
     public async Task SubscribeModel()
     {
         await _eventStore.StartInDocker();
-        await AppendOneEvent();
+        var before = await AppendOneEvent();
+
+        await plumber.TryCreateJoinProjection<FooModel>();
+        var modelStream = plumber.Config.Conventions.OutputStreamModelConvention(typeof(FooModel));
+        var linked = await Eventually(() => CountIn(modelStream), n => n == 1);
+        linked.Should().Be(1, $"the projection must link the pre-subscribe event into {modelStream} first — it held {linked} of 1 after 30 s");
 
         var fooModel = new FooModel(new InMemoryAssertionDb());
+        var sub = await plumber.SubscribeEventHandler(fooModel, ensureOutputStreamProjection: false);
+        var fence = await AppendOneEvent();
+        try
+        {
+            var delivered = await Eventually(() => Task.FromResult(fooModel.AssertionDb.Index.Count), n => n >= 2);
+            delivered.Should().BeGreaterThanOrEqualTo(2, $"the event before subscribing and the fence are delivered — held {delivered} of 2 after 30 s");
+        }
+        finally
+        {
+            // Disposed BEFORE the ids are read (rev-reach b77357c5c): Index is a SortedList the subscription writes on
+            // its own thread; enumerating it while a late delivery lands throws "collection was modified".
+            await sub.DisposeAsync();
+        }
+        var ids = fooModel.AssertionDb.Index.Values.Select(i => i.Metadata.Id).ToList();
 
-        var sub = await plumber.SubscribeEventHandler(fooModel);
-
-        await Task.Delay(1000);
-
-        fooModel.AssertionDb.Index.Should().HaveCount(1);
+        ids.Should().Equal(before, fence);
     }
     [Fact]
     public async Task SubscribeModelWithEventStoreRestart()
