@@ -121,8 +121,29 @@ public static class KurrentDBProjectionManagementClientExtensions
         // The gRPC create cannot enable emitting; the update does — on the running projection, never after
         // disabling it.
         await UpdateWithRetry(client, outputStream, query, token);
-        await ProjectionQueryHash.StoreAsync(esClient, outputStream, ProjectionQueryHash.Of(query), token);
+        await StoreFirstHash(esClient, outputStream, ProjectionQueryHash.Of(query), token);
         return true;
+    }
+
+    /// <summary>
+    /// The FIRST hash of a projection is stored CONDITIONALLY (no hash stored yet): a creator slower than another's wait (#29's
+    /// ResolveExisting) must not overwrite the hash of a definition that replaced its own. Refused → the stored hash decides:
+    /// the same → nothing to do; a different one → this definition was REPLACED while it was being created: surfaced, named.
+    /// </summary>
+    private static async Task StoreFirstHash(KurrentDBClient esClient, string outputStream, string mine, CancellationToken token)
+    {
+        try
+        {
+            await ProjectionQueryHash.StoreAsync(esClient, outputStream, mine, StreamState.NoStream, token);
+        }
+        catch (WrongExpectedVersionException stored)
+        {
+            var (existing, _) = await ProjectionQueryHash.ReadWithSourceAsync(esClient, outputStream, token);
+            if (existing == mine) return;
+            throw new InvalidOperationException(
+                $"Projection '{outputStream}' was given a DIFFERENT definition (query hash {existing}, this one {mine}) while this " +
+                "one was being created; its hash was not overwritten. Two code paths define the same output stream differently.", stored);
+        }
     }
 
     /// <summary>
@@ -150,7 +171,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         }
 
         await UpdateWithRetry(client, outputStream, query, token);
-        await ProjectionQueryHash.StoreAsync(esClient, outputStream, mine, token);
+        await StoreFirstHash(esClient, outputStream, mine, token);
         return true;
     }
 

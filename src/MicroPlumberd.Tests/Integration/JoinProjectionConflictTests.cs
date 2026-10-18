@@ -80,4 +80,33 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
             "the existing definition was kept");
         (await ProjectionsNamed(ModelStream)).Should().Be(1);
     }
+
+    /// <summary>
+    /// A creator SLOWER than another's wait (the PR #34 limit, rev-reach cae59475b): the other definition's hash is already
+    /// stored when this one comes to store its own. The first hash is stored CONDITIONALLY, so this one is refused, reads the
+    /// stored hash, and surfaces — its late store no longer overwrites the hash of the definition that replaced it.
+    /// </summary>
+    [Fact]
+    public async Task ACreatorWhoseHashWasStoredFirstByADifferentDefinition_Surfaces_AndDoesNotOverwriteIt()
+    {
+        await _eventStore.StartInDocker();
+        const string theOther = "0000000000000000000000000000000000000000000000000000000000000000";
+        await WithStoreReady(() => ProjectionQueryHash.StoreAsync(plumber.Client, ModelStream, theOther));
+
+        var created = await Record.ExceptionAsync(() => plumber.TryCreateJoinProjection<FooModel>());
+
+        created.Should().BeOfType<InvalidOperationException>().Which.Message.Should()
+            .Contain($"'{ModelStream}'").And.Contain("DIFFERENT definition").And.Contain("while this one was being created");
+        (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().Be(theOther, "the stored hash was not overwritten");
+    }
+
+    private static async Task WithStoreReady(Func<Task> act)
+    {
+        var deadline = DateTime.UtcNow.AddSeconds(60);
+        while (true)
+        {
+            try { await act(); return; }
+            catch (Exception) when (DateTime.UtcNow < deadline) { await Task.Delay(500); }
+        }
+    }
 }

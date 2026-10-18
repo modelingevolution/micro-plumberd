@@ -37,10 +37,18 @@ public static class ProjectionQueryHash
     }
 
     /// <summary>Stores the hash in the projection's own hash stream (never the output stream).</summary>
-    public static async Task StoreAsync(KurrentDBClient client, string projection, string hash, CancellationToken token = default)
+    public static Task StoreAsync(KurrentDBClient client, string projection, string hash, CancellationToken token = default) =>
+        StoreAsync(client, projection, hash, StreamState.Any, token);
+
+    /// <summary>
+    /// Stores the hash only when the hash stream's metadata is at <paramref name="expected"/> — <see cref="StreamState.NoStream"/>
+    /// for the FIRST hash of a projection. Throws <see cref="WrongExpectedVersionException"/> when another writer stored first.
+    /// </summary>
+    internal static async Task StoreAsync(KurrentDBClient client, string projection, string hash, StreamState expected,
+        CancellationToken token = default)
     {
         var custom = JsonDocument.Parse($"{{\"{MetadataKey}\":\"{hash}\"}}");
-        await client.SetStreamMetadataAsync(StreamFor(projection), StreamState.Any,
+        await client.SetStreamMetadataAsync(StreamFor(projection), expected,
             new KurrentDB.Client.StreamMetadata(customMetadata: custom), cancellationToken: token);
     }
 
