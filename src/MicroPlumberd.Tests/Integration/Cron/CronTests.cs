@@ -40,11 +40,13 @@ namespace MicroPlumberd.Tests.Integration.Cron
         /// caller in the process (none today — measured: 0 calls while WorkflowTests ran); only a call for this test's own
         /// recipient proves this test's job ran.
         /// </summary>
-        private ulong RanForMe() => (ulong)CompleteWorkflowHandler.Mock.ReceivedCalls()
-            .Count(c => c.GetMethodInfo().Name == nameof(ICommandHandler<Guid, CompleteWorkflow>.Execute)
-                        && c.GetArguments()[0] is Guid id && id == _recipientId);
+        private ulong RanForMe() => RanFor(_recipientId);
 
-        private async Task<(IJobService Jobs, IJobsMonitor Monitor)> StartServer()
+        private static ulong RanFor(Guid recipient) => (ulong)CompleteWorkflowHandler.Mock.ReceivedCalls()
+            .Count(c => c.GetMethodInfo().Name == nameof(ICommandHandler<Guid, CompleteWorkflow>.Execute)
+                        && c.GetArguments()[0] is Guid id && id == recipient);
+
+        private async Task<(IJobService Jobs, IJobsMonitor Monitor, IJobsScheduler Scheduler)> StartServer()
         {
             await _eventStore.StartInDocker();
             _serverTestApp.Configure(x => x
@@ -55,7 +57,8 @@ namespace MicroPlumberd.Tests.Integration.Cron
             var srv = await _serverTestApp.StartAsync();
             // No fixed wait before creating the job (rev-reach 116f2d9ad): the job's events are folded whenever the
             // processor subscribes, so a job created before it is ready is scheduled when it is.
-            return (srv.CreateScope().ServiceProvider.GetRequiredService<IJobService>(), srv.GetRequiredService<IJobsMonitor>());
+            return (srv.CreateScope().ServiceProvider.GetRequiredService<IJobService>(), srv.GetRequiredService<IJobsMonitor>(),
+                srv.GetRequiredService<IJobsScheduler>());
         }
 
         /// <summary>Waits for the CONDITION, bounded — never a fixed sleep (a fixed 20 s failed under load with ScheduledTotal 0).</summary>
@@ -72,7 +75,7 @@ namespace MicroPlumberd.Tests.Integration.Cron
         [Fact]
         public async Task AnEnabledIntervalJob_IsScheduledByTheEngine_AndRuns()
         {
-            var (js, monitor) = await StartServer();
+            var (js, monitor, _) = await StartServer();
 
             await js.CreateBuilder("test")
                 .WithCommand(new StartWorkflow { Name = "Test" }, _recipientId)
@@ -87,23 +90,38 @@ namespace MicroPlumberd.Tests.Integration.Cron
         }
 
         /// <summary>
-        /// The MANUAL path (IJobService.RunOnce → ScheduleTrigger.Manual): a job that is NOT enabled — so the engine never
-        /// schedules it — runs once when triggered, and the engine's schedule count stays 0, which proves the run was manual.
+        /// The MANUAL path (IJobService.RunOnce → ScheduleTrigger.Manual): a job that is NOT enabled runs once when triggered,
+        /// and the engine never schedules it. Both are NEGATIVE claims a late second run or schedule would falsify, so they are
+        /// read behind a FENCE (rev-reach c26d3f53f): a second, ENABLED job for another recipient must run TWICE first — the
+        /// engine has then had two full cycles in which to (wrongly) schedule or rerun the disabled one.
         /// </summary>
         [Fact]
         public async Task ADisabledJob_TriggeredManually_RunsOnce_WithoutTheEngineScheduling_It()
         {
-            var (js, monitor) = await StartServer();
+            var (js, _, scheduler) = await StartServer();
+            var schedules = new System.Collections.Concurrent.ConcurrentQueue<(Guid Job, ScheduleTrigger Trigger)>();
+            scheduler.JobScheduled += (_, e) => schedules.Enqueue((e.JobDefinitionId, e.Trigger));
+
             var job = await js.CreateBuilder("manual")
                 .WithCommand(new StartWorkflow { Name = "Manual" }, _recipientId)
                 .WithIntervalSchedule(TimeSpan.FromSeconds(1))
                 .Create();
-
             await js.RunOnce(job.Id);
-            await Until(() => monitor.Executed >= 1 && RanForMe() >= 1);
+            await Until(() => RanForMe() >= 1);
+            RanForMe().Should().Be(1ul, "the manual trigger ran this job");
 
-            RanForMe().Should().Be(1ul, "the manual trigger ran this job exactly once");
-            monitor.ScheduledTotal.Should().Be(0ul, "a disabled job is never scheduled by the engine: the run was the manual one");
+            var fence = Guid.NewGuid();
+            await js.CreateBuilder("fence")
+                .WithCommand(new StartWorkflow { Name = "Fence" }, fence)
+                .WithIntervalSchedule(TimeSpan.FromSeconds(1))
+                .Enable()
+                .Create();
+            await Until(() => RanFor(fence) >= 2);
+
+            RanFor(fence).Should().BeGreaterThanOrEqualTo(2ul, "the fence: the engine ran two cycles of an enabled job");
+            RanForMe().Should().Be(1ul, "and still ran the disabled job exactly once — the manual run");
+            schedules.Where(x => x.Job == job.Id && x.Trigger == ScheduleTrigger.Engine).Should()
+                .BeEmpty("a disabled job is never scheduled by the engine");
         }
 
         public void Dispose()
