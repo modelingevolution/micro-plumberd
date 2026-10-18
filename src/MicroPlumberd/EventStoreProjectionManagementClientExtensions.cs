@@ -102,11 +102,22 @@ public static class KurrentDBProjectionManagementClientExtensions
     /// <summary>How long a create that met an existing projection waits for that projection's creator to record its query hash.</summary>
     internal static TimeSpan ConflictHashWait = TimeSpan.FromSeconds(10);
 
+    /// <summary>Test seam, keyed by the client: runs just before a conditional hash claim (a rival's store lands here).</summary>
+    internal static Func<KurrentDBClient, string, Task>? BeforeHashClaimForTests;
+
+    /// <summary>Test seam, keyed by the client: observes every query update this library makes.</summary>
+    internal static Action<KurrentDBProjectionManagementClient, string>? OnQueryUpdateForTests;
+
     /// <returns><c>true</c> if this call created (or, for an unknown existing one, updated) the projection; <c>false</c> if an
     /// IDENTICAL projection already existed.</returns>
     private static async Task<bool> CreateAndStoreHash(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
         string outputStream, string query, CancellationToken token = default)
     {
+        // Read BEFORE the create (rev-reach e3712ab61 M1): if the create SUCCEEDS this process IS the creator — a racing creator
+        // gets the Conflict — so any hash already there is STALE (a projection deleted to be redefined leaves its hash stream
+        // behind) and must be overwritten, not obeyed. The claim below stores AT this revision: a stale hash is replaced, and
+        // only a rival that stored BETWEEN the create and the claim moves the revision and is compared.
+        var (_, before) = await ProjectionQueryHash.ReadStateAsync(esClient, outputStream, token);
         try
         {
             await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
@@ -121,38 +132,67 @@ public static class KurrentDBProjectionManagementClientExtensions
         // The gRPC create cannot enable emitting; the update does — on the running projection, never after
         // disabling it.
         await UpdateWithRetry(client, outputStream, query, token);
-        await ProjectionQueryHash.StoreAsync(esClient, outputStream, ProjectionQueryHash.Of(query), token);
+        var mine = ProjectionQueryHash.Of(query);
+        if (await ClaimHash(esClient, outputStream, mine, before, token) is { } other && other != mine)
+            throw new InvalidOperationException(
+                $"Projection '{outputStream}' was given a DIFFERENT definition (query hash {other}, this one {mine}) while this " +
+                "one was being created; its hash was not overwritten. Two code paths define the same output stream differently.");
         return true;
+    }
+
+    /// <summary>
+    /// Stores <paramref name="mine"/> only if the hash stream is still at <paramref name="expected"/>. Null when the claim WON;
+    /// otherwise the hash that is there now (another writer stored first).
+    /// </summary>
+    private static async Task<string?> ClaimHash(KurrentDBClient esClient, string outputStream, string mine, StreamState expected,
+        CancellationToken token)
+    {
+        if (BeforeHashClaimForTests is { } seam) await seam(esClient, outputStream);
+        try
+        {
+            await ProjectionQueryHash.StoreAsync(esClient, outputStream, mine, expected, token);
+            return null;
+        }
+        catch (WrongExpectedVersionException)
+        {
+            return (await ProjectionQueryHash.ReadStateAsync(esClient, outputStream, token)).Hash
+                   ?? (await ProjectionQueryHash.ReadWithSourceAsync(esClient, outputStream, token)).Hash;
+        }
     }
 
     /// <summary>
     /// A create refused because the projection already exists. Its creator records the query hash after creating it, so
     /// this waits (bounded) for that hash: the SAME definition is success — nothing to do; a DIFFERENT one surfaces, named,
     /// and is never overwritten. No hash within the wait (a creator that died between creating and recording, or an older
-    /// MicroPlumberd) is treated as UpdateIfChanged treats an unknown definition: updated in place, which keeps the
-    /// projection's checkpoint and never disables it.
+    /// MicroPlumberd) is CLAIMED first and only then updated in place (rev-reach e3712ab61 m2): a refused claim means another
+    /// definition got there, and this one must not have written its query either.
     /// </summary>
     private static async Task<bool> ResolveExisting(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
         string outputStream, string query, RpcException conflict, CancellationToken token)
     {
         var mine = ProjectionQueryHash.Of(query);
         var deadline = DateTime.UtcNow + ConflictHashWait;
+        StreamState observed;
         while (true)
         {
-            var (existing, _) = await ProjectionQueryHash.ReadWithSourceAsync(esClient, outputStream, token);
+            var (own, expected) = await ProjectionQueryHash.ReadStateAsync(esClient, outputStream, token);
+            var existing = own ?? (await ProjectionQueryHash.ReadWithSourceAsync(esClient, outputStream, token)).Hash;
             if (existing == mine) return false;
-            if (existing != null)
-                throw new InvalidOperationException(
-                    $"Projection '{outputStream}' already exists with a DIFFERENT definition (query hash {existing}, this one {mine}); " +
-                    "it was not overwritten. Two code paths define the same output stream differently.", conflict);
+            if (existing != null) throw Different(outputStream, existing, mine, conflict);
+            observed = expected;
             if (DateTime.UtcNow >= deadline) break;
             await Task.Delay(200, token);
         }
 
+        if (await ClaimHash(esClient, outputStream, mine, observed, token) is { } other)
+            return other == mine ? false : throw Different(outputStream, other, mine, conflict);
         await UpdateWithRetry(client, outputStream, query, token);
-        await ProjectionQueryHash.StoreAsync(esClient, outputStream, mine, token);
         return true;
     }
+
+    private static InvalidOperationException Different(string outputStream, string existing, string mine, Exception cause) =>
+        new($"Projection '{outputStream}' already exists with a DIFFERENT definition (query hash {existing}, this one {mine}); " +
+            "it was not overwritten. Two code paths define the same output stream differently.", cause);
 
     /// <summary>KurrentDB answers a create of an existing projection "Envelope callback expected Updated, received Conflict".</summary>
     private static bool IsConflict(RpcException ex) =>
@@ -171,6 +211,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         {
             try
             {
+                OnQueryUpdateForTests?.Invoke(client, outputStream);
                 await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
                 await client.EnableAsync(outputStream, cancellationToken: token);
                 return;

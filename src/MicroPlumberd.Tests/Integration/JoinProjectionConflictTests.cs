@@ -80,4 +80,94 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
             "the existing definition was kept");
         (await ProjectionsNamed(ModelStream)).Should().Be(1);
     }
+
+    private const string Rival = "0000000000000000000000000000000000000000000000000000000000000000";
+
+    /// <summary>
+    /// (a) THE MUST-STILL-START CASE (rev-reach e3712ab61 M1): a hash left on the hash stream by a projection that was deleted
+    /// to be redefined. The create SUCCEEDS, so this process IS the creator and the hash is STALE: it is overwritten, and the
+    /// app starts. 4f866b1 stored "no hash yet" conditionally, was refused, and THREW — an ensure that could never succeed,
+    /// so the app could not start; its own row asserted that throw.
+    /// </summary>
+    [Fact]
+    public async Task AStaleHashLeftByADeletedProjection_IsOverwrittenByTheCreator_AndTheEnsureSucceeds()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(() => ProjectionQueryHash.StoreAsync(plumber.Client, ModelStream, Rival));
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue("the creator overwrites a stale hash and starts");
+
+        (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().NotBe(Rival, "the stale hash was replaced");
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("and it is OURS: a second ensure sees the same definition");
+    }
+
+    /// <summary>
+    /// (b) A RIVAL that stores between this creator's create and its claim (through the seam): the claim, made at the revision
+    /// read before the create, is refused, and the rival's DIFFERENT definition surfaces — its hash is not overwritten.
+    /// </summary>
+    [Fact]
+    public async Task ARivalStoringBetweenTheCreateAndTheClaim_Surfaces_AndItsHashIsKept()
+    {
+        await _eventStore.StartInDocker();
+        KurrentDBProjectionManagementClientExtensions.BeforeHashClaimForTests = (client, stream) =>
+            ReferenceEquals(client, plumber.Client) && stream == ModelStream
+                ? ProjectionQueryHash.StoreAsync(client, stream, Rival) : Task.CompletedTask;
+        try
+        {
+            var created = await Record.ExceptionAsync(() => plumber.TryCreateJoinProjection<FooModel>());
+
+            created.Should().BeOfType<InvalidOperationException>().Which.Message.Should()
+                .Contain($"'{ModelStream}'").And.Contain("DIFFERENT definition").And.Contain("while this one was being created");
+            (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().Be(Rival);
+        }
+        finally { KurrentDBProjectionManagementClientExtensions.BeforeHashClaimForTests = null; }
+    }
+
+    /// <summary>
+    /// m2 (rev-reach e3712ab61): the no-hash branch CLAIMS before it updates. A projection exists with no hash (the register,
+    /// loaded before it existed, sends the ensure down the create path); a rival claims first → the claim is refused, the
+    /// rival's definition surfaces, and THIS definition's query was never written (no update was made).
+    /// </summary>
+    [Fact]
+    public async Task ARefusedClaim_InTheNoHashBranch_WritesNoQuery()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => await plumber.ProjectionRegister.Get(ModelStream));   // the register loads: empty
+        await plumber.ProjectionManagementClient.CreateContinuousAsync(ModelStream, "fromStreams(['$et-NothingAtAll']).when({})", false);
+
+        var updates = 0;
+        var wait = KurrentDBProjectionManagementClientExtensions.ConflictHashWait;
+        KurrentDBProjectionManagementClientExtensions.ConflictHashWait = TimeSpan.FromMilliseconds(300);
+        KurrentDBProjectionManagementClientExtensions.BeforeHashClaimForTests = (client, stream) =>
+            ReferenceEquals(client, plumber.Client) && stream == ModelStream
+                ? ProjectionQueryHash.StoreAsync(client, stream, Rival) : Task.CompletedTask;
+        KurrentDBProjectionManagementClientExtensions.OnQueryUpdateForTests = (management, stream) =>
+        {
+            if (ReferenceEquals(management, plumber.ProjectionManagementClient) && stream == ModelStream) Interlocked.Increment(ref updates);
+        };
+        try
+        {
+            var ensured = await Record.ExceptionAsync(() => plumber.TryCreateJoinProjection<FooModel>());
+
+            ensured.Should().BeOfType<InvalidOperationException>().Which.Message.Should().Contain("DIFFERENT definition");
+            updates.Should().Be(0, "a refused claim means another definition got there first: this one's query must not be written");
+            (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().Be(Rival);
+        }
+        finally
+        {
+            KurrentDBProjectionManagementClientExtensions.BeforeHashClaimForTests = null;
+            KurrentDBProjectionManagementClientExtensions.OnQueryUpdateForTests = null;
+            KurrentDBProjectionManagementClientExtensions.ConflictHashWait = wait;
+        }
+    }
+
+    private static async Task WithStoreReady(Func<Task> act)
+    {
+        var deadline = DateTime.UtcNow.AddSeconds(60);
+        while (true)
+        {
+            try { await act(); return; }
+            catch (Exception) when (DateTime.UtcNow < deadline) { await Task.Delay(500); }
+        }
+    }
 }
