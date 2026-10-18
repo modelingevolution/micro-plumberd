@@ -51,10 +51,7 @@ public static class KurrentDBProjectionManagementClientExtensions
     {
         string query = CreateLookupQuery(category, eventProperty, outputStreamCategory);
 
-        if ((await register.Get(outputStreamCategory)) != null)
-            return await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
-        else
-            return await CreateAndStoreHash(client, esClient, outputStreamCategory, query, token);
+        return await Ensure(client, esClient, register, outputStreamCategory, query, token);
     }
 
     /// <summary>
@@ -72,10 +69,38 @@ public static class KurrentDBProjectionManagementClientExtensions
 
         var query = CreateJoinQuery(outputStream, eventTypes);
 
+        return await Ensure(client, esClient, register, outputStream, query, token);
+    }
+
+    /// <summary>
+    /// One ensure. Within one process run an output stream has ONE definition: a stream this process already ensured is
+    /// decided by that (the same hash: no change; a different one: two code paths define it differently — surfaced, never
+    /// overwritten, #29). Otherwise the store decides: a projection the register lists is updated if its definition changed
+    /// (a new deployment), and one it does not list is created — after which the register, loaded before it existed, is
+    /// dropped so it sees it (card microplumberd-projection-register-invalidation, the #29 root cause).
+    /// </summary>
+    private static async Task<bool> Ensure(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+        IProjectionRegister register, string outputStream, string query, CancellationToken token)
+    {
+        var mine = ProjectionQueryHash.Of(query);
+        var here = register as ProjectionRegister;
+        if (here?.DefinedHere(outputStream) is { } earlier)
+            return earlier == mine ? false
+                : throw Different(outputStream, earlier, mine, new InvalidOperationException("defined earlier in this process"));
+
+        bool changed;
         if ((await register.Get(outputStream)) != null)
-            return await UpdateIfChanged(client, esClient, outputStream, query, token);
+            changed = await UpdateIfChanged(client, esClient, outputStream, query, token);
         else
-            return await CreateAndStoreHash(client, esClient, outputStream, query, token);
+        {
+            // A FAILED create invalidates too: what the store holds is then unknown, and a reload is the only honest answer.
+            try { changed = await CreateAndStoreHash(client, esClient, outputStream, query, token); }
+            finally { here?.Invalidate(); }
+        }
+
+        if (here?.Defined(outputStream, mine) is { } first && first != mine)
+            throw Different(outputStream, first, mine, new InvalidOperationException("defined concurrently in this process"));
+        return changed;
     }
 
     private static async Task<bool> UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,

@@ -161,6 +161,78 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
         }
     }
 
+    // card microplumberd-projection-register-invalidation: the register (loaded once per process) is dropped after an ensure
+    // takes the create path, so it sees the projection that now exists — the #29 root cause, at its root.
+
+    private ProjectionRegister Register => (ProjectionRegister)plumber.ProjectionRegister;
+
+    /// <summary>R1: the register, loaded before the projection existed, sees the projection THIS process just created.</summary>
+    [Fact]
+    public async Task TheRegister_SeesAProjectionThisProcessCreated_AfterItLoaded()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => (await plumber.ProjectionRegister.Get(ModelStream)).Should().BeNull("loaded before it exists"));
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue();
+
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull("the ensure created it; a second ensure must take the update path");
+    }
+
+    /// <summary>
+    /// R2: ANOTHER instance created it after this register loaded; this ensure meets the Conflict, resolves it as identical
+    /// (no change) — and the register must see it too. The plausible wrong fix, invalidating only when the ensure CHANGED
+    /// something, leaves it stale here.
+    /// </summary>
+    [Fact]
+    public async Task TheRegister_SeesAProjectionAnotherInstanceCreated_OnceAnEnsureMetIt()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => (await plumber.ProjectionRegister.Get(ModelStream)).Should().BeNull());
+        var other = Plumber.Create(_eventStore.GetEventStoreSettings());
+        (await other.TryCreateJoinProjection<FooModel>()).Should().BeTrue();
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("the identical projection already exists");
+
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull();
+    }
+
+    /// <summary>
+    /// R4, THE MUST-STILL-WORK CASE: a definition left by an EARLIER run (another instance stands in for the previous
+    /// deployment) that differs from this run's — a model changed in a new deployment. It is UPDATED, not refused: the
+    /// one-definition rule is per process RUN, never "whatever the store holds".
+    /// </summary>
+    [Fact]
+    public async Task ADefinitionFromAnEarlierRun_IsUpdatedToThisRunsDefinition_NotRefused()
+    {
+        await _eventStore.StartInDocker();
+        var earlierRun = Plumber.Create(_eventStore.GetEventStoreSettings());
+        await WithStoreReady(async () => (await earlierRun.ProjectionManagementClient.TryCreateJoinProjection(
+            earlierRun.Client, ModelStream, earlierRun.ProjectionRegister, ["SomeOtherEvent"])).Should().BeTrue());
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue("this run's definition replaces the earlier run's");
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("and it is this run's one definition now");
+        (await ProjectionsNamed(ModelStream)).Should().Be(1);
+    }
+
+    /// <summary>R3, the cost: an ensure of a projection the register already lists does NOT reload the list (paid at every startup).</summary>
+    [Fact]
+    public async Task AnEnsureOfARegisteredProjection_DoesNotReloadTheRegister()
+    {
+        await _eventStore.StartInDocker();
+        // Registered but NOT ensured in this run (an earlier run created it), so the ensure below really takes the
+        // update-if-changed path — a projection this run already ensured is answered before the register is consulted.
+        var earlierRun = Plumber.Create(_eventStore.GetEventStoreSettings());
+        await WithStoreReady(() => earlierRun.TryCreateJoinProjection<FooModel>());
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull();
+        var loads = Register.Loads;
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("the identical definition: no change");
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull();
+
+        Register.Loads.Should().Be(loads, "the update-if-changed path must not drop the list");
+    }
+
     private static async Task WithStoreReady(Func<Task> act)
     {
         var deadline = DateTime.UtcNow.AddSeconds(60);
