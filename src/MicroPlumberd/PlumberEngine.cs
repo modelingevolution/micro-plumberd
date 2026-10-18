@@ -523,11 +523,20 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         await foreach (var i in items)
         {
+            // Issue #27 (the #26 rule, for Rehydrate — how process managers are loaded): the version is the STREAM REVISION of
+            // the last event read, mapped or not. Counting DELIVERED events undercounted on a type this build does not map
+            // (a newer release's, after a rollback) and on a stream whose head was truncated; every expected-version write
+            // from that version failed WrongExpectedVersion, and a stream of only unknown events read as "never created".
+            // OriginalEventNumber: this stream's own position (a link's, when links are resolved).
+            var revision = i.OriginalEventNumber.ToInt64();
             if (!converter(i.Event.EventType, out var t))
+            {
+                if (vAware != null) vAware.Version = revision;
                 continue;
+            }
             var (evt, metadata) = ReadEventData(context, i.Event, i.Link, t);
             await model.Handle(metadata, evt);
-            vAware?.Increase();
+            if (vAware != null) vAware.Version = revision;
         }
     }
 
@@ -597,11 +606,20 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         await foreach (var i in items)
         {
+            // Issue #27 (the #26 rule, for Rehydrate — how process managers are loaded): the version is the STREAM REVISION of
+            // the last event read, mapped or not. Counting DELIVERED events undercounted on a type this build does not map
+            // (a newer release's, after a rollback) and on a stream whose head was truncated; every expected-version write
+            // from that version failed WrongExpectedVersion, and a stream of only unknown events read as "never created".
+            // OriginalEventNumber: this stream's own position (a link's, when links are resolved).
+            var revision = i.OriginalEventNumber.ToInt64();
             if (!converter(i.Event.EventType, out var t))
+            {
+                if (vAware != null) vAware.Version = revision;
                 continue;
+            }
             var (evt, metadata) = ReadEventData(context, i.Event, i.Link, t);
             await model.Handle(metadata, evt);
-            vAware?.Increase();
+            if (vAware != null) vAware.Version = revision;
         }
     }
 
