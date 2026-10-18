@@ -79,6 +79,18 @@ public interface IVersioned
 /// Interface for increasing the version.
 /// </summary>
 /// <seealso cref="MicroPlumberd.IVersioned" />
+/// <summary>
+/// A model that tells how many events it APPLIED (delivered to its handler) from its version, which is the stream revision
+/// of the last event read — mapped or not (issue #27). A stream holding only events this build does not map has a version
+/// (it exists) yet nothing applied: a process manager in that state was never initialised by this build and must not act.
+/// <see cref="PlumberEngine"/>'s Rehydrate increments it once per event it hands to the model.
+/// </summary>
+public interface IAppliedEventsAware
+{
+    /// <summary>How many events Rehydrate delivered to the model's handler (mapped events only).</summary>
+    long AppliedEvents { get; set; }
+}
+
 public interface IVersionAware : IVersioned
 {
     /// <summary>
