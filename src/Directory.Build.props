@@ -1,5 +1,14 @@
 <Project>
   <PropertyGroup>
+    <!-- ONE pinned KurrentDB.Client for every MicroPlumberd project (card microplumberd-pin-kurrentdb-client). It was "1.*", a
+         floating version: a client bump could arrive on any restore. MicroPlumberd depends on the client's MEASURED behaviour
+         (IsConflict: StatusCode Unknown + "received Conflict", measured on 1.6.0), so a bump is a deliberate change: move this,
+         re-measure, and update KurrentDBProjectionManagementClientExtensions.MeasuredOnClientVersion — KurrentDBClientPinTests
+         stays red until all three agree. -->
+    <KurrentDBClientVersion>1.6.0</KurrentDBClientVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <!-- Suppress CS8632: The annotation for nullable reference types should only be used in code within a '#nullable' annotations context -->
     <NoWarn>$(NoWarn);CS8632</NoWarn>
   </PropertyGroup>

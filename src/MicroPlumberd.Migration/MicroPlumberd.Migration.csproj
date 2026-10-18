@@ -19,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="KurrentDB.Client" Version="1.*" />
+    <PackageReference Include="KurrentDB.Client" Version="$(KurrentDBClientVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.7" />
   </ItemGroup>
 

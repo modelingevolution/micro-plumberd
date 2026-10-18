@@ -30,7 +30,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="KurrentDB.Client" Version="1.*" />
+    <PackageReference Include="KurrentDB.Client" Version="$(KurrentDBClientVersion)" />
     
     
     
