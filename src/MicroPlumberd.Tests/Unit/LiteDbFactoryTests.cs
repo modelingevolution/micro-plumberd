@@ -8,13 +8,33 @@ namespace MicroPlumberd.Tests.Unit;
 /// <summary>
 /// HowToSubscribeRealModel counted reservations of EARLIER test runs: LiteDbFactory "freshened" ./test_{n}.db by deleting
 /// it, but LiteDB's journal ./test_{n}-log.db survived and was replayed on the next open ("found 2", "found 6", 10 — growing
-/// run on run). The guard is that a new assertion db starts EMPTY whatever an earlier one held: red on the shipped file
-/// factory ("found 11" — a leftover journal replayed). (A "no new *.db file" row was dropped, rev-reach 6646ada65: the old
-/// factory REUSED test_{n} names, so on any bin that had run once it created no NEW path — blind exactly where the defect
-/// lived. The in-memory seam makes "no file" true by construction.)
+/// run on run). Two rows, because a file factory shows differently on the two kinds of bin (rev-reach):
+/// - CLEAN bin (CI, always): the file factory CREATES test_1.db — the no-file row is red; StartsEmpty is green (nothing to replay).
+/// - DIRTY bin (a dev's second run): it re-opens existing names — no new path, but the files are MODIFIED (the no-file row,
+///   by length + write time, is red) and a leftover journal is replayed (StartsEmpty is red, "found 11").
+/// A path-set-only form of the no-file row was blind on the dirty bin (names are reused); this one sees creation AND change.
 /// </summary>
 public class LiteDbFactoryTests
 {
+    [Fact]
+    public void AnAssertionDb_CreatesOrTouchesNoFile_ForALaterRunToReplay()
+    {
+        var dir = Directory.GetCurrentDirectory();
+        var before = Snapshot(dir);
+
+        using (var db = LiteDbFactory.Get())
+            db.Reservations().Insert(new Reservation { MovieName = "written", RoomName = "1" });
+
+        var after = Snapshot(dir);
+        var created = after.Keys.Except(before.Keys).ToList();
+        var modified = after.Where(f => before.TryGetValue(f.Key, out var was) && was != f.Value).Select(f => f.Key).ToList();
+        created.Concat(modified).Should().BeEmpty(
+            "an assertion db must leave nothing on disk — a file, or its journal, is replayed into the next run's model");
+    }
+
+    private static Dictionary<string, (long Length, DateTime Written)> Snapshot(string dir) =>
+        Directory.GetFiles(dir, "*.db").ToDictionary(f => f, f => { var i = new FileInfo(f); return (i.Length, i.LastWriteTimeUtc); });
+
     [Fact]
     public void EachAssertionDb_StartsEmpty()
     {
