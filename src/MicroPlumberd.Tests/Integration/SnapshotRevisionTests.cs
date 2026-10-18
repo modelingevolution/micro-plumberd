@@ -21,14 +21,16 @@ namespace MicroPlumberd.Tests.Integration;
 public class SnapshotRevisionTests : IClassFixture<EventStoreServer>
 {
     private readonly IPlumberApi _plumber;
+    private readonly PlumberEngine _engine;
     private readonly EventStoreServer _es;
 
     public SnapshotRevisionTests(EventStoreServer es)
     {
         // Through DI, as an application gets it: a snapshot policy (ISnapshotPolicy<> → AttributeSnaphotPolicy<>, registered by
         // AddPlumberd) is what makes Get read a snapshot at all — Plumber.Create alone has none.
-        _plumber = new ServiceCollection().AddPlumberd(es.GetEventStoreSettings()).BuildServiceProvider()
-            .GetRequiredService<IPlumberInstance>();
+        var sp = new ServiceCollection().AddPlumberd(es.GetEventStoreSettings()).BuildServiceProvider();
+        _plumber = sp.GetRequiredService<IPlumberInstance>();
+        _engine = sp.GetRequiredService<PlumberEngine>();
         _es = es;
     }
 
@@ -189,6 +191,31 @@ public class SnapshotRevisionTests : IClassFixture<EventStoreServer>
 
         PlumberEngine.WrittenAfter(next, snapshot).Should().BeFalse("the event at v+1 committed BEFORE the snapshot, whatever its clock says");
         PlumberEngine.WrittenAfter(snapshot, next).Should().BeTrue();
+    }
+
+    /// <summary>
+    /// The seam row proves the comparison; this proves its INPUT (lead + rev-reach 2883377b9). Through the real read path
+    /// Get's snapshot branch uses (SnapshotOrderRecords), both records carry a server-populated $all Position: non-zero, not
+    /// Position.Start, and in commit order — the event at v+1 appended first has the smaller one. Were a server to send 0,
+    /// WrittenAfter would call every legacy snapshot "may be low": all rebuilt, safely but silently.
+    /// </summary>
+    [Fact]
+    public async Task TheRecordsTheDecisionReads_CarryServerPositions_InCommitOrder()
+    {
+        await _es.StartInDocker();
+        var id = Guid.NewGuid();
+        await Append(id, new TallyAdded { Mark = "a" }, new TallyAdded { Mark = "b" }); // v+1 = revision 1, appended first
+        await LegacySnapshot(id, new TallyAggregate.TallyState { Count = 1, Seen = "a" }, version: 0);
+
+        var (next, snapshot) = await _engine.SnapshotOrderRecords(null!, typeof(TallyAggregate), id, typeof(TallyAggregate.TallyState), 0, default);
+
+        next.Should().NotBeNull(); snapshot.Should().NotBeNull();
+        next!.EventNumber.ToInt64().Should().Be(1, "the event at version + 1");
+        next.Position.CommitPosition.Should().BeGreaterThan(0UL);
+        snapshot!.Position.CommitPosition.Should().BeGreaterThan(0UL);
+        next.Position.Should().NotBe(Position.Start);
+        snapshot.Position.Should().NotBe(Position.Start);
+        next.Position.Should().BeLessThan(snapshot.Position, "the event at v+1 was committed before the snapshot");
     }
 
     private static EventRecord Record(ulong position, DateTime created) =>

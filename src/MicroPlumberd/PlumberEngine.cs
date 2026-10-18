@@ -883,17 +883,31 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// </summary>
     private async Task<bool> LegacySnapshotMayBeLow(OperationContext context, Type owner, object id, Type snapshotType, long version, CancellationToken token)
     {
-        var next = Client.ReadStreamAsync(Direction.Forwards, Conventions.GetStreamIdConvention(context, owner, id),
-            StreamPosition.FromInt64(version + 1), maxCount: 1, resolveLinkTos: false, cancellationToken: token);
-        if (await next.ReadState == ReadState.StreamNotFound) return false;
-        var after = await next.FirstOrDefaultAsync(token);
-        if (after.Event == null) return false; // nothing after the snapshot's version: nothing to re-fold
+        var (next, snapshot) = await SnapshotOrderRecords(context, owner, id, snapshotType, version, token);
+        if (next == null) return false;        // nothing after the snapshot's version: nothing to re-fold
+        if (snapshot == null) return true;
+        return !WrittenAfter(next, snapshot);
+    }
 
-        var snap = Client.ReadStreamAsync(Direction.Backwards, Conventions.GetStreamIdSnapshotConvention(context, snapshotType, id),
+    /// <summary>
+    /// The two records the legacy-snapshot decision compares, read as <see cref="Get{TOwner}"/> reads them: the aggregate
+    /// stream's event at <paramref name="version"/> + 1, and the snapshot stream's latest event. Their $all Position comes
+    /// from the SERVER on a stream read (KurrentDB.Client builds it from the server's commit/prepare position); a row pins
+    /// that it is populated and in commit order — a zero would make every legacy snapshot "may be low" (rebuilt), silently.
+    /// </summary>
+    internal async Task<(EventRecord? Next, EventRecord? Snapshot)> SnapshotOrderRecords(OperationContext context, Type owner, object id,
+        Type snapshotType, long version, CancellationToken token)
+    {
+        var nextRead = Client.ReadStreamAsync(Direction.Forwards, Conventions.GetStreamIdConvention(context, owner, id),
+            StreamPosition.FromInt64(version + 1), maxCount: 1, resolveLinkTos: false, cancellationToken: token);
+        if (await nextRead.ReadState == ReadState.StreamNotFound) return (null, null);
+        var next = (await nextRead.FirstOrDefaultAsync(token)).Event;
+        if (next == null) return (null, null);
+
+        var snapRead = Client.ReadStreamAsync(Direction.Backwards, Conventions.GetStreamIdSnapshotConvention(context, snapshotType, id),
             StreamPosition.End, maxCount: 1, resolveLinkTos: false, cancellationToken: token);
-        if (await snap.ReadState == ReadState.StreamNotFound) return true;
-        var written = await snap.FirstOrDefaultAsync(token);
-        return written.Event == null || !WrittenAfter(after.Event, written.Event);
+        if (await snapRead.ReadState == ReadState.StreamNotFound) return (next, null);
+        return (next, (await snapRead.FirstOrDefaultAsync(token)).Event);
     }
 
     /// <summary>
