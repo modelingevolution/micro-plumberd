@@ -52,6 +52,27 @@ public static class ProjectionQueryHash
             new KurrentDB.Client.StreamMetadata(customMetadata: custom), cancellationToken: token);
     }
 
+    /// <summary>
+    /// The projection's OWN hash and the revision of its hash stream's metadata, as the expected state a conditional store
+    /// needs: <see cref="StreamState.NoStream"/> when no hash was ever stored.
+    /// </summary>
+    internal static async Task<(string? Hash, StreamState Expected)> ReadStateAsync(KurrentDBClient client, string projection,
+        CancellationToken token = default)
+    {
+        try
+        {
+            var meta = await client.GetStreamMetadataAsync(StreamFor(projection), cancellationToken: token);
+            if (meta.MetastreamRevision is not { } revision) return (null, StreamState.NoStream);
+            var custom = meta.Metadata.CustomMetadata;
+            var hash = custom != null && custom.RootElement.TryGetProperty(MetadataKey, out var v) ? v.GetString() : null;
+            return (hash, StreamState.StreamRevision(revision.ToUInt64()));
+        }
+        catch (StreamNotFoundException)
+        {
+            return (null, StreamState.NoStream);
+        }
+    }
+
     private static async Task<string?> ReadKey(KurrentDBClient client, string stream, CancellationToken token)
     {
         try
