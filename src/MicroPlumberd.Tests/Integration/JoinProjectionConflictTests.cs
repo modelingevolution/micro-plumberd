@@ -75,7 +75,9 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
             plumber.Client, ModelStream, plumber.ProjectionRegister, ["SomeOtherEvent"]));
 
         different.Should().BeOfType<InvalidOperationException>().Which.Message.Should()
-            .Contain($"'{ModelStream}'").And.Contain("DIFFERENT definition").And.Contain("not overwritten");
+            .Contain($"'{ModelStream}'").And.Contain("DIFFERENT definition").And.Contain("not overwritten")
+            .And.Contain(typeof(FooModel).FullName!, "the generic ensure names its model type")
+            .And.Contain("by output stream name", "and the by-name ensure says it has none");
         (await ProjectionQueryHash.ReadWithSourceAsync(plumber.Client, ModelStream)).Item1.Should().Be(stored,
             "the existing definition was kept");
         (await ProjectionsNamed(ModelStream)).Should().Be(1);
@@ -213,6 +215,28 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
 
         (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("and it is this run's one definition now");
         (await ProjectionsNamed(ModelStream)).Should().Be(1);
+    }
+
+    /// <summary>
+    /// rev-reach 9499dc2cb: the one-definition refusal names BOTH definers by FULL name, so two model types whose short names
+    /// collide (and so map to the same output stream) are obvious — not two identical-looking "ClashModel"s.
+    /// </summary>
+    [Fact]
+    public async Task TheOneDefinitionRefusal_NamesBothModelTypes_ByFullName()
+    {
+        await _eventStore.StartInDocker();
+        const string stream = "clash-row";
+        await WithStoreReady(() => KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(
+            plumber.ProjectionManagementClient, plumber.Client, stream, plumber.ProjectionRegister, ["ClashEventA"],
+            typeof(ClashA.ClashModel)));
+
+        var second = await Record.ExceptionAsync(() => KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(
+            plumber.ProjectionManagementClient, plumber.Client, stream, plumber.ProjectionRegister, ["ClashEventB"],
+            typeof(ClashB.ClashModel)));
+
+        second.Should().BeOfType<InvalidOperationException>().Which.Message.Should()
+            .Contain(typeof(ClashA.ClashModel).FullName!).And.Contain(typeof(ClashB.ClashModel).FullName!)
+            .And.Contain("DIFFERENT definition");
     }
 
     /// <summary>R3, the cost: an ensure of a projection the register already lists does NOT reload the list (paid at every startup).</summary>

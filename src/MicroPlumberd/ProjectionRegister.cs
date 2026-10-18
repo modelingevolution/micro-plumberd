@@ -68,15 +68,23 @@ class ProjectionRegister : IProjectionRegister
     /// <summary>Drops the loaded list; the next <see cref="Get"/> loads it again.</summary>
     internal void Invalidate() => _lazyLoader = Load();
 
-    // name → query hash of each projection THIS process ensured in this run. Within one run an output stream has ONE
-    // definition: a second, different one is two code paths fighting over it (#29) and must surface, not overwrite.
-    private readonly ConcurrentDictionary<string, string> _definedHere = new(StringComparer.Ordinal);
+    // name → (query hash, who defined it) of each projection THIS process ensured in this run. Within one run an output stream
+    // has ONE definition: a second, different one is two code paths fighting over it (#29) and must surface, not overwrite —
+    // naming BOTH definers, so two model types whose short names collide (Ns1.FooModel / Ns2.FooModel) are obvious.
+    private readonly ConcurrentDictionary<string, Definition> _definedHere = new(StringComparer.Ordinal);
 
-    /// <summary>The hash this process ensured <paramref name="name"/> with in this run, or null.</summary>
-    internal string? DefinedHere(string name) => _definedHere.TryGetValue(name, out var h) ? h : null;
+    /// <summary>The definition this process ensured <paramref name="name"/> with in this run, or null.</summary>
+    internal Definition? DefinedHere(string name) => _definedHere.TryGetValue(name, out var d) ? d : null;
 
-    /// <summary>Records that this process ensured <paramref name="name"/> with <paramref name="hash"/>; the first one wins.</summary>
-    internal string Defined(string name, string hash) => _definedHere.GetOrAdd(name, hash);
+    /// <summary>Records that this process ensured <paramref name="name"/> with <paramref name="definition"/>; the first one wins.</summary>
+    internal Definition Defined(string name, Definition definition) => _definedHere.GetOrAdd(name, definition);
+
+    /// <summary>A projection's query hash and what defined it: a model type's full name, or a by-name ensure.</summary>
+    internal readonly record struct Definition(string Hash, string By)
+    {
+        public static Definition Of(string hash, Type? definedBy) =>
+            new(hash, definedBy?.FullName ?? "an ensure by output stream name (no model type)");
+    }
 
     public async Task<ProjectionDetails?> Get(string name)
     {
