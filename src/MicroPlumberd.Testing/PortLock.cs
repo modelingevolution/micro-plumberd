@@ -12,6 +12,9 @@ namespace MicroPlumberd.Testing;
 /// and never an endless search.
 /// </para>
 /// </summary>
+// Never tidy lock files while tests run: this class never unlinks one (Dispose only closes it, releasing the flock). A lock
+// file removed while held — only its owner, the directory's owner or root can, under the sticky bit — lets the next opener
+// create a NEW inode and hold it too, and the race is back.
 internal sealed class PortLock : IDisposable
 {
     /// <summary>One directory for every process on the machine (not the per-user/per-process TMPDIR).</summary>
@@ -50,7 +53,8 @@ internal sealed class PortLock : IDisposable
                 case Denied when ++denied >= DeniedLimit:
                     throw new InvalidOperationException(
                         $"No store port could be locked in '{directory}': this user may not create or open lock files there " +
-                        $"({DeniedLimit} ports in a row). Make it shared — chmod 1777 '{directory}' — or remove it so it is recreated.");
+                        $"({DeniedLimit} ports in a row). Make it shared — chmod 1777 '{directory}' — or remove it so it is recreated; " +
+                        "stale lock files of another user (made before these modes) are the other cause: remove them.");
                 case Denied: continue;
                 default: denied = 0; continue; // held by another process: the next port
             }
