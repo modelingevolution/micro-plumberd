@@ -60,9 +60,10 @@ namespace MicroPlumberd.Tests.Integration.Cron
                 .Enable()
                 .Create();
             
-            // Wait for the CONDITION, bounded — not a fixed 20 s sleep, which failed under load with ScheduledTotal 0. And THIS
-            // job's evidence: CompleteWorkflowHandler.Mock is STATIC and WorkflowTests drives it too, so "received any call"
-            // was satisfied by another test in the suite; only a call for this test's own recipient proves this job ran.
+            // Wait for the CONDITION, bounded — not a fixed 20 s sleep, which failed under load with ScheduledTotal 0 (a job
+            // first firing after 20 s is red under a fixed sleep, green here). And THIS job's evidence: CompleteWorkflowHandler.Mock
+            // is STATIC, so "received any call" would be satisfied by any other caller in the process (none today — measured: 0
+            // calls while WorkflowTests ran); only a call for this test's own recipient proves this job ran.
             ulong RanForMe() => (ulong)CompleteWorkflowHandler.Mock.ReceivedCalls()
                 .Count(c => c.GetMethodInfo().Name == nameof(ICommandHandler<Guid, CompleteWorkflow>.Execute)
                             && c.GetArguments()[0] is Guid id && id == recipientId);
