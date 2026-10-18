@@ -105,8 +105,25 @@ public class TestAppHostStartTests(ITestOutputHelper output)
 
         var ex = await StartWithin(host);
 
-        ex.Should().BeOfType<InvalidOperationException>().Which.Message.Should().Contain($"failed to start at {nameof(FailingStarter)}: index unreachable");
-        ex!.InnerException!.Message.Should().Be("index unreachable");
+        ex.Should().BeOfType<InvalidOperationException>().Which.Message.Should().Contain($"failed to start at {nameof(FailingStarter)}: InvalidOperationException");
+        ex!.InnerException!.Message.Should().Be("index unreachable", "the full message stays on the attached exception");
+    }
+
+    /// <summary>
+    /// rev-reach 23166defc: a starter's message can carry a connection string. The health DESCRIPTION — served by the health
+    /// endpoint — names the starter and the exception type only; the secret stays in the attached exception.
+    /// </summary>
+    [Fact]
+    public async Task AFailureMessageWithASecret_StaysOutOfTheHealthText()
+    {
+        var starter = new FailingStarter("cannot reach esdb://admin:secret@x:2113");
+        using var host = Host(starter, TimeSpan.FromMinutes(10));
+        await StartWithin(host);
+
+        var health = await host.Host.Services.GetRequiredService<StartupHealthCheck>().CheckHealthAsync(null!, default);
+
+        health.Description.Should().Contain(nameof(FailingStarter)).And.NotContain("secret");
+        health.Exception!.Message.Should().Contain("secret", "the full message is still there for the logs");
     }
 }
 
@@ -115,12 +132,12 @@ sealed class StallingStarter : IEventHandlerStarter
     public Task Start(CancellationToken stoppingToken) => Task.Delay(Timeout.Infinite, stoppingToken);
 }
 
-sealed class FailingStarter : IEventHandlerStarter
+sealed class FailingStarter(string message = "index unreachable") : IEventHandlerStarter
 {
     public async Task Start(CancellationToken stoppingToken)
     {
         await Task.Yield();
-        throw new InvalidOperationException("index unreachable");
+        throw new InvalidOperationException(message);
     }
 }
 

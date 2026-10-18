@@ -24,8 +24,14 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
     /// ready says WHICH handler it is waiting for, not only "not ready".</summary>
     internal string? Starting { get; private set; }
 
-    /// <summary>The exception that stopped the start, if one did; IsReady then stays false for good.</summary>
-    internal Exception? Failure { get; private set; }
+    /// <summary>A failed start: the starter it failed at and its exception — one immutable snapshot.</summary>
+    internal sealed record StartFailure(string? Starter, Exception Error);
+
+    private StartFailure? _failure;
+
+    /// <summary>The FIRST failure that stopped the start, if one did (first wins; IsReady then stays false for good).
+    /// Read it once into a local: the starter and the exception come from the same snapshot.</summary>
+    internal StartFailure? Failure => Volatile.Read(ref _failure);
 
     /// <summary>
     /// Executes the event handler service, starting all registered event handlers.
@@ -50,7 +56,7 @@ sealed class EventHandlerService(IEnumerable<IEventHandlerStarter> starters) : B
         }
         catch (Exception ex)
         {
-            Failure = ex;
+            Interlocked.CompareExchange(ref _failure, new StartFailure(Starting, ex), null);
             throw;
         }
     }
@@ -70,10 +76,15 @@ internal sealed class StartupHealthCheck(EventHandlerService eventHandlers, Comm
     public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
     {
         if (!eventHandlers.IsReady)
-            return HealthCheckResult.Unhealthy(eventHandlers.Failure != null
-                ? $"Event handlers failed to start at {eventHandlers.Starting}: {eventHandlers.Failure.Message}"
-                : $"Event handlers' projections are not ready{(eventHandlers.Starting is { } s ? $" (starting {s})" : "")}.",
-                eventHandlers.Failure);
+        {
+            // The text names the starter and the exception TYPE only — never its message: a starter's message can carry a
+            // connection string (esdb://user:pass@…, Password=…), and a health description is served to anyone who can
+            // reach the endpoint. The full exception stays attached (and in the logs).
+            var failure = eventHandlers.Failure;
+            return failure != null
+                ? HealthCheckResult.Unhealthy($"Event handlers failed to start at {failure.Starter}: {failure.Error.GetType().Name}.", failure.Error)
+                : HealthCheckResult.Unhealthy($"Event handlers' projections are not ready{(eventHandlers.Starting is { } s ? $" (starting {s})" : "")}.");
+        }
         if(!commandHandlers.IsReady)
             return HealthCheckResult.Unhealthy("Command handlers' projections are not ready.");
         
