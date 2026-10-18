@@ -245,6 +245,9 @@ public static class KurrentDBProjectionManagementClientExtensions
     // Measured on KurrentDB.Client 1.6.0 (Unknown + this Detail): a client bump must re-run that row and re-measure.
     internal const string ConflictDetail = "received Conflict";
 
+    /// <summary>The KurrentDB.Client version <see cref="ConflictDetail"/>'s shape was measured on; KurrentDBClientPinTests holds the pin to it.</summary>
+    internal const string MeasuredOnClientVersion = "1.6.0";
+
     /// <summary>A create refused because the projection exists: the measured Detail, or AlreadyExists from a client that reports it.</summary>
     internal static bool IsConflict(RpcException ex) =>
         ex.StatusCode == StatusCode.AlreadyExists || (ex.Status.Detail ?? "").Contains(ConflictDetail, StringComparison.Ordinal);
