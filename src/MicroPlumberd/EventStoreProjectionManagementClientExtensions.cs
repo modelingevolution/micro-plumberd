@@ -199,6 +199,7 @@ public static class KurrentDBProjectionManagementClientExtensions
     /// Conflict". Measured: KurrentDB.Client reports it with <see cref="StatusCode.Unknown"/>, NOT AlreadyExists, so THIS match
     /// is what fires today (pinned by JoinProjectionConflictTests against a real store; the client has no Conflict enum).
     /// </summary>
+    // Measured on KurrentDB.Client 1.6.0 (Unknown + this Detail): a client bump must re-run that row and re-measure.
     internal const string ConflictDetail = "received Conflict";
 
     /// <summary>A create refused because the projection exists: the measured Detail, or AlreadyExists from a client that reports it.</summary>
