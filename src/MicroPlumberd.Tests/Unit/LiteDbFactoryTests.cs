@@ -11,7 +11,8 @@ namespace MicroPlumberd.Tests.Unit;
 /// run on run). Two rows, because a file factory shows differently on the two kinds of bin (rev-reach):
 /// - CLEAN bin (CI, always): the file factory CREATES test_1.db — the no-file row is red; StartsEmpty is green (nothing to replay).
 /// - DIRTY bin (a dev's second run): it re-opens existing names — no new path, but the files are MODIFIED (the no-file row,
-///   by length + write time, is red) and a leftover journal is replayed (StartsEmpty is red, "found 11").
+///   by length + write time, is red). StartsEmpty is red only where a NOT-yet-checkpointed journal was left behind (as the
+///   HowTo rows left one: "found 11"); in this class's own runs it stayed green. The no-file row is the guard on both bins.
 /// A path-set-only form of the no-file row was blind on the dirty bin (names are reused); this one sees creation AND change.
 /// </summary>
 public class LiteDbFactoryTests
