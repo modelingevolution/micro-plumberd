@@ -66,7 +66,7 @@ public interface IStatefull<out T>
 /// </summary>
 /// <typeparam name="TState">The type of the aggregate state.</typeparam>
 /// <typeparam name="TId"></typeparam>
-public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>, IStatefull<TState>, IStatefull
+public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>, IStatefull<TState>, IStatefull, IAggregateRevision
     where TState : new() 
     where TId : IParsable<TId>
 
@@ -136,6 +136,8 @@ public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>,
     /// <summary>
     /// Acknowledges the committed events and clears the pending events.
     /// </summary>
+    void IAggregateRevision.RehydratedTo(long revision) => Version = revision;
+
     void IAggregate.AckCommitted()
     {
         Version += _pendingEvents.Count;
@@ -151,4 +153,13 @@ public abstract class AggregateBase<TId, TState>(TId id) : IAggregate, IId<TId>,
     {
         return Given(State, ev);
     }
+}
+
+/// <summary>
+/// An aggregate whose version is set to the stream revision it was rehydrated to (issue #25): the revision of the last event
+/// READ, including events of types this build cannot map — <see cref="IAggregate.Rehydrate"/> only sees the mapped ones.
+/// </summary>
+internal interface IAggregateRevision
+{
+    void RehydratedTo(long revision);
 }
