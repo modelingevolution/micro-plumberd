@@ -77,7 +77,11 @@ jobs:
       run: docker pull docker.kurrent.io/kurrent-latest/kurrentdb:latest
 
     - name: Poison-event read test (Release)
-      run: dotnet test src/MicroPlumberd.Tests/MicroPlumberd.Tests.csproj --configuration Release --filter "FullyQualifiedName~PoisonEventContextTests"
+      # /p:Version, as in the build above: this test REBUILDS its reference closure into the Release bins the pack
+      # below packs with --no-build. Without it those assemblies were restamped 1.0.0.0 — 1.3.2..1.3.4 shipped that,
+      # and the Uniqueness dialect packages (outside the closure) could no longer bind their own core. The guard
+      # after the pack is what catches any other path to the same defect.
+      run: dotnet test src/MicroPlumberd.Tests/MicroPlumberd.Tests.csproj --configuration Release --filter "FullyQualifiedName~PoisonEventContextTests" /p:Version=${{ steps.get_version.outputs.VERSION }}
 
     - name: Pack NuGet packages
       run: |
@@ -220,6 +224,12 @@ jobs:
           --no-build \
           --output ./artifacts \
           /p:PackageVersion=${{ steps.get_version.outputs.VERSION }}
+
+    # A publish gate on what was actually PACKED: every first-party DLL in every .nupkg carries the release's
+    # AssemblyVersion, or nothing is pushed (the 1.3.2..1.3.4 defect: assemblies packed at 1.0.0.0).
+    - name: Guard - packed assembly versions
+      shell: pwsh
+      run: ./.github/scripts/check-packed-assembly-versions.ps1 -Artifacts ./artifacts -Version '${{ steps.get_version.outputs.VERSION }}'
 
     - name: List artifacts
       run: ls -lh ./artifacts
