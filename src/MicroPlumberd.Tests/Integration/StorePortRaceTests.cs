@@ -30,6 +30,7 @@ public class StorePortRaceTests(ITestOutputHelper output)
         var results = await Task.WhenAll(children);
         foreach (var r in results) output.WriteLine($"exit={r.Exit} {r.Line}");
 
+        results.Should().HaveCount(2, "the claims below hold vacuously over one result (rev-reach 9de418b9d)");
         results.Should().OnlyContain(r => r.Exit == 0 && r.Line.EndsWith("RESULT=SURVIVED"), "each process keeps its own store");
         results.Select(r => Field(r.Line, "PORT")).Should().OnlyHaveUniqueItems("two processes never share a port");
         results.Select(r => Field(r.Line, "CONTAINER")).Should().OnlyHaveUniqueItems("nor a container");

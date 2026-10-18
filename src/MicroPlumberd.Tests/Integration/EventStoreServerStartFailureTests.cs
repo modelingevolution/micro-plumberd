@@ -7,7 +7,8 @@ namespace MicroPlumberd.Tests.Integration;
 /// <summary>
 /// A failed start removes its container — and if that removal ALSO fails (two processes removing one container gave Docker
 /// 409 "removal already in progress", 2026-10-18), the START failure is still the one thrown; the cleanup failure rides
-/// along in Data. It used to replace it, and the first failure was lost (dev-clean's observation).
+/// along, both printed (an AggregateException, start failure first). It used to replace it, and the first failure was lost
+/// (dev-clean's observation); then it rode in Data, which nothing prints (rev-reach 9de418b9d m2).
 /// </summary>
 [TestCategory("Integration")]
 public class EventStoreServerStartFailureTests
@@ -32,9 +33,12 @@ public class EventStoreServerStartFailureTests
         {
             var thrown = await Record.ExceptionAsync(() => server.StartInDocker());
 
-            thrown.Should().BeOfType<NotReady>("the start failure is the first failure, and it is the one thrown");
-            thrown!.Data["MicroPlumberd.Testing.CleanupFailure"].Should().BeOfType<string>()
-                .Which.Should().Contain("already in progress", "the cleanup failure rides along, not instead");
+            var both = thrown.Should().BeOfType<AggregateException>().Subject;
+            both.InnerExceptions.Should().HaveCount(2);
+            both.InnerExceptions[0].Should().BeOfType<NotReady>("the start failure is the first failure, and it comes first");
+            both.InnerExceptions[1].Message.Should().Contain("already in progress", "the cleanup failure rides along, not instead");
+            both.ToString().Should().Contain("did not become ready").And.Contain("already in progress",
+                "both are printed — Data was printed by neither xUnit nor ToString");
         }
         finally
         {
