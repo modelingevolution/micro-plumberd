@@ -86,7 +86,13 @@ public partial class TestAppHost : IDisposable
     /// </summary>
     public async Task<IServiceProvider> StartAsync()
     {
-        await Host.StartAsync();
+        // Host.StartAsync itself is bounded too (rev-reach 23166defc): a hosted service blocking in ITS StartAsync would
+        // otherwise hang one line before the readiness loop.
+        try { await Host.StartAsync().WaitAsync(ReadyTimeout); }
+        catch (TimeoutException)
+        {
+            throw new TimeoutException($"The test host's Host.StartAsync did not return within {ReadyTimeout.TotalSeconds:0.#} s — a hosted service is blocking in its StartAsync.");
+        }
 
         var hc = Host.Services.GetRequiredService<StartupHealthCheck>();
         var lifetime = Host.Services.GetRequiredService<IHostApplicationLifetime>();
