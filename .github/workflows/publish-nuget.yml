@@ -227,6 +227,12 @@ jobs:
 
     # A publish gate on what was actually PACKED: every first-party DLL in every .nupkg carries the release's
     # AssemblyVersion, or nothing is pushed (the 1.3.2..1.3.4 defect: assemblies packed at 1.0.0.0).
+    # The guard's own self-test first: synthetic packages prove it FAILS a first-party DLL outside MicroPlumberd*
+    # (mp-rewrite.dll, the tool's own assembly) and ignores third-party ones — a guard that cannot fail is not one.
+    - name: Guard - the packed-assembly-version guard's self-test
+      shell: pwsh
+      run: ./.github/scripts/check-packed-assembly-versions.selftest.ps1
+
     - name: Guard - packed assembly versions
       shell: pwsh
       run: ./.github/scripts/check-packed-assembly-versions.ps1 -Artifacts ./artifacts -Version '${{ steps.get_version.outputs.VERSION }}'
