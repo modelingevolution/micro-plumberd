@@ -76,7 +76,9 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
             plumber.Client, ModelStream, plumber.ProjectionRegister, ["SomeOtherEvent"]));
 
         different.Should().BeOfType<InvalidOperationException>().Which.Message.Should()
-            .Contain($"'{ModelStream}'").And.Contain("DIFFERENT definition").And.Contain("not overwritten");
+            .Contain($"'{ModelStream}'").And.Contain("DIFFERENT definition").And.Contain("not overwritten")
+            .And.Contain(typeof(FooModel).FullName!, "the generic ensure names its model type")
+            .And.Contain("by output stream name", "and the by-name ensure says it has none");
         (await ProjectionQueryHash.ReadWithSourceAsync(plumber.Client, ModelStream)).Item1.Should().Be(stored,
             "the existing definition was kept");
         (await ProjectionsNamed(ModelStream)).Should().Be(1);
@@ -162,6 +164,99 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
         }
     }
 
+    // card microplumberd-projection-register-invalidation: the register (loaded once per process) is dropped after an ensure
+    // takes the create path, so it sees the projection that now exists — the #29 root cause, at its root.
+
+    private ProjectionRegister Register => (ProjectionRegister)plumber.ProjectionRegister;
+
+    /// <summary>R1: the register, loaded before the projection existed, sees the projection THIS process just created.</summary>
+    [Fact]
+    public async Task TheRegister_SeesAProjectionThisProcessCreated_AfterItLoaded()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => (await plumber.ProjectionRegister.Get(ModelStream)).Should().BeNull("loaded before it exists"));
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue();
+
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull("the ensure created it; a second ensure must take the update path");
+    }
+
+    /// <summary>
+    /// R2: ANOTHER instance created it after this register loaded; this ensure meets the Conflict, resolves it as identical
+    /// (no change) — and the register must see it too. The plausible wrong fix, invalidating only when the ensure CHANGED
+    /// something, leaves it stale here.
+    /// </summary>
+    [Fact]
+    public async Task TheRegister_SeesAProjectionAnotherInstanceCreated_OnceAnEnsureMetIt()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => (await plumber.ProjectionRegister.Get(ModelStream)).Should().BeNull());
+        var other = Plumber.Create(_eventStore.GetEventStoreSettings());
+        (await other.TryCreateJoinProjection<FooModel>()).Should().BeTrue();
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("the identical projection already exists");
+
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull();
+    }
+
+    /// <summary>
+    /// R4, THE MUST-STILL-WORK CASE: a definition left by an EARLIER run (another instance stands in for the previous
+    /// deployment) that differs from this run's — a model changed in a new deployment. It is UPDATED, not refused: the
+    /// one-definition rule is per process RUN, never "whatever the store holds".
+    /// </summary>
+    [Fact]
+    public async Task ADefinitionFromAnEarlierRun_IsUpdatedToThisRunsDefinition_NotRefused()
+    {
+        await _eventStore.StartInDocker();
+        var earlierRun = Plumber.Create(_eventStore.GetEventStoreSettings());
+        await WithStoreReady(async () => (await earlierRun.ProjectionManagementClient.TryCreateJoinProjection(
+            earlierRun.Client, ModelStream, earlierRun.ProjectionRegister, ["SomeOtherEvent"])).Should().BeTrue());
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue("this run's definition replaces the earlier run's");
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("and it is this run's one definition now");
+        (await ProjectionsNamed(ModelStream)).Should().Be(1);
+    }
+
+    /// <summary>
+    /// rev-reach 9499dc2cb: the one-definition refusal names BOTH definers by FULL name, so two model types whose short names
+    /// collide (and so map to the same output stream) are obvious — not two identical-looking "ClashModel"s.
+    /// </summary>
+    [Fact]
+    public async Task TheOneDefinitionRefusal_NamesBothModelTypes_ByFullName()
+    {
+        await _eventStore.StartInDocker();
+        const string stream = "clash-row";
+        await WithStoreReady(() => KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(
+            plumber.ProjectionManagementClient, plumber.Client, stream, plumber.ProjectionRegister, ["ClashEventA"],
+            typeof(ClashA.ClashModel)));
+
+        var second = await Record.ExceptionAsync(() => KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(
+            plumber.ProjectionManagementClient, plumber.Client, stream, plumber.ProjectionRegister, ["ClashEventB"],
+            typeof(ClashB.ClashModel)));
+
+        second.Should().BeOfType<InvalidOperationException>().Which.Message.Should()
+            .Contain(typeof(ClashA.ClashModel).FullName!).And.Contain(typeof(ClashB.ClashModel).FullName!)
+            .And.Contain("DIFFERENT definition");
+    }
+
+    /// <summary>R3, the cost: an ensure of a projection the register already lists does NOT reload the list (paid at every startup).</summary>
+    [Fact]
+    public async Task AnEnsureOfARegisteredProjection_DoesNotReloadTheRegister()
+    {
+        await _eventStore.StartInDocker();
+        // Registered but NOT ensured in this run (an earlier run created it), so the ensure below really takes the
+        // update-if-changed path — a projection this run already ensured is answered before the register is consulted.
+        var earlierRun = Plumber.Create(_eventStore.GetEventStoreSettings());
+        await WithStoreReady(() => earlierRun.TryCreateJoinProjection<FooModel>());
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull();
+        var loads = Register.Loads;
+
+        (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeFalse("the identical definition: no change");
+        (await plumber.ProjectionRegister.Get(ModelStream)).Should().NotBeNull();
+
+        Register.Loads.Should().Be(loads, "the update-if-changed path must not drop the list");
+    }
     /// <summary>
     /// microplumberd-isconflict-status: the shape KurrentDB.Client ACTUALLY gives a create of an existing projection —
     /// StatusCode Unknown with Detail "… received Conflict", not AlreadyExists — read from a real double create, so a client

@@ -166,7 +166,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// </returns>
     public Task<bool> TryCreateJoinProjection<TEventHandler>(string? outputStream=null, CancellationToken token = default) where TEventHandler : class, IEventHandler, ITypeRegister
     {
-        return TryCreateJoinProjection(outputStream ?? Conventions.OutputStreamModelConvention(typeof(TEventHandler)), _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(), token);
+        return TryCreateJoinProjection(outputStream ?? Conventions.OutputStreamModelConvention(typeof(TEventHandler)), _typeHandlerRegisters.GetEventNamesFor<TEventHandler>(), typeof(TEventHandler), token);
     }
 
     /// <summary>
@@ -184,9 +184,12 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// <returns>
     /// A <see cref="Task"/> representing the asynchronous operation.
     /// </returns>
-    public async Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default)
+    public Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, CancellationToken token = default) =>
+        TryCreateJoinProjection(outputStream, eventTypes, null, token);
+
+    private async Task<bool> TryCreateJoinProjection(string outputStream, IEnumerable<string> eventTypes, Type? definedBy, CancellationToken token)
     {
-        var changed = await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token);
+        var changed = await KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(ProjectionManagementClient, Client, outputStream, ProjectionRegister, eventTypes, definedBy, token);
         LogProjectionEnsured(outputStream, changed);
         return changed;
     }
@@ -262,7 +265,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            LogProjectionEnsured(outputStream, await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token));
+            LogProjectionEnsured(outputStream, await KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(ProjectionManagementClient, Client, outputStream, ProjectionRegister, eventTypes, typeof(TEventHandler), token));
         var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken: token);
         if (eh == null)
             await sub.WithSnapshotHandler<TEventHandler>();
@@ -292,7 +295,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
 
         outputStream ??= Conventions.OutputStreamModelConvention(typeof(TEventHandler));
         if (ensureOutputStreamProjection)
-            LogProjectionEnsured(outputStream, await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, eventTypes, token: token));
+            LogProjectionEnsured(outputStream, await KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(ProjectionManagementClient, Client, outputStream, ProjectionRegister, eventTypes, typeof(TEventHandler), token));
         var sub = Subscribe(outputStream, start ?? FromStream.Start, cancellationToken:token);
         if (eh == null)
             await sub.WithHandler<TEventHandler>(mapFunc);
@@ -403,7 +406,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
         outputStream ??= Conventions.OutputStreamModelConvention(handlerType);
         groupName ??= Conventions.GroupNameModelConvention(handlerType);
         if (ensureOutputStreamProjection)
-            LogProjectionEnsured(outputStream, await ProjectionManagementClient.TryCreateJoinProjection(Client, outputStream, ProjectionRegister, events, token: token));
+            LogProjectionEnsured(outputStream, await KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(ProjectionManagementClient, Client, outputStream, ProjectionRegister, events, typeof(TEventHandler), token));
 
         try
         {

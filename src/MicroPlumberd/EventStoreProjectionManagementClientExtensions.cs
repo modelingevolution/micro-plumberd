@@ -51,10 +51,7 @@ public static class KurrentDBProjectionManagementClientExtensions
     {
         string query = CreateLookupQuery(category, eventProperty, outputStreamCategory);
 
-        if ((await register.Get(outputStreamCategory)) != null)
-            return await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
-        else
-            return await CreateAndStoreHash(client, esClient, outputStreamCategory, query, token);
+        return await Ensure(client, esClient, register, outputStreamCategory, query, null, token);
     }
 
     /// <summary>
@@ -70,13 +67,59 @@ public static class KurrentDBProjectionManagementClientExtensions
             throw new ArgumentOutOfRangeException(
                 $"There are not event type to create the output stream: {outputStream}");
 
+        return await TryCreateJoinProjectionBy(client, esClient, outputStream, register, eventTypes, null, token);
+    }
+
+    /// <summary>As <see cref="TryCreateJoinProjection"/>, naming the model type that defines it (for the one-definition refusal).</summary>
+    internal static async Task<bool> TryCreateJoinProjectionBy(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+        string outputStream, IProjectionRegister register, IEnumerable<string> eventTypes, Type? definedBy,
+        CancellationToken token = default)
+    {
+        if (!eventTypes.Any())
+            throw new ArgumentOutOfRangeException(
+                $"There are not event type to create the output stream: {outputStream}");
+
         var query = CreateJoinQuery(outputStream, eventTypes);
 
-        if ((await register.Get(outputStream)) != null)
-            return await UpdateIfChanged(client, esClient, outputStream, query, token);
-        else
-            return await CreateAndStoreHash(client, esClient, outputStream, query, token);
+        return await Ensure(client, esClient, register, outputStream, query, definedBy, token);
     }
+
+    /// <summary>
+    /// One ensure. Within one process run an output stream has ONE definition: a stream this process already ensured is
+    /// decided by that (the same hash: no change; a different one: two code paths define it differently — surfaced, never
+    /// overwritten, #29). Otherwise the store decides: a projection the register lists is updated if its definition changed
+    /// (a new deployment), and one it does not list is created — after which the register, loaded before it existed, is
+    /// dropped so it sees it (card microplumberd-projection-register-invalidation, the #29 root cause).
+    /// </summary>
+    private static async Task<bool> Ensure(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+        IProjectionRegister register, string outputStream, string query, Type? definedBy, CancellationToken token)
+    {
+        var mine = ProjectionRegister.Definition.Of(ProjectionQueryHash.Of(query), definedBy);
+        var here = register as ProjectionRegister;
+        if (here?.DefinedHere(outputStream) is { } earlier)
+            return earlier.Hash == mine.Hash ? false : throw DefinedTwice(outputStream, earlier, mine);
+
+        bool changed;
+        if ((await register.Get(outputStream)) != null)
+            changed = await UpdateIfChanged(client, esClient, outputStream, query, token);
+        else
+        {
+            // A FAILED create invalidates too: what the store holds is then unknown, and a reload is the only honest answer.
+            try { changed = await CreateAndStoreHash(client, esClient, outputStream, query, token); }
+            finally { here?.Invalidate(); }
+        }
+
+        if (here?.Defined(outputStream, mine) is { } first && first.Hash != mine.Hash)
+            throw DefinedTwice(outputStream, first, mine);
+        return changed;
+    }
+
+    /// <summary>The one-definition refusal, naming BOTH definers (rev-reach 9499dc2cb): a short-name clash is then obvious.</summary>
+    private static InvalidOperationException DefinedTwice(string outputStream, ProjectionRegister.Definition first,
+        ProjectionRegister.Definition second) =>
+        new($"Projection '{outputStream}' was already defined in this process by {first.By} (query hash {first.Hash}); " +
+            $"{second.By} gives it a DIFFERENT definition (query hash {second.Hash}). It was not overwritten. Two code paths " +
+            "define the same output stream differently — e.g. two model types whose short names map to the same stream.");
 
     private static async Task<bool> UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
         string outputStream, string query, CancellationToken token = default)
