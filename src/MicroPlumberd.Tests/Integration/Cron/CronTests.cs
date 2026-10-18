@@ -30,6 +30,9 @@ namespace MicroPlumberd.Tests.Integration.Cron
             _clientTestApp = new TestAppHost(testOutputHelper);
         }
 
+        /// <summary>How long the job may take to be scheduled and run (it runs every second; the budget absorbs a loaded host).</summary>
+        private static readonly TimeSpan JobRunBudget = TimeSpan.FromSeconds(60);
+
         [Fact]
         public async Task ManualTrigger()
         {
@@ -57,11 +60,19 @@ namespace MicroPlumberd.Tests.Integration.Cron
                 .Enable()
                 .Create();
             
-            await Task.Delay(20000);
+            // Wait for the CONDITION, bounded — not a fixed 20 s sleep, which failed under load with ScheduledTotal 0. And THIS
+            // job's evidence: CompleteWorkflowHandler.Mock is STATIC and WorkflowTests drives it too, so "received any call"
+            // was satisfied by another test in the suite; only a call for this test's own recipient proves this job ran.
+            ulong RanForMe() => (ulong)CompleteWorkflowHandler.Mock.ReceivedCalls()
+                .Count(c => c.GetMethodInfo().Name == nameof(ICommandHandler<Guid, CompleteWorkflow>.Execute)
+                            && c.GetArguments()[0] is Guid id && id == recipientId);
+            var deadline = DateTime.UtcNow + JobRunBudget;
+            while (!(monitor.ScheduledTotal >= 1 && monitor.Executed >= 1 && RanForMe() >= 1) && DateTime.UtcNow < deadline)
+                await Task.Delay(200);
 
-            await CompleteWorkflowHandler.Mock.Received().Execute(Arg.Any<Guid>(), Arg.Any<CompleteWorkflow>());
-            monitor.ScheduledTotal.Should().BeGreaterThanOrEqualTo(1ul);
-            monitor.Executed.Should().BeGreaterThanOrEqualTo(1ul);
+            monitor.ScheduledTotal.Should().BeGreaterThanOrEqualTo(1ul, $"the job is scheduled within {JobRunBudget}");
+            monitor.Executed.Should().BeGreaterThanOrEqualTo(1ul, "and executed");
+            RanForMe().Should().BeGreaterThanOrEqualTo(1ul, "and THIS job's command reached the handler for this test's recipient");
             
             using var serverScope = srv.CreateScope();
             var pl = serverScope.ServiceProvider.GetRequiredService<IPlumber>();
