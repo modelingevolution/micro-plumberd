@@ -37,8 +37,15 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
     public static TimeSpan ReadyBudget(TimeSpan perStore, int startingAtOnce) => perStore * Math.Max(1, startingAtOnce);
 
     /// <summary>The readiness wait itself — a seam so a test can see the budget each start actually waited with.</summary>
-    internal static Func<KurrentDBClientSettings, TimeSpan, Task> WaitReady { get; set; } =
-        (settings, budget) => settings.WaitUntilReady(budget);
+    /// <summary>
+    /// The removal Cleanup makes — a seam so a test can make it fail (as a concurrent removal's 409 did). It is given the
+    /// server, so a test touches only its own store while the suite runs classes in parallel.
+    /// </summary>
+    internal static Func<EventStoreServer, DockerClient, string, Task> RemoveContainer { get; set; } =
+        (_, docker, id) => docker.Containers.RemoveContainerAsync(id, new ContainerRemoveParameters { Force = true, RemoveVolumes = true });
+
+    internal static Func<EventStoreServer, KurrentDBClientSettings, TimeSpan, Task> WaitReady { get; set; } =
+        (_, settings, budget) => settings.WaitUntilReady(budget);
     private static readonly ConcurrentDictionary<EventStoreServer, byte> Undisposed = new();
     private static readonly string CurrentOwner = OwnerOf(Environment.ProcessId, Process.GetCurrentProcess().StartTime);
 
@@ -56,7 +63,7 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
     {
         if (containerName != null)
             _containerName = containerName;
-        httpPort = _searcher.FindNextAvailablePort();
+        (httpPort, _portLock) = PortLock.Acquire(_searcher);
         const string eventStoreHostName = "127.0.0.1";
         HttpUrl = new Uri($"esdb://admin:changeit@{eventStoreHostName}:{httpPort}?tls=false&tlsVerifyCert=false");
         client = new DockerClientConfiguration()
@@ -64,6 +71,12 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
     }
 
     private string? _containerName;
+
+    // card microplumberd-testing-store-port-race: this store's port, held machine-wide for its lifetime (see PortLock), and
+    // the id of the container IT created. Removal and restart go by that id — never by name: the name is derived from the
+    // port, so another process's store can carry it.
+    private PortLock? _portLock;
+    private string? _containerId;
     public string ContainerName => _containerName ?? $"eventstore-mem-{httpPort}";
     public int HttpPort => httpPort;
 
@@ -86,10 +99,10 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
 
     public async Task<bool> Stop()
     {
-        var container = await GetEventStoreContainer();
-        if (container != null)
+        // This server's own container only (by id) — a name can be another process's store.
+        if (_containerId != null)
         {
-            var data = await client.Containers.InspectContainerAsync(container.ID);
+            var data = await client.Containers.InspectContainerAsync(_containerId);
             if (data.State.Running)
             {
                 await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
@@ -102,10 +115,9 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
 
     public async Task Restart(TimeSpan delay)
     {
-        var container = await GetEventStoreContainer();
-        if (container != null)
+        if (_containerId != null)
         {
-            var data = await client.Containers.InspectContainerAsync(container.ID);
+            var data = await client.Containers.InspectContainerAsync(_containerId);
             if (data.State.Running)
             {
                 await client.Containers.StopContainerAsync(data.ID, new ContainerStopParameters());
@@ -139,10 +151,20 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
         await ReapOrphans(client);
 
         var container = await GetEventStoreContainer();
+        if (container != null && container.ID != _containerId)
+        {
+            // A container with this name that THIS server did not create: another live process's store (refused, named —
+            // restarting it would wipe it, removing it would pull it from under that process), or a dead owner's (reaped).
+            if (!container.Labels.TryGetValue(OwnerLabel, out var owner) || !IsDeadOwnerOnThisMachine(owner))
+                throw new InvalidOperationException(
+                    $"Container '{ContainerName}' ({container.ID[..12]}) belongs to another process ({owner ?? "no owner label"}); " +
+                    "it was neither restarted nor removed. Two processes chose the same store port.");
+            await client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters { Force = true, RemoveVolumes = true });
+            container = null;
+        }
         if (!inMemory && container != null)
         {
-            var data = await client.Containers.InspectContainerAsync(container.ID);
-            await client.Containers.RemoveContainerAsync(data.ID, new ContainerRemoveParameters() { RemoveVolumes = true});
+            await client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters() { RemoveVolumes = true});
             container = null;
         }
 
@@ -178,6 +200,7 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
                         { "2113", default},
                     }
                 });
+                _containerId = response.ID;
                 await client.Containers.StartContainerAsync(response.ID, new ContainerStartParameters());
             }
             else
@@ -191,12 +214,21 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
 
             // Health THEN a gRPC round trip (WaitUntilReady), on a budget that grows with the stores starting
             // alongside this one — read now, when they are all competing for the host.
-            await WaitReady(this.GetEventStoreSettings(), ReadyBudget(readyTimeout, Volatile.Read(ref _starting)));
+            await WaitReady(this, this.GetEventStoreSettings(), ReadyBudget(readyTimeout, Volatile.Read(ref _starting)));
         }
-        catch
+        catch (Exception started)
         {
-            await Cleanup();
-            throw;
+            // The START failure is the one to see (dev-clean, 2026-10-18): a cleanup that throws too (Docker 409 "removal
+            // already in progress") replaced it, and the first failure was lost. Cleanup's failure rides along, never instead.
+            // Both visible (rev-reach 9de418b9d m2): Data is printed by neither xUnit nor ToString. The start failure FIRST.
+            try { await Cleanup(); }
+            catch (Exception cleanup)
+            {
+                throw new AggregateException($"Store '{ContainerName}' failed to start, and removing its container failed too.",
+                    started, cleanup);
+            }
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(started).Throw();
+            throw; // unreachable
         }
 
         return this;
@@ -285,19 +317,21 @@ public class EventStoreServer :  IDisposable, IAsyncDisposable
 
     async ValueTask Cleanup()
     {
-        var container = await GetEventStoreContainer();
-        if (container != null)
+        // ONLY the container this server created, by its id: a name lookup here removed another process's live store.
+        if (_containerId != null)
         {
             try
             {
-                await client.Containers.RemoveContainerAsync(container.ID, new ContainerRemoveParameters() { Force = true, RemoveVolumes = true });
+                await RemoveContainer(this, client, _containerId);
             }
             catch (DockerContainerNotFoundException)
             {
             }
+            _containerId = null;
         }
 
         Undisposed.TryRemove(this, out _);
+        Interlocked.Exchange(ref _portLock, null)?.Dispose();
     }
 
     public void Dispose()

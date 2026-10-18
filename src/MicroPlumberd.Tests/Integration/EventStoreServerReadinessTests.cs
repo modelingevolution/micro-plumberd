@@ -17,11 +17,16 @@ public class EventStoreServerReadinessTests
     {
         var budgets = new ConcurrentBag<TimeSpan>();
         var real = EventStoreServer.WaitReady;
-        EventStoreServer.WaitReady = async (settings, budget) => { budgets.Add(budget); await real(settings, budget); };
+        await using var a = EventStoreServer.Create();
+        await using var b = EventStoreServer.Create();
+        // Only these two stores' budgets: other classes start stores through the same static seam in parallel.
+        EventStoreServer.WaitReady = async (server, settings, budget) =>
+        {
+            if (ReferenceEquals(server, a) || ReferenceEquals(server, b)) budgets.Add(budget);
+            await real(server, settings, budget);
+        };
         try
         {
-            await using var a = EventStoreServer.Create();
-            await using var b = EventStoreServer.Create();
             await Task.WhenAll(a.StartInDocker(), b.StartInDocker());
         }
         finally
