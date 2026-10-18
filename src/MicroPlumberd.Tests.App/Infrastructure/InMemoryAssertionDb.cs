@@ -37,13 +37,11 @@ public class InMemoryAssertionDb
 
 public class LiteDbFactory
 {
-    private static int _id = 0;
-
-    public static LiteDatabase Get()
-    {
-        string fileName = $"./test_{Interlocked.Increment(ref _id)}.db";
-        if(File.Exists(fileName))
-            File.Delete(fileName);
-        return new LiteDatabase(fileName);
-    }
+    /// <summary>
+    /// A fresh, empty, IN-MEMORY LiteDB per call. It was a file, ./test_{n}.db, "fresh" by deleting that file — but LiteDB
+    /// also writes a journal, ./test_{n}-log.db, which survived and was REPLAYED on the next open: a later process's
+    /// HowToSubscribeRealModel counted earlier runs' reservations ("found 2", "found 6", 10 — growing run on run, and
+    /// passing only where the journal had been checkpointed away). Memory leaves nothing behind for the next run.
+    /// </summary>
+    public static LiteDatabase Get() => new LiteDatabase(new MemoryStream());
 }

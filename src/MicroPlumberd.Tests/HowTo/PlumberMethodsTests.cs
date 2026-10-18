@@ -82,12 +82,16 @@ namespace MicroPlumberd.Tests.HowTo
             await plumber.SubscribeEventHandler(dbModel);
 
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
-            var ourLovelyEvent = new TicketReserved() { MovieName = "Golden Eye", RoomName = "101"};
+            // THIS row's own reservation, by its own name. The "found 2/6" reds were a LiteDB journal replayed from earlier runs
+            // (fixed in LiteDbFactory); the class-fixture store contributes nothing TODAY (the absolute-count mutant survives) —
+            // but the model subscribes from the beginning, so the next row in this class that reserves under a shared name would
+            // bring an absolute count's order-dependence back. Count ours.
+            var movie = $"Golden Eye {Guid.NewGuid():N}";
+            var ourLovelyEvent = new TicketReserved() { MovieName = movie, RoomName = "101"};
 
             await plumber.AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
-            await Task.Delay(1000);
 
-            dbModel.Reservations.Query().Count().Should().Be(1);
+            (await OwnReservationsFolded(dbModel.Reservations, movie)).Should().Be(1, "our event is folded exactly once");
 
         }
         [Fact]
@@ -102,12 +106,12 @@ namespace MicroPlumberd.Tests.HowTo
                 .StartAsync();
             
             var suffixOfStreamWhereOurEventWillBeAppend = Guid.NewGuid();
-            var ourLovelyEvent = new TicketReserved() { MovieName = "Golden Eye", RoomName = "101" };
+            var movie = $"Golden Eye {Guid.NewGuid():N}"; // this row's own reservation (see HowToSubscribeRealModel)
+            var ourLovelyEvent = new TicketReserved() { MovieName = movie, RoomName = "101" };
 
             await sp.GetRequiredService<IPlumber>().AppendEvent(ourLovelyEvent, suffixOfStreamWhereOurEventWillBeAppend);
-            await Task.Delay(1000);
 
-            sp.GetRequiredService<LiteDatabase>().Reservations().Query().Count().Should().Be(1);
+            (await OwnReservationsFolded(sp.GetRequiredService<LiteDatabase>().Reservations(), movie)).Should().Be(1, "our event is folded exactly once");
 
         }
 
@@ -264,6 +268,19 @@ namespace MicroPlumberd.Tests.HowTo
             model.EventHandled.Should().BeFalse();
         }
 
+
+        /// <summary>
+        /// Waits — bounded, for the condition the assertion needs: THIS row's reservation folded — instead of a fixed delay, then
+        /// gives a short settle so a duplicate delivery of the same event would still be counted. Returns how many are folded.
+        /// </summary>
+        private static async Task<int> OwnReservationsFolded(LiteDB.ILiteCollection<Reservation> reservations, string movie)
+        {
+            var deadline = DateTime.UtcNow + TimeSpan.FromSeconds(15);
+            while (reservations.Count(x => x.MovieName == movie) == 0 && DateTime.UtcNow < deadline)
+                await Task.Delay(50);
+            await Task.Delay(250);
+            return reservations.Count(x => x.MovieName == movie);
+        }
 
         public void Dispose()
         {
