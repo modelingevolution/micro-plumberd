@@ -74,18 +74,34 @@ public partial class TestAppHost : IDisposable
     }
 
 
+    /// <summary>How long <see cref="StartAsync"/> waits for the handlers to be ready before it THROWS.</summary>
+    public TimeSpan ReadyTimeout { get; set; } = TimeSpan.FromSeconds(60);
+
+    /// <summary>
+    /// Starts the host and waits until the MicroPlumberd handlers are ready — BOUNDED. It was <c>while (true)</c> on the health
+    /// check: a starter that threw (the host then stops; IsReady never turns true) or stalled spun the test forever, silently —
+    /// a full suite killed by its timeout with no summary and the store left running (the test's finally never ran). Now:
+    /// a host that STOPPED (a faulted starter, BackgroundServiceExceptionBehavior.StopHost) or a health result carrying an
+    /// exception throws at once; one that never becomes ready throws after <see cref="ReadyTimeout"/> with the health text.
+    /// </summary>
     public async Task<IServiceProvider> StartAsync()
     {
         await Host.StartAsync();
 
         var hc = Host.Services.GetRequiredService<StartupHealthCheck>();
+        var lifetime = Host.Services.GetRequiredService<IHostApplicationLifetime>();
+        var deadline = DateTime.UtcNow + ReadyTimeout;
         while (true)
         {
             var ret = await hc.CheckHealthAsync(null, default);
             if (ret.Status == HealthStatus.Healthy) break;
-            await Task.Delay(1000);
+            if (ret.Exception != null || lifetime.ApplicationStopping.IsCancellationRequested)
+                throw new InvalidOperationException($"The test host stopped before it was ready: {ret.Description}", ret.Exception);
+            if (DateTime.UtcNow >= deadline)
+                throw new TimeoutException($"The test host was not ready after {ReadyTimeout.TotalSeconds:0.#} s: {ret.Description}");
+            await Task.Delay(100);
         }
-        
+
         return Host.Services;
     }
 }
