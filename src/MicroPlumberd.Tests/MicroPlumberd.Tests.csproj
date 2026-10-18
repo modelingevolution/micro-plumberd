@@ -26,6 +26,9 @@
     <AssemblyMetadata Include="MicroPlumberdSourceDir" Value="$(MSBuildThisFileDirectory).." />
   </ItemGroup>
   <ItemGroup>
+    <AssemblyMetadata Include="StoreHolderDll" Value="$(MSBuildThisFileDirectory)../MicroPlumberd.Testing.StoreHolder/bin/$(Configuration)/net10.0/MicroPlumberd.Testing.StoreHolder.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="10.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -55,6 +58,8 @@
     <ProjectReference Include="..\MicroPlumberd.Service.Identity\MicroPlumberd.Services.Identity.csproj" />
     <ProjectReference Include="..\MicroPlumberd.SourceGenerators\MicroPlumberd.SourceGenerators.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Testing\MicroPlumberd.Testing.csproj" />
+    <!-- Built, not referenced: StorePortRaceTests runs two of it as separate processes. -->
+    <ProjectReference Include="..\MicroPlumberd.Testing.StoreHolder\MicroPlumberd.Testing.StoreHolder.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\MicroPlumberd.Tests.App.Dsl\MicroPlumberd.Tests.App.Dsl.csproj" />
     <ProjectReference Include="..\MicroPlumberd.Tests.App\MicroPlumberd.Tests.App.csproj" />
     <ProjectReference Include="..\MicroPlumberd\MicroPlumberd.csproj" />
