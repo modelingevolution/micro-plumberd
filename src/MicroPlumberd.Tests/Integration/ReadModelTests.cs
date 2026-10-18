@@ -36,24 +36,65 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
 
         fooModel.AssertionDb.Index.Should().HaveCount(1);
     }
+    /// <summary>
+    /// "From End-1" delivers the LAST event of the model's stream, then what follows. ORDER-INDEPENDENT (epic-099 card
+    /// microplumberd-readmodeltests-order-dependency: red 2/2 inside its class, green alone): End-1 is resolved over the
+    /// model's join-projection stream, which the SERVER fills asynchronously — 100 ms after the appends it could hold fewer
+    /// than both, and End-1 then pointed elsewhere; fixed delays then asserted on whichever race was won. Now the projection
+    /// stream must hold both events BEFORE the subscription resolves End-1, and the claim is checked by IDENTITY with a
+    /// FENCE (rev-reach 346ee9e75): one subscription delivers in order, so once the event appended AFTER subscribing has
+    /// arrived, everything before it has too — the delivered sequence must be exactly [the last pre-subscribe event, the
+    /// new one]. A wrong End-1 is red under any load; no settle window is needed.
+    /// </summary>
     [Fact]
     public async Task SubscribeModelFromEnd()
     {
         await _eventStore.StartInDocker();
         await AppendOneEvent();
-        await AppendOneEvent();
-        await Task.Delay(100);
+        var last = await AppendOneEvent();
+
+        await plumber.TryCreateJoinProjection<FooModel>();
+        var modelStream = plumber.Config.Conventions.OutputStreamModelConvention(typeof(FooModel));
+        var linked = await Eventually(() => CountIn(modelStream), n => n == 2);
+        linked.Should().Be(2, $"the projection must link both events into {modelStream} before End-1 is resolved over it — " +
+                              $"it held {linked} of 2 after 30 s");
 
         var fooModel = new FooModel(new InMemoryAssertionDb());
-        var sub = await plumber.SubscribeEventHandler(fooModel, start: FromRelativeStreamPosition.End-1);
+        // The projection exists and is verified populated (above), so the subscription must not ensure it again: an
+        // immediate second ensure of a just-created projection is answered Conflict by the server (measured).
+        await using var sub = await plumber.SubscribeEventHandler(fooModel, start: FromRelativeStreamPosition.End - 1,
+            ensureOutputStreamProjection: false);
 
-        await Task.Delay(1000);
+        var appended = await AppendOneEvent();   // the FENCE
+        var delivered = await Eventually(() => Task.FromResult(fooModel.AssertionDb.Index.Count), n => n >= 2);
+        delivered.Should().BeGreaterThanOrEqualTo(2, $"the fence and the event before it are delivered — held {delivered} of 2 after 30 s");
 
-        fooModel.AssertionDb.Index.Should().HaveCount(1);
+        // From End-1, in order: the last pre-subscribe event, then the fence — nothing earlier, nothing between.
+        fooModel.AssertionDb.Index.Values.Select(i => i.Metadata.Id).Should().Equal(last, appended);
+    }
 
-        await AppendOneEvent();
-        await Task.Delay(200);
-        fooModel.AssertionDb.Index.Should().HaveCount(2);
+    /// <summary>
+    /// Observes until <paramref name="done"/> holds or 30 s pass, and returns the LAST observed value either way — so a
+    /// timed-out assertion says what it saw ("held 1 of 2"), never only that it waited.
+    /// </summary>
+    private static async Task<T> Eventually<T>(Func<Task<T>> observe, Func<T, bool> done)
+    {
+        var deadline = DateTime.UtcNow.AddSeconds(30);
+        var seen = await observe();
+        while (!done(seen) && DateTime.UtcNow < deadline)
+        {
+            await Task.Delay(100);
+            seen = await observe();
+        }
+        return seen;
+    }
+
+    /// <summary>How many events a stream holds (links counted as events), 0 when it does not exist yet.</summary>
+    private async Task<int> CountIn(string stream)
+    {
+        var read = plumber.Client.ReadStreamAsync(Direction.Forwards, stream, StreamPosition.Start, resolveLinkTos: false);
+        if (await read.ReadState == ReadState.StreamNotFound) return 0;
+        return await read.CountAsync();
     }
     [Fact]
     public async Task SubscribeModel()
@@ -154,10 +195,12 @@ public class ReadModelTests : IAsyncDisposable, IDisposable
         // Should check db.
     }
 
-    private async Task AppendOneEvent()
+    /// <summary>Appends one FooCreated (a new aggregate) and returns its id — the identity a delivery carries (Metadata.Id).</summary>
+    private async Task<Guid> AppendOneEvent()
     {
         FooAggregate aggregate = FooAggregate.Open("Hello");
         await plumber.SaveNew(aggregate);
+        return aggregate.Id;
     }
 
     public async ValueTask DisposeAsync()
