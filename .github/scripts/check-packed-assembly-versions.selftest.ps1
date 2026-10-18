@@ -69,6 +69,27 @@ try {
     $r = Run-Guard (New-Package 'MicroPlumberd.9.9.9' @{ 'lib/net10.0/MicroPlumberd.dll' = $good })
     if ($r.Exit -eq 0 -and $r.Out -match 'ok\s+MicroPlumberd\.9\.9\.9\.nupkg: lib/net10\.0/MicroPlumberd\.dll 9\.9\.9\.0') { Ok 'the core package at 9.9.9.0: passes, checked' }
     else { Bad "core: exit $($r.Exit) $($r.Out)" }
+
+    # rev-reach 2f5a9a7b5: a name the guard cannot read literally is REFUSED, naming where — never a DLL left unchecked.
+    function Run-GuardOn([string] $root, [string] $artifacts) {
+        $out = & pwsh -NoProfile -File $guard -Artifacts $artifacts -Version '9.9.9.0' -RepoRoot $root 2>&1 | Out-String
+        [pscustomobject]@{ Exit = $LASTEXITCODE; Out = $out }
+    }
+    $pkg = New-Package 'MicroPlumberd.9.9.9' @{ 'lib/net10.0/MicroPlumberd.dll' = $good }
+    $fake = Join-Path $work 'repo-prop'
+    New-Item -ItemType Directory -Path "$fake/src/Tool" -Force | Out-Null
+    Set-Content "$fake/src/Tool/Tool.csproj" '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><AssemblyName>$(ToolName)</AssemblyName></PropertyGroup></Project>'
+    $r = Run-GuardOn $fake $pkg
+    if ($r.Exit -ne 0 -and $r.Out -match 'Tool\.csproj' -and $r.Out -match 'MSBuild property') { Ok 'an AssemblyName built from $(…): REFUSED, naming the project' }
+    else { Bad "property AssemblyName: exit $($r.Exit) $($r.Out)" }
+
+    $fake = Join-Path $work 'repo-props'
+    New-Item -ItemType Directory -Path "$fake/src/Tool" -Force | Out-Null
+    Set-Content "$fake/src/Tool/Tool.csproj" '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup /></Project>'
+    Set-Content "$fake/src/Directory.Build.props" '<Project><PropertyGroup><AssemblyName>tool</AssemblyName></PropertyGroup></Project>'
+    $r = Run-GuardOn $fake $pkg
+    if ($r.Exit -ne 0 -and $r.Out -match 'Directory\.Build\.props sets an AssemblyName') { Ok 'an AssemblyName set in a Directory.Build.props: REFUSED, naming the file' }
+    else { Bad "props AssemblyName: exit $($r.Exit) $($r.Out)" }
 }
 finally { Remove-Item -Recurse -Force $work -ErrorAction SilentlyContinue }
 

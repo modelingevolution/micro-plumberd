@@ -44,9 +44,22 @@ while ($parts.Count -lt 4) { $parts += '0' }
 $expected = [Version]::new([int]$parts[0], [int]$parts[1], [int]$parts[2], [int]$parts[3])
 
 $firstParty = [Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+# Read LITERALLY, so refused where a literal would lie (rev-reach 2f5a9a7b5): an AssemblyName built from an MSBuild
+# property ($(…)) never matches a packed file name, and one set in a Directory.Build.props is not in the project file at
+# all — either way that DLL would go unchecked, silently. Both are refused by name; write the name literally instead.
+foreach ($props in Get-ChildItem -Path $RepoRoot -Filter Directory.Build.props -Recurse -File |
+        Where-Object { $_.FullName -notmatch '[\\/](bin|obj)[\\/]' }) {
+    [xml] $xml = Get-Content -Raw $props.FullName
+    if (@($xml.Project.PropertyGroup | ForEach-Object { $_.AssemblyName } | Where-Object { $_ }).Count -gt 0) {
+        Write-Error "$($props.FullName) sets an AssemblyName: this guard reads project files literally and would not see it. Set it in the project file."
+    }
+}
 foreach ($project in Get-ChildItem -Path (Join-Path $RepoRoot 'src') -Filter *.csproj -Recurse -File) {
     [xml] $xml = Get-Content -Raw $project.FullName
     $name = @($xml.Project.PropertyGroup | ForEach-Object { $_.AssemblyName } | Where-Object { $_ }) | Select-Object -First 1
+    if ($name -and $name.Contains('$(')) {
+        Write-Error "$($project.FullName): AssemblyName '$name' uses an MSBuild property, which this guard cannot evaluate — its DLL would go unchecked. Write the name literally."
+    }
     if (-not $name) { $name = $project.BaseName }
     [void] $firstParty.Add($name)
 }
