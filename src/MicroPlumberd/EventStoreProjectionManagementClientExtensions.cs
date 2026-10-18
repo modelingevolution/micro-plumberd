@@ -36,10 +36,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         if (await client.ListContinuousAsync().AnyAsync(x => x.Name == outputStream))
             return await UpdateIfChanged(client, esClient, outputStream, query);
         else
-        {
-            await CreateAndStoreHash(client, esClient, outputStream, query);
-            return true;
-        }
+            return await CreateAndStoreHash(client, esClient, outputStream, query);
     }
 
     /// <summary>
@@ -57,10 +54,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         if ((await register.Get(outputStreamCategory)) != null)
             return await UpdateIfChanged(client, esClient, outputStreamCategory, query, token);
         else
-        {
-            await CreateAndStoreHash(client, esClient, outputStreamCategory, query, token);
-            return true;
-        }
+            return await CreateAndStoreHash(client, esClient, outputStreamCategory, query, token);
     }
 
     /// <summary>
@@ -81,10 +75,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         if ((await register.Get(outputStream)) != null)
             return await UpdateIfChanged(client, esClient, outputStream, query, token);
         else
-        {
-            await CreateAndStoreHash(client, esClient, outputStream, query, token);
-            return true;
-        }
+            return await CreateAndStoreHash(client, esClient, outputStream, query, token);
     }
 
     private static async Task<bool> UpdateIfChanged(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
@@ -108,15 +99,64 @@ public static class KurrentDBProjectionManagementClientExtensions
         return true;
     }
 
-    private static async Task CreateAndStoreHash(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+    /// <summary>How long a create that met an existing projection waits for that projection's creator to record its query hash.</summary>
+    internal static TimeSpan ConflictHashWait = TimeSpan.FromSeconds(10);
+
+    /// <returns><c>true</c> if this call created (or, for an unknown existing one, updated) the projection; <c>false</c> if an
+    /// IDENTICAL projection already existed.</returns>
+    private static async Task<bool> CreateAndStoreHash(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
         string outputStream, string query, CancellationToken token = default)
     {
-        await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+        try
+        {
+            await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+        }
+        catch (RpcException ex) when (IsConflict(ex))
+        {
+            // The projection EXISTS (issue #29): the register is loaded once per process and does not see a projection
+            // created after it loaded — a second ensure of the same model in the same process, or another instance's
+            // creation — so the create path met it. Decided by the definition, never by overwriting it.
+            return await ResolveExisting(client, esClient, outputStream, query, ex, token);
+        }
         // The gRPC create cannot enable emitting; the update does — on the running projection, never after
         // disabling it.
         await UpdateWithRetry(client, outputStream, query, token);
         await ProjectionQueryHash.StoreAsync(esClient, outputStream, ProjectionQueryHash.Of(query), token);
+        return true;
     }
+
+    /// <summary>
+    /// A create refused because the projection already exists. Its creator records the query hash after creating it, so
+    /// this waits (bounded) for that hash: the SAME definition is success — nothing to do; a DIFFERENT one surfaces, named,
+    /// and is never overwritten. No hash within the wait (a creator that died between creating and recording, or an older
+    /// MicroPlumberd) is treated as UpdateIfChanged treats an unknown definition: updated in place, which keeps the
+    /// projection's checkpoint and never disables it.
+    /// </summary>
+    private static async Task<bool> ResolveExisting(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
+        string outputStream, string query, RpcException conflict, CancellationToken token)
+    {
+        var mine = ProjectionQueryHash.Of(query);
+        var deadline = DateTime.UtcNow + ConflictHashWait;
+        while (true)
+        {
+            var (existing, _) = await ProjectionQueryHash.ReadWithSourceAsync(esClient, outputStream, token);
+            if (existing == mine) return false;
+            if (existing != null)
+                throw new InvalidOperationException(
+                    $"Projection '{outputStream}' already exists with a DIFFERENT definition (query hash {existing}, this one {mine}); " +
+                    "it was not overwritten. Two code paths define the same output stream differently.", conflict);
+            if (DateTime.UtcNow >= deadline) break;
+            await Task.Delay(200, token);
+        }
+
+        await UpdateWithRetry(client, outputStream, query, token);
+        await ProjectionQueryHash.StoreAsync(esClient, outputStream, mine, token);
+        return true;
+    }
+
+    /// <summary>KurrentDB answers a create of an existing projection "Envelope callback expected Updated, received Conflict".</summary>
+    private static bool IsConflict(RpcException ex) =>
+        ex.StatusCode == StatusCode.AlreadyExists || ex.Status.Detail.Contains("Conflict", StringComparison.Ordinal);
 
     /// <summary>
     /// Updates the query of a projection WITHOUT disabling it first. It used to disable, then update: when
