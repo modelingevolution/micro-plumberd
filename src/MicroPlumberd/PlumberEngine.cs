@@ -879,7 +879,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// BEFORE the snapshot, the snapshot may cover it → may be low → do not use it (the caller rebuilds from the stream, which
     /// is always right). Otherwise version + 1 was written after the snapshot: the version is the revision, use it.
     /// (A writer that appended between another's save and its snapshot also reads as "may be low": a needless rebuild, never
-    /// a wrong state.) The order is the store's own commit timestamps on both streams.
+    /// a wrong state.) The order is the $all COMMIT POSITION of both records (<see cref="WrittenAfter"/>), never a timestamp.
     /// </summary>
     private async Task<bool> LegacySnapshotMayBeLow(OperationContext context, Type owner, object id, Type snapshotType, long version, CancellationToken token)
     {
@@ -893,8 +893,16 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             StreamPosition.End, maxCount: 1, resolveLinkTos: false, cancellationToken: token);
         if (await snap.ReadState == ReadState.StreamNotFound) return true;
         var written = await snap.FirstOrDefaultAsync(token);
-        return written.Event == null || after.Event.Created <= written.Event.Created;
+        return written.Event == null || !WrittenAfter(after.Event, written.Event);
     }
+
+    /// <summary>
+    /// Whether <paramref name="later"/> was committed after <paramref name="earlier"/> — by the $all COMMIT POSITION, which is
+    /// monotonic across streams. NOT <c>Created</c> (rev-reach a3f8d0c32): that is the server's wall clock, and a clock step
+    /// BACK between the write of the event at version + 1 and the snapshot's write would make a SHORT legacy snapshot look
+    /// as if its next event came later — the snapshot used, the event re-folded: the very state #28 fixes.
+    /// </summary>
+    internal static bool WrittenAfter(EventRecord later, EventRecord earlier) => later.Position > earlier.Position;
 
     /// <summary>The revision of the last event a read went past, mapped or not.</summary>
     private sealed class LastRevisionRead

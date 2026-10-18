@@ -171,4 +171,33 @@ public class SnapshotRevisionTests : IClassFixture<EventStoreServer>
         metadata.RootElement.GetProperty("SnapshotVersion").GetInt64().Should().Be(6);
         metadata.RootElement.GetProperty("SnapshotVersionIsRevision").GetBoolean().Should().BeTrue("the marker is an ADDED key the old reader skips");
     }
+
+    /// <summary>
+    /// rev-reach a3f8d0c32 (m1): "written after" is decided by the $all COMMIT POSITION, never by Created (the server's wall
+    /// clock). A real store cannot plant a clock step, so the decision is isolated in PlumberEngine.WrittenAfter and fed two
+    /// records whose Created order CONTRADICTS their positions — what a clock stepped back between the two writes produces.
+    /// The event at version + 1 committed BEFORE the snapshot (position 100 &lt; 200) but stamped LATER (Created +1 h):
+    /// it is NOT "written after" → the short legacy snapshot is not used.
+    /// </summary>
+    [Fact]
+    public void WrittenAfter_IsDecidedByCommitPosition_NotByCreated()
+    {
+        var t0 = DateTime.UtcNow;
+        var next = Record(position: 100, created: t0.AddHours(1));    // committed first, clock says later
+        var snapshot = Record(position: 200, created: t0);            // committed second, clock says earlier
+        next.Created.Should().BeAfter(snapshot.Created, "precondition: the records' clocks contradict their commit order");
+
+        PlumberEngine.WrittenAfter(next, snapshot).Should().BeFalse("the event at v+1 committed BEFORE the snapshot, whatever its clock says");
+        PlumberEngine.WrittenAfter(snapshot, next).Should().BeTrue();
+    }
+
+    private static EventRecord Record(ulong position, DateTime created) =>
+        new("Tally-x", Uuid.NewUuid(), StreamPosition.FromInt64(0), new Position(position, position),
+            new Dictionary<string, string>
+            {
+                ["type"] = "TallyAdded",
+                ["created"] = new DateTimeOffset(created).ToUnixTimeMilliseconds().ToString() + "0000",
+                ["content-type"] = "application/json"
+            },
+            ReadOnlyMemory<byte>.Empty, ReadOnlyMemory<byte>.Empty);
 }
