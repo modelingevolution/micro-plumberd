@@ -832,8 +832,40 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             }
         }
 
-        await aggregate.Rehydrate(Read<TOwner>(context,id, sp, token: token));
+        // The aggregate's version is the STREAM REVISION of the last event read — known or not (issue #25). Read filters the
+        // types this build has no mapping for (what a newer release's event is to an older build), and Rehydrate counted
+        // DELIVERED events: one unknown event made the expected version one short, and every save after a rollback failed
+        // WrongExpectedVersion. Unknown events are skipped for state and counted for version.
+        var streamId = Conventions.GetStreamIdConvention(context, typeof(TOwner), id);
+        var registry = _typeHandlerRegisters.GetEventNameConverterFor<TOwner>();
+        var read = new LastRevisionRead();
+        await aggregate.Rehydrate(ReadCountingRevisions(context, streamId, registry, sp, read, token));
+        if (read.Revision is { } revision && aggregate is IAggregateRevision versioned) versioned.RehydratedTo(revision);
         return aggregate;
+    }
+
+    /// <summary>The revision of the last event a read went past, mapped or not.</summary>
+    private sealed class LastRevisionRead
+    {
+        public long? Revision { get; set; }
+    }
+
+    /// <summary>
+    /// <see cref="Read(OperationContext, string, TypeEventConverter, StreamPosition?, Direction?, long, CancellationToken)"/>
+    /// forwards, recording the stream revision of EVERY event read — including the ones whose type is not mapped, which it skips.
+    /// </summary>
+    private async IAsyncEnumerable<object> ReadCountingRevisions(OperationContext context, string streamId, TypeEventConverter converter,
+        StreamPosition start, LastRevisionRead read, [EnumeratorCancellation] CancellationToken token)
+    {
+        var items = Client.ReadStreamAsync(Direction.Forwards, streamId, start, resolveLinkTos: true, cancellationToken: token);
+        if (await items.ReadState == ReadState.StreamNotFound) yield break;
+
+        await foreach (var x in items.WithCancellation(token))
+        {
+            read.Revision = x.OriginalEventNumber.ToInt64();
+            if (converter(x.Event.EventType, out var type) && type != null)
+                yield return Serializer(type).Deserialize(context, x.Event.Data.Span, type);
+        }
     }
 
     /// <summary>
