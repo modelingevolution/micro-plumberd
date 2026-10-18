@@ -537,6 +537,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             var (evt, metadata) = ReadEventData(context, i.Event, i.Link, t);
             await model.Handle(metadata, evt);
             if (vAware != null) vAware.Version = revision;
+            if (model is IAppliedEventsAware applied) applied.AppliedEvents++;
         }
     }
 
@@ -620,6 +621,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
             var (evt, metadata) = ReadEventData(context, i.Event, i.Link, t);
             await model.Handle(metadata, evt);
             if (vAware != null) vAware.Version = revision;
+            if (model is IAppliedEventsAware applied) applied.AppliedEvents++;
         }
     }
 
