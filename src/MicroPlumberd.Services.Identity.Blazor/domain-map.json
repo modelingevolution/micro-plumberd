@@ -1,0 +1,26 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Services.Identity.Blazor",
+  "description": "Blazor identity UI.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Identity UI",
+      "kind": "ui",
+      "status": "existing",
+      "note": "Razor-only; no C# types to bind."
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.Services.Identity",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

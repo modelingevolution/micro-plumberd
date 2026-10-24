@@ -1,0 +1,44 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Services",
+  "description": "Command bus, command handlers, correlation, health checks.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Command bus",
+      "kind": "library",
+      "types": [
+        "CommandBus",
+        "ICommandBusPool",
+        "CommandHandlerAttribute"
+      ],
+      "status": "existing"
+    },
+    {
+      "name": "Correlation model",
+      "kind": "library",
+      "types": [
+        "CorrelationModel",
+        "CorrelationModelBuilder"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.CommandBus.Abstractions",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

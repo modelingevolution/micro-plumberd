@@ -1,0 +1,29 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Migration.Scripting",
+  "description": "JavaScript migration rules.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "tooling",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Script migrations",
+      "kind": "tool",
+      "types": [
+        "ScriptMigration",
+        "JsRuleHost"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.Migration",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

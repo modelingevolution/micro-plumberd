@@ -1,0 +1,36 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Services.BatchOperations",
+  "description": "Long-running batch operations with progress.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Batch operations",
+      "kind": "service",
+      "types": [
+        "BatchOperationService",
+        "BatchOperationModel",
+        "BatchOperationStarted",
+        "OrphanDetector"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.Services",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd.SourceGenerators",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

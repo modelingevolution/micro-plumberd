@@ -1,0 +1,36 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Rewrite",
+  "description": "Offline store rewrite with verification and rollback.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "tooling",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Store rewrite",
+      "kind": "tool",
+      "types": [
+        "RewriteCommand",
+        "RewriteVerification",
+        "DirectorySwap",
+        "DockerStore"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.Migration",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd.Migration.Scripting",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

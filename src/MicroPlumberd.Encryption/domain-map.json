@@ -1,0 +1,30 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Encryption",
+  "description": "Encrypted event payloads (secret objects, certificates).",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Encryption",
+      "kind": "library",
+      "types": [
+        "IEncryptor",
+        "SecretObject",
+        "ICertManager"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

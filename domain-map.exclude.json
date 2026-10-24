@@ -1,0 +1,6 @@
+{ "exclude": [
+  { "path": "src/MicroPluberd.Examples.*", "reason": "Example apps." },
+  { "path": "src/MicroPlumberd.Examples.*", "reason": "Example apps." },
+  { "path": "src/Markdown2Toc", "reason": "Docs build helper." },
+  { "path": "src/MicroPlumberd.SpecFlow.SourceGenerators", "reason": "SpecFlow test helper." },
+  { "path": "src/MicroPlumberd.Testing.StoreHolder", "reason": "Test fixture helper." } ] }

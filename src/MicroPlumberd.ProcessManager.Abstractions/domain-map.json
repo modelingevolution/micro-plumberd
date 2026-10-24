@@ -1,0 +1,36 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.ProcessManager.Abstractions",
+  "description": "Process manager contracts.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Process manager contracts",
+      "kind": "library",
+      "types": [
+        "IProcessManager",
+        "ProcessManagerBase",
+        "ProcessManagerAttribute",
+        "CommandRequest"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.CommandBus.Abstractions",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

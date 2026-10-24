@@ -1,0 +1,35 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Services.Grpc.DirectConnect",
+  "description": "Commands over gRPC DirectConnect.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "adapter",
+  "status": "existing",
+  "components": [
+    {
+      "name": "gRPC commands",
+      "kind": "adapter",
+      "types": [
+        "CommandEnvelope",
+        "FaultEnvelope",
+        "ReturnsAttribute"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.Services",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

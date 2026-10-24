@@ -1,0 +1,34 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Services.ProcessManagers",
+  "description": "Process manager execution.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Process manager executor",
+      "kind": "service",
+      "types": [
+        "ProcessManagerExecutor",
+        "ProcessManagerClient"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.ProcessManager.Abstractions",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd.Services",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}

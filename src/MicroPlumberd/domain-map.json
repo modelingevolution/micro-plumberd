@@ -1,0 +1,43 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd",
+  "description": "CQRS/event-sourcing core over KurrentDB: plumber, aggregates, read models, event handlers.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "platform",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Plumber",
+      "kind": "library",
+      "types": [
+        "IPlumber",
+        "IPlumberInstance",
+        "Plumber",
+        "PlumberEngine"
+      ],
+      "status": "existing"
+    },
+    {
+      "name": "Aggregates and snapshots",
+      "kind": "library",
+      "types": [
+        "AggregateBase",
+        "AggregateAttribute",
+        "ISnapshotPolicy"
+      ],
+      "status": "existing"
+    },
+    {
+      "name": "Event handlers and output streams",
+      "kind": "library",
+      "types": [
+        "EventHandlerAttribute",
+        "OutputStreamAttribute"
+      ],
+      "status": "existing"
+    }
+  ]
+}

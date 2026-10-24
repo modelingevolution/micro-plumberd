@@ -1,0 +1,40 @@
+{
+  "$schema": "https://modelingevolution.com/schemas/domain-map/v1",
+  "repo": "micro-plumberd",
+  "project": "MicroPlumberd.Testing",
+  "description": "Spec testing DSL and an EventStore server for tests.",
+  "domain": "Platform libraries",
+  "subdomain": "Event sourcing",
+  "boundedContext": "event-sourcing",
+  "layer": "tooling",
+  "status": "existing",
+  "components": [
+    {
+      "name": "Spec DSL",
+      "kind": "tool",
+      "types": [
+        "AggregateSpecs",
+        "CommandHandlerSpecs",
+        "EventStoreServer"
+      ],
+      "status": "existing"
+    }
+  ],
+  "dependsOn": [
+    {
+      "target": "MicroPlumberd.CommandBus.Abstractions",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd.Services",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    },
+    {
+      "target": "MicroPlumberd",
+      "pattern": "conformist",
+      "note": "framework / platform library"
+    }
+  ]
+}
