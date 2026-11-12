@@ -14,8 +14,9 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
 
     <!-- Source Generator Testing -->
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing.XUnit" Version="1.1.2" />
+    <PackageReference Include="ModelingEvolution.JsonParsableConverter" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +26,8 @@
   <ItemGroup>
     <ProjectReference Include="../MicroPlumberd.SourceGenerators/MicroPlumberd.SourceGenerators.csproj" />
     <ProjectReference Include="../MicroPlumberd/MicroPlumberd.csproj" />
+    <ProjectReference Include="../MicroPlumberd.Services/MicroPlumberd.Services.csproj" />
+    <ProjectReference Include="../MicroPlumberd.ProcessManager.Abstractions/MicroPlumberd.ProcessManager.Abstractions.csproj" />
   </ItemGroup>
 
 </Project>

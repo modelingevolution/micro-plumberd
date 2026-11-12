@@ -15,6 +15,12 @@ namespace MicroPlumberd.SourceGenerators
         private const string CommandHandlerAttributeName = "CommandHandlerAttribute";
         private const string CommandHandlerAttributeShortName = "CommandHandler";
 
+        private static readonly string[] GeneratedUsings =
+        {
+            "using Microsoft.Extensions.DependencyInjection;",
+            "using MicroPlumberd.Services;"
+        };
+
         // Diagnostic descriptors
         private static readonly DiagnosticDescriptor NoHandleMethodsRule = new DiagnosticDescriptor(
             id: "MPLUMB002",
@@ -139,13 +145,17 @@ namespace MicroPlumberd.SourceGenerators
         {
             var sb = new StringBuilder();
 
-            // Add using directives
-            foreach (var usingDirective in info.Usings)
+            // Generated files are in a disabled nullable context whatever the project sets (CS8669 on every '?'
+            // below); the emitted signatures carry the annotations of the interfaces they implement.
+            sb.AppendLine("#nullable enable annotations");
+            sb.AppendLine();
+
+            // Add using directives: the handler file's own, then the two the generated code needs, each once
+            // (the handler file already imports MicroPlumberd.Services for [CommandHandler]: CS0105).
+            foreach (var usingDirective in info.Usings.Concat(GeneratedUsings).Distinct())
             {
                 sb.AppendLine(usingDirective);
             }
-            sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
-            sb.AppendLine("using MicroPlumberd.Services;");
             sb.AppendLine();
 
             // Add namespace
@@ -203,7 +213,9 @@ namespace MicroPlumberd.SourceGenerators
             sb.AppendLine();
 
             // Generate RegisterHandlers method
-            sb.AppendLine("    static IServiceCollection IServiceTypeRegister.RegisterHandlers(IServiceCollection services, bool scoped=true)");
+            // No default value: an explicit implementation is never called with optional arguments (CS1066);
+            // the default lives on IServiceTypeRegister.RegisterHandlers.
+            sb.AppendLine("    static IServiceCollection IServiceTypeRegister.RegisterHandlers(IServiceCollection services, bool scoped)");
             sb.AppendLine("    {");
             sb.AppendLine("        if(scoped)");
             sb.AppendLine("        {");
