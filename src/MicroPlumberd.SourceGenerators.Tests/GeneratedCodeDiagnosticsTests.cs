@@ -11,7 +11,7 @@ namespace MicroPlumberd.SourceGenerators.Tests;
 
 /// <summary>
 /// The generated code must compile clean in a consumer that builds with Nullable=enable and warnings as errors
-/// (the ModelingEvolution simulator: CS0105, CS8669 and CS1066 from the [CommandHandler] output of 1.3.4).
+/// (observed in a consumer build: CS0105, CS8669 and CS1066 from the [CommandHandler] output of 1.3.4).
 /// Each fixture is compiled against the real MicroPlumberd assemblies, so the whole compilation (user code plus
 /// generated code) must carry no diagnostic of severity warning or above. The control in the same test plants a
 /// duplicate using (CS0105) in the user source and requires the same harness to report it.
@@ -33,7 +33,7 @@ global using global::System.Threading;
 global using global::System.Threading.Tasks;
 ";
 
-    // An identifier in the org shape (standards/dotnet.md, Identifiers: THE ONE SHAPE); the handler's TId. The converter is
+    // A strongly typed identifier (prefixed, IParsable, JSON as one string); the handler's and the aggregate's TId. The converter is
     // named in full because MicroPlumberd also declares a JsonParsableConverter<T> (CS0104 with both namespaces imported).
     private const string FooId = @"
 [JsonConverter(typeof(ModelingEvolution.JsonParsableConverter.JsonParsableConverter<FooId>))]
@@ -58,7 +58,7 @@ public readonly record struct FooId(Guid Value) : IParsable<FooId>
 }
 ";
 
-    // The simulator's reproduction: the user file already imports MicroPlumberd.Services (it must, for the attribute).
+    // A consumer's command handler: the user file already imports MicroPlumberd.Services (it must, for the attribute).
     private const string CommandHandlerSource = @"
 using System.Text.Json.Serialization;
 using MicroPlumberd;
@@ -87,6 +87,7 @@ public partial class FooCommandHandler(IPlumberInstance plumber)
 ";
 
     // The ProcessManager shape (MicroPlumberd.Tests.App XooProcessManager), user file importing MicroPlumberd.Services.
+    // The facts and commands carry no key (the test needs none); the recipient is a Guid because CommandRequest.Create takes one.
     private const string ProcessManagerSource = @"
 using MicroPlumberd;
 using MicroPlumberd.Services;
@@ -94,25 +95,25 @@ using MicroPlumberd.Services;
 
 namespace Consumer.Processes;
 
-public sealed record OrderPlaced(string Number);
-public sealed record PaymentReceived(string Number);
-public sealed record ShipOrder(string Number);
-public sealed record ChargeOrder(string Number);
+public sealed record OrderPlaced;
+public sealed record PaymentReceived;
+public sealed record ShipOrder;
+public sealed record ChargeOrder;
 
 [ProcessManager]
 public partial class OrderProcessManager
 {
     public Task<ICommandRequest<ChargeOrder>> StartWhen(Metadata m, OrderPlaced ev)
-        => Task.FromResult(CommandRequest.Create(Guid.NewGuid(), new ChargeOrder(ev.Number)));
+        => Task.FromResult(CommandRequest.Create(Guid.NewGuid(), new ChargeOrder()));
 
     private Task<ICommandRequest<ShipOrder>> When(Metadata m, PaymentReceived ev)
-        => Task.FromResult(CommandRequest.Create(Guid.NewGuid(), new ShipOrder(ev.Number)));
+        => Task.FromResult(CommandRequest.Create(Guid.NewGuid(), new ShipOrder()));
 
     private Task Given(Metadata m, OrderPlaced ev) => Task.CompletedTask;
 }
 ";
 
-    // The two generators whose output the simulator also builds with warnings as errors today.
+    // The two other generators, under the same consumer settings.
     private const string EventHandlerSource = @"
 using MicroPlumberd;
 //PLANTED
@@ -129,10 +130,12 @@ public partial class FooView
 ";
 
     private const string AggregateSource = @"
+using System.Text.Json.Serialization;
 using MicroPlumberd;
 //PLANTED
 
 namespace Consumer.Domain;
+" + FooId + @"
 
 public sealed record FooOpened(string Name);
 public sealed record FooState
@@ -141,7 +144,7 @@ public sealed record FooState
 }
 
 [Aggregate]
-public partial class FooAggregate(Guid id) : AggregateBase<Guid, FooState>(id)
+public partial class FooAggregate(FooId id) : AggregateBase<FooId, FooState>(id)
 {
     private static FooState Given(FooState state, FooOpened ev) => state with { Name = ev.Name };
 }
