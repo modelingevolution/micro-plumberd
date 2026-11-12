@@ -14,6 +14,12 @@ namespace MicroPlumberd.SourceGenerators
         private const string ProcessManagerAttributeName = "ProcessManagerAttribute";
         private const string ProcessManagerAttributeShortName = "ProcessManager";
 
+        private static readonly string[] GeneratedUsings =
+        {
+            "using Microsoft.Extensions.DependencyInjection;",
+            "using MicroPlumberd.Services;"
+        };
+
         // Diagnostic descriptors
         private static readonly DiagnosticDescriptor NoWhenMethodsRule = new DiagnosticDescriptor(
             id: "MPLUMB004",
@@ -170,13 +176,17 @@ namespace MicroPlumberd.SourceGenerators
         {
             var sb = new StringBuilder();
 
-            // Add using directives
-            foreach (var usingDirective in info.Usings)
+            // Generated files are in a disabled nullable context whatever the project sets (CS8669 on the
+            // Task<ICommandRequest?> below); the emitted signatures carry the annotations of IProcessManager.
+            sb.AppendLine("#nullable enable annotations");
+            sb.AppendLine();
+
+            // Add using directives: the process manager file's own, then the two the generated code needs, each once
+            // (a file that already imports MicroPlumberd.Services: CS0105).
+            foreach (var usingDirective in info.Usings.Concat(GeneratedUsings).Distinct())
             {
                 sb.AppendLine(usingDirective);
             }
-            sb.AppendLine("using Microsoft.Extensions.DependencyInjection;");
-            sb.AppendLine("using MicroPlumberd.Services;");
             sb.AppendLine();
 
             // Add namespace
