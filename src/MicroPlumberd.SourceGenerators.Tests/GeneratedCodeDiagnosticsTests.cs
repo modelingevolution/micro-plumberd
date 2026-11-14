@@ -109,7 +109,8 @@ public partial class FooCommandHandler(IPlumberInstance plumber)
 ";
 
     // The ProcessManager shape (MicroPlumberd.Tests.App XooProcessManager), user file importing MicroPlumberd.Services.
-    // The facts and commands carry no key (the test needs none); the recipient is a Guid because CommandRequest.Create takes one.
+    // The commands carry the exactly-once Id every command carries; the facts carry no domain key (the test needs none);
+    // the recipient is a Guid because CommandRequest.Create takes one.
     private const string ProcessManagerSource = @"
 using MicroPlumberd;
 using MicroPlumberd.Services;
@@ -122,9 +123,17 @@ public sealed record OrderPlaced;
 /// <summary>The order's payment arrived.</summary>
 public sealed record PaymentReceived;
 /// <summary>Ships an order.</summary>
-public sealed record ShipOrder;
+public sealed record ShipOrder
+{
+    /// <summary>The command's exactly-once key.</summary>
+    public Guid Id { get; init; } = Guid.NewGuid();
+}
 /// <summary>Charges an order.</summary>
-public sealed record ChargeOrder;
+public sealed record ChargeOrder
+{
+    /// <summary>The command's exactly-once key.</summary>
+    public Guid Id { get; init; } = Guid.NewGuid();
+}
 
 /// <summary>Takes an order from placement to shipping.</summary>
 [ProcessManager]
@@ -214,6 +223,8 @@ public partial class FooAggregate(FooId id) : AggregateBase<FooId, FooState>(id)
 
         var clean = Compile(source.Replace("//PLANTED", ""), generator, out var generated, DocumentationMode.Diagnose);
         Assert.EndsWith($"_{shape}.g.cs", Assert.Single(generated).FilePath);
+        // Control: the GENERATED tree is parsed with documentation diagnostics on; in any other mode the empty list below passes over nothing.
+        Assert.Equal(DocumentationMode.Diagnose, generated[0].Options.DocumentationMode);
         Assert.Empty(clean.Select(Describe));
 
         // Control: the same harness must report an undocumented public member of the user file as CS1591.
@@ -252,7 +263,8 @@ public static class Planted
 
     /// <summary>Runs the generator and returns every diagnostic of severity warning or above of the resulting compilation.</summary>
     /// <param name="documentation">DocumentationMode.Diagnose is what GenerateDocumentationFile=true gives a consumer; it applies
-    /// to the generated files too, because the driver parses them with the same options.</param>
+    /// to the generated files too, because the driver parses them with the same options (asserted on the generated tree in
+    /// GeneratedCode_WithDocumentationFile_HasNoWarningOrError).</param>
     private ImmutableArray<Diagnostic> Compile(string source, IIncrementalGenerator generator, out ImmutableArray<SyntaxTree> generated,
         DocumentationMode documentation = DocumentationMode.Parse)
     {
