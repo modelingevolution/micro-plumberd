@@ -201,7 +201,8 @@ namespace MicroPlumberd.SourceGenerators
             }
             sb.AppendLine();
 
-            // Generate Execute dispatcher
+            // Generate Execute dispatcher (implements ICommandHandler.Execute; the XML comment keeps CS1591 away, #54)
+            sb.AppendLine("    /// <inheritdoc/>");
             sb.AppendLine("    public async Task<object?> Execute(string id, object command) => command switch");
             sb.AppendLine("    {");
             foreach (var cmdType in commandTypes)

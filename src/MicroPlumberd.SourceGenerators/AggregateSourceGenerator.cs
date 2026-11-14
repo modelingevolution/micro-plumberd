@@ -155,7 +155,10 @@ namespace MicroPlumberd.SourceGenerators
             sb.AppendLine($"partial class {info.ClassName} : IAggregate<{info.ClassName}>, ITypeRegister");
             sb.AppendLine("{");
 
-            // Add AcceptedType attributes
+            // Add AcceptedType attributes (the comment goes above them: it documents the Given dispatcher below).
+            // Every public or protected member written here carries an XML comment, or a consumer that builds its
+            // documentation file gets CS1591 from this file (#54).
+            sb.AppendLine("    /// <inheritdoc/>");
             var attrs = info.EventTypes.Select(t => $"AcceptedType(typeof({t}))");
             sb.AppendLine($"    [{string.Join(", ", attrs)}]");
 
@@ -175,7 +178,8 @@ namespace MicroPlumberd.SourceGenerators
             sb.AppendLine("    }");
             sb.AppendLine();
 
-            // Generate Empty factory method
+            // Generate Empty factory method (implements IAggregate<TSelf>.Empty)
+            sb.AppendLine("    /// <inheritdoc/>");
             sb.AppendLine($"    public static {info.ClassName} Empty(object id) => new {info.ClassName}(({info.IdType})id);");
             sb.AppendLine();
 
