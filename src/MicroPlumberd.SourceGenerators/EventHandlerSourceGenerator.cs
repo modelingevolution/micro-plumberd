@@ -140,6 +140,8 @@ namespace MicroPlumberd.SourceGenerators
             // Generate Handle dispatcher
             sb.AppendLine("    Task IEventHandler.Handle(Metadata m, object ev) => Given(m, ev);");
             sb.AppendLine();
+            // Public and implementing nothing, so it gets its own summary (CS1591 for a consumer's documentation file, #54).
+            sb.AppendLine("    /// <summary>Dispatches the event to the Given method for its type.</summary>");
             sb.AppendLine("    public async Task Given(Metadata m, object ev)");
             sb.AppendLine("    {");
             sb.AppendLine("        switch (ev)");

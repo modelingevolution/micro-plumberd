@@ -48,6 +48,7 @@ namespace TestNamespace;
 
 partial class FooAggregate : IAggregate<FooAggregate>, ITypeRegister
 {
+    /// <inheritdoc/>
     [AcceptedType(typeof(FooCreated)), AcceptedType(typeof(FooUpdated))]
     protected override FooState Given(FooState state, object ev)
     {
@@ -59,6 +60,7 @@ partial class FooAggregate : IAggregate<FooAggregate>, ITypeRegister
         };
     }
 
+    /// <inheritdoc/>
     public static FooAggregate Empty(object id) => new FooAggregate((Guid)id);
 
     static IEnumerable<Type> ITypeRegister.Types => [typeof(FooCreated), typeof(FooUpdated)];
