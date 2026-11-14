@@ -15,6 +15,11 @@ namespace MicroPlumberd.SourceGenerators.Tests;
 /// Each fixture is compiled against the real MicroPlumberd assemblies, so the whole compilation (user code plus
 /// generated code) must carry no diagnostic of severity warning or above. The control in the same test plants a
 /// duplicate using (CS0105) in the user source and requires the same harness to report it.
+/// The same holds for a consumer that also builds its documentation file (GenerateDocumentationFile=true, which compiles
+/// with DocumentationMode.Diagnose): every public or protected member the generators write must carry an XML comment, or
+/// the consumer gets CS1591 from the generated file (issue #54, observed on 1.3.7). The fixtures' own code is fully
+/// documented, so any CS1591 comes from the generated code; the control plants an undocumented public member in the user
+/// source and requires the same harness to report it as CS1591.
 /// </summary>
 public class GeneratedCodeDiagnosticsTests
 {
@@ -36,17 +41,24 @@ global using global::System.Threading.Tasks;
     // A strongly typed identifier (prefixed, IParsable, JSON as one string); the handler's and the aggregate's TId. The converter is
     // named in full because MicroPlumberd also declares a JsonParsableConverter<T> (CS0104 with both namespaces imported).
     private const string FooId = @"
+/// <summary>Identifies a foo.</summary>
+/// <param name=""Value"">The guid behind the id.</param>
 [JsonConverter(typeof(ModelingEvolution.JsonParsableConverter.JsonParsableConverter<FooId>))]
 public readonly record struct FooId(Guid Value) : IParsable<FooId>
 {
     private const string Prefix = ""fo-"";
 
+    /// <summary>A new unique id.</summary>
     public static FooId New() => new(Guid.NewGuid());
+    /// <summary>The guid behind the id.</summary>
     public static implicit operator Guid(FooId id) => id.Value;
+    /// <summary>The id over a guid.</summary>
     public static explicit operator FooId(Guid value) => new(value);
 
+    /// <inheritdoc/>
     public static FooId Parse(string s, IFormatProvider? provider = null)
         => TryParse(s, provider, out var r) ? r : throw new FormatException($""Invalid {nameof(FooId)}: {s}"");
+    /// <inheritdoc/>
     public static bool TryParse(string? s, IFormatProvider? provider, out FooId result)
     {
         if (s is null) { result = default; return false; }
@@ -54,6 +66,7 @@ public readonly record struct FooId(Guid Value) : IParsable<FooId>
         if (Guid.TryParse(span, out var g)) { result = new(g); return true; }
         result = default; return false;
     }
+    /// <inheritdoc/>
     public override string ToString() => $""{Prefix}{Value}"";
 }
 ";
@@ -67,21 +80,30 @@ using MicroPlumberd.Services;
 
 namespace Consumer.Handlers;
 " + FooId + @"
+/// <summary>Creates a foo.</summary>
+/// <param name=""Name"">The foo's name.</param>
 public sealed record CreateFoo(string Name)
 {
+    /// <summary>The command's exactly-once key.</summary>
     public Guid Id { get; init; } = Guid.NewGuid();
 }
 
+/// <summary>Renames a foo.</summary>
+/// <param name=""Name"">The new name.</param>
 public sealed record RenameFoo(string Name)
 {
+    /// <summary>The command's exactly-once key.</summary>
     public Guid Id { get; init; } = Guid.NewGuid();
 }
 
+/// <summary>Handles the foo commands.</summary>
 [CommandHandler]
 public partial class FooCommandHandler(IPlumberInstance plumber)
 {
+    /// <summary>Handles <see cref=""CreateFoo""/>.</summary>
     public Task Handle(FooId id, CreateFoo cmd) => Task.CompletedTask;
 
+    /// <summary>Handles <see cref=""RenameFoo""/>.</summary>
     public Task<string> Handle(FooId id, RenameFoo cmd) => Task.FromResult(cmd.Name + plumber.GetHashCode());
 }
 ";
@@ -95,14 +117,20 @@ using MicroPlumberd.Services;
 
 namespace Consumer.Processes;
 
+/// <summary>An order was placed.</summary>
 public sealed record OrderPlaced;
+/// <summary>The order's payment arrived.</summary>
 public sealed record PaymentReceived;
+/// <summary>Ships an order.</summary>
 public sealed record ShipOrder;
+/// <summary>Charges an order.</summary>
 public sealed record ChargeOrder;
 
+/// <summary>Takes an order from placement to shipping.</summary>
 [ProcessManager]
 public partial class OrderProcessManager
 {
+    /// <summary>Starts the process: charges the order.</summary>
     public Task<ICommandRequest<ChargeOrder>> StartWhen(Metadata m, OrderPlaced ev)
         => Task.FromResult(CommandRequest.Create(Guid.NewGuid(), new ChargeOrder()));
 
@@ -120,8 +148,11 @@ using MicroPlumberd;
 
 namespace Consumer.Views;
 
+/// <summary>A foo was created.</summary>
+/// <param name=""Name"">The foo's name.</param>
 public sealed record FooCreated(string Name);
 
+/// <summary>A view of the foos.</summary>
 [EventHandler]
 public partial class FooView
 {
@@ -137,12 +168,18 @@ using MicroPlumberd;
 namespace Consumer.Domain;
 " + FooId + @"
 
+/// <summary>A foo was opened.</summary>
+/// <param name=""Name"">The foo's name.</param>
 public sealed record FooOpened(string Name);
+/// <summary>What the foo aggregate remembers.</summary>
 public sealed record FooState
 {
+    /// <summary>The foo's name.</summary>
     public string Name { get; init; } = string.Empty;
 }
 
+/// <summary>A foo.</summary>
+/// <param name=""id"">The foo's id.</param>
 [Aggregate]
 public partial class FooAggregate(FooId id) : AggregateBase<FooId, FooState>(id)
 {
@@ -169,6 +206,33 @@ public partial class FooAggregate(FooId id) : AggregateBase<FooId, FooState>(id)
         Assert.Equal("Consumer.cs", Path.GetFileName(cs0105.Location.SourceTree?.FilePath));
     }
 
+    [Theory]
+    [MemberData(nameof(Shapes))]
+    public void GeneratedCode_WithDocumentationFile_HasNoWarningOrError(string shape)
+    {
+        var (source, generator) = Fixture(shape);
+
+        var clean = Compile(source.Replace("//PLANTED", ""), generator, out var generated, DocumentationMode.Diagnose);
+        Assert.EndsWith($"_{shape}.g.cs", Assert.Single(generated).FilePath);
+        Assert.Empty(clean.Select(Describe));
+
+        // Control: the same harness must report an undocumented public member of the user file as CS1591.
+        var planted = Compile(source.Replace("//PLANTED", "") + PlantedUndocumentedMember, generator, out _, DocumentationMode.Diagnose);
+        var cs1591 = Assert.Single(planted);
+        Assert.Equal("CS1591", cs1591.Id);
+        Assert.Equal("Consumer.cs", Path.GetFileName(cs1591.Location.SourceTree?.FilePath));
+        Assert.Contains("Planted.Undocumented()", cs1591.GetMessage());
+    }
+
+    // Appended after the fixture (inside its file-scoped namespace): a documented type with one undocumented public member.
+    private const string PlantedUndocumentedMember = @"
+/// <summary>The control's documented type.</summary>
+public static class Planted
+{
+    public static void Undocumented() { }
+}
+";
+
     private static (string Source, IIncrementalGenerator Generator) Fixture(string shape) => shape switch
     {
         "CommandHandler" => (CommandHandlerSource, new CommandHandlerSourceGenerator()),
@@ -187,9 +251,12 @@ public partial class FooAggregate(FooId id) : AggregateBase<FooId, FooState>(id)
             .Add("CS1702", ReportDiagnostic.Suppress);
 
     /// <summary>Runs the generator and returns every diagnostic of severity warning or above of the resulting compilation.</summary>
-    private ImmutableArray<Diagnostic> Compile(string source, IIncrementalGenerator generator, out ImmutableArray<SyntaxTree> generated)
+    /// <param name="documentation">DocumentationMode.Diagnose is what GenerateDocumentationFile=true gives a consumer; it applies
+    /// to the generated files too, because the driver parses them with the same options.</param>
+    private ImmutableArray<Diagnostic> Compile(string source, IIncrementalGenerator generator, out ImmutableArray<SyntaxTree> generated,
+        DocumentationMode documentation = DocumentationMode.Parse)
     {
-        var parse = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest);
+        var parse = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.Latest).WithDocumentationMode(documentation);
         var compilation = CSharpCompilation.Create(
             "Consumer",
             new[]
