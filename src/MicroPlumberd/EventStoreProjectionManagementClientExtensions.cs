@@ -148,6 +148,10 @@ public static class KurrentDBProjectionManagementClientExtensions
     /// <summary>Test seam, keyed by the client: runs just before a conditional hash claim (a rival's store lands here).</summary>
     internal static Func<KurrentDBClient, string, Task>? BeforeHashClaimForTests;
 
+    /// <summary>Test seam, keyed by the client: runs after each create attempt the server accepted (a fault thrown here is one
+    /// the client saw although the create went through, issue #59).</summary>
+    internal static Func<KurrentDBProjectionManagementClient, string, Task>? AfterCreateForTests;
+
     /// <summary>Test seam, keyed by the client: observes every query update this library makes.</summary>
     internal static Action<KurrentDBProjectionManagementClient, string>? OnQueryUpdateForTests;
 
@@ -163,13 +167,20 @@ public static class KurrentDBProjectionManagementClientExtensions
         var (_, before) = await ProjectionQueryHash.ReadStateAsync(esClient, outputStream, token);
         try
         {
-            await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+            // A transient failure (DeadlineExceeded under a slow store, issue #59) is retried as the update is. The create may
+            // have gone through on the server before the client gave up: the retry then meets the Conflict below.
+            await RetryTransient(async () =>
+            {
+                await client.CreateContinuousAsync(outputStream, query, false, cancellationToken: token);
+                if (AfterCreateForTests is { } seam) await seam(client, outputStream);
+            }, token);
         }
         catch (RpcException ex) when (IsConflict(ex))
         {
             // The projection EXISTS (issue #29): the register is loaded once per process and does not see a projection
             // created after it loaded — a second ensure of the same model in the same process, or another instance's
-            // creation — so the create path met it. Decided by the definition, never by overwriting it.
+            // creation — so the create path met it. Decided by the definition, never by overwriting it. Also issue #59: a
+            // create that went through while its caller saw a timeout, so no hash was stored — resolved here, hash claimed.
             return await ResolveExisting(client, esClient, outputStream, query, ex, token);
         }
         // The gRPC create cannot enable emitting; the update does — on the running projection, never after
@@ -261,24 +272,40 @@ public static class KurrentDBProjectionManagementClientExtensions
     private static async Task UpdateWithRetry(KurrentDBProjectionManagementClient client, string outputStream,
         string query, CancellationToken token)
     {
-        for (int i = 0; ; i++)
+        try
         {
-            try
+            await RetryTransient(async () =>
             {
                 OnQueryUpdateForTests?.Invoke(client, outputStream);
                 await client.UpdateAsync(outputStream, query, true, cancellationToken: token);
                 await client.EnableAsync(outputStream, cancellationToken: token);
+            }, token);
+        }
+        catch (Exception) when (!token.IsCancellationRequested)
+        {
+            try { await client.EnableAsync(outputStream, cancellationToken: token); }
+            catch { /* the original failure is the one to report */ }
+            throw;
+        }
+    }
+
+    /// <summary>
+    /// The one retry for projection management calls (update and create): a transient <see cref="RpcException"/> is retried
+    /// up to <see cref="PROJECTION_UPDATE_RETRY_COUNT"/> attempts in all, each after a random delay under one second; the last
+    /// failure, or any other, propagates.
+    /// </summary>
+    private static async Task RetryTransient(Func<Task> call, CancellationToken token)
+    {
+        for (int i = 0; ; i++)
+        {
+            try
+            {
+                await call();
                 return;
             }
             catch (RpcException ex) when (IsTransient(ex) && i < PROJECTION_UPDATE_RETRY_COUNT - 1)
             {
                 await Task.Delay(Random.Shared.Next(1000), token);
-            }
-            catch (Exception) when (!token.IsCancellationRequested)
-            {
-                try { await client.EnableAsync(outputStream, cancellationToken: token); }
-                catch { /* the original failure is the one to report */ }
-                throw;
             }
         }
     }

@@ -164,6 +164,71 @@ public class JoinProjectionConflictTests : IAsyncDisposable, IDisposable
         }
     }
 
+    // Issue #59: a slow store at boot — the create timed out on the client (DeadlineExceeded) although it went through on the
+    // server, so no hash was stored; the host stopped, and every later start met "received Conflict" on the create.
+
+    /// <summary>
+    /// #59 (a): a projection that EXISTS on the server with NO stored hash (a create that went through, its hash never
+    /// stored), met by an ensure whose register does not list it: the Conflict resolves — the ensure succeeds and stores
+    /// the hash, so the next start takes the update-if-changed path and reports no change.
+    /// </summary>
+    [Fact]
+    public async Task AProjectionCreatedWithNoStoredHash_IsResolvedOnTheNextEnsure_AndItsHashIsStored()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => (await plumber.ProjectionRegister.Get(ModelStream)).Should().BeNull("loaded before it exists"));
+        var query = KurrentDBProjectionManagementClientExtensions.CreateJoinQuery(ModelStream,
+            plumber.TypeHandlerRegisters.GetEventNamesFor<FooModel>());
+        await plumber.ProjectionManagementClient.CreateContinuousAsync(ModelStream, query, false);   // created, no hash stored
+        (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().BeNull("the hash was never stored");
+
+        var wait = KurrentDBProjectionManagementClientExtensions.ConflictHashWait;
+        KurrentDBProjectionManagementClientExtensions.ConflictHashWait = TimeSpan.FromMilliseconds(300);
+        try
+        {
+            (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue("the existing projection is taken over and updated");
+        }
+        finally { KurrentDBProjectionManagementClientExtensions.ConflictHashWait = wait; }
+
+        (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().Be(ProjectionQueryHash.Of(query), "the hash is stored now");
+        (await ProjectionsNamed(ModelStream)).Should().Be(1);
+        (await Plumber.Create(_eventStore.GetEventStoreSettings()).TryCreateJoinProjection<FooModel>()).Should()
+            .BeFalse("the next start (a new process) sees the same definition: no change");
+    }
+
+    /// <summary>
+    /// #59 (b): the create times out on the client (DeadlineExceeded, injected after the server accepted it): it is retried,
+    /// the retry meets the Conflict, which resolves — the ensure succeeds and the hash is stored, instead of the exception
+    /// stopping the host.
+    /// </summary>
+    [Fact]
+    public async Task ACreateThatTimesOutAfterTheServerAcceptedIt_IsRetried_AndTheEnsureSucceedsWithItsHashStored()
+    {
+        await _eventStore.StartInDocker();
+        await WithStoreReady(async () => (await plumber.ProjectionRegister.Get(ModelStream)).Should().BeNull());
+        var faults = 0;
+        var wait = KurrentDBProjectionManagementClientExtensions.ConflictHashWait;
+        KurrentDBProjectionManagementClientExtensions.ConflictHashWait = TimeSpan.FromMilliseconds(300);
+        KurrentDBProjectionManagementClientExtensions.AfterCreateForTests = (management, stream) =>
+            ReferenceEquals(management, plumber.ProjectionManagementClient) && stream == ModelStream && Interlocked.Increment(ref faults) == 1
+                ? throw new RpcException(new Status(StatusCode.DeadlineExceeded, "injected: the client gave up, the create went through"))
+                : Task.CompletedTask;
+        try
+        {
+            (await plumber.TryCreateJoinProjection<FooModel>()).Should().BeTrue();
+        }
+        finally
+        {
+            KurrentDBProjectionManagementClientExtensions.AfterCreateForTests = null;
+            KurrentDBProjectionManagementClientExtensions.ConflictHashWait = wait;
+        }
+
+        faults.Should().Be(1, "the injected timeout fired once; the retried create met the Conflict");
+        (await ProjectionQueryHash.ReadAsync(plumber.Client, ModelStream)).Should().NotBeNull("the hash is stored");
+        (await ProjectionsNamed(ModelStream)).Should().Be(1);
+        (await Plumber.Create(_eventStore.GetEventStoreSettings()).TryCreateJoinProjection<FooModel>()).Should().BeFalse();
+    }
+
     // card microplumberd-projection-register-invalidation: the register (loaded once per process) is dropped after an ensure
     // takes the create path, so it sees the projection that now exists — the #29 root cause, at its root.
 
