@@ -3,7 +3,9 @@ using KurrentDB.Client;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("MicroPlumberd.Tests")]
-//[assembly: InternalsVisibleTo("MicroPlumberd.Services")]
+// MicroPlumberd.Services calls internals (TailAsync, TryCreateJoinProjectionBy): the two packages ship from one tag with
+// one version and must be moved together in an app.
+[assembly: InternalsVisibleTo("MicroPlumberd.Services")]
 
 /// <summary>
 /// Extension methods for <see cref="KurrentDBClientSettings"/> to provide utility functionality.

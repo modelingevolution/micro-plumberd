@@ -13,16 +13,19 @@ namespace MicroPlumberd.Services;
 /// </summary>
 sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
     PlumberEngine plumber,
-    IEnumerable<ICommandHandlerStarter> starters) : BackgroundService, IEventHandler
+    IEnumerable<ICommandHandlerStarter> starters) : BackgroundService, IEventHandler, ICommandHandlerReadiness
 {
     private readonly Dictionary<Type, IEventHandler> _handlersByCommand = new();
     private readonly IServicesConvention _serviceConventions = plumber.Config.Conventions.ServicesConventions();
     private IAsyncDisposable? _subscription;
     private Dictionary<string, Type> _eventMapper;
+    private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
     /// <summary>
     /// Gets a value indicating whether the command handler service is ready to process commands.
     /// </summary>
-    public bool IsReady { get; private set; }
+    public bool IsReady => WhenSubscribed.IsCompletedSuccessfully;
+    /// <inheritdoc/>
+    public Task WhenSubscribed => _ready.Task;
     /// <summary>
     /// Stops the command handler service and disposes subscriptions.
     /// </summary>
@@ -30,6 +33,7 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
     /// <returns>A task representing the asynchronous stop operation.</returns>
     public override async Task StopAsync(CancellationToken cancellationToken)
     {
+        _ready.TrySetCanceled();
         if (_subscription != null)
             await _subscription.DisposeAsync();
         _subscription = null;
@@ -53,7 +57,7 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
 
             if (_handlersByCommand.Count == 0)
             {
-                IsReady = true;
+                _ready.TrySetResult();
                 return;
             }
             this._eventMapper = _handlersByCommand.Keys.ToDictionary(x => x.Name);
@@ -66,18 +70,38 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
                 this._subscription = await plumber.SubscribeEventHandlerPersistently(MapCommandType, events, this,
                     outputStream, AppDomain.CurrentDomain.FriendlyName, StreamPosition.End, true, token: stoppingToken);
             else
+            {
+                // feature-017 design.md § slice B1: ensure the join projection, THEN read the tail (commands already
+                // linked when the tail is read are not re-handled; links the projection writes later for older commands
+                // are handled, as in 1.3.9), THEN subscribe from that number. The background subscribe, its confirmation
+                // and any re-subscribe after a drop start there, so a command appended after this point is handled.
+                plumber.LogProjectionEnsured(outputStream, await KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(
+                    plumber.ProjectionManagementClient, plumber.Client, outputStream, plumber.ProjectionRegister, events,
+                    typeof(CommandHandlerService), stoppingToken));
+                var start = await plumber.Client.TailAsync(outputStream, stoppingToken);
                 this._subscription = await plumber.SubscribeEventHandler(MapCommandType, events, this, outputStream,
-                    FromStream.End, true, stoppingToken);
-            IsReady = true;
+                    start, ensureOutputStreamProjection: false, stoppingToken);
+            }
+            _ready.TrySetResult();
         }
         catch (OperationCanceledException ex)
         {
-            // do nothing
+            _ready.TrySetCanceled();
         }
         catch(Exception ex)
         {
+            _ready.TrySetException(ex);
             throw;
         }
+    }
+
+    /// <summary>
+    /// Disposes the service; a readiness not yet completed is canceled.
+    /// </summary>
+    public override void Dispose()
+    {
+        _ready.TrySetCanceled();
+        base.Dispose();
     }
 
     /// <summary>

@@ -55,7 +55,9 @@ internal class CommandBus : ICommandBus, IEventHandler
         var servicesConventions = plumber.Config.Conventions.ServicesConventions();
         _streamIn = servicesConventions.SessionInStreamFromSessionIdConvention(SessionId);
         _streamOut = servicesConventions.SessionOutStreamFromSessionIdConvention(SessionId);
-        _initialized = new AsyncLazy<bool>(OnInitialize);
+        // Not cached on failure: a set-up that failed (e.g. a store refusing appends while it starts) runs again on the next send
+        // (feature-017 design.md § slice B1).
+        _initialized = new AsyncLazy<bool>(OnInitialize, cacheFailure: false);
     }
 
     /// <summary>
@@ -64,9 +66,12 @@ internal class CommandBus : ICommandBus, IEventHandler
     /// <returns>A task representing the asynchronous initialization, with a result of true when complete.</returns>
     private async Task<bool> OnInitialize()
     {
-        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.NoStream, new KurrentDB.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
-        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.NoStream, new KurrentDB.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
-        _subscription = await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.End, false);
+        // StreamState.Any: an earlier set-up attempt of this session that already wrote the same metadata is accepted.
+        await _plumber.Client.SetStreamMetadataAsync(_streamIn, StreamState.Any, new KurrentDB.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        await _plumber.Client.SetStreamMetadataAsync(_streamOut, StreamState.Any, new KurrentDB.Client.StreamMetadata(maxAge: TimeSpan.FromDays(30)));
+        // FromStream.Start: the out stream is new by construction (new SessionId per bus), so every answer on it is ours,
+        // including one that lands before the server confirms this subscription.
+        _subscription = await _plumber.SubscribeEventHandler(TryMapEventResponse, null, this, _streamOut, FromStream.Start, false);
         _log.LogDebug("Session {steamId} subscribed.", _streamOut);
        
         return true;

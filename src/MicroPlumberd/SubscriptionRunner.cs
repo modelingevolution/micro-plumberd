@@ -57,6 +57,33 @@ record SubscriptionRunnerState : ISubscriptionState
 
 
 };
+/// <summary>
+/// The one-record stream read shared by <see cref="SubscriptionSeeker"/> and the command handler's start position
+/// (feature-017 design.md § slice B1).
+/// </summary>
+internal static class StreamReadOneExtensions
+{
+    /// <summary>Reads one record of <paramref name="stream"/> from <paramref name="position"/>; <c>null</c> when the stream does not exist.</summary>
+    internal static async Task<ResolvedEvent?> ReadOneAsync(this KurrentDBClient client, Direction direction, string stream,
+        StreamPosition position, CancellationToken token)
+    {
+        var records = client.ReadStreamAsync(direction, stream, position, 1, cancellationToken: token);
+        if (await records.ReadState == ReadState.StreamNotFound)
+            return null;
+        return await records.FirstAsync(token);
+    }
+
+    /// <summary>
+    /// The position after the last record of <paramref name="stream"/> at the time of the read: a subscription made from it
+    /// receives every record appended after this call. No stream yet ⇒ <see cref="FromStream.Start"/> (all of it is new).
+    /// </summary>
+    internal static async Task<FromStream> TailAsync(this KurrentDBClient client, string stream, CancellationToken token)
+    {
+        var last = await client.ReadOneAsync(Direction.Backwards, stream, StreamPosition.End, token);
+        return last is null ? FromStream.Start : FromStream.After(last.Value.OriginalEventNumber);
+    }
+}
+
 class SubscriptionSeeker(PlumberEngine plumber, string streamName, FromRelativeStreamPosition start,
     UserCredentials? userCredentials = null, CancellationToken cancellationToken = default) : ISubscriptionRunner
 {
@@ -76,13 +103,12 @@ class SubscriptionSeeker(PlumberEngine plumber, string streamName, FromRelativeS
         else if (start.StartPosition != FromStream.Start)
             sp = start.StartPosition.ToUInt64();
 
-        var records = plumber.Client.ReadStreamAsync(start.Direction, streamName, sp, 1, 
-            cancellationToken:cancellationToken);
+        var found = await plumber.Client.ReadOneAsync(start.Direction, streamName, sp, cancellationToken);
         StreamPosition dstPosition;
-        if (await records.ReadState == ReadState.StreamNotFound)
+        if (found is null)
             return new (subscriptionStart,plumber.Client,streamName, userCredentials,  cancellationToken);
 
-        var record = await records.FirstAsync();
+        var record = found.Value;
         if (start.Direction == Direction.Forwards)
         {
             dstPosition = record.Event.EventNumber + start.Count;
