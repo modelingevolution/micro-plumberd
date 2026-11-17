@@ -192,5 +192,63 @@ namespace MicroPlumberd.Tests.Unit
                 await Task.WhenAll(tasks.Concat(new[] { initTask }));
             }
         
-    }
+    
+            // design.md (feature-017) § slice B1, "MicroPlumberd/AsyncLazy.cs": cacheFailure: false retries a failed attempt.
+            [Fact]
+            public async Task Value_FactoryThrowsOnce_WithoutFailureCaching_NextValueRunsFactoryAgain()
+            {
+                var calls = 0;
+                var lazy = new AsyncLazy<int>(async () =>
+                {
+                    await Task.Yield();
+                    if (Interlocked.Increment(ref calls) == 1) throw new InvalidOperationException("first attempt fails");
+                    return 42;
+                }, cacheFailure: false);
+
+                await Assert.ThrowsAsync<InvalidOperationException>(async () => await lazy.Value);
+                Assert.False(lazy.IsValueCreated);
+
+                Assert.Equal(42, await lazy.Value);
+                Assert.True(lazy.IsValueCreated);
+                Assert.Equal(2, calls);
+            }
+
+            // Deterministic: each attempt is held open by a test-owned gate until every caller has joined it.
+            [Fact]
+            public async Task Value_CallersJoiningAFailingAttemptAndTheRetry_AllComplete_FactoryRunsTwice()
+            {
+                var wait = TimeSpan.FromSeconds(5);
+                var gates = new[]
+                {
+                    new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously),
+                    new TaskCompletionSource<int>(TaskCreationOptions.RunContinuationsAsynchronously)
+                };
+                var calls = 0;
+                var lazy = new AsyncLazy<int>(() =>
+                {
+                    var n = Interlocked.Increment(ref calls);
+                    return gates[n - 1].Task;
+                }, cacheFailure: false);
+
+                var a = lazy.Value.AsTask();
+                var b = lazy.Value.AsTask();
+                Assert.Equal(1, calls);
+
+                var failure = new InvalidOperationException("attempt 1 fails");
+                gates[0].SetException(failure);
+                var exA = await Assert.ThrowsAsync<InvalidOperationException>(() => a.WaitAsync(wait));
+                var exB = await Assert.ThrowsAsync<InvalidOperationException>(() => b.WaitAsync(wait));
+                Assert.Same(failure, exA);
+                Assert.Same(failure, exB);
+
+                var c = lazy.Value.AsTask();
+                var d = lazy.Value.AsTask();
+                Assert.Equal(2, calls);
+
+                gates[1].SetResult(42);
+                Assert.Equal(42, await c.WaitAsync(wait));
+                Assert.Equal(42, await d.WaitAsync(wait));
+                Assert.Equal(2, calls);
+            }
+}
 }
