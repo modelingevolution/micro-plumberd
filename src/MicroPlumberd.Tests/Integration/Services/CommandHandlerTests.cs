@@ -418,6 +418,35 @@ namespace MicroPlumberd.Tests.Integration.Services
                 "should complete promptly.");
         }
 
+        // feature-017 design.md § slice B1: a command appended after WhenSubscribed completes is handled, on a command
+        // stream that does not exist yet (the subscription starts at the position read when it was made).
+        [Fact]
+        public async Task CommandQueuedWhenSubscribed_OnANewCommandStream_IsHandled()
+        {
+            _serverTestApp.Configure(x => x
+                .AddPlumberd(_eventStore.GetEventStoreSettings())
+                .AddCommandHandler<FooCommandHandler>());
+
+            var srv = await _serverTestApp.StartAsync();
+
+            var fooModel = new FooModel(new InMemoryAssertionDb());
+            await srv.GetRequiredService<IPlumber>().SubscribeEventHandler(fooModel);
+
+            await srv.GetRequiredService<ICommandHandlerReadiness>().WhenSubscribed.WaitAsync(TimeSpan.FromSeconds(30));
+            var recipientId = Guid.NewGuid();
+            await srv.GetRequiredService<ICommandBus>().QueueAsync(recipientId, new CreateFoo() { Name = "queued" });
+
+            await Eventually(() => fooModel.AssertionDb.Index.Should().HaveCount(1), TimeSpan.FromSeconds(10));
+
+            // The position the subscription starts at: a missing stream is read from its start, a stream of 3 events after 2.
+            var client = srv.GetRequiredService<IPlumberInstance>().Client;
+            (await client.TailAsync($"tail-{Guid.NewGuid():N}", CancellationToken.None)).Should().Be(FromStream.Start);
+            var stream = $"tail-{Guid.NewGuid():N}";
+            await client.AppendToStreamAsync(stream, StreamState.NoStream, Enumerable.Range(0, 3)
+                .Select(i => new EventData(Uuid.NewUuid(), "TailProbe", Encoding.UTF8.GetBytes("{}"))));
+            (await client.TailAsync(stream, CancellationToken.None)).Should().Be(FromStream.After(new StreamPosition(2)));
+        }
+
         public async Task InitializeAsync()
         {
             await _eventStore.StartInDocker();
