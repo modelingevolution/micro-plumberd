@@ -102,6 +102,7 @@ public static class ContainerExtensions
         collection.AddSingleton<StartupHealthCheck>();
         
         collection.AddBackgroundServiceIfMissing<CommandHandlerService>();
+        collection.TryAddSingleton<ICommandHandlerReadiness>(sp => sp.GetRequiredService<CommandHandlerService>());
         collection.AddBackgroundServiceIfMissing<EventHandlerService>();
         
         collection.TryAddSingleton(typeof(ISnapshotPolicy<>), typeof(AttributeSnaphotPolicy<>));

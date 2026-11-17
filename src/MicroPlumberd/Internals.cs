@@ -3,7 +3,7 @@ using KurrentDB.Client;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("MicroPlumberd.Tests")]
-//[assembly: InternalsVisibleTo("MicroPlumberd.Services")]
+[assembly: InternalsVisibleTo("MicroPlumberd.Services")]
 
 /// <summary>
 /// Extension methods for <see cref="KurrentDBClientSettings"/> to provide utility functionality.
