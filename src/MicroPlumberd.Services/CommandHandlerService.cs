@@ -71,8 +71,9 @@ sealed class CommandHandlerService(ILogger<CommandHandlerService> log,
                     outputStream, AppDomain.CurrentDomain.FriendlyName, StreamPosition.End, true, token: stoppingToken);
             else
             {
-                // feature-017 design.md § slice B1: ensure the join projection, THEN read the tail (history the ensure
-                // links is not re-handled), THEN subscribe from that number. The background subscribe, its confirmation
+                // feature-017 design.md § slice B1: ensure the join projection, THEN read the tail (commands already
+                // linked when the tail is read are not re-handled; links the projection writes later for older commands
+                // are handled, as in 1.3.9), THEN subscribe from that number. The background subscribe, its confirmation
                 // and any re-subscribe after a drop start there, so a command appended after this point is handled.
                 plumber.LogProjectionEnsured(outputStream, await KurrentDBProjectionManagementClientExtensions.TryCreateJoinProjectionBy(
                     plumber.ProjectionManagementClient, plumber.Client, outputStream, plumber.ProjectionRegister, events,

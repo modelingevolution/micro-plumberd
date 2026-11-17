@@ -21,14 +21,25 @@ public class AsyncLazy<T>
     private TaskCompletionSource<T>? _attempt;
 
     /// <summary>
-    /// Initializes a new instance of AsyncLazy with the specified value factory
+    /// Initializes a new instance of AsyncLazy with the specified value factory. A failed factory call stays cached:
+    /// every later <see cref="Value"/> throws its exception.
+    /// </summary>
+    /// <param name="valueFactory">Creates the value.</param>
+    // Kept as its own constructor (not an optional parameter on the one below): assemblies built against 1.3.9 bind to
+    // this exact signature.
+    public AsyncLazy(Func<Task<T>> valueFactory) : this(valueFactory, cacheFailure: true)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of AsyncLazy with the specified value factory and failure caching.
     /// </summary>
     /// <param name="valueFactory">Creates the value.</param>
     /// <param name="cacheFailure">
-    /// <c>true</c> (default): a failed factory call stays cached and every later <see cref="Value"/> throws its exception.
+    /// <c>true</c>: a failed factory call stays cached and every later <see cref="Value"/> throws its exception.
     /// <c>false</c>: a failed or canceled attempt is not cached; the next <see cref="Value"/> runs the factory again.
     /// </param>
-    public AsyncLazy(Func<Task<T>> valueFactory, bool cacheFailure = true)
+    public AsyncLazy(Func<Task<T>> valueFactory, bool cacheFailure)
     {
         _valueFactory = valueFactory ?? throw new ArgumentNullException(nameof(valueFactory));
         _cacheFailure = cacheFailure;
