@@ -12,7 +12,11 @@ namespace MicroPlumberd.Migration;
 /// <summary>Per source-stream copy accounting.</summary>
 public sealed class StreamCopyInfo
 {
-    /// <summary>The destination stream these events were written to (after any rename).</summary>
+    /// <summary>
+    /// The destination stream the LAST kept event of this source stream was written to (after any rename). A rule
+    /// may send one source stream's events to several destination streams; the per-destination counts are
+    /// <see cref="CopyResult.KeptByDestStream"/>.
+    /// </summary>
     public required string TargetStream { get; set; }
 
     /// <summary>Events read from this source stream (excludes system/unparseable events).</summary>
@@ -62,6 +66,13 @@ public sealed class CopyResult
 
     /// <summary>Per source-stream accounting, keyed by source stream id.</summary>
     public Dictionary<string, StreamCopyInfo> SourceStreams { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>
+    /// Events kept per destination stream, counted event by event at the moment each one is routed. This, not
+    /// <see cref="StreamCopyInfo.TargetStream"/>, is what the verifier expects in the destination: a source stream
+    /// whose events a rule routes to two destination streams is counted in both.
+    /// </summary>
+    public Dictionary<string, long> KeptByDestStream { get; } = new(StringComparer.Ordinal);
 
     /// <summary>
     /// Final revision (last event number) per destination stream. Computed on a dry run too (the append is
@@ -311,6 +322,7 @@ internal sealed class CopyEngine(ILogger? logger = null) : IMigrationOpLog
             info.TargetStream = ctx.TargetStream;
             info.Kept++;
             result.Kept++;
+            result.KeptByDestStream[ctx.TargetStream] = result.KeptByDestStream.GetValueOrDefault(ctx.TargetStream) + 1;
 
             var ed = BuildEventData(er, ctx, runTimeUtc, scratch, writer);
             var edSize = ed.Data.Length + ed.Metadata.Length + PerEventFramingOverheadBytes;

@@ -81,14 +81,10 @@ internal sealed class Verifier
     public async Task<VerificationReport> VerifyAsync(KurrentDBClient dest, CopyResult copy,
         IReadOnlySet<string> reservedStreams, CancellationToken ct = default)
     {
-        // Expected destination counts = kept events grouped by their target stream.
-        var expected = new Dictionary<string, long>(StringComparer.Ordinal);
-        foreach (var info in copy.SourceStreams.Values)
-        {
-            if (info.Kept == 0) continue;
-            expected.TryGetValue(info.TargetStream, out var cur);
-            expected[info.TargetStream] = cur + info.Kept;
-        }
+        // Expected destination counts = kept events per destination stream, as the engine routed each event. Not
+        // grouped by a source stream's TargetStream: that holds only the last event's target, so a source stream
+        // split over two destinations would be credited wholly to the last one.
+        var expected = new Dictionary<string, long>(copy.KeptByDestStream, StringComparer.Ordinal);
 
         // Actual destination counts + final revision, RE-READ independently from the destination log, plus a
         // per-stream rolling write-fidelity hash recomputed over each event's (EventType || 0x00 || Data) in
