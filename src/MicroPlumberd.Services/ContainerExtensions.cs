@@ -255,6 +255,30 @@ public static class ContainerExtensions
         return services;
     }
 
+    // ── Binary compatibility with packages compiled against 1.2.x ──────────────────────────────────────────────────
+    // 1.3.0 (fe87609) added the optional `mergeSource` parameter to the three registrations below and removed their
+    // 3-parameter forms. That is a BINARY break: a package built on 1.2.x (e.g. ModelingEvolution.Booking / .Chat)
+    // throws MissingMethodException at startup. These forwarders restore the old signatures. They have NO default
+    // values, so source calls keep resolving to the 4-parameter overloads (no ambiguity); only old binaries bind here.
+
+    /// <summary>Binary-compatibility forwarder for 1.2.x callers; use the overload with <c>mergeSource</c>.</summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static IServiceCollection AddScopedEventHandler<TEventHandler>(this IServiceCollection services,
+        bool persistently, FromStream? start) where TEventHandler : class, IEventHandler, ITypeRegister
+        => AddScopedEventHandler<TEventHandler>(services, persistently, start, MergeSource.Projection);
+
+    /// <summary>Binary-compatibility forwarder for 1.2.x callers; use the overload with <c>mergeSource</c>.</summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static IServiceCollection AddSingletonEventHandler<TEventHandler>(this IServiceCollection services,
+        bool persistently, FromStream? start) where TEventHandler : class, IEventHandler, ITypeRegister
+        => AddSingletonEventHandler<TEventHandler>(services, persistently, start, MergeSource.Projection);
+
+    /// <summary>Binary-compatibility forwarder for 1.2.x callers; use the overload with <c>mergeSource</c>.</summary>
+    [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+    public static IServiceCollection AddEventHandler<TEventHandler>(this IServiceCollection services,
+        bool persistently, FromStream? start) where TEventHandler : class, IEventHandler, ITypeRegister
+        => AddEventHandler<TEventHandler>(services, persistently, start, MergeSource.Projection);
+
     /// <summary>
     /// Adds a state event handler that reads from the end of the stream minus one event.
     /// </summary>
