@@ -339,6 +339,49 @@ public class MigrationCopyIntegrationTests
         (await ReadStreamAsync(dst, "B-1")).Should().BeEmpty();
     }
 
+    // A Transform that routes one source stream's events to two destination streams (by payload): verification is
+    // OK and expects the exact count per destination. Before KeptByDestStream the verifier credited every kept event
+    // of a source stream to its LAST target and reported a MISMATCH on both destinations.
+    [Fact]
+    public async Task Transform_splitting_one_source_stream_over_two_targets_verifies_with_exact_counts_per_target()
+    {
+        await using var stores = new Stores();
+        var src = await stores.NewStoreAsync("ssrc");
+        var dst = await stores.NewStoreAsync("sdst");
+
+        // S-1: x0, x1, y0, y1, y2 (x* go to X-1, y* to Y-1); K-1 stays single-target (renamed to L-1).
+        await AppendAsync(src, "S-1", StreamState.NoStream, "T", "{\"v\":\"x0\"}");
+        await AppendAsync(src, "S-1", 0ul, "T", "{\"v\":\"x1\"}");
+        await AppendAsync(src, "K-1", StreamState.NoStream, "T", "{\"v\":\"k0\"}");
+        await AppendAsync(src, "S-1", 1ul, "T", "{\"v\":\"y0\"}");
+        await AppendAsync(src, "S-1", 2ul, "T", "{\"v\":\"y1\"}");
+        await AppendAsync(src, "K-1", 0ul, "T", "{\"v\":\"k1\"}");
+        await AppendAsync(src, "S-1", 3ul, "T", "{\"v\":\"y2\"}");
+
+        var migration = new InlineMigration("0001_split", b =>
+        {
+            b.RenameStream("K-1", "L-1");
+            b.Transform(e => e.StreamId != "S-1" ? e
+                : e with { StreamId = e.Data!["v"]!.GetValue<string>().StartsWith('x') ? "X-1" : "Y-1" });
+        });
+        var result = await new MigrationRunner().RunAsync(src, dst, [migration], dryRun: false);
+
+        result.Verification!.AllOk.Should().BeTrue(result.Verification.Format());
+        result.Copy.KeptByDestStream.Should().BeEquivalentTo(
+            new Dictionary<string, long> { ["X-1"] = 2, ["Y-1"] = 3, ["L-1"] = 2 });
+        var byStream = result.Verification.Streams.ToDictionary(s => s.DestStream);
+        (byStream["X-1"].ExpectedCount, byStream["X-1"].ActualCount).Should().Be((2L, 2L));
+        (byStream["Y-1"].ExpectedCount, byStream["Y-1"].ActualCount).Should().Be((3L, 3L));
+        (byStream["L-1"].ExpectedCount, byStream["L-1"].ActualCount).Should().Be((2L, 2L));
+        byStream.Should().NotContainKey("S-1");
+
+        (await ReadStreamAsync(dst, "X-1")).Select(e => JsonNode.Parse(e.Event.Data.Span)!["v"]!.GetValue<string>())
+            .Should().Equal("x0", "x1");
+        (await ReadStreamAsync(dst, "Y-1")).Select(e => JsonNode.Parse(e.Event.Data.Span)!["v"]!.GetValue<string>())
+            .Should().Equal("y0", "y1", "y2");
+        (await ReadStreamAsync(dst, "L-1")).Should().HaveCount(2);
+    }
+
     // M4: the write-fidelity checksum catches a dest whose CONTENT differs from the copy intent even when the
     // COUNT matches (a count-only verifier would pass it). Copy once cleanly; copy again with a transform that
     // alters the bytes; verify the altered dest against the CLEAN copy's hashes → MISMATCH on the changed
