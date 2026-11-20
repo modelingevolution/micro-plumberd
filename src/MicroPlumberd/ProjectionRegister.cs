@@ -45,12 +45,34 @@ static class Executor
 class ProjectionRegister : IProjectionRegister
 {
     private readonly KurrentDBProjectionManagementClient _client;
+    private readonly KurrentDBClientSettings? _settings;
     private volatile AsyncLazy<Dictionary<string, ProjectionDetails>> _lazyLoader;
 
-    public ProjectionRegister(KurrentDBProjectionManagementClient client)
+    /// <param name="client">The projection management client the list is read with.</param>
+    /// <param name="settings">The store's connection settings: with them the register can delete a half-created projection
+    /// (<see cref="TryDelete"/>); without them such a projection is reported, not repaired.</param>
+    public ProjectionRegister(KurrentDBProjectionManagementClient client, KurrentDBClientSettings? settings = null)
     {
         _client = client;
+        _settings = settings;
         _lazyLoader = Load();
+    }
+
+    /// <summary>
+    /// Deletes the projection <paramref name="name"/> over KurrentDB's HTTP API (the gRPC client has no delete). Used only for a
+    /// half-created projection, which answers no other command (INT-013). Its checkpoint and state streams go; emitted streams
+    /// are never deleted. False when this register was built without connection settings.
+    /// </summary>
+    internal async Task<bool> TryDelete(string name, CancellationToken token)
+    {
+        if (_settings is null) return false;
+        var (baseUri, user, pass) = KurrentHttpEndpoint.FromSettings(_settings);
+        using var http = KurrentHttpEndpoint.CreateClient(user, pass);
+        http.Timeout = TimeSpan.FromSeconds(30);
+        using var response = await http.DeleteAsync(
+            new Uri(baseUri, $"projection/{Uri.EscapeDataString(name)}?deleteCheckpointStream=true&deleteStateStream=true"), token);
+        response.EnsureSuccessStatusCode();
+        return true;
     }
 
     private int _loads;

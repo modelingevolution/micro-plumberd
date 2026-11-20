@@ -79,7 +79,7 @@ public class PlumberEngine : IPlumberReadOnlyConfig
     /// Gets the projection register for managing EventStore projections.
     /// </summary>
     public IProjectionRegister ProjectionRegister =>
-        _projectionRegister ??= new ProjectionRegister(ProjectionManagementClient);
+        _projectionRegister ??= new ProjectionRegister(ProjectionManagementClient, _settings);
 
     /// <summary>
     /// Gets the persistent subscription client for managing persistent subscriptions.
