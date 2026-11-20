@@ -105,7 +105,7 @@ public static class KurrentDBProjectionManagementClientExtensions
         else
         {
             // A FAILED create invalidates too: what the store holds is then unknown, and a reload is the only honest answer.
-            try { changed = await CreateAndStoreHash(client, esClient, outputStream, query, token); }
+            try { changed = await CreateAndStoreHash(client, esClient, outputStream, query, token, here); }
             finally { here?.Invalidate(); }
         }
 
@@ -158,7 +158,8 @@ public static class KurrentDBProjectionManagementClientExtensions
     /// <returns><c>true</c> if this call created (or, for an unknown existing one, updated) the projection; <c>false</c> if an
     /// IDENTICAL projection already existed.</returns>
     private static async Task<bool> CreateAndStoreHash(KurrentDBProjectionManagementClient client, KurrentDBClient esClient,
-        string outputStream, string query, CancellationToken token = default)
+        string outputStream, string query, CancellationToken token = default, ProjectionRegister? here = null,
+        HalfCreatedRecovery done = HalfCreatedRecovery.None)
     {
         // Read BEFORE the create (rev-reach e3712ab61 M1): if the create SUCCEEDS this process IS the creator — a racing creator
         // gets the Conflict — so any hash already there is STALE (a projection deleted to be redefined leaves its hash stream
@@ -175,8 +176,31 @@ public static class KurrentDBProjectionManagementClientExtensions
                 if (AfterCreateForTests is { } seam) await seam(client, outputStream);
             }, token);
         }
+        catch (RpcException ex) when (IsHalfRecorded(ex) && !done.HasFlag(HalfCreatedRecovery.SubsystemRestarted))
+        {
+            // INT-013 state 1: an earlier create was half-recorded (the name reached $projections-$all, the manager did not
+            // see it), so the manager's expected version is stale and EVERY create fails until the subsystem reloads. Reload
+            // it — no store restart — and create again; a half-recorded THIS name then meets the ghost branch below.
+            await client.RestartSubsystemAsync(cancellationToken: token);
+            return await CreateAndStoreHash(client, esClient, outputStream, query, token, here,
+                done | HalfCreatedRecovery.SubsystemRestarted);
+        }
         catch (RpcException ex) when (IsConflict(ex))
         {
+            // INT-013 state 2: the name exists with no definition (a ghost) — update, abort and reset never reply, so neither
+            // the hash nor an update can make it work. Delete it and create it properly. Checked BEFORE the stored hash:
+            // a hash claimed against a ghost would otherwise read as "already up to date" while nothing is linked.
+            if (!done.HasFlag(HalfCreatedRecovery.GhostDeleted) && await IsHalfCreated(client, outputStream, token))
+            {
+                if (here is null || !await here.TryDelete(outputStream, token))
+                    throw new InvalidOperationException(
+                        $"Projection '{outputStream}' is half-created (status Creating, mode Transient, no definition): a " +
+                        "create that timed out left only its name. It cannot be updated. Delete it — DELETE /projection/" +
+                        outputStream + " on the store's HTTP API — and start again.", ex);
+                return await CreateAndStoreHash(client, esClient, outputStream, query, token, here,
+                    done | HalfCreatedRecovery.GhostDeleted);
+            }
+
             // The projection EXISTS (issue #29): the register is loaded once per process and does not see a projection
             // created after it loaded — a second ensure of the same model in the same process, or another instance's
             // creation — so the create path met it. Decided by the definition, never by overwriting it. Also issue #59: a
@@ -258,6 +282,29 @@ public static class KurrentDBProjectionManagementClientExtensions
 
     /// <summary>The KurrentDB.Client version <see cref="ConflictDetail"/>'s shape was measured on; KurrentDBClientPinTests holds the pin to it.</summary>
     internal const string MeasuredOnClientVersion = "1.6.0";
+
+    /// <summary>What <see cref="CreateAndStoreHash"/> already did to recover a half-created projection: each step at most once.</summary>
+    [Flags]
+    private enum HalfCreatedRecovery { None = 0, SubsystemRestarted = 1, GhostDeleted = 2 }
+
+    /// <summary>
+    /// The Detail of a create whose record in <c>$projections-$all</c> was refused (KurrentDB logs "Created event for projections
+    /// has not been written to $projections-$all ... WrongExpectedVersion"). Measured on KurrentDB 26.1.2 and the fixture's image
+    /// with KurrentDB.Client 1.6.0: StatusCode Unknown, "Envelope callback expected Updated, received OperationFailed instead".
+    /// </summary>
+    internal static bool IsHalfRecorded(RpcException ex) =>
+        (ex.Status.Detail ?? "").Contains("received OperationFailed", StringComparison.Ordinal);
+
+    /// <summary>
+    /// A ghost: KurrentDB loaded the name from <c>$projections-$all</c> but found no definition, so it stays Creating with the
+    /// default mode Transient. Never a create in flight: the manager handles one command at a time, and this library creates
+    /// Continuous projections only.
+    /// </summary>
+    private static async Task<bool> IsHalfCreated(KurrentDBProjectionManagementClient client, string name, CancellationToken token)
+    {
+        var status = await client.GetStatusAsync(name, cancellationToken: token);
+        return status is { Mode: "Transient" } && (status.Status ?? "").Contains("Creating", StringComparison.Ordinal);
+    }
 
     /// <summary>A create refused because the projection exists: the measured Detail, or AlreadyExists from a client that reports it.</summary>
     internal static bool IsConflict(RpcException ex) =>
